@@ -44,6 +44,8 @@
     "messageDescription": "Chat with suppliers, factories and customers on CONSTRUPRECO.",
     "productDetailsTitle": "Product Details",
     "productDetailsDescription": "View product images, pricing, specifications and seller information on CONSTRUPRECO.",
+    "addProductTitle": "Add Product",
+    "addProductDescription": "Create a new product listing with pricing, images and specifications on CONSTRUPRECO.",
     "notFoundTitle": "Page Not Found",
     "notFoundDescription": "The page you are looking for does not exist."
   },

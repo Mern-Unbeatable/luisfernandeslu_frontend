@@ -44,6 +44,8 @@
     "messageDescription": "Chatea con proveedores, fábricas y clientes en CONSTRUPRECO.",
     "productDetailsTitle": "Detalles del producto",
     "productDetailsDescription": "Consulta imágenes, precios, especificaciones e información del vendedor en CONSTRUPRECO.",
+    "addProductTitle": "Añadir producto",
+    "addProductDescription": "Crea un nuevo producto con precios, imágenes y especificaciones en CONSTRUPRECO.",
     "notFoundTitle": "Página no encontrada",
     "notFoundDescription": "La página que buscas no existe."
   },

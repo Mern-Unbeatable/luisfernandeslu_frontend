@@ -4,6 +4,8 @@ import {
   ADMIN_PRODUCT,
   DEMO_PRODUCT,
 } from '../components/data-display/ProductDetails/demoProduct'
+import AddProduct from '../components/forms/AddProduct/AddProduct'
+import { DEMO_ADD_PRODUCT, DEMO_FACTORY_PRODUCT } from '../components/forms/AddProduct/defaults'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 
@@ -357,6 +359,44 @@ export default function HomePage() {
                   console.log(variant.name, actionId, product?.title, qty)
                 }}
               />
+            </div>
+          ))}
+        </div>
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            Add Product
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Same component — `role="supplier"` | `role="factory"`.
+          </p>
+        </header>
+
+        <div className="flex flex-col gap-10">
+          {[
+            { name: 'Supplier', role: 'supplier', product: DEMO_ADD_PRODUCT },
+            { name: 'Factory', role: 'factory', product: DEMO_FACTORY_PRODUCT },
+          ].map((variant) => (
+            <div key={variant.role} className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <div className="rounded-xl bg-white p-4 sm:p-6 lg:p-8">
+                <AddProduct
+                  role={variant.role}
+                  defaultValue={variant.product}
+                  onBack={() => console.log('back', variant.role)}
+                  onSubmit={(payload) =>
+                    console.log('submit', variant.role, payload)
+                  }
+                  onAiAssist={async (section, form) => {
+                    await new Promise((r) => setTimeout(r, 300))
+                    return section === 'feature'
+                      ? 'High Strength & Durability\nSmooth Workability\nCrack Resistance Performance'
+                      : `AI generated ${section} for ${form.title || 'this product'}.`
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
