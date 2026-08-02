@@ -1,5 +1,0 @@
-export { default as axiosInstance } from './axiosInstance'
-export { default } from './axiosInstance'
-export { axiosBaseQuery } from './axiosBaseQuery'
-export { tokenStorage } from './tokenStorage'
-export { setupInterceptors } from './interceptors'

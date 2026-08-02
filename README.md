@@ -1,350 +1,208 @@
-# Frontend Folder Structure
+# CONSTRUPRECO — Frontend
 
-This document describes the **exact folder structure used in this project**.  
-Copy the same layout into a new React + Vite app and follow the same rules.
+A React + Vite application built with Redux Toolkit (RTK Query), Axios, React Router v7 and Tailwind CSS v4.
 
----
-
-## Root
-
-```text
-frontend/
-├── public/
-├── src/
-├── .env
-├── .env.example
-├── index.html
-├── vite.config.js
-├── package.json
-└── README.md
-```
+This document describes the **project folder structure** in detail — what each folder is for, how the pieces fit together, and where to add new code.
 
 ---
 
-## Full `src/` tree (this project)
-
-```text
-src/
-├── main.jsx
-├── App.jsx
-├── index.css
-│
-├── config/
-│   └── env.js
-│
-├── routes/
-│   ├── router.jsx
-│   ├── ProtectedRoute.jsx
-│   └── PublicRoute.jsx
-│
-├── api/
-│   ├── index.js
-│   ├── auth.api.js
-│   ├── member.api.js
-│   ├── staff.api.js          # calls backend /api/staff (concierge)
-│   ├── admin.api.js
-│   ├── messages.api.js
-│   └── notifications.api.js
-│
-├── hooks/
-│   ├── useAuth.js
-│   ├── useApiError.js
-│   ├── useMessages.js
-│   ├── useMessageSocket.js
-│   ├── useNominatim.js
-│   └── api/
-│       ├── index.js
-│       ├── useAuthQueries.js
-│       ├── useMemberQueries.js
-│       ├── useStaffQueries.js
-│       ├── useAdminQueries.js
-│       ├── useMessageQueries.js
-│       └── useNotificationQueries.js
-│
-├── lib/
-│   ├── api/
-│   │   ├── axios.js
-│   │   ├── http.js
-│   │   ├── interceptors.js
-│   │   ├── tokenStorage.js
-│   │   ├── refreshAccessToken.js
-│   │   ├── authSession.js
-│   │   ├── unwrapResponse.js
-│   │   ├── ApiError.js
-│   │   └── index.js
-│   ├── auth/
-│   │   └── betterAuthClient.js
-│   ├── socket/
-│   │   └── socketClient.js
-│   ├── query/
-│   │   ├── queryClient.js
-│   │   ├── queryKeys.js
-│   │   └── index.js
-│   └── messages/
-│       └── messageUtils.js
-│
-├── features/
-│   ├── auth/
-│   │   ├── authSlice.js
-│   │   ├── authApiSlice.js
-│   │   └── dummyAuth.js
-│   ├── member/
-│   │   └── memberApiSlice.js
-│   ├── concierge/
-│   │   └── conciergeApiSlice.js
-│   └── admin/
-│       └── adminApiSlice.js
-│
-├── app/
-│   ├── store.js
-│   ├── apiSlice.js
-│   └── providers/
-│       └── AppProviders.jsx
-│
-├── components/
-│   ├── layout/
-│   │   ├── DashboardLayout.jsx
-│   │   └── public/
-│   │       ├── PublicLayout.jsx
-│   │       ├── Navbar.jsx
-│   │       ├── Footer.jsx
-│   │       └── ExperienceBanner.jsx
-│   ├── common/
-│   │   ├── Pagination.jsx
-│   │   ├── PasswordInput.jsx
-│   │   ├── skeletons/
-│   │   └── messenger/
-│   └── flight-demand-calendar/
-│
-├── pages/
-│   ├── public/
-│   │   ├── Home/
-│   │   ├── Membership/
-│   │   ├── Terms/
-│   │   ├── FAQ/
-│   │   ├── Contact/
-│   │   ├── login/
-│   │   ├── register/
-│   │   ├── payment-success/
-│   │   ├── forgot-password/
-│   │   ├── varify-otp/
-│   │   └── reset-password/
-│   │
-│   ├── member/
-│   │   ├── overview/
-│   │   ├── travel-opportunities/
-│   │   ├── pending-reservations/
-│   │   ├── upcoming-trips/
-│   │   ├── travel-preferences/
-│   │   ├── custom-travel/
-│   │   ├── message/
-│   │   ├── notification/
-│   │   └── profile/
-│   │
-│   ├── concierge/
-│   │   ├── dashboard/
-│   │   ├── calendar-demand/
-│   │   ├── member-interest/
-│   │   ├── opportunities/
-│   │   ├── travel-preferences/
-│   │   ├── message/
-│   │   └── Profile.jsx
-│   │
-│   └── admin/
-│       ├── dashboard-overview/
-│       ├── members/
-│       ├── concierge-staff/
-│       ├── support/
-│       └── settings/
-│
-├── assets/
-└── utils/
-    └── paymentAlerts.js
-```
-
----
-
-## What each top-level folder does
-
-| Folder | Purpose |
-|--------|---------|
-| `config/` | Environment variables (`VITE_API_URL`, etc.) |
-| `routes/` | All URLs + login/role guards |
-| `api/` | Backend HTTP calls (one file per API area) |
-| `hooks/` | React logic + TanStack Query hooks |
-| `lib/` | Axios, auth, socket, query client (no UI) |
-| `features/` | Redux slices |
-| `app/` | Redux store + providers |
-| `components/` | UI shared across multiple pages |
-| `pages/` | Screens — grouped by user area |
-| `assets/` | Images, fonts |
-| `utils/` | Small helper functions |
-
----
-
-## `pages/` rule
-
-Pages are split into **4 areas**:
-
-```text
-pages/public/      → anyone (marketing + login/register)
-pages/member/      → logged-in members
-pages/concierge/   → logged-in concierge users
-pages/admin/       → logged-in admins
-```
-
-**Each feature folder looks like this:**
-
-```text
-pages/member/profile/
-├── Profile.jsx              # main page
-├── profileUtils.js          # optional helpers
-└── components/              # only used on this page
-    ├── PersonalInfoForm.jsx
-    └── PasswordForm.jsx
-```
-
-| Put in `pages/.../components/` | Put in `components/common/` |
-|--------------------------------|-----------------------------|
-| UI for one page only | Navbar, pagination, skeletons, messenger |
-| Feature-specific forms/tables | Layout shells |
-
----
-
-## Routes (this project)
-
-Defined in `routes/router.jsx`.
-
-| URL prefix | Folder | Role |
-|------------|--------|------|
-| `/` | `pages/public/` | public |
-| `/login`, `/register`, … | `pages/public/` | public (guest only) |
-| `/member/*` | `pages/member/` | `member` |
-| `/concierge/*` | `pages/concierge/` | `concierge` |
-| `/admin/*` | `pages/admin/` | `admin` |
-
-Add a new page:
-
-1. Create folder under the correct `pages/<area>/`
-2. Register route in `routes/router.jsx`
-3. Add API in `api/` if needed
-4. Add hook in `hooks/api/` if needed
-
----
-
-## API layer
-
-```text
-api/auth.api.js           → /api/auth
-api/member.api.js         → /api/member
-api/staff.api.js          → /api/staff        (concierge backend routes)
-api/admin.api.js          → /api/admin
-api/messages.api.js       → /api/messages
-api/notifications.api.js  → /api/notifications
-```
-
-Hooks mirror API files:
-
-```text
-hooks/api/useAuthQueries.js
-hooks/api/useMemberQueries.js
-hooks/api/useStaffQueries.js      → uses staff.api.js
-hooks/api/useAdminQueries.js
-hooks/api/useMessageQueries.js
-hooks/api/useNotificationQueries.js
-```
-
-**Flow:**
-
-```text
-Page → hooks/api/useXQueries.js → api/x.api.js → lib/api/http.js → backend
-```
-
----
-
-## Auth & session
-
-```text
-pages/public/login/     → hooks/useAuth.js → api/auth.api.js
-features/auth/authSlice.js   (user, token, isAuthenticated)
-lib/api/tokenStorage.js      (cookies)
-lib/api/interceptors.js      (Bearer header + refresh)
-routes/ProtectedRoute.jsx    (block by role)
-```
-
----
-
-## Shared components
-
-```text
-components/layout/DashboardLayout.jsx   → sidebar for member / concierge / admin
-components/layout/public/               → marketing site shell
-components/common/skeletons/              → loading UI per page
-components/common/messenger/              → chat UI (member + concierge)
-components/common/Pagination.jsx
-components/common/PasswordInput.jsx
-components/flight-demand-calendar/      → shared calendar widget
-```
-
----
-
-## Where to go for common tasks
-
-| Task | Go to |
-|------|--------|
-| New page URL | `routes/router.jsx` + `pages/<area>/<feature>/` |
-| New API call | `api/*.api.js` + `hooks/api/use*Queries.js` |
-| Login / logout | `hooks/useAuth.js`, `features/auth/`, `lib/api/` |
-| Member screen | `pages/member/` |
-| Concierge screen | `pages/concierge/` |
-| Admin screen | `pages/admin/` |
-| Marketing / auth page | `pages/public/` |
-| Navbar / footer | `components/layout/public/` |
-| Chat / socket | `lib/socket/`, `hooks/useMessageSocket.js`, `components/common/messenger/` |
-| API base URL | `.env` + `config/env.js` |
-
----
-
-## Naming rules
-
-| Item | Rule | Example |
-|------|------|---------|
-| Page folder | kebab-case | `travel-preferences/` |
-| Page file | PascalCase | `TravelPreferences.jsx` |
-| API file | `<name>.api.js` | `member.api.js` |
-| Query hook | `use<Name>Queries.js` | `useMemberQueries.js` |
-| Page utils | camelCase | `opportunityUtils.js` |
-
----
-
-## Copy to a new project
-
-1. Copy the `src/` folder layout from the tree above.
-2. Keep the same folder names (`api`, `hooks`, `lib`, `pages`, etc.).
-3. Under `pages/`, create one folder per **user area** your app needs (rename `member` / `concierge` / `admin` only if your product has different roles).
-4. Under `api/` and `hooks/api/`, add one file per backend module.
-5. Put page-only components inside `pages/<area>/<feature>/components/`.
-6. Put reusable UI in `components/`.
-
----
-
-## Scripts
+## Quick start
 
 ```bash
 npm install
-npm run dev
-npm run build
-npm run preview
-npm run lint
+npm run dev       # start dev server
+npm run build     # production build
+npm run preview   # preview the production build
+npm run lint      # run eslint
+```
+
+Environment variables live in `.env` (see `.env.example`) and are read in `src/config/env.js`.
+
+---
+
+## Folder structure overview
+
+```text
+src/
+├── app/                  # App-wide wiring: Redux store, router, providers
+├── assets/               # Static assets (images, icons, fonts)
+├── components/           # Global reusable UI components
+├── layouts/              # Page layout shells
+├── features/            # Business modules (self-contained per area)
+├── roles/                # Role-based configuration (menu, permissions)
+├── hooks/                # Shared React hooks
+├── services/             # API client, HTTP layer, storage abstraction
+├── utils/                # Pure helper functions
+├── config/               # Env & app configuration
+├── styles/               # Global CSS + design tokens
+├── App.jsx               # Root app component
+└── main.jsx              # Entry point
 ```
 
 ---
 
-## Env
+## Top-level folders — what they do
 
-```env
-VITE_API_URL=https://your-api.com/api
-VITE_SOCKET_URL=https://your-api.com
+### `app/` — App wiring (Redux store, router, providers)
+
+Holds everything that **boots the application**.
+
+- **`store/`** — the Redux store. Split into `index.js` (creates the store), `rootReducer.js` (combines all slices), and `middleware.js` (RTK Query middleware).
+- **`router/`** — route definitions. `index.jsx` builds the router; `PublicRoute.jsx` and `ProtectedRoute.jsx` guard pages for guests vs. logged-in users (optionally by role).
+- **`providers/`** — `AppProvider.jsx` wraps the app with the Redux `<Provider>`.
+
+**Put here:** anything that is app-wide configuration and only set up once.
+
+### `assets/` — static files
+
+- `images/` — static images.
+- `icons/` — SVG / icon assets.
+- `fonts/` — font files.
+
+**Put here:** raw, public-facing assets that Vite copies as-is.
+
+### `components/` — global reusable components
+
+Unopinionated building blocks with **no business logic**, reused across many screens.
+
+- **`ui/`** — low-level primitives: `Button`, `Input`, `Select`, `Modal`, etc.
+- **`common/`** — generic helpers: `Loader`, `ErrorBoundary`, `EmptyState`, `Pagination`.
+- **`data-display/`** — data presentation: `Table`, `Card`.
+
+**Put here:** anything used by more than one feature. Rule of thumb — if you copy-paste a component across pages, promote it here.
+
+### `layouts/` — page shells
+
+Layouts define the surrounding frame of a screen and render the page content via an `<Outlet/>`.
+
+- **`PublicLayout/`** — the marketing / guest shell: `/PublicLayout.jsx`, `/Header.jsx`, `/Footer.jsx`.
+- **`DashboardLayout/`** — the logged-in app shell: `/DashboardLayout.jsx`, `/Sidebar.jsx`, `/Navbar.jsx`, `/Breadcrumb.jsx`.
+
+### `features/` — business modules
+
+Each folder is one **domain of the app** and is self-contained, mirroring one backend module:
+
+```text
+features/auth/
+├── api/
+│   └── authApi.js      # RTK Query endpoints for auth
+├── components/         # components used only by this feature
+├── hooks/              # hooks used only by this feature
+├── pages/              # screens for this feature
+├── authSlice.js        # Redux state (global side-effect state)
+└── validation.js       # form/validation schemas
 ```
 
-Read in `src/config/env.js`.
+Current features: `auth`, `users`, `products`, `orders`.
+
+**Put here:** feature-specific components, hooks, pages, API calls and slices. Components that are only used by one feature **stay inside that feature**; components reused across features go in `components/`.
+
+### `roles/` — role-based configuration
+
+One folder per role (`admin`, `manager`, `user`), each with:
+
+- `menu.js` — navigation menu definition for that role.
+- `permissions.js` — access rules.
+
+**Put here:** per-role navigation and permission config used by guards and menus.
+
+### `hooks/` — shared React hooks
+
+Reusable hooks that are **not bound to one feature**:
+
+- `useAuth.js` — authentication logic.
+- `usePermission.js` — permission checks.
+- `useDebounce.js` — debounce utility.
+
+Feature-specific hooks live inside their feature folder instead.
+
+### `services/` — external / infrastructure layer (no UI)
+
+- **`api/`** — HTTP layer using Axios + RTK Query:
+  - `baseApi.js` — the RTK Query base API object (`injectEndpoints`).
+  - `axiosInstance.js` — the configured Axios instance.
+  - `interceptors.js` — request/response interceptors (auth header + token refresh).
+- **`storage/`** — `localStorage.js` abstracts browser storage (token storage helpers etc.).
+
+**Put here:** anything that talks to the outside world or the browser — it must never contain JSX.
+
+### `utils/` — pure helper functions
+
+- `constants.js` — shared constants.
+- `helpers.js` — general helpers.
+- `formatter.js` — formatting utilities (dates, currency, etc.).
+- `permissions.js` — permission helper logic.
+
+**Put here:** side-effect-free functions used across the app.
+
+### `config/` — configuration
+
+- `env.js` — environment variables (`import.meta.env.VITE_*`).
+- `appConfig.js` — static app config (name, constants at launch).
+
+### `styles/`
+
+- `globals.css` — global CSS, imports Tailwind and the theme.
+- `variables.css` — design tokens / theme colors / CSS variables.
+
+---
+
+## How data flows
+
+```text
+Page component
+   └─ features/<feature>/api/<feature>Api.js   (RTK Query endpoint)
+        └─ services/api/baseApi.js             (base query)
+             └─ services/api/axiosInstance.js  (Axios)
+                  └─ services/api/interceptors.js (token refresh)
+```
+
+Using RTK Query automatically wires caching, loading and error states into the Redux store.
+
+---
+
+## Route guard / authentication flow
+
+```
+guest page          → routes/ PublicRoute
+logged-in page      → routes/ ProtectedRoute (optionally restricted by role via roles/*/permissions)
+auth state          → features/auth/authSlice.js
+tokens              → services/storage/localStorage.js (via tokenStorage)
+HTTP auth header    → services/api/interceptors.js
+```
+
+---
+
+## Adding new code — quick map
+
+| Task | Go to |
+|------|-------|
+| New global UI component | `components/ui/` or `components/common/` or `components/data-display/` |
+| New page shell | `layouts/` |
+| New feature/screen | `features/<module>/` (components, hooks, pages, api) |
+| New role area | `roles/<role>/` (`menu.js`, `permissions.js`) |
+| New backend module | `features/<module>/api/<module>Api.js` |
+| Shared hook | `hooks/` |
+| API / HTTP config | `services/api/` |
+| Storage / tokens | `services/storage/` |
+| Pure helpers | `utils/` |
+| Env / app config | `config/` |
+| Global styles / tokens | `styles/` |
+
+---
+
+## Naming conventions
+
+| Item | Rule | Example |
+| --- | --- | --- |
+| Folder (component/ui) | PascalCase | `Button/` |
+| Component file | PascalCase + `.jsx` | `Button.jsx` |
+| API file | camelCase + `Api.js` | `authApi.js` |
+| Slice file | camelCase + `Slice.js` | `authSlice.js` |
+| Hook file | camelCase + `useXxx.js` | `useAuth.js` |
+| Utils/file | camelCase | `formatter.js` |
+| CSS | kebab-case | `variables.css` |
+
+---
+
+This structure keeps UI, infrastructure, and business logic separated, so each area can grow independently without creating circular dependencies or scattered code.

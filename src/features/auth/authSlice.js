@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { tokenStorage } from '../../lib/axios'
+import { tokenStorage } from '../../services/storage/localStorage'
 
 const initialState = {
   user: null,
