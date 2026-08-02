@@ -198,6 +198,7 @@ HTTP auth header    → services/api/interceptors.js
 | New feature endpoints | `features/<module>/<module>Api.js` |
 | New feature UI state | `features/<module>/<module>Slice.js` |
 | New global / reusable UI | `components/ui/` or `components/common/` or `components/data-display/` |
+| Reusable data table (tabs/filters/pagination) | `components/data-display/DataTable` |
 | New page shell | `layouts/` |
 | New role area | `roles/<role>/` (`menu.js`, `permissions.js`) |
 | Shared hook | `hooks/` |
