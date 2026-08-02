@@ -2,10 +2,10 @@ import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from './rootReducer'
 import { apiMiddlewares } from './middleware'
 
-import '../../services/api/authApi'
-import '../../services/api/userApi'
-import '../../services/api/productApi'
-import '../../services/api/orderApi'
+import '../../features/auth/authApi'
+import '../../features/users/userApi'
+import '../../features/products/productApi'
+import '../../features/orders/orderApi'
 
 export const store = configureStore({
   reducer: rootReducer,

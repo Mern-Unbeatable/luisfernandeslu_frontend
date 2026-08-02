@@ -1,4 +1,4 @@
-export default function App() {
+export default function HomePage() {
   return (
     <main className="min-h-screen bg-ink-50 flex items-center justify-center px-4">
       <div className="text-center space-y-3">
