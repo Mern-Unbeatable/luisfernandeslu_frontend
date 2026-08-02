@@ -1,240 +1,307 @@
-import { useMemo, useState } from 'react'
-import DataTable from '../components/data-display/DataTable/DataTable'
-import StatusBadge from '../components/data-display/DataTable/StatusBadge'
+import ProductCard from '../components/data-display/ProductCard/ProductCard'
 
-const ALL_ROWS = [
-  {
-    id: 1,
-    poNumber: 'PO-2001',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'Produced',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 2,
-    poNumber: 'PO-2002',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'In Production',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 3,
-    poNumber: 'PO-2003',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'Ready',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 4,
-    poNumber: 'PO-2004',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'Assigned',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 5,
-    poNumber: 'PO-2005',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'Cancel',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 6,
-    poNumber: 'PO-2006',
-    factoryName: 'ABC Corp',
-    total: '$4,500,000',
-    installmentAmount: '$4,500,000',
-    status: 'Completed',
-    installmentNumber: '1',
-    date: '12/05/2025',
-  },
-  {
-    id: 7,
-    poNumber: 'PO-2007',
-    factoryName: 'XYZ Ltd',
-    total: '$2,100,000',
-    installmentAmount: '$700,000',
-    status: 'Ready',
-    installmentNumber: '2',
-    date: '15/05/2025',
-  },
-]
+const IMG =
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
 
-const TRANSPORT_ROWS = [
+const baseProduct = {
+  image: IMG,
+  title: 'Portland Cement',
+  description:
+    'High-strength building cement suitable for construction and masonry work.',
+  price: '$115',
+  priceText: 'Price: $115 per bag (50 kg)',
+  companyPrice: '$98',
+  companyPriceText: 'Company: $98 per bag (50 kg)',
+  unit: 'bag (50 kg)',
+}
+
+const sponsoredProduct = {
+  image: IMG,
+  title: 'Industrial Steel Beams',
+  description: 'High-quality steel beams for construction. Grade A certified.',
+  price: '$150',
+  unit: 'units',
+  minOrder: '10 units',
+  company: 'SteelWorks Inc',
+  rating: 4.8,
+  companyPrice: '$135',
+  companyPriceText: 'Company: $135 /units',
+}
+
+const featuredProduct = {
+  ...baseProduct,
+  title: 'Portland Cement Quick Set',
+  description: 'Fast-setting cement for rapid construction work.',
+  priceText: 'Price: $130 per bag (50 kg)',
+  expiryDate: '5/4/2026',
+}
+
+const promoCodeProduct = {
+  ...baseProduct,
+  title: 'Portland Cement Quick Set',
+  description: 'Fast-setting cement for rapid construction work.',
+  priceText: 'Price: $130 per bag (50 kg)',
+  bulkOptionLabel: 'Bulk option Open',
+  promoLabel: '25% Off',
+}
+
+const VARIANTS = [
   {
-    id: 101,
-    poNumber: 'TR-1001',
-    factoryName: 'Swift Logistics',
-    total: '$12,000',
-    installmentAmount: '$12,000',
-    status: 'Assigned',
-    installmentNumber: '1',
-    date: '10/05/2025',
+    name: 'Sponsored (customer)',
+    props: {
+      type: 'sponsored',
+      role: 'customer',
+      tag: 'sponsored',
+      product: sponsoredProduct,
+    },
   },
   {
-    id: 102,
-    poNumber: 'TR-1002',
-    factoryName: 'Porto Haul',
-    total: '$8,500',
-    installmentAmount: '$8,500',
-    status: 'In Production',
-    installmentNumber: '1',
-    date: '11/05/2025',
+    name: 'Sponsored (company) — dual price',
+    props: {
+      type: 'sponsored',
+      role: 'company',
+      tag: 'sponsored',
+      product: {
+        ...sponsoredProduct,
+        priceText: 'Price: $150 /units',
+      },
+    },
+  },
+  {
+    name: 'Normal (customer)',
+    props: {
+      type: 'normal',
+      role: 'customer',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Normal (company) — dual price',
+    props: {
+      type: 'normal',
+      role: 'company',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Normal + quantity / Add to Cart',
+    props: {
+      type: 'normal',
+      role: 'customer',
+      showQuantity: true,
+      product: {
+        ...baseProduct,
+        title: 'Portland Cement Quick Set',
+        description: 'Fast-setting cement for rapid construction work.',
+        priceText: 'Price: $130 per bag (50 kg)',
+        bulkOptionLabel: 'Bulk option Open',
+      },
+    },
+  },
+  {
+    name: 'Supplier dashboard — Regular',
+    props: {
+      type: 'dashboard',
+      role: 'supplier',
+      tag: 'regular',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Supplier dashboard — Bulk Order',
+    props: {
+      type: 'dashboard',
+      role: 'supplier',
+      tag: 'bulk_order',
+      product: {
+        ...baseProduct,
+        priceText: 'Price: $135 per bag (50 kg)',
+      },
+    },
+  },
+  {
+    name: 'Supplier dashboard — Pending',
+    props: {
+      type: 'dashboard',
+      role: 'supplier',
+      status: 'pending',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Supplier dashboard — Rejected',
+    props: {
+      type: 'dashboard',
+      role: 'supplier',
+      status: 'rejected',
+      product: {
+        ...baseProduct,
+        title: 'Portland Cement Standard',
+        description: 'Reliable cement for all your everyday construction needs.',
+      },
+    },
+  },
+  {
+    name: 'Featured',
+    props: {
+      type: 'featured',
+      tag: 'featured',
+      product: featuredProduct,
+    },
+  },
+  {
+    name: 'Promo code product',
+    props: {
+      type: 'dashboard',
+      context: 'promo_code',
+      role: 'supplier',
+      product: promoCodeProduct,
+    },
+  },
+  {
+    name: 'Supplier — Buy from factory',
+    props: {
+      type: 'normal',
+      role: 'supplier',
+      product: {
+        ...baseProduct,
+        title: 'Portland Cement Quick Set',
+        description: 'Fast-setting cement for rapid construction work.',
+        priceText: 'Price: $130 per bag (50 kg)',
+      },
+    },
+  },
+  {
+    name: 'Factory dashboard — Active',
+    props: {
+      type: 'dashboard',
+      role: 'factory',
+      status: 'active',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Factory dashboard — Pending',
+    props: {
+      type: 'dashboard',
+      role: 'factory',
+      status: 'pending',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Factory dashboard — Rejected',
+    props: {
+      type: 'dashboard',
+      role: 'factory',
+      status: 'rejected',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin approval — Pending',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'approval',
+      status: 'pending',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin approval — Accepted (active)',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'approval',
+      status: 'active',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin approval — Rejected',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'approval',
+      status: 'rejected',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin promotion — Pending',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'promotion',
+      status: 'pending',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin promotion — Active',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'promotion',
+      status: 'active',
+      product: baseProduct,
+    },
+  },
+  {
+    name: 'Admin promotion — Featured (accepted)',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'promotion',
+      status: 'featured',
+      product: {
+        ...baseProduct,
+        timeLeft: '5 days left',
+      },
+    },
+  },
+  {
+    name: 'Admin promotion — Completed',
+    props: {
+      type: 'dashboard',
+      role: 'admin',
+      context: 'promotion',
+      status: 'completed',
+      product: baseProduct,
+    },
   },
 ]
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState('orders')
-  const [search, setSearch] = useState('')
-  const [company, setCompany] = useState('all')
-  const [status, setStatus] = useState('all')
-  const [page, setPage] = useState(1)
-  const pageSize = 7
-
-  const sourceRows = activeTab === 'orders' ? ALL_ROWS : TRANSPORT_ROWS
-
-  const filteredRows = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    return sourceRows.filter((row) => {
-      const companyOk =
-        company === 'all' || row.factoryName.toLowerCase().includes(company)
-      const statusOk =
-        status === 'all'
-        || row.status.toLowerCase() === status.toLowerCase()
-      const searchOk =
-        !query
-        || [
-          row.poNumber,
-          row.factoryName,
-          row.total,
-          row.installmentAmount,
-          row.status,
-          row.installmentNumber,
-          row.date,
-        ].some((value) => String(value).toLowerCase().includes(query))
-      return companyOk && statusOk && searchOk
-    })
-  }, [sourceRows, company, status, search])
-
-  const pagedRows = useMemo(() => {
-    const start = (page - 1) * pageSize
-    return filteredRows.slice(start, start + pageSize)
-  }, [filteredRows, page])
-
   return (
-    <section className="w-full bg-slate-100 px-4 py-8 sm:px-6 lg:px-10 xl:px-24">
+    <section className="w-full bg-gray-100 px-4 py-8 sm:px-6 lg:px-10 xl:px-24">
       <div className="mx-auto w-full max-w-[1440px]">
-        <DataTable
-          showTabs
-          tabs={[
-            { id: 'orders', label: 'Orders' },
-            { id: 'transport', label: 'Transport Request' },
-          ]}
-          activeTab={activeTab}
-          onTabChange={(tabId) => {
-            setActiveTab(tabId)
-            setPage(1)
-          }}
-          showSearch
-          searchValue={search}
-          searchPlaceholder="Search..."
-          onSearchChange={(value) => {
-            setSearch(value)
-            setPage(1)
-          }}
-          showFilters
-          filterLabel="Sort By:"
-          filters={[
-            {
-              id: 'company',
-              value: company,
-              onChange: (value) => {
-                setCompany(value)
-                setPage(1)
-              },
-              options: [
-                { value: 'all', label: 'All Company' },
-                { value: 'abc', label: 'ABC Corp' },
-                { value: 'xyz', label: 'XYZ Ltd' },
-                { value: 'swift', label: 'Swift Logistics' },
-              ],
-            },
-            {
-              id: 'status',
-              value: status,
-              onChange: (value) => {
-                setStatus(value)
-                setPage(1)
-              },
-              options: [
-                { value: 'all', label: 'All Status' },
-                { value: 'Produced', label: 'Produced' },
-                { value: 'In Production', label: 'In Production' },
-                { value: 'Ready', label: 'Ready' },
-                { value: 'Assigned', label: 'Assigned' },
-                { value: 'Cancel', label: 'Cancel' },
-                { value: 'Completed', label: 'Completed' },
-              ],
-            },
-          ]}
-          showTable
-          columns={[
-            { key: 'poNumber', header: 'PO Number' },
-            { key: 'factoryName', header: 'Factory Name' },
-            { key: 'total', header: 'Total' },
-            { key: 'installmentAmount', header: 'Installment Amount' },
-            {
-              key: 'status',
-              header: 'Status',
-              render: (value) => <StatusBadge status={value} />,
-            },
-            { key: 'installmentNumber', header: 'Installment Number' },
-            { key: 'date', header: 'Date' },
-          ]}
-          data={pagedRows}
-          showActions
-          actionType="menu"
-          actions={[
-            {
-              id: 'view',
-              label: 'View',
-              onClick: (row) => console.log('View', row),
-            },
-            {
-              id: 'edit',
-              label: 'Edit',
-              onClick: (row) => console.log('Edit', row),
-            },
-            {
-              id: 'delete',
-              label: 'Delete',
-              variant: 'danger',
-              onClick: (row) => console.log('Delete', row),
-            },
-          ]}
-          showPagination
-          pagination={{
-            page,
-            pageSize,
-            total: filteredRows.length,
-            onPageChange: setPage,
-          }}
-        />
+        <header className="mb-8">
+          <h1 className="text-2xl font-bold text-[var(--primary-text)]">
+            ProductCard variants
+          </h1>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Same common component — different type / role / context / status /
+            tag props.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {VARIANTS.map((variant) => (
+            <div key={variant.name} className="flex flex-col gap-2">
+              <h2 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h2>
+              <ProductCard
+                {...variant.props}
+                onAction={(actionId, product) => {
+                  console.log(variant.name, actionId, product?.title)
+                }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
