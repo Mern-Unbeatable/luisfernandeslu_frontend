@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import ChatArea from './ChatArea'
+import CreateOfferModal from './CreateOfferModal'
 import Sidebar from './Sidebar'
 
 /**
@@ -29,6 +31,16 @@ export default function Messenger({
   sidebarTitle = 'Recent Messages',
   className = '',
 }) {
+  const [offerModalOpen, setOfferModalOpen] = useState(false)
+
+  const openOfferModal = () => {
+    setOfferModalOpen(true)
+  }
+
+  const handleOfferSubmit = (form) => {
+    onCreateOffer?.(form)
+  }
+
   return (
     <div
       className={`flex h-full w-full overflow-hidden rounded-xl border border-gray-200 bg-[#F8F8F8] ${className}`}
@@ -42,11 +54,11 @@ export default function Messenger({
           chats={chats}
           activeChatId={activePartnerId}
           search={search}
-          onSearchChange={undefined}
+          onSearchChange={onSearchChange}
           onSelectChat={onSelectChat}
           isLoading={isLoading && !chats.length}
           title={sidebarTitle}
-          onCompose={onCreateOffer}
+          onCompose={openOfferModal}
         />
       </div>
 
@@ -64,7 +76,7 @@ export default function Messenger({
           onDeleteMessage={onDeleteMessage}
           onTyping={onTyping}
           onStopTyping={onStopTyping}
-          onCreateOffer={onCreateOffer}
+          onCreateOffer={openOfferModal}
           onPayNow={onPayNow}
           onNegotiate={onNegotiate}
           isPartnerTyping={isPartnerTyping}
@@ -73,6 +85,12 @@ export default function Messenger({
           actionMessageId={actionMessageId}
         />
       </div>
+
+      <CreateOfferModal
+        open={offerModalOpen}
+        onClose={() => setOfferModalOpen(false)}
+        onSubmit={handleOfferSubmit}
+      />
     </div>
   )
 }
