@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation, useMatches } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { appConfig } from '../../../config/appConfig'
 import { env } from '../../../config/env'
 
@@ -44,6 +45,7 @@ export default function Seo({
   noIndex = false,
   path,
 } = {}) {
+  const { t, i18n } = useTranslation()
   const location = useLocation()
   const matches = useMatches()
 
@@ -51,9 +53,17 @@ export default function Seo({
     .reverse()
     .find((match) => match.handle?.seo)?.handle?.seo
 
-  const pageTitle = title ?? routeSeo?.title
+  const pageTitle =
+    title
+    ?? (routeSeo?.titleKey ? t(routeSeo.titleKey) : routeSeo?.title)
+
   const pageDescription =
-    description ?? routeSeo?.description ?? appConfig.defaultDescription
+    description
+    ?? (routeSeo?.descriptionKey
+      ? t(routeSeo.descriptionKey)
+      : routeSeo?.description)
+    ?? appConfig.defaultDescription
+
   const pageKeywords =
     keywords ?? routeSeo?.keywords ?? appConfig.defaultKeywords
   const pageImage = image ?? routeSeo?.image
@@ -69,6 +79,7 @@ export default function Seo({
     : `${env.siteUrl}/og-default.png`
 
   useEffect(() => {
+    document.documentElement.lang = i18n.resolvedLanguage || 'en'
     document.title = fullTitle
 
     upsertMeta('name', 'description', pageDescription)
@@ -84,7 +95,7 @@ export default function Seo({
     upsertMeta('property', 'og:type', pageType)
     upsertMeta('property', 'og:url', canonicalUrl)
     upsertMeta('property', 'og:site_name', appConfig.name)
-    upsertMeta('property', 'og:locale', appConfig.locale)
+    upsertMeta('property', 'og:locale', i18n.resolvedLanguage || appConfig.locale)
     upsertMeta('property', 'og:image', absoluteImage)
 
     upsertMeta('name', 'twitter:card', 'summary_large_image')
@@ -104,6 +115,7 @@ export default function Seo({
     canonicalUrl,
     absoluteImage,
     shouldNoIndex,
+    i18n.resolvedLanguage,
   ])
 
   return null

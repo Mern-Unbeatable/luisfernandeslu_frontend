@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
 import {
   FaFacebookF,
@@ -14,50 +15,50 @@ const socialLinks = [
   { Icon: FaLinkedinIn, label: 'LinkedIn' },
 ]
 
-const footerColumns = [
+const footerColumnDefs = [
   {
-    title: 'For Businessman',
+    titleKey: 'footer.businessman',
     links: [
-      { label: 'Being a Supplier', href: '#' },
-      { label: 'Being a transporter', href: '#' },
-      { label: 'Affiliates', href: '#' },
+      { labelKey: 'footer.supplier', href: '#' },
+      { labelKey: 'footer.transporter', href: '#' },
+      { labelKey: 'footer.affiliates', href: '#' },
     ],
   },
   {
-    title: 'Support',
+    titleKey: 'footer.support',
     links: [
-      { label: 'Help Center', href: '#' },
-      { label: 'Dispute resolution', href: '#' },
-      { label: 'Returns', href: '#' },
-      { label: 'Complaint Book', href: '#' },
+      { labelKey: 'footer.helpCenter', href: '#' },
+      { labelKey: 'footer.dispute', href: '#' },
+      { labelKey: 'footer.returns', href: '#' },
+      { labelKey: 'footer.complaintBook', href: '#' },
     ],
   },
   {
-    title: 'Legal',
+    titleKey: 'footer.legal',
     links: [
-      { label: 'General Terms & Condition', href: '#' },
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Return Policy', href: '#' },
+      { labelKey: 'footer.terms', href: '#' },
+      { labelKey: 'footer.privacy', href: '#' },
+      { labelKey: 'footer.returnPolicy', href: '#' },
     ],
   },
 ]
 
 export default function Footer() {
+  const { t } = useTranslation()
+
   return (
     <footer className="w-full mt-auto bg-[#FDFBF7]">
       <div className="mx-auto w-full container px-4 py-12 sm:px-6 md:py-12 lg:px-10 xl:px-24">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-12 lg:items-start">
-          {/* Brand column */}
           <div className="flex flex-col items-start gap-5 md:gap-6 lg:h-full">
             <Logo />
             <p className="max-w-sm text-base leading-relaxed text-neutral-800 md:text-lg">
-              The most complete building materials marketplace in Portugal.
-              Delivery within 2 hours.
+              {t('footer.description')}
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-sm text-neutral-900 md:text-base">
-                Follow :
+                {t('footer.follow')}
               </span>
               <div className="flex items-center gap-3">
                 {socialLinks.map(({ Icon, label }) => (
@@ -74,13 +75,12 @@ export default function Footer() {
             </div>
 
             <p className="mt-auto pt-4 text-sm text-neutral-700">
-              © 2025 Construpreço. All rights reserved.
+              {t('footer.copyright')}
             </p>
           </div>
 
-          {/* Link columns */}
-          {footerColumns.map((column) => (
-            <FooterColumn key={column.title} {...column} />
+          {footerColumnDefs.map((column) => (
+            <FooterColumn key={column.titleKey} {...column} />
           ))}
         </div>
       </div>
@@ -88,20 +88,22 @@ export default function Footer() {
   )
 }
 
-function FooterColumn({ title, links }) {
+function FooterColumn({ titleKey, links }) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-col items-start gap-3 md:gap-4">
       <h3 className="text-base font-semibold text-neutral-900 md:text-lg">
-        {title}
+        {t(titleKey)}
       </h3>
       <ul className="flex flex-col items-start gap-2.5 md:gap-3">
         {links.map((link) => (
-          <li key={link.label}>
+          <li key={link.labelKey}>
             <Link
               to={link.href}
               className="text-sm text-neutral-800 transition-colors hover:text-amber-600 md:text-base"
             >
-              {link.label}
+              {t(link.labelKey)}
             </Link>
           </li>
         ))}

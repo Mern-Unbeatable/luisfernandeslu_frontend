@@ -1,0 +1,50 @@
+{
+  "header": {
+    "welcome": "Welcome to construpreco online eCommerce store.",
+    "followUs": "Follow us:",
+    "searchPlaceholder": "search product name......",
+    "searchPlaceholderShort": "search product...",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "messages": "Messages",
+    "cart": "Cart",
+    "account": "Account"
+  },
+  "languages": {
+    "en": "English",
+    "pt": "Portuguese",
+    "es": "Spanish"
+  },
+  "footer": {
+    "description": "The most complete building materials marketplace in Portugal. Delivery within 2 hours.",
+    "follow": "Follow :",
+    "copyright": "© 2025 Construpreço. All rights reserved.",
+    "businessman": "For Businessman",
+    "supplier": "Being a Supplier",
+    "transporter": "Being a transporter",
+    "affiliates": "Affiliates",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "dispute": "Dispute resolution",
+    "returns": "Returns",
+    "complaintBook": "Complaint Book",
+    "legal": "Legal",
+    "terms": "General Terms & Condition",
+    "privacy": "Privacy Policy",
+    "returnPolicy": "Return Policy"
+  },
+  "home": {
+    "title": "CONSTRUPRECO",
+    "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios"
+  },
+  "seo": {
+    "homeTitle": "Home",
+    "homeDescription": "CONSTRUPRECO — shop building materials online with fast delivery across Portugal.",
+    "notFoundTitle": "Page Not Found",
+    "notFoundDescription": "The page you are looking for does not exist."
+  },
+  "common": {
+    "backHome": "Back to Home",
+    "loading": "Loading"
+  }
+}

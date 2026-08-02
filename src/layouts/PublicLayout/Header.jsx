@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
+import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
 import {
   FiSearch,
-  FiGlobe,
   FiMessageSquare,
   FiShoppingCart,
   FiUser,
@@ -27,16 +28,22 @@ const socialLinks = [
   { Icon: FaInstagram, label: 'Instagram' },
 ]
 
-const actionIcons = [
-  { Icon: FiMessageSquare, label: 'Messages' },
-  { Icon: FiShoppingCart, label: 'Cart' },
-  { Icon: FiUser, label: 'Account' },
+const actionIconDefs = [
+  { Icon: FiMessageSquare, key: 'messages' },
+  { Icon: FiShoppingCart, key: 'cart' },
+  { Icon: FiUser, key: 'account' },
 ]
 
 export default function Header() {
+  const { t } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [headerBottom, setHeaderBottom] = useState(0)
   const headerRef = useRef(null)
+
+  const actionIcons = actionIconDefs.map((item) => ({
+    ...item,
+    label: t(`header.${item.key}`),
+  }))
 
   useEffect(() => {
     const updateHeaderBottom = () => {
@@ -67,12 +74,12 @@ export default function Header() {
       <div className="hidden md:block w-full bg-zinc-950 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.16)]">
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10 xl:px-24">
           <p className="text-white text-sm font-normal leading-5 truncate">
-            Welcome to construpreco online eCommerce store.
+            {t('header.welcome')}
           </p>
 
           <div className="flex items-center justify-center gap-3 shrink-0">
             <span className="text-white text-sm font-normal leading-5">
-              Follow us:
+              {t('header.followUs')}
             </span>
             <div className="flex items-start gap-3">
               {socialLinks.map(({ Icon, label }) => (
@@ -90,7 +97,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile header — solid bar above overlay */}
+      {/* Mobile header */}
       <div className="relative z-50 md:hidden w-full bg-[#FFFFFF]">
         <div className="flex items-center gap-2.5 px-4 py-6">
           <Logo className="shrink-0" />
@@ -98,7 +105,7 @@ export default function Header() {
           <label className="flex min-w-0 flex-1 items-center gap-2 rounded-md bg-white px-3 py-2 shadow-[0px_4px_16px_0px_rgba(0,0,0,0.06)] outline outline-1 outline-slate-200">
             <input
               type="search"
-              placeholder="search product..."
+              placeholder={t('header.searchPlaceholderShort')}
               className="w-full min-w-0 bg-transparent text-sm text-slate-500 placeholder:text-slate-400 outline-none"
             />
             <FiSearch className="size-3.5 shrink-0 text-zinc-900" aria-hidden />
@@ -106,7 +113,7 @@ export default function Header() {
 
           <button
             type="button"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? t('header.closeMenu') : t('header.openMenu')}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
             className="shrink-0 p-1 text-neutral-950"
@@ -129,7 +136,7 @@ export default function Header() {
             <label className="flex w-full items-center gap-2 rounded-sm bg-white px-5 py-3.5 shadow-[0px_8px_32px_0px_rgba(0,0,0,0.08)] outline outline-1 outline-offset-[-1px] outline-slate-200 focus-within:outline-amber-500">
               <input
                 type="search"
-                placeholder="search product name......"
+                placeholder={t('header.searchPlaceholder')}
                 className="w-full min-w-0 bg-transparent text-sm leading-5 text-slate-500 placeholder:text-slate-500 outline-none"
               />
               <FiSearch className="size-5 shrink-0 text-zinc-900" aria-hidden />
@@ -137,13 +144,7 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-6 shrink-0">
-            <button
-              type="button"
-              className="inline-flex h-11 items-center gap-2 rounded-sm px-3 outline outline-1 outline-offset-[-1px] outline-gray-200 text-neutral-950 hover:bg-slate-50 transition-colors"
-            >
-              <FiGlobe className="size-5 shrink-0" aria-hidden />
-              <span className="text-base font-medium">English</span>
-            </button>
+            <LanguageSwitcher />
 
             <div className="flex items-center gap-6">
               {actionIcons.map(({ Icon, label }) => (
@@ -161,7 +162,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Backdrop — only below header */}
       <div
         className={`md:hidden fixed inset-x-0 bottom-0 z-40 bg-black/30 transition-opacity duration-300 ease-out ${
           menuOpen
@@ -173,7 +173,6 @@ export default function Header() {
         onClick={() => setMenuOpen(false)}
       />
 
-      {/* Dropdown — right side, items stacked vertically */}
       <div
         className={`md:hidden absolute right-3 top-full z-50 mt-1 w-44 origin-top-right transition-all duration-300 ease-out ${
           menuOpen
@@ -194,6 +193,9 @@ export default function Header() {
                 <span className="text-sm font-medium">{label}</span>
               </button>
             ))}
+            <div className="border-t border-slate-100 px-2 py-2">
+              <LanguageSwitcher className="w-full [&_button]:h-9 [&_button]:w-full [&_button]:justify-between" />
+            </div>
           </div>
         </div>
       </div>
