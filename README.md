@@ -28,7 +28,8 @@ src/
 ├── assets/               # Static assets (images, icons, fonts)
 ├── components/           # Global reusable UI components
 ├── layouts/              # Page layout shells
-├── features/            # Business modules (self-contained per area)
+├── features/            # Feature modules — only pages + components
+├── users/                # User-related pages + components
 ├── roles/                # Role-based configuration (menu, permissions)
 ├── hooks/                # Shared React hooks
 ├── services/             # API client, HTTP layer, storage abstraction
@@ -47,7 +48,7 @@ src/
 
 Holds everything that **boots the application**.
 
-- **`store/`** — the Redux store. Split into `index.js` (creates the store), `rootReducer.js` (combines all slices), and `middleware.js` (RTK Query middleware).
+- **`store/`** — the Redux store. `index.js` creates the store, `rootReducer.js` combines the slices, `middleware.js` adds RTK Query middleware, and `slices/` holds the Redux slices (`authSlice`, `userSlice`, etc.).
 - **`router/`** — route definitions. `index.jsx` builds the router; `PublicRoute.jsx` and `ProtectedRoute.jsx` guard pages for guests vs. logged-in users (optionally by role).
 - **`providers/`** — `AppProvider.jsx` wraps the app with the Redux `<Provider>`.
 
@@ -78,24 +79,32 @@ Layouts define the surrounding frame of a screen and render the page content via
 - **`PublicLayout/`** — the marketing / guest shell: `/PublicLayout.jsx`, `/Header.jsx`, `/Footer.jsx`.
 - **`DashboardLayout/`** — the logged-in app shell: `/DashboardLayout.jsx`, `/Sidebar.jsx`, `/Navbar.jsx`, `/Breadcrumb.jsx`.
 
-### `features/` — business modules
+### `features/` — feature modules (UI only)
 
-Each folder is one **domain of the app** and is self-contained, mirroring one backend module:
+Each feature folder contains only **`pages/`** and **`components/`** used by that area. No API or Redux state lives here — those are kept out of the feature folders to stay simple:
 
 ```text
 features/auth/
-├── api/
-│   └── authApi.js      # RTK Query endpoints for auth
-├── components/         # components used only by this feature
-├── hooks/              # hooks used only by this feature
-├── pages/              # screens for this feature
-├── authSlice.js        # Redux state (global side-effect state)
-└── validation.js       # form/validation schemas
+├── pages/               # screens for this feature
+└── components/          # components used only by this feature
 ```
 
-Current features: `auth`, `users`, `products`, `orders`.
+Current features: `auth`, `products`, `orders`.
 
-**Put here:** feature-specific components, hooks, pages, API calls and slices. Components that are only used by one feature **stay inside that feature**; components reused across features go in `components/`.
+**Put here:** feature-specific pages and components. Components used by only one feature stay inside that feature; components reused across features go in `components/`.
+
+### `users/` — user pages + components
+
+Kept separate from `features/` as its own top-level area. Contains only UI:
+
+```text
+users/
+├── pages/               # user account screens
+└── components/          # user-specific components
+```
+
+- **User API endpoints** live in `services/api/userApi.js`.
+- **User Redux slice** lives in `app/store/slices/userSlice.js`.
 
 ### `roles/` — role-based configuration
 
@@ -118,11 +127,14 @@ Feature-specific hooks live inside their feature folder instead.
 
 ### `services/` — external / infrastructure layer (no UI)
 
-- **`api/`** — HTTP layer using Axios + RTK Query:
+- **`api/`** — HTTP layer **plus** every RTK Query endpoint, all in one place:
   - `baseApi.js` — the RTK Query base API object (`injectEndpoints`).
   - `axiosInstance.js` — the configured Axios instance.
   - `interceptors.js` — request/response interceptors (auth header + token refresh).
+  - `authApi.js`, `userApi.js`, `productApi.js`, `orderApi.js` — the endpoint (RTK Query) definitions for each module.
 - **`storage/`** — `localStorage.js` abstracts browser storage (token storage helpers etc.).
+
+All API code lives here centrally, so feature folders never need their own `api/` subfolder.
 
 **Put here:** anything that talks to the outside world or the browser — it must never contain JSX.
 
@@ -151,8 +163,8 @@ Feature-specific hooks live inside their feature folder instead.
 
 ```text
 Page component
-   └─ features/<feature>/api/<feature>Api.js   (RTK Query endpoint)
-        └─ services/api/baseApi.js             (base query)
+   └─ services/api/<module>Api.js   (RTK Query endpoints)
+        └─ services/api/baseApi.js    (base query)
              └─ services/api/axiosInstance.js  (Axios)
                   └─ services/api/interceptors.js (token refresh)
 ```
@@ -164,9 +176,9 @@ Using RTK Query automatically wires caching, loading and error states into the R
 ## Route guard / authentication flow
 
 ```
-guest page          → routes/ PublicRoute
-logged-in page      → routes/ ProtectedRoute (optionally restricted by role via roles/*/permissions)
-auth state          → features/auth/authSlice.js
+guest page          → app/router/PublicRoute
+logged-in page      → app/router/ProtectedRoute (optionally restricted by role via roles/*/permissions)
+auth state          → app/store/slices/authSlice.js
 tokens              → services/storage/localStorage.js (via tokenStorage)
 HTTP auth header    → services/api/interceptors.js
 ```
@@ -179,11 +191,13 @@ HTTP auth header    → services/api/interceptors.js
 |------|-------|
 | New global UI component | `components/ui/` or `components/common/` or `components/data-display/` |
 | New page shell | `layouts/` |
-| New feature/screen | `features/<module>/` (components, hooks, pages, api) |
+| New feature/screen | `features/<module>/` (pages + components) |
+| User screens/components | `users/` |
 | New role area | `roles/<role>/` (`menu.js`, `permissions.js`) |
-| New backend module | `features/<module>/api/<module>Api.js` |
+| New backend module endpoints | `services/api/<module>Api.js` |
 | Shared hook | `hooks/` |
 | API / HTTP config | `services/api/` |
+| Redux slice | `app/store/slices/<name>Slice.js` |
 | Storage / tokens | `services/storage/` |
 | Pure helpers | `utils/` |
 | Env / app config | `config/` |

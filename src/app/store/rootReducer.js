@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import { baseApi } from '../../services/api/baseApi'
-import authReducer from '../../features/auth/authSlice'
-import userReducer from '../../features/users/userSlice'
-import productReducer from '../../features/products/productSlice'
-import orderReducer from '../../features/orders/orderSlice'
+import authReducer from './slices/authSlice'
+import userReducer from './slices/userSlice'
+import productReducer from './slices/productSlice'
+import orderReducer from './slices/orderSlice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
