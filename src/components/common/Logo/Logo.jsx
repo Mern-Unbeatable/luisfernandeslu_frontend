@@ -1,18 +1,45 @@
-export default function Logo() {
+export default function Logo({ className = '' }) {
   return (
-    <div className="w-20 h-14 relative overflow-hidden">
-      <div className="w-2.5 h-4 left-[46.50px] top-[0.02px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-2 h-1.5 left-[32.79px] top-[8.68px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-2 h-1 left-[38.86px] top-[14.86px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-[2.79px] h-0.5 left-[35.46px] top-[16.29px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-2 h-1 left-[27.66px] top-[14.86px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="size-[1.31px] left-[36.30px] top-[25.06px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-5 h-px left-[25.99px] top-[33px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-6 h-3.5 left-[24px] top-[18.52px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-2 h-[0.20px] left-[27.56px] top-[18.51px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-3 h-3.5 left-[30.70px] top-[1.98px] absolute bg-amber-500 outline outline-[0.04px] outline-offset-[-0.02px] outline-black" />
-      <div className="w-20 h-2.5 left-0 top-[38.65px] absolute bg-black" />
-      <div className="w-16 h-[2.54px] left-[8px] top-[50.30px] absolute bg-amber-500" />
-    </div>
+    <a
+      href="/"
+      className={`inline-flex flex-col items-start gap-0.5 shrink-0 ${className}`}
+      aria-label="CONSTRUPRECO home"
+    >
+      <svg
+        width="48"
+        height="36"
+        viewBox="0 0 48 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        className="text-amber-500"
+      >
+        <path
+          d="M18.5 22.5V14.5C18.5 12.015 20.515 10 23 10H28C30.485 10 32.5 12.015 32.5 14.5V16"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        <rect
+          x="14"
+          y="16"
+          width="20"
+          height="12"
+          rx="1.5"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <circle cx="24" cy="7" r="3.5" fill="currentColor" />
+        <path
+          d="M12 28H36"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="text-[11px] sm:text-xs font-bold tracking-[0.04em] text-neutral-950 uppercase leading-none">
+        CONSTRUPRECO
+      </span>
+    </a>
   )
 }
