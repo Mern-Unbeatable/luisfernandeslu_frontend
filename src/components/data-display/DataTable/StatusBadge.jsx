@@ -1,13 +1,15 @@
 const STATUS_STYLES = {
   produced: 'bg-sky-100 text-sky-700',
-  'in-production': 'bg-orange-100 text-orange-700',
-  'in production': 'bg-orange-100 text-orange-700',
+  'in-production':
+    'bg-[color-mix(in_srgb,var(--active)_15%,transparent)] text-[var(--active)]',
+  'in production':
+    'bg-[color-mix(in_srgb,var(--active)_15%,transparent)] text-[var(--active)]',
   ready: 'bg-pink-100 text-pink-700',
-  assigned: 'bg-neutral-700 text-white',
+  assigned: 'bg-gray-700 text-white',
   cancel: 'bg-red-100 text-red-700',
   cancelled: 'bg-red-100 text-red-700',
   completed: 'bg-emerald-100 text-emerald-700',
-  default: 'bg-slate-100 text-slate-700',
+  default: 'bg-gray-100 text-[var(--secondary-text)]',
 }
 
 export default function StatusBadge({ status, label, className = '' }) {

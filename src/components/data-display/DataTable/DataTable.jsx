@@ -6,6 +6,7 @@ import StatusBadge from './StatusBadge'
 /**
  * Fully prop-driven data table toolkit.
  * Toggle: showTabs / showSearch / showFilters / showTable / showActions / showPagination
+ * Shell: showCard / bgClassName / className
  */
 export default function DataTable({
   showTabs = false,
@@ -36,27 +37,43 @@ export default function DataTable({
   showPagination = false,
   pagination = null,
 
+  /** Card shell: border, radius, padding. Set false for no chrome. */
+  showCard = true,
+  /** Background class when showCard is true. Use '' / false for no bg. */
+  bgClassName = 'bg-white',
+
   className = '',
 }) {
   const showToolbar = showTabs || showSearch || showFilters
 
+  const wrapperClassName = [
+    'w-full overflow-visible',
+    showCard
+      ? [
+          'rounded-xl border border-gray-200 p-4 sm:p-5',
+          bgClassName || '',
+        ].filter(Boolean).join(' ')
+      : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div
-      className={`w-full overflow-visible rounded-xl border border-slate-200 bg-white p-4 sm:p-5 ${className}`}
-    >
+    <div className={wrapperClassName}>
       {showToolbar ? (
         <div className="mb-5 flex flex-col gap-3">
           {showSearch ? (
             <>
               {showTabs && tabs.length > 0 ? <TabsBar tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} /> : null}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <label className="flex w-full min-w-0 max-w-md items-center rounded-md border border-slate-200 bg-white px-3 py-2 focus-within:border-amber-500">
+                <label className="flex w-full min-w-0 max-w-md items-center rounded-md border border-gray-200 bg-white px-3 py-2 focus-within:border-[var(--active)]">
                   <input
                     type="search"
                     value={searchValue}
                     onChange={(event) => onSearchChange?.(event.target.value)}
                     placeholder={searchPlaceholder}
-                    className="w-full min-w-0 bg-transparent text-sm text-neutral-800 placeholder:text-slate-400 outline-none"
+                    className="w-full min-w-0 bg-transparent text-sm text-[var(--primary-text)] placeholder:text-[var(--secondary-text)] outline-none"
                   />
                 </label>
                 {showFilters && filters.length > 0 ? (
@@ -83,17 +100,17 @@ export default function DataTable({
         <div className="w-full overflow-x-auto overflow-y-visible">
           <table className="w-full min-w-[900px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-slate-200 bg-[#F6FBFF]">
+              <tr className="border-b border-gray-200 bg-[#F6FBFF]">
                 {columns.map((column) => (
                   <th
                     key={column.key}
-                    className={`px-3 py-3 font-semibold text-neutral-900 whitespace-nowrap sm:px-4 ${column.headerClassName || ''}`}
+                    className={`px-3 py-3 font-semibold text-[var(--primary-text)] whitespace-nowrap sm:px-4 ${column.headerClassName || ''}`}
                   >
                     {column.header}
                   </th>
                 ))}
                 {showActions && actions.length > 0 ? (
-                  <th className="px-3 py-3 font-semibold text-neutral-900 whitespace-nowrap sm:px-4">
+                  <th className="px-3 py-3 font-semibold text-[var(--primary-text)] whitespace-nowrap sm:px-4">
                     {actionHeader}
                   </th>
                 ) : null}
@@ -106,7 +123,7 @@ export default function DataTable({
                     colSpan={
                       columns.length + (showActions && actions.length > 0 ? 1 : 0)
                     }
-                    className="px-4 py-10 text-center text-slate-500"
+                    className="px-4 py-10 text-center text-[var(--secondary-text)]"
                   >
                     {emptyMessage}
                   </td>
@@ -115,14 +132,14 @@ export default function DataTable({
                 data.map((row, rowIndex) => (
                   <tr
                     key={getRowKey(row, rowIndex)}
-                    className="border-b border-slate-100 last:border-b-0"
+                    className="border-b border-gray-100 last:border-b-0"
                   >
                     {columns.map((column) => {
                       const value = row?.[column.key]
                       return (
                         <td
                           key={column.key}
-                          className={`px-3 py-3.5 text-neutral-800 whitespace-nowrap sm:px-4 ${column.className || ''}`}
+                          className={`px-3 py-3.5 text-[var(--primary-text)] whitespace-nowrap sm:px-4 ${column.className || ''}`}
                         >
                           {typeof column.render === 'function'
                             ? column.render(value, row, rowIndex)
@@ -156,7 +173,7 @@ export default function DataTable({
 
 function TabsBar({ tabs, activeTab, onTabChange }) {
   return (
-    <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-slate-100 p-1">
+    <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-gray-100 p-1">
       {tabs.map((tab) => {
         const isActive = tab.id === activeTab
         return (
@@ -166,8 +183,8 @@ function TabsBar({ tabs, activeTab, onTabChange }) {
             onClick={() => onTabChange?.(tab.id)}
             className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
               isActive
-                ? 'bg-amber-500 text-white shadow-sm'
-                : 'bg-transparent text-neutral-800 hover:bg-white/80'
+                ? 'bg-[var(--active)] text-white shadow-sm'
+                : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
             }`}
           >
             {tab.label}
@@ -182,7 +199,7 @@ function FiltersBar({ filterLabel, filters }) {
   return (
     <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
       {filterLabel ? (
-        <span className="text-sm font-medium text-neutral-800">{filterLabel}</span>
+        <span className="text-sm font-medium text-[var(--primary-text)]">{filterLabel}</span>
       ) : null}
       {filters.map((filter) => (
         <FilterSelect key={filter.id} filter={filter} />
@@ -198,7 +215,7 @@ function FilterSelect({ filter }) {
         value={filter.value ?? ''}
         onChange={(event) => filter.onChange?.(event.target.value)}
         disabled={filter.disabled}
-        className="h-10 w-full cursor-pointer appearance-none rounded-md border border-slate-200 bg-white py-2 pl-3 pr-9 text-sm text-neutral-800 outline-none transition-colors hover:border-slate-300 focus:border-amber-500 disabled:cursor-not-allowed"
+        className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)] disabled:cursor-not-allowed"
         aria-label={filter.placeholder || filter.id}
       >
         {filter.placeholder && !filter.options?.some((o) => o.value === '') ? (
@@ -213,7 +230,7 @@ function FilterSelect({ filter }) {
         ))}
       </select>
       <FiChevronDown
-        className="pointer-events-none absolute right-2.5 size-4 text-neutral-700"
+        className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
         aria-hidden
       />
     </label>
@@ -233,7 +250,7 @@ function RowActions({ row, actions, actionType }) {
             className={`rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
               action.variant === 'danger'
                 ? 'bg-red-50 text-red-700 hover:bg-red-100'
-                : 'bg-slate-100 text-neutral-800 hover:bg-slate-200'
+                : 'bg-gray-100 text-[var(--primary-text)] hover:bg-gray-200'
             } disabled:cursor-not-allowed disabled:opacity-50`}
           >
             {action.icon ? <span className="mr-1 inline-flex">{action.icon}</span> : null}
@@ -313,7 +330,7 @@ function ActionMenu({ row, actions }) {
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
-        className="rounded-md p-1.5 text-neutral-700 transition-colors hover:bg-slate-100"
+        className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100"
       >
         <FiMoreVertical className="size-5" />
       </button>
@@ -325,7 +342,7 @@ function ActionMenu({ row, actions }) {
               id={menuId}
               role="menu"
               style={{ top: coords.top, left: coords.left }}
-              className="fixed z-[9999] min-w-[148px] overflow-hidden rounded-md border border-slate-200 bg-white py-1 shadow-lg"
+              className="fixed z-[9999] min-w-[148px] overflow-hidden rounded-md border border-gray-200 bg-white py-1 shadow-lg"
             >
               {actions.map((action) => (
                 <button
@@ -340,7 +357,7 @@ function ActionMenu({ row, actions }) {
                   className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
                     action.variant === 'danger'
                       ? 'text-red-600 hover:bg-red-50'
-                      : 'text-neutral-800 hover:bg-slate-50'
+                      : 'text-[var(--primary-text)] hover:bg-gray-50'
                   }`}
                 >
                   {action.icon}
@@ -388,7 +405,7 @@ function PaginationBar({ pagination }) {
 
   return (
     <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm font-medium text-amber-600">
+      <p className="text-sm font-medium text-[var(--active)]">
         {pagination.summaryLabel
           || `Showing ${from} to ${to} of ${total} results`}
       </p>
@@ -398,7 +415,7 @@ function PaginationBar({ pagination }) {
           type="button"
           onClick={goPrevious}
           disabled={!hasPrevious}
-          className="rounded-md border border-amber-500 bg-white px-4 py-2 text-sm font-medium text-amber-600 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400 disabled:hover:bg-white"
+          className="rounded-md border border-[var(--active)] bg-white px-4 py-2 text-sm font-medium text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_10%,transparent)] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-[var(--secondary-text)] disabled:hover:bg-white"
         >
           {pagination.previousLabel || 'Previous'}
         </button>
@@ -406,7 +423,7 @@ function PaginationBar({ pagination }) {
           type="button"
           onClick={goNext}
           disabled={!hasNext}
-          className="rounded-md border border-amber-500 bg-white px-4 py-2 text-sm font-medium text-amber-600 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400 disabled:hover:bg-white"
+          className="rounded-md border border-[var(--active)] bg-white px-4 py-2 text-sm font-medium text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_10%,transparent)] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-[var(--secondary-text)] disabled:hover:bg-white"
         >
           {pagination.nextLabel || 'Next'}
         </button>
