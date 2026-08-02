@@ -1,12 +1,14 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { FiChevronDown, FiMoreVertical } from 'react-icons/fi'
+import Skeleton from '../../common/Skeleton/Skeleton'
 import StatusBadge from './StatusBadge'
 
 /**
  * Fully prop-driven data table toolkit.
  * Toggle: showTabs / showSearch / showFilters / showTable / showActions / showPagination
  * Shell: showCard / bgClassName / className
+ * Loading: loading / skeletonRows
  */
 export default function DataTable({
   showTabs = false,
@@ -28,6 +30,8 @@ export default function DataTable({
   data = [],
   emptyMessage = 'No data found',
   getRowKey = (row, index) => row?.id ?? index,
+  loading = false,
+  skeletonRows = 7,
 
   showActions = false,
   actions = [],
@@ -45,6 +49,8 @@ export default function DataTable({
   className = '',
 }) {
   const showToolbar = showTabs || showSearch || showFilters
+  const colSpan =
+    columns.length + (showActions && actions.length > 0 ? 1 : 0)
 
   const wrapperClassName = [
     'w-full overflow-visible',
@@ -60,8 +66,10 @@ export default function DataTable({
     .join(' ')
 
   return (
-    <div className={wrapperClassName}>
-      {showToolbar ? (
+    <div
+      className={wrapperClassName}
+      aria-busy={loading || undefined}
+    >      {showToolbar ? (
         <div className="mb-5 flex flex-col gap-3">
           {showSearch ? (
             <>
@@ -117,12 +125,31 @@ export default function DataTable({
               </tr>
             </thead>
             <tbody>
-              {data.length === 0 ? (
+              {loading ? (
+                Array.from({ length: skeletonRows }).map((_, rowIndex) => (
+                  <tr
+                    key={`skeleton-${rowIndex}`}
+                    className="border-b border-gray-100 last:border-b-0"
+                  >
+                    {columns.map((column) => (
+                      <td
+                        key={column.key}
+                        className={`px-3 py-3.5 sm:px-4 ${column.className || ''}`}
+                      >
+                        <Skeleton className="h-4 w-full max-w-[9rem]" />
+                      </td>
+                    ))}
+                    {showActions && actions.length > 0 ? (
+                      <td className="px-3 py-3.5 sm:px-4">
+                        <Skeleton className="mx-auto size-5 rounded-full" />
+                      </td>
+                    ) : null}
+                  </tr>
+                ))
+              ) : data.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={
-                      columns.length + (showActions && actions.length > 0 ? 1 : 0)
-                    }
+                    colSpan={colSpan}
                     className="px-4 py-10 text-center text-[var(--secondary-text)]"
                   >
                     {emptyMessage}
@@ -164,8 +191,17 @@ export default function DataTable({
         </div>
       ) : null}
 
-      {showPagination && pagination ? (
+      {showPagination && pagination && !loading ? (
         <PaginationBar pagination={pagination} />
+      ) : null}
+      {showPagination && loading ? (
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Skeleton className="h-5 w-48" />
+          <div className="flex gap-2">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-20" />
+          </div>
+        </div>
       ) : null}
     </div>
   )

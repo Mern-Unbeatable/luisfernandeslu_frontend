@@ -1,22 +1,14 @@
 import { Suspense, lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import PublicLayout from '../../layouts/PublicLayout/PublicLayout'
+import PageSkeleton from '../../components/common/Skeleton/PageSkeleton'
 import { routeSeo } from '../../config/seo'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
 
-function PageLoader() {
-  return (
-    <div className="flex min-h-[40vh] items-center justify-center" role="status">
-      <div className="size-8 animate-spin rounded-full border-2 border-slate-200 border-t-amber-500" />
-      <span className="sr-only">Loading</span>
-    </div>
-  )
-}
-
 function withSuspense(element) {
-  return <Suspense fallback={<PageLoader />}>{element}</Suspense>
+  return <Suspense fallback={<PageSkeleton />}>{element}</Suspense>
 }
 
 export const router = createBrowserRouter([
