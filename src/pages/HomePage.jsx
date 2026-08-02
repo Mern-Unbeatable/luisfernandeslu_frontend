@@ -281,8 +281,6 @@ export default function HomePage() {
     messages,
     activePartnerId,
     activeChat,
-    search,
-    setSearch,
     selectChat,
     sendMessage,
     editMessage,
@@ -340,8 +338,6 @@ export default function HomePage() {
             messages={messages}
             activePartnerId={activePartnerId}
             activeChat={activeChat}
-            search={search}
-            onSearchChange={setSearch}
             onSelectChat={selectChat}
             onSend={sendMessage}
             onEditMessage={editMessage}

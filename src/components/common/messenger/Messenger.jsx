@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import ChatArea from './ChatArea'
-import CreateOfferModal from './CreateOfferModal'
-import Sidebar from './Sidebar'
+import ChatArea from './components/ChatArea'
+import CreateOfferModal from './components/CreateOfferModal'
+import Sidebar from './components/Sidebar'
 
 /**
  * Common messenger shell — inbox + conversation.
@@ -12,8 +12,6 @@ export default function Messenger({
   messages = [],
   activePartnerId = null,
   activeChat = null,
-  search = '',
-  onSearchChange,
   onSelectChat,
   onSend,
   onEditMessage,
@@ -53,12 +51,9 @@ export default function Messenger({
         <Sidebar
           chats={chats}
           activeChatId={activePartnerId}
-          search={search}
-          onSearchChange={onSearchChange}
           onSelectChat={onSelectChat}
           isLoading={isLoading && !chats.length}
           title={sidebarTitle}
-          onCompose={openOfferModal}
         />
       </div>
 

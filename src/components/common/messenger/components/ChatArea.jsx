@@ -6,7 +6,7 @@ import {
   FiX,
 } from 'react-icons/fi'
 import MessageBubble from './MessageBubble'
-import UserAvatar from './UserAvatar'
+import UserAvatar from '../components/UserAvatar'
 
 export default function ChatArea({
   activeChat,

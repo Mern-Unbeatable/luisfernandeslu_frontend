@@ -1,49 +1,20 @@
-import { FiEdit3, FiSearch } from 'react-icons/fi'
-import Skeleton from '../Skeleton/Skeleton'
+import Skeleton from '../../Skeleton/Skeleton'
 import UserAvatar from './UserAvatar'
 
 export default function Sidebar({
   chats = [],
   activeChatId,
-  search = '',
-  onSearchChange,
   onSelectChat,
   isLoading = false,
   title = 'Recent Messages',
-  onCompose,
 }) {
   return (
     <div className="flex h-full flex-col border-r border-gray-200 bg-[#EEEEEE]">
-      <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-4 py-3.5">
+      <div className="border-b border-gray-200 px-4 py-5">
         <h2 className="text-base font-bold text-[var(--primary-text)]">
           {title}
         </h2>
-        {onCompose ? (
-          <button
-            type="button"
-            onClick={onCompose}
-            aria-label="Compose"
-            className="rounded-md p-1.5 text-[var(--secondary-text)] hover:bg-white hover:text-[var(--active)]"
-          >
-            <FiEdit3 className="size-5" />
-          </button>
-        ) : null}
       </div>
-
-      {onSearchChange ? (
-        <div className="px-3 pt-3">
-          <label className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 focus-within:border-[var(--active)]">
-            <FiSearch className="size-4 shrink-0 text-[var(--secondary-text)]" />
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => onSearchChange?.(event.target.value)}
-              placeholder="Search conversations"
-              className="w-full bg-transparent text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)]"
-            />
-          </label>
-        </div>
-      ) : null}
 
       <div className="flex-1 overflow-y-auto px-3 py-3">
         {isLoading ? (

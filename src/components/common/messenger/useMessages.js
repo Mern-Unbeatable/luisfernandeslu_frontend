@@ -113,21 +113,10 @@ export default function useMessages() {
   const [chats, setChats] = useState(MOCK_CHATS)
   const [messagesByChat, setMessagesByChat] = useState(MOCK_MESSAGES)
   const [activePartnerId, setActivePartnerId] = useState('c2')
-  const [search, setSearch] = useState('')
   const [isSending, setIsSending] = useState(false)
   const [isPartnerTyping] = useState(false)
   const [actionMessageId, setActionMessageId] = useState(null)
   const [isLoading] = useState(false)
-
-  const filteredChats = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return chats
-    return chats.filter(
-      (chat) =>
-        chat.name.toLowerCase().includes(q)
-        || chat.lastMessage?.toLowerCase().includes(q),
-    )
-  }, [chats, search])
 
   const activeChat = useMemo(
     () => chats.find((chat) => chat.id === activePartnerId) || null,
@@ -221,12 +210,10 @@ export default function useMessages() {
   const stopTyping = useCallback(() => {}, [])
 
   return {
-    chats: filteredChats,
+    chats,
     messages,
     activePartnerId,
     activeChat,
-    search,
-    setSearch,
     selectChat,
     sendMessage,
     editMessage,

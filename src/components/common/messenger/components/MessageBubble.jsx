@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { FiMoreVertical } from 'react-icons/fi'
 import OfferCard from './OfferCard'
 import UserAvatar from './UserAvatar'
@@ -112,13 +113,52 @@ function Meta({ time, editedAt, status, align = 'left' }) {
 
 function MessageActions({ onEdit, onDelete, disabled }) {
   const [open, setOpen] = useState(false)
+  const [coords, setCoords] = useState(null)
   const rootRef = useRef(null)
+  const buttonRef = useRef(null)
+  const menuRef = useRef(null)
   const menuId = useId()
+
+  useLayoutEffect(() => {
+    if (!open || !buttonRef.current) {
+      setCoords(null)
+      return undefined
+    }
+
+    const updatePosition = () => {
+      const rect = buttonRef.current.getBoundingClientRect()
+      const menuHeight = menuRef.current?.offsetHeight ?? 88
+      const menuWidth = menuRef.current?.offsetWidth ?? 112
+      const gap = 4
+      const spaceBelow = window.innerHeight - rect.bottom
+      const openBelow = spaceBelow >= menuHeight + gap
+
+      let top = openBelow
+        ? rect.bottom + gap
+        : rect.top - menuHeight - gap
+      let left = rect.right - menuWidth
+
+      top = Math.max(8, Math.min(top, window.innerHeight - menuHeight - 8))
+      left = Math.max(8, Math.min(left, window.innerWidth - menuWidth - 8))
+
+      setCoords({ top, left })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [open])
 
   useEffect(() => {
     if (!open) return undefined
     const onPointer = (event) => {
-      if (!rootRef.current?.contains(event.target)) setOpen(false)
+      const inTrigger = rootRef.current?.contains(event.target)
+      const inMenu = menuRef.current?.contains(event.target)
+      if (!inTrigger && !inMenu) setOpen(false)
     }
     document.addEventListener('pointerdown', onPointer)
     return () => document.removeEventListener('pointerdown', onPointer)
@@ -127,6 +167,7 @@ function MessageActions({ onEdit, onDelete, disabled }) {
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
+        ref={buttonRef}
         type="button"
         disabled={disabled}
         aria-haspopup="menu"
@@ -137,36 +178,45 @@ function MessageActions({ onEdit, onDelete, disabled }) {
       >
         <FiMoreVertical className="size-4" />
       </button>
-      {open ? (
-        <div
-          id={menuId}
-          role="menu"
-          className="absolute right-0 bottom-full z-20 mb-1 min-w-[7rem] overflow-hidden rounded-md border border-gray-200 bg-white py-1 shadow-lg"
-        >
-          <button
-            type="button"
-            role="menuitem"
-            className="block w-full px-3 py-2 text-left text-sm text-[var(--primary-text)] hover:bg-gray-50"
-            onClick={() => {
-              setOpen(false)
-              onEdit?.()
-            }}
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            className="block w-full px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
-            onClick={() => {
-              setOpen(false)
-              onDelete?.()
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      ) : null}
+      {open
+        ? createPortal(
+            <div
+              ref={menuRef}
+              id={menuId}
+              role="menu"
+              style={
+                coords
+                  ? { top: coords.top, left: coords.left }
+                  : { top: 0, left: 0, visibility: 'hidden' }
+              }
+              className="fixed z-50 min-w-[7rem] overflow-hidden rounded-md border border-gray-200 bg-white py-1 shadow-lg"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                className="block w-full px-3 py-2 text-left text-sm text-[var(--primary-text)] hover:bg-gray-50"
+                onClick={() => {
+                  setOpen(false)
+                  onEdit?.()
+                }}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                className="block w-full px-3 py-2 text-left text-sm text-red-500 hover:bg-red-50"
+                onClick={() => {
+                  setOpen(false)
+                  onDelete?.()
+                }}
+              >
+                Delete
+              </button>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   )
 }

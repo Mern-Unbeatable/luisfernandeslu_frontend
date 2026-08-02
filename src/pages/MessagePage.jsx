@@ -7,8 +7,6 @@ export default function MessagePage() {
     messages,
     activePartnerId,
     activeChat,
-    search,
-    setSearch,
     selectChat,
     sendMessage,
     editMessage,
@@ -30,8 +28,6 @@ export default function MessagePage() {
           messages={messages}
           activePartnerId={activePartnerId}
           activeChat={activeChat}
-          search={search}
-          onSearchChange={setSearch}
           onSelectChat={selectChat}
           onSend={sendMessage}
           onEditMessage={editMessage}

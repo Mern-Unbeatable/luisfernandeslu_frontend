@@ -1,4 +1,4 @@
-import { getPartnerInitials } from './messageUtils'
+import { getPartnerInitials } from '../messageUtils'
 
 export default function UserAvatar({
   partner,
