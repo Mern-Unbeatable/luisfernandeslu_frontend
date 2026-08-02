@@ -1,4 +1,9 @@
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
+import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
+import {
+  ADMIN_PRODUCT,
+  DEMO_PRODUCT,
+} from '../components/data-display/ProductDetails/demoProduct'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 
@@ -275,6 +280,13 @@ const VARIANTS = [
   },
 ]
 
+const PRODUCT_DETAILS_VARIANTS = [
+  { name: 'Customer', role: 'customer', product: DEMO_PRODUCT },
+  { name: 'Company', role: 'company', product: DEMO_PRODUCT },
+  { name: 'Supplier / Factory', role: 'supplier', product: DEMO_PRODUCT },
+  { name: 'Admin', role: 'admin', product: ADMIN_PRODUCT },
+]
+
 export default function HomePage() {
   const {
     chats,
@@ -317,6 +329,32 @@ export default function HomePage() {
                 {...variant.props}
                 onAction={(actionId, product) => {
                   console.log(variant.name, actionId, product?.title)
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            ProductDetails variants
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Same common component — customer, company, supplier/factory, admin.
+          </p>
+        </header>
+
+        <div className="flex flex-col gap-10">
+          {PRODUCT_DETAILS_VARIANTS.map((variant) => (
+            <div key={variant.name} className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <ProductDetails
+                role={variant.role}
+                product={variant.product}
+                onAction={(actionId, product, qty) => {
+                  console.log(variant.name, actionId, product?.title, qty)
                 }}
               />
             </div>

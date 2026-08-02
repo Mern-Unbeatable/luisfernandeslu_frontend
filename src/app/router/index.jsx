@@ -6,6 +6,7 @@ import { routeSeo } from '../../config/seo'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
 const MessagePage = lazy(() => import('../../pages/MessagePage'))
+const ProductDetailsPage = lazy(() => import('../../pages/ProductDetailsPage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
 
 function withSuspense(element) {
@@ -26,6 +27,11 @@ export const router = createBrowserRouter([
         path: 'message',
         element: withSuspense(<MessagePage />),
         handle: { seo: routeSeo.message },
+      },
+      {
+        path: 'product-details',
+        element: withSuspense(<ProductDetailsPage />),
+        handle: { seo: routeSeo.productDetails },
       },
       {
         path: '*',
