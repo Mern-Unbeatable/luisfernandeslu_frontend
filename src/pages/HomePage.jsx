@@ -6,6 +6,9 @@ import {
 } from '../components/data-display/ProductDetails/demoProduct'
 import AddProduct from '../components/forms/AddProduct/AddProduct'
 import { DEMO_ADD_PRODUCT, DEMO_FACTORY_PRODUCT } from '../components/forms/AddProduct/defaults'
+import InstallmentTimeline, {
+  DEMO_INSTALLMENTS,
+} from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 
@@ -400,6 +403,21 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            Installment Timeline
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Common timeline — completed / pending installments.
+          </p>
+        </header>
+
+        <InstallmentTimeline
+          items={DEMO_INSTALLMENTS}
+          onPayNow={(item) => console.log('pay now', item)}
+          onCancel={(item) => console.log('cancel', item)}
+        />
 
         <header className="mt-12 mb-6">
           <h2 className="text-2xl font-bold text-[var(--primary-text)]">
