@@ -1,4 +1,6 @@
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
+import Messenger from '../components/common/messenger/Messenger'
+import useMessages from '../components/common/messenger/useMessages'
 
 const IMG =
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
@@ -274,6 +276,26 @@ const VARIANTS = [
 ]
 
 export default function HomePage() {
+  const {
+    chats,
+    messages,
+    activePartnerId,
+    activeChat,
+    search,
+    setSearch,
+    selectChat,
+    sendMessage,
+    editMessage,
+    deleteMessage,
+    handleTyping,
+    stopTyping,
+    isPartnerTyping,
+    isSending,
+    actionMessageId,
+    isLoading,
+    sharedInbox,
+  } = useMessages()
+
   return (
     <section className="w-full bg-gray-100 px-4 py-8 sm:px-6 lg:px-10 xl:px-24">
       <div className="mx-auto w-full max-w-[1440px]">
@@ -301,6 +323,41 @@ export default function HomePage() {
               />
             </div>
           ))}
+        </div>
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            Messenger
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Common chat UI — sidebar + conversation (project colors).
+          </p>
+        </header>
+
+        <div className="h-[min(70vh,720px)] min-h-[480px] w-full">
+          <Messenger
+            chats={chats}
+            messages={messages}
+            activePartnerId={activePartnerId}
+            activeChat={activeChat}
+            search={search}
+            onSearchChange={setSearch}
+            onSelectChat={selectChat}
+            onSend={sendMessage}
+            onEditMessage={editMessage}
+            onDeleteMessage={deleteMessage}
+            onTyping={handleTyping}
+            onStopTyping={stopTyping}
+            onCreateOffer={() => console.log('Create offer')}
+            onPayNow={(message) => console.log('Pay now', message)}
+            onNegotiate={(message) => console.log('Negotiate', message)}
+            isPartnerTyping={isPartnerTyping}
+            isSending={isSending}
+            isLoading={isLoading}
+            actionMessageId={actionMessageId}
+            sharedInbox={sharedInbox}
+            sidebarTitle="Recent Messages"
+          />
         </div>
       </div>
     </section>

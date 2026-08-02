@@ -48,7 +48,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full mt-auto bg-[#FDFBF7]">
-      <div className="mx-auto w-full container px-4 py-12 sm:px-6 md:py-12 lg:px-10 xl:px-24">
+      <div className="mx-auto w-full container px-4 py-12 sm:px-6 md:py-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-12 lg:items-start">
           <div className="flex flex-col items-start gap-5 md:gap-6 lg:h-full">
             <Logo />

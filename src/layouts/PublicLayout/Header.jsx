@@ -72,7 +72,7 @@ export default function Header() {
     <header ref={headerRef} className="relative w-full sticky top-0 z-50">
       {/* Top bar — desktop only */}
       <div className="hidden md:block w-full bg-zinc-950 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.16)]">
-        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10 xl:px-24">
+        <div className="mx-auto flex w-full container items-center justify-between gap-4 px-6 py-3">
           <p className="text-white text-sm font-normal leading-5 truncate">
             {t('header.welcome')}
           </p>
@@ -129,7 +129,7 @@ export default function Header() {
 
       {/* Desktop header */}
       <div className="hidden md:block w-full bg-white border-b border-slate-100">
-        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-6 px-4 py-5 sm:px-6 lg:px-10 xl:px-24">
+        <div className="mx-auto flex w-full container items-center justify-between gap-6 px-4 py-3">
           <Logo />
 
           <div className="flex flex-1 max-w-[640px] mx-4 lg:mx-8">

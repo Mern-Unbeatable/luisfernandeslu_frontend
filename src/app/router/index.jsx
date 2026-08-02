@@ -5,6 +5,7 @@ import PageSkeleton from '../../components/common/Skeleton/PageSkeleton'
 import { routeSeo } from '../../config/seo'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
+const MessagePage = lazy(() => import('../../pages/MessagePage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
 
 function withSuspense(element) {
@@ -20,6 +21,11 @@ export const router = createBrowserRouter([
         index: true,
         element: withSuspense(<HomePage />),
         handle: { seo: routeSeo.home },
+      },
+      {
+        path: 'message',
+        element: withSuspense(<MessagePage />),
+        handle: { seo: routeSeo.message },
       },
       {
         path: '*',
