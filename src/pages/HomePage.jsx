@@ -9,6 +9,7 @@ import { DEMO_ADD_PRODUCT, DEMO_FACTORY_PRODUCT } from '../components/forms/AddP
 import InstallmentTimeline, {
   DEMO_INSTALLMENTS,
 } from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
+import DataTableDemos from '../components/data-display/DataTable/DataTableDemos'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 
@@ -316,8 +317,20 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-[1440px]">
         <header className="mb-8">
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-            ProductCard variants
+            DataTable variants
           </h1>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Prop toggles — tabs, search, filters, actions, pagination, loading,
+            empty, card shell.
+          </p>
+        </header>
+
+        <DataTableDemos />
+
+        <header className="mt-12 mb-8">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            ProductCard variants
+          </h2>
           <p className="mt-1 text-sm text-[var(--secondary-text)]">
             Same common component — different type / role / context / status /
             tag props.
@@ -327,9 +340,9 @@ export default function HomePage() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {VARIANTS.map((variant) => (
             <div key={variant.name} className="flex flex-col gap-2">
-              <h2 className="text-sm font-semibold text-[var(--primary-text)]">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
                 {variant.name}
-              </h2>
+              </h3>
               <ProductCard
                 {...variant.props}
                 onAction={(actionId, product) => {

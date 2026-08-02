@@ -8,18 +8,6 @@ export const routeSeo = {
     titleKey: 'seo.homeTitle',
     descriptionKey: 'seo.homeDescription',
   },
-  message: {
-    titleKey: 'seo.messageTitle',
-    descriptionKey: 'seo.messageDescription',
-  },
-  productDetails: {
-    titleKey: 'seo.productDetailsTitle',
-    descriptionKey: 'seo.productDetailsDescription',
-  },
-  addProduct: {
-    titleKey: 'seo.addProductTitle',
-    descriptionKey: 'seo.addProductDescription',
-  },
   notFound: {
     titleKey: 'seo.notFoundTitle',
     descriptionKey: 'seo.notFoundDescription',

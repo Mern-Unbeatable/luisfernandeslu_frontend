@@ -5,9 +5,6 @@ import PageSkeleton from '../../components/common/Skeleton/PageSkeleton'
 import { routeSeo } from '../../config/seo'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
-const MessagePage = lazy(() => import('../../pages/MessagePage'))
-const ProductDetailsPage = lazy(() => import('../../pages/ProductDetailsPage'))
-const AddProductPage = lazy(() => import('../../pages/AddProductPage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
 
 function withSuspense(element) {
@@ -23,21 +20,6 @@ export const router = createBrowserRouter([
         index: true,
         element: withSuspense(<HomePage />),
         handle: { seo: routeSeo.home },
-      },
-      {
-        path: 'message',
-        element: withSuspense(<MessagePage />),
-        handle: { seo: routeSeo.message },
-      },
-      {
-        path: 'product-details',
-        element: withSuspense(<ProductDetailsPage />),
-        handle: { seo: routeSeo.productDetails },
-      },
-      {
-        path: 'add-product',
-        element: withSuspense(<AddProductPage />),
-        handle: { seo: routeSeo.addProduct },
       },
       {
         path: '*',
