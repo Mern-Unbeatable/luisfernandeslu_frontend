@@ -42,23 +42,25 @@ export default function MessageBubble({
 
   if (isOutgoing) {
     return (
-      <div className="flex justify-end gap-1">
-        {!message.isDeleted && !isBeingEdited ? (
-          <MessageActions
-            disabled={isBusy}
-            onEdit={() => onStartEdit?.(message)}
-            onDelete={() => onDeleteMessage?.(message.id)}
-          />
-        ) : null}
+      <div className="flex justify-end">
         <div className="flex max-w-[75%] flex-col items-end gap-1">
-          <div
-            className={`rounded-2xl rounded-br-md px-3.5 py-2.5 text-sm leading-relaxed ${
-              message.isDeleted
-                ? 'bg-gray-100 italic text-[var(--secondary-text)]'
-                : 'bg-[#E8EEF5] text-[var(--primary-text)]'
-            } ${isBeingEdited ? 'ring-2 ring-[var(--active)]' : ''}`}
-          >
-            {displayText}
+          <div className="flex items-center gap-1">
+            {!message.isDeleted && !isBeingEdited ? (
+              <MessageActions
+                disabled={isBusy}
+                onEdit={() => onStartEdit?.(message)}
+                onDelete={() => onDeleteMessage?.(message.id)}
+              />
+            ) : null}
+            <div
+              className={`rounded-2xl rounded-br-md px-3.5 py-2.5 text-sm leading-relaxed ${
+                message.isDeleted
+                  ? 'bg-gray-100 italic text-[var(--secondary-text)]'
+                  : 'bg-[#E8EEF5] text-[var(--primary-text)]'
+              } ${isBeingEdited ? 'ring-2 ring-[var(--active)]' : ''}`}
+            >
+              {displayText}
+            </div>
           </div>
           <Meta
             time={message.time}
@@ -123,7 +125,7 @@ function MessageActions({ onEdit, onDelete, disabled }) {
   }, [open])
 
   return (
-    <div ref={rootRef} className="relative self-center">
+    <div ref={rootRef} className="relative shrink-0">
       <button
         type="button"
         disabled={disabled}
