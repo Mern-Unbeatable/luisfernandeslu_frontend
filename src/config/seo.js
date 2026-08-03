@@ -44,6 +44,10 @@ export const routeSeo = {
     titleKey: 'seo.signupTitle',
     descriptionKey: 'seo.signupDescription',
   },
+  forgotPassword: {
+    titleKey: 'seo.forgotPasswordTitle',
+    descriptionKey: 'seo.forgotPasswordDescription',
+  },
   notFound: {
     titleKey: 'seo.notFoundTitle',
     descriptionKey: 'seo.notFoundDescription',

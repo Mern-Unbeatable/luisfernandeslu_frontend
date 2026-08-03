@@ -149,7 +149,11 @@ export default function LoginPage() {
           labelRight={
             forgotBeside ? (
               <Link
-                to="/forgot-password"
+                to={
+                  role
+                    ? `/forgot-password?role=${encodeURIComponent(role)}`
+                    : '/forgot-password'
+                }
                 className="text-sm font-medium text-[var(--active)] hover:underline"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -162,7 +166,11 @@ export default function LoginPage() {
         {!forgotBeside ? (
           <div className="-mt-1 flex justify-end">
             <Link
-              to="/forgot-password"
+              to={
+                role
+                  ? `/forgot-password?role=${encodeURIComponent(role)}`
+                  : '/forgot-password'
+              }
               className="text-sm font-medium text-[var(--active)] underline-offset-2 hover:underline"
             >
               {t('auth.forgotPassword')}

@@ -34,6 +34,15 @@ const ComingSoonPage = lazy(() => import('../../pages/panel/ComingSoonPage'))
 const RoleSelectPage = lazy(() => import('../../pages/auth/RoleSelectPage'))
 const LoginPage = lazy(() => import('../../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../../pages/auth/RegisterPage'))
+const ForgotPasswordPage = lazy(
+  () => import('../../pages/auth/ForgotPasswordPage'),
+)
+const OtpVerificationPage = lazy(
+  () => import('../../pages/auth/OtpVerificationPage'),
+)
+const ResetPasswordPage = lazy(
+  () => import('../../pages/auth/ResetPasswordPage'),
+)
 
 function withSuspense(element, fallback = <PageSkeleton />) {
   return <Suspense fallback={fallback}>{element}</Suspense>
@@ -197,6 +206,21 @@ export const router = createBrowserRouter([
             path: 'login/:role',
             element: withSuspense(<LoginPage />, <AuthSkeleton />),
             handle: { seo: routeSeo.login },
+          },
+          {
+            path: 'forgot-password',
+            element: withSuspense(<ForgotPasswordPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.forgotPassword },
+          },
+          {
+            path: 'forgot-password/otp',
+            element: withSuspense(<OtpVerificationPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.forgotPassword },
+          },
+          {
+            path: 'forgot-password/reset',
+            element: withSuspense(<ResetPasswordPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.forgotPassword },
           },
         ],
       },

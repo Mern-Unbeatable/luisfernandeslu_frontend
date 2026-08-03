@@ -17,6 +17,9 @@ export default function AuthLayout() {
   const matchAdminLogin = useMatch('/admin/login')
   const matchSignup = useMatch('/signup')
   const matchSignupRole = useMatch('/signup/:role')
+  const matchForgot = useMatch('/forgot-password')
+  const matchForgotOtp = useMatch('/forgot-password/otp')
+  const matchForgotReset = useMatch('/forgot-password/reset')
   const role = roleParam || (matchAdminLogin ? 'admin' : null)
   const isRegister = Boolean(matchSignupRole)
   const isSignupFlow = Boolean(matchSignup || matchSignupRole)
@@ -27,6 +30,32 @@ export default function AuthLayout() {
   const sidebar = config?.[mode]?.sidebar
 
   const goBack = () => {
+    if (matchForgotReset) {
+      navigate('/forgot-password/otp')
+      return
+    }
+    if (matchForgotOtp) {
+      navigate('/forgot-password')
+      return
+    }
+    if (matchForgot) {
+      try {
+        const raw = sessionStorage.getItem('forgotPassword')
+        const data = raw ? JSON.parse(raw) : null
+        if (data?.role === 'admin') {
+          navigate('/admin/login')
+          return
+        }
+        if (data?.role) {
+          navigate(`/login/${data.role}`)
+          return
+        }
+      } catch {
+        /* ignore */
+      }
+      navigate('/login')
+      return
+    }
     if (isAdminLogin) {
       navigate('/')
       return
