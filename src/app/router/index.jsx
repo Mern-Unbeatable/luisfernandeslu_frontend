@@ -81,7 +81,12 @@ function panelPage(item) {
       <ComingSoonPage titleKey={item.labelKey} />,
       <PanelSkeleton />,
     ),
-    handle: { seo: routeSeo.panel },
+    handle: {
+      seo: {
+        titleKey: item.labelKey,
+        descriptionKey: 'seo.panelDescription',
+      },
+    },
   }
 }
 
