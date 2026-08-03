@@ -8,6 +8,30 @@ export const routeSeo = {
     titleKey: 'seo.homeTitle',
     descriptionKey: 'seo.homeDescription',
   },
+  buyerDashboard: {
+    titleKey: 'seo.buyerDashboardTitle',
+    descriptionKey: 'seo.buyerDashboardDescription',
+  },
+  buyerOrders: {
+    titleKey: 'seo.buyerOrdersTitle',
+    descriptionKey: 'seo.buyerOrdersDescription',
+  },
+  buyerProjects: {
+    titleKey: 'seo.buyerProjectsTitle',
+    descriptionKey: 'seo.buyerProjectsDescription',
+  },
+  buyerAccount: {
+    titleKey: 'seo.buyerAccountTitle',
+    descriptionKey: 'seo.buyerAccountDescription',
+  },
+  buyerAffiliates: {
+    titleKey: 'seo.buyerAffiliatesTitle',
+    descriptionKey: 'seo.buyerAffiliatesDescription',
+  },
+  buyerProductToReview: {
+    titleKey: 'seo.buyerProductToReviewTitle',
+    descriptionKey: 'seo.buyerProductToReviewDescription',
+  },
   notFound: {
     titleKey: 'seo.notFoundTitle',
     descriptionKey: 'seo.notFoundDescription',
