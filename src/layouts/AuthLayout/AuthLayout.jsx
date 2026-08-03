@@ -5,10 +5,13 @@ import Seo from '../../components/common/Seo/Seo'
 
 /**
  * Split-screen auth shell: construction image left, form/content right.
+ * Back always returns to the public home (not browser history).
  */
 export default function AuthLayout() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const goHome = () => navigate('/')
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -24,10 +27,7 @@ export default function AuthLayout() {
         />
         <button
           type="button"
-          onClick={() => {
-            if (window.history.length > 1) navigate(-1)
-            else navigate('/')
-          }}
+          onClick={goHome}
           className="absolute top-6 left-6 z-10 flex size-10 items-center justify-center rounded-full bg-white/90 text-[var(--primary-text)] shadow-sm transition-colors hover:bg-white"
           aria-label={t('auth.back')}
         >
@@ -40,10 +40,7 @@ export default function AuthLayout() {
         <div className="flex items-center justify-between px-4 py-4 lg:hidden">
           <button
             type="button"
-            onClick={() => {
-              if (window.history.length > 1) navigate(-1)
-              else navigate('/')
-            }}
+            onClick={goHome}
             className="flex size-10 items-center justify-center rounded-full border border-gray-200 text-[var(--primary-text)]"
             aria-label={t('auth.back')}
           >

@@ -27,7 +27,7 @@ export default function PanelSidebar({
 
   return (
     <aside
-      className={`flex h-full w-64 shrink-0 flex-col border-r border-gray-200 bg-white ${className}`}
+      className={`flex h-full w-full shrink-0 flex-col border-r border-gray-200 bg-white lg:w-64 ${className}`}
     >
       <div className="flex items-center justify-between px-5 pt-5 pb-2">
         {showMainMenu ? (
