@@ -33,6 +33,7 @@ const BuyerPlaceholderPage = lazy(
 const ComingSoonPage = lazy(() => import('../../pages/panel/ComingSoonPage'))
 const RoleSelectPage = lazy(() => import('../../pages/auth/RoleSelectPage'))
 const LoginPage = lazy(() => import('../../pages/auth/LoginPage'))
+const RegisterPage = lazy(() => import('../../pages/auth/RegisterPage'))
 
 function withSuspense(element, fallback = <PageSkeleton />) {
   return <Suspense fallback={fallback}>{element}</Suspense>
@@ -170,7 +171,17 @@ export const router = createBrowserRouter([
             handle: { seo: routeSeo.signup },
           },
           {
+            path: 'signup/:role',
+            element: withSuspense(<RegisterPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.signup },
+          },
+          {
             path: 'login',
+            element: withSuspense(<RoleSelectPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.login },
+          },
+          {
+            path: 'login/:role',
             element: withSuspense(<LoginPage />, <AuthSkeleton />),
             handle: { seo: routeSeo.login },
           },
