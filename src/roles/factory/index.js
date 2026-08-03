@@ -43,6 +43,11 @@ const factoryRole = {
       Icon: FaGavel,
     },
     {
+      to: '/factory/auction-details',
+      labelKey: 'auction.details.nav',
+      Icon: FaGavel,
+    },
+    {
       to: '/factory/chat',
       labelKey: 'panel.nav.chat',
       Icon: FiMessageSquare,

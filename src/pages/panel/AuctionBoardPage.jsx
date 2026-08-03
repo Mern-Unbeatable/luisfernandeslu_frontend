@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Seo from '../../components/common/Seo/Seo'
@@ -17,7 +17,9 @@ import { getRoleBasePath } from '../../roles'
  */
 export default function AuctionBoardPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const role = useSelector((state) => state.auth.user?.role) || 'supplier'
+  const base = getRoleBasePath(role)
 
   const titleKey =
     role === 'admin'
@@ -37,7 +39,7 @@ export default function AuctionBoardPage() {
         </h1>
         {canCreate ? (
           <Link
-            to={`${getRoleBasePath(role)}/create-auction`}
+            to={`${base}/create-auction`}
             className="inline-flex h-10 items-center justify-center rounded-xl bg-[var(--active)] px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             {t('auction.create.nav')}
@@ -52,13 +54,13 @@ export default function AuctionBoardPage() {
               role={role}
               status="open"
               auction={DEMO_AUCTION_CREATED}
-              onViewDetails={() => {}}
+              onViewDetails={() => navigate(`${base}/auction-details`)}
             />
             <AuctionCard
               role={role}
               status="assigned"
               auction={DEMO_AUCTION_ASSIGNED}
-              onViewDetails={() => {}}
+              onViewDetails={() => navigate(`${base}/auction-details`)}
             />
           </>
         )}

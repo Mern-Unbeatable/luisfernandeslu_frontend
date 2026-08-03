@@ -18,6 +18,10 @@ import CreateAuction, {
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
 } from '../components/forms/CreateAuction'
+import AuctionDetails, {
+  DEMO_AUCTION_DETAILS_ACTIVE,
+  DEMO_AUCTION_DETAILS_ASSIGNED,
+} from '../components/data-display/AuctionDetails'
 import DataTableDemos from '../components/data-display/DataTable/DataTableDemos'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
@@ -65,6 +69,33 @@ const CREATE_AUCTION_VARIANTS = [
     name: 'Factory — Create Auction',
     role: 'factory',
     placeholders: DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
+  },
+]
+
+const AUCTION_DETAILS_VARIANTS = [
+  {
+    name: '1 — Supplier · Active (Shipping + Bids)',
+    role: 'supplier',
+    status: 'active',
+    auction: DEMO_AUCTION_DETAILS_ACTIVE,
+  },
+  {
+    name: '2 — Supplier · Assigned (Shipping + Transporter)',
+    role: 'supplier',
+    status: 'assigned',
+    auction: DEMO_AUCTION_DETAILS_ASSIGNED,
+  },
+  {
+    name: '3 — Factory · Active (Bids, no Shipping)',
+    role: 'factory',
+    status: 'active',
+    auction: DEMO_AUCTION_DETAILS_ACTIVE,
+  },
+  {
+    name: '4 — Factory · Assigned (Transporter, no Shipping)',
+    role: 'factory',
+    status: 'assigned',
+    auction: DEMO_AUCTION_DETAILS_ASSIGNED,
   },
 ]
 
@@ -394,6 +425,34 @@ export default function HomePage() {
                   onSubmit={(payload) =>
                     console.log('submit auction', variant.role, payload)
                   }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            Auction Details
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Common page — supplier shows Shipping Details; factory hides it.
+            Active → Competing Bids; Assigned → Transporter Information.
+          </p>
+        </header>
+
+        <div className="flex flex-col gap-10">
+          {AUCTION_DETAILS_VARIANTS.map((variant) => (
+            <div key={variant.name} className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <div className="rounded-xl ">
+                <AuctionDetails
+                  role={variant.role}
+                  status={variant.status}
+                  auction={variant.auction}
+                  onBack={() => console.log('back', variant.name)}
                 />
               </div>
             </div>

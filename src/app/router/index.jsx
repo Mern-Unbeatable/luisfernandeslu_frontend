@@ -37,6 +37,9 @@ const AuctionBoardPage = lazy(
 const CreateAuctionPage = lazy(
   () => import('../../pages/panel/CreateAuctionPage'),
 )
+const AuctionDetailsPage = lazy(
+  () => import('../../pages/panel/AuctionDetailsPage'),
+)
 const RoleSelectPage = lazy(() => import('../../pages/auth/RoleSelectPage'))
 const LoginPage = lazy(() => import('../../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../../pages/auth/RegisterPage'))
@@ -107,10 +110,28 @@ function isCreateAuctionNavItem(item) {
   )
 }
 
+function isAuctionDetailsNavItem(item) {
+  return (
+    typeof item?.to === 'string' && item.to.endsWith('/auction-details')
+  )
+}
+
 function panelPage(item) {
   if (isCreateAuctionNavItem(item)) {
     return {
       element: withSuspense(<CreateAuctionPage />, <PanelSkeleton />),
+      handle: {
+        seo: {
+          titleKey: item.labelKey,
+          descriptionKey: 'seo.panelDescription',
+        },
+      },
+    }
+  }
+
+  if (isAuctionDetailsNavItem(item)) {
+    return {
+      element: withSuspense(<AuctionDetailsPage />, <PanelSkeleton />),
       handle: {
         seo: {
           titleKey: item.labelKey,
