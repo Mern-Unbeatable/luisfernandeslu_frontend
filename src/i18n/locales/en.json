@@ -9,6 +9,8 @@
     "messages": "Messages",
     "cart": "Cart",
     "account": "Account",
+    "dashboard": "Dashboard",
+    "logOut": "Log Out",
     "signUp": "Sign Up",
     "logIn": "Log In",
     "search": "Search",

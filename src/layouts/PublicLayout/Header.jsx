@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
 import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
+import { logout } from '../../features/auth/authSlice'
 import {
   FiSearch,
   FiMessageSquare,
@@ -12,6 +13,8 @@ import {
   FiUser,
   FiMenu,
   FiX,
+  FiGrid,
+  FiLogOut,
 } from 'react-icons/fi'
 import {
   FaTwitter,
@@ -38,6 +41,8 @@ const socialLinks = [
  */
 export default function Header() {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const dashboardPath = getHomePathForRole(user?.role)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -45,6 +50,12 @@ export default function Header() {
   const [headerBottom, setHeaderBottom] = useState(0)
   const headerRef = useRef(null)
   const searchInputRef = useRef(null)
+
+  const handleLogout = () => {
+    setMenuOpen(false)
+    dispatch(logout())
+    navigate('/login', { replace: true })
+  }
 
   useEffect(() => {
     const updateHeaderBottom = () => {
@@ -255,13 +266,41 @@ export default function Header() {
             ))}
 
             {isAuthenticated ? (
-              <Link
-                to={dashboardPath}
-                aria-label={t('header.account')}
-                className="text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
-              >
-                <FiUser className="size-6" strokeWidth={1.75} />
-              </Link>
+              <div className="group relative">
+                <button
+                  type="button"
+                  aria-label={t('header.account')}
+                  aria-haspopup="menu"
+                  className="flex items-center text-[var(--primary-text)] transition-colors hover:text-[var(--active)] group-hover:text-[var(--active)]"
+                >
+                  <FiUser className="size-6" strokeWidth={1.75} />
+                </button>
+
+                <div className="invisible absolute right-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 ease-out group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div
+                    role="menu"
+                    className="min-w-[11rem] overflow-hidden rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+                  >
+                    <Link
+                      to={dashboardPath}
+                      role="menuitem"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--primary-text)] transition-colors hover:bg-gray-50 hover:text-[var(--active)]"
+                    >
+                      <FiGrid className="size-4 shrink-0" strokeWidth={1.75} />
+                      {t('header.dashboard')}
+                    </Link>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-red-500 transition-colors hover:bg-red-50"
+                    >
+                      <FiLogOut className="size-4 shrink-0" strokeWidth={1.75} />
+                      {t('header.logOut')}
+                    </button>
+                  </div>
+                </div>
+              </div>
             ) : (
               <div className="flex items-center gap-3">
                 <Link
@@ -314,14 +353,26 @@ export default function Header() {
             ))}
 
             {isAuthenticated ? (
-              <Link
-                to={dashboardPath}
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
-              >
-                <FiUser className="size-5 shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium">{t('header.account')}</span>
-              </Link>
+              <>
+                <Link
+                  to={dashboardPath}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+                >
+                  <FiGrid className="size-5 shrink-0" strokeWidth={1.75} />
+                  <span className="text-sm font-medium">
+                    {t('header.dashboard')}
+                  </span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 px-4 py-3 text-left text-red-500 transition-colors hover:bg-red-50"
+                >
+                  <FiLogOut className="size-5 shrink-0" strokeWidth={1.75} />
+                  <span className="text-sm font-medium">{t('header.logOut')}</span>
+                </button>
+              </>
             ) : (
               <div className="flex flex-col gap-2 border-t border-gray-100 px-3 py-3">
                 <Link

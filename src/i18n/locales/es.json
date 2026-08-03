@@ -9,6 +9,8 @@
     "messages": "Mensajes",
     "cart": "Carrito",
     "account": "Cuenta",
+    "dashboard": "Panel",
+    "logOut": "Cerrar sesión",
     "signUp": "Registrarse",
     "logIn": "Iniciar sesión",
     "search": "Buscar",
