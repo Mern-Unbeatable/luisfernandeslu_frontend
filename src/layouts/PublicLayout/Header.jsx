@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
 import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
@@ -28,22 +30,17 @@ const socialLinks = [
   { Icon: FaInstagram, label: 'Instagram' },
 ]
 
-const actionIconDefs = [
-  { Icon: FiMessageSquare, key: 'messages' },
-  { Icon: FiShoppingCart, key: 'cart' },
-  { Icon: FiUser, key: 'account' },
-]
-
+/**
+ * Public site header.
+ * Guest (logged out): matches marketing header — search + SIGN UP / LOG IN.
+ * Authenticated: top bar + account icon.
+ */
 export default function Header() {
   const { t } = useTranslation()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const [menuOpen, setMenuOpen] = useState(false)
   const [headerBottom, setHeaderBottom] = useState(0)
   const headerRef = useRef(null)
-
-  const actionIcons = actionIconDefs.map((item) => ({
-    ...item,
-    label: t(`header.${item.key}`),
-  }))
 
   useEffect(() => {
     const updateHeaderBottom = () => {
@@ -68,47 +65,56 @@ export default function Header() {
     }
   }, [menuOpen])
 
-  return (
-    <header ref={headerRef} className="relative w-full sticky top-0 z-50">
-      {/* Top bar — desktop only */}
-      <div className="hidden md:block w-full bg-zinc-950 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.16)]">
-        <div className="mx-auto flex w-full container items-center justify-between gap-4 px-6 py-3">
-          <p className="text-white text-sm font-normal leading-5 truncate">
-            {t('header.welcome')}
-          </p>
+  const utilityIcons = [
+    { Icon: FiMessageSquare, key: 'messages' },
+    { Icon: FiShoppingCart, key: 'cart' },
+  ]
 
-          <div className="flex items-center justify-center gap-3 shrink-0">
-            <span className="text-white text-sm font-normal leading-5">
-              {t('header.followUs')}
-            </span>
-            <div className="flex items-start gap-3">
-              {socialLinks.map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  className="text-white hover:text-amber-500 transition-colors"
-                >
-                  <Icon className="size-3.5" />
-                </a>
-              ))}
+  return (
+    <header ref={headerRef} className="relative sticky top-0 z-50 w-full">
+      {/* Top promo bar — authenticated only */}
+      {isAuthenticated ? (
+        <div className="hidden w-full bg-zinc-950 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.16)] md:block">
+          <div className="container mx-auto flex w-full items-center justify-between gap-4 px-6 py-3">
+            <p className="truncate text-sm leading-5 font-normal text-white">
+              {t('header.welcome')}
+            </p>
+            <div className="flex shrink-0 items-center justify-center gap-3">
+              <span className="text-sm leading-5 font-normal text-white">
+                {t('header.followUs')}
+              </span>
+              <div className="flex items-start gap-3">
+                {socialLinks.map(({ Icon, label }) => (
+                  <a
+                    key={label}
+                    href="#"
+                    aria-label={label}
+                    className="text-white transition-colors hover:text-[var(--active)]"
+                  >
+                    <Icon className="size-3.5" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : null}
 
       {/* Mobile header */}
-      <div className="relative z-50 md:hidden w-full bg-[#FFFFFF]">
-        <div className="flex items-center gap-2.5 px-4 py-6">
+      <div className="relative z-50 w-full border-b border-gray-100 bg-white md:hidden">
+        <div className="flex items-center gap-2.5 px-4 py-4">
           <Logo className="shrink-0" />
 
-          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-md bg-white px-3 py-2 shadow-[0px_4px_16px_0px_rgba(0,0,0,0.06)] outline outline-1 outline-slate-200">
+          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2">
             <input
               type="search"
               placeholder={t('header.searchPlaceholderShort')}
-              className="w-full min-w-0 bg-transparent text-sm text-slate-500 placeholder:text-slate-400 outline-none"
+              className="w-full min-w-0 bg-transparent text-sm text-[var(--secondary-text)] outline-none placeholder:text-gray-400"
             />
-            <FiSearch className="size-3.5 shrink-0 text-zinc-900" aria-hidden />
+            <FiSearch
+              className="size-3.5 shrink-0 text-[var(--secondary-text)]"
+              aria-hidden
+            />
           </label>
 
           <button
@@ -116,7 +122,7 @@ export default function Header() {
             aria-label={menuOpen ? t('header.closeMenu') : t('header.openMenu')}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
-            className="shrink-0 p-1 text-neutral-950"
+            className="shrink-0 p-1 text-[var(--primary-text)]"
           >
             {menuOpen ? (
               <FiX className="size-5" strokeWidth={2} />
@@ -128,45 +134,70 @@ export default function Header() {
       </div>
 
       {/* Desktop header */}
-      <div className="hidden md:block w-full bg-white border-b border-slate-100">
-        <div className="mx-auto flex w-full container items-center justify-between gap-6 px-4 py-3">
+      <div className="hidden w-full border-b border-gray-100 bg-white md:block">
+        <div className="container mx-auto flex w-full items-center justify-between gap-6 px-4 py-3.5">
           <Logo />
 
-          <div className="flex flex-1 max-w-[640px] mx-4 lg:mx-8">
-            <label className="flex w-full items-center gap-2 rounded-sm bg-white px-5 py-3.5 shadow-[0px_8px_32px_0px_rgba(0,0,0,0.08)] outline outline-1 outline-offset-[-1px] outline-slate-200 focus-within:outline-amber-500">
+          <div className="mx-4 flex max-w-[560px] flex-1 lg:mx-8">
+            <label className="flex w-full items-center gap-2 rounded-md border border-gray-200 bg-white px-4 py-2.5 focus-within:border-[var(--active)]">
               <input
                 type="search"
                 placeholder={t('header.searchPlaceholder')}
-                className="w-full min-w-0 bg-transparent text-sm leading-5 text-slate-500 placeholder:text-slate-500 outline-none"
+                className="w-full min-w-0 bg-transparent text-sm leading-5 text-[var(--secondary-text)] outline-none placeholder:text-gray-400"
               />
-              <FiSearch className="size-5 shrink-0 text-zinc-900" aria-hidden />
+              <FiSearch
+                className="size-5 shrink-0 text-[var(--secondary-text)]"
+                aria-hidden
+              />
             </label>
           </div>
 
-          <div className="flex items-center gap-6 shrink-0">
+          <div className="flex shrink-0 items-center gap-5 lg:gap-6">
             <LanguageSwitcher />
 
-            <div className="flex items-center gap-6">
-              {actionIcons.map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  type="button"
-                  aria-label={label}
-                  className="text-slate-800 hover:text-neutral-950 transition-colors"
+            {utilityIcons.map(({ Icon, key }) => (
+              <button
+                key={key}
+                type="button"
+                aria-label={t(`header.${key}`)}
+                className="text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
+              >
+                <Icon className="size-6" strokeWidth={1.75} />
+              </button>
+            ))}
+
+            {isAuthenticated ? (
+              <button
+                type="button"
+                aria-label={t('header.account')}
+                className="text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
+              >
+                <FiUser className="size-6" strokeWidth={1.75} />
+              </button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/signup"
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--active)] px-4 text-sm font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
                 >
-                  <Icon className="size-6" strokeWidth={1.75} />
-                </button>
-              ))}
-            </div>
+                  {t('header.signUp')}
+                </Link>
+                <Link
+                  to="/login"
+                  className="text-sm font-semibold tracking-wide text-[var(--active)] uppercase transition-opacity hover:opacity-80"
+                >
+                  {t('header.logIn')}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
+      {/* Mobile overlay + menu */}
       <div
-        className={`md:hidden fixed inset-x-0 bottom-0 z-40 bg-black/30 transition-opacity duration-300 ease-out ${
-          menuOpen
-            ? 'opacity-100'
-            : 'opacity-0 pointer-events-none'
+        className={`fixed inset-x-0 bottom-0 z-40 bg-black/30 transition-opacity duration-300 ease-out md:hidden ${
+          menuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
         style={{ top: headerBottom }}
         aria-hidden={!menuOpen}
@@ -174,26 +205,55 @@ export default function Header() {
       />
 
       <div
-        className={`md:hidden absolute right-3 top-full z-50 mt-1 w-44 origin-top-right transition-all duration-300 ease-out ${
+        className={`absolute top-full right-3 z-50 mt-1 w-52 origin-top-right transition-all duration-300 ease-out md:hidden ${
           menuOpen
-            ? 'translate-y-0 opacity-100 scale-100'
-            : '-translate-y-2 opacity-0 scale-95 pointer-events-none'
+            ? 'translate-y-0 scale-100 opacity-100'
+            : 'pointer-events-none -translate-y-2 scale-95 opacity-0'
         }`}
       >
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
           <div className="flex flex-col py-1">
-            {actionIcons.map(({ Icon, label }) => (
+            {utilityIcons.map(({ Icon, key }) => (
               <button
-                key={label}
+                key={key}
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-left text-slate-800 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
               >
                 <Icon className="size-5 shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium">{label}</span>
+                <span className="text-sm font-medium">{t(`header.${key}`)}</span>
               </button>
             ))}
-            <div className="border-t border-slate-100 px-2 py-2">
+
+            {isAuthenticated ? (
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+              >
+                <FiUser className="size-5 shrink-0" strokeWidth={1.75} />
+                <span className="text-sm font-medium">{t('header.account')}</span>
+              </button>
+            ) : (
+              <div className="flex flex-col gap-2 border-t border-gray-100 px-3 py-3">
+                <Link
+                  to="/signup"
+                  onClick={() => setMenuOpen(false)}
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--active)] text-sm font-semibold tracking-wide text-white uppercase"
+                >
+                  {t('header.signUp')}
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="inline-flex h-10 items-center justify-center text-sm font-semibold tracking-wide text-[var(--active)] uppercase"
+                >
+                  {t('header.logIn')}
+                </Link>
+              </div>
+            )}
+
+            <div className="border-t border-gray-100 px-2 py-2">
               <LanguageSwitcher className="w-full [&_button]:h-9 [&_button]:w-full [&_button]:justify-between" />
             </div>
           </div>

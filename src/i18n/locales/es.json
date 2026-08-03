@@ -8,7 +8,9 @@
     "closeMenu": "Cerrar menú",
     "messages": "Mensajes",
     "cart": "Carrito",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "signUp": "Registrarse",
+    "logIn": "Iniciar sesión"
   },
   "languages": {
     "en": "Inglés",
