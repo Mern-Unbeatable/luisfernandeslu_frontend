@@ -22,6 +22,13 @@ import AuctionDetails, {
   DEMO_AUCTION_DETAILS_ACTIVE,
   DEMO_AUCTION_DETAILS_ASSIGNED,
 } from '../components/data-display/AuctionDetails'
+import OrderDetails, {
+  DEMO_ORDER_PENDING,
+  DEMO_ORDER_ASSIGNED,
+  DEMO_ORDER_CANCEL,
+  DEMO_ORDER_INSTALLMENT_NEW,
+  DEMO_ORDER_INSTALLMENT_ASSIGNED,
+} from '../components/data-display/OrderDetails'
 import DataTableDemos from '../components/data-display/DataTable/DataTableDemos'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
@@ -96,6 +103,34 @@ const AUCTION_DETAILS_VARIANTS = [
     role: 'factory',
     status: 'assigned',
     auction: DEMO_AUCTION_DETAILS_ASSIGNED,
+  },
+]
+
+const ORDER_DETAILS_VARIANTS = [
+  {
+    name: '1 — No installment · Pending',
+    hasInstallment: false,
+    order: DEMO_ORDER_PENDING,
+  },
+  {
+    name: '2 — No installment · Assigned (transporter)',
+    hasInstallment: false,
+    order: DEMO_ORDER_ASSIGNED,
+  },
+  {
+    name: '3 — No installment · Cancel',
+    hasInstallment: false,
+    order: DEMO_ORDER_CANCEL,
+  },
+  {
+    name: '4 — Installment · New',
+    hasInstallment: true,
+    order: DEMO_ORDER_INSTALLMENT_NEW,
+  },
+  {
+    name: '5 — Installment · Assigned (transporter + chat)',
+    hasInstallment: true,
+    order: DEMO_ORDER_INSTALLMENT_ASSIGNED,
   },
 ]
 
@@ -403,8 +438,44 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-[1440px]">
         <header className="mb-8">
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-            Create Auction
+            Order Details
           </h1>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Common page — hasInstallment false (pending / assigned / cancel) |
+            true (new / assigned with timeline).
+          </p>
+        </header>
+
+        <div className="flex flex-col gap-10">
+          {ORDER_DETAILS_VARIANTS.map((variant) => (
+            <div key={variant.name} className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <div className="bg-white p-4 rounded-xl">
+                <OrderDetails
+                  hasInstallment={variant.hasInstallment}
+                  order={variant.order}
+                  onDownloadInvoice={(order) =>
+                    console.log('download invoice', order?.orderId)
+                  }
+                  onChat={(transporter) =>
+                    console.log('chat', transporter?.name)
+                  }
+                  onPayNow={(item) => console.log('pay now', item)}
+                  onCancelInstallment={(item) =>
+                    console.log('cancel installment', item)
+                  }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <header className="mt-12 mb-8">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            Create Auction
+          </h2>
           <p className="mt-1 text-sm text-[var(--secondary-text)]">
             Common form — supplier (with shipping & unloading) | factory
             (without shipping section).
