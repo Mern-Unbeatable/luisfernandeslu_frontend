@@ -97,6 +97,57 @@
       "rolesPermissions": "Funções e permissões"
     }
   },
+  "auth": {
+    "back": "Voltar",
+    "loginTitle": "Iniciar sessão para continuar",
+    "loginSubtitle": "Entre na sua conta.",
+    "email": "Email",
+    "emailPlaceholder": "Introduza o seu email aqui...",
+    "password": "Palavra-passe",
+    "passwordPlaceholder": "Introduza a sua palavra-passe aqui...",
+    "forgotPassword": "Esqueceu a palavra-passe?",
+    "signIn": "Entrar",
+    "noAccount": "Não tem uma conta?",
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "or": "Ou",
+    "google": "Registar com Google",
+    "facebook": "Registar com Facebook",
+    "invalidCredentials": "Email ou palavra-passe inválidos. Use uma conta demo abaixo.",
+    "demo": {
+      "title": "Contas demo",
+      "hint": "Palavra-passe para todos: {{password}} — toque numa linha para preencher.",
+      "use": "Usar",
+      "customer": "Cliente",
+      "company": "Empresa",
+      "supplier": "Fornecedor",
+      "factory": "Fábrica",
+      "transporter": "Transportador",
+      "affiliate": "Afiliado",
+      "admin": "Admin"
+    },
+    "roles": {
+      "customer": {
+        "title": "Sou Cliente",
+        "desc": "Encontre e ligue-se a empresas."
+      },
+      "company": {
+        "title": "Sou Empresa",
+        "desc": "Faça crescer o seu negócio e chegue a mais clientes"
+      },
+      "supplier": {
+        "title": "Sou Fornecedor",
+        "desc": "Forneça materiais e serviços de qualidade para apoiar o crescimento"
+      },
+      "factory": {
+        "title": "Sou Fábrica",
+        "desc": "Descubra novos produtos e serviços adequados às suas necessidades"
+      },
+      "transporter": {
+        "title": "Sou Transportador",
+        "desc": "Colabore com outros para melhorar ofertas e visibilidade"
+      }
+    }
+  },
   "buyer": {
     "myAccount": "A Minha Conta",
     "home": "Início",
@@ -136,6 +187,10 @@
     "buyerProductToReviewDescription": "Avalie os produtos que comprou no CONSTRUPRECO.",
     "panelTitle": "Painel",
     "panelDescription": "Faça a gestão do seu painel de negócio no CONSTRUPRECO.",
+    "loginTitle": "Entrar",
+    "loginDescription": "Inicie sessão na sua conta CONSTRUPRECO.",
+    "signupTitle": "Registar",
+    "signupDescription": "Crie a sua conta CONSTRUPRECO.",
     "notFoundTitle": "Página não encontrada",
     "notFoundDescription": "A página que procura não existe."
   },

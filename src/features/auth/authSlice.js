@@ -1,10 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { tokenStorage } from '../../services/storage/localStorage'
+import { tokenStorage, storage } from '../../services/storage/localStorage'
+
+const USER_KEY = 'auth_user'
+
+function readStoredUser() {
+  try {
+    const raw = storage.get(USER_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+function persistUser(user) {
+  if (user) storage.set(USER_KEY, JSON.stringify(user))
+  else storage.remove(USER_KEY)
+}
+
+const storedUser = readStoredUser()
+const storedToken = tokenStorage.getAccessToken()
 
 const initialState = {
-  user: null,
-  accessToken: tokenStorage.getAccessToken(),
-  isAuthenticated: Boolean(tokenStorage.getAccessToken()),
+  user: storedUser,
+  accessToken: storedToken,
+  isAuthenticated: Boolean(storedToken && storedUser),
 }
 
 const authSlice = createSlice({
@@ -16,7 +35,11 @@ const authSlice = createSlice({
 
       state.user = user ?? state.user
       state.accessToken = accessToken ?? state.accessToken
-      state.isAuthenticated = Boolean(accessToken || state.accessToken)
+      state.isAuthenticated = Boolean(
+        (accessToken || state.accessToken) && state.user,
+      )
+
+      if (user) persistUser(state.user)
 
       if (accessToken || refreshToken) {
         tokenStorage.setTokens({
@@ -29,6 +52,7 @@ const authSlice = createSlice({
       state.user = null
       state.accessToken = null
       state.isAuthenticated = false
+      persistUser(null)
       tokenStorage.clear()
     },
   },

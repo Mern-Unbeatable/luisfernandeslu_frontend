@@ -97,6 +97,57 @@
       "rolesPermissions": "Roles & Permissions"
     }
   },
+  "auth": {
+    "back": "Go back",
+    "loginTitle": "Login to Continue",
+    "loginSubtitle": "Sign in to your account.",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email here...",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password here...",
+    "forgotPassword": "Forgot Password?",
+    "signIn": "Sign In",
+    "noAccount": "Don't Have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "or": "Or",
+    "google": "Sign Up With Google",
+    "facebook": "Sign Up With Facebook",
+    "invalidCredentials": "Invalid email or password. Use a demo account below.",
+    "demo": {
+      "title": "Demo accounts",
+      "hint": "Password for all roles: {{password}} — tap a row to fill.",
+      "use": "Use",
+      "customer": "Customer",
+      "company": "Company",
+      "supplier": "Supplier",
+      "factory": "Factory",
+      "transporter": "Transporter",
+      "affiliate": "Affiliate",
+      "admin": "Admin"
+    },
+    "roles": {
+      "customer": {
+        "title": "I'm a Customer",
+        "desc": "Find and connect with businesses."
+      },
+      "company": {
+        "title": "I'm a Company",
+        "desc": "Grow your business and reach more customers"
+      },
+      "supplier": {
+        "title": "I'm a Supplier",
+        "desc": "Provide quality materials and services to support business growth"
+      },
+      "factory": {
+        "title": "I'm a Factory",
+        "desc": "Discover new products and services that fit your needs"
+      },
+      "transporter": {
+        "title": "I'm a Transporter",
+        "desc": "Collaborate with others to enhance offerings and visibility"
+      }
+    }
+  },
   "buyer": {
     "myAccount": "My Account",
     "home": "Home",
@@ -136,6 +187,10 @@
     "buyerProductToReviewDescription": "Review products you purchased on CONSTRUPRECO.",
     "panelTitle": "Panel",
     "panelDescription": "Manage your CONSTRUPRECO business panel.",
+    "loginTitle": "Login",
+    "loginDescription": "Sign in to your CONSTRUPRECO account.",
+    "signupTitle": "Sign Up",
+    "signupDescription": "Create your CONSTRUPRECO account.",
     "notFoundTitle": "Page Not Found",
     "notFoundDescription": "The page you are looking for does not exist."
   },
