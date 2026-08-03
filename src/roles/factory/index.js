@@ -12,42 +12,42 @@ import {
 const factoryRole = {
   id: 'factory',
   labelKey: 'panel.roles.factory',
-  basePath: '/panel',
+  basePath: '/factory',
   activeVariant: 'solid',
   nav: [
     {
-      to: '/panel',
+      to: '/factory',
       labelKey: 'panel.nav.dashboard',
       Icon: FiHome,
       end: true,
     },
     {
-      to: '/panel/products',
+      to: '/factory/products',
       labelKey: 'panel.nav.products',
       Icon: FiPackage,
     },
     {
-      to: '/panel/orders',
+      to: '/factory/orders',
       labelKey: 'panel.nav.orders',
       Icon: FiShoppingCart,
     },
     {
-      to: '/panel/chat',
+      to: '/factory/chat',
       labelKey: 'panel.nav.chat',
       Icon: FiMessageSquare,
     },
     {
-      to: '/panel/delivery-logistics',
+      to: '/factory/delivery-logistics',
       labelKey: 'panel.nav.deliveryLogistics',
       Icon: FiTruck,
     },
     {
-      to: '/panel/invoices',
+      to: '/factory/invoices',
       labelKey: 'panel.nav.invoices',
       Icon: FiFile,
     },
     {
-      to: '/panel/profile',
+      to: '/factory/profile',
       labelKey: 'panel.nav.profile',
       Icon: FiUser,
     },

@@ -67,9 +67,10 @@ export function findDemoUser(email, password) {
   )
 }
 
+/** Role home: /customer, /company, /admin, /supplier, ... */
 export function getHomePathForRole(role) {
-  if (BUYER_ROLES.has(role)) return '/account'
-  return '/panel'
+  if (!role) return '/login'
+  return `/${role}`
 }
 
 export function isBuyerRole(role) {
@@ -77,5 +78,5 @@ export function isBuyerRole(role) {
 }
 
 export function isPanelRole(role) {
-  return !BUYER_ROLES.has(role)
+  return Boolean(role) && !BUYER_ROLES.has(role)
 }

@@ -14,52 +14,52 @@ import { FaGavel } from 'react-icons/fa'
 const transporterRole = {
   id: 'transporter',
   labelKey: 'panel.roles.transporter',
-  basePath: '/panel',
+  basePath: '/transporter',
   activeVariant: 'soft',
   nav: [
     {
-      to: '/panel',
+      to: '/transporter',
       labelKey: 'panel.nav.dashboard',
       Icon: FiHome,
       end: true,
     },
     {
-      to: '/panel/auction-board',
+      to: '/transporter/auction-board',
       labelKey: 'panel.nav.auctionBoard',
       Icon: FaGavel,
     },
     {
-      to: '/panel/assign-deliveries',
+      to: '/transporter/assign-deliveries',
       labelKey: 'panel.nav.assignDeliveries',
       Icon: FiTruck,
     },
     {
-      to: '/panel/payments-payouts',
+      to: '/transporter/payments-payouts',
       labelKey: 'panel.nav.paymentsPayouts',
       Icon: FiDollarSign,
     },
     {
-      to: '/panel/order-history',
+      to: '/transporter/order-history',
       labelKey: 'panel.nav.orderHistory',
       Icon: FiRotateCcw,
     },
     {
-      to: '/panel/insurance',
+      to: '/transporter/insurance',
       labelKey: 'panel.nav.insurance',
       Icon: FiShield,
     },
     {
-      to: '/panel/map',
+      to: '/transporter/map',
       labelKey: 'panel.nav.map',
       Icon: FiMapPin,
     },
     {
-      to: '/panel/invoices',
+      to: '/transporter/invoices',
       labelKey: 'panel.nav.invoices',
       Icon: FiFile,
     },
     {
-      to: '/panel/profile',
+      to: '/transporter/profile',
       labelKey: 'panel.nav.profile',
       Icon: FiUser,
     },

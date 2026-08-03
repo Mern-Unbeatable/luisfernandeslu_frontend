@@ -20,6 +20,7 @@ const PANEL_ROLES = {
 }
 
 export const PANEL_ROLE_IDS = Object.keys(PANEL_ROLES)
+export const BUYER_ROLE_IDS = Object.keys(BUYER_ROLES)
 
 /** Resolve buyer role config. Defaults to company. */
 export function getBuyerRoleConfig(role = 'company') {
@@ -31,19 +32,30 @@ export function getPanelRoleConfig(role = 'supplier') {
   return PANEL_ROLES[role] || PANEL_ROLES.supplier
 }
 
-/** Unique panel routes across all roles (for router). */
-export function getAllPanelNavItems() {
-  const byPath = new Map()
+/** Base path for a role: /admin, /supplier, /customer, ... */
+export function getRoleBasePath(role) {
+  if (!role) return '/'
+  return `/${role}`
+}
 
-  for (const role of Object.values(PANEL_ROLES)) {
-    for (const item of role.nav) {
-      if (!byPath.has(item.to)) {
-        byPath.set(item.to, item)
-      }
+/**
+ * Build RR child routes from a role nav config.
+ * Index = basePath; other items = relative segment after basePath.
+ */
+export function buildNavChildren(roleConfig, renderPage) {
+  const base = roleConfig.basePath || getRoleBasePath(roleConfig.id)
+
+  return roleConfig.nav.map((item) => {
+    const isIndex = item.end || item.to === base
+    const relative = isIndex
+      ? undefined
+      : item.to.replace(new RegExp(`^${base}/?`), '')
+
+    return {
+      ...(isIndex ? { index: true } : { path: relative }),
+      ...renderPage(item),
     }
-  }
-
-  return [...byPath.values()]
+  })
 }
 
 export {
@@ -54,4 +66,6 @@ export {
   transporterRole,
   affiliateRole,
   adminRole,
+  BUYER_ROLES,
+  PANEL_ROLES,
 }

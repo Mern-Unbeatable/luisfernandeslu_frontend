@@ -26,6 +26,7 @@ export default function PanelLayout({
       <PanelHeader
         userName={userName}
         roleLabel={t(roleConfig.labelKey)}
+        homeTo="/"
         onMenuOpen={() => setMobileOpen(true)}
       />
 

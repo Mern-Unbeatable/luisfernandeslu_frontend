@@ -13,7 +13,13 @@ import HomeSkeleton from '../../components/common/Skeleton/HomeSkeleton'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
 import { routeSeo } from '../../config/seo'
-import { getAllPanelNavItems, PANEL_ROLE_IDS } from '../../roles'
+import {
+  PANEL_ROLE_IDS,
+  BUYER_ROLE_IDS,
+  getBuyerRoleConfig,
+  getPanelRoleConfig,
+  buildNavChildren,
+} from '../../roles'
 import { logout } from '../../features/auth/authSlice'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
@@ -32,53 +38,117 @@ function withSuspense(element, fallback = <PageSkeleton />) {
   return <Suspense fallback={fallback}>{element}</Suspense>
 }
 
-function BuyerShell() {
+function useAuthLogout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  return () => {
+    dispatch(logout())
+    navigate('/login', { replace: true })
+  }
+}
+
+function BuyerShell() {
   const user = useSelector((state) => state.auth.user)
-  const role = user?.role === 'customer' ? 'customer' : 'company'
+  const onLogout = useAuthLogout()
+  const role = BUYER_ROLE_IDS.includes(user?.role) ? user.role : 'company'
 
   return (
     <BuyerLayout
       role={role}
       userName={user?.name?.split(' ')[0] || 'User'}
-      onLogout={() => {
-        dispatch(logout())
-        navigate('/login', { replace: true })
-      }}
+      onLogout={onLogout}
     />
   )
 }
 
 function PanelShell() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
+  const onLogout = useAuthLogout()
   const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : 'supplier'
 
   return (
     <PanelLayout
       role={role}
       userName={user?.name || 'User'}
-      onLogout={() => {
-        dispatch(logout())
-        navigate('/login', { replace: true })
-      }}
+      onLogout={onLogout}
     />
   )
 }
 
-const panelChildren = getAllPanelNavItems().map((item) => {
-  const isIndex = item.to === '/panel'
-  const path = isIndex ? undefined : item.to.replace(/^\/panel\/?/, '')
-
+function panelPage(item) {
   return {
-    ...(isIndex ? { index: true } : { path }),
     element: withSuspense(
       <ComingSoonPage titleKey={item.labelKey} />,
       <PanelSkeleton />,
     ),
     handle: { seo: routeSeo.panel },
+  }
+}
+
+function buyerChildren(roleConfig) {
+  const base = roleConfig.basePath
+  return [
+    {
+      index: true,
+      element: withSuspense(<BuyerDashboardPage />, <BuyerSkeleton />),
+      handle: { seo: routeSeo.buyerDashboard },
+    },
+    ...roleConfig.nav
+      .filter((item) => item.to !== base)
+      .map((item) => {
+        const path = item.to.replace(new RegExp(`^${base}/`), '')
+        return {
+          path,
+          element: withSuspense(
+            <BuyerPlaceholderPage titleKey={item.labelKey} />,
+            <BuyerSkeleton variant="placeholder" />,
+          ),
+          handle: { seo: routeSeo.buyerDashboard },
+        }
+      }),
+    // Affiliates card may not be in nav — keep route for cards
+    ...(roleConfig.dashboardCards || [])
+      .filter(
+        (card) =>
+          !roleConfig.nav.some((n) => n.to === card.to) &&
+          card.to !== base,
+      )
+      .map((card) => ({
+        path: card.to.replace(new RegExp(`^${base}/`), ''),
+        element: withSuspense(
+          <BuyerPlaceholderPage titleKey={card.labelKey} />,
+          <BuyerSkeleton variant="placeholder" />,
+        ),
+        handle: { seo: routeSeo.buyerDashboard },
+      })),
+  ]
+}
+
+const buyerRouteTrees = BUYER_ROLE_IDS.map((roleId) => {
+  const config = getBuyerRoleConfig(roleId)
+  return {
+    element: <ProtectedRoute allowedRoles={[roleId]} />,
+    children: [
+      {
+        path: config.basePath,
+        element: <BuyerShell />,
+        children: buyerChildren(config),
+      },
+    ],
+  }
+})
+
+const panelRouteTrees = PANEL_ROLE_IDS.map((roleId) => {
+  const config = getPanelRoleConfig(roleId)
+  return {
+    element: <ProtectedRoute allowedRoles={[roleId]} />,
+    children: [
+      {
+        path: config.basePath,
+        element: <PanelShell />,
+        children: buildNavChildren(config, panelPage),
+      },
+    ],
   }
 })
 
@@ -114,87 +184,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  {
-    element: (
-      <ProtectedRoute allowedRoles={['customer', 'company']} />
-    ),
-    children: [
-      {
-        path: '/account',
-        element: <BuyerShell />,
-        children: [
-          {
-            index: true,
-            element: withSuspense(
-              <BuyerDashboardPage />,
-              <BuyerSkeleton />,
-            ),
-            handle: { seo: routeSeo.buyerDashboard },
-          },
-          {
-            path: 'orders',
-            element: withSuspense(
-              <BuyerPlaceholderPage titleKey="buyer.orders" />,
-              <BuyerSkeleton variant="placeholder" />,
-            ),
-            handle: { seo: routeSeo.buyerOrders },
-          },
-          {
-            path: 'projects',
-            element: withSuspense(
-              <BuyerPlaceholderPage titleKey="buyer.projects" />,
-              <BuyerSkeleton variant="placeholder" />,
-            ),
-            handle: { seo: routeSeo.buyerProjects },
-          },
-          {
-            path: 'product-to-review',
-            element: withSuspense(
-              <BuyerPlaceholderPage titleKey="buyer.productToReview" />,
-              <BuyerSkeleton variant="placeholder" />,
-            ),
-            handle: { seo: routeSeo.buyerProductToReview },
-          },
-          {
-            path: 'profile',
-            element: withSuspense(
-              <BuyerPlaceholderPage titleKey="buyer.account" />,
-              <BuyerSkeleton variant="placeholder" />,
-            ),
-            handle: { seo: routeSeo.buyerAccount },
-          },
-          {
-            path: 'affiliates',
-            element: withSuspense(
-              <BuyerPlaceholderPage titleKey="buyer.affiliates" />,
-              <BuyerSkeleton variant="placeholder" />,
-            ),
-            handle: { seo: routeSeo.buyerAffiliates },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    element: (
-      <ProtectedRoute
-        allowedRoles={[
-          'supplier',
-          'factory',
-          'transporter',
-          'affiliate',
-          'admin',
-        ]}
-      />
-    ),
-    children: [
-      {
-        path: '/panel',
-        element: <PanelShell />,
-        children: panelChildren,
-      },
-    ],
-  },
+  ...buyerRouteTrees,
+  ...panelRouteTrees,
   {
     path: '*',
     element: <PublicLayout />,

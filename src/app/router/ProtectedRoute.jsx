@@ -1,7 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { getHomePathForRole } from '../../features/auth/demoUsers'
 
-export default function ProtectedRoute({ allowedRoles, redirectTo = '/login' }) {
+export default function ProtectedRoute({
+  allowedRoles,
+  redirectTo = '/login',
+}) {
   const { isAuthenticated, user } = useSelector((state) => state.auth)
 
   if (!isAuthenticated) {
@@ -9,7 +13,7 @@ export default function ProtectedRoute({ allowedRoles, redirectTo = '/login' }) 
   }
 
   if (allowedRoles && !allowedRoles.includes(user?.role)) {
-    return <Navigate to={redirectTo} replace />
+    return <Navigate to={getHomePathForRole(user?.role)} replace />
   }
 
   return <Outlet />

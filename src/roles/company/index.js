@@ -3,47 +3,48 @@ import { FiCheckSquare, FiGrid, FiUser, FiLink } from 'react-icons/fi'
 /** Company buyer-account config (sidebar + dashboard). */
 const companyRole = {
   id: 'company',
+  basePath: '/company',
   nav: [
-    { to: '/account', labelKey: 'buyer.dashboard', end: true },
-    { to: '/account/orders', labelKey: 'buyer.orders' },
-    { to: '/account/projects', labelKey: 'buyer.projects' },
-    { to: '/account/profile', labelKey: 'buyer.account' },
+    { to: '/company', labelKey: 'buyer.dashboard', end: true },
+    { to: '/company/orders', labelKey: 'buyer.orders' },
+    { to: '/company/projects', labelKey: 'buyer.projects' },
+    { to: '/company/profile', labelKey: 'buyer.account' },
   ],
   breadcrumbs: {
-    '/account': 'buyer.dashboard',
-    '/account/orders': 'buyer.orders',
-    '/account/projects': 'buyer.projects',
-    '/account/profile': 'buyer.account',
-    '/account/affiliates': 'buyer.affiliates',
+    '/company': 'buyer.dashboard',
+    '/company/orders': 'buyer.orders',
+    '/company/projects': 'buyer.projects',
+    '/company/profile': 'buyer.account',
+    '/company/affiliates': 'buyer.affiliates',
   },
   dashboardCards: [
     {
       id: 'orders',
       labelKey: 'buyer.orders',
-      to: '/account/orders',
+      to: '/company/orders',
       Icon: FiCheckSquare,
     },
     {
       id: 'project',
       labelKey: 'buyer.project',
-      to: '/account/projects',
+      to: '/company/projects',
       Icon: FiGrid,
     },
     {
       id: 'account',
       labelKey: 'buyer.account',
-      to: '/account/profile',
+      to: '/company/profile',
       Icon: FiUser,
     },
     {
       id: 'affiliates',
       labelKey: 'buyer.affiliates',
-      to: '/account/affiliates',
+      to: '/company/affiliates',
       Icon: FiLink,
     },
   ],
   introLinks: [
-    { labelKey: 'buyer.recentOrders', to: '/account/orders' },
+    { labelKey: 'buyer.recentOrders', to: '/company/orders' },
   ],
 }
 

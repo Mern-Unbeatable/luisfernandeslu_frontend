@@ -11,38 +11,38 @@ import {
 const affiliateRole = {
   id: 'affiliate',
   labelKey: 'panel.roles.affiliate',
-  basePath: '/panel',
+  basePath: '/affiliate',
   activeVariant: 'soft',
   showMainMenu: false,
   nav: [
     {
-      to: '/panel',
+      to: '/affiliate',
       labelKey: 'panel.nav.overviewDashboard',
       Icon: FiGrid,
       end: true,
     },
     {
-      to: '/panel/referral-channels',
+      to: '/affiliate/referral-channels',
       labelKey: 'panel.nav.referralChannels',
       Icon: FiLink,
     },
     {
-      to: '/panel/referred-clients',
+      to: '/affiliate/referred-clients',
       labelKey: 'panel.nav.referredClients',
       Icon: FiUser,
     },
     {
-      to: '/panel/commissions',
+      to: '/affiliate/commissions',
       labelKey: 'panel.nav.commissions',
       Icon: FiDollarSign,
     },
     {
-      to: '/panel/affiliate-levels',
+      to: '/affiliate/affiliate-levels',
       labelKey: 'panel.nav.affiliateLevels',
       Icon: FiAward,
     },
     {
-      to: '/panel/settings',
+      to: '/affiliate/settings',
       labelKey: 'panel.nav.settings',
       Icon: FiSettings,
     },
