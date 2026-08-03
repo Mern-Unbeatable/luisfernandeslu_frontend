@@ -17,12 +17,10 @@ function ActionButton({ action, onClick, className = '' }) {
     'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5'
 
   const variants = {
-    primary:
-      'bg-[var(--active)] text-white hover:brightness-95',
+    primary: 'bg-[var(--active)] text-white hover:brightness-95',
     outline:
       'border border-[var(--active)] bg-white text-[var(--active)] hover:bg-[color-mix(in_srgb,var(--active)_8%,white)]',
-    danger:
-      'bg-red-500 text-white hover:bg-red-600',
+    danger: 'bg-red-500 text-white hover:bg-red-600',
   }
 
   return (
@@ -31,7 +29,7 @@ function ActionButton({ action, onClick, className = '' }) {
       onClick={() => onClick?.(action.id)}
       className={`${base} ${variants[action.variant] || variants.primary} ${className}`}
     >
-      {Icon ? <Icon className="size-4 shrink-0" /> : null}
+      {Icon ? <Icon className="size-4 shrink-0" aria-hidden /> : null}
       <span>{action.label}</span>
     </button>
   )
@@ -39,9 +37,10 @@ function ActionButton({ action, onClick, className = '' }) {
 
 /**
  * Role-aware purchase / moderation actions.
- * customer: qty + add to cart + buy now
- * company: qty + add to cart, then buy now + send quote
- * admin: accept + reject
+ *
+ * customer: row1 = qty + ADD TO CART, row2 = BUY NOW
+ * company:  row1 = qty + ADD TO CART, row2 = BUY NOW + SEND QUOTE
+ * admin:    Accept + Reject in one row
  */
 export default function ProductActions({
   actions = [],
@@ -57,52 +56,18 @@ export default function ProductActions({
     return (
       <div className="flex flex-row gap-3">
         {actions.map((action) => (
-          <ActionButton
-            key={action.id}
-            action={action}
-            onClick={onAction}
-          />
+          <ActionButton key={action.id} action={action} onClick={onAction} />
         ))}
       </div>
     )
   }
 
-  if (layout === 'company') {
-    const [primary, ...rest] = actions
-    return (
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          {showQuantity ? (
-            <QuantitySelector
-              value={quantity}
-              onChange={onQuantityChange}
-              className="shrink-0"
-            />
-          ) : null}
-          {primary ? (
-            <ActionButton
-              action={primary}
-              onClick={onAction}
-              className="min-w-0"
-            />
-          ) : null}
-        </div>
-        {rest.length ? (
-          <div className="flex flex-row gap-3">
-            {rest.map((action) => (
-              <ActionButton key={action.id} action={action} onClick={onAction} />
-            ))}
-          </div>
-        ) : null}
-      </div>
-    )
-  }
-
-  // customer: qty + primary actions share one aligned row; wrap cleanly on narrow screens
+  // customer + company share the same structure (matches mobile mockups)
   const [primary, ...rest] = actions
+
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
+      <div className="flex items-stretch gap-3">
         {showQuantity ? (
           <QuantitySelector
             value={quantity}
@@ -117,24 +82,16 @@ export default function ProductActions({
             className="min-w-0"
           />
         ) : null}
-        {rest.length === 1 ? (
-          <ActionButton
-            action={rest[0]}
-            onClick={onAction}
-            className="hidden min-w-0 sm:inline-flex"
-          />
-        ) : null}
       </div>
-      {rest.length === 1 ? (
-        <ActionButton
-          action={rest[0]}
-          onClick={onAction}
-          className="w-full sm:hidden"
-        />
-      ) : rest.length > 1 ? (
+
+      {rest.length > 0 ? (
         <div className="flex flex-row gap-3">
           {rest.map((action) => (
-            <ActionButton key={action.id} action={action} onClick={onAction} />
+            <ActionButton
+              key={action.id}
+              action={action}
+              onClick={onAction}
+            />
           ))}
         </div>
       ) : null}
