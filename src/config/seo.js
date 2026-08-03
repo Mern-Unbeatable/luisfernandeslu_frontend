@@ -32,6 +32,10 @@ export const routeSeo = {
     titleKey: 'seo.buyerProductToReviewTitle',
     descriptionKey: 'seo.buyerProductToReviewDescription',
   },
+  panel: {
+    titleKey: 'seo.panelTitle',
+    descriptionKey: 'seo.panelDescription',
+  },
   notFound: {
     titleKey: 'seo.notFoundTitle',
     descriptionKey: 'seo.notFoundDescription',

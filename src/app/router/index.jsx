@@ -2,8 +2,13 @@ import { Suspense, lazy } from 'react'
 import { createBrowserRouter, useSearchParams } from 'react-router-dom'
 import PublicLayout from '../../layouts/PublicLayout/PublicLayout'
 import BuyerLayout from '../../layouts/BuyerLayout/BuyerLayout'
+import PanelLayout from '../../layouts/PanelLayout/PanelLayout'
 import PageSkeleton from '../../components/common/Skeleton/PageSkeleton'
 import { routeSeo } from '../../config/seo'
+import {
+  PANEL_ROLE_IDS,
+  getAllPanelNavItems,
+} from '../../roles'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
@@ -13,6 +18,7 @@ const BuyerDashboardPage = lazy(
 const BuyerPlaceholderPage = lazy(
   () => import('../../pages/buyer/BuyerPlaceholderPage'),
 )
+const ComingSoonPage = lazy(() => import('../../pages/panel/ComingSoonPage'))
 
 function withSuspense(element) {
   return <Suspense fallback={<PageSkeleton />}>{element}</Suspense>
@@ -32,6 +38,40 @@ function BuyerShell() {
     />
   )
 }
+
+/**
+ * Demo roles via query:
+ * /panel?role=supplier|factory|transporter|affiliate|admin
+ * Later: role from auth.
+ */
+function PanelShell() {
+  const [params] = useSearchParams()
+  const roleParam = params.get('role')
+  const role = PANEL_ROLE_IDS.includes(roleParam) ? roleParam : 'supplier'
+
+  return (
+    <PanelLayout
+      role={role}
+      userName="Atik Adnan"
+      onLogout={() => {
+        console.log('panel logout', role)
+      }}
+    />
+  )
+}
+
+const panelChildren = getAllPanelNavItems().map((item) => {
+  const isIndex = item.to === '/panel'
+  const path = isIndex ? undefined : item.to.replace(/^\/panel\/?/, '')
+
+  return {
+    ...(isIndex ? { index: true } : { path }),
+    element: withSuspense(
+      <ComingSoonPage titleKey={item.labelKey} />,
+    ),
+    handle: { seo: routeSeo.panel },
+  }
+})
 
 export const router = createBrowserRouter([
   {
@@ -95,6 +135,11 @@ export const router = createBrowserRouter([
         handle: { seo: routeSeo.buyerAffiliates },
       },
     ],
+  },
+  {
+    path: '/panel',
+    element: <PanelShell />,
+    children: panelChildren,
   },
 ])
 
