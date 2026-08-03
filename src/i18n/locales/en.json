@@ -127,6 +127,10 @@
     "invalidCredentials": "Invalid email or password. Use a demo account below.",
     "wrongRole": "This account is not a {{role}} account. Pick the matching demo user.",
     "rememberMe": "Remember me for 30 days",
+    "admin": {
+      "loginTitle": "Admin Login",
+      "loginSubtitle": "Sign in to the CONSTRUPRECO admin panel."
+    },
     "legal": {
       "prefix": "By continuing, you agree to our",
       "terms": "Terms of Service",

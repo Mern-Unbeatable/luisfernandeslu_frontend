@@ -92,8 +92,12 @@ export function setupInterceptors(client) {
         resolveRefreshQueue(refreshError, null)
         tokenStorage.clear()
 
-        if (window.location.pathname !== '/login') {
-          window.location.assign('/login')
+        if (
+          window.location.pathname !== '/login' &&
+          window.location.pathname !== '/admin/login'
+        ) {
+          const isAdminArea = window.location.pathname.startsWith('/admin')
+          window.location.assign(isAdminArea ? '/admin/login' : '/login')
         }
 
         return Promise.reject(refreshError)

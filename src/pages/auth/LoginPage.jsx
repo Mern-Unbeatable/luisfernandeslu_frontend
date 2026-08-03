@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams, useMatch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { FiMail, FiLock } from 'react-icons/fi'
@@ -18,12 +18,14 @@ import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
 import AuthDemoAccounts from '../../components/auth/AuthDemoAccounts'
 import AuthLegalNote from '../../components/auth/AuthLegalNote'
 
-/** Single login form — photo (customer/company) or marketing roles */
+/** Single login form — photo / marketing / admin (/admin/login) */
 export default function LoginPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { role } = useParams()
+  const { role: roleParam } = useParams()
+  const isAdminLogin = Boolean(useMatch('/admin/login'))
+  const role = isAdminLogin ? 'admin' : roleParam
   const roleValid = !role || AUTH_ROLE_IDS.includes(role)
   const config = roleValid && role ? getRoleAuthConfig(role) : null
   const layout = config?.layout || 'photo'
@@ -38,6 +40,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [error, setError] = useState('')
+
+  if (roleParam === 'admin') {
+    return <Navigate to="/admin/login" replace />
+  }
 
   if (!roleValid) {
     return <Navigate to="/login" replace />
@@ -78,10 +84,12 @@ export default function LoginPage() {
   const isMarketing = layout === 'marketing'
   const fieldVariant = isMarketing ? 'marketing' : 'photo'
   const forgotBeside = Boolean(loginCfg.forgotBesideLabel)
+  const showModeToggle = isMarketing && role && role !== 'admin'
+  const showSignUpFooter = !loginCfg.showLegal && role !== 'admin'
 
   return (
     <div className="mx-auto w-full max-w-md">
-      {isMarketing && role ? (
+      {showModeToggle ? (
         <AuthModeToggle role={role} mode="login" />
       ) : null}
 
@@ -191,7 +199,7 @@ export default function LoginPage() {
 
       {loginCfg.showLegal ? (
         <AuthLegalNote />
-      ) : (
+      ) : showSignUpFooter ? (
         <p className="mt-6 text-center text-sm text-[var(--secondary-text)]">
           {isMarketing ? t('auth.noAccountAny') : t('auth.noAccount')}{' '}
           <Link
@@ -201,7 +209,7 @@ export default function LoginPage() {
             {isMarketing ? t('auth.signUpTabUpper') : t('header.signUp')}
           </Link>
         </p>
-      )}
+      ) : null}
 
       {!isMarketing && loginCfg.showSocial ? (
         <AuthSocialButtons

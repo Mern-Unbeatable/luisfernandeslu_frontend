@@ -42,9 +42,12 @@ function withSuspense(element, fallback = <PageSkeleton />) {
 function useAuthLogout() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.user)
   return () => {
     dispatch(logout())
-    navigate('/login', { replace: true })
+    navigate(user?.role === 'admin' ? '/admin/login' : '/login', {
+      replace: true,
+    })
   }
 }
 
@@ -147,7 +150,12 @@ const buyerRouteTrees = BUYER_ROLE_IDS.map((roleId) => {
 const panelRouteTrees = PANEL_ROLE_IDS.map((roleId) => {
   const config = getPanelRoleConfig(roleId)
   return {
-    element: <ProtectedRoute allowedRoles={[roleId]} />,
+    element: (
+      <ProtectedRoute
+        allowedRoles={[roleId]}
+        redirectTo={roleId === 'admin' ? '/admin/login' : '/login'}
+      />
+    ),
     children: [
       {
         path: config.basePath,
@@ -174,6 +182,11 @@ export const router = createBrowserRouter([
             path: 'signup/:role',
             element: withSuspense(<RegisterPage />, <AuthSkeleton />),
             handle: { seo: routeSeo.signup },
+          },
+          {
+            path: 'admin/login',
+            element: withSuspense(<LoginPage />, <AuthSkeleton />),
+            handle: { seo: routeSeo.login },
           },
           {
             path: 'login',

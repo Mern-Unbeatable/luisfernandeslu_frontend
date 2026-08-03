@@ -7,24 +7,30 @@ import { getRoleAuthConfig } from '../../features/auth/roleAuthConfig'
 
 /**
  * Auth shell:
- * - photo: construction image left (role select, customer/company)
- * - marketing: cream feature panel left (supplier/factory/transporter)
- * Register: left sticky, right scrollable
+ * - photo: construction image left (role select, customer/company/admin)
+ * - marketing: cream feature panel left (supplier/factory/transporter/affiliate)
  */
 export default function AuthLayout() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { role } = useParams()
+  const { role: roleParam } = useParams()
+  const matchAdminLogin = useMatch('/admin/login')
   const matchSignup = useMatch('/signup')
   const matchSignupRole = useMatch('/signup/:role')
+  const role = roleParam || (matchAdminLogin ? 'admin' : null)
   const isRegister = Boolean(matchSignupRole)
   const isSignupFlow = Boolean(matchSignup || matchSignupRole)
+  const isAdminLogin = Boolean(matchAdminLogin)
   const config = role ? getRoleAuthConfig(role) : null
   const layout = config?.layout || 'photo'
   const mode = isRegister ? 'register' : 'login'
   const sidebar = config?.[mode]?.sidebar
 
   const goBack = () => {
+    if (isAdminLogin) {
+      navigate('/')
+      return
+    }
     if (role) {
       navigate(isSignupFlow ? '/signup' : '/login')
       return
@@ -80,7 +86,7 @@ export default function AuthLayout() {
               mode === 'login' ? 'justify-center' : 'justify-start pt-2'
             }`}
           >
-            <Outlet context={{ role, config, layout, mode }} />
+          <Outlet context={{ role, config, layout, mode }} />
           </div>
         </div>
       </div>

@@ -51,6 +51,18 @@ const ROLE_AUTH = {
     },
   },
 
+  admin: {
+    id: 'admin',
+    layout: 'photo',
+    shortNameKey: 'auth.demo.admin',
+    login: {
+      titleKey: 'auth.admin.loginTitle',
+      subtitleKey: 'auth.admin.loginSubtitle',
+      showSocial: false,
+      showDemo: true,
+    },
+  },
+
   company: {
     id: 'company',
     layout: 'photo',

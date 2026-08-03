@@ -67,7 +67,7 @@ export default function RegisterPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reset when role changes
   }, [role])
 
-  if (!config) {
+  if (!config || !config.register) {
     return <Navigate to="/signup" replace />
   }
 
