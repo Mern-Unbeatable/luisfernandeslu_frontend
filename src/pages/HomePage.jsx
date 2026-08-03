@@ -14,6 +14,10 @@ import AuctionCard, {
   DEMO_AUCTION_ASSIGNED,
   DEMO_AUCTION_LIVE,
 } from '../components/data-display/AuctionCard'
+import CreateAuction, {
+  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
+  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
+} from '../components/forms/CreateAuction'
 import DataTableDemos from '../components/data-display/DataTable/DataTableDemos'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
@@ -48,6 +52,19 @@ const AUCTION_VARIANTS = [
       status: 'assigned',
       auction: DEMO_AUCTION_ASSIGNED,
     },
+  },
+]
+
+const CREATE_AUCTION_VARIANTS = [
+  {
+    name: 'Supplier — Create Auction',
+    role: 'supplier',
+    placeholders: DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
+  },
+  {
+    name: 'Factory — Create Auction',
+    role: 'factory',
+    placeholders: DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
   },
 ]
 
@@ -355,8 +372,38 @@ export default function HomePage() {
       <div className="mx-auto w-full max-w-[1440px]">
         <header className="mb-8">
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-            DataTable variants
+            Create Auction
           </h1>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Common form — supplier (with shipping & unloading) | factory
+            (without shipping section).
+          </p>
+        </header>
+
+        <div className="flex flex-col gap-10">
+          {CREATE_AUCTION_VARIANTS.map((variant) => (
+            <div key={variant.role} className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <div className="rounded-xl ">
+                <CreateAuction
+                  role={variant.role}
+                  placeholders={variant.placeholders}
+                  onBack={() => console.log('back', variant.role)}
+                  onSubmit={(payload) =>
+                    console.log('submit auction', variant.role, payload)
+                  }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <header className="mt-12 mb-8">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            DataTable variants
+          </h2>
           <p className="mt-1 text-sm text-[var(--secondary-text)]">
             Prop toggles — tabs, search, filters, actions, pagination, loading,
             empty, card shell.
@@ -375,7 +422,7 @@ export default function HomePage() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {AUCTION_VARIANTS.map((variant) => (
             <div key={variant.name} className="flex flex-col gap-2">
               <h3 className="text-sm font-semibold text-[var(--primary-text)]">

@@ -89,6 +89,11 @@ const supplierRole = {
       Icon: FaGavel,
     },
     {
+      to: '/supplier/create-auction',
+      labelKey: 'auction.create.nav',
+      Icon: FaGavel,
+    },
+    {
       to: '/supplier/payments-finance',
       labelKey: 'panel.nav.paymentsFinance',
       Icon: FiCreditCard,
