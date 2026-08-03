@@ -452,7 +452,7 @@ export default function HomePage() {
               <h3 className="text-sm font-semibold text-[var(--primary-text)]">
                 {variant.name}
               </h3>
-              <div className="bg-white p-4 rounded-xl">
+              <div className="rounded-xl">
                 <OrderDetails
                   hasInstallment={variant.hasInstallment}
                   order={variant.order}

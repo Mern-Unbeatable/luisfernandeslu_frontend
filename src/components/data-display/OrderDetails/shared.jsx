@@ -129,10 +129,10 @@ const BREAKDOWN_COLS = [
 
 export function DataTable({ columns, rows = [], emptyLabel = 'No items' }) {
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-200">
-      <table className="min-w-[900px] w-full border-collapse text-left text-sm">
+    <div className="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white">
+      <table className="min-w-[900px] w-full border-collapse bg-white text-left text-sm">
         <thead>
-          <tr className="bg-sky-50">
+          <tr className="bg-white">
             {columns.map((col) => (
               <th
                 key={col.key}
@@ -148,18 +148,18 @@ export function DataTable({ columns, rows = [], emptyLabel = 'No items' }) {
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-3 py-8 text-center text-[var(--secondary-text)]"
+                className="bg-white px-3 py-8 text-center text-[var(--secondary-text)]"
               >
                 {emptyLabel}
               </td>
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row.id} className="border-t border-gray-100">
+              <tr key={row.id} className="border-t border-gray-100 bg-white">
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className="max-w-[200px] px-3 py-3 align-top text-[var(--primary-text)]"
+                    className="max-w-[200px] bg-white px-3 py-3 align-top text-[var(--primary-text)]"
                   >
                     <span className="block break-words">
                       {row[col.key] || '—'}
