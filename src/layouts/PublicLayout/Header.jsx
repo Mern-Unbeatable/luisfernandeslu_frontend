@@ -39,8 +39,10 @@ export default function Header() {
   const { t } = useTranslation()
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [headerBottom, setHeaderBottom] = useState(0)
   const headerRef = useRef(null)
+  const searchInputRef = useRef(null)
 
   useEffect(() => {
     const updateHeaderBottom = () => {
@@ -56,7 +58,7 @@ export default function Header() {
       window.removeEventListener('resize', updateHeaderBottom)
       window.removeEventListener('scroll', updateHeaderBottom)
     }
-  }, [menuOpen])
+  }, [menuOpen, searchOpen])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -65,10 +67,20 @@ export default function Header() {
     }
   }, [menuOpen])
 
+  useEffect(() => {
+    if (!searchOpen) return undefined
+    const id = window.requestAnimationFrame(() => {
+      searchInputRef.current?.focus()
+    })
+    return () => window.cancelAnimationFrame(id)
+  }, [searchOpen])
+
   const utilityIcons = [
     { Icon: FiMessageSquare, key: 'messages' },
     { Icon: FiShoppingCart, key: 'cart' },
   ]
+
+  const closeSearch = () => setSearchOpen(false)
 
   return (
     <header ref={headerRef} className="relative sticky top-0 z-50 w-full">
@@ -101,35 +113,109 @@ export default function Header() {
       ) : null}
 
       {/* Mobile header */}
-      <div className="relative z-50 w-full border-b border-gray-100 bg-white md:hidden">
-        <div className="flex items-center gap-2.5 px-4 py-4">
-          <Logo className="shrink-0" />
+      <div className="relative z-50 w-full overflow-visible border-b border-gray-100 bg-white md:hidden">
+        <div className="flex w-full items-center gap-2 px-3 py-3 sm:gap-2.5 sm:px-4">
+          {/* Logo collapses with fixed max-width (animatable) */}
+          <div
+            className={`overflow-hidden transition-[max-width,opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              searchOpen
+                ? 'max-w-0 -translate-x-2 opacity-0'
+                : 'max-w-[4.75rem] translate-x-0 opacity-100'
+            }`}
+          >
+            <Logo className="shrink-0 [&_img]:h-8 [&_img]:w-auto" />
+          </div>
 
-          <label className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2">
-            <input
-              type="search"
-              placeholder={t('header.searchPlaceholderShort')}
-              className="w-full min-w-0 bg-transparent text-sm text-[var(--secondary-text)] outline-none placeholder:text-gray-400"
-            />
-            <FiSearch
-              className="size-3.5 shrink-0 text-[var(--secondary-text)]"
-              aria-hidden
-            />
-          </label>
+          {/* Search expands via 0fr → 1fr (smooth width) */}
+          <div
+            className="grid min-w-0 flex-1 transition-[grid-template-columns] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{
+              gridTemplateColumns: searchOpen ? '1fr' : '0fr',
+            }}
+          >
+            <div className="min-w-0 overflow-hidden">
+              <label
+                className={`flex w-full items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 focus-within:border-[var(--active)] transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  searchOpen
+                    ? 'translate-x-0 opacity-100 delay-75'
+                    : 'translate-x-3 opacity-0'
+                }`}
+              >
+                <FiSearch
+                  className="size-4 shrink-0 text-[var(--secondary-text)]"
+                  aria-hidden
+                />
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  placeholder={t('header.searchPlaceholderShort')}
+                  tabIndex={searchOpen ? 0 : -1}
+                  className="w-full min-w-0 bg-transparent text-sm text-[var(--secondary-text)] outline-none placeholder:text-gray-400"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Escape') closeSearch()
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={closeSearch}
+                  tabIndex={searchOpen ? 0 : -1}
+                  className="shrink-0 rounded-full p-0.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
+                  aria-label={t('header.closeSearch')}
+                >
+                  <FiX className="size-4" strokeWidth={2} />
+                </button>
+              </label>
+            </div>
+          </div>
 
+          {/* Search toggle */}
           <button
             type="button"
-            aria-label={menuOpen ? t('header.closeMenu') : t('header.openMenu')}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-            className="shrink-0 p-1 text-[var(--primary-text)]"
+            aria-label={t('header.search')}
+            aria-expanded={searchOpen}
+            onClick={() => {
+              setMenuOpen(false)
+              setSearchOpen((open) => !open)
+            }}
+            className={`shrink-0 p-1.5 text-[var(--primary-text)] transition-[opacity,transform] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-[var(--active)] ${
+              searchOpen
+                ? 'pointer-events-none absolute scale-75 opacity-0'
+                : 'relative scale-100 opacity-100'
+            }`}
           >
-            {menuOpen ? (
-              <FiX className="size-5" strokeWidth={2} />
-            ) : (
-              <FiMenu className="size-5" strokeWidth={2} />
-            )}
+            <FiSearch className="size-5" strokeWidth={1.75} />
           </button>
+
+          {/* Lang + menu — no max-width clip (was cutting the switcher) */}
+          <div
+            className={`flex shrink-0 items-center gap-2 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              searchOpen
+                ? 'pointer-events-none w-0 translate-x-2 overflow-hidden opacity-0'
+                : 'translate-x-0 opacity-100'
+            }`}
+          >
+            <LanguageSwitcher compact className="shrink-0" />
+
+            <button
+              type="button"
+              aria-label={
+                menuOpen ? t('header.closeMenu') : t('header.openMenu')
+              }
+              aria-expanded={menuOpen}
+              tabIndex={searchOpen ? -1 : 0}
+              onClick={() => {
+                closeSearch()
+                setMenuOpen((open) => !open)
+              }}
+              className="shrink-0 p-1.5 text-[var(--primary-text)]"
+            >
+              {menuOpen ? (
+                <FiX className="size-5" strokeWidth={2} />
+              ) : (
+                <FiMenu className="size-5" strokeWidth={2} />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -252,10 +338,6 @@ export default function Header() {
                 </Link>
               </div>
             )}
-
-            <div className="border-t border-gray-100 px-2 py-2">
-              <LanguageSwitcher className="w-full [&_button]:h-9 [&_button]:w-full [&_button]:justify-between" />
-            </div>
           </div>
         </div>
       </div>

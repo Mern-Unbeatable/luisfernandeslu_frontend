@@ -10,7 +10,9 @@
     "cart": "Cart",
     "account": "Account",
     "signUp": "Sign Up",
-    "logIn": "Log In"
+    "logIn": "Log In",
+    "search": "Search",
+    "closeSearch": "Close search"
   },
   "languages": {
     "en": "English",

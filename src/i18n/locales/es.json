@@ -10,7 +10,9 @@
     "cart": "Carrito",
     "account": "Cuenta",
     "signUp": "Registrarse",
-    "logIn": "Iniciar sesión"
+    "logIn": "Iniciar sesión",
+    "search": "Buscar",
+    "closeSearch": "Cerrar búsqueda"
   },
   "languages": {
     "en": "Inglés",
