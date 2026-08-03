@@ -9,9 +9,47 @@ import { DEMO_ADD_PRODUCT, DEMO_FACTORY_PRODUCT } from '../components/forms/AddP
 import InstallmentTimeline, {
   DEMO_INSTALLMENTS,
 } from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
+import AuctionCard, {
+  DEMO_AUCTION_CREATED,
+  DEMO_AUCTION_ASSIGNED,
+  DEMO_AUCTION_LIVE,
+} from '../components/data-display/AuctionCard'
 import DataTableDemos from '../components/data-display/DataTable/DataTableDemos'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
+
+const AUCTION_VARIANTS = [
+  {
+    name: '1 — Supplier / Factory (created)',
+    props: {
+      role: 'supplier',
+      status: 'open',
+      auction: DEMO_AUCTION_CREATED,
+    },
+  },
+  {
+    name: '2 — Transporter (live bid)',
+    props: {
+      role: 'transporter',
+      auction: DEMO_AUCTION_LIVE,
+    },
+  },
+  {
+    name: '3 — Admin (competing bids)',
+    props: {
+      role: 'admin',
+      auction: DEMO_AUCTION_LIVE,
+    },
+  },
+  {
+    name: '4 — After transporter assigned',
+    props: {
+      role: 'factory',
+      status: 'assigned',
+      auction: DEMO_AUCTION_ASSIGNED,
+    },
+  },
+]
 
 const IMG =
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
@@ -326,6 +364,35 @@ export default function HomePage() {
         </header>
 
         <DataTableDemos />
+
+        <header className="mt-12 mb-6">
+          <h2 className="text-2xl font-bold text-[var(--primary-text)]">
+            AuctionCard variants
+          </h2>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            Same common component — supplier/factory created, transporter bid,
+            admin competing bids, assigned transporter.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
+          {AUCTION_VARIANTS.map((variant) => (
+            <div key={variant.name} className="flex flex-col gap-2">
+              <h3 className="text-sm font-semibold text-[var(--primary-text)]">
+                {variant.name}
+              </h3>
+              <AuctionCard
+                {...variant.props}
+                onViewDetails={(auction) =>
+                  console.log(variant.name, 'view', auction)
+                }
+                onPlaceBid={(bid, auction) =>
+                  console.log(variant.name, 'bid', bid, auction)
+                }
+              />
+            </div>
+          ))}
+        </div>
 
         <header className="mt-12 mb-8">
           <h2 className="text-2xl font-bold text-[var(--primary-text)]">

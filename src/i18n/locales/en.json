@@ -385,5 +385,25 @@
   "common": {
     "backHome": "Back to Home",
     "loading": "Loading"
+  },
+  "auction": {
+    "boardTitle": "Auction",
+    "orderId": "Order ID",
+    "pickupLocation": "Pickup Location",
+    "customerName": "Customer Name",
+    "deliveryLocation": "Delivery Location",
+    "productName": "Product Name",
+    "assignedTransporter": "Assigned Transporter",
+    "bidPrice": "Bid Price",
+    "viewDetails": "View Details",
+    "auctionId": "Auction ID",
+    "quantity": "Quantity",
+    "pickup": "Pickup",
+    "delivery": "Delivery",
+    "distance": "Distance",
+    "bidHistory": "Bid History",
+    "competingBids": "Competing Transporter Bids",
+    "enterBid": "Enter your bid",
+    "placeBid": "Place Bid"
   }
 }

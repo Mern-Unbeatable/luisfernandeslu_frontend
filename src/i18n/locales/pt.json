@@ -316,5 +316,25 @@
   "common": {
     "backHome": "Voltar ao Início",
     "loading": "A carregar"
+  },
+  "auction": {
+    "boardTitle": "Leilão",
+    "orderId": "ID da encomenda",
+    "pickupLocation": "Local de recolha",
+    "customerName": "Nome do cliente",
+    "deliveryLocation": "Local de entrega",
+    "productName": "Nome do produto",
+    "assignedTransporter": "Transportador atribuído",
+    "bidPrice": "Preço da proposta",
+    "viewDetails": "Ver detalhes",
+    "auctionId": "ID do leilão",
+    "quantity": "Quantidade",
+    "pickup": "Recolha",
+    "delivery": "Entrega",
+    "distance": "Distância",
+    "bidHistory": "Histórico de propostas",
+    "competingBids": "Propostas de transportadores",
+    "enterBid": "Introduza a sua proposta",
+    "placeBid": "Fazer proposta"
   }
 }

@@ -7,6 +7,7 @@ import {
   FiFile,
   FiUser,
 } from 'react-icons/fi'
+import { FaGavel } from 'react-icons/fa'
 
 /** Factory panel config (sidebar nav). */
 const factoryRole = {
@@ -30,6 +31,11 @@ const factoryRole = {
       to: '/factory/orders',
       labelKey: 'panel.nav.orders',
       Icon: FiShoppingCart,
+    },
+    {
+      to: '/factory/auction',
+      labelKey: 'panel.nav.auction',
+      Icon: FaGavel,
     },
     {
       to: '/factory/chat',

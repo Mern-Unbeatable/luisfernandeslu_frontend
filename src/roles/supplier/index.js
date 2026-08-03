@@ -18,6 +18,7 @@ import {
   FiFile,
   FiUser,
 } from 'react-icons/fi'
+import { FaGavel } from 'react-icons/fa'
 
 /** Supplier panel config (sidebar nav). */
 const supplierRole = {
@@ -81,6 +82,11 @@ const supplierRole = {
       to: '/supplier/delivery-logistics',
       labelKey: 'panel.nav.deliveryLogistics',
       Icon: FiMap,
+    },
+    {
+      to: '/supplier/auction',
+      labelKey: 'panel.nav.auction',
+      Icon: FaGavel,
     },
     {
       to: '/supplier/payments-finance',
