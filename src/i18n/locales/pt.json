@@ -158,6 +158,8 @@
     "account": "Conta",
     "affiliates": "Afiliados",
     "project": "Projeto",
+    "menu": "Menu",
+    "closeMenu": "Fechar menu",
     "logOut": "Terminar sessão",
     "hello": "Olá {{name}}",
     "notYou": "(Não é {{name}}?",

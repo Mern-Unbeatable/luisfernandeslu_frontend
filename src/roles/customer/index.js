@@ -53,8 +53,8 @@ const customerRole = {
       separatorKey: 'buyer.sepManageYour',
     },
     {
-      labelKey: 'buyer.bulkQuotes',
-      to: '/account/orders',
+      labelKey: 'buyer.productToReview',
+      to: '/account/product-to-review',
       separatorKey: 'buyer.sepAndTrackYour',
     },
   ],

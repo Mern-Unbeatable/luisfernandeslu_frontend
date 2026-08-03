@@ -7,6 +7,7 @@ const itemBase =
 export default function BuyerSidebar({
   items = [],
   onLogout,
+  onNavigate,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -14,8 +15,8 @@ export default function BuyerSidebar({
   const qs = params.toString()
 
   return (
-    <aside className={`w-full shrink-0 lg:w-56 ${className}`}>
-      <nav aria-label={t('buyer.account')} className="flex flex-col">
+    <aside className={`w-full shrink-0 ${className}`}>
+      <nav aria-label={t('buyer.account')} className="flex w-full flex-col">
         {items.map((item) => {
           const to = qs ? `${item.to}?${qs}` : item.to
           return (
@@ -23,6 +24,7 @@ export default function BuyerSidebar({
               key={item.to}
               to={to}
               end={item.end}
+              onClick={onNavigate}
               className={({ isActive }) =>
                 `${itemBase} ${
                   isActive

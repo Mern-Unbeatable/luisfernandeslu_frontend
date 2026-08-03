@@ -30,14 +30,14 @@ export default function BuyerSkeleton({ variant = 'dashboard' }) {
         <Skeleton className="h-4 w-full max-w-xl" />
         <Skeleton className="h-4 w-full max-w-lg" />
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5">
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="flex min-h-40 flex-col items-center justify-center gap-4 rounded-sm border border-gray-300 bg-white px-6 py-10"
+            className="flex min-h-32 flex-col items-center justify-center gap-3 rounded-sm border border-gray-300 bg-white px-3 py-8 sm:min-h-40 sm:gap-4 sm:px-6 sm:py-10"
           >
-            <Skeleton className="size-12 rounded-full" />
-            <Skeleton className="h-5 w-24" />
+            <Skeleton className="size-9 rounded-full sm:size-12" />
+            <Skeleton className="h-4 w-16 sm:h-5 sm:w-24" />
           </div>
         ))}
       </div>
