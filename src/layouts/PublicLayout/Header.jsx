@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
 import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
+import { getHomePathForRole } from '../../features/auth/demoUsers'
 import {
   FiSearch,
   FiMessageSquare,
@@ -37,7 +38,8 @@ const socialLinks = [
  */
 export default function Header() {
   const { t } = useTranslation()
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const { isAuthenticated, user } = useSelector((state) => state.auth)
+  const dashboardPath = getHomePathForRole(user?.role)
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [headerBottom, setHeaderBottom] = useState(0)
@@ -253,13 +255,13 @@ export default function Header() {
             ))}
 
             {isAuthenticated ? (
-              <button
-                type="button"
+              <Link
+                to={dashboardPath}
                 aria-label={t('header.account')}
                 className="text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
               >
                 <FiUser className="size-6" strokeWidth={1.75} />
-              </button>
+              </Link>
             ) : (
               <div className="flex items-center gap-3">
                 <Link
@@ -312,14 +314,14 @@ export default function Header() {
             ))}
 
             {isAuthenticated ? (
-              <button
-                type="button"
+              <Link
+                to={dashboardPath}
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
               >
                 <FiUser className="size-5 shrink-0" strokeWidth={1.75} />
                 <span className="text-sm font-medium">{t('header.account')}</span>
-              </button>
+              </Link>
             ) : (
               <div className="flex flex-col gap-2 border-t border-gray-100 px-3 py-3">
                 <Link
