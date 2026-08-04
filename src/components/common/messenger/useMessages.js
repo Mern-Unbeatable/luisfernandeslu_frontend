@@ -101,7 +101,31 @@ const MOCK_MESSAGES = {
       type: 'offer',
       time: '6:21 PM',
       status: 'Delivered',
-      offer: SAMPLE_OFFER,
+      offer: {
+        ...SAMPLE_OFFER,
+        statusLabel: 'Awaiting their response',
+      },
+    },
+  ],
+  /** Buyer view: partner sent the offer → Pay Now / Negotiate */
+  c4: [
+    {
+      id: 'm20',
+      sender: 'them',
+      text: 'Here is our offer for the steel order.',
+      time: '5:10 PM',
+      partner: { id: 'p4', name: 'SteelWorks Inc' },
+    },
+    {
+      id: 'm21',
+      sender: 'them',
+      type: 'offer',
+      time: '5:12 PM',
+      partner: { id: 'p4', name: 'SteelWorks Inc' },
+      offer: {
+        ...SAMPLE_OFFER,
+        statusLabel: 'Pending Response',
+      },
     },
   ],
 }

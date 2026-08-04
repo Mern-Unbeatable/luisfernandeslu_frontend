@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
 import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
 import {
@@ -442,6 +443,18 @@ export default function HomePage() {
   return (
     <section className="w-full bg-gray-100 px-4 py-8 sm:px-6 lg:px-10 xl:px-24">
       <div className="mx-auto w-full max-w-[1440px]">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+          <p className="text-sm text-amber-950">
+            Looking for how to use these components? Open the full docs.
+          </p>
+          <Link
+            to="/developer"
+            className="inline-flex h-9 items-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white hover:opacity-90"
+          >
+            Developer Docs
+          </Link>
+        </div>
+
         <header className="mb-8">
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
             Order Details

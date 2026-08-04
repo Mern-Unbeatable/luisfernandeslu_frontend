@@ -6,9 +6,15 @@ import {
 } from 'react-icons/fi'
 
 /**
- * Offer card — matches messenger design (orange border, section cards, pay/negotiate).
+ * Offer card — matches messenger design (orange border, section cards).
+ * Pay Now / Negotiate only for the recipient (showActions=true).
  */
-export default function OfferCard({ offer, onPayNow, onNegotiate }) {
+export default function OfferCard({
+  offer,
+  showActions = false,
+  onPayNow,
+  onNegotiate,
+}) {
   if (!offer) return null
 
   const pricing = offer.pricing || []
@@ -26,7 +32,8 @@ export default function OfferCard({ offer, onPayNow, onNegotiate }) {
             {offer.title || 'Offer Card'}
           </p>
           <p className="text-xs text-[var(--secondary-text)]">
-            {offer.statusLabel || 'Pending Response'}
+            {offer.statusLabel ||
+              (showActions ? 'Pending Response' : 'Awaiting their response')}
           </p>
         </div>
       </div>
@@ -112,25 +119,27 @@ export default function OfferCard({ offer, onPayNow, onNegotiate }) {
         ) : null}
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-2 px-3 pb-3">
-        <button
-          type="button"
-          onClick={onPayNow}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-[var(--active)] px-3 py-2.5 text-sm font-semibold text-white hover:brightness-95"
-        >
-          <FiCheck className="size-4" />
-          Pay Now
-        </button>
-        <button
-          type="button"
-          onClick={onNegotiate}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-[#1E293B] px-3 py-2.5 text-sm font-semibold text-white hover:opacity-90"
-        >
-          <FiMessageSquare className="size-4" />
-          Negotiate
-        </button>
-      </div>
+      {/* Recipient-only actions */}
+      {showActions ? (
+        <div className="flex gap-2 px-3 pb-3">
+          <button
+            type="button"
+            onClick={onPayNow}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-[var(--active)] px-3 py-2.5 text-sm font-semibold text-white hover:brightness-95"
+          >
+            <FiCheck className="size-4" />
+            Pay Now
+          </button>
+          <button
+            type="button"
+            onClick={onNegotiate}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-[#1E293B] px-3 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+          >
+            <FiMessageSquare className="size-4" />
+            Negotiate
+          </button>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -23,6 +23,7 @@ import {
 import { logout } from '../../features/auth/authSlice'
 
 const HomePage = lazy(() => import('../../pages/HomePage'))
+const DeveloperPage = lazy(() => import('../../pages/DeveloperPage'))
 const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
 const BuyerDashboardPage = lazy(
   () => import('../../pages/buyer/BuyerDashboardPage'),
@@ -300,6 +301,14 @@ export const router = createBrowserRouter([
         handle: { seo: routeSeo.home },
       },
     ],
+  },
+  {
+    path: '/developer',
+    element: withSuspense(<DeveloperPage />, <PageSkeleton />),
+  },
+  {
+    path: '/developer/:componentId',
+    element: withSuspense(<DeveloperPage />, <PageSkeleton />),
   },
   ...buyerRouteTrees,
   ...panelRouteTrees,

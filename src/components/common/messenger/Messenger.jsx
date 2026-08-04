@@ -30,6 +30,7 @@ export default function Messenger({
   className = '',
 }) {
   const [offerModalOpen, setOfferModalOpen] = useState(false)
+  const canCreateOffer = typeof onCreateOffer === 'function'
 
   const openOfferModal = () => {
     setOfferModalOpen(true)
@@ -71,7 +72,7 @@ export default function Messenger({
           onDeleteMessage={onDeleteMessage}
           onTyping={onTyping}
           onStopTyping={onStopTyping}
-          onCreateOffer={openOfferModal}
+          onCreateOffer={canCreateOffer ? openOfferModal : undefined}
           onPayNow={onPayNow}
           onNegotiate={onNegotiate}
           isPartnerTyping={isPartnerTyping}
@@ -81,11 +82,13 @@ export default function Messenger({
         />
       </div>
 
-      <CreateOfferModal
-        open={offerModalOpen}
-        onClose={() => setOfferModalOpen(false)}
-        onSubmit={handleOfferSubmit}
-      />
+      {canCreateOffer ? (
+        <CreateOfferModal
+          open={offerModalOpen}
+          onClose={() => setOfferModalOpen(false)}
+          onSubmit={handleOfferSubmit}
+        />
+      ) : null}
     </div>
   )
 }

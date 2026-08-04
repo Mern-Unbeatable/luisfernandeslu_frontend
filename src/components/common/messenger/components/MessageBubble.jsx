@@ -20,6 +20,8 @@ export default function MessageBubble({
     : message.text
 
   if (message.type === 'offer' && message.offer && !message.isDeleted) {
+    // Only the recipient can Pay / Negotiate — sender just waits.
+    const isRecipient = !isOutgoing
     return (
       <div
         className={`flex w-full ${isOutgoing ? 'justify-end' : 'justify-start'}`}
@@ -27,6 +29,7 @@ export default function MessageBubble({
         <div className="flex max-w-[min(100%,28rem)] flex-col gap-1">
           <OfferCard
             offer={message.offer}
+            showActions={isRecipient}
             onPayNow={() => onPayNow?.(message)}
             onNegotiate={() => onNegotiate?.(message)}
           />
