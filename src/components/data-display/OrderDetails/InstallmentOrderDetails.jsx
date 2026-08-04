@@ -6,6 +6,7 @@ import {
   IconLabel,
   InstallmentBreakdownTable,
   ProductsTable,
+  SectionEyebrow,
   StackLabel,
   StatusBadge,
   normalizeStatus,
@@ -131,11 +132,38 @@ export default function InstallmentOrderDetails({
 }) {
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
-  const company = order.company || {}
+  const recipient = order.customer || order.company || {}
+  const isCustomerRecipient =
+    order.recipientType === 'customer' ||
+    Boolean(order.customer) ||
+    Boolean(
+      recipient.region ||
+        recipient.city ||
+        recipient.zipCode ||
+        recipient.address,
+    )
   const logistics = order.logistics || {}
   const payment = order.payment || {}
   const showTransporter = Boolean(order.transporter) && status === 'assigned'
   const paymentVariant = showTransporter ? 'split' : 'bordered'
+  const canPayInstallments = (() => {
+    if (typeof order.canPayInstallments === 'boolean') {
+      return order.canPayInstallments
+    }
+    if (typeof order.isPayee === 'boolean') return !order.isPayee
+
+    const actor = String(
+      order.installmentActor || order.paymentActor || order.viewerSide || '',
+    ).toLowerCase()
+    if (['payee', 'receiver', 'seller'].includes(actor)) return false
+    if (['payer', 'buyer'].includes(actor)) return true
+
+    const role = String(order.role || order.viewerRole || '').toLowerCase()
+    if (['customer', 'company'].includes(role)) return true
+    if (role) return false
+
+    return true
+  })()
 
   return (
     <div className="w-full">
@@ -150,44 +178,37 @@ export default function InstallmentOrderDetails({
       </div>
 
       <section className="mb-6">
+        <SectionEyebrow>Recipient</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
-          Company Information
+          {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
         </h2>
         <p className="text-base font-bold text-[var(--primary-text)]">
-          {company.name}
+          {recipient.name}
         </p>
         <div className="mt-1">
           <ContactLine
-            email={company.email || company.taxId}
-            phone={company.phone}
+            email={recipient.email || recipient.taxId}
+            phone={recipient.phone}
           />
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <IconLabel
-            icon={FiMapPin}
-            label="Pickup Location"
-            value={logistics.pickupLocation || company.project}
-          />
-          <IconLabel
-            icon={FiMapPin}
-            label="Delivery Location"
-            value={logistics.deliveryLocation}
-          />
-          <IconLabel
-            icon={FiTag}
-            label={showTransporter ? 'Total Bid' : 'Total Price'}
-            value={payment.totalPrice}
-          />
-          <IconLabel
-            icon={FiBox}
-            label={showTransporter ? 'Duration' : 'Materials'}
-            value={
-              showTransporter
-                ? payment.duration
-                : logistics.materials || payment.duration
-            }
-          />
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-4">
+            <IconLabel
+              icon={FiMapPin}
+              label={isCustomerRecipient ? 'Address' : 'Project'}
+              value={recipient.project || recipient.address || logistics.pickupLocation}
+            />
+            <IconLabel icon={FiTag} label="Total Price" value={payment.totalPrice} />
+          </div>
+          <div className="flex flex-col gap-4">
+            <IconLabel
+              icon={FiMapPin}
+              label="Delivery Location"
+              value={logistics.deliveryLocation}
+            />
+            <IconLabel icon={FiBox} label="Installment" value={payment.duration} />
+          </div>
         </div>
       </section>
 
@@ -230,6 +251,7 @@ export default function InstallmentOrderDetails({
         items={order.installments}
         onPayNow={onPayNow}
         onCancel={onCancelInstallment}
+        canPayInstallments={canPayInstallments}
       />
     </div>
   )

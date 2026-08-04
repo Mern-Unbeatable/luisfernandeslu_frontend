@@ -105,16 +105,15 @@ export function StackLabel({ label, value }) {
 
 export function ContactLine({ email, phone }) {
   return (
-    <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--secondary-text)]">
-      {email ? <span>{email}</span> : null}
-      {email && phone ? <span className="text-gray-300">|</span> : null}
+    <div className="flex flex-col gap-1 text-sm text-[var(--secondary-text)]">
+      {email ? <p>{email}</p> : null}
       {phone ? (
-        <span className="inline-flex items-center gap-1">
+        <p className="inline-flex items-center gap-1">
           <FiPhone className="size-3.5" aria-hidden />
           {phone}
-        </span>
+        </p>
       ) : null}
-    </p>
+    </div>
   )
 }
 

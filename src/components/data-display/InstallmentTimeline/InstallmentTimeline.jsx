@@ -26,10 +26,40 @@ function Meta({ label, value }) {
   )
 }
 
-function InstallmentCard({ item, showLine, onPayNow, onCancel }) {
+function parseDueDate(value) {
+  if (!value) return null
+  const parsed = new Date(value)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+function isPayableNow(item) {
+  if (typeof item.canPayNow === 'boolean') return item.canPayNow
+  if (item.status !== 'pending') return false
+
+  const due = parseDueDate(item.dueDate)
+  if (!due) return false
+
+  const today = new Date()
+  const dueDate = new Date(due.getFullYear(), due.getMonth(), due.getDate())
+  const nowDate = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  )
+  return dueDate <= nowDate
+}
+
+function InstallmentCard({
+  item,
+  showLine,
+  onPayNow,
+  onCancel,
+  canPayInstallments = true,
+}) {
   const status = STATUS[item.status] || STATUS.pending
   const Icon = status.Icon
   const isCompleted = item.status === 'completed'
+  const canPayNow = isPayableNow(item)
 
   return (
     <li className="relative flex gap-4">
@@ -75,7 +105,7 @@ function InstallmentCard({ item, showLine, onPayNow, onCancel }) {
             <span className="inline-flex h-11 min-w-20 items-center justify-center rounded-2xl bg-gray-100 px-4 text-base font-medium text-gray-400">
               Paid
             </span>
-          ) : (
+          ) : canPayInstallments && canPayNow ? (
             <>
               <button
                 type="button"
@@ -92,7 +122,11 @@ function InstallmentCard({ item, showLine, onPayNow, onCancel }) {
                 Cancel
               </button>
             </>
-          )}
+          ) : canPayInstallments ? (
+            <span className="inline-flex h-11 min-w-24 items-center justify-center rounded-2xl bg-gray-100 px-4 text-sm font-medium text-gray-500">
+              Not Due
+            </span>
+          ) : null}
         </div>
       </div>
     </li>
@@ -108,6 +142,7 @@ export default function InstallmentTimeline({
   items = [],
   onPayNow,
   onCancel,
+  canPayInstallments = true,
   className = '',
 }) {
   return (
@@ -127,6 +162,7 @@ export default function InstallmentTimeline({
               showLine={index < items.length - 1}
               onPayNow={onPayNow}
               onCancel={onCancel}
+              canPayInstallments={canPayInstallments}
             />
           ))}
         </ul>

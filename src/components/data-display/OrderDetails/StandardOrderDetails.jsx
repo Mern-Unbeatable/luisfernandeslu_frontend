@@ -28,7 +28,16 @@ export default function StandardOrderDetails({
   const isCancel = status === 'cancel'
   const showTransporter =
     status === 'assigned' || (isCancel && order.transporter)
-  const company = order.company || {}
+  const recipient = order.customer || order.company || {}
+  const isCustomerRecipient =
+    order.recipientType === 'customer' ||
+    Boolean(order.customer) ||
+    Boolean(
+      recipient.region ||
+        recipient.city ||
+        recipient.zipCode ||
+        recipient.address,
+    )
   const logistics = order.logistics || {}
   const transporter = order.transporter || {}
 
@@ -60,28 +69,41 @@ export default function StandardOrderDetails({
         </div>
       ) : null}
 
-      <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <div
+        className={`mb-8 grid grid-cols-1 gap-8 ${showTransporter ? 'lg:grid-cols-2' : ''}`}
+      >
         <div>
           <SectionEyebrow>Recipient</SectionEyebrow>
           <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-            Company Information
+            {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
           </h2>
           <p className="text-base font-bold text-[var(--primary-text)]">
-            {company.name}
+            {recipient.name}
           </p>
           <div className="mt-1">
-            <ContactLine email={company.email} phone={company.phone} />
+            <ContactLine email={recipient.email} phone={recipient.phone} />
           </div>
           <div className="mt-4 flex flex-col gap-3">
-            <IconLabel
-              icon={FiMapPin}
-              label="Project"
-              value={company.project}
-            />
-            <StackLabel
-              label="Types of unloading Needed"
-              value={logistics.unloadingType}
-            />
+            {isCustomerRecipient ? (
+              <>
+                <StackLabel label="Region" value={recipient.region} />
+                <StackLabel label="City" value={recipient.city} />
+                <StackLabel label="Zip Code" value={recipient.zipCode} />
+                <StackLabel label="Address" value={recipient.address} />
+              </>
+            ) : (
+              <>
+                <IconLabel
+                  icon={FiMapPin}
+                  label="Project"
+                  value={recipient.project}
+                />
+                <StackLabel
+                  label="Types of unloading Needed"
+                  value={logistics.unloadingType}
+                />
+              </>
+            )}
           </div>
         </div>
 
@@ -112,19 +134,7 @@ export default function StandardOrderDetails({
               />
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col gap-3 pt-7">
-            <IconLabel
-              icon={FiMapPin}
-              label="Delivery Location"
-              value={logistics.deliveryLocation}
-            />
-            <StackLabel
-              label="Access Conditions"
-              value={logistics.accessCondition}
-            />
-          </div>
-        )}
+        ) : null}
       </div>
 
       <div>

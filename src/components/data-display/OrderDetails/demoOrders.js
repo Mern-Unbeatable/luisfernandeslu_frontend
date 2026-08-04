@@ -200,6 +200,8 @@ export const DEMO_ORDER_INSTALLMENT_NEW = {
   orderDate: '2026-03-01',
   status: 'new',
   hasInstallment: true,
+  role: 'company',
+  canPayInstallments: true,
   company: {
     ...baseCompany,
     phone: '+1 23 789 2456',
@@ -243,6 +245,8 @@ export const DEMO_ORDER_INSTALLMENT_ASSIGNED = {
   id: 'ORD-001',
   orderId: 'ORD-001',
   status: 'assigned',
+  role: 'company',
+  canPayInstallments: true,
   payment: {
     totalPrice: '$126,000',
     paidAmount: '$25,100',
