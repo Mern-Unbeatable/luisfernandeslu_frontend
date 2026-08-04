@@ -636,10 +636,13 @@ function AddProductPreview({ variantId }) {
 
 function MessengerPreview({ variantId }) {
   const state = useMessages()
+  const isCreator = variantId === 'offer-sent'
+  const isRecipient = variantId === 'offer-received'
 
   useEffect(() => {
     if (variantId === 'conversation') state.selectChat('c1')
-    else if (variantId === 'with-offer') state.selectChat('c2')
+    else if (variantId === 'offer-sent') state.selectChat('c2')
+    else if (variantId === 'offer-received') state.selectChat('c4')
     else state.selectChat(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only sync on variant change
   }, [variantId])
@@ -657,6 +660,9 @@ function MessengerPreview({ variantId }) {
         onDeleteMessage={state.deleteMessage}
         onTyping={state.handleTyping}
         onStopTyping={state.stopTyping}
+        onCreateOffer={isCreator ? () => {} : undefined}
+        onPayNow={isRecipient ? () => {} : undefined}
+        onNegotiate={isRecipient ? () => {} : undefined}
         isPartnerTyping={state.isPartnerTyping}
         isSending={state.isSending}
         isLoading={state.isLoading}

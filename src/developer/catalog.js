@@ -1150,6 +1150,27 @@ export const COMPONENT_DOCS = [
         description: 'Send message.',
       },
       {
+        name: 'onCreateOffer',
+        type: '(form) => void',
+        required: false,
+        description:
+          'Supplier/seller only. Pass this to show Create Offer. Buyer pages should omit it.',
+      },
+      {
+        name: 'onPayNow',
+        type: '(message) => void',
+        required: false,
+        description:
+          'Runs on Pay Now — only shown on offers you received (sender=them), never on offers you sent.',
+      },
+      {
+        name: 'onNegotiate',
+        type: '(message) => void',
+        required: false,
+        description:
+          'Runs on Negotiate — only on received offers. Hidden for offers you created.',
+      },
+      {
         name: 'sidebarTitle',
         type: 'string',
         required: false,
@@ -1167,11 +1188,14 @@ export const COMPONENT_DOCS = [
   onSelectChat={state.selectChat}
   onSend={state.sendMessage}
 />`,
-    optionalExample: `<Messenger
-  {...messageState}
-  sidebarTitle="Inbox"
-  onCreateOffer={() => openOfferModal()}
+    optionalExample: `/* Supplier: create offers */
+<Messenger {...state} onCreateOffer={(form) => createOffer(form)} />
+
+/* Buyer: respond to offers */
+<Messenger
+  {...state}
   onPayNow={(msg) => pay(msg)}
+  onNegotiate={(msg) => negotiate(msg)}
 />`,
     previewId: 'messenger',
     variants: [
@@ -1200,16 +1224,24 @@ export const COMPONENT_DOCS = [
 />`,
       },
       {
-        id: 'with-offer',
-        name: 'With offer card',
-        description: 'Conversation that includes an OfferCard message.',
+        id: 'offer-sent',
+        name: 'Offer sent (creator)',
+        description:
+          'You created the offer → Create Offer available; no Pay/Negotiate on your own card.',
         example: `<Messenger
-  chats={chats}
-  messages={messagesWithOffer}
-  activePartnerId={chatId}
-  activeChat={chat}
-  onSelectChat={selectChat}
-  onPayNow={pay}
+  {...state}
+  onCreateOffer={(form) => createOffer(form)}
+/>`,
+      },
+      {
+        id: 'offer-received',
+        name: 'Offer received (buyer)',
+        description:
+          'Partner sent the offer → Pay Now / Negotiate shown; no Create Offer.',
+        example: `<Messenger
+  {...state}
+  onPayNow={(msg) => pay(msg)}
+  onNegotiate={(msg) => negotiate(msg)}
 />`,
       },
     ],

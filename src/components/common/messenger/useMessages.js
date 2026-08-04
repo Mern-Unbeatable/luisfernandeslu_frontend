@@ -31,7 +31,7 @@ const MOCK_CHATS = [
   {
     id: 'c4',
     name: 'SteelWorks Inc',
-    lastMessage: 'Can we schedule a call?',
+    lastMessage: 'Offer received — Pending Response',
     time: 'Mon',
     unreadCount: 1,
     online: false,
