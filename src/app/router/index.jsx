@@ -33,15 +33,6 @@ const BuyerPlaceholderPage = lazy(
   () => import('../../pages/buyer/BuyerPlaceholderPage'),
 )
 const ComingSoonPage = lazy(() => import('../../pages/panel/ComingSoonPage'))
-const AuctionBoardPage = lazy(
-  () => import('../../pages/panel/AuctionBoardPage'),
-)
-const CreateAuctionPage = lazy(
-  () => import('../../pages/panel/CreateAuctionPage'),
-)
-const AuctionDetailsPage = lazy(
-  () => import('../../pages/panel/AuctionDetailsPage'),
-)
 const RoleSelectPage = lazy(() => import('../../pages/auth/RoleSelectPage'))
 const LoginPage = lazy(() => import('../../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../../pages/auth/RegisterPage'))
@@ -109,62 +100,9 @@ function PanelShell() {
   )
 }
 
-function isAuctionNavItem(item) {
-  return (
-    typeof item?.to === 'string' &&
-    (item.to.endsWith('/auction') || item.to.endsWith('/auction-board'))
-  )
-}
-
-function isCreateAuctionNavItem(item) {
-  return (
-    typeof item?.to === 'string' && item.to.endsWith('/create-auction')
-  )
-}
-
-function isAuctionDetailsNavItem(item) {
-  return (
-    typeof item?.to === 'string' && item.to.endsWith('/auction-details')
-  )
-}
-
 function panelPage(item) {
-  if (isCreateAuctionNavItem(item)) {
-    return {
-      element: withSuspense(<CreateAuctionPage />, <PanelSkeleton />),
-      handle: {
-        seo: {
-          titleKey: item.labelKey,
-          descriptionKey: 'seo.panelDescription',
-        },
-      },
-    }
-  }
-
-  if (isAuctionDetailsNavItem(item)) {
-    return {
-      element: withSuspense(<AuctionDetailsPage />, <PanelSkeleton />),
-      handle: {
-        seo: {
-          titleKey: item.labelKey,
-          descriptionKey: 'seo.panelDescription',
-        },
-      },
-    }
-  }
-
-  if (isAuctionNavItem(item)) {
-    return {
-      element: withSuspense(<AuctionBoardPage />, <PanelSkeleton />),
-      handle: {
-        seo: {
-          titleKey: item.labelKey,
-          descriptionKey: 'seo.panelDescription',
-        },
-      },
-    }
-  }
-
+  // All panel/dashboard screens are Coming Soon for now.
+  // Customer & company buyer dashboards stay live via buyerChildren().
   return {
     element: withSuspense(
       <ComingSoonPage titleKey={item.labelKey} />,
@@ -245,7 +183,20 @@ const panelRouteTrees = PANEL_ROLE_IDS.map((roleId) => {
       {
         path: config.basePath,
         element: <PanelShell />,
-        children: buildNavChildren(config, panelPage),
+        children: [
+          ...buildNavChildren(config, panelPage),
+          // Any unlisted panel path → Coming Soon
+          {
+            path: '*',
+            element: withSuspense(<ComingSoonPage />, <PanelSkeleton />),
+            handle: {
+              seo: {
+                titleKey: 'panel.nav.dashboard',
+                descriptionKey: 'seo.panelDescription',
+              },
+            },
+          },
+        ],
       },
     ],
   }

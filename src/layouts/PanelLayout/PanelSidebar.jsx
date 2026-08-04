@@ -5,19 +5,13 @@ import { FiLogOut, FiX } from 'react-icons/fi'
 const linkBase =
   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors'
 
-function activeClasses(variant) {
-  if (variant === 'soft') {
-    return 'bg-[color-mix(in_srgb,var(--active)_18%,white)] text-[var(--active)]'
-  }
-  return 'bg-[var(--active)] text-white'
-}
+const activeLink = 'bg-[var(--active)] text-white'
 
 /** Panel left nav only (no logo — logo lives in PanelHeader). */
 export default function PanelSidebar({
   items = [],
   onLogout,
   onClose,
-  activeVariant = 'solid',
   showMainMenu = true,
   className = '',
 }) {
@@ -66,7 +60,7 @@ export default function PanelSidebar({
                   className={({ isActive }) =>
                     `${linkBase} ${
                       isActive
-                        ? activeClasses(activeVariant)
+                        ? activeLink
                         : 'text-[var(--secondary-text)] hover:bg-gray-50 hover:text-[var(--primary-text)]'
                     }`
                   }

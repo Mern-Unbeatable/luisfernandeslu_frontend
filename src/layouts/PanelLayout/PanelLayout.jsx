@@ -51,7 +51,6 @@ export default function PanelLayout({
           <PanelSidebar
             items={roleConfig.nav}
             onLogout={onLogout}
-            activeVariant={roleConfig.activeVariant}
             showMainMenu={roleConfig.showMainMenu !== false}
           />
         </div>
@@ -84,7 +83,6 @@ export default function PanelLayout({
                 onLogout?.()
               }}
               onClose={closeMobile}
-              activeVariant={roleConfig.activeVariant}
               showMainMenu={roleConfig.showMainMenu !== false}
               className="h-full"
             />

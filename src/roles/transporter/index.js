@@ -15,7 +15,6 @@ const transporterRole = {
   id: 'transporter',
   labelKey: 'panel.roles.transporter',
   basePath: '/transporter',
-  activeVariant: 'soft',
   nav: [
     {
       to: '/transporter',

@@ -12,8 +12,7 @@ const affiliateRole = {
   id: 'affiliate',
   labelKey: 'panel.roles.affiliate',
   basePath: '/affiliate',
-  activeVariant: 'soft',
-  showMainMenu: false,
+  showMainMenu: true,
   nav: [
     {
       to: '/affiliate',

@@ -7,14 +7,12 @@ import {
   FiFile,
   FiUser,
 } from 'react-icons/fi'
-import { FaGavel } from 'react-icons/fa'
 
 /** Factory panel config (sidebar nav). */
 const factoryRole = {
   id: 'factory',
   labelKey: 'panel.roles.factory',
   basePath: '/factory',
-  activeVariant: 'solid',
   nav: [
     {
       to: '/factory',
@@ -31,21 +29,6 @@ const factoryRole = {
       to: '/factory/orders',
       labelKey: 'panel.nav.orders',
       Icon: FiShoppingCart,
-    },
-    {
-      to: '/factory/auction',
-      labelKey: 'panel.nav.auction',
-      Icon: FaGavel,
-    },
-    {
-      to: '/factory/create-auction',
-      labelKey: 'auction.create.nav',
-      Icon: FaGavel,
-    },
-    {
-      to: '/factory/auction-details',
-      labelKey: 'auction.details.nav',
-      Icon: FaGavel,
     },
     {
       to: '/factory/chat',

@@ -20,7 +20,6 @@ const adminRole = {
   id: 'admin',
   labelKey: 'panel.roles.admin',
   basePath: '/admin',
-  activeVariant: 'solid',
   nav: [
     {
       to: '/admin',
