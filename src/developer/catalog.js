@@ -698,6 +698,248 @@ export const COMPONENT_DOCS = [
     ],
   },
   {
+    id: 'status-card',
+    name: 'StatusCard',
+    category: 'data-display',
+    summary:
+      'Dashboard metric / status card. One component covers all layouts via variant + tone props.',
+    path: 'src/components/data-display/StatusCard/',
+    importExample:
+      "import StatusCard from '../components/data-display/StatusCard'",
+    props: [
+      {
+        name: 'variant',
+        type: "'default' | 'inline' | 'action' | 'filled' | 'status' | 'badge' | 'summary'",
+        required: false,
+        defaultValue: "'default'",
+        description: 'Layout family for the card.',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        required: false,
+        description: 'Title / metric name.',
+      },
+      {
+        name: 'value',
+        type: 'string | number',
+        required: true,
+        description: 'Primary metric value.',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        required: false,
+        description: 'Subtitle / footer text (also used as filled subLabel).',
+      },
+      {
+        name: 'icon',
+        type: 'ComponentType',
+        required: false,
+        description: 'react-icons (or any) icon component.',
+      },
+      {
+        name: 'iconTone',
+        type: "'brand' | 'purple' | 'teal' | 'red' | 'warning' | 'gray'",
+        required: false,
+        defaultValue: "'brand'",
+        description: 'Icon + tinted icon-box colors.',
+      },
+      {
+        name: 'tone',
+        type: "'default' | 'brand' | 'warning' | 'danger' | 'success'",
+        required: false,
+        defaultValue: "'default'",
+        description: 'Colors value/footer/badge/filled background.',
+      },
+      {
+        name: 'badge',
+        type: 'string | number',
+        required: false,
+        description: 'Count chip (badge variant).',
+      },
+      {
+        name: 'actionLabel',
+        type: 'string',
+        required: false,
+        description: 'CTA button label (action variant).',
+      },
+      {
+        name: 'onAction',
+        type: '() => void',
+        required: false,
+        description: 'CTA click handler (action variant).',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        defaultValue: "''",
+        description: 'Wrapper className.',
+      },
+    ],
+    requiredExample: `<StatusCard label="Total Users" value="12,453" />`,
+    optionalExample: `<StatusCard
+  variant="default"
+  label="Active Suppliers"
+  value="342"
+  icon={FiBriefcase}
+  iconTone="brand"
+/>`,
+    previewId: 'status-card',
+    variants: [
+      {
+        id: 'active-suppliers',
+        name: 'Default · Icon + label + value',
+        description: 'Active Suppliers style.',
+        example: `<StatusCard
+  variant="default"
+  label="Active Suppliers"
+  value="342"
+  icon={FiBriefcase}
+  iconTone="brand"
+/>`,
+      },
+      {
+        id: 'total-users',
+        name: 'Default · Label + value',
+        description: 'Total Users — no icon.',
+        example: `<StatusCard label="Total Users" value="12,453" />`,
+      },
+      {
+        id: 'referred-clients',
+        name: 'Default · With description',
+        description: 'Referred Clients + subtitle.',
+        example: `<StatusCard
+  label="Referred Clients"
+  value="18"
+  description="Active paying subscriptions"
+  icon={FiShoppingBag}
+/>`,
+      },
+      {
+        id: 'inline-referred',
+        name: 'Inline · Icon right',
+        description: 'TOTAL REFERRED CLIENT with purple icon box.',
+        example: `<StatusCard
+  variant="inline"
+  label="Total Referred Client"
+  value="13"
+  icon={FiUser}
+  iconTone="purple"
+/>`,
+      },
+      {
+        id: 'available-balance',
+        name: 'Action · Withdraw CTA',
+        description: 'Available Balance + Withdraw Funds button.',
+        example: `<StatusCard
+  variant="action"
+  label="Available Balance"
+  value="$67,400.00"
+  icon={FiDollarSign}
+  actionLabel="Withdraw Funds"
+  onAction={withdraw}
+/>`,
+      },
+      {
+        id: 'total-earnings',
+        name: 'Filled · Earnings',
+        description: 'Solid brand card with icon + All time.',
+        example: `<StatusCard
+  variant="filled"
+  label="Total Earnings"
+  value="$580K"
+  description="All time"
+  icon={FiDollarSign}
+  tone="brand"
+/>`,
+      },
+      {
+        id: 'admin-commission',
+        name: 'Default · Emphasis text',
+        description: 'Admin Commission — title / % / per-order note.',
+        example: `<StatusCard
+  label="Admin Comission"
+  value="20%"
+  description="20% per order"
+/>`,
+      },
+      {
+        id: 'payment-overdue',
+        name: 'Status · Danger',
+        description: 'Payment Overdue with alert icon.',
+        example: `<StatusCard
+  variant="status"
+  label="Payment Overdue"
+  value="$12,400"
+  description="3 orders"
+  tone="danger"
+/>`,
+      },
+      {
+        id: 'pending-badge',
+        name: 'Badge · Count chip',
+        description: 'Pending with circular badge.',
+        example: `<StatusCard
+  variant="badge"
+  label="Pending"
+  value="18"
+  badge={18}
+  tone="brand"
+/>`,
+      },
+      {
+        id: 'total-documents',
+        name: 'Filled · Documents',
+        description: 'Solid brand — label + value only.',
+        example: `<StatusCard
+  variant="filled"
+  label="Total Documents"
+  value="4"
+  tone="brand"
+/>`,
+      },
+      {
+        id: 'total-products',
+        name: 'Summary · Icon top-right',
+        description: 'Total Products + Active SKUs.',
+        example: `<StatusCard
+  variant="summary"
+  label="Total Products"
+  value="42"
+  description="Active SKU'S"
+  icon={FiHome}
+  iconTone="teal"
+/>`,
+      },
+      {
+        id: 'low-stock',
+        name: 'Status · Warning',
+        description: 'Low Stock Items.',
+        example: `<StatusCard
+  variant="status"
+  label="Low Stock Items"
+  value="5"
+  description="Need Reorder"
+  tone="warning"
+/>`,
+      },
+      {
+        id: 'out-of-stock',
+        name: 'Status · Critical',
+        description: 'Out Of Stock.',
+        example: `<StatusCard
+  variant="status"
+  label="Out Of Stock"
+  value="2"
+  description="Urgent action needed"
+  tone="danger"
+/>`,
+      },
+    ],
+  },
+  {
     id: 'data-table',
     name: 'DataTable',
     category: 'data-display',

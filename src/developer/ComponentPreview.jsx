@@ -27,6 +27,9 @@ import StatusBadge from '../components/data-display/DataTable/StatusBadge'
 import InstallmentTimeline, {
   DEMO_INSTALLMENTS,
 } from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
+import StatusCard, {
+  DEMO_STATUS_CARDS,
+} from '../components/data-display/StatusCard'
 import CreateAuction, {
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
@@ -602,6 +605,32 @@ function InstallmentTimelinePreview({ variantId }) {
   )
 }
 
+const STATUS_CARD_VARIANT_MAP = {
+  'active-suppliers': DEMO_STATUS_CARDS.activeSuppliers,
+  'total-users': DEMO_STATUS_CARDS.totalUsers,
+  'referred-clients': DEMO_STATUS_CARDS.referredClients,
+  'inline-referred': DEMO_STATUS_CARDS.totalReferredInline,
+  'available-balance': DEMO_STATUS_CARDS.availableBalance,
+  'total-earnings': DEMO_STATUS_CARDS.totalEarnings,
+  'admin-commission': DEMO_STATUS_CARDS.adminCommission,
+  'payment-overdue': DEMO_STATUS_CARDS.paymentOverdue,
+  'pending-badge': DEMO_STATUS_CARDS.pendingBadge,
+  'total-documents': DEMO_STATUS_CARDS.totalDocuments,
+  'total-products': DEMO_STATUS_CARDS.totalProducts,
+  'low-stock': DEMO_STATUS_CARDS.lowStock,
+  'out-of-stock': DEMO_STATUS_CARDS.outOfStock,
+}
+
+function StatusCardPreview({ variantId }) {
+  const props =
+    STATUS_CARD_VARIANT_MAP[variantId] || DEMO_STATUS_CARDS.activeSuppliers
+  return (
+    <div className="max-w-sm">
+      <StatusCard {...props} onAction={() => {}} />
+    </div>
+  )
+}
+
 /* ─── Create Auction / Add Product ──────────────────────────────── */
 
 function CreateAuctionPreview({ variantId }) {
@@ -704,6 +733,10 @@ export default function ComponentPreview({ previewId, variantId }) {
     case 'installment-timeline':
       return (
         <InstallmentTimelinePreview variantId={variantId || 'mixed'} />
+      )
+    case 'status-card':
+      return (
+        <StatusCardPreview variantId={variantId || 'active-suppliers'} />
       )
     case 'create-auction':
       return <CreateAuctionPreview variantId={variantId || 'supplier'} />
