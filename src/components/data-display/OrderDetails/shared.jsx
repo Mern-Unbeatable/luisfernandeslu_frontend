@@ -136,9 +136,19 @@ const PRODUCT_COLS = [
   {
     key: 'warehouse',
     header: 'WAREHOUSE LOCATION',
-    className: 'max-w-[200px] whitespace-normal',
+    className: 'w-[160px]',
+    render: (value) => (
+      <span className="block w-[160px] truncate" title={value || '—'}>
+        {value || '—'}
+      </span>
+    ),
   },
-  { key: 'total', header: 'TOTAL' },
+  {
+    key: 'total',
+    header: 'TOTAL',
+    headerClassName: 'text-right',
+    className: 'min-w-[110px] text-right whitespace-nowrap',
+  },
 ]
 
 const BREAKDOWN_COLS = [
@@ -158,10 +168,24 @@ const BREAKDOWN_COLS = [
   {
     key: 'warehouse',
     header: 'WAREHOUSE LOCATION',
-    className: 'max-w-[200px] whitespace-normal',
+    className: 'w-[160px]',
+    render: (value) => (
+      <span className="block w-[160px] truncate" title={value || '—'}>
+        {value || '—'}
+      </span>
+    ),
   },
-  { key: 'installmentNumber', header: 'INSTALLMENT NUMBER' },
-  { key: 'amount', header: 'AMOUNT' },
+  {
+    key: 'installmentNumber',
+    header: 'INSTALLMENT NUMBER',
+    className: 'min-w-[170px] whitespace-nowrap',
+  },
+  {
+    key: 'amount',
+    header: 'AMOUNT',
+    headerClassName: 'text-right',
+    className: 'min-w-[110px] text-right whitespace-nowrap',
+  },
 ]
 
 export function ProductsTable({ products = [] }) {
