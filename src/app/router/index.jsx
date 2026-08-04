@@ -23,16 +23,10 @@ import {
 } from '../../roles'
 import { logout } from '../../features/auth/authSlice'
 
-const HomePage = lazy(() => import('../../pages/HomePage'))
-const DeveloperPage = lazy(() => import('../../pages/DeveloperPage'))
-const NotFoundPage = lazy(() => import('../../pages/NotFoundPage'))
-const BuyerDashboardPage = lazy(
-  () => import('../../pages/buyer/BuyerDashboardPage'),
-)
-const BuyerPlaceholderPage = lazy(
-  () => import('../../pages/buyer/BuyerPlaceholderPage'),
-)
-const ComingSoonPage = lazy(() => import('../../pages/panel/ComingSoonPage'))
+const HomePage = lazy(() => import('../../pages/public_page/HomePage'))
+const DeveloperPage = lazy(() => import('../../pages/public_page/DeveloperPage'))
+const NotFoundPage = lazy(() => import('../../pages/public_page/NotFoundPage'))
+const ComingSoonPage = lazy(() => import('../../pages/shared/ComingSoonPage'))
 const RoleSelectPage = lazy(() => import('../../pages/auth/RoleSelectPage'))
 const LoginPage = lazy(() => import('../../pages/auth/LoginPage'))
 const RegisterPage = lazy(() => import('../../pages/auth/RegisterPage'))
@@ -45,6 +39,38 @@ const OtpVerificationPage = lazy(
 const ResetPasswordPage = lazy(
   () => import('../../pages/auth/ResetPasswordPage'),
 )
+
+/** Eager map of role page modules: `../../pages/<role>/<segment>/<Name>Page.jsx` */
+const rolePageModules = import.meta.glob(
+  '../../pages/{customer,company,supplier,factory,transporter,affiliate,admin}/**/*Page.jsx',
+)
+
+function toPascal(segment) {
+  return segment
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('')
+}
+
+/** Index routes live under dashboard/ (affiliate: overview-dashboard/). */
+function indexSegmentForRole(roleId) {
+  return roleId === 'affiliate' ? 'overview-dashboard' : 'dashboard'
+}
+
+/**
+ * Resolve a lazy page for a role + relative nav segment.
+ * @param {string} roleId
+ * @param {string|undefined} relativeSegment — undefined for index/dashboard
+ */
+function lazyRolePage(roleId, relativeSegment) {
+  const segment = relativeSegment || indexSegmentForRole(roleId)
+  const key = `../../pages/${roleId}/${segment}/${toPascal(segment)}Page.jsx`
+  const loader = rolePageModules[key]
+  if (!loader) {
+    throw new Error(`Missing role page module: ${key}`)
+  }
+  return lazy(loader)
+}
 
 function withSuspense(element, fallback = <PageSkeleton />) {
   return <Suspense fallback={fallback}>{element}</Suspense>
@@ -100,41 +126,47 @@ function PanelShell() {
   )
 }
 
-function panelPage(item) {
-  // All panel/dashboard screens are Coming Soon for now.
-  // Customer & company buyer dashboards stay live via buyerChildren().
-  return {
-    element: withSuspense(
-      <ComingSoonPage titleKey={item.labelKey} />,
-      <PanelSkeleton />,
-    ),
-    handle: {
-      seo: {
-        titleKey: item.labelKey,
-        descriptionKey: 'seo.panelDescription',
+function panelPage(roleId) {
+  return (item) => {
+    const config = getPanelRoleConfig(roleId)
+    const base = config.basePath
+    const isIndex = item.end || item.to === base
+    const relative = isIndex
+      ? undefined
+      : item.to.replace(new RegExp(`^${base}/?`), '')
+    const Page = lazyRolePage(roleId, relative)
+
+    return {
+      element: withSuspense(<Page />, <PanelSkeleton />),
+      handle: {
+        seo: {
+          titleKey: item.labelKey,
+          descriptionKey: 'seo.panelDescription',
+        },
       },
-    },
+    }
   }
 }
 
 function buyerChildren(roleConfig) {
   const base = roleConfig.basePath
+  const roleId = roleConfig.id
+  const DashboardPage = lazyRolePage(roleId)
+
   return [
     {
       index: true,
-      element: withSuspense(<BuyerDashboardPage />, <BuyerSkeleton />),
+      element: withSuspense(<DashboardPage />, <BuyerSkeleton />),
       handle: { seo: routeSeo.buyerDashboard },
     },
     ...roleConfig.nav
       .filter((item) => item.to !== base)
       .map((item) => {
         const path = item.to.replace(new RegExp(`^${base}/`), '')
+        const Page = lazyRolePage(roleId, path)
         return {
           path,
-          element: withSuspense(
-            <BuyerPlaceholderPage titleKey={item.labelKey} />,
-            <BuyerSkeleton variant="placeholder" />,
-          ),
+          element: withSuspense(<Page />, <BuyerSkeleton variant="placeholder" />),
           handle: { seo: routeSeo.buyerDashboard },
         }
       }),
@@ -145,14 +177,18 @@ function buyerChildren(roleConfig) {
           !roleConfig.nav.some((n) => n.to === card.to) &&
           card.to !== base,
       )
-      .map((card) => ({
-        path: card.to.replace(new RegExp(`^${base}/`), ''),
-        element: withSuspense(
-          <BuyerPlaceholderPage titleKey={card.labelKey} />,
-          <BuyerSkeleton variant="placeholder" />,
-        ),
-        handle: { seo: routeSeo.buyerDashboard },
-      })),
+      .map((card) => {
+        const path = card.to.replace(new RegExp(`^${base}/`), '')
+        const Page = lazyRolePage(roleId, path)
+        return {
+          path,
+          element: withSuspense(
+            <Page />,
+            <BuyerSkeleton variant="placeholder" />,
+          ),
+          handle: { seo: routeSeo.buyerDashboard },
+        }
+      }),
   ]
 }
 
@@ -184,7 +220,7 @@ const panelRouteTrees = PANEL_ROLE_IDS.map((roleId) => {
         path: config.basePath,
         element: <PanelShell />,
         children: [
-          ...buildNavChildren(config, panelPage),
+          ...buildNavChildren(config, panelPage(roleId)),
           // Any unlisted panel path → Coming Soon
           {
             path: '*',
