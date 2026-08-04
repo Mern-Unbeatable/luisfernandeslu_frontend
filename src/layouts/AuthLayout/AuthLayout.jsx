@@ -89,7 +89,10 @@ export default function AuthLayout() {
         </div>
 
         {/* Right — independently scrollable */}
-        <div className="relative flex min-h-screen w-full flex-col lg:h-screen lg:w-[58%] lg:overflow-y-auto">
+        <div
+          data-scroll-restore
+          className="relative flex min-h-screen w-full flex-col lg:h-screen lg:w-[58%] lg:overflow-y-auto"
+        >
           <div className="flex items-center justify-between px-4 py-4 lg:hidden">
             <button
               type="button"
@@ -145,7 +148,10 @@ export default function AuthLayout() {
       </div>
 
       {/* Right — scrollable */}
-      <div className="relative flex min-h-screen w-full flex-col lg:h-screen lg:w-1/2 lg:overflow-y-auto">
+      <div
+        data-scroll-restore
+        className="relative flex min-h-screen w-full flex-col lg:h-screen lg:w-1/2 lg:overflow-y-auto"
+      >
         <div className="flex items-center justify-between px-4 py-4 lg:hidden">
           <button
             type="button"

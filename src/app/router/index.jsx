@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { createBrowserRouter, useNavigate } from 'react-router-dom'
+import { createBrowserRouter, Outlet, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import PublicLayout from '../../layouts/PublicLayout/PublicLayout'
 import BuyerLayout from '../../layouts/BuyerLayout/BuyerLayout'
@@ -10,6 +10,7 @@ import AuthSkeleton from '../../components/common/Skeleton/AuthSkeleton'
 import BuyerSkeleton from '../../components/common/Skeleton/BuyerSkeleton'
 import PanelSkeleton from '../../components/common/Skeleton/PanelSkeleton'
 import HomeSkeleton from '../../components/common/Skeleton/HomeSkeleton'
+import ScrollToTop from '../../components/common/ScrollToTop/ScrollToTop'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
 import { routeSeo } from '../../config/seo'
@@ -56,6 +57,16 @@ const ResetPasswordPage = lazy(
 
 function withSuspense(element, fallback = <PageSkeleton />) {
   return <Suspense fallback={fallback}>{element}</Suspense>
+}
+
+/** Root shell: scroll-to-top on navigation for every route tree. */
+function RootLayout() {
+  return (
+    <>
+      <ScrollToTop />
+      <Outlet />
+    </>
+  )
 }
 
 function useAuthLogout() {
@@ -242,84 +253,89 @@ const panelRouteTrees = PANEL_ROLE_IDS.map((roleId) => {
 
 export const router = createBrowserRouter([
   {
-    element: <PublicRoute />,
+    element: <RootLayout />,
     children: [
       {
-        element: <AuthLayout />,
+        element: <PublicRoute />,
         children: [
           {
-            path: 'signup',
-            element: withSuspense(<RoleSelectPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.signup },
-          },
-          {
-            path: 'signup/:role',
-            element: withSuspense(<RegisterPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.signup },
-          },
-          {
-            path: 'admin/login',
-            element: withSuspense(<LoginPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.login },
-          },
-          {
-            path: 'login',
-            element: withSuspense(<RoleSelectPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.login },
-          },
-          {
-            path: 'login/:role',
-            element: withSuspense(<LoginPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.login },
-          },
-          {
-            path: 'forgot-password',
-            element: withSuspense(<ForgotPasswordPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.forgotPassword },
-          },
-          {
-            path: 'forgot-password/otp',
-            element: withSuspense(<OtpVerificationPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.forgotPassword },
-          },
-          {
-            path: 'forgot-password/reset',
-            element: withSuspense(<ResetPasswordPage />, <AuthSkeleton />),
-            handle: { seo: routeSeo.forgotPassword },
+            element: <AuthLayout />,
+            children: [
+              {
+                path: 'signup',
+                element: withSuspense(<RoleSelectPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.signup },
+              },
+              {
+                path: 'signup/:role',
+                element: withSuspense(<RegisterPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.signup },
+              },
+              {
+                path: 'admin/login',
+                element: withSuspense(<LoginPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: 'login',
+                element: withSuspense(<RoleSelectPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: 'login/:role',
+                element: withSuspense(<LoginPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: 'forgot-password',
+                element: withSuspense(<ForgotPasswordPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: 'forgot-password/otp',
+                element: withSuspense(<OtpVerificationPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: 'forgot-password/reset',
+                element: withSuspense(<ResetPasswordPage />, <AuthSkeleton />),
+                handle: { seo: routeSeo.forgotPassword },
+              },
+            ],
           },
         ],
       },
-    ],
-  },
-  {
-    path: '/',
-    element: <PublicLayout />,
-    children: [
       {
-        index: true,
-        element: withSuspense(<HomePage />, <HomeSkeleton />),
-        handle: { seo: routeSeo.home },
+        path: '/',
+        element: <PublicLayout />,
+        children: [
+          {
+            index: true,
+            element: withSuspense(<HomePage />, <HomeSkeleton />),
+            handle: { seo: routeSeo.home },
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: '/developer',
-    element: withSuspense(<DeveloperPage />, <PageSkeleton />),
-  },
-  {
-    path: '/developer/:componentId',
-    element: withSuspense(<DeveloperPage />, <PageSkeleton />),
-  },
-  ...buyerRouteTrees,
-  ...panelRouteTrees,
-  {
-    path: '*',
-    element: <PublicLayout />,
-    children: [
+      {
+        path: '/developer',
+        element: withSuspense(<DeveloperPage />, <PageSkeleton />),
+      },
+      {
+        path: '/developer/:componentId',
+        element: withSuspense(<DeveloperPage />, <PageSkeleton />),
+      },
+      ...buyerRouteTrees,
+      ...panelRouteTrees,
       {
         path: '*',
-        element: withSuspense(<NotFoundPage />),
-        handle: { seo: routeSeo.notFound },
+        element: <PublicLayout />,
+        children: [
+          {
+            path: '*',
+            element: withSuspense(<NotFoundPage />),
+            handle: { seo: routeSeo.notFound },
+          },
+        ],
       },
     ],
   },
