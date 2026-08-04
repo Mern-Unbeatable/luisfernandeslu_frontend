@@ -308,7 +308,7 @@ export const COMPONENT_DOCS = [
     name: 'AuctionDetails',
     category: 'data-display',
     summary:
-      'Auction details for supplier/factory. Shipping for supplier only; active → bids, assigned → transporter.',
+      'Auction details for supplier / factory / transporter. Shipping for supplier & transporter; active → bids; assigned → transporter info (panel roles) or job view (transporter).',
     path: 'src/components/data-display/AuctionDetails/',
     importExample:
       "import AuctionDetails from '../components/data-display/AuctionDetails'",
@@ -321,16 +321,18 @@ export const COMPONENT_DOCS = [
       },
       {
         name: 'role',
-        type: "'supplier' | 'factory'",
+        type: "'supplier' | 'factory' | 'transporter'",
         required: false,
         defaultValue: "'supplier'",
-        description: 'supplier shows Shipping Details; factory hides it.',
+        description:
+          'supplier/transporter show Shipping; factory hides it. transporter sees Delivery Charge + job layout.',
       },
       {
         name: 'status',
-        type: "'active' | 'assigned'",
+        type: "'active' | 'assigned' | 'complete'",
         required: false,
-        description: 'active → Competing Bids; assigned → Transporter Information.',
+        description:
+          'supplier/factory: active → Competing Bids; assigned/complete → Transporter Info. transporter: assigned/complete → shipping job view.',
       },
       {
         name: 'onBack',
@@ -353,10 +355,10 @@ export const COMPONENT_DOCS = [
   auction={DEMO_AUCTION_DETAILS_ACTIVE}
 />`,
     optionalExample: `<AuctionDetails
-  role="factory"
+  role="transporter"
   status="assigned"
-  auction={DEMO_AUCTION_DETAILS_ASSIGNED}
-  onBack={() => navigate('/factory/auction')}
+  auction={DEMO_AUCTION_DETAILS_TRANSPORTER}
+  onBack={() => navigate('/transporter/auction-board')}
 />`,
     previewId: 'auction-details',
     variants: [
@@ -401,6 +403,29 @@ export const COMPONENT_DOCS = [
   role="factory"
   status="assigned"
   auction={DEMO_AUCTION_DETAILS_ASSIGNED}
+  onBack={() => navigate(-1)}
+/>`,
+      },
+      {
+        id: 'transporter-assigned',
+        name: 'Transporter · Assigned',
+        description:
+          'Job view: Auction ID, Delivery Charge, Customer + Shipping, Product with quantity.',
+        example: `<AuctionDetails
+  role="transporter"
+  status="assigned"
+  auction={DEMO_AUCTION_DETAILS_TRANSPORTER}
+  onBack={() => navigate(-1)}
+/>`,
+      },
+      {
+        id: 'transporter-complete',
+        name: 'Transporter · Complete',
+        description: 'Same transporter job layout for completed auctions.',
+        example: `<AuctionDetails
+  role="transporter"
+  status="complete"
+  auction={DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE}
   onBack={() => navigate(-1)}
 />`,
       },

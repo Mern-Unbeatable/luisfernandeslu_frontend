@@ -7,6 +7,8 @@ import AuctionCard, {
 import AuctionDetails, {
   DEMO_AUCTION_DETAILS_ACTIVE,
   DEMO_AUCTION_DETAILS_ASSIGNED,
+  DEMO_AUCTION_DETAILS_TRANSPORTER,
+  DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
 } from '../components/data-display/AuctionDetails'
 import OrderDetails, {
   DEMO_ORDER_NEW,
@@ -129,6 +131,16 @@ const AUCTION_DETAILS_VARIANTS = {
     role: 'factory',
     status: 'assigned',
     auction: DEMO_AUCTION_DETAILS_ASSIGNED,
+  },
+  'transporter-assigned': {
+    role: 'transporter',
+    status: 'assigned',
+    auction: DEMO_AUCTION_DETAILS_TRANSPORTER,
+  },
+  'transporter-complete': {
+    role: 'transporter',
+    status: 'complete',
+    auction: DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
   },
 }
 

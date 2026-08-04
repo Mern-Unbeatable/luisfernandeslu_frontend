@@ -1,10 +1,12 @@
-/** Demo auction detail payloads for supplier / factory views */
+/** Demo auction detail payloads for supplier / factory / transporter views */
 
 export const DEMO_AUCTION_DETAILS_ACTIVE = {
   id: 'auc-det-001',
   orderId: 'ORD-2026-002',
+  auctionId: 'ORD-: AUC-001',
   auctionDate: 'May 18, 2026',
   pickupLocation: '890 Industrial Blvd, Houston, TX',
+  deliveryCharge: '$2000.00',
   currentStatus: 'in-transit',
   status: 'active',
   customer: {
@@ -16,13 +18,13 @@ export const DEMO_AUCTION_DETAILS_ACTIVE = {
   product: {
     name: 'Heavy Machinery - Excavator',
     sku: 'EXC-HD-2024',
-    weight: '18000 kg',
+    quantity: '500 bags (50kg each)',
+    weight: '25000 kg',
     price: '$85,000',
   },
   shipping: {
-    pickupLocation: '890 Industrial Blvd, Houston, TX',
-    unloadingInstructions:
-      'Requires heavy-duty crane. Access via south gate.',
+    pickupLocation: 'Ambuja Cement Factory, Kalyan',
+    unloadingInstructions: 'Metro Construction Site, Andheri West',
     accessCondition: 'Loading dock with ramp',
     additionalNotes:
       'Delivery must be coordinated with site manager. Contact 24 hours before arrival.',
@@ -60,4 +62,29 @@ export const DEMO_AUCTION_DETAILS_ASSIGNED = {
     bidAmount: '$4,500',
     assignedAt: 'May 18, 2026 2:30 PM',
   },
+}
+
+/** Transporter view — assigned job. */
+export const DEMO_AUCTION_DETAILS_TRANSPORTER = {
+  ...DEMO_AUCTION_DETAILS_ACTIVE,
+  id: 'auc-det-003',
+  status: 'assigned',
+  auctionId: 'ORD-: AUC-001',
+  orderId: 'ORD-2026-002',
+  deliveryCharge: '$2000.00',
+  bids: [],
+  transporter: {
+    name: 'Swift Transport Co.',
+    phone: '+1 (555) 987-6543',
+    vehicleType: 'Heavy-duty flatbed truck',
+    bidAmount: '$2000.00',
+    assignedAt: 'May 18, 2026 2:30 PM',
+  },
+}
+
+export const DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE = {
+  ...DEMO_AUCTION_DETAILS_TRANSPORTER,
+  id: 'auc-det-004',
+  status: 'complete',
+  currentStatus: 'complete',
 }

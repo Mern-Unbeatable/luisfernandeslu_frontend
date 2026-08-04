@@ -116,13 +116,90 @@ function TransporterInfo({ transporter = {}, t }) {
   )
 }
 
+function ShippingCard({ auction, shipping, t }) {
+  return (
+    <Card title={t('auction.details.shippingDetails')}>
+      <div className="flex flex-col gap-4">
+        <StackField
+          label={t('auction.details.pickupLocation')}
+          value={shipping.pickupLocation || auction.pickupLocation}
+        />
+        <StackField
+          label={t('auction.details.unloadingInstructions')}
+          value={shipping.unloadingInstructions}
+        />
+        <StackField
+          label={t('auction.details.accessCondition')}
+          value={shipping.accessCondition}
+        />
+        <StackField
+          label={t('auction.details.additionalNotes')}
+          value={shipping.additionalNotes}
+        />
+      </div>
+    </Card>
+  )
+}
+
+function CustomerCard({ customer, t }) {
+  return (
+    <Card title={t('auction.details.customerInfo')}>
+      <div className="flex flex-col gap-4">
+        <StackField label={t('auction.details.name')} value={customer.name} />
+        <StackField label={t('auction.details.phone')} value={customer.phone} />
+        <StackField label={t('auction.details.email')} value={customer.email} />
+        <StackField
+          label={t('auction.details.deliveryAddress')}
+          value={customer.deliveryAddress}
+        />
+      </div>
+    </Card>
+  )
+}
+
+function ProductCard({ product, showQuantity, t }) {
+  return (
+    <Card title={t('auction.details.productInfo')}>
+      <div className="flex flex-col gap-4">
+        <StackField
+          label={t('auction.details.productName')}
+          value={product.name}
+        />
+        <div
+          className={[
+            'grid grid-cols-1 gap-4',
+            showQuantity ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3',
+          ].join(' ')}
+        >
+          <StackField label={t('auction.details.sku')} value={product.sku} />
+          {showQuantity ? (
+            <StackField
+              label={t('auction.details.quantity')}
+              value={product.quantity}
+            />
+          ) : null}
+          <StackField
+            label={t('auction.details.weight')}
+            value={product.weight}
+          />
+          <StackField
+            label={t('auction.details.price')}
+            value={product.price}
+          />
+        </div>
+      </div>
+    </Card>
+  )
+}
+
 /**
- * Common auction details page for supplier / factory.
+ * Common auction details page.
  *
- * role: 'supplier' → Shipping Details shown
- * role: 'factory'  → Shipping Details hidden; pickup in Order Summary
- * status: 'active' → Competing Transporter Bids
- * status: 'assigned' → Transporter Information + status badge
+ * role: 'supplier'     → Shipping Details; active → bids; assigned → transporter info
+ * role: 'factory'      → no Shipping card; pickup in summary; same status split
+ * role: 'transporter'  → assigned/complete job view: Shipping + Delivery Charge; no bids/transporter card
+ *
+ * status: 'active' | 'assigned' | 'complete'
  */
 export default function AuctionDetails({
   role = 'supplier',
@@ -133,8 +210,14 @@ export default function AuctionDetails({
 }) {
   const { t } = useTranslation()
   const isSupplier = role === 'supplier'
-  const resolvedStatus = status || auction.status || 'active'
+  const isFactory = role === 'factory'
+  const isTransporter = role === 'transporter'
+  const resolvedStatus = String(status || auction.status || 'active').toLowerCase()
   const isAssigned = resolvedStatus === 'assigned'
+  const isComplete = resolvedStatus === 'complete' || resolvedStatus === 'completed'
+  const showTransporterPanel = (isSupplier || isFactory) && (isAssigned || isComplete)
+  const showBids = (isSupplier || isFactory) && !showTransporterPanel
+  const showShipping = isSupplier || isTransporter
   const customer = auction.customer || {}
   const product = auction.product || {}
   const shipping = auction.shipping || {}
@@ -155,105 +238,72 @@ export default function AuctionDetails({
       <div className="flex flex-col gap-5">
         <Card title={t('auction.details.orderSummary')}>
           <div className="flex flex-col gap-3">
-            <SummaryRow label={t('auction.details.orderId')}>
-              {auction.orderId}
+            <SummaryRow
+              label={
+                isTransporter
+                  ? t('auction.details.auctionId')
+                  : t('auction.details.orderId')
+              }
+            >
+              {isTransporter
+                ? auction.auctionId || auction.orderId
+                : auction.orderId}
             </SummaryRow>
             <SummaryRow label={t('auction.details.auctionDate')}>
               {auction.auctionDate}
             </SummaryRow>
-            {!isSupplier ? (
+            {isFactory ? (
               <SummaryRow label={t('auction.details.pickupLocation')}>
                 {auction.pickupLocation || shipping.pickupLocation}
               </SummaryRow>
             ) : null}
-            {isAssigned ? (
+            {isTransporter ? (
+              <SummaryRow label={t('auction.details.deliveryCharge')}>
+                {auction.deliveryCharge || auction.transporter?.bidAmount}
+              </SummaryRow>
+            ) : null}
+            {showTransporterPanel ? (
               <SummaryRow label={t('auction.details.currentStatus')}>
                 <StatusBadge
-                  label={auction.currentStatus || t('auction.details.inTransit')}
+                  label={
+                    auction.currentStatus ||
+                    (isComplete
+                      ? t('auction.details.complete')
+                      : t('auction.details.inTransit'))
+                  }
                 />
               </SummaryRow>
             ) : null}
           </div>
         </Card>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="flex flex-col gap-5">
-            <Card title={t('auction.details.customerInfo')}>
-              <div className="flex flex-col gap-4">
-                <StackField
-                  label={t('auction.details.name')}
-                  value={customer.name}
-                />
-                <StackField
-                  label={t('auction.details.phone')}
-                  value={customer.phone}
-                />
-                <StackField
-                  label={t('auction.details.email')}
-                  value={customer.email}
-                />
-                <StackField
-                  label={t('auction.details.deliveryAddress')}
-                  value={customer.deliveryAddress}
-                />
-              </div>
-            </Card>
+        {isTransporter ? (
+          <>
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <CustomerCard customer={customer} t={t} />
+              <ShippingCard auction={auction} shipping={shipping} t={t} />
+            </div>
+            <ProductCard product={product} showQuantity t={t} />
+          </>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            <div className="flex flex-col gap-5">
+              <CustomerCard customer={customer} t={t} />
+              <ProductCard product={product} showQuantity={false} t={t} />
+            </div>
 
-            <Card title={t('auction.details.productInfo')}>
-              <div className="flex flex-col gap-4">
-                <StackField
-                  label={t('auction.details.productName')}
-                  value={product.name}
-                />
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <StackField
-                    label={t('auction.details.sku')}
-                    value={product.sku}
-                  />
-                  <StackField
-                    label={t('auction.details.weight')}
-                    value={product.weight}
-                  />
-                  <StackField
-                    label={t('auction.details.price')}
-                    value={product.price}
-                  />
-                </div>
-              </div>
-            </Card>
+            <div className="flex flex-col gap-5">
+              {showShipping ? (
+                <ShippingCard auction={auction} shipping={shipping} t={t} />
+              ) : null}
+
+              {showTransporterPanel ? (
+                <TransporterInfo transporter={auction.transporter} t={t} />
+              ) : null}
+              {showBids ? <CompetingBids bids={auction.bids} t={t} /> : null}
+            </div>
           </div>
-
-          <div className="flex flex-col gap-5">
-            {isSupplier ? (
-              <Card title={t('auction.details.shippingDetails')}>
-                <div className="flex flex-col gap-4">
-                  <StackField
-                    label={t('auction.details.pickupLocation')}
-                    value={shipping.pickupLocation || auction.pickupLocation}
-                  />
-                  <StackField
-                    label={t('auction.details.unloadingInstructions')}
-                    value={shipping.unloadingInstructions}
-                  />
-                  <StackField
-                    label={t('auction.details.accessCondition')}
-                    value={shipping.accessCondition}
-                  />
-                  <StackField
-                    label={t('auction.details.additionalNotes')}
-                    value={shipping.additionalNotes}
-                  />
-                </div>
-              </Card>
-            ) : null}
-
-            {isAssigned ? (
-              <TransporterInfo transporter={auction.transporter} t={t} />
-            ) : (
-              <CompetingBids bids={auction.bids} t={t} />
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )
