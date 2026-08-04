@@ -1,3 +1,5 @@
+import { FiArrowLeft } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import StandardOrderDetails from './StandardOrderDetails'
 import InstallmentOrderDetails from './InstallmentOrderDetails'
 
@@ -13,19 +15,22 @@ import InstallmentOrderDetails from './InstallmentOrderDetails'
  *   assigned → transporter banner + chat
  *
  * @example
- * <OrderDetails order={data} hasInstallment={false} />
- * <OrderDetails order={data} hasInstallment status="assigned" />
+ * <OrderDetails order={data} hasInstallment={false} onBack={fn} />
+ * <OrderDetails order={data} hasInstallment status="assigned" onBack={fn} />
  */
 export default function OrderDetails({
   order = {},
   hasInstallment,
   status,
+  onBack,
+  onAccept,
   onDownloadInvoice,
   onChat,
   onPayNow,
   onCancelInstallment,
   className = '',
 }) {
+  const { t } = useTranslation()
   const resolvedHasInstallment =
     hasInstallment ?? order.hasInstallment ?? false
 
@@ -37,9 +42,21 @@ export default function OrderDetails({
 
   return (
     <div className={`mx-auto w-full ${className}`}>
+      {onBack ? (
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-5 inline-flex items-center gap-1.5 text-sm text-[var(--secondary-text)] transition-colors hover:text-[var(--active)]"
+        >
+          <FiArrowLeft className="size-4" strokeWidth={2} aria-hidden />
+          {t('order.details.back')}
+        </button>
+      ) : null}
+
       {resolvedHasInstallment ? (
         <InstallmentOrderDetails
           order={merged}
+          onAccept={onAccept}
           onChat={onChat}
           onPayNow={onPayNow}
           onCancelInstallment={onCancelInstallment}
@@ -47,6 +64,7 @@ export default function OrderDetails({
       ) : (
         <StandardOrderDetails
           order={merged}
+          onAccept={onAccept}
           onDownloadInvoice={onDownloadInvoice}
         />
       )}

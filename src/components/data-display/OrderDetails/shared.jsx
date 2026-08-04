@@ -1,4 +1,5 @@
 import { FiDownload, FiMapPin, FiPhone } from 'react-icons/fi'
+import DataTable from '../DataTable/DataTable'
 
 export function normalizeStatus(status = '') {
   const s = String(status).toLowerCase().trim()
@@ -41,6 +42,18 @@ export function DownloadInvoiceButton({ onClick, label = 'DOWNLOAD INVOICE' }) {
       className="inline-flex h-11 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
     >
       <FiDownload className="size-4" strokeWidth={2.25} aria-hidden />
+      {label}
+    </button>
+  )
+}
+
+export function AcceptButton({ onClick, label = 'ACCEPT' }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex h-11 min-w-[120px] items-center justify-center rounded-lg bg-[var(--active)] px-6 text-sm font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
+    >
       {label}
     </button>
   )
@@ -106,81 +119,83 @@ export function ContactLine({ email, phone }) {
 }
 
 const PRODUCT_COLS = [
-  { key: 'product', label: 'PRODUCT' },
-  { key: 'category', label: 'CATEGORY' },
-  { key: 'material', label: 'MATERIAL' },
-  { key: 'weightSize', label: 'WEIGHT / SIZE' },
-  { key: 'qty', label: 'QTY' },
-  { key: 'unit', label: 'UNIT' },
-  { key: 'warehouse', label: 'WAREHOUSE LOCATION' },
-  { key: 'total', label: 'TOTAL' },
+  {
+    key: 'product',
+    header: 'PRODUCT',
+    className: 'max-w-[200px] whitespace-normal',
+  },
+  { key: 'category', header: 'CATEGORY' },
+  { key: 'material', header: 'MATERIAL' },
+  {
+    key: 'weightSize',
+    header: 'WEIGHT / SIZE',
+    className: 'max-w-[180px] whitespace-normal',
+  },
+  { key: 'qty', header: 'QTY' },
+  { key: 'unit', header: 'UNIT' },
+  {
+    key: 'warehouse',
+    header: 'WAREHOUSE LOCATION',
+    className: 'max-w-[200px] whitespace-normal',
+  },
+  { key: 'total', header: 'TOTAL' },
 ]
 
 const BREAKDOWN_COLS = [
-  { key: 'product', label: 'PRODUCT' },
-  { key: 'category', label: 'CATEGORY' },
-  { key: 'material', label: 'MATERIAL' },
-  { key: 'weightSize', label: 'WEIGHT / SIZE' },
-  { key: 'qty', label: 'QTY' },
-  { key: 'warehouse', label: 'WAREHOUSE LOCATION' },
-  { key: 'installmentNumber', label: 'INSTALLMENT NUMBER' },
-  { key: 'amount', label: 'AMOUNT' },
+  {
+    key: 'product',
+    header: 'PRODUCT',
+    className: 'max-w-[200px] whitespace-normal',
+  },
+  { key: 'category', header: 'CATEGORY' },
+  { key: 'material', header: 'MATERIAL' },
+  {
+    key: 'weightSize',
+    header: 'WEIGHT / SIZE',
+    className: 'max-w-[180px] whitespace-normal',
+  },
+  { key: 'qty', header: 'QTY' },
+  {
+    key: 'warehouse',
+    header: 'WAREHOUSE LOCATION',
+    className: 'max-w-[200px] whitespace-normal',
+  },
+  { key: 'installmentNumber', header: 'INSTALLMENT NUMBER' },
+  { key: 'amount', header: 'AMOUNT' },
 ]
 
-export function DataTable({ columns, rows = [], emptyLabel = 'No items' }) {
+export function ProductsTable({ products = [] }) {
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-200 bg-white">
-      <table className="min-w-[900px] w-full border-collapse bg-white text-left text-sm">
-        <thead>
-          <tr className="bg-white">
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                className="px-3 py-3 text-[11px] font-semibold tracking-wide whitespace-nowrap text-gray-500 uppercase"
-              >
-                {col.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length === 0 ? (
-            <tr>
-              <td
-                colSpan={columns.length}
-                className="bg-white px-3 py-8 text-center text-[var(--secondary-text)]"
-              >
-                {emptyLabel}
-              </td>
-            </tr>
-          ) : (
-            rows.map((row) => (
-              <tr key={row.id} className="border-t border-gray-100 bg-white">
-                {columns.map((col) => (
-                  <td
-                    key={col.key}
-                    className="max-w-[200px] bg-white px-3 py-3 align-top text-[var(--primary-text)]"
-                  >
-                    <span className="block break-words">
-                      {row[col.key] || '—'}
-                    </span>
-                  </td>
-                ))}
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      showCard
+      bgClassName="bg-white"
+      columns={PRODUCT_COLS}
+      data={products}
+      emptyMessage="No products"
+      showTabs={false}
+      showSearch={false}
+      showFilters={false}
+      showActions={false}
+      showPagination={false}
+    />
   )
 }
 
-export function ProductsTable({ products }) {
-  return <DataTable columns={PRODUCT_COLS} rows={products} />
-}
-
-export function InstallmentBreakdownTable({ rows }) {
-  return <DataTable columns={BREAKDOWN_COLS} rows={rows} />
+export function InstallmentBreakdownTable({ rows = [] }) {
+  return (
+    <DataTable
+      showCard
+      bgClassName="bg-white"
+      columns={BREAKDOWN_COLS}
+      data={rows}
+      emptyMessage="No installments"
+      showTabs={false}
+      showSearch={false}
+      showFilters={false}
+      showActions={false}
+      showPagination={false}
+    />
+  )
 }
 
 export function PriceSummary({ totals = {} }) {

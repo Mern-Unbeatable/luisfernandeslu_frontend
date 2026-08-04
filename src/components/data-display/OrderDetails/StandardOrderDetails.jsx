@@ -1,5 +1,6 @@
 import { FiMapPin } from 'react-icons/fi'
 import {
+  AcceptButton,
   ContactLine,
   DownloadInvoiceButton,
   IconLabel,
@@ -14,13 +15,16 @@ import {
 
 /**
  * Order details when hasInstallment=false
- * status: pending | assigned | cancel
+ * status: new | pending | assigned | cancel
+ * new → Accept button (instead of Download Invoice)
  */
 export default function StandardOrderDetails({
   order = {},
   onDownloadInvoice,
+  onAccept,
 }) {
   const status = normalizeStatus(order.status)
+  const isNew = status === 'new'
   const isCancel = status === 'cancel'
   const showTransporter =
     status === 'assigned' || (isCancel && order.transporter)
@@ -43,7 +47,11 @@ export default function StandardOrderDetails({
             <MetaCard label="Order Date" value={order.orderDate} />
           </div>
         </div>
-        <DownloadInvoiceButton onClick={() => onDownloadInvoice?.(order)} />
+        {isNew ? (
+          <AcceptButton onClick={() => onAccept?.(order)} />
+        ) : (
+          <DownloadInvoiceButton onClick={() => onDownloadInvoice?.(order)} />
+        )}
       </div>
 
       {isCancel && order.cancelReason ? (

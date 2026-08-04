@@ -407,5 +407,10 @@
       "submit": "Submeter leilão",
       "nav": "Criar leilão"
     }
+  },
+  "order": {
+    "details": {
+      "back": "Voltar"
+    }
   }
 }

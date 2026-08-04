@@ -160,6 +160,24 @@ export const DEMO_ORDER_PENDING = {
   cancelReason: null,
 }
 
+/** hasInstallment=false · New (Accept button) */
+export const DEMO_ORDER_NEW = {
+  ...DEMO_ORDER_PENDING,
+  id: 'ORD-1001',
+  orderId: 'ORD-1001',
+  status: 'new',
+  company: {
+    name: 'Zarah Islam',
+    email: 'zaraislam@gmail.com',
+    phone: '+123 765 3400',
+    project: 'America',
+    region: 'America',
+    city: 'America',
+    zipCode: '095764',
+    address: '2118 Thornridge Cir. Syracuse, Connecticut 35624',
+  },
+}
+
 /** hasInstallment=false · Assigned */
 export const DEMO_ORDER_ASSIGNED = {
   ...DEMO_ORDER_PENDING,

@@ -112,7 +112,7 @@ const MOCK_MESSAGES = {
 export default function useMessages() {
   const [chats, setChats] = useState(MOCK_CHATS)
   const [messagesByChat, setMessagesByChat] = useState(MOCK_MESSAGES)
-  const [activePartnerId, setActivePartnerId] = useState('c2')
+  const [activePartnerId, setActivePartnerId] = useState(null)
   const [isSending, setIsSending] = useState(false)
   const [isPartnerTyping] = useState(false)
   const [actionMessageId, setActionMessageId] = useState(null)

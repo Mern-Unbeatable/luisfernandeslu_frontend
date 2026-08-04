@@ -24,6 +24,7 @@ import AuctionDetails, {
 } from '../components/data-display/AuctionDetails'
 import OrderDetails, {
   DEMO_ORDER_PENDING,
+  DEMO_ORDER_NEW,
   DEMO_ORDER_ASSIGNED,
   DEMO_ORDER_CANCEL,
   DEMO_ORDER_INSTALLMENT_NEW,
@@ -107,6 +108,11 @@ const AUCTION_DETAILS_VARIANTS = [
 ]
 
 const ORDER_DETAILS_VARIANTS = [
+  {
+    name: '0 — No installment · New (Accept)',
+    hasInstallment: false,
+    order: DEMO_ORDER_NEW,
+  },
   {
     name: '1 — No installment · Pending',
     hasInstallment: false,
@@ -456,6 +462,8 @@ export default function HomePage() {
                 <OrderDetails
                   hasInstallment={variant.hasInstallment}
                   order={variant.order}
+                  onBack={() => console.log('back', variant.name)}
+                  onAccept={(order) => console.log('accept', order?.orderId)}
                   onDownloadInvoice={(order) =>
                     console.log('download invoice', order?.orderId)
                   }

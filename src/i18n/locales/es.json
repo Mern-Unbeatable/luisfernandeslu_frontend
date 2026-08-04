@@ -407,5 +407,10 @@
       "submit": "Enviar subasta",
       "nav": "Crear subasta"
     }
+  },
+  "order": {
+    "details": {
+      "back": "Volver"
+    }
   }
 }

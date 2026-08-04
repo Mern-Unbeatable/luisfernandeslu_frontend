@@ -27,11 +27,14 @@ export default function ChatArea({
 }) {
   const [inputText, setInputText] = useState('')
   const [editingMessageId, setEditingMessageId] = useState(null)
-  const messagesEndRef = useRef(null)
+  const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = messagesContainerRef.current
+    if (!container) return
+    // Scroll only inside the chat pane — never the page
+    container.scrollTop = container.scrollHeight
   }, [messages, isPartnerTyping])
 
   useEffect(() => {
@@ -105,7 +108,10 @@ export default function ChatArea({
         </div>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto bg-[#F8F8F8] px-3 py-4 sm:px-5">
+      <div
+        ref={messagesContainerRef}
+        className="flex-1 space-y-4 overflow-y-auto bg-[#F8F8F8] px-3 py-4 sm:px-5"
+      >
         <p className="text-center text-xs text-[var(--secondary-text)]">
           Thursday, Jan 4 • 6:21 PM
         </p>
@@ -139,7 +145,6 @@ export default function ChatArea({
             <span className="rounded-2xl bg-gray-100 px-3 py-2">Typing...</span>
           </div>
         ) : null}
-        <div ref={messagesEndRef} />
       </div>
 
       <div className="border-t border-gray-200 bg-[#F8F8F8] px-3 py-3 sm:px-4">

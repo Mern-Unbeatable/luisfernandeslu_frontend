@@ -4,6 +4,7 @@ export { default as StandardOrderDetails } from './StandardOrderDetails'
 export { default as InstallmentOrderDetails } from './InstallmentOrderDetails'
 export {
   DEMO_ORDER_PENDING,
+  DEMO_ORDER_NEW,
   DEMO_ORDER_ASSIGNED,
   DEMO_ORDER_CANCEL,
   DEMO_ORDER_INSTALLMENT_NEW,

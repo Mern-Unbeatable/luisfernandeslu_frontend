@@ -1,6 +1,7 @@
 import { FiBox, FiMapPin, FiMessageSquare, FiTag } from 'react-icons/fi'
 import InstallmentTimeline from '../InstallmentTimeline/InstallmentTimeline'
 import {
+  AcceptButton,
   ContactLine,
   IconLabel,
   InstallmentBreakdownTable,
@@ -123,11 +124,13 @@ function TransporterBanner({ transporter = {}, onChat }) {
  */
 export default function InstallmentOrderDetails({
   order = {},
+  onAccept,
   onChat,
   onPayNow,
   onCancelInstallment,
 }) {
   const status = normalizeStatus(order.status)
+  const isNew = status === 'new'
   const company = order.company || {}
   const logistics = order.logistics || {}
   const payment = order.payment || {}
@@ -136,11 +139,14 @@ export default function InstallmentOrderDetails({
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
-          {order.orderId}
-        </h1>
-        <StatusBadge status={status} />
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
+            {order.orderId}
+          </h1>
+          <StatusBadge status={status} />
+        </div>
+        {isNew ? <AcceptButton onClick={() => onAccept?.(order)} /> : null}
       </div>
 
       <section className="mb-6">
