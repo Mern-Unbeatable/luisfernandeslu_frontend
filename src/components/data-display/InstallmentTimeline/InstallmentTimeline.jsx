@@ -54,7 +54,7 @@ function InstallmentCard({
   showLine,
   onPayNow,
   onCancel,
-  canPayInstallments = true,
+  showPay = false,
 }) {
   const status = STATUS[item.status] || STATUS.pending
   const Icon = status.Icon
@@ -105,7 +105,7 @@ function InstallmentCard({
             <span className="inline-flex h-11 min-w-20 items-center justify-center rounded-2xl bg-gray-100 px-4 text-base font-medium text-gray-400">
               Paid
             </span>
-          ) : canPayInstallments && canPayNow ? (
+          ) : showPay && canPayNow ? (
             <>
               <button
                 type="button"
@@ -122,7 +122,7 @@ function InstallmentCard({
                 Cancel
               </button>
             </>
-          ) : canPayInstallments ? (
+          ) : showPay ? (
             <span className="inline-flex h-11 min-w-24 items-center justify-center rounded-2xl bg-gray-100 px-4 text-sm font-medium text-gray-500">
               Not Due
             </span>
@@ -135,14 +135,15 @@ function InstallmentCard({
 
 /**
  * Common installment timeline.
+ * showPay → Pay Now / Cancel / Not Due; onPayNow(item) when Pay Now is clicked.
  * items: { id, title, status, dueDate, amount, quantity?, statusLabel? }[]
  */
 export default function InstallmentTimeline({
   title = 'Installment Timeline',
   items = [],
+  showPay = false,
   onPayNow,
   onCancel,
-  canPayInstallments = true,
   className = '',
 }) {
   return (
@@ -160,9 +161,9 @@ export default function InstallmentTimeline({
               key={item.id || `${item.title}-${index}`}
               item={item}
               showLine={index < items.length - 1}
+              showPay={showPay}
               onPayNow={onPayNow}
               onCancel={onCancel}
-              canPayInstallments={canPayInstallments}
             />
           ))}
         </ul>

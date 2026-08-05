@@ -6,17 +6,16 @@ import InstallmentOrderDetails from './InstallmentOrderDetails'
 /**
  * Common Order Details page.
  *
- * hasInstallment=false → standard UI (images 1–3)
- *   status: pending | assigned | cancel
- *   assigned/cancel → transporter info shown
+ * hasInstallment=false → standard UI
+ * hasInstallment=true  → installment UI + timeline
  *
- * hasInstallment=true → installment UI (images 4–5)
- *   status: new | pending | processing | assigned | paid
- *   assigned → transporter banner + chat
+ * Pay actions (installment only):
+ *   showPay={true}  → Pay Now / Cancel / Not Due on timeline
+ *   onPayNow={fn}   → called when Pay Now is clicked
  *
  * @example
- * <OrderDetails order={data} hasInstallment={false} onBack={fn} />
- * <OrderDetails order={data} hasInstallment status="assigned" onBack={fn} />
+ * <OrderDetails order={data} hasInstallment showPay onPayNow={pay} />
+ * <OrderDetails order={data} hasInstallment /> // no Pay UI
  */
 export default function OrderDetails({
   order = {},
@@ -26,6 +25,7 @@ export default function OrderDetails({
   onAccept,
   onDownloadInvoice,
   onChat,
+  showPay = false,
   onPayNow,
   onCancelInstallment,
   className = '',
@@ -58,6 +58,7 @@ export default function OrderDetails({
           order={merged}
           onAccept={onAccept}
           onChat={onChat}
+          showPay={showPay}
           onPayNow={onPayNow}
           onCancelInstallment={onCancelInstallment}
         />

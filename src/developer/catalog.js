@@ -77,16 +77,24 @@ export const COMPONENT_DOCS = [
         description: 'Installment + assigned transporter Chat button.',
       },
       {
+        name: 'showPay',
+        type: 'boolean',
+        required: false,
+        defaultValue: 'false',
+        description:
+          'true → show Pay Now / Cancel / Not Due on installment timeline. false → hide pay actions.',
+      },
+      {
         name: 'onPayNow',
         type: '(installment) => void',
         required: false,
-        description: 'Installment timeline Pay Now.',
+        description: 'Called when Pay Now is clicked (only if showPay).',
       },
       {
         name: 'onCancelInstallment',
         type: '(installment) => void',
         required: false,
-        description: 'Installment timeline Cancel.',
+        description: 'Called when Cancel is clicked (only if showPay).',
       },
       {
         name: 'className',
@@ -102,11 +110,11 @@ export const COMPONENT_DOCS = [
 />`,
     optionalExample: `<OrderDetails
   order={order}
-  hasInstallment={false}
-  status="new"
+  hasInstallment
+  showPay
   onBack={() => navigate(-1)}
-  onAccept={(order) => acceptOrder(order.id)}
-  onDownloadInvoice={(order) => download(order.id)}
+  onPayNow={(row) => payInstallment(row.id)}
+  onCancelInstallment={(row) => cancelInstallment(row.id)}
 />`,
     previewId: 'order-details',
     variants: [
@@ -159,11 +167,12 @@ export const COMPONENT_DOCS = [
       },
       {
         id: 'installment-new',
-        name: 'Installment · New',
-        description: 'Installment timeline + payment summary; no transporter card.',
+        name: 'Installment · New (with Pay)',
+        description: 'showPay + onPayNow — Pay Now when due.',
         example: `<OrderDetails
   order={order}
   hasInstallment
+  showPay
   status="new"
   onBack={() => navigate(-1)}
   onPayNow={(row) => pay(row.id)}
@@ -172,16 +181,29 @@ export const COMPONENT_DOCS = [
       },
       {
         id: 'installment-assigned',
-        name: 'Installment · Assigned',
-        description: 'Transporter banner + Chat; installment timeline.',
+        name: 'Installment · Assigned (with Pay)',
+        description: 'Transporter banner + Chat; showPay + onPayNow.',
+        example: `<OrderDetails
+  order={order}
+  hasInstallment
+  showPay
+  status="assigned"
+  onBack={() => navigate(-1)}
+  onChat={(t) => openChat(t)}
+  onPayNow={(row) => pay(row.id)}
+  onCancelInstallment={(row) => cancel(row.id)}
+/>`,
+      },
+      {
+        id: 'installment-supplier',
+        name: 'Installment · No Pay',
+        description: 'Same installment UI without Pay — omit showPay (or showPay={false}).',
         example: `<OrderDetails
   order={order}
   hasInstallment
   status="assigned"
   onBack={() => navigate(-1)}
   onChat={(t) => openChat(t)}
-  onPayNow={(row) => pay(row.id)}
-  onCancelInstallment={(row) => cancel(row.id)}
 />`,
       },
     ],
@@ -1161,21 +1183,29 @@ export const COMPONENT_DOCS = [
         description: 'Section heading.',
       },
       {
+        name: 'showPay',
+        type: 'boolean',
+        required: false,
+        defaultValue: 'false',
+        description: 'true → show Pay Now / Cancel / Not Due. false → timeline only.',
+      },
+      {
         name: 'onPayNow',
         type: '(item) => void',
         required: false,
-        description: 'Pending installment Pay Now.',
+        description: 'Called when Pay Now is clicked (only if showPay).',
       },
       {
         name: 'onCancel',
         type: '(item) => void',
         required: false,
-        description: 'Pending installment Cancel.',
+        description: 'Called when Cancel is clicked (only if showPay).',
       },
     ],
     requiredExample: `<InstallmentTimeline items={DEMO_INSTALLMENTS} />`,
     optionalExample: `<InstallmentTimeline
   items={DEMO_INSTALLMENTS}
+  showPay
   onPayNow={(item) => pay(item.id)}
   onCancel={(item) => cancel(item.id)}
 />`,
@@ -1183,25 +1213,36 @@ export const COMPONENT_DOCS = [
     variants: [
       {
         id: 'mixed',
-        name: 'Mixed',
-        description: 'Completed + pending items (default demo).',
+        name: 'Mixed (with Pay)',
+        description: 'Completed + pending; showPay on.',
         example: `<InstallmentTimeline
   items={DEMO_INSTALLMENTS}
+  showPay
   onPayNow={(item) => pay(item.id)}
   onCancel={(item) => cancel(item.id)}
 />`,
       },
       {
         id: 'all-pending',
-        name: 'All pending',
-        description: 'Every row shows Pay Now / Cancel.',
-        example: `<InstallmentTimeline items={items.map((i) => ({ ...i, status: 'pending' }))} />`,
+        name: 'All pending (with Pay)',
+        description: 'Every row shows Pay Now / Cancel when due.',
+        example: `<InstallmentTimeline
+  items={items.map((i) => ({ ...i, status: 'pending' }))}
+  showPay
+  onPayNow={pay}
+/>`,
       },
       {
         id: 'all-completed',
         name: 'All completed',
-        description: 'Every row shows Paid / completed state.',
+        description: 'Every row shows Paid.',
         example: `<InstallmentTimeline items={items.map((i) => ({ ...i, status: 'completed' }))} />`,
+      },
+      {
+        id: 'no-pay',
+        name: 'No Pay',
+        description: 'showPay={false} — timeline only, no Pay/Cancel.',
+        example: `<InstallmentTimeline items={DEMO_INSTALLMENTS} />`,
       },
     ],
   },
@@ -1452,6 +1493,97 @@ export const COMPONENT_DOCS = [
   onStatusChange={setStatus}
   onSendMessage={send}
 />`,
+      },
+    ],
+  },
+  {
+    id: 'delivery-timeline',
+    name: 'DeliveryTimeline',
+    category: 'data-display',
+    summary:
+      'Delivery progress card(s) with actions by status: assigned, picked_up, in_transit, delivered.',
+    path: 'src/components/data-display/DeliveryTimeline/',
+    importExample:
+      "import DeliveryTimeline from '../components/data-display/DeliveryTimeline'",
+    props: [
+      {
+        name: 'items',
+        type: 'Array<DeliveryItem>',
+        required: true,
+        description:
+          '{ id, title, orderLabel, price, distance, status, pickup, delivery }',
+      },
+      {
+        name: 'onStartTrip',
+        type: '(item) => void',
+        required: false,
+        description: 'Primary action when status=assigned.',
+      },
+      {
+        name: 'onMarkPickedUp',
+        type: '(item) => void',
+        required: false,
+        description: 'Secondary action when status=assigned.',
+      },
+      {
+        name: 'onNavigateToDelivery',
+        type: '(item) => void',
+        required: false,
+        description: 'Primary action when status=picked_up.',
+      },
+      {
+        name: 'onVerifyDelivery',
+        type: '(item) => void',
+        required: false,
+        description: 'Primary action when status=in_transit.',
+      },
+      {
+        name: 'onSeeDetails',
+        type: '(item) => void',
+        required: false,
+        description: 'See Details action for every status.',
+      },
+    ],
+    requiredExample: `<DeliveryTimeline items={DEMO_DELIVERY_TIMELINE_ITEMS} />`,
+    optionalExample: `<DeliveryTimeline
+  items={DEMO_DELIVERY_TIMELINE_ITEMS}
+  onStartTrip={(item) => startTrip(item.id)}
+  onMarkPickedUp={(item) => markPicked(item.id)}
+  onNavigateToDelivery={(item) => openMap(item.id)}
+  onVerifyDelivery={(item) => verify(item.id)}
+  onSeeDetails={(item) => navigate(item.id)}
+/>`,
+    previewId: 'delivery-timeline',
+    variants: [
+      {
+        id: 'mixed',
+        name: 'Mixed statuses',
+        description: 'List containing assigned, picked_up, in_transit and delivered.',
+        example: `<DeliveryTimeline items={DEMO_DELIVERY_TIMELINE_ITEMS} />`,
+      },
+      {
+        id: 'assigned',
+        name: 'Assigned',
+        description: 'Before pickup: Start Trip + Mark Picked Up.',
+        example: `<DeliveryTimeline items={items.filter((x) => x.status === 'assigned')} />`,
+      },
+      {
+        id: 'picked-up',
+        name: 'Picked Up',
+        description: 'After pickup: Navigate to Delivery action.',
+        example: `<DeliveryTimeline items={items.filter((x) => x.status === 'picked_up')} />`,
+      },
+      {
+        id: 'in-transit',
+        name: 'In Transit',
+        description: 'In route: Verify Delivery action.',
+        example: `<DeliveryTimeline items={items.filter((x) => x.status === 'in_transit')} />`,
+      },
+      {
+        id: 'delivered',
+        name: 'Delivered',
+        description: 'Completed: only See Details.',
+        example: `<DeliveryTimeline items={items.filter((x) => x.status === 'delivered')} />`,
       },
     ],
   },

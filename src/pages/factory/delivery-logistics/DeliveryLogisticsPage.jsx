@@ -1,5 +1,15 @@
-import ComingSoonPage from '../../shared/ComingSoonPage'
+import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
+import { DEMO_DELIVERY_TIMELINE_ITEMS } from '@/data/demoData'
 
 export default function DeliveryLogisticsPage() {
-  return <ComingSoonPage titleKey="panel.nav.deliveryLogistics" />
+  return (
+    <DeliveryTimeline
+      items={DEMO_DELIVERY_TIMELINE_ITEMS}
+      onStartTrip={() => {}}
+      onMarkPickedUp={() => {}}
+      onNavigateToDelivery={() => {}}
+      onVerifyDelivery={() => {}}
+      onSeeDetails={() => {}}
+    />
+  )
 }

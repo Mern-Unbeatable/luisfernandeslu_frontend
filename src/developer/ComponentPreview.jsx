@@ -9,6 +9,7 @@ import StatusBadge from '../components/data-display/DataTable/StatusBadge'
 import InstallmentTimeline from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
 import StatusCard from '../components/data-display/StatusCard'
 import DisputeResolution from '../components/data-display/DisputeResolution'
+import DeliveryTimeline from '../components/data-display/DeliveryTimeline'
 import CreateAuction from '../components/forms/CreateAuction'
 import AddProduct from '../components/forms/AddProduct/AddProduct'
 import Messenger from '../components/common/messenger/Messenger'
@@ -27,12 +28,14 @@ import {
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
   DEMO_DISPUTE_DASHBOARD,
   DEMO_DISPUTE_PUBLIC,
+  DEMO_DELIVERY_TIMELINE_ITEMS,
   DEMO_FACTORY_PRODUCT,
   DEMO_INSTALLMENTS,
   DEMO_ORDER_ASSIGNED,
   DEMO_ORDER_CANCEL,
   DEMO_ORDER_INSTALLMENT_ASSIGNED,
   DEMO_ORDER_INSTALLMENT_NEW,
+  DEMO_ORDER_INSTALLMENT_SUPPLIER,
   DEMO_ORDER_NEW,
   DEMO_ORDER_PENDING,
   DEMO_PRODUCT,
@@ -48,15 +51,21 @@ const ORDER_VARIANT_ORDERS = {
   'standard-cancel': DEMO_ORDER_CANCEL,
   'installment-new': DEMO_ORDER_INSTALLMENT_NEW,
   'installment-assigned': DEMO_ORDER_INSTALLMENT_ASSIGNED,
+  'installment-supplier': DEMO_ORDER_INSTALLMENT_SUPPLIER,
 }
 
 function OrderDetailsPreview({ variantId }) {
   const order = ORDER_VARIANT_ORDERS[variantId] ?? DEMO_ORDER_NEW
+  const showPay =
+    variantId === 'installment-new' || variantId === 'installment-assigned'
+
   return (
     <OrderDetails
       order={order}
       hasInstallment={Boolean(order.hasInstallment)}
       status={order.status}
+      className="px-3 sm:px-0"
+      showPay={showPay}
       onBack={() => {}}
       onAccept={() => {}}
       onDownloadInvoice={() => {}}
@@ -603,9 +612,12 @@ function InstallmentTimelinePreview({ variantId }) {
     items = items.map((item) => ({ ...item, status: 'completed' }))
   }
 
+  const showPay = variantId !== 'no-pay' && variantId !== 'payee'
+
   return (
     <InstallmentTimeline
       items={items}
+      showPay={showPay}
       onPayNow={() => {}}
       onCancel={() => {}}
     />
@@ -708,6 +720,30 @@ function DisputeResolutionPreview({ variantId }) {
   )
 }
 
+function DeliveryTimelinePreview({ variantId }) {
+  let items = DEMO_DELIVERY_TIMELINE_ITEMS
+  if (variantId === 'assigned') {
+    items = DEMO_DELIVERY_TIMELINE_ITEMS.filter((x) => x.status === 'assigned')
+  } else if (variantId === 'picked-up') {
+    items = DEMO_DELIVERY_TIMELINE_ITEMS.filter((x) => x.status === 'picked_up')
+  } else if (variantId === 'in-transit') {
+    items = DEMO_DELIVERY_TIMELINE_ITEMS.filter((x) => x.status === 'in_transit')
+  } else if (variantId === 'delivered') {
+    items = DEMO_DELIVERY_TIMELINE_ITEMS.filter((x) => x.status === 'delivered')
+  }
+
+  return (
+    <DeliveryTimeline
+      items={items}
+      onStartTrip={() => {}}
+      onMarkPickedUp={() => {}}
+      onNavigateToDelivery={() => {}}
+      onVerifyDelivery={() => {}}
+      onSeeDetails={() => {}}
+    />
+  )
+}
+
 /* ─── Messenger ─────────────────────────────────────────────────── */
 
 function MessengerPreview({ variantId }) {
@@ -792,6 +828,10 @@ export default function ComponentPreview({ previewId, variantId }) {
     case 'dispute-resolution':
       return (
         <DisputeResolutionPreview variantId={variantId || 'public'} />
+      )
+    case 'delivery-timeline':
+      return (
+        <DeliveryTimelinePreview variantId={variantId || 'mixed'} />
       )
     case 'messenger':
       return <MessengerPreview variantId={variantId || 'inbox'} />

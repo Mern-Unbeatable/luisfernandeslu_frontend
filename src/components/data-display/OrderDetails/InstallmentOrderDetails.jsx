@@ -127,6 +127,7 @@ export default function InstallmentOrderDetails({
   order = {},
   onAccept,
   onChat,
+  showPay = false,
   onPayNow,
   onCancelInstallment,
 }) {
@@ -146,24 +147,6 @@ export default function InstallmentOrderDetails({
   const payment = order.payment || {}
   const showTransporter = Boolean(order.transporter) && status === 'assigned'
   const paymentVariant = showTransporter ? 'split' : 'bordered'
-  const canPayInstallments = (() => {
-    if (typeof order.canPayInstallments === 'boolean') {
-      return order.canPayInstallments
-    }
-    if (typeof order.isPayee === 'boolean') return !order.isPayee
-
-    const actor = String(
-      order.installmentActor || order.paymentActor || order.viewerSide || '',
-    ).toLowerCase()
-    if (['payee', 'receiver', 'seller'].includes(actor)) return false
-    if (['payer', 'buyer'].includes(actor)) return true
-
-    const role = String(order.role || order.viewerRole || '').toLowerCase()
-    if (['customer', 'company'].includes(role)) return true
-    if (role) return false
-
-    return true
-  })()
 
   return (
     <div className="w-full">
@@ -249,9 +232,9 @@ export default function InstallmentOrderDetails({
 
       <InstallmentTimeline
         items={order.installments}
+        showPay={showPay}
         onPayNow={onPayNow}
         onCancel={onCancelInstallment}
-        canPayInstallments={canPayInstallments}
       />
     </div>
   )

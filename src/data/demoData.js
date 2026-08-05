@@ -381,7 +381,6 @@ export const DEMO_ORDER_INSTALLMENT_NEW = {
   status: 'new',
   hasInstallment: true,
   role: 'company',
-  canPayInstallments: true,
   company: {
     ...baseCompany,
     phone: '+1 23 789 2456',
@@ -426,7 +425,6 @@ export const DEMO_ORDER_INSTALLMENT_ASSIGNED = {
   orderId: 'ORD-001',
   status: 'assigned',
   role: 'company',
-  canPayInstallments: true,
   payment: {
     totalPrice: '$126,000',
     paidAmount: '$25,100',
@@ -455,6 +453,15 @@ export const DEMO_ORDER_INSTALLMENT_ASSIGNED = {
       total: '$6,110.00',
     },
   ],
+}
+
+/**
+ * Installment order demo used for “No Pay” preview (showPay omitted / false).
+ */
+export const DEMO_ORDER_INSTALLMENT_SUPPLIER = {
+  ...DEMO_ORDER_INSTALLMENT_ASSIGNED,
+  id: 'ORD-SUP-001',
+  orderId: 'ORD-SUP-001',
 }
 
 // ── Installment timeline ──────────────────────────────────────────
@@ -1038,3 +1045,71 @@ export const DEMO_DISPUTE_DASHBOARD = {
     },
   ],
 }
+
+// ── Delivery timeline ──────────────────────────────────────────────
+export const DEMO_DELIVERY_TIMELINE_ITEMS = [
+  {
+    id: 'dl-001',
+    title: 'Premium Portland Cement',
+    orderLabel: 'Auction ID: AUC-001',
+    price: '$8,500',
+    distance: '32 km',
+    status: 'assigned',
+    pickup: {
+      title: 'Ambuja Cement Factory',
+      subtitle: 'Plot 45, MIDC Kalyan, Maharashtra 421301',
+    },
+    delivery: {
+      title: 'Metro Construction Pvt Ltd',
+      subtitle: 'Site 12, Andheri West, Mumbai 400053',
+    },
+  },
+  {
+    id: 'dl-002',
+    title: 'TMT Steel Rods ( 12mm )',
+    orderLabel: 'Auction ID: AUC-002',
+    price: '$5,500',
+    distance: '18 km',
+    status: 'picked_up',
+    pickup: {
+      title: 'Tata Steel Depot',
+      subtitle: 'Sector 11, Turbhe, Navi Mumbai 400705',
+    },
+    delivery: {
+      title: 'Skyline Residency Project',
+      subtitle: 'Plot 8, Sector 20, Kharghar, Navi Mumbai 410210',
+    },
+  },
+  {
+    id: 'dl-003',
+    title: 'Red Bricks',
+    orderLabel: 'Auction ID: AUC-003',
+    price: '$8,500',
+    distance: '18 km',
+    status: 'in_transit',
+    pickup: {
+      title: 'Brick Kiln Industries',
+      subtitle: 'Vasai East, Palghar 401208',
+    },
+    delivery: {
+      title: 'Villa Paradise Construction',
+      subtitle: 'Mira Road, Thane 401107',
+    },
+  },
+  {
+    id: 'dl-004',
+    title: 'Ready Mix Concrete',
+    orderLabel: 'Delivery ID: DL-004',
+    price: '$6,200',
+    distance: '12 km',
+    status: 'delivered',
+    pickup: {
+      title: 'UltraMix Concrete Plant',
+      subtitle: 'Ghodbunder Road, Thane 400607',
+    },
+    delivery: {
+      title: 'Sunrise Tower Project',
+      subtitle: 'Pokhran Road, Thane 400606',
+    },
+  },
+]
