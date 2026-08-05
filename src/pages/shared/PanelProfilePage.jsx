@@ -1,4 +1,5 @@
 import { useOutletContext } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Seo from '../../components/common/Seo/Seo'
 import PanelProfile from '../../components/forms/PanelProfile'
 import {
@@ -21,12 +22,13 @@ const DEMO_BY_ROLE = {
  * Shared panel profile screen for supplier / factory / transporter / admin / affiliate.
  */
 export default function PanelProfilePage() {
+  const { t } = useTranslation()
   const { role } = useOutletContext() || {}
   const resolvedRole = role || 'supplier'
 
   return (
     <>
-      <Seo title="My Profile" />
+      <Seo title={t('panel.profile.title')} />
       <PanelProfile
         role={resolvedRole}
         defaultValue={DEMO_BY_ROLE[resolvedRole] || DEMO_PANEL_PROFILE_SUPPLIER}

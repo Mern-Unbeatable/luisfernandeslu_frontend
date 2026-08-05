@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiUser } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
 import { Field, PrimaryButton, SecretInput, TextInput } from './FormControls'
@@ -33,6 +34,7 @@ function AvatarBlock({
   fileInputId,
   onPick,
   onRemove,
+  t,
 }) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -52,10 +54,10 @@ function AvatarBlock({
         {showAvatarActions ? (
           <>
             <h2 className="text-base font-semibold text-[var(--primary-text)]">
-              Profile Picture
+              {t('panel.profile.profilePicture')}
             </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              Manage your personal information and account settings.
+              {t('panel.profile.profilePictureHint')}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <input
@@ -71,14 +73,14 @@ function AvatarBlock({
                 onClick={() => fileRef.current?.click()}
                 className="inline-flex h-8 items-center rounded-md bg-emerald-400 px-3 text-xs font-semibold text-white hover:bg-emerald-500"
               >
-                Upload New
+                {t('panel.profile.uploadNew')}
               </button>
               <button
                 type="button"
                 onClick={onRemove}
                 className="inline-flex h-8 items-center rounded-md bg-rose-300 px-3 text-xs font-semibold text-white hover:bg-rose-400"
               >
-                Remove
+                {t('panel.profile.remove')}
               </button>
             </div>
           </>
@@ -103,58 +105,64 @@ function AccountFields({
   setField,
   onSave,
   withTopBorder = false,
+  t,
 }) {
   return (
     <div className={withTopBorder ? 'mt-8 border-t border-gray-100 pt-8' : 'mt-8'}>
       <h3 className="text-sm font-semibold text-[var(--primary-text)]">
-        {cfg.accountTitle}
+        {t(cfg.accountTitleKey)}
       </h3>
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <Field label={cfg.nameLabel}>
+        <Field label={t(cfg.nameLabelKey)}>
           <TextInput
             value={form.name}
             onChange={setField('name')}
-            placeholder="Your name or company"
+            placeholder={t('panel.profile.namePlaceholder')}
           />
         </Field>
-        <Field label="Email">
+        <Field label={t('panel.profile.email')}>
           <TextInput
             type="email"
             value={form.email}
             onChange={setField('email')}
-            placeholder="you@example.com"
+            placeholder={t('panel.profile.emailPlaceholder')}
           />
         </Field>
         {cfg.showAccountPhone ? (
-          <Field label="Phone Number" className="sm:col-span-2">
+          <Field label={t('panel.profile.phoneNumber')} className="sm:col-span-2">
             <TextInput
               value={form.phone}
               onChange={setField('phone')}
-              placeholder="+1 (555) 000-0000"
+              placeholder={t('panel.profile.phonePlaceholder')}
             />
           </Field>
         ) : null}
       </div>
       <div className={`mt-5 flex ${alignClass(cfg.profileActionsAlign)}`}>
-        <PrimaryButton onClick={onSave}>{cfg.updateProfileLabel}</PrimaryButton>
+        <PrimaryButton onClick={onSave}>
+          {t(cfg.updateProfileLabelKey)}
+        </PrimaryButton>
       </div>
     </div>
   )
 }
 
-function WarehouseFields({ warehouses, onUpdate, onAdd, onSave }) {
+function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, t }) {
   return (
     <div className="mt-8 border-t border-gray-100 pt-8">
       <h3 className="text-sm font-semibold text-[var(--primary-text)]">
-        Warehouse Location
+        {t('panel.profile.warehouseLocation')}
       </h3>
       <div className="mt-4 space-y-4">
-        {warehouses.map((item) => (
-          <Field key={item.id} label={item.label || 'Warehouse'}>
+        {warehouses.map((item, index) => (
+          <Field
+            key={item.id}
+            label={t('panel.profile.warehouseN', { n: index + 1 })}
+          >
             <TextInput
               value={item.address}
               onChange={(address) => onUpdate(item.id, address)}
-              placeholder="Street, city, region, postal code"
+              placeholder={t('panel.profile.warehousePlaceholder')}
             />
           </Field>
         ))}
@@ -164,10 +172,10 @@ function WarehouseFields({ warehouses, onUpdate, onAdd, onSave }) {
         onClick={onAdd}
         className="mt-3 text-sm font-medium text-[var(--active)] hover:underline"
       >
-        + Add New Warehouse
+        {t('panel.profile.addWarehouse')}
       </button>
       <div className="mt-5 flex justify-end">
-        <PrimaryButton onClick={onSave}>Save</PrimaryButton>
+        <PrimaryButton onClick={onSave}>{t('panel.profile.save')}</PrimaryButton>
       </div>
     </div>
   )
@@ -180,6 +188,7 @@ function PasswordFields({
   onSave,
   withTopBorder = true,
   stacked = false,
+  t,
 }) {
   const isFull = cfg.passwordMode === 'full'
   const gridClass = stacked
@@ -191,11 +200,11 @@ function PasswordFields({
   return (
     <div className={withTopBorder ? 'mt-8 border-t border-gray-100 pt-8' : ''}>
       <h3 className="text-sm font-semibold text-[var(--primary-text)]">
-        {cfg.passwordTitle}
+        {t(cfg.passwordTitleKey)}
       </h3>
       <div className={`mt-4 grid gap-4 ${gridClass}`}>
         {isFull ? (
-          <Field label="Current Password">
+          <Field label={t('panel.profile.currentPassword')}>
             <SecretInput
               value={form.currentPassword}
               onChange={setField('currentPassword')}
@@ -204,7 +213,7 @@ function PasswordFields({
             />
           </Field>
         ) : null}
-        <Field label={cfg.newPasswordLabel}>
+        <Field label={t(cfg.newPasswordLabelKey)}>
           <SecretInput
             value={form.newPassword}
             onChange={setField('newPassword')}
@@ -212,7 +221,7 @@ function PasswordFields({
             autoComplete="new-password"
           />
         </Field>
-        <Field label={cfg.confirmPasswordLabel}>
+        <Field label={t(cfg.confirmPasswordLabelKey)}>
           <SecretInput
             value={form.confirmPassword}
             onChange={setField('confirmPassword')}
@@ -222,37 +231,41 @@ function PasswordFields({
         </Field>
       </div>
       <div className={`mt-5 flex ${alignClass(cfg.passwordActionsAlign)}`}>
-        <PrimaryButton onClick={onSave}>{cfg.changePasswordLabel}</PrimaryButton>
+        <PrimaryButton size="lg" onClick={onSave}>
+          {t(cfg.changePasswordLabelKey)}
+        </PrimaryButton>
       </div>
     </div>
   )
 }
 
-function IbanCard({ cfg, form, setField, onSave }) {
+function IbanCard({ cfg, form, setField, onSave, t }) {
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 px-5 py-4 sm:px-8">
         <h3 className="text-sm font-bold tracking-wide text-[var(--primary-text)] uppercase">
-          IBAN Number
+          {t('panel.profile.ibanTitle')}
         </h3>
       </div>
       <div className="space-y-4 p-5 sm:p-8">
-        <Field label="IBAN Number">
+        <Field label={t('panel.profile.ibanNumber')}>
           <SecretInput
             value={form.iban}
             onChange={setField('iban')}
-            placeholder="PT50 0000 0000 0000 0000 0000 0"
+            placeholder={t('panel.profile.ibanPlaceholder')}
           />
         </Field>
-        <Field label={cfg.ibanPhoneLabel}>
+        <Field label={t(cfg.ibanPhoneLabelKey)}>
           <SecretInput
             value={form.ibanPhone}
             onChange={setField('ibanPhone')}
-            placeholder={cfg.ibanPhonePlaceholder}
+            placeholder={t(cfg.ibanPhonePlaceholderKey)}
           />
         </Field>
         <div className="flex justify-end pt-2">
-          <PrimaryButton onClick={onSave}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSave}>
+            {t('panel.profile.saveIban')}
+          </PrimaryButton>
         </div>
       </div>
     </section>
@@ -274,26 +287,27 @@ export default function PanelProfile({
   onSaveIban,
   onUploadAvatar,
   onRemoveAvatar,
-  title = 'My Profile',
-  subtitle,
+  title,
+  subtitleKey,
   showAccountPhone,
   showWarehouses,
   showIban,
   passwordMode,
-  ibanPhoneLabel,
+  ibanPhoneLabelKey,
   showAvatarActions,
   layout,
   className = '',
 }) {
+  const { t } = useTranslation()
   const cfg = resolveProfileConfig(role, {
     showAccountPhone,
     showWarehouses,
     showIban,
     passwordMode,
-    ibanPhoneLabel,
+    ibanPhoneLabelKey,
     showAvatarActions,
     layout,
-    ...(subtitle !== undefined ? { subtitle } : null),
+    ...(subtitleKey !== undefined ? { subtitleKey } : null),
   })
 
   const isControlled = value !== undefined
@@ -327,7 +341,6 @@ export default function PanelProfile({
         ...list,
         {
           id: nextWarehouseId(list),
-          label: `Warehouse ${list.length + 1}`,
           address: '',
         },
       ],
@@ -378,15 +391,16 @@ export default function PanelProfile({
 
   const warehouses = form.warehouses || []
   const isSplit = cfg.layout === 'split'
+  const pageTitle = title || t('panel.profile.title')
 
   return (
-    <div className={`w-full  ${className}`}>
+    <div className={`w-full ${className}`}>
       <header className="mb-6 sm:mb-8">
         <h1 className="font-serif text-3xl font-bold tracking-tight text-[var(--primary-text)] sm:text-4xl">
-          {title}
+          {pageTitle}
         </h1>
         <p className="mt-1.5 text-sm text-[var(--secondary-text)]">
-          {cfg.subtitle}
+          {t(cfg.subtitleKey)}
         </p>
       </header>
 
@@ -401,12 +415,14 @@ export default function PanelProfile({
                 fileInputId={fileInputId}
                 onPick={handleAvatarPick}
                 onRemove={handleRemoveAvatar}
+                t={t}
               />
               <AccountFields
                 cfg={cfg}
                 form={form}
                 setField={setField}
                 onSave={handleUpdateProfile}
+                t={t}
               />
             </Card>
 
@@ -418,6 +434,7 @@ export default function PanelProfile({
                 onSave={handleChangePassword}
                 withTopBorder={false}
                 stacked
+                t={t}
               />
             </Card>
           </>
@@ -430,6 +447,7 @@ export default function PanelProfile({
               fileInputId={fileInputId}
               onPick={handleAvatarPick}
               onRemove={handleRemoveAvatar}
+              t={t}
             />
             <AccountFields
               cfg={cfg}
@@ -437,6 +455,7 @@ export default function PanelProfile({
               setField={setField}
               onSave={handleUpdateProfile}
               withTopBorder
+              t={t}
             />
             {cfg.showWarehouses ? (
               <WarehouseFields
@@ -444,6 +463,7 @@ export default function PanelProfile({
                 onUpdate={updateWarehouse}
                 onAdd={addWarehouse}
                 onSave={handleSaveWarehouses}
+                t={t}
               />
             ) : null}
             <PasswordFields
@@ -451,6 +471,7 @@ export default function PanelProfile({
               form={form}
               setField={setField}
               onSave={handleChangePassword}
+              t={t}
             />
           </Card>
         )}
@@ -461,6 +482,7 @@ export default function PanelProfile({
             form={form}
             setField={setField}
             onSave={handleSaveIban}
+            t={t}
           />
         ) : null}
       </div>
