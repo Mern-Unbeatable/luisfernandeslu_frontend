@@ -702,6 +702,19 @@ function DocPanel({ doc, query = '' }) {
       <section className="min-w-0 space-y-3">
         <h2 className="text-lg font-bold text-[var(--primary-text)]">Import</h2>
         <CodeBlock label="Import" code={doc.importExample} />
+        {doc.importExample?.includes('@/data/demoData') ? (
+          <p className="text-xs text-[var(--secondary-text)]">
+            Demo payloads come from{' '}
+            <code className="rounded bg-gray-100 px-1 py-0.5 font-mono text-[11px]">
+              src/data/demoData.js
+            </code>
+            . Prefer{' '}
+            <code className="rounded bg-gray-100 px-1 py-0.5 font-mono text-[11px]">
+              @/data/demoData
+            </code>{' '}
+            — old per-component demo files were removed.
+          </p>
+        ) : null}
       </section>
 
       <section className="min-w-0 space-y-3">
@@ -958,7 +971,10 @@ export default function DeveloperPage() {
               </h1>
               <p className="text-sm text-[var(--secondary-text)]">
                 {COMPONENT_DOCS.length} shared components — import, props, examples,
-                live output.
+                live output. Demo data:{' '}
+                <code className="rounded bg-gray-100 px-1 py-0.5 font-mono text-[11px]">
+                  @/data/demoData
+                </code>
               </p>
             </div>
           </div>

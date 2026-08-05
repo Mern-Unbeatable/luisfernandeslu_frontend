@@ -1,6 +1,10 @@
 /**
  * Component documentation catalog for /developer.
  * Keep in sync when adding shared UI used across panels.
+ *
+ * Demo / mock payloads live in `src/data/demoData.js`.
+ * Import: `import { DEMO_* } from '@/data/demoData'`
+ * (Do not import from old per-component demo files — they were removed.)
  */
 
 export const DOC_CATEGORIES = [
@@ -28,9 +32,8 @@ export const COMPONENT_DOCS = [
     summary:
       'Order details page driven by hasInstallment + status (new / pending / assigned / cancel).',
     path: 'src/components/data-display/OrderDetails/',
-    importPath: "import OrderDetails from '@/components/data-display/OrderDetails'",
     importExample:
-      "import OrderDetails from '../components/data-display/OrderDetails'",
+      "import OrderDetails from '@/components/data-display/OrderDetails'\nimport {\n  DEMO_ORDER_NEW,\n  DEMO_ORDER_PENDING,\n  DEMO_ORDER_ASSIGNED,\n  DEMO_ORDER_CANCEL,\n  DEMO_ORDER_INSTALLMENT_NEW,\n  DEMO_ORDER_INSTALLMENT_ASSIGNED,\n  DEMO_ORDER_INSTALLMENT_SUPPLIER,\n} from '@/data/demoData'",
     props: [
       {
         name: 'order',
@@ -106,11 +109,11 @@ export const COMPONENT_DOCS = [
       },
     ],
     requiredExample: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_NEW}
   onBack={() => navigate(-1)}
 />`,
     optionalExample: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_INSTALLMENT_NEW}
   hasInstallment
   className="px-3 sm:px-0"
   showPay
@@ -125,7 +128,7 @@ export const COMPONENT_DOCS = [
         name: 'Standard · New',
         description: 'hasInstallment=false, status=new → Accept button; no transporter.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_NEW}
   hasInstallment={false}
   status="new"
   onBack={() => navigate(-1)}
@@ -137,7 +140,7 @@ export const COMPONENT_DOCS = [
         name: 'Standard · Pending',
         description: 'Download Invoice; no transporter banner.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_PENDING}
   hasInstallment={false}
   status="pending"
   onBack={() => navigate(-1)}
@@ -149,7 +152,7 @@ export const COMPONENT_DOCS = [
         name: 'Standard · Assigned',
         description: 'Shows transporter info + Download Invoice.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_ASSIGNED}
   hasInstallment={false}
   status="assigned"
   onBack={() => navigate(-1)}
@@ -161,7 +164,7 @@ export const COMPONENT_DOCS = [
         name: 'Standard · Cancel',
         description: 'Cancel reason banner; transporter retained if assigned before cancel.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_CANCEL}
   hasInstallment={false}
   status="cancel"
   onBack={() => navigate(-1)}
@@ -172,7 +175,7 @@ export const COMPONENT_DOCS = [
         name: 'Installment · New (with Pay)',
         description: 'showPay + onPayNow — Pay Now when due.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_INSTALLMENT_NEW}
   hasInstallment
   showPay
   status="new"
@@ -186,7 +189,7 @@ export const COMPONENT_DOCS = [
         name: 'Installment · Assigned (with Pay)',
         description: 'Transporter banner + Chat; showPay + onPayNow.',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_INSTALLMENT_ASSIGNED}
   hasInstallment
   showPay
   status="assigned"
@@ -201,7 +204,7 @@ export const COMPONENT_DOCS = [
         name: 'Installment · No Pay',
         description: 'Same installment UI without Pay — omit showPay (or showPay={false}).',
         example: `<OrderDetails
-  order={order}
+  order={DEMO_ORDER_INSTALLMENT_SUPPLIER}
   hasInstallment
   status="assigned"
   onBack={() => navigate(-1)}
@@ -218,7 +221,7 @@ export const COMPONENT_DOCS = [
       'Role + status driven auction card (supplier/factory created/assigned, transporter bid, admin bids).',
     path: 'src/components/data-display/AuctionCard/',
     importExample:
-      "import AuctionCard from '../components/data-display/AuctionCard'",
+      "import AuctionCard from '@/components/data-display/AuctionCard'\nimport {\n  DEMO_AUCTION_CREATED,\n  DEMO_AUCTION_ASSIGNED,\n  DEMO_AUCTION_LIVE,\n} from '@/data/demoData'",
     props: [
       {
         name: 'auction',
@@ -335,7 +338,7 @@ export const COMPONENT_DOCS = [
       'Auction details for supplier / factory / transporter. Shipping for supplier & transporter; active → bids; assigned → transporter info (panel roles) or job view (transporter).',
     path: 'src/components/data-display/AuctionDetails/',
     importExample:
-      "import AuctionDetails from '../components/data-display/AuctionDetails'",
+      "import AuctionDetails from '@/components/data-display/AuctionDetails'\nimport {\n  DEMO_AUCTION_DETAILS_ACTIVE,\n  DEMO_AUCTION_DETAILS_ASSIGNED,\n  DEMO_AUCTION_DETAILS_TRANSPORTER,\n  DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,\n} from '@/data/demoData'",
     props: [
       {
         name: 'auction',
@@ -463,7 +466,7 @@ export const COMPONENT_DOCS = [
       'Listing / dashboard product card. Layout from type + role + context + status + tag.',
     path: 'src/components/data-display/ProductCard/',
     importExample:
-      "import ProductCard from '../components/data-display/ProductCard/ProductCard'",
+      "import ProductCard from '@/components/data-display/ProductCard/ProductCard'",
     props: [
       {
         name: 'product',
@@ -675,7 +678,7 @@ export const COMPONENT_DOCS = [
       'Full product details page. Role drives actions, seller card, tabs, warehouse fields.',
     path: 'src/components/data-display/ProductDetails/',
     importExample:
-      "import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'",
+      "import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'\nimport { DEMO_PRODUCT, ADMIN_PRODUCT } from '@/data/demoData'",
     props: [
       {
         name: 'product',
@@ -754,7 +757,7 @@ export const COMPONENT_DOCS = [
       'Dashboard metric / status card. One component covers all layouts via variant + tone props.',
     path: 'src/components/data-display/StatusCard/',
     importExample:
-      "import StatusCard from '../components/data-display/StatusCard'",
+      "import StatusCard from '@/components/data-display/StatusCard'\nimport { DEMO_STATUS_CARDS } from '@/data/demoData'",
     props: [
       {
         name: 'variant',
@@ -996,7 +999,7 @@ export const COMPONENT_DOCS = [
       'Prop-driven table toolkit: tabs, search, filters, actions, pagination, loading.',
     path: 'src/components/data-display/DataTable/',
     importExample:
-      "import DataTable from '../components/data-display/DataTable/DataTable'",
+      "import DataTable from '@/components/data-display/DataTable/DataTable'",
     props: [
       {
         name: 'columns',
@@ -1169,7 +1172,7 @@ export const COMPONENT_DOCS = [
     summary: 'Vertical timeline of completed / pending installments with Pay Now.',
     path: 'src/components/data-display/InstallmentTimeline/',
     importExample:
-      "import InstallmentTimeline from '../components/data-display/InstallmentTimeline/InstallmentTimeline'",
+      "import InstallmentTimeline from '@/components/data-display/InstallmentTimeline/InstallmentTimeline'\nimport { DEMO_INSTALLMENTS } from '@/data/demoData'",
     props: [
       {
         name: 'items',
@@ -1256,7 +1259,7 @@ export const COMPONENT_DOCS = [
       'Shipment Information form. Supplier includes shipping/unloading; factory omits that section.',
     path: 'src/components/forms/CreateAuction/',
     importExample:
-      "import CreateAuction from '../components/forms/CreateAuction'",
+      "import CreateAuction from '@/components/forms/CreateAuction'\nimport {\n  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,\n  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,\n} from '@/data/demoData'",
     props: [
       {
         name: 'role',
@@ -1343,7 +1346,7 @@ export const COMPONENT_DOCS = [
     summary: 'Add Product form. role=supplier (full) | factory (simplified).',
     path: 'src/components/forms/AddProduct/',
     importExample:
-      "import AddProduct from '../components/forms/AddProduct/AddProduct'",
+      "import AddProduct from '@/components/forms/AddProduct/AddProduct'\nimport { DEMO_ADD_PRODUCT, DEMO_FACTORY_PRODUCT } from '@/data/demoData'",
     props: [
       {
         name: 'role',
@@ -1419,7 +1422,7 @@ export const COMPONENT_DOCS = [
       'Dispute & returns detail. variant=public (status meta) | dashboard (header + status pills).',
     path: 'src/components/data-display/DisputeResolution/',
     importExample:
-      "import DisputeResolution from '../components/data-display/DisputeResolution'",
+      "import DisputeResolution from '@/components/data-display/DisputeResolution'\nimport { DEMO_DISPUTE_PUBLIC, DEMO_DISPUTE_DASHBOARD } from '@/data/demoData'",
     props: [
       {
         name: 'variant',
@@ -1506,7 +1509,7 @@ export const COMPONENT_DOCS = [
       'Delivery progress card(s) with actions by status: assigned, picked_up, in_transit, delivered.',
     path: 'src/components/data-display/DeliveryTimeline/',
     importExample:
-      "import DeliveryTimeline from '../components/data-display/DeliveryTimeline'",
+      "import DeliveryTimeline from '@/components/data-display/DeliveryTimeline'\nimport { DEMO_DELIVERY_TIMELINE_ITEMS } from '@/data/demoData'",
     props: [
       {
         name: 'items',
@@ -1597,7 +1600,7 @@ export const COMPONENT_DOCS = [
       'Chat shell: sidebar inbox + conversation. Pass state from useMessages() or your API layer.',
     path: 'src/components/common/messenger/',
     importExample:
-      "import Messenger from '../components/common/messenger/Messenger'\nimport useMessages from '../components/common/messenger/useMessages'",
+      "import Messenger from '@/components/common/messenger/Messenger'\nimport useMessages from '@/components/common/messenger/useMessages'\n// useMessages() seeds from DEMO_MESSENGER_* in '@/data/demoData'",
     props: [
       {
         name: 'chats',
