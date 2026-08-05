@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Navigate, useNavigate, useParams, useMatch } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams, useMatch, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { FiMail, FiLock } from 'react-icons/fi'
@@ -23,6 +23,7 @@ export default function LoginPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { role: roleParam } = useParams()
   const isAdminLogin = Boolean(useMatch('/admin/login'))
   const role = isAdminLogin ? 'admin' : roleParam
@@ -154,6 +155,7 @@ export default function LoginPage() {
                     ? `/forgot-password?role=${encodeURIComponent(role)}`
                     : '/forgot-password'
                 }
+                state={location.state}
                 className="text-sm font-medium text-[var(--active)] hover:underline"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -171,6 +173,7 @@ export default function LoginPage() {
                   ? `/forgot-password?role=${encodeURIComponent(role)}`
                   : '/forgot-password'
               }
+              state={location.state}
               className="text-sm font-medium text-[var(--active)] underline-offset-2 hover:underline"
             >
               {t('auth.forgotPassword')}
@@ -212,6 +215,7 @@ export default function LoginPage() {
           {isMarketing ? t('auth.noAccountAny') : t('auth.noAccount')}{' '}
           <Link
             to={signupLink}
+            state={location.state}
             className="font-bold text-[var(--active)] hover:underline"
           >
             {isMarketing ? t('auth.signUpTabUpper') : t('header.signUp')}

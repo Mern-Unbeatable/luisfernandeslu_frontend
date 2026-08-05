@@ -16,6 +16,14 @@
     "search": "Pesquisar",
     "closeSearch": "Fechar pesquisa"
   },
+  "categoryBar": {
+    "navLabel": "Categorias",
+    "allCategories": "Todas as categorias",
+    "products": "Produtos",
+    "affiliate": "Afiliado",
+    "becomeSeller": "Torne-se um vendedor",
+    "beLiberator": "Seja um libertador"
+  },
   "languages": {
     "en": "Inglês",
     "pt": "Português",

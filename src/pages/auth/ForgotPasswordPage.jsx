@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiArrowRight } from 'react-icons/fi'
 import { AuthSubmitButton } from '../../components/auth/AuthField'
@@ -11,10 +11,14 @@ const inputClass =
 export default function ForgotPasswordPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
   const [params] = useSearchParams()
   const role = params.get('role') || ''
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const authNavState = location.state?.fromAuthHub
+    ? { fromAuthHub: true }
+    : undefined
 
   const loginPath =
     role === 'admin' ? '/admin/login' : role ? `/login/${role}` : '/login'
@@ -30,7 +34,11 @@ export default function ForgotPasswordPage() {
     setError('')
     sessionStorage.setItem(
       'forgotPassword',
-      JSON.stringify({ email: trimmed, role }),
+      JSON.stringify({
+        email: trimmed,
+        role,
+        fromAuthHub: Boolean(location.state?.fromAuthHub),
+      }),
     )
     navigate('/forgot-password/otp')
   }
@@ -79,6 +87,7 @@ export default function ForgotPasswordPage() {
           {t('auth.alreadyHaveAccount')}{' '}
           <Link
             to={loginPath}
+            state={authNavState}
             className="font-semibold text-[var(--active)] hover:underline"
           >
             {t('header.logIn')}
@@ -88,6 +97,7 @@ export default function ForgotPasswordPage() {
           {t('auth.forgot.newTo')}{' '}
           <Link
             to={signupPath}
+            state={authNavState}
             className="font-semibold text-[var(--active)] hover:underline"
           >
             {t('auth.forgot.createAccount')}

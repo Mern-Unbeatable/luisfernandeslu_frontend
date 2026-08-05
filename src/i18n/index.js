@@ -5,6 +5,9 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import en from './locales/en.json'
 import pt from './locales/pt.json'
 import es from './locales/es.json'
+import catalogEn from './locales/catalog/en.json'
+import catalogPt from './locales/catalog/pt.json'
+import catalogEs from './locales/catalog/es.json'
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', labelKey: 'languages.en' },
@@ -19,9 +22,9 @@ void i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
-      pt: { translation: pt },
-      es: { translation: es },
+      en: { translation: { ...en, catalog: catalogEn } },
+      pt: { translation: { ...pt, catalog: catalogPt } },
+      es: { translation: { ...es, catalog: catalogEs } },
     },
     fallbackLng: DEFAULT_LANGUAGE,
     supportedLngs: SUPPORTED_LANGUAGES.map((lang) => lang.code),

@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate, useParams, useMatch } from 'react-router-dom'
+import { Link, Outlet, useNavigate, useParams, useMatch, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiChevronLeft } from 'react-icons/fi'
 import Seo from '../../components/common/Seo/Seo'
@@ -9,10 +9,16 @@ import { getRoleAuthConfig } from '../../features/auth/roleAuthConfig'
  * Auth shell:
  * - photo: construction image left (role select, customer/company/admin)
  * - marketing: cream feature panel left (supplier/factory/transporter/affiliate)
+ *
+ * Back rules for role login/register:
+ * - came from /login or /signup role picker → back to that hub
+ * - came from public (home, category CTA, etc.) → back to home
  */
 export default function AuthLayout() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
   const { role: roleParam } = useParams()
   const matchAdminLogin = useMatch('/admin/login')
   const matchSignup = useMatch('/signup')
@@ -28,6 +34,7 @@ export default function AuthLayout() {
   const layout = config?.layout || 'photo'
   const mode = isRegister ? 'register' : 'login'
   const sidebar = config?.[mode]?.sidebar
+  const fromAuthHub = Boolean(location.state?.fromAuthHub)
 
   const goBack = () => {
     if (matchForgotReset) {
@@ -39,19 +46,27 @@ export default function AuthLayout() {
       return
     }
     if (matchForgot) {
+      let sessionRole = ''
+      let sessionFromHub = Boolean(location.state?.fromAuthHub)
       try {
         const raw = sessionStorage.getItem('forgotPassword')
         const data = raw ? JSON.parse(raw) : null
-        if (data?.role === 'admin') {
-          navigate('/admin/login')
-          return
-        }
-        if (data?.role) {
-          navigate(`/login/${data.role}`)
-          return
+        if (data?.role) sessionRole = data.role
+        if (typeof data?.fromAuthHub === 'boolean') {
+          sessionFromHub = data.fromAuthHub
         }
       } catch {
         /* ignore */
+      }
+      const forgotRole = sessionRole || searchParams.get('role') || ''
+      const hubState = sessionFromHub ? { fromAuthHub: true } : undefined
+      if (forgotRole === 'admin') {
+        navigate('/admin/login')
+        return
+      }
+      if (forgotRole) {
+        navigate(`/login/${forgotRole}`, { state: hubState })
+        return
       }
       navigate('/login')
       return
@@ -60,10 +75,16 @@ export default function AuthLayout() {
       navigate('/')
       return
     }
+    // Role-specific login/register
     if (role) {
-      navigate(isSignupFlow ? '/signup' : '/login')
+      if (fromAuthHub) {
+        navigate(isSignupFlow ? '/signup' : '/login')
+        return
+      }
+      navigate('/')
       return
     }
+    // Role select hubs (/login, /signup)
     navigate('/')
   }
 

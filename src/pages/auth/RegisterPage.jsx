@@ -4,6 +4,7 @@ import {
   Navigate,
   useNavigate,
   useParams,
+  useLocation,
 } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -53,6 +54,7 @@ function groupFields(fields) {
 /** Single register form — fields & layout driven by roleAuthConfig */
 export default function RegisterPage() {
   const { t } = useTranslation()
+  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { role } = useParams()
@@ -208,6 +210,7 @@ export default function RegisterPage() {
             : t('auth.alreadyHaveAccount')}{' '}
           <Link
             to={`/login/${role}`}
+            state={location.state}
             className="font-bold text-[var(--active)] hover:underline"
           >
             {layout === 'marketing'

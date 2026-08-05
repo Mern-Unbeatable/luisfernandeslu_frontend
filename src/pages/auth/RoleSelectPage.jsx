@@ -66,6 +66,7 @@ export default function RoleSelectPage() {
           <li key={id}>
             <Link
               to={`${nextBase}/${id}`}
+              state={{ fromAuthHub: true }}
               className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white px-4 py-3.5 transition-colors hover:border-[var(--active)] hover:bg-[#FFFBF5]"
             >
               <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[var(--active)] text-white">
