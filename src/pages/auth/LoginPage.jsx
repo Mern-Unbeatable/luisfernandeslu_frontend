@@ -89,7 +89,7 @@ export default function LoginPage() {
   const showSignUpFooter = !loginCfg.showLegal && role !== 'admin'
 
   return (
-    <div className="mx-auto w-full max-w-md">
+    <div className="mx-auto w-full max-w-xl">
       {showModeToggle ? (
         <AuthModeToggle role={role} mode="login" />
       ) : null}

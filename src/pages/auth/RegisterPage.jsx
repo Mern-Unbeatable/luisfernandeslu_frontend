@@ -149,7 +149,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-md">
+    <div className="mx-auto w-full max-w-xl">
       {layout === 'marketing' ? (
         <AuthModeToggle role={role} mode="register" />
       ) : null}
