@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import Seo from '../../components/common/Seo/Seo'
+import Seo from '@/components/common/Seo/Seo'
 import PanelProfile from '@/components/forms/PanelProfile'
 import { DEMO_PANEL_PROFILE_AFFILIATE } from '@/data/demoData'
 
