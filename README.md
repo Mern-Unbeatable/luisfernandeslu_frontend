@@ -18,6 +18,8 @@ npm run preview
 npm run lint
 ```
 
+Use **npm** + committed `package-lock.json` (not yarn). Coolify/Nixpacks chooses the installer from the lockfile — if a stale `yarn.lock` is present, deploy fails on `yarn install --frozen-lockfile`.
+
 - Path alias: `@` → `src/` (see `vite.config.js`)
 - Env: copy `.env.example` → `.env`, read via `src/config/env.js` (`import.meta.env.VITE_*`)
 
