@@ -6,7 +6,6 @@ import {
   DEFAULT_ADD_PRODUCT,
   PRODUCT_TYPE_OPTIONS,
   SUB_CATEGORY_OPTIONS,
-  WAREHOUSE_OPTIONS,
 } from './defaults'
 import { Field, SelectInput, TextInput } from './FormControls'
 import ImageDropzone from './ImageDropzone'
@@ -26,7 +25,6 @@ export default function AddProduct({
   breadcrumb = 'Product > Add Product',
   title = 'Add Product',
   submitLabel = 'Submit',
-  warehouseOptions = WAREHOUSE_OPTIONS,
   categoryOptions = CATEGORY_OPTIONS,
   subCategoryOptions = SUB_CATEGORY_OPTIONS,
   productTypeOptions = PRODUCT_TYPE_OPTIONS,
@@ -88,10 +86,10 @@ export default function AddProduct({
         {isFactory ? (
           <>
             <Field label="Warehouse Location">
-              <SelectInput
-                value={form.warehouseId}
-                onChange={setField('warehouseId')}
-                options={warehouseOptions}
+              <TextInput
+                value={form.warehouseLocation}
+                onChange={setField('warehouseLocation')}
+                placeholder="Enter warehouse location"
               />
             </Field>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -129,10 +127,10 @@ export default function AddProduct({
                 />
               </Field>
               <Field label="Warehouse Location">
-                <SelectInput
-                  value={form.warehouseId}
-                  onChange={setField('warehouseId')}
-                  options={warehouseOptions}
+                <TextInput
+                  value={form.warehouseLocation}
+                  onChange={setField('warehouseLocation')}
+                  placeholder="Enter warehouse location"
                 />
               </Field>
               <Field label="Category">

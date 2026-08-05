@@ -1,5 +1,5 @@
 export const DEFAULT_ADD_PRODUCT = {
-  warehouseId: '',
+  warehouseLocation: '',
   categoryId: '',
   subCategoryId: '',
   productTypeId: '',
@@ -23,13 +23,6 @@ export const DEFAULT_ADD_PRODUCT = {
   otherImages: [],
 }
 
-export const WAREHOUSE_OPTIONS = [
-  { value: '', label: 'Select warehouse' },
-  { value: 'wh-1', label: 'Santa Ana Warehouse' },
-  { value: 'wh-2', label: 'Lisbon Central Depot' },
-  { value: 'wh-3', label: 'Porto Distribution Hub' },
-]
-
 export const CATEGORY_OPTIONS = [
   { value: '', label: 'Select category' },
   { value: 'cement', label: 'Cement, Mortars & Concretes' },
@@ -50,13 +43,3 @@ export const PRODUCT_TYPE_OPTIONS = [
   { value: 'cem-ii', label: 'Portland-Composite Cement (CEM II)' },
   { value: 'quick-set', label: 'Quick Set Cement' },
 ]
-
-export const DEMO_ADD_PRODUCT = {
-  ...DEFAULT_ADD_PRODUCT,
-}
-
-export const DEMO_FACTORY_PRODUCT = {
-  ...DEFAULT_ADD_PRODUCT,
-  bulkEnabled: false,
-  bulkTiers: [],
-}

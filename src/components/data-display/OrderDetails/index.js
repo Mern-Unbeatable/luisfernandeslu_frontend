@@ -11,4 +11,4 @@ export {
   DEMO_ORDER_INSTALLMENT_ASSIGNED,
   DEMO_ORDER_PRODUCTS,
   DEMO_ORDER_INSTALLMENTS,
-} from './demoOrders'
+} from '@/data/demoData'

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { DEMO_USERS, DEMO_PASSWORD } from '../../features/auth/demoUsers'
+import { DEMO_PASSWORD, DEMO_USERS } from '@/data/demoData'
 
 /**
  * Demo credentials for login pages.

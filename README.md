@@ -27,6 +27,7 @@ src/
 ├── app/                  # App-wide wiring: Redux store, router, providers
 ├── assets/               # Static assets (images, icons, fonts)
 ├── components/           # Global reusable UI components
+├── data/                 # Static / demo data (temporary until backend APIs)
 ├── layouts/              # Page layout shells
 ├── pages/                # Route screens (side by side with features — not nested)
 ├── features/             # Domain only: *Api.js + *Slice.js (no UI)
@@ -70,6 +71,30 @@ Unopinionated building blocks with **no business logic**, reused across many scr
 - **`data-display/`** — data presentation: `Table`, `Card`.
 
 **Put here:** anything used by more than one feature. Rule of thumb — if you copy-paste a component across pages, promote it here.
+
+### `data/` — static & demo data (temporary)
+
+Holds seed / mock payloads used while the UI is built **without a backend**.
+
+| File | Purpose |
+|------|---------|
+| `demoData.js` | **Single source** for all `DEMO_*` mocks (auth users, products, orders, auctions, messenger, form placeholders, …) |
+| `productCategories.js` | Public category mega-menu tree (static catalog labels) |
+
+```js
+import { DEMO_PRODUCT, DEMO_USERS } from '@/data/demoData'
+```
+
+**Backend migration (do this feature by feature):**
+
+1. Add / finish RTK Query endpoints in `features/<module>/<module>Api.js`.
+2. In pages and components, replace `DEMO_*` imports with the matching API hooks (`useGetProductQuery`, `useGetOrdersQuery`, …).
+3. Delete the unused section from `demoData.js` once nothing imports it.
+4. Keep `demoData.js` only for developer previews (`src/developer/`) if still useful — never ship production screens that depend on it.
+
+Role helpers such as `getHomePathForRole` stay in `features/auth/demoUsers.js` (not data). Demo **accounts** themselves live in `demoData.js`.
+
+**Put here:** mock payloads and static catalog trees — never JSX, never API calls.
 
 ### `layouts/` — page shells
 
@@ -164,14 +189,17 @@ Feature endpoints (`authApi`, `productApi`, …) live under `features/<module>/`
 ```text
 pages/<module>/Page.jsx
    ├─ components/ui|common|data-display/…
-   ├─ features/<module>/<module>Api.js   (endpoints)
+   ├─ features/<module>/<module>Api.js   (endpoints)  ← prefer this
    ├─ features/<module>/<module>Slice.js (UI state)
+   ├─ data/demoData.js                   (temporary mocks only)
    └─ services/api/baseApi.js
         └─ axiosInstance.js
              └─ interceptors.js
 ```
 
 Using RTK Query automatically wires caching, loading and error states into the Redux store.
+
+Until the API exists, screens may import from `data/demoData.js`. After backend integration, each feature should read from its `*Api.js` hooks instead — see the `data/` section above.
 
 ---
 
@@ -198,6 +226,8 @@ HTTP auth header    → services/api/interceptors.js
 | New feature endpoints | `features/<module>/<module>Api.js` |
 | New feature UI state | `features/<module>/<module>Slice.js` |
 | New global / reusable UI | `components/ui/` or `components/common/` or `components/data-display/` |
+| Demo / mock payloads (pre-backend) | `data/demoData.js` — swap for `features/<module>/*Api.js` when backend is ready |
+| Category mega-menu tree | `data/productCategories.js` |
 | Reusable data table (tabs/filters/pagination) | `components/data-display/DataTable` |
 | New page shell | `layouts/` |
 | New role area | `roles/<role>/` (`menu.js`, `permissions.js`) |

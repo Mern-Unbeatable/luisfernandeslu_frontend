@@ -8,6 +8,10 @@ export const routeSeo = {
     titleKey: 'seo.homeTitle',
     descriptionKey: 'seo.homeDescription',
   },
+  disputeResolution: {
+    titleKey: 'seo.disputeResolutionTitle',
+    descriptionKey: 'seo.disputeResolutionDescription',
+  },
   buyerDashboard: {
     titleKey: 'seo.buyerDashboardTitle',
     descriptionKey: 'seo.buyerDashboardDescription',

@@ -1369,6 +1369,93 @@ export const COMPONENT_DOCS = [
     ],
   },
   {
+    id: 'dispute-resolution',
+    name: 'DisputeResolution',
+    category: 'data-display',
+    summary:
+      'Dispute & returns detail. variant=public (status meta) | dashboard (header + status pills).',
+    path: 'src/components/data-display/DisputeResolution/',
+    importExample:
+      "import DisputeResolution from '../components/data-display/DisputeResolution'",
+    props: [
+      {
+        name: 'variant',
+        type: "'public' | 'dashboard'",
+        required: false,
+        defaultValue: "'public'",
+        description:
+          'public → status/created on description card; dashboard → page header + Resolved/Under Review pills.',
+      },
+      {
+        name: 'dispute',
+        type: 'object',
+        required: false,
+        description:
+          '{ items, description, evidence, messages, status, createdAt }',
+      },
+      {
+        name: 'currentUserRole',
+        type: 'string',
+        required: false,
+        defaultValue: "'buyer'",
+        description: 'Aligns own messages to the right when role matches.',
+      },
+      {
+        name: 'onSendMessage',
+        type: '(text) => void',
+        required: false,
+        description: 'Composer submit handler.',
+      },
+      {
+        name: 'onStatusChange',
+        type: "(status: 'resolved' | 'under_review') => void",
+        required: false,
+        description: 'Dashboard status pills only.',
+      },
+      {
+        name: 'onAttach',
+        type: '(files) => void',
+        required: false,
+        description: 'Paperclip file picker.',
+      },
+    ],
+    requiredExample: `<DisputeResolution variant="public" dispute={DEMO_DISPUTE_PUBLIC} />`,
+    optionalExample: `<DisputeResolution
+  variant="dashboard"
+  dispute={DEMO_DISPUTE_DASHBOARD}
+  currentUserRole="admin"
+  onStatusChange={setStatus}
+  onSendMessage={send}
+/>`,
+    previewId: 'dispute-resolution',
+    variants: [
+      {
+        id: 'public',
+        name: 'Public end',
+        description: 'Status + created meta; no page header; no status pills.',
+        example: `<DisputeResolution
+  variant="public"
+  dispute={DEMO_DISPUTE_PUBLIC}
+  currentUserRole="buyer"
+  onSendMessage={send}
+/>`,
+      },
+      {
+        id: 'dashboard',
+        name: 'Dashboard',
+        description:
+          'Disputes & Returns Center header; Resolved / Under Review pills.',
+        example: `<DisputeResolution
+  variant="dashboard"
+  dispute={DEMO_DISPUTE_DASHBOARD}
+  currentUserRole="admin"
+  onStatusChange={setStatus}
+  onSendMessage={send}
+/>`,
+      },
+    ],
+  },
+  {
     id: 'messenger',
     name: 'Messenger',
     category: 'common',

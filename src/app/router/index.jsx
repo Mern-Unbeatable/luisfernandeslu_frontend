@@ -24,6 +24,9 @@ import {
 import { logout } from '../../features/auth/authSlice'
 
 const HomePage = lazy(() => import('../../pages/public_page/HomePage'))
+const DisputeResolutionPage = lazy(
+  () => import('../../pages/public_page/DisputeResolutionPage'),
+)
 const DeveloperPage = lazy(() => import('../../pages/public_page/DeveloperPage'))
 const NotFoundPage = lazy(() => import('../../pages/public_page/NotFoundPage'))
 const ComingSoonPage = lazy(() => import('../../pages/shared/ComingSoonPage'))
@@ -300,6 +303,14 @@ export const router = createBrowserRouter([
             index: true,
             element: withSuspense(<HomePage />, <HomeSkeleton />),
             handle: { seo: routeSeo.home },
+          },
+          {
+            path: 'dispute-resolution',
+            element: withSuspense(
+              <DisputeResolutionPage />,
+              <PageSkeleton />,
+            ),
+            handle: { seo: routeSeo.disputeResolution },
           },
         ],
       },

@@ -1,48 +1,43 @@
 import { useEffect, useMemo, useState } from 'react'
-import AuctionCard, {
-  DEMO_AUCTION_CREATED,
+import AuctionCard from '../components/data-display/AuctionCard'
+import AuctionDetails from '../components/data-display/AuctionDetails'
+import OrderDetails from '../components/data-display/OrderDetails'
+import ProductCard from '../components/data-display/ProductCard/ProductCard'
+import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
+import DataTable from '../components/data-display/DataTable/DataTable'
+import StatusBadge from '../components/data-display/DataTable/StatusBadge'
+import InstallmentTimeline from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
+import StatusCard from '../components/data-display/StatusCard'
+import DisputeResolution from '../components/data-display/DisputeResolution'
+import CreateAuction from '../components/forms/CreateAuction'
+import AddProduct from '../components/forms/AddProduct/AddProduct'
+import Messenger from '../components/common/messenger/Messenger'
+import useMessages from '../components/common/messenger/useMessages'
+import {
+  ADMIN_PRODUCT,
+  DEMO_ADD_PRODUCT,
   DEMO_AUCTION_ASSIGNED,
-  DEMO_AUCTION_LIVE,
-} from '../components/data-display/AuctionCard'
-import AuctionDetails, {
+  DEMO_AUCTION_CREATED,
   DEMO_AUCTION_DETAILS_ACTIVE,
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_AUCTION_DETAILS_TRANSPORTER,
   DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
-} from '../components/data-display/AuctionDetails'
-import OrderDetails, {
-  DEMO_ORDER_NEW,
-  DEMO_ORDER_PENDING,
+  DEMO_AUCTION_LIVE,
+  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
+  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
+  DEMO_DISPUTE_DASHBOARD,
+  DEMO_DISPUTE_PUBLIC,
+  DEMO_FACTORY_PRODUCT,
+  DEMO_INSTALLMENTS,
   DEMO_ORDER_ASSIGNED,
   DEMO_ORDER_CANCEL,
-  DEMO_ORDER_INSTALLMENT_NEW,
   DEMO_ORDER_INSTALLMENT_ASSIGNED,
-} from '../components/data-display/OrderDetails'
-import ProductCard from '../components/data-display/ProductCard/ProductCard'
-import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
-import {
+  DEMO_ORDER_INSTALLMENT_NEW,
+  DEMO_ORDER_NEW,
+  DEMO_ORDER_PENDING,
   DEMO_PRODUCT,
-  ADMIN_PRODUCT,
-} from '../components/data-display/ProductDetails/demoProduct'
-import DataTable from '../components/data-display/DataTable/DataTable'
-import StatusBadge from '../components/data-display/DataTable/StatusBadge'
-import InstallmentTimeline, {
-  DEMO_INSTALLMENTS,
-} from '../components/data-display/InstallmentTimeline/InstallmentTimeline'
-import StatusCard, {
   DEMO_STATUS_CARDS,
-} from '../components/data-display/StatusCard'
-import CreateAuction, {
-  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
-  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
-} from '../components/forms/CreateAuction'
-import AddProduct from '../components/forms/AddProduct/AddProduct'
-import {
-  DEMO_ADD_PRODUCT,
-  DEMO_FACTORY_PRODUCT,
-} from '../components/forms/AddProduct/defaults'
-import Messenger from '../components/common/messenger/Messenger'
-import useMessages from '../components/common/messenger/useMessages'
+} from '@/data/demoData'
 
 /* ─── Order Details ─────────────────────────────────────────────── */
 
@@ -673,6 +668,46 @@ function AddProductPreview({ variantId }) {
   )
 }
 
+function DisputeResolutionPreview({ variantId }) {
+  const isDashboard = variantId === 'dashboard'
+  const [dispute, setDispute] = useState(
+    isDashboard ? DEMO_DISPUTE_DASHBOARD : DEMO_DISPUTE_PUBLIC,
+  )
+
+  useEffect(() => {
+    setDispute(isDashboard ? DEMO_DISPUTE_DASHBOARD : DEMO_DISPUTE_PUBLIC)
+  }, [isDashboard])
+
+  return (
+    <DisputeResolution
+      key={isDashboard ? 'dashboard' : 'public'}
+      variant={isDashboard ? 'dashboard' : 'public'}
+      dispute={dispute}
+      currentUserRole={isDashboard ? 'admin' : 'buyer'}
+      onStatusChange={(status) =>
+        setDispute((prev) => ({ ...prev, status }))
+      }
+      onSendMessage={(text) => {
+        setDispute((prev) => ({
+          ...prev,
+          messages: [
+            ...prev.messages,
+            {
+              id: `local-${Date.now()}`,
+              author: isDashboard ? 'Support' : 'You',
+              roleLabel: isDashboard ? 'Admin' : 'Buyer',
+              role: isDashboard ? 'admin' : 'buyer',
+              align: isDashboard ? 'left' : 'right',
+              at: new Date().toLocaleString(),
+              text,
+            },
+          ],
+        }))
+      }}
+    />
+  )
+}
+
 /* ─── Messenger ─────────────────────────────────────────────────── */
 
 function MessengerPreview({ variantId }) {
@@ -754,6 +789,10 @@ export default function ComponentPreview({ previewId, variantId }) {
       return <CreateAuctionPreview variantId={variantId || 'supplier'} />
     case 'add-product':
       return <AddProductPreview variantId={variantId || 'supplier'} />
+    case 'dispute-resolution':
+      return (
+        <DisputeResolutionPreview variantId={variantId || 'public'} />
+      )
     case 'messenger':
       return <MessengerPreview variantId={variantId || 'inbox'} />
     default:

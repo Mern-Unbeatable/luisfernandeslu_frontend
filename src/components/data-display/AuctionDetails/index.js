@@ -5,4 +5,4 @@ export {
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_AUCTION_DETAILS_TRANSPORTER,
   DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
-} from './demoAuctionDetails'
+} from '@/data/demoData'

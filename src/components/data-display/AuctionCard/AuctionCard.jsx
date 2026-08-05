@@ -3,7 +3,19 @@ import { useTranslation } from 'react-i18next'
 import { FiClock, FiCalendar, FiTruck, FiDollarSign } from 'react-icons/fi'
 import AuctionDetailRow, { AuctionIcons } from './AuctionDetailRow'
 import { resolveAuctionView } from './resolveAuctionView'
-import { formatMoney } from './demoAuctions'
+
+function formatMoney(amount, currency = 'USD') {
+  if (amount == null || Number.isNaN(Number(amount))) return '—'
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: 0,
+    }).format(Number(amount))
+  } catch {
+    return `$${amount}`
+  }
+}
 
 function CardShell({ children, accent = false, className = '' }) {
   return (

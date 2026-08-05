@@ -6,5 +6,4 @@ export {
   DEMO_AUCTION_CREATED,
   DEMO_AUCTION_ASSIGNED,
   DEMO_AUCTION_LIVE,
-  formatMoney,
-} from './demoAuctions'
+} from '@/data/demoData'

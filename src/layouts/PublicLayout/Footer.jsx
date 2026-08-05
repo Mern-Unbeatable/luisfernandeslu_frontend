@@ -28,7 +28,7 @@ const footerColumnDefs = [
     titleKey: 'footer.support',
     links: [
       { labelKey: 'footer.helpCenter', href: '#' },
-      { labelKey: 'footer.dispute', href: '#' },
+      { labelKey: 'footer.dispute', href: '/dispute-resolution' },
       { labelKey: 'footer.returns', href: '#' },
       { labelKey: 'footer.complaintBook', href: '#' },
     ],
