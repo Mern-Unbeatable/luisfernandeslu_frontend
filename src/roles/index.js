@@ -6,6 +6,11 @@ import transporterRole from './transporter'
 import affiliateRole from './affiliate'
 import adminRole from './admin'
 
+/**
+ * Role configs for sidebar / layout only.
+ * All URL routes are declared explicitly in `src/app/router/index.jsx`.
+ */
+
 const BUYER_ROLES = {
   customer: customerRole,
   company: companyRole,
@@ -36,26 +41,6 @@ export function getPanelRoleConfig(role = 'supplier') {
 export function getRoleBasePath(role) {
   if (!role) return '/'
   return `/${role}`
-}
-
-/**
- * Build RR child routes from a role nav config.
- * Index = basePath; other items = relative segment after basePath.
- */
-export function buildNavChildren(roleConfig, renderPage) {
-  const base = roleConfig.basePath || getRoleBasePath(roleConfig.id)
-
-  return roleConfig.nav.map((item) => {
-    const isIndex = item.end || item.to === base
-    const relative = isIndex
-      ? undefined
-      : item.to.replace(new RegExp(`^${base}/?`), '')
-
-    return {
-      ...(isIndex ? { index: true } : { path: relative }),
-      ...renderPage(item),
-    }
-  })
 }
 
 export {

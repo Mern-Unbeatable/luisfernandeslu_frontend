@@ -12,6 +12,7 @@ import DisputeResolution from '../components/data-display/DisputeResolution'
 import DeliveryTimeline from '../components/data-display/DeliveryTimeline'
 import CreateAuction from '../components/forms/CreateAuction'
 import AddProduct from '../components/forms/AddProduct/AddProduct'
+import PanelProfile from '../components/forms/PanelProfile'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 import {
@@ -38,6 +39,11 @@ import {
   DEMO_ORDER_INSTALLMENT_SUPPLIER,
   DEMO_ORDER_NEW,
   DEMO_ORDER_PENDING,
+  DEMO_PANEL_PROFILE_ADMIN,
+  DEMO_PANEL_PROFILE_AFFILIATE,
+  DEMO_PANEL_PROFILE_FACTORY,
+  DEMO_PANEL_PROFILE_SUPPLIER,
+  DEMO_PANEL_PROFILE_TRANSPORTER,
   DEMO_PRODUCT,
   DEMO_STATUS_CARDS,
 } from '@/data/demoData'
@@ -680,6 +686,32 @@ function AddProductPreview({ variantId }) {
   )
 }
 
+function PanelProfilePreview({ variantId }) {
+  const role = [
+    'admin',
+    'affiliate',
+    'transporter',
+    'factory',
+    'supplier',
+  ].includes(variantId)
+    ? variantId
+    : 'admin'
+
+  const demos = {
+    admin: DEMO_PANEL_PROFILE_ADMIN,
+    affiliate: DEMO_PANEL_PROFILE_AFFILIATE,
+    transporter: DEMO_PANEL_PROFILE_TRANSPORTER,
+    factory: DEMO_PANEL_PROFILE_FACTORY,
+    supplier: DEMO_PANEL_PROFILE_SUPPLIER,
+  }
+
+  return (
+    <div className="rounded-xl bg-[#F5F6F8] p-2 sm:p-4">
+      <PanelProfile role={role} defaultValue={demos[role]} />
+    </div>
+  )
+}
+
 function DisputeResolutionPreview({ variantId }) {
   const isDashboard = variantId === 'dashboard'
   const [dispute, setDispute] = useState(
@@ -825,6 +857,8 @@ export default function ComponentPreview({ previewId, variantId }) {
       return <CreateAuctionPreview variantId={variantId || 'supplier'} />
     case 'add-product':
       return <AddProductPreview variantId={variantId || 'supplier'} />
+    case 'panel-profile':
+      return <PanelProfilePreview variantId={variantId || 'admin'} />
     case 'dispute-resolution':
       return (
         <DisputeResolutionPreview variantId={variantId || 'public'} />

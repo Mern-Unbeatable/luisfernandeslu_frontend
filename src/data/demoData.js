@@ -1113,3 +1113,60 @@ export const DEMO_DELIVERY_TIMELINE_ITEMS = [
     },
   },
 ]
+
+// ── Panel profile ─────────────────────────────────────────────────
+export const DEMO_PANEL_PROFILE = {
+  displayName: 'Chowdhury Group Of Industries',
+  displayEmail: 'chowdhury@gmail.com',
+  name: 'John Industries',
+  email: 'admin@johnindustries.com',
+  phone: '+1 (555) 000-1122',
+  warehouses: [
+    {
+      id: 'wh-1',
+      label: 'Warehouse 1',
+      address: '4140 Forest Rd. Abilene, New Mexico 21134',
+    },
+  ],
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  iban: '',
+  ibanPhone: '',
+  avatarUrl: null,
+}
+
+export const DEMO_PANEL_PROFILE_SUPPLIER = { ...DEMO_PANEL_PROFILE }
+export const DEMO_PANEL_PROFILE_FACTORY = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'UltraMix Concrete Plant',
+  displayEmail: 'factory@demo.com',
+  name: 'UltraMix Factory',
+  email: 'factory@demo.com',
+}
+export const DEMO_PANEL_PROFILE_TRANSPORTER = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'Swift Logistics',
+  displayEmail: 'transporter@demo.com',
+  name: 'Swift Logistics',
+  email: 'transporter@demo.com',
+  phone: '+1 (555) 220-3344',
+  warehouses: [],
+}
+export const DEMO_PANEL_PROFILE_ADMIN = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'Platform Admin',
+  displayEmail: 'admin@demo.com',
+  name: 'Platform Admin',
+  email: 'admin@demo.com',
+  warehouses: [],
+}
+export const DEMO_PANEL_PROFILE_AFFILIATE = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'Affiliate Partner',
+  displayEmail: 'affiliate@demo.com',
+  name: 'Affiliate Partner',
+  email: 'affiliate@demo.com',
+  phone: '+1 (555) 440-5566',
+  warehouses: [],
+}

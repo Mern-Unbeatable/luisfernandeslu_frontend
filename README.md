@@ -120,20 +120,23 @@ There is **no** `DashboardLayout` — use `PanelLayout` (B2B panels) or `BuyerLa
 
 ## Roles & layouts
 
-Wired in `src/roles/index.js`:
+Wired in `src/roles/index.js` (**sidebar / layout config only** — not routes):
 
 | Kind | Roles | Layout | Base path |
 |------|-------|--------|-----------|
 | Buyer | `customer`, `company` | `BuyerLayout` | `/customer`, `/company` |
 | Panel | `supplier`, `factory`, `transporter`, `affiliate`, `admin` | `PanelLayout` | `/supplier`, … `/admin` |
 
-Each role folder exports nav items from `roles/<role>/index.js` (not separate `menu.js` / `permissions.js`). Stubs `roles/manager` and `roles/user` are unused.
+Each role folder exports nav items from `roles/<role>/index.js`.  
+**All routes** are declared in `src/app/router/index.jsx` (lazy page imports + path). Adding a sidebar link without a matching router entry will 404 / hit the panel `*` Coming Soon catch-all.
 
-Unmatched panel routes fall through to `ComingSoonPage`.
+Unmatched panel paths fall through to `ComingSoonPage`.
 
 ---
 
 ## Routes (summary)
+
+**Source of truth:** `src/app/router/index.jsx`
 
 | Path | Shell | Notes |
 |------|-------|--------|
@@ -141,11 +144,9 @@ Unmatched panel routes fall through to `ComingSoonPage`.
 | `/dispute-resolution` | PublicLayout | Public dispute UI |
 | `/developer`, `/developer/:componentId` | Standalone | Component docs + live preview |
 | `/login`, `/signup`, `/login/:role`, … | AuthLayout | Also `/admin/login`, password reset flow |
-| `/customer/*`, `/company/*` | BuyerLayout | Protected |
-| `/supplier/*` … `/admin/*` | PanelLayout | Protected by role |
+| `/customer/*`, `/company/*` | BuyerLayout | Protected — explicit children in router |
+| `/supplier/*` … `/admin/*` | PanelLayout | Protected — explicit children in router |
 | `*` | PublicLayout | `NotFoundPage` |
-
-Router: `src/app/router/index.jsx`.
 
 ---
 
@@ -169,6 +170,7 @@ These are the **common building blocks**. Docs: `src/developer/catalog.js`. Prev
 | `dispute-resolution` | DisputeResolution | `components/data-display/DisputeResolution/` |
 | `create-auction` | CreateAuction | `components/forms/CreateAuction/` |
 | `add-product` | AddProduct | `components/forms/AddProduct/` |
+| `panel-profile` | PanelProfile | `components/forms/PanelProfile/` |
 | `messenger` | Messenger + useMessages | `components/common/messenger/` |
 
 **When adding a shared component:** implement under `components/`, add `DEMO_*` to `data/demoData.js` if needed, register in `catalog.js`, wire a case in `ComponentPreview.jsx`, keep `id === previewId`.
@@ -289,7 +291,7 @@ Auth:
 
 | Task | Location |
 |------|----------|
-| New role screen | `pages/<role>/…` + nav entry in `roles/<role>/index.js` + route if not auto-built from nav |
+| New role screen | 1) `pages/<role>/…/*Page.jsx` 2) **route** in `app/router/index.jsx` 3) sidebar item in `roles/<role>/index.js` |
 | New shared display/form UI | `components/data-display` or `forms` + catalog + preview + demoData |
 | New auth field widget | `components/auth/` |
 | New RTK endpoints | `features/<module>/<module>Api.js` + ensure store imports the Api module |
@@ -297,18 +299,20 @@ Auth:
 | Translation | `i18n/locales/*.json` |
 | SEO title | `config/seo.js` |
 | Env flag | `.env` + `config/env.js` |
+| Sidebar link only | `roles/<role>/index.js` (`nav`) — does **not** register a route |
 
 ---
 
 ## Agent / onboarding checklist
 
-1. Read this README + skim `src/app/router/index.jsx` and `src/roles/index.js`
+1. Read this README + skim `src/app/router/index.jsx` (all routes) and `src/roles/<role>/index.js` (sidebar only)
 2. For UI work, open `/developer` and the matching entry in `catalog.js`
 3. Import demos only from `@/data/demoData`
 4. Prefer existing shared components over one-off page markup
 5. Do not invent `DashboardLayout` or nest pages under `features/`
-6. `HomePage` is intentionally empty (`return null`) until marketing content lands — do not treat that as a broken route
-7. `hooks/` and `utils/` are reserved; add files there when shared logic appears
+6. New page = file under `pages/` **and** explicit route in `router/index.jsx` **and** optional sidebar entry in `roles/`
+7. `HomePage` is intentionally empty (`return null`) until marketing content lands — do not treat that as a broken route
+8. `hooks/` and `utils/` are reserved; add files there when shared logic appears
 
 ---
 

@@ -1593,6 +1593,140 @@ export const COMPONENT_DOCS = [
     ],
   },
   {
+    id: 'panel-profile',
+    name: 'PanelProfile',
+    category: 'forms',
+    summary:
+      'Shared My Profile for panel roles. Mockups: admin, affiliate, transporter (split cards), factory, supplier.',
+    path: 'src/components/forms/PanelProfile/',
+    importExample:
+      "import PanelProfile from '@/components/forms/PanelProfile'\nimport {\n  DEMO_PANEL_PROFILE_ADMIN,\n  DEMO_PANEL_PROFILE_AFFILIATE,\n  DEMO_PANEL_PROFILE_TRANSPORTER,\n  DEMO_PANEL_PROFILE_FACTORY,\n  DEMO_PANEL_PROFILE_SUPPLIER,\n} from '@/data/demoData'",
+    props: [
+      {
+        name: 'role',
+        type: "'admin' | 'affiliate' | 'transporter' | 'factory' | 'supplier'",
+        required: false,
+        defaultValue: "'supplier'",
+        description:
+          'Drives layout + sections from the design map (see roleConfig.js).',
+      },
+      {
+        name: 'defaultValue',
+        type: 'object',
+        required: false,
+        description:
+          '{ displayName, displayEmail, name, email, phone, warehouses, iban, ibanPhone, … }',
+      },
+      {
+        name: 'layout',
+        type: "'combined' | 'split'",
+        required: false,
+        description:
+          'combined = one main card; split = avatar/info + password as separate cards (transporter).',
+      },
+      {
+        name: 'showWarehouses',
+        type: 'boolean',
+        required: false,
+        description: 'Override role default for warehouse section.',
+      },
+      {
+        name: 'showAccountPhone',
+        type: 'boolean',
+        required: false,
+        description: 'Override whether phone shows under account fields.',
+      },
+      {
+        name: 'passwordMode',
+        type: "'full' | 'simple'",
+        required: false,
+        description:
+          "full → Current + New + Confirm; simple → New + Confirm only.",
+      },
+      {
+        name: 'showIban',
+        type: 'boolean',
+        required: false,
+        description: 'Show/hide the IBAN card.',
+      },
+      {
+        name: 'showAvatarActions',
+        type: 'boolean',
+        required: false,
+        defaultValue: 'false',
+        description: 'true → Upload New / Remove (transporter layout).',
+      },
+      {
+        name: 'onUpdateProfile',
+        type: '(payload) => void',
+        required: false,
+        description: 'Account Information save.',
+      },
+      {
+        name: 'onSaveWarehouses',
+        type: '(warehouses) => void',
+        required: false,
+        description: 'Warehouse list save.',
+      },
+      {
+        name: 'onChangePassword',
+        type: '(payload) => void',
+        required: false,
+        description: 'Password change submit.',
+      },
+      {
+        name: 'onSaveIban',
+        type: '(payload) => void',
+        required: false,
+        description: 'IBAN + payment phone save.',
+      },
+    ],
+    requiredExample: `<PanelProfile
+  role="admin"
+  defaultValue={DEMO_PANEL_PROFILE_ADMIN}
+/>`,
+    optionalExample: `<PanelProfile
+  role="transporter"
+  onUpdateProfile={(data) => saveProfile(data)}
+  onChangePassword={(data) => changePassword(data)}
+  onSaveIban={(data) => saveIban(data)}
+/>`,
+    previewId: 'panel-profile',
+    variants: [
+      {
+        id: 'admin',
+        name: '1 · Admin',
+        description: 'Name + Email only; full password (3 fields); IBAN.',
+        example: `<PanelProfile role="admin" defaultValue={DEMO_PANEL_PROFILE_ADMIN} />`,
+      },
+      {
+        id: 'affiliate',
+        name: '2 · Affiliate',
+        description: 'Name + Email + Phone; simple password; IBAN (E-pagar).',
+        example: `<PanelProfile role="affiliate" defaultValue={DEMO_PANEL_PROFILE_AFFILIATE} />`,
+      },
+      {
+        id: 'transporter',
+        name: '3 · Transporter',
+        description:
+          'Split cards; avatar upload/remove; Personal Information; stacked password; IBAN.',
+        example: `<PanelProfile role="transporter" defaultValue={DEMO_PANEL_PROFILE_TRANSPORTER} />`,
+      },
+      {
+        id: 'factory',
+        name: '4 · Factory',
+        description: 'Phone + warehouses; simple password; IBAN.',
+        example: `<PanelProfile role="factory" defaultValue={DEMO_PANEL_PROFILE_FACTORY} />`,
+      },
+      {
+        id: 'supplier',
+        name: '5 · Supplier',
+        description: 'Phone + warehouses; full password (3 fields); IBAN.',
+        example: `<PanelProfile role="supplier" defaultValue={DEMO_PANEL_PROFILE_SUPPLIER} />`,
+      },
+    ],
+  },
+  {
     id: 'messenger',
     name: 'Messenger',
     category: 'common',
