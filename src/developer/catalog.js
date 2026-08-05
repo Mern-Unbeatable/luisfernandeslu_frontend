@@ -101,7 +101,8 @@ export const COMPONENT_DOCS = [
         type: 'string',
         required: false,
         defaultValue: "''",
-        description: 'Wrapper className.',
+        description:
+          "Wrapper className. Use for layout/padding control, e.g. 'px-3 sm:px-0' on mobile.",
       },
     ],
     requiredExample: `<OrderDetails
@@ -111,6 +112,7 @@ export const COMPONENT_DOCS = [
     optionalExample: `<OrderDetails
   order={order}
   hasInstallment
+  className="px-3 sm:px-0"
   showPay
   onBack={() => navigate(-1)}
   onPayNow={(row) => payInstallment(row.id)}
