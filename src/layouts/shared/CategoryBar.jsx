@@ -90,7 +90,7 @@ export default function CategoryBar() {
 
           <div className="flex min-w-0 flex-row items-center gap-5 sm:gap-8 md:flex-1 md:justify-start md:gap-10 md:pl-8 lg:gap-12">
             <Link
-              to="/#products"
+              to="/products"
               onClick={() => setMenuOpen(false)}
               className="inline-flex shrink-0 flex-row items-center gap-2 whitespace-nowrap text-sm font-medium leading-none text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
             >
