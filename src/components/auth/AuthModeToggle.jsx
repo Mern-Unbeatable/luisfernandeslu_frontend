@@ -15,8 +15,8 @@ export default function AuthModeToggle({ role, mode }) {
         state={location.state}
         className={`${tab} ${
           mode === 'login'
-            ? 'bg-[var(--active)] text-white'
-            : 'text-[var(--primary-text)] hover:text-[var(--active)]'
+            ? 'bg-(--active) text-white'
+            : 'text-(--primary-text) hover:text-(--active)'
         }`}
       >
         {t('auth.loginTab')}
@@ -26,8 +26,8 @@ export default function AuthModeToggle({ role, mode }) {
         state={location.state}
         className={`${tab} ${
           mode === 'register'
-            ? 'bg-[var(--active)] text-white'
-            : 'text-[var(--primary-text)] hover:text-[var(--active)]'
+            ? 'bg-(--active) text-white'
+            : 'text-(--primary-text) hover:text-(--active)'
         }`}
       >
         {t('auth.signUpTab')}
