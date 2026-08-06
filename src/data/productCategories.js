@@ -1,6 +1,7 @@
+import { getProductTypeImage } from '../utils/productTypeImages'
+
 /**
  * Public catalog taxonomy: Category → SubCategory → Product Types.
- * Images are placeholders for now (imageKey); wire real assets later.
  */
 
 function types(...names) {
@@ -957,6 +958,15 @@ export const PRODUCT_CATEGORIES = [
     ],
   },
 ]
+
+// Auto-assign imageSrc for all product types across categories
+PRODUCT_CATEGORIES.forEach((category) => {
+  category.subcategories.forEach((sub) => {
+    sub.productTypes.forEach((type) => {
+      type.imageSrc = getProductTypeImage(type, sub.id, category.id)
+    })
+  })
+})
 
 export function getCategoryById(id) {
   return PRODUCT_CATEGORIES.find((category) => category.id === id) || null
