@@ -39,6 +39,7 @@ export function SelectInput({
   value,
   onChange,
   options = [],
+  disabled = false,
   className = '',
 }) {
   const isEmpty = !value
@@ -48,8 +49,9 @@ export function SelectInput({
       <select
         id={id}
         value={value}
+        disabled={disabled}
         onChange={(event) => onChange?.(event.target.value)}
-        className={`${controlBase} h-10 appearance-none px-2.5 pr-9 ${
+        className={`${controlBase} h-10 appearance-none px-2.5 pr-9 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-70 ${
           isEmpty
             ? 'text-xs text-zinc-500'
             : 'text-sm font-medium text-[var(--primary-text)]'

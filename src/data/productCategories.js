@@ -961,3 +961,53 @@ export const PRODUCT_CATEGORIES = [
 export function getCategoryById(id) {
   return PRODUCT_CATEGORIES.find((category) => category.id === id) || null
 }
+
+export function getSubCategoryById(categoryId, subCategoryId) {
+  const category = getCategoryById(categoryId)
+  if (!category) return null
+  return (
+    category.subcategories.find((sub) => sub.id === subCategoryId) || null
+  )
+}
+
+/** Select options: Category → SubCategory → Product Type (cascading). */
+export function getCategorySelectOptions(
+  placeholder = 'Select category',
+) {
+  return [
+    { value: '', label: placeholder },
+    ...PRODUCT_CATEGORIES.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })),
+  ]
+}
+
+export function getSubCategorySelectOptions(
+  categoryId,
+  placeholder = 'Select sub category',
+) {
+  const category = getCategoryById(categoryId)
+  return [
+    { value: '', label: placeholder },
+    ...(category?.subcategories ?? []).map((sub) => ({
+      value: sub.id,
+      label: sub.name,
+    })),
+  ]
+}
+
+export function getProductTypeSelectOptions(
+  categoryId,
+  subCategoryId,
+  placeholder = 'Select product type',
+) {
+  const sub = getSubCategoryById(categoryId, subCategoryId)
+  return [
+    { value: '', label: placeholder },
+    ...(sub?.productTypes ?? []).map((type) => ({
+      value: type.id,
+      label: type.name,
+    })),
+  ]
+}

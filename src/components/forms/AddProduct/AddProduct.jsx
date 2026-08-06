@@ -1,18 +1,21 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { FiArrowLeft } from 'react-icons/fi'
-import BulkOptionSection, { AiTextSection } from './BulkOptionSection'
 import {
-  CATEGORY_OPTIONS,
-  DEFAULT_ADD_PRODUCT,
-  PRODUCT_TYPE_OPTIONS,
-  SUB_CATEGORY_OPTIONS,
-} from './defaults'
+  getCategorySelectOptions,
+  getProductTypeSelectOptions,
+  getSubCategorySelectOptions,
+} from '@/data/productCategories'
+import BulkOptionSection, { AiTextSection } from './BulkOptionSection'
+import { DEFAULT_ADD_PRODUCT } from './defaults'
 import { Field, SelectInput, TextInput } from './FormControls'
 import ImageDropzone from './ImageDropzone'
 
 /**
  * Common Add Product form.
  * role: 'supplier' (default, full form) | 'factory' (simplified)
+ *
+ * Category / Sub Category / Product Type cascade from PRODUCT_CATEGORIES.
+ * Pass categoryOptions / subCategoryOptions / productTypeOptions to override.
  */
 export default function AddProduct({
   role = 'supplier',
@@ -25,9 +28,9 @@ export default function AddProduct({
   breadcrumb = 'Product > Add Product',
   title = 'Add Product',
   submitLabel = 'Submit',
-  categoryOptions = CATEGORY_OPTIONS,
-  subCategoryOptions = SUB_CATEGORY_OPTIONS,
-  productTypeOptions = PRODUCT_TYPE_OPTIONS,
+  categoryOptions,
+  subCategoryOptions,
+  productTypeOptions,
   className = '',
 }) {
   const isFactory = role === 'factory'
@@ -46,6 +49,40 @@ export default function AddProduct({
   }
 
   const setField = (key) => (nextValue) => patch({ [key]: nextValue })
+
+  const resolvedCategoryOptions = useMemo(
+    () => categoryOptions ?? getCategorySelectOptions(),
+    [categoryOptions],
+  )
+
+  const resolvedSubCategoryOptions = useMemo(
+    () =>
+      subCategoryOptions
+      ?? getSubCategorySelectOptions(form.categoryId),
+    [subCategoryOptions, form.categoryId],
+  )
+
+  const resolvedProductTypeOptions = useMemo(
+    () =>
+      productTypeOptions
+      ?? getProductTypeSelectOptions(form.categoryId, form.subCategoryId),
+    [productTypeOptions, form.categoryId, form.subCategoryId],
+  )
+
+  const handleCategoryChange = (categoryId) => {
+    patch({
+      categoryId,
+      subCategoryId: '',
+      productTypeId: '',
+    })
+  }
+
+  const handleSubCategoryChange = (subCategoryId) => {
+    patch({
+      subCategoryId,
+      productTypeId: '',
+    })
+  }
 
   const handleAi = async (section) => {
     if (!onAiAssist) return
@@ -136,22 +173,24 @@ export default function AddProduct({
               <Field label="Category">
                 <SelectInput
                   value={form.categoryId}
-                  onChange={setField('categoryId')}
-                  options={categoryOptions}
+                  onChange={handleCategoryChange}
+                  options={resolvedCategoryOptions}
                 />
               </Field>
               <Field label="Sub Category">
                 <SelectInput
                   value={form.subCategoryId}
-                  onChange={setField('subCategoryId')}
-                  options={subCategoryOptions}
+                  onChange={handleSubCategoryChange}
+                  options={resolvedSubCategoryOptions}
+                  disabled={!form.categoryId && !subCategoryOptions}
                 />
               </Field>
               <Field label="Product Type">
                 <SelectInput
                   value={form.productTypeId}
                   onChange={setField('productTypeId')}
-                  options={productTypeOptions}
+                  options={resolvedProductTypeOptions}
+                  disabled={!form.subCategoryId && !productTypeOptions}
                 />
               </Field>
             </div>
