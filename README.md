@@ -96,7 +96,8 @@ src/
 ├── hooks/                   # Shared hooks (empty for now)
 ├── i18n/                    # i18next + locales en / pt / es
 ├── layouts/
-│   ├── PublicLayout/        # Header, Footer, CategoryBar, mega-menu
+│   ├── shared/              # Header, Footer, CategoryBar, mega-menu (used by PublicLayout + BuyerLayout)
+│   ├── PublicLayout/        # Public page shell
 │   ├── AuthLayout/          # Login / register shell
 │   ├── BuyerLayout/         # customer + company
 │   └── PanelLayout/         # supplier, factory, transporter, affiliate, admin

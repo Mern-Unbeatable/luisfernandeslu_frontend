@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiMenu, FiX } from 'react-icons/fi'
-import Header from '../PublicLayout/Header'
-import Footer from '../PublicLayout/Footer'
+import Header from '../shared/Header'
+import CategoryBar from '../shared/CategoryBar'
+import Footer from '../shared/Footer'
 import Seo from '../../components/common/Seo/Seo'
 import BuyerSidebar from './BuyerSidebar'
 import { getBuyerRoleConfig } from '../../roles'
@@ -45,6 +46,7 @@ export default function BuyerLayout({
     <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-white">
       <Seo />
       <Header />
+      <CategoryBar />
 
       <div className="w-full bg-[#EFF0F1] py-6 sm:py-10">
         <h1 className="text-center text-2xl font-bold text-[var(--primary-text)] sm:text-3xl md:text-4xl">

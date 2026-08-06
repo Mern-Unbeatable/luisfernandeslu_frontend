@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
-import Header from './Header'
-import CategoryBar from './CategoryBar'
-import Footer from './Footer'
+import Header from '../shared/Header'
+import CategoryBar from '../shared/CategoryBar'
+import Footer from '../shared/Footer'
 import Seo from '../../components/common/Seo/Seo'
 
 export default function PublicLayout() {
