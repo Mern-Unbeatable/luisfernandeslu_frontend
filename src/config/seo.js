@@ -8,6 +8,34 @@ export const routeSeo = {
     titleKey: 'seo.homeTitle',
     descriptionKey: 'seo.homeDescription',
   },
+  products: {
+    titleKey: 'seo.productsTitle',
+    descriptionKey: 'seo.productsDescription',
+  },
+  productDetail: {
+    titleKey: 'seo.productDetailTitle',
+    descriptionKey: 'seo.productDetailDescription',
+  },
+  userCheckout: {
+    titleKey: 'seo.userCheckoutTitle',
+    descriptionKey: 'seo.userCheckoutDescription',
+  },
+  companyCheckout: {
+    titleKey: 'seo.companyCheckoutTitle',
+    descriptionKey: 'seo.companyCheckoutDescription',
+  },
+  orderConfirmation: {
+    titleKey: 'seo.orderConfirmationTitle',
+    descriptionKey: 'seo.orderConfirmationDescription',
+  },
+  messages: {
+    titleKey: 'seo.messagesTitle',
+    descriptionKey: 'seo.messagesDescription',
+  },
+  cart: {
+    titleKey: 'seo.cartTitle',
+    descriptionKey: 'seo.cartDescription',
+  },
   disputeResolution: {
     titleKey: 'seo.disputeResolutionTitle',
     descriptionKey: 'seo.disputeResolutionDescription',

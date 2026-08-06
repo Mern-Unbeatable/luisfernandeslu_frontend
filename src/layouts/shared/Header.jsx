@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
@@ -43,6 +43,10 @@ export default function Header() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const isMessagesRoute =
+    pathname === '/messages' || pathname.startsWith('/messages/')
+  const isCartRoute = pathname === '/cart' || pathname.startsWith('/cart/')
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const dashboardPath = getHomePathForRole(user?.role)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -89,11 +93,23 @@ export default function Header() {
   }, [searchOpen])
 
   const utilityIcons = [
-    { Icon: FiMessageSquare, key: 'messages' },
-    { Icon: FiShoppingCart, key: 'cart' },
+    { Icon: FiMessageSquare, key: 'messages', to: '/messages' },
+    { Icon: FiShoppingCart, key: 'cart', to: '/cart' },
   ]
 
   const closeSearch = () => setSearchOpen(false)
+
+  const utilityIconClass = (key) => {
+    if (key === 'messages' && isMessagesRoute) return 'text-[var(--active)]'
+    if (key === 'cart' && isCartRoute) return 'text-[var(--active)]'
+    return 'text-[var(--primary-text)] transition-colors hover:text-[var(--active)]'
+  }
+
+  const utilityAriaCurrent = (key) => {
+    if (key === 'messages' && isMessagesRoute) return 'page'
+    if (key === 'cart' && isCartRoute) return 'page'
+    return undefined
+  }
 
   return (
     <header ref={headerRef} className="relative sticky top-0 z-50 w-full">
@@ -254,16 +270,28 @@ export default function Header() {
           <div className="flex shrink-0 items-center gap-5 lg:gap-6">
             <LanguageSwitcher />
 
-            {utilityIcons.map(({ Icon, key }) => (
-              <button
-                key={key}
-                type="button"
-                aria-label={t(`header.${key}`)}
-                className="text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
-              >
-                <Icon className="size-6" strokeWidth={1.75} />
-              </button>
-            ))}
+            {utilityIcons.map(({ Icon, key, to }) =>
+              to ? (
+                <Link
+                  key={key}
+                  to={to}
+                  aria-label={t(`header.${key}`)}
+                  aria-current={utilityAriaCurrent(key)}
+                  className={utilityIconClass(key)}
+                >
+                  <Icon className="size-6" strokeWidth={1.75} />
+                </Link>
+              ) : (
+                <button
+                  key={key}
+                  type="button"
+                  aria-label={t(`header.${key}`)}
+                  className={utilityIconClass(key)}
+                >
+                  <Icon className="size-6" strokeWidth={1.75} />
+                </button>
+              ),
+            )}
 
             {isAuthenticated ? (
               <div className="group relative">
@@ -340,17 +368,35 @@ export default function Header() {
       >
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
           <div className="flex flex-col py-1">
-            {utilityIcons.map(({ Icon, key }) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
-              >
-                <Icon className="size-5 shrink-0" strokeWidth={1.75} />
-                <span className="text-sm font-medium">{t(`header.${key}`)}</span>
-              </button>
-            ))}
+            {utilityIcons.map(({ Icon, key, to }) =>
+              to ? (
+                <Link
+                  key={key}
+                  to={to}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={utilityAriaCurrent(key)}
+                  className={`flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50 ${
+                    (key === 'messages' && isMessagesRoute) ||
+                    (key === 'cart' && isCartRoute)
+                      ? 'text-[var(--active)]'
+                      : 'text-[var(--primary-text)]'
+                  }`}
+                >
+                  <Icon className="size-5 shrink-0" strokeWidth={1.75} />
+                  <span className="text-sm font-medium">{t(`header.${key}`)}</span>
+                </Link>
+              ) : (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+                >
+                  <Icon className="size-5 shrink-0" strokeWidth={1.75} />
+                  <span className="text-sm font-medium">{t(`header.${key}`)}</span>
+                </button>
+              ),
+            )}
 
             {isAuthenticated ? (
               <>
