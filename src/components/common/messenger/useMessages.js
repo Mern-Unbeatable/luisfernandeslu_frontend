@@ -107,6 +107,97 @@ export default function useMessages() {
   const handleTyping = useCallback(() => {}, [])
   const stopTyping = useCallback(() => {}, [])
 
+  const createOffer = useCallback(
+    async (form) => {
+      if (!activePartnerId) return false
+      setIsSending(true)
+      await new Promise((r) => setTimeout(r, 200))
+
+      const pricing = (form.installments || []).flatMap((row, index) => {
+        const n = index + 1
+        const ord =
+          n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : `${n}th`
+        return [
+          {
+            label: `${ord} Installment`,
+            value: row.price ? `$${row.price}` : '—',
+          },
+          {
+            label: 'Quantity',
+            value: row.quantity ? `${row.quantity} Bags` : '—',
+          },
+        ]
+      })
+
+      if (form.totalPrice) {
+        pricing.unshift(
+          { label: 'Total Price', value: `$${form.totalPrice}` },
+          {
+            label: 'Installment',
+            value: form.installmentMonths
+              ? `${form.installmentMonths} months`
+              : '—',
+          },
+        )
+      }
+
+      const firstPrice = form.installments?.[0]?.price
+      const offer = {
+        title: 'Offer Card',
+        statusLabel: 'Awaiting their response',
+        product: form.product || '—',
+        quantity: form.totalQuantity ? `${form.totalQuantity} Bags` : '—',
+        projectName: form.projectName || '—',
+        address: form.deliveryLocation || '—',
+        unloadingType: form.unloadingType || '—',
+        accessConditions: form.accessConditions || '—',
+        pricing,
+        summary: firstPrice
+          ? {
+              firstInstallment: `$${firstPrice}`,
+              remainingBalance: form.totalPrice
+                ? `$${Math.max(
+                    Number(form.totalPrice) - Number(firstPrice),
+                    0,
+                  )}`
+                : '—',
+              note: form.installmentMonths
+                ? `Pay in ${form.installmentMonths} installments`
+                : '',
+            }
+          : undefined,
+      }
+
+      const next = {
+        id: `offer-${Date.now()}`,
+        sender: 'me',
+        type: 'offer',
+        time: formatNow(),
+        status: 'Delivered',
+        offer,
+      }
+
+      setMessagesByChat((prev) => ({
+        ...prev,
+        [activePartnerId]: [...(prev[activePartnerId] || []), next],
+      }))
+      setChats((prev) =>
+        prev.map((chat) =>
+          chat.id === activePartnerId
+            ? {
+                ...chat,
+                lastMessage: `Offer: ${form.product || 'Product'}`,
+                time: 'Just now',
+              }
+            : chat,
+        ),
+      )
+      setIsSending(false)
+      return true
+    },
+    [activePartnerId],
+  )
+
   return {
     chats,
     messages,
@@ -116,6 +207,7 @@ export default function useMessages() {
     sendMessage,
     editMessage,
     deleteMessage,
+    createOffer,
     handleTyping,
     stopTyping,
     isPartnerTyping,

@@ -33,6 +33,27 @@ const Home = Loadable(
   lazy(() => import('../../pages/public_page/HomePage')),
   <HomeSkeleton />,
 )
+const PublicProducts = Loadable(
+  lazy(() => import('../../pages/public_page/products/ProductsPage')),
+)
+const PublicProductDetail = Loadable(
+  lazy(() => import('../../pages/public_page/products/ProductDetailPage')),
+)
+const UserCheckout = Loadable(
+  lazy(() => import('../../pages/public_page/checkout/UserCheckoutPage')),
+)
+const CompanyCheckout = Loadable(
+  lazy(() => import('../../pages/public_page/checkout/CompanyCheckoutPage')),
+)
+const OrderConfirmation = Loadable(
+  lazy(() => import('../../pages/public_page/checkout/OrderConfirmationPage')),
+)
+const PublicCart = Loadable(
+  lazy(() => import('../../pages/public_page/cart/CartPage')),
+)
+const PublicMessages = Loadable(
+  lazy(() => import('../../pages/public_page/messages/MessagesPage')),
+)
 const DisputeResolution = Loadable(
   lazy(() => import('../../pages/public_page/DisputeResolutionPage')),
 )
@@ -431,6 +452,41 @@ export const router = createBrowserRouter([
         element: <PublicLayout />,
         children: [
           { path: '/', element: <Home />, handle: { seo: routeSeo.home } },
+          {
+            path: '/products/:slug',
+            element: <PublicProductDetail />,
+            handle: { seo: routeSeo.productDetail },
+          },
+          {
+            path: '/products',
+            element: <PublicProducts />,
+            handle: { seo: routeSeo.products },
+          },
+          {
+            path: '/cart',
+            element: <PublicCart />,
+            handle: { seo: routeSeo.cart },
+          },
+          {
+            path: '/messages',
+            element: <PublicMessages />,
+            handle: { seo: routeSeo.messages },
+          },
+          {
+            path: '/order/confirmation',
+            element: <OrderConfirmation />,
+            handle: { seo: routeSeo.orderConfirmation },
+          },
+          {
+            path: '/checkout/company',
+            element: <CompanyCheckout />,
+            handle: { seo: routeSeo.companyCheckout },
+          },
+          {
+            path: '/checkout',
+            element: <UserCheckout />,
+            handle: { seo: routeSeo.userCheckout },
+          },
           {
             path: '/dispute-resolution',
             element: <DisputeResolution />,

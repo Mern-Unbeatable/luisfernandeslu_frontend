@@ -6,6 +6,11 @@ import { FiMenu } from 'react-icons/fi'
 import { PRODUCT_CATEGORIES } from '../../data/productCategories'
 import CategoryMegaMenu from './CategoryMegaMenu'
 
+function prefersHoverOpen() {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches
+}
+
 /**
  * Category / CTA strip under the public header.
  * Desktop: mega menu opens on hover over "All categories".
@@ -67,10 +72,13 @@ export default function CategoryBar() {
             aria-expanded={menuOpen}
             aria-controls="category-mega-menu"
             onClick={() => setMenuOpen((open) => !open)}
-            onMouseEnter={openMenu}
-            onMouseLeave={scheduleCloseMenu}
-            onFocus={openMenu}
-            className={`inline-flex shrink-0 flex-row items-center gap-2 whitespace-nowrap text-sm font-medium leading-none transition-colors ${
+            onMouseEnter={() => {
+              if (prefersHoverOpen()) openMenu()
+            }}
+            onMouseLeave={() => {
+              if (prefersHoverOpen()) scheduleCloseMenu()
+            }}
+            className={`inline-flex min-h-11 shrink-0 touch-manipulation flex-row items-center gap-2 whitespace-nowrap px-1 text-sm font-medium leading-none transition-colors sm:min-h-0 sm:px-0 ${
               menuOpen
                 ? 'text-[var(--active)]'
                 : 'text-[var(--primary-text)] hover:text-[var(--active)]'
@@ -82,7 +90,7 @@ export default function CategoryBar() {
 
           <div className="flex min-w-0 flex-row items-center gap-5 sm:gap-8 md:flex-1 md:justify-start md:gap-10 md:pl-8 lg:gap-12">
             <Link
-              to="/#products"
+              to="/products"
               onClick={() => setMenuOpen(false)}
               className="inline-flex shrink-0 flex-row items-center gap-2 whitespace-nowrap text-sm font-medium leading-none text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
             >
@@ -124,11 +132,24 @@ export default function CategoryBar() {
       </nav>
 
       {menuOpen ? (
+        <button
+          type="button"
+          aria-label={t('header.closeMenu')}
+          className="fixed inset-0 z-10 bg-black/25 lg:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      ) : null}
+
+      {menuOpen ? (
         <div
           id="category-mega-menu"
           className="absolute top-full right-0 left-0 z-20"
-          onMouseEnter={openMenu}
-          onMouseLeave={scheduleCloseMenu}
+          onMouseEnter={() => {
+            if (prefersHoverOpen()) openMenu()
+          }}
+          onMouseLeave={() => {
+            if (prefersHoverOpen()) scheduleCloseMenu()
+          }}
         >
           <CategoryMegaMenu
             activeCategoryId={activeCategoryId}
