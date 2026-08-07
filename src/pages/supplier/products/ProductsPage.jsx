@@ -20,6 +20,12 @@ const TAB_CONFIG = [
   { id: 'featured', labelKey: 'panel.supplierProducts.tabFeatured' },
 ];
 
+const CATEGORY_LABEL_KEYS = {
+  'cement-mortar-concrete': 'panel.supplierProducts.categories.cementMortarConcrete',
+  aggregates: 'panel.supplierProducts.categories.aggregates',
+  'steel-rebar': 'panel.supplierProducts.categories.steelRebar',
+};
+
 export default function ProductsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -61,7 +67,9 @@ export default function ProductsPage() {
 
   const categoryOptions = DEMO_SUPPLIER_PRODUCT_CATEGORIES.map((option) => ({
     value: option.value,
-    label: option.labelKey ? t(option.labelKey) : option.label,
+    label: option.labelKey
+      ? t(option.labelKey)
+      : t(CATEGORY_LABEL_KEYS[option.value], { defaultValue: option.label }),
   }));
 
   const handleTabChange = (tabId) => {

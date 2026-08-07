@@ -378,28 +378,60 @@ function ActionMenu({ row, actions }) {
               id={menuId}
               role="menu"
               style={{ top: coords.top, left: coords.left }}
-              className="fixed z-[9999] min-w-[148px] overflow-hidden rounded-md border border-gray-200 bg-white py-1 shadow-lg"
+              className="fixed z-[9999] min-w-[160px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg"
             >
-              {actions.map((action) => (
-                <button
-                  key={action.id || action.label}
-                  type="button"
-                  role="menuitem"
-                  disabled={action.disabled?.(row)}
-                  onClick={() => {
-                    action.onClick?.(row)
-                    setOpen(false)
-                  }}
-                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-                    action.variant === 'danger'
-                      ? 'text-red-600 hover:bg-red-50'
-                      : 'text-[var(--primary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {action.icon}
-                  {action.label}
-                </button>
-              ))}
+              {actions.map((action) => {
+                if (action.variant === 'header') {
+                  return (
+                    <button
+                      key={action.id || action.label}
+                      type="button"
+                      role="menuitem"
+                      disabled={action.disabled?.(row)}
+                      onClick={() => {
+                        action.onClick?.(row)
+                        setOpen(false)
+                      }}
+                      className="flex w-full items-center bg-[var(--active)] px-4 py-3 text-left text-sm font-medium text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {action.icon}
+                      {action.label}
+                    </button>
+                  )
+                }
+
+                if (action.variant === 'section') {
+                  return (
+                    <p
+                      key={action.id || action.label}
+                      className="px-4 py-2.5 text-sm font-semibold text-[var(--primary-text)]"
+                    >
+                      {action.label}
+                    </p>
+                  )
+                }
+
+                return (
+                  <button
+                    key={action.id || action.label}
+                    type="button"
+                    role="menuitem"
+                    disabled={action.disabled?.(row)}
+                    onClick={() => {
+                      action.onClick?.(row)
+                      setOpen(false)
+                    }}
+                    className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                      action.variant === 'danger'
+                        ? 'text-red-600 hover:bg-red-50'
+                        : 'text-[var(--primary-text)] hover:bg-gray-50'
+                    }`}
+                  >
+                    {action.icon}
+                    {action.label}
+                  </button>
+                )
+              })}
             </div>,
             document.body,
           )

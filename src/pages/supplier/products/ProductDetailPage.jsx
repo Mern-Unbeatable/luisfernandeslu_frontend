@@ -13,17 +13,21 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className='rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm'>
-        <p className='text-base font-semibold text-[var(--primary-text)]'>
-          {t('panel.supplierProducts.notFound')}
-        </p>
-        <Link
-          to='/supplier/products'
-          className='mt-4 inline-flex text-sm font-semibold text-[var(--active)] hover:underline'
-        >
-          {t('panel.supplierProducts.backToProducts')}
-        </Link>
-      </div>
+      <>
+        <Seo title={t('panel.supplierProducts.notFound')} />
+
+        <div className='rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm'>
+          <p className='text-base font-semibold text-[var(--primary-text)]'>
+            {t('panel.supplierProducts.notFound')}
+          </p>
+          <Link
+            to='/supplier/products'
+            className='mt-4 inline-flex text-sm font-semibold text-[var(--active)] hover:underline'
+          >
+            {t('panel.supplierProducts.backToProducts')}
+          </Link>
+        </div>
+      </>
     );
   }
 

@@ -256,7 +256,49 @@
       "emptyTitle": "Nenhum produto encontrado",
       "emptyHint": "Tente outro filtro ou adicione um novo produto.",
       "notFound": "Produto não encontrado.",
-      "backToProducts": "Voltar aos produtos"
+      "backToProducts": "Voltar aos produtos",
+      "categories": {
+        "cementMortarConcrete": "Cimento, Argamassa e Betão",
+        "aggregates": "Agregados",
+        "steelRebar": "Aço e Vergalhão"
+      },
+      "add": {
+        "title": "Adicionar produto",
+        "breadcrumb": "Produto > Adicionar produto",
+        "submit": "SUBMETER",
+        "selectWarehouse": "Selecionar armazém"
+      }
+    },
+    "supplierPromoCodes": {
+      "title": "Gestão de códigos promocionais",
+      "subtitle": "Crie e faça a gestão de códigos promocionais para a sua plataforma de e-commerce",
+      "createPromoCode": "+ Criar código promocional",
+      "tabPromoCode": "Código promocional",
+      "tabPromoProduct": "Produto promocional",
+      "allStatus": "Todos os estados",
+      "colPromoCode": "Código promocional",
+      "colDiscountType": "Tipo de desconto",
+      "colDiscountValue": "Valor do desconto",
+      "colMinOrder": "Pedido mínimo",
+      "colUsageLimit": "Limite de uso",
+      "colUsedCount": "Utilizações",
+      "colStatus": "Estado",
+      "colExpiryDate": "Data de expiração",
+      "colAction": "Ação",
+      "discountTypePercentage": "Percentagem",
+      "discountTypeFixed": "Fixo",
+      "unlimited": "Ilimitado",
+      "unlimitedLower": "ilimitado",
+      "statusActive": "Ativo",
+      "statusDisabled": "Desativado",
+      "statusExpired": "Expirado",
+      "actionEdit": "Editar",
+      "actionDelete": "Eliminar",
+      "actionSeeDetails": "Ver detalhes",
+      "statusSection": "Estado",
+      "emptyPromoCodes": "Nenhum código promocional encontrado.",
+      "emptyPromoProductsTitle": "Ainda sem produtos promocionais",
+      "emptyPromoProductsHint": "Os produtos promocionais aparecerão aqui quando atribuídos a uma promoção."
     },
     "profile": {
       "title": "O meu perfil",

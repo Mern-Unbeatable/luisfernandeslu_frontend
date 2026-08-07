@@ -256,7 +256,49 @@
       "emptyTitle": "No products found",
       "emptyHint": "Try a different filter or add a new product.",
       "notFound": "Product not found.",
-      "backToProducts": "Back to products"
+      "backToProducts": "Back to products",
+      "categories": {
+        "cementMortarConcrete": "Cement, Mortar & Concrete",
+        "aggregates": "Aggregates",
+        "steelRebar": "Steel & Rebar"
+      },
+      "add": {
+        "title": "Add Product",
+        "breadcrumb": "Product > Add Product",
+        "submit": "SUBMIT",
+        "selectWarehouse": "Select warehouse"
+      }
+    },
+    "supplierPromoCodes": {
+      "title": "Promo Code Management",
+      "subtitle": "Create and manage promotional codes for your e-commerce platform",
+      "createPromoCode": "+ Create Promo Code",
+      "tabPromoCode": "Promo Code",
+      "tabPromoProduct": "Promo Product",
+      "allStatus": "All Status",
+      "colPromoCode": "Promo Code",
+      "colDiscountType": "Discount Type",
+      "colDiscountValue": "Discount Value",
+      "colMinOrder": "Min Order",
+      "colUsageLimit": "Usage Limit",
+      "colUsedCount": "Used Count",
+      "colStatus": "Status",
+      "colExpiryDate": "Expiry Date",
+      "colAction": "Action",
+      "discountTypePercentage": "Percentage",
+      "discountTypeFixed": "Fixed",
+      "unlimited": "Unlimited",
+      "unlimitedLower": "unlimited",
+      "statusActive": "Active",
+      "statusDisabled": "Disabled",
+      "statusExpired": "Expired",
+      "actionEdit": "Edit",
+      "actionDelete": "Delete",
+      "actionSeeDetails": "See Details",
+      "statusSection": "Status",
+      "emptyPromoCodes": "No promo codes found.",
+      "emptyPromoProductsTitle": "No promo products yet",
+      "emptyPromoProductsHint": "Promo products will appear here when assigned to a promotion."
     },
     "profile": {
       "title": "My Profile",
