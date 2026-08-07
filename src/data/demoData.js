@@ -18,10 +18,10 @@ import {
   FiPackage,
   FiShoppingBag,
   FiUser,
-} from 'react-icons/fi'
+} from 'react-icons/fi';
 
 // ── Auth ──────────────────────────────────────────────────────────
-export const DEMO_PASSWORD = 'demo123'
+export const DEMO_PASSWORD = 'demo123';
 
 export const DEMO_USERS = [
   {
@@ -73,21 +73,21 @@ export const DEMO_USERS = [
     name: 'Admin Demo',
     labelKey: 'auth.demo.admin',
   },
-]
+];
 
-const BUYER_ROLES = new Set(['customer', 'company'])
+const BUYER_ROLES = new Set(['customer', 'company']);
 
 // ── Product details ───────────────────────────────────────────────
 const IMG_MAIN =
-  'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80'
+  'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80';
 const IMG_2 =
-  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80'
+  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80';
 const IMG_3 =
-  'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=400&q=80'
+  'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=400&q=80';
 const IMG_4 =
-  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80'
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80';
 const AVATAR =
-  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80'
+  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80';
 
 export const DEMO_PRODUCT = {
   title: 'Portland Cement',
@@ -168,7 +168,7 @@ export const DEMO_PRODUCT = {
     { label: 'Service Area', value: 'Illinois & nearby states' },
     { label: 'Verification', value: 'Verified vendor' },
   ],
-}
+};
 
 /** Admin-facing seller label override */
 export const ADMIN_PRODUCT = {
@@ -177,7 +177,7 @@ export const ADMIN_PRODUCT = {
     ...DEMO_PRODUCT.seller,
     name: 'A2A Construction Supplies',
   },
-}
+};
 
 // ── Orders ────────────────────────────────────────────────────────
 export const DEMO_ORDER_PRODUCTS = [
@@ -214,7 +214,7 @@ export const DEMO_ORDER_PRODUCTS = [
     warehouse: '1901 Thornridge Cir. Shiloh, Hawaii 81063',
     total: '$2,100.00',
   },
-]
+];
 
 export const DEMO_INSTALLMENT_BREAKDOWN = [
   {
@@ -250,7 +250,7 @@ export const DEMO_INSTALLMENT_BREAKDOWN = [
     installmentNumber: '3rd Installment',
     amount: '$5,333.34',
   },
-]
+];
 
 export const DEMO_ORDER_INSTALLMENTS = [
   {
@@ -295,7 +295,7 @@ export const DEMO_ORDER_INSTALLMENTS = [
     dueDate: 'Aug 15, 2026',
     amount: '$8,335',
   },
-]
+];
 
 const baseCompany = {
   name: 'ABC CORP',
@@ -303,7 +303,7 @@ const baseCompany = {
   phone: '+123 765 3490',
   project: 'Downtown Office Complex',
   taxId: 'TX-998877',
-}
+};
 
 const baseTransporter = {
   name: 'Esther Howard',
@@ -311,20 +311,20 @@ const baseTransporter = {
   phone: '(385) 555-0121',
   vehicle: 'Truck #TR-2034',
   initials: 'EH',
-}
+};
 
 const baseLogistics = {
   deliveryLocation: '123 Main St, Downtown',
   pickupLocation: 'Downtown Office Complex',
   unloadingType: 'Tipper truck',
   accessCondition: 'Manual Unloading',
-}
+};
 
 const baseTotals = {
   grandTotal: '$5,873.00',
   shipping: '$1,200.00',
   total: '$7,073.00',
-}
+};
 
 /** hasInstallment=false · Pending */
 export const DEMO_ORDER_PENDING = {
@@ -339,7 +339,7 @@ export const DEMO_ORDER_PENDING = {
   totals: baseTotals,
   transporter: null,
   cancelReason: null,
-}
+};
 
 /** hasInstallment=false · New (Accept button) */
 export const DEMO_ORDER_NEW = {
@@ -357,14 +357,14 @@ export const DEMO_ORDER_NEW = {
     zipCode: '095764',
     address: '2118 Thornridge Cir. Syracuse, Connecticut 35624',
   },
-}
+};
 
 /** hasInstallment=false · Assigned */
 export const DEMO_ORDER_ASSIGNED = {
   ...DEMO_ORDER_PENDING,
   status: 'assigned',
   transporter: baseTransporter,
-}
+};
 
 /** hasInstallment=false · Cancel */
 export const DEMO_ORDER_CANCEL = {
@@ -372,7 +372,7 @@ export const DEMO_ORDER_CANCEL = {
   status: 'cancel',
   cancelReason:
     'Order has been cancelled by the customer as the requirement has been updated and the purchase is no longer needed.',
-}
+};
 
 /** hasInstallment=true · New (no transporter card) */
 export const DEMO_ORDER_INSTALLMENT_NEW = {
@@ -417,7 +417,7 @@ export const DEMO_ORDER_INSTALLMENT_NEW = {
   installments: DEMO_ORDER_INSTALLMENTS,
   transporter: null,
   totals: null,
-}
+};
 
 /** hasInstallment=true · Assigned / with transporter */
 export const DEMO_ORDER_INSTALLMENT_ASSIGNED = {
@@ -454,7 +454,7 @@ export const DEMO_ORDER_INSTALLMENT_ASSIGNED = {
       total: '$6,110.00',
     },
   ],
-}
+};
 
 /**
  * Installment order demo used for “No Pay” preview (showPay omitted / false).
@@ -463,7 +463,7 @@ export const DEMO_ORDER_INSTALLMENT_SUPPLIER = {
   ...DEMO_ORDER_INSTALLMENT_ASSIGNED,
   id: 'ORD-SUP-001',
   orderId: 'ORD-SUP-001',
-}
+};
 
 // ── Installment timeline ──────────────────────────────────────────
 export const DEMO_INSTALLMENTS = [
@@ -515,7 +515,7 @@ export const DEMO_INSTALLMENTS = [
     amount: '$8,335',
     quantity: '30 bags',
   },
-]
+];
 
 // ── Auction cards ─────────────────────────────────────────────────
 export const DEMO_AUCTION_CREATED = {
@@ -526,7 +526,7 @@ export const DEMO_AUCTION_CREATED = {
   deliveryLocation: '5678 Oak Ave, San Francisco, CA',
   productName: 'Construction Materials - Steel Beams',
   status: 'open',
-}
+};
 
 export const DEMO_AUCTION_ASSIGNED = {
   id: 'auc-ord-002',
@@ -537,7 +537,7 @@ export const DEMO_AUCTION_ASSIGNED = {
   assignedTransporter: 'Swift Transport Co.',
   bidPrice: 4500,
   status: 'assigned',
-}
+};
 
 export const DEMO_AUCTION_LIVE = {
   id: 'auc-001',
@@ -552,12 +552,36 @@ export const DEMO_AUCTION_LIVE = {
   dateLabel: '6/21/2026',
   status: 'bidding',
   bids: [
-    { id: 'b1', amount: 285, label: 'Just now', at: '5/20/2026, 4:16:01 PM', transporterName: 'FastShip Logistics' },
-    { id: 'b2', amount: 290, label: '1 min ago', at: '5/20/2026, 4:15:01 PM', transporterName: 'Swift Transport Co.' },
-    { id: 'b3', amount: 310, label: '3 min ago', at: '5/20/2026, 4:13:01 PM', transporterName: 'RoadRunner Freight' },
-    { id: 'b4', amount: 320, label: '4 min ago', at: '5/20/2026, 4:12:01 PM', transporterName: 'HaulMaster Inc.' },
+    {
+      id: 'b1',
+      amount: 285,
+      label: 'Just now',
+      at: '5/20/2026, 4:16:01 PM',
+      transporterName: 'FastShip Logistics',
+    },
+    {
+      id: 'b2',
+      amount: 290,
+      label: '1 min ago',
+      at: '5/20/2026, 4:15:01 PM',
+      transporterName: 'Swift Transport Co.',
+    },
+    {
+      id: 'b3',
+      amount: 310,
+      label: '3 min ago',
+      at: '5/20/2026, 4:13:01 PM',
+      transporterName: 'RoadRunner Freight',
+    },
+    {
+      id: 'b4',
+      amount: 320,
+      label: '4 min ago',
+      at: '5/20/2026, 4:12:01 PM',
+      transporterName: 'HaulMaster Inc.',
+    },
   ],
-}
+};
 
 // ── Auction details ───────────────────────────────────────────────
 export const DEMO_AUCTION_DETAILS_ACTIVE = {
@@ -607,7 +631,7 @@ export const DEMO_AUCTION_DETAILS_ACTIVE = {
     },
   ],
   transporter: null,
-}
+};
 
 export const DEMO_AUCTION_DETAILS_ASSIGNED = {
   ...DEMO_AUCTION_DETAILS_ACTIVE,
@@ -622,7 +646,7 @@ export const DEMO_AUCTION_DETAILS_ASSIGNED = {
     bidAmount: '$4,500',
     assignedAt: 'May 18, 2026 2:30 PM',
   },
-}
+};
 
 /** Transporter view — assigned job. */
 export const DEMO_AUCTION_DETAILS_TRANSPORTER = {
@@ -640,14 +664,14 @@ export const DEMO_AUCTION_DETAILS_TRANSPORTER = {
     bidAmount: '$2000.00',
     assignedAt: 'May 18, 2026 2:30 PM',
   },
-}
+};
 
 export const DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE = {
   ...DEMO_AUCTION_DETAILS_TRANSPORTER,
   id: 'auc-det-004',
   status: 'complete',
   currentStatus: 'complete',
-}
+};
 
 // ── Status cards ──────────────────────────────────────────────────
 export const DEMO_STATUS_CARDS = {
@@ -745,11 +769,11 @@ export const DEMO_STATUS_CARDS = {
     tone: 'danger',
     icon: FiAlertCircle,
   },
-}
+};
 
 export const DEMO_STATUS_CARD_LIST = Object.entries(DEMO_STATUS_CARDS).map(
   ([id, props]) => ({ id, ...props }),
-)
+);
 
 // ── Supplier dashboard ────────────────────────────────────────────
 export const DEMO_SUPPLIER_DASHBOARD = {
@@ -874,7 +898,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       statusLabel: 'Pending',
     },
   ],
-}
+};
 
 export const DEMO_SUPPLIER_DASHBOARD_STAT_CARDS = [
   {
@@ -917,28 +941,29 @@ export const DEMO_SUPPLIER_DASHBOARD_STAT_CARDS = [
     icon: FiPackage,
     iconTone: 'blue',
   },
-]
+];
 
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';
 
 const SUPPLIER_PRODUCT_TITLES = [
   'Portland Cement',
   'Portland Cement Standard',
   'Portland Cement Quick Set',
-]
+];
 
 const SUPPLIER_PRODUCT_DESCRIPTION =
-  'High-strength building cement suitable for construction and masonry work.'
+  'High-strength building cement suitable for construction and masonry work.';
 
 const SUPPLIER_FEATURED_BADGE = {
   label: 'Featured',
   className: 'bg-sky-100 text-sky-700',
-}
+};
 
 function buildSupplierCatalogProduct(id, config) {
-  const titleIndex = Number(id.replace(/\D/g, '')) % SUPPLIER_PRODUCT_TITLES.length
+  const titleIndex =
+    Number(id.replace(/\D/g, '')) % SUPPLIER_PRODUCT_TITLES.length;
 
   return {
     id,
@@ -955,7 +980,7 @@ function buildSupplierCatalogProduct(id, config) {
       priceText: config.priceText || 'Price: $115 per bag (50 kg)',
       expiryDate: config.expiryDate,
     },
-  }
+  };
 }
 
 function buildSupplierCatalogBatch(tab, count, baseConfig = {}) {
@@ -964,7 +989,7 @@ function buildSupplierCatalogBatch(tab, count, baseConfig = {}) {
       ...baseConfig,
       tab,
     }),
-  )
+  );
 }
 
 export const DEMO_SUPPLIER_PRODUCTS = [
@@ -987,36 +1012,40 @@ export const DEMO_SUPPLIER_PRODUCTS = [
     priceText: 'Price: $130 per bag (50 kg)',
     expiryDate: '5/4/2026',
   }),
-]
+];
 
 export const DEMO_SUPPLIER_PRODUCT_CATEGORIES = [
   { value: 'all', labelKey: 'panel.supplierProducts.allCategories' },
   { value: 'cement-mortar-concrete', label: 'Cement, Mortar & Concrete' },
   { value: 'aggregates', label: 'Aggregates' },
   { value: 'steel-rebar', label: 'Steel & Rebar' },
-]
+];
 
-export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8
+export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8;
 
 /** Full PDP payload for supplier product details (API-ready shape). */
 export function getSupplierProductDetail(productId) {
-  const catalogItem = DEMO_SUPPLIER_PRODUCTS.find((item) => item.id === productId)
-  if (!catalogItem) return null
+  const catalogItem = DEMO_SUPPLIER_PRODUCTS.find(
+    (item) => item.id === productId,
+  );
+  if (!catalogItem) return null;
 
-  const image = catalogItem.product.image || DEMO_PRODUCT.images[0]
+  const image = catalogItem.product.image || DEMO_PRODUCT.images[0];
   const images = image
     ? [image, ...DEMO_PRODUCT.images.filter((src) => src !== image).slice(0, 3)]
-    : DEMO_PRODUCT.images
+    : DEMO_PRODUCT.images;
 
   return {
     ...DEMO_PRODUCT,
     title: catalogItem.product.title || DEMO_PRODUCT.title,
-    description: catalogItem.product.description || DEMO_PRODUCT.descriptionParagraphs?.[0],
+    description:
+      catalogItem.product.description ||
+      DEMO_PRODUCT.descriptionParagraphs?.[0],
     images,
     image,
     priceText: catalogItem.product.priceText || DEMO_PRODUCT.priceText,
     expiryDate: catalogItem.product.expiryDate,
-  }
+  };
 }
 
 // ── Add Product form demos ────────────────────────────────────────
@@ -1043,15 +1072,15 @@ const EMPTY_ADD_PRODUCT = {
   ],
   bannerImage: null,
   otherImages: [],
-}
+};
 
 const DEMO_ADD_PRODUCT_LONG_TEXT =
-  'Portland Cement is a high-quality, versatile construction material designed for strong, durable, and long-lasting structures. It is widely used for concrete, mortar, plastering, and other construction applications, ensuring excellent bonding and superior performance. With its fine composition and consistent quality, this cement provides smooth workability and reliable strength development. It is suitable for residential, commercial, and industrial projects, making it an essential material for builders and contractors. Its advanced formulation ensures high compressive strength, resistance to cracks, and long-term durability. Whether used for foundations, walls, or finishing work, Portland Cement delivers dependable results for all types of construction needs.'
+  'Portland Cement is a high-quality, versatile construction material designed for strong, durable, and long-lasting structures. It is widely used for concrete, mortar, plastering, and other construction applications, ensuring excellent bonding and superior performance. With its fine composition and consistent quality, this cement provides smooth workability and reliable strength development. It is suitable for residential, commercial, and industrial projects, making it an essential material for builders and contractors. Its advanced formulation ensures high compressive strength, resistance to cracks, and long-term durability. Whether used for foundations, walls, or finishing work, Portland Cement delivers dependable results for all types of construction needs.';
 
 export const DEMO_WAREHOUSE_OPTIONS = [
   { value: '', label: 'Select warehouse' },
   { value: 'wh-santa-ana', label: DEMO_PRODUCT.warehouse },
-]
+];
 
 export const DEMO_ADD_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,
@@ -1072,7 +1101,7 @@ export const DEMO_ADD_PRODUCT = {
     { id: 'tier-1', quantity: '1-20', price: '$40.00' },
     { id: 'tier-2', quantity: '20-40', price: '$38.00' },
   ],
-}
+};
 
 // ── Supplier promo codes ──────────────────────────────────────────
 export const DEMO_SUPPLIER_PROMO_CODES = [
@@ -1184,11 +1213,11 @@ export const DEMO_SUPPLIER_PROMO_CODES = [
     status: 'active',
     expiryDate: 'Dec 31, 2025',
   },
-]
+];
 
 const DEMO_QUICK_SET_PRODUCT = DEMO_SUPPLIER_PRODUCTS.find(
   (item) => item.product?.title === 'Portland Cement Quick Set',
-)
+);
 
 export const DEMO_SUPPLIER_PROMO_PRODUCT_OPTIONS = Array.from(
   new Map(
@@ -1200,7 +1229,7 @@ export const DEMO_SUPPLIER_PROMO_PRODUCT_OPTIONS = Array.from(
       },
     ]),
   ).values(),
-)
+);
 
 export const DEMO_CREATE_PROMO_CODE = {
   code: 'SAVE10',
@@ -1212,14 +1241,94 @@ export const DEMO_CREATE_PROMO_CODE = {
   usageUnlimited: false,
   applicableUsers: 'all',
   applicableCategory: 'cement-mortar-concrete',
-  applicableProductIds: DEMO_QUICK_SET_PRODUCT ? [DEMO_QUICK_SET_PRODUCT.id] : [],
+  applicableProductIds: DEMO_QUICK_SET_PRODUCT
+    ? [DEMO_QUICK_SET_PRODUCT.id]
+    : [],
+};
+
+const PROMO_PRODUCT_TEMPLATES = [
+  {
+    title: 'Portland Cement Quick Set',
+    description: 'Fast-setting cement for rapid construction work.',
+    priceText: 'Price: $130 per bag (50 kg)',
+  },
+  {
+    title: 'Reinforcing Steel Bar (Rebar)',
+    description: 'High-strength steel for structural reinforcement.',
+    priceText: 'Price: $90 per ton',
+  },
+  {
+    title: 'Concrete Blocks',
+    description: 'Durable blocks for walls and structures.',
+    priceText: 'Price: $2 per piece',
+  },
+  {
+    title: 'Clay Bricks',
+    description: 'Traditional bricks for strong construction.',
+    priceText: 'Price: $0.50 per piece',
+  },
+  {
+    title: 'Fine Sand',
+    description: 'Clean fine sand for plastering and finishing work.',
+    priceText: 'Price: $35 per ton',
+  },
+  {
+    title: 'Gravel Aggregate',
+    description: 'Crushed gravel for concrete and road base.',
+    priceText: 'Price: $40 per ton',
+  },
+  {
+    title: 'Crushed Stone',
+    description: 'Hard-wearing aggregate for heavy-duty construction.',
+    priceText: 'Price: $45 per ton',
+  },
+  {
+    title: 'Plywood Sheet',
+    description: 'Strong plywood sheets for formwork and interiors.',
+    priceText: 'Price: $28 per sheet',
+  },
+  {
+    title: 'Granite Stone',
+    description: 'Polished granite for flooring and exterior finishes.',
+    priceText: 'Price: $80 per square meter',
+  },
+  {
+    title: 'Ceramic Tiles',
+    description: 'Durable tiles for walls and floor installations.',
+    priceText: 'Price: $12 per piece',
+  },
+];
+
+function buildPromoProduct(index, template) {
+  return {
+    id: `promo-product-${index}`,
+    product: {
+      image: SUPPLIER_PRODUCT_IMAGE,
+      title: template.title,
+      description: template.description,
+      priceText: template.priceText,
+      bulkOptionLabel: 'Bulk option Open',
+      promoLabel: '25% Off',
+    },
+  };
 }
+
+export const SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE = 12;
+
+export const DEMO_SUPPLIER_PROMO_PRODUCTS = Array.from(
+  { length: 40 },
+  (_, index) =>
+    buildPromoProduct(
+      index + 1,
+      PROMO_PRODUCT_TEMPLATES[index % PROMO_PRODUCT_TEMPLATES.length],
+    ),
+);
 
 export const DEMO_FACTORY_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,
   bulkEnabled: false,
   bulkTiers: [],
-}
+};
 
 // ── Create Auction placeholders ───────────────────────────────────
 /** Demo copy used as field placeholders (not prefilled values) */
@@ -1238,7 +1347,7 @@ export const DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS = {
   unloadingInstruction: 'Unload near gate B',
   accessCondition: 'Easy Access',
   additionalNotes: 'Any additional information',
-}
+};
 
 export const DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS = {
   orderId: 'ORD-2026-010',
@@ -1251,13 +1360,13 @@ export const DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS = {
   weight: '25000 kg',
   sku: 'CEM-PPC-50',
   price: '$285',
-}
+};
 
 /** @deprecated use DEMO_CREATE_AUCTION_*_PLACEHOLDERS */
 export const DEMO_CREATE_AUCTION_SUPPLIER =
-  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS
+  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS;
 export const DEMO_CREATE_AUCTION_FACTORY =
-  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS
+  DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS;
 
 // ── Messenger ─────────────────────────────────────────────────────
 export const DEMO_MESSENGER_CHATS = [
@@ -1297,7 +1406,7 @@ export const DEMO_MESSENGER_CHATS = [
     online: false,
     partner: { id: 'p4', name: 'SteelWorks Inc', avatar: null },
   },
-]
+];
 
 export const DEMO_MESSENGER_OFFER = {
   title: 'Offer Card',
@@ -1321,7 +1430,7 @@ export const DEMO_MESSENGER_OFFER = {
     remainingBalance: '$100,400',
     note: 'Pay $10,040/month for 10 months',
   },
-}
+};
 
 export const DEMO_MESSENGER_MESSAGES = {
   c1: [
@@ -1388,17 +1497,17 @@ export const DEMO_MESSENGER_MESSAGES = {
       },
     },
   ],
-}
+};
 
 // ── Dispute resolution ─────────────────────────────────────────────
 const DISPUTE_IMG_MARBLE =
-  'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=200&q=80'
+  'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=200&q=80';
 const DISPUTE_IMG_GRANITE =
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=200&q=80'
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=200&q=80';
 const DISPUTE_EVIDENCE_1 =
-  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=300&q=80'
+  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=300&q=80';
 const DISPUTE_EVIDENCE_2 =
-  'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=300&q=80'
+  'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=300&q=80';
 
 const DEMO_DISPUTE_MESSAGES = [
   {
@@ -1437,7 +1546,7 @@ const DEMO_DISPUTE_MESSAGES = [
     at: '3/15/2024, 1:40 PM',
     text: 'Thanks — we have opened a review case. We will confirm replacement or refund within 48 hours.',
   },
-]
+];
 
 /** Public end — status + created on description card */
 export const DEMO_DISPUTE_PUBLIC = {
@@ -1464,7 +1573,7 @@ export const DEMO_DISPUTE_PUBLIC = {
   ],
   evidence: [DISPUTE_EVIDENCE_1, DISPUTE_EVIDENCE_2],
   messages: DEMO_DISPUTE_MESSAGES,
-}
+};
 
 /** Dashboard — page header + status pills in composer */
 export const DEMO_DISPUTE_DASHBOARD = {
@@ -1479,7 +1588,7 @@ export const DEMO_DISPUTE_DASHBOARD = {
       image: DISPUTE_IMG_MARBLE,
     },
   ],
-}
+};
 
 // ── Delivery timeline ──────────────────────────────────────────────
 export const DEMO_DELIVERY_TIMELINE_ITEMS = [
@@ -1547,7 +1656,7 @@ export const DEMO_DELIVERY_TIMELINE_ITEMS = [
       subtitle: 'Pokhran Road, Thane 400606',
     },
   },
-]
+];
 
 // ── Panel profile ─────────────────────────────────────────────────
 export const DEMO_PANEL_PROFILE = {
@@ -1569,16 +1678,16 @@ export const DEMO_PANEL_PROFILE = {
   iban: '',
   ibanPhone: '',
   avatarUrl: null,
-}
+};
 
-export const DEMO_PANEL_PROFILE_SUPPLIER = { ...DEMO_PANEL_PROFILE }
+export const DEMO_PANEL_PROFILE_SUPPLIER = { ...DEMO_PANEL_PROFILE };
 export const DEMO_PANEL_PROFILE_FACTORY = {
   ...DEMO_PANEL_PROFILE,
   displayName: 'UltraMix Concrete Plant',
   displayEmail: 'factory@demo.com',
   name: 'UltraMix Factory',
   email: 'factory@demo.com',
-}
+};
 export const DEMO_PANEL_PROFILE_TRANSPORTER = {
   ...DEMO_PANEL_PROFILE,
   displayName: 'Swift Logistics',
@@ -1587,7 +1696,7 @@ export const DEMO_PANEL_PROFILE_TRANSPORTER = {
   email: 'transporter@demo.com',
   phone: '+1 (555) 220-3344',
   warehouses: [],
-}
+};
 export const DEMO_PANEL_PROFILE_ADMIN = {
   ...DEMO_PANEL_PROFILE,
   displayName: 'Platform Admin',
@@ -1595,7 +1704,7 @@ export const DEMO_PANEL_PROFILE_ADMIN = {
   name: 'Platform Admin',
   email: 'admin@demo.com',
   warehouses: [],
-}
+};
 export const DEMO_PANEL_PROFILE_AFFILIATE = {
   ...DEMO_PANEL_PROFILE,
   displayName: 'Affiliate Partner',
@@ -1604,4 +1713,4 @@ export const DEMO_PANEL_PROFILE_AFFILIATE = {
   email: 'affiliate@demo.com',
   phone: '+1 (555) 440-5566',
   warehouses: [],
-}
+};

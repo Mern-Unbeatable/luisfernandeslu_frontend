@@ -3,9 +3,15 @@ import { FiChevronDown, FiFilter } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
+import Pagination from '@/components/common/Pagination/Pagination';
+import ProductCard from '@/components/data-display/ProductCard/ProductCard';
 import DataTable from '@/components/data-display/DataTable/DataTable';
 import StatusBadge from '@/components/data-display/DataTable/StatusBadge';
-import { DEMO_SUPPLIER_PROMO_CODES } from '@/data/demoData';
+import {
+  DEMO_SUPPLIER_PROMO_CODES,
+  DEMO_SUPPLIER_PROMO_PRODUCTS,
+  SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE,
+} from '@/data/demoData';
 
 const TAB_IDS = {
   promoCode: 'promo_code',
@@ -24,14 +30,16 @@ export default function PromoCodesPage() {
   const [activeTab, setActiveTab] = useState(TAB_IDS.promoCode);
   const [statusFilter, setStatusFilter] = useState('all');
   const [promoCodes, setPromoCodes] = useState(DEMO_SUPPLIER_PROMO_CODES);
+  const [promoProducts, setPromoProducts] = useState(
+    DEMO_SUPPLIER_PROMO_PRODUCTS,
+  );
+  const [promoProductPage, setPromoProductPage] = useState(1);
 
   // TODO: replace DEMO_* with supplier promo codes API fetch
 
   const handleStatusChange = useCallback((row, status) => {
     setPromoCodes((prev) =>
-      prev.map((item) =>
-        item.id === row.id ? { ...item, status } : item,
-      ),
+      prev.map((item) => (item.id === row.id ? { ...item, status } : item)),
     );
     // TODO: wire promo code status API
   }, []);
@@ -54,7 +62,10 @@ export default function PromoCodesPage() {
     () => [
       { value: 'all', label: t('panel.supplierPromoCodes.allStatus') },
       { value: 'active', label: t('panel.supplierPromoCodes.statusActive') },
-      { value: 'disabled', label: t('panel.supplierPromoCodes.statusDisabled') },
+      {
+        value: 'disabled',
+        label: t('panel.supplierPromoCodes.statusDisabled'),
+      },
       { value: 'expired', label: t('panel.supplierPromoCodes.statusExpired') },
     ],
     [t],
@@ -64,6 +75,25 @@ export default function PromoCodesPage() {
     if (statusFilter === 'all') return promoCodes;
     return promoCodes.filter((row) => row.status === statusFilter);
   }, [promoCodes, statusFilter]);
+
+  const promoProductTotalPages = Math.max(
+    1,
+    Math.ceil(promoProducts.length / SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE),
+  );
+
+  const safePromoProductPage = Math.min(
+    promoProductPage,
+    promoProductTotalPages,
+  );
+
+  const visiblePromoProducts = useMemo(() => {
+    const start =
+      (safePromoProductPage - 1) * SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE;
+    return promoProducts.slice(
+      start,
+      start + SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE,
+    );
+  }, [promoProducts, safePromoProductPage]);
 
   const columns = useMemo(
     () => [
@@ -112,7 +142,7 @@ export default function PromoCodesPage() {
           <StatusBadge
             status={value}
             label={t(STATUS_LABEL_KEYS[value])}
-            className="rounded-full"
+            className='rounded-full'
           />
         ),
       },
@@ -173,40 +203,82 @@ export default function PromoCodesPage() {
     [t, handleStatusChange],
   );
 
+  const promoProductActions = useMemo(
+    () => [
+      {
+        id: 'edit',
+        kind: 'pill',
+        label: t('panel.supplierPromoCodes.actionEdit'),
+        variant: 'primary',
+      },
+      {
+        id: 'delete',
+        kind: 'pill',
+        label: t('panel.supplierPromoCodes.actionDelete'),
+        variant: 'danger',
+      },
+    ],
+    [t],
+  );
+
+  const handlePromoProductAction = useCallback((actionId, product, itemId) => {
+    if (actionId === 'delete') {
+      setPromoProducts((prev) => {
+        const next = prev.filter((item) => item.id !== itemId);
+        const nextTotalPages = Math.max(
+          1,
+          Math.ceil(next.length / SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE),
+        );
+        setPromoProductPage((current) => Math.min(current, nextTotalPages));
+        return next;
+      });
+      // TODO: wire delete promo product API
+      return;
+    }
+    if (actionId === 'edit') {
+      // TODO: open edit promo product flow when available
+      void product;
+    }
+  }, []);
+
   return (
     <>
       <Seo title={t('panel.supplierPromoCodes.title')} />
 
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between'>
         <header>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+          <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
             {t('panel.supplierPromoCodes.title')}
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className='mt-1 text-sm text-neutral-500'>
             {t('panel.supplierPromoCodes.subtitle')}
           </p>
         </header>
 
         <button
-          type="button"
+          type='button'
           onClick={() => navigate('/supplier/promo-codes/create')}
-          className="inline-flex shrink-0 items-center justify-center self-start rounded-md bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
+          className='inline-flex shrink-0 items-center justify-center self-start rounded-md bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95'
         >
           {t('panel.supplierPromoCodes.createPromoCode')}
         </button>
       </div>
 
-      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-gray-100 p-1">
+      <section className=''>
+        <div className='mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
+          <div className='inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1'>
             {tabs.map((tab) => {
               const isActive = tab.id === activeTab;
-
               return (
                 <button
                   key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
+                  type='button'
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    if (tab.id === TAB_IDS.promoProduct) {
+                      setPromoProductPage(1);
+                    }
+                  }}
                   className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
                     isActive
                       ? 'bg-[var(--active)] text-white shadow-sm'
@@ -220,15 +292,15 @@ export default function PromoCodesPage() {
           </div>
 
           {activeTab === TAB_IDS.promoCode ? (
-            <label className="relative inline-flex min-w-[160px] shrink-0 items-center gap-2 self-start rounded-md border border-gray-200 bg-white px-3 pr-9">
+            <label className='relative inline-flex min-w-[160px] shrink-0 items-center gap-2 self-start rounded-md border border-gray-200 bg-white px-3 pr-9'>
               <FiFilter
-                className="size-4 shrink-0 text-[var(--secondary-text)]"
+                className='size-4 shrink-0 text-[var(--secondary-text)]'
                 aria-hidden
               />
               <select
                 value={statusFilter}
                 onChange={(event) => setStatusFilter(event.target.value)}
-                className="h-10 w-full min-w-0 cursor-pointer appearance-none bg-transparent py-2 text-sm text-[var(--primary-text)] outline-none"
+                className='h-10 w-full min-w-0 cursor-pointer appearance-none bg-transparent py-2 text-sm text-[var(--primary-text)] outline-none'
                 aria-label={t('panel.supplierPromoCodes.allStatus')}
               >
                 {statusOptions.map((option) => (
@@ -238,7 +310,7 @@ export default function PromoCodesPage() {
                 ))}
               </select>
               <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
+                className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
                 aria-hidden
               />
             </label>
@@ -246,22 +318,51 @@ export default function PromoCodesPage() {
         </div>
 
         {activeTab === TAB_IDS.promoCode ? (
-          <DataTable
-            showCard={false}
-            columns={columns}
-            data={filteredPromoCodes}
-            getRowKey={(row) => row.id}
-            showActions
-            actions={rowActions}
-            actionHeader={t('panel.supplierPromoCodes.colAction')}
-            emptyMessage={t('panel.supplierPromoCodes.emptyPromoCodes')}
-          />
+          <div className='rounded-xl border border-gray-100 bg-white'>
+            <DataTable
+              showCard={false}
+              columns={columns}
+              data={filteredPromoCodes}
+              getRowKey={(row) => row.id}
+              showActions
+              actions={rowActions}
+              actionHeader={t('panel.supplierPromoCodes.colAction')}
+              emptyMessage={t('panel.supplierPromoCodes.emptyPromoCodes')}
+            />
+          </div>
+        ) : promoProducts.length > 0 ? (
+          <>
+            <ul className='grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5'>
+              {visiblePromoProducts.map((item) => (
+                <li key={item.id} className='flex min-w-0'>
+                  <ProductCard
+                    type='dashboard'
+                    context='promo_code'
+                    role='supplier'
+                    product={item.product}
+                    actions={promoProductActions}
+                    onAction={(actionId) =>
+                      handlePromoProductAction(actionId, item.product, item.id)
+                    }
+                    className='h-full w-full shadow-sm'
+                  />
+                </li>
+              ))}
+            </ul>
+
+            <Pagination
+              className='mt-8 sm:mt-10'
+              page={safePromoProductPage}
+              totalPages={promoProductTotalPages}
+              onPageChange={setPromoProductPage}
+            />
+          </>
         ) : (
-          <div className="rounded-xl border border-gray-100 bg-white px-6 py-16 text-center">
-            <p className="text-base font-semibold text-[var(--primary-text)]">
+          <div className='rounded-xl border border-gray-100 bg-white px-6 py-16 text-center'>
+            <p className='text-base font-semibold text-[var(--primary-text)]'>
               {t('panel.supplierPromoCodes.emptyPromoProductsTitle')}
             </p>
-            <p className="mt-2 text-sm text-[var(--secondary-text)]">
+            <p className='mt-2 text-sm text-[var(--secondary-text)]'>
               {t('panel.supplierPromoCodes.emptyPromoProductsHint')}
             </p>
           </div>
