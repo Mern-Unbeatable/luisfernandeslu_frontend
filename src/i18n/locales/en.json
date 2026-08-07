@@ -445,7 +445,9 @@
       "subtitle": "Browse construction materials from verified factories and send inquiries directly",
       "sendMessage": "Send Message",
       "emptyTitle": "No factory products found",
-      "emptyHint": "Check back later for new listings from factories."
+      "emptyHint": "Check back later for new listings from factories.",
+      "notFound": "Factory product not found.",
+      "backToProducts": "Back to Buy From Factory"
     },
     "profile": {
       "title": "My Profile",

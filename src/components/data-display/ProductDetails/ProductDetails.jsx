@@ -13,13 +13,14 @@ import { resolveDetailsView } from './resolveDetailsView'
  */
 export default function ProductDetails({
   role = 'customer',
+  context = 'default',
   product = {},
   quantity: quantityProp,
   onQuantityChange,
   onAction,
   className = '',
 }) {
-  const view = resolveDetailsView(role)
+  const view = resolveDetailsView(role, context)
   const [quantity, setQuantity] = useState(quantityProp ?? 1)
 
   const actionLayout =
@@ -150,7 +151,19 @@ export default function ProductDetails({
               </div>
             )}
 
-            {product.priceText ? (
+            {view.splitPrice && product.price ? (
+              <p className="text-xl sm:text-2xl">
+                <span className="font-bold text-[var(--active)]">
+                  {product.price}
+                </span>
+                {product.unit ? (
+                  <span className="font-bold text-[var(--primary-text)]">
+                    {' '}
+                    Per {product.unit}
+                  </span>
+                ) : null}
+              </p>
+            ) : product.priceText ? (
               <p className="text-xl font-bold text-[var(--active)] sm:text-2xl">
                 {product.priceText}
               </p>
@@ -162,6 +175,41 @@ export default function ProductDetails({
             ) : null}
 
             <BulkPricingTable tiers={product.bulkPricing || []} />
+
+            {view.showInlineDescription ? (
+              <div className="space-y-5">
+                <div>
+                  <h2 className="mb-2 text-base font-bold text-[var(--primary-text)]">
+                    Description
+                  </h2>
+                  <div className="space-y-3 text-sm leading-relaxed text-[var(--secondary-text)]">
+                    {(product.descriptionParagraphs || [product.description])
+                      .filter(Boolean)
+                      .map((paragraph, index) => (
+                        <p key={index}>{paragraph}</p>
+                      ))}
+                  </div>
+                </div>
+                {product.features?.length ? (
+                  <div>
+                    <h2 className="mb-2 text-base font-bold text-[var(--primary-text)]">
+                      Feature
+                    </h2>
+                    <ul className="space-y-2 text-sm text-[var(--secondary-text)]">
+                      {product.features.map((feature) => (
+                        <li key={feature} className="flex gap-2">
+                          <span
+                            className="mt-2 size-1.5 shrink-0 rounded-full bg-[var(--active)]"
+                            aria-hidden
+                          />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
 
             {view.showMinOrder && product.minOrder ? (
               <p className="text-sm font-bold text-red-500">
@@ -190,7 +238,11 @@ export default function ProductDetails({
         </div>
       </div>
 
-      <ProductTabs tabs={view.tabs} product={product} />
+      <ProductTabs
+        tabs={view.tabs}
+        product={product}
+        defaultTab={view.defaultTab}
+      />
     </div>
   )
 }

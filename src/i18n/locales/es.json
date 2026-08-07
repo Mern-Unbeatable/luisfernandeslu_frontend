@@ -445,7 +445,9 @@
       "subtitle": "Explora materiales de construcción de fábricas verificadas y envía consultas directamente",
       "sendMessage": "Enviar mensaje",
       "emptyTitle": "No se encontraron productos de fábrica",
-      "emptyHint": "Vuelve más tarde para ver nuevos listados de fábricas."
+      "emptyHint": "Vuelve más tarde para ver nuevos listados de fábricas.",
+      "notFound": "Producto de fábrica no encontrado.",
+      "backToProducts": "Volver a Comprar de fábrica"
     },
     "profile": {
       "title": "Mi perfil",

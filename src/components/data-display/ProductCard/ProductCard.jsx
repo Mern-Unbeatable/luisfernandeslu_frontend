@@ -36,6 +36,7 @@ export default function ProductCard({
   showQuantity = false,
   actions,
   onAction,
+  onCardClick,
   className = '',
 }) {
   const [qty, setQty] = useState(quantityProp ?? 1)
@@ -72,11 +73,13 @@ export default function ProductCard({
 
   return (
     <article
+      onClick={() => onCardClick?.(product)}
       className={[
         'flex w-full flex-col overflow-hidden rounded-lg bg-white',
         isSponsored
           ? 'border-2 border-[var(--active)]'
           : 'border border-gray-200',
+        onCardClick ? 'cursor-pointer' : '',
         className,
       ].join(' ')}
     >
@@ -355,7 +358,10 @@ function ActionButton({ action, onClick, className = '' }) {
     return (
       <button
         type="button"
-        onClick={onClick}
+        onClick={(event) => {
+          event.stopPropagation()
+          onClick?.()
+        }}
         aria-label={action.label || action.id}
         className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 ${className}`}
       >
@@ -375,7 +381,10 @@ function ActionButton({ action, onClick, className = '' }) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={(event) => {
+        event.stopPropagation()
+        onClick?.()
+      }}
       className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
     >
       {Icon ? <Icon className="size-4" /> : null}

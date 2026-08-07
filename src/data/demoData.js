@@ -1802,6 +1802,109 @@ export const DEMO_SUPPLIER_BUY_FROM_FACTORY_PRODUCTS = [
 
 export const SUPPLIER_BUY_FROM_FACTORY_PAGE_SIZE = 8;
 
+const FACTORY_PRODUCT_OVERVIEW = [
+  { label: 'Product Name', value: 'Portland Cement' },
+  { label: 'Brand', value: 'Anycubic' },
+  {
+    label: 'Specific Uses',
+    value:
+      'Concrete Work, Masonry, Plastering, Structural Construction, Flooring',
+  },
+  {
+    label: 'Type',
+    value: 'Ordinary Portland Cement (OPC) / Portland Composite Cement (PCC)',
+  },
+  {
+    label: 'Grade',
+    value: '32.5 / 42.5 / 52.5 Grade (depending on requirement)',
+  },
+  { label: 'Form', value: 'Fine Powder' },
+  { label: 'Color', value: 'Grey' },
+  { label: 'Packaging Size', value: '50 KG Bag' },
+];
+
+const FACTORY_PRODUCT_TECHNICAL_SPECS = [
+  {
+    title: 'Compressive Strength',
+    lines: ['High early and long-term strength performance'],
+  },
+  {
+    title: 'Setting Time',
+    lines: ['Initial: 30–45 minutes', 'Final: Up to 10 hours'],
+  },
+  {
+    title: 'Compatibility',
+    lines: [
+      'Suitable for all types of aggregates, sand, and construction materials',
+    ],
+  },
+  {
+    title: 'Product Warranty',
+    lines: ['Quality assured as per industry standards'],
+  },
+];
+
+function parseFactoryListPrice(priceText) {
+  if (!priceText) {
+    return { price: '$130.00', unit: 'Bag ( 50kg )' };
+  }
+
+  const cleaned = priceText.replace(/^Price:\s*/i, '').trim();
+  const match = cleaned.match(/^\$?([\d.]+)\s+per\s+(.+)$/i);
+  if (match) {
+    return { price: `$${match[1]}`, unit: match[2] };
+  }
+
+  return { price: cleaned, unit: null };
+}
+
+/** Full PDP payload for supplier buy-from-factory detail (API-ready shape). */
+export function getSupplierBuyFromFactoryDetail(productId) {
+  const listItem = DEMO_SUPPLIER_BUY_FROM_FACTORY_PRODUCTS.find(
+    (item) => item.id === productId,
+  );
+  if (!listItem) return null;
+
+  const image = listItem.product.image || IMG_MAIN;
+  const images = [
+    image,
+    ...DEMO_PRODUCT.images.filter((src) => src !== image).slice(0, 3),
+  ];
+  const { price, unit } = parseFactoryListPrice(listItem.product.priceText);
+
+  return {
+    ...DEMO_PRODUCT,
+    title: listItem.product.title || DEMO_PRODUCT.title,
+    sku: DEMO_PRODUCT.sku,
+    category: 'Building Materials',
+    availability: 'In Stock',
+    rating: 4.7,
+    feedbackCount: 21671,
+    price,
+    unit,
+    priceText: undefined,
+    images,
+    image,
+    description:
+      listItem.product.description || DEMO_PRODUCT.descriptionParagraphs?.[0],
+    seller: {
+      ...DEMO_PRODUCT.seller,
+      name: 'R2A Store',
+      rating: 4.6,
+      reviewCount: 66,
+    },
+    overviewItems: FACTORY_PRODUCT_OVERVIEW.map((item) => ({
+      ...item,
+      value:
+        item.label === 'Product Name'
+          ? listItem.product.title || item.value
+          : item.value,
+    })),
+    technicalSpecs: FACTORY_PRODUCT_TECHNICAL_SPECS,
+    factoryId: listItem.factoryId,
+  };
+}
+
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';

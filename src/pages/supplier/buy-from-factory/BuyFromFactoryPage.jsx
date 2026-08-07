@@ -76,6 +76,9 @@ export default function BuyFromFactoryPage() {
                   product={item.product}
                   actions={cardActions}
                   onAction={(actionId) => handleAction(actionId, item)}
+                  onCardClick={() =>
+                    navigate(`/supplier/buy-from-factory/${item.id}`)
+                  }
                   className="h-full w-full shadow-sm"
                 />
               </li>

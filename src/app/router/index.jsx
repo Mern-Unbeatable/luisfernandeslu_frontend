@@ -196,6 +196,10 @@ const SupplierBuyFromFactory = Loadable(
   lazy(() => import('../../pages/supplier/buy-from-factory/BuyFromFactoryPage')),
   <PanelSkeleton />,
 )
+const SupplierBuyFromFactoryDetail = Loadable(
+  lazy(() => import('../../pages/supplier/buy-from-factory/BuyFromFactoryDetailPage')),
+  <PanelSkeleton />,
+)
 const SupplierFactoryOrders = Loadable(
   lazy(() => import('../../pages/supplier/factory-orders/FactoryOrdersPage')),
   <PanelSkeleton />,
@@ -718,6 +722,11 @@ export const router = createBrowserRouter([
                 path: 'chat',
                 element: <SupplierChat />,
                 handle: panelSeo('panel.nav.chat'),
+              },
+              {
+                path: 'buy-from-factory/:productId',
+                element: <SupplierBuyFromFactoryDetail />,
+                handle: panelSeo('panel.nav.buyFromFactory'),
               },
               {
                 path: 'buy-from-factory',
