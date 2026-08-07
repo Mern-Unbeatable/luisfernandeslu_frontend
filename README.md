@@ -27,15 +27,15 @@ Use **npm** + committed `package-lock.json` (not yarn). Coolify/Nixpacks chooses
 
 All demo accounts use password **`demo123`**. Accounts live in `src/data/demoData.js` (`DEMO_USERS`). Helpers: `src/features/auth/demoUsers.js`.
 
-| Role | Email |
-|------|-------|
-| customer | `customer@demo.com` |
-| company | `company@demo.com` |
-| supplier | `supplier@demo.com` |
-| factory | `factory@demo.com` |
+| Role        | Email                  |
+| ----------- | ---------------------- |
+| customer    | `customer@demo.com`    |
+| company     | `company@demo.com`     |
+| supplier    | `supplier@demo.com`    |
+| factory     | `factory@demo.com`     |
 | transporter | `transporter@demo.com` |
-| affiliate | `affiliate@demo.com` |
-| admin | `admin@demo.com` |
+| affiliate   | `affiliate@demo.com`   |
+| admin       | `admin@demo.com`       |
 
 ---
 
@@ -53,15 +53,15 @@ URL → app/router → layouts/* → pages/<role|public|auth>/*
 
 **Rules of thumb**
 
-| Need | Put it here |
-|------|-------------|
-| Screen tied to a route | `pages/...` |
-| Reusable UI (2+ screens) | `components/...` |
-| Nav / sidebar for a role | `roles/<role>/index.js` |
-| API endpoints / client state | `features/<module>/` |
-| Mock payloads until backend | `data/demoData.js` |
+| Need                             | Put it here                             |
+| -------------------------------- | --------------------------------------- |
+| Screen tied to a route           | `pages/...`                             |
+| Reusable UI (2+ screens)         | `components/...`                        |
+| Nav / sidebar for a role         | `roles/<role>/index.js`                 |
+| API endpoints / client state     | `features/<module>/`                    |
+| Mock payloads until backend      | `data/demoData.js`                      |
 | Form field defaults (empty form) | component `defaults.js` (not demo data) |
-| Live component docs | `developer/` + `/developer` |
+| Live component docs              | `developer/` + `/developer`             |
 
 ---
 
@@ -125,9 +125,9 @@ There is **no** `DashboardLayout` — use `PanelLayout` (B2B panels) or `BuyerLa
 
 Wired in `src/roles/index.js` (**sidebar / layout config only** — not routes):
 
-| Kind | Roles | Layout | Base path |
-|------|-------|--------|-----------|
-| Buyer | `customer`, `company` | `BuyerLayout` | `/customer`, `/company` |
+| Kind  | Roles                                                      | Layout        | Base path               |
+| ----- | ---------------------------------------------------------- | ------------- | ----------------------- |
+| Buyer | `customer`, `company`                                      | `BuyerLayout` | `/customer`, `/company` |
 | Panel | `supplier`, `factory`, `transporter`, `affiliate`, `admin` | `PanelLayout` | `/supplier`, … `/admin` |
 
 Each role folder exports nav items from `roles/<role>/index.js`.  
@@ -141,15 +141,15 @@ Unmatched panel paths fall through to `ComingSoonPage`.
 
 **Source of truth:** `src/app/router/index.jsx`
 
-| Path | Shell | Notes |
-|------|-------|--------|
-| `/` | PublicLayout | `HomePage` (currently returns `null` — header/footer only) |
-| `/dispute-resolution` | PublicLayout | Public dispute UI |
-| `/developer`, `/developer/:componentId` | Standalone | Component docs + live preview |
-| `/login`, `/signup`, `/login/:role`, … | AuthLayout | Also `/admin/login`, password reset flow |
-| `/customer/*`, `/company/*` | BuyerLayout | Protected — explicit children in router |
-| `/supplier/*` … `/admin/*` | PanelLayout | Protected — explicit children in router |
-| `*` | PublicLayout | `NotFoundPage` |
+| Path                                    | Shell        | Notes                                                      |
+| --------------------------------------- | ------------ | ---------------------------------------------------------- |
+| `/`                                     | PublicLayout | `HomePage` (currently returns `null` — header/footer only) |
+| `/dispute-resolution`                   | PublicLayout | Public dispute UI                                          |
+| `/developer`, `/developer/:componentId` | Standalone   | Component docs + live preview                              |
+| `/login`, `/signup`, `/login/:role`, …  | AuthLayout   | Also `/admin/login`, password reset flow                   |
+| `/customer/*`, `/company/*`             | BuyerLayout  | Protected — explicit children in router                    |
+| `/supplier/*` … `/admin/*`              | PanelLayout  | Protected — explicit children in router                    |
+| `*`                                     | PublicLayout | `NotFoundPage`                                             |
 
 ---
 
@@ -159,31 +159,31 @@ Unmatched panel paths fall through to `ComingSoonPage`.
 
 These are the **common building blocks**. Docs: `src/developer/catalog.js`. Preview: `src/developer/ComponentPreview.jsx`. Demo props: `import { DEMO_* } from '@/data/demoData'`.
 
-| Catalog id | Component | Path |
-|------------|-----------|------|
-| `order-details` | OrderDetails | `components/data-display/OrderDetails/` |
-| `auction-card` | AuctionCard | `components/data-display/AuctionCard/` |
-| `auction-details` | AuctionDetails | `components/data-display/AuctionDetails/` |
-| `product-card` | ProductCard | `components/data-display/ProductCard/` |
-| `product-details` | ProductDetails | `components/data-display/ProductDetails/` |
-| `status-card` | StatusCard | `components/data-display/StatusCard/` |
-| `data-table` | DataTable | `components/data-display/DataTable/` |
-| `installment-timeline` | InstallmentTimeline | `components/data-display/InstallmentTimeline/` |
-| `delivery-timeline` | DeliveryTimeline | `components/data-display/DeliveryTimeline/` |
-| `dispute-resolution` | DisputeResolution | `components/data-display/DisputeResolution/` |
-| `create-auction` | CreateAuction | `components/forms/CreateAuction/` |
-| `add-product` | AddProduct | `components/forms/AddProduct/` |
-| `panel-profile` | PanelProfile | `components/forms/PanelProfile/` |
-| `messenger` | Messenger + useMessages | `components/common/messenger/` |
+| Catalog id             | Component               | Path                                           |
+| ---------------------- | ----------------------- | ---------------------------------------------- |
+| `order-details`        | OrderDetails            | `components/data-display/OrderDetails/`        |
+| `auction-card`         | AuctionCard             | `components/data-display/AuctionCard/`         |
+| `auction-details`      | AuctionDetails          | `components/data-display/AuctionDetails/`      |
+| `product-card`         | ProductCard             | `components/data-display/ProductCard/`         |
+| `product-details`      | ProductDetails          | `components/data-display/ProductDetails/`      |
+| `status-card`          | StatusCard              | `components/data-display/StatusCard/`          |
+| `data-table`           | DataTable               | `components/data-display/DataTable/`           |
+| `installment-timeline` | InstallmentTimeline     | `components/data-display/InstallmentTimeline/` |
+| `delivery-timeline`    | DeliveryTimeline        | `components/data-display/DeliveryTimeline/`    |
+| `dispute-resolution`   | DisputeResolution       | `components/data-display/DisputeResolution/`   |
+| `create-auction`       | CreateAuction           | `components/forms/CreateAuction/`              |
+| `add-product`          | AddProduct              | `components/forms/AddProduct/`                 |
+| `panel-profile`        | PanelProfile            | `components/forms/PanelProfile/`               |
+| `messenger`            | Messenger + useMessages | `components/common/messenger/`                 |
 
 **When adding a shared component:** implement under `components/`, add `DEMO_*` to `data/demoData.js` if needed, register in `catalog.js`, wire a case in `ComponentPreview.jsx`, keep `id === previewId`.
 
 ### Implemented but not on `/developer`
 
-| Area | Components |
-|------|------------|
-| `common/` | Logo, Seo, Skeleton (+ Auth/Buyer/Home/Panel/Page/Table), LanguageSwitcher, ScrollToTop |
-| `auth/` | AuthField, AuthSubmitButton, AuthModeToggle, AuthDemoAccounts, AuthFileUpload, AuthLegalNote, AuthSocialButtons, MarketingSidebar |
+| Area      | Components                                                                                                                        |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `common/` | Logo, Seo, Skeleton (+ Auth/Buyer/Home/Panel/Page/Table), LanguageSwitcher, ScrollToTop                                           |
+| `auth/`   | AuthField, AuthSubmitButton, AuthModeToggle, AuthDemoAccounts, AuthFileUpload, AuthLegalNote, AuthSocialButtons, MarketingSidebar |
 
 ### Stubs only (folders exist, no code yet)
 
@@ -196,19 +196,19 @@ These are the **common building blocks**. Docs: `src/developer/catalog.js`. Prev
 **Single file:** `src/data/demoData.js`
 
 ```js
-import { DEMO_PRODUCT, DEMO_ORDER_NEW, DEMO_USERS } from '@/data/demoData'
+import { DEMO_PRODUCT, DEMO_ORDER_NEW, DEMO_USERS } from '@/data/demoData';
 ```
 
 Also: `ADMIN_PRODUCT` (admin product-details preview).
 
 Do **not** recreate old paths like `developer/demoData`, `ProductDetails/demoProduct.js`, etc.
 
-| Kind | Where |
-|------|--------|
-| Mock API-shaped payloads (`DEMO_*`) | `data/demoData.js` |
-| Empty form defaults / select options | `components/forms/*/defaults.js` |
+| Kind                                     | Where                                                         |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| Mock API-shaped payloads (`DEMO_*`)      | `data/demoData.js`                                            |
+| Empty form defaults / select options     | `components/forms/*/defaults.js`                              |
 | Auth path helpers (`getHomePathForRole`) | `features/auth/demoUsers.js` (re-exports users from demoData) |
-| Category mega-menu labels | `data/productCategories.js` |
+| Category mega-menu labels                | `data/productCategories.js`                                   |
 
 **Backend migration (feature by feature):**
 
@@ -241,7 +241,7 @@ Catalog `id`, `previewId`, and `ComponentPreview` switch cases must stay in sync
 
 ```css
 :root {
-  --active: #DF900A;       /* brand accent */
+  --active: #df900a; /* brand accent */
   --primary-text: #191c1f;
   --secondary-text: #4a5565;
 }
@@ -278,31 +278,31 @@ Auth:
 
 ## Naming conventions
 
-| Item | Convention | Example |
-|------|------------|---------|
-| Component folder / file | PascalCase | `OrderDetails/OrderDetails.jsx` |
-| Barrel | `index.js` | re-export default + named |
-| RTK API | `*Api.js` | `authApi.js` |
-| Slice | `*Slice.js` | `authSlice.js` |
-| Page | `*Page.jsx` | `DisputesPage.jsx` |
-| Demo constants | `DEMO_*` | `DEMO_ORDER_NEW` |
-| Imports | prefer `@/` | `import x from '@/data/demoData'` |
+| Item                    | Convention  | Example                           |
+| ----------------------- | ----------- | --------------------------------- |
+| Component folder / file | PascalCase  | `OrderDetails/OrderDetails.jsx`   |
+| Barrel                  | `index.js`  | re-export default + named         |
+| RTK API                 | `*Api.js`   | `authApi.js`                      |
+| Slice                   | `*Slice.js` | `authSlice.js`                    |
+| Page                    | `*Page.jsx` | `DisputesPage.jsx`                |
+| Demo constants          | `DEMO_*`    | `DEMO_ORDER_NEW`                  |
+| Imports                 | prefer `@/` | `import x from '@/data/demoData'` |
 
 ---
 
 ## Where to add new code
 
-| Task | Location |
-|------|----------|
-| New role screen | 1) `pages/<role>/…/*Page.jsx` 2) **route** in `app/router/index.jsx` 3) sidebar item in `roles/<role>/index.js` |
-| New shared display/form UI | `components/data-display` or `forms` + catalog + preview + demoData |
-| New auth field widget | `components/auth/` |
-| New RTK endpoints | `features/<module>/<module>Api.js` + ensure store imports the Api module |
-| New mock payload | `data/demoData.js` |
-| Translation | `i18n/locales/*.json` |
-| SEO title | `config/seo.js` |
-| Env flag | `.env` + `config/env.js` |
-| Sidebar link only | `roles/<role>/index.js` (`nav`) — does **not** register a route |
+| Task                       | Location                                                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| New role screen            | 1) `pages/<role>/…/*Page.jsx` 2) **route** in `app/router/index.jsx` 3) sidebar item in `roles/<role>/index.js` |
+| New shared display/form UI | `components/data-display` or `forms` + catalog + preview + demoData                                             |
+| New auth field widget      | `components/auth/`                                                                                              |
+| New RTK endpoints          | `features/<module>/<module>Api.js` + ensure store imports the Api module                                        |
+| New mock payload           | `data/demoData.js`                                                                                              |
+| Translation                | `i18n/locales/*.json`                                                                                           |
+| SEO title                  | `config/seo.js`                                                                                                 |
+| Env flag                   | `.env` + `config/env.js`                                                                                        |
+| Sidebar link only          | `roles/<role>/index.js` (`nav`) — does **not** register a route                                                 |
 
 ---
 
@@ -321,11 +321,11 @@ Auth:
 
 ## Scripts & tooling
 
-| Script | Command |
-|--------|---------|
-| Dev server | `npm run dev` |
-| Production build | `npm run build` |
-| Preview build | `npm run preview` |
-| ESLint | `npm run lint` |
+| Script           | Command           |
+| ---------------- | ----------------- |
+| Dev server       | `npm run dev`     |
+| Production build | `npm run build`   |
+| Preview build    | `npm run preview` |
+| ESLint           | `npm run lint`    |
 
 Package name: `CONSTRUPRECO-frontend` (`package.json`).

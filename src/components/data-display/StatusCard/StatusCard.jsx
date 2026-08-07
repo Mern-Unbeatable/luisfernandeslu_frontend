@@ -13,6 +13,14 @@ const ICON_TONES = {
     wrap: 'bg-teal-100 text-teal-600',
     text: 'text-teal-600',
   },
+  success: {
+    wrap: 'bg-emerald-100 text-emerald-600',
+    text: 'text-emerald-600',
+  },
+  blue: {
+    wrap: 'bg-sky-100 text-sky-600',
+    text: 'text-sky-600',
+  },
   red: {
     wrap: 'bg-red-100 text-red-600',
     text: 'text-red-600',
