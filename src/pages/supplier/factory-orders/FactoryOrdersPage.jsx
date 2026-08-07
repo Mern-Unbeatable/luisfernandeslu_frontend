@@ -88,7 +88,21 @@ export default function FactoryOrdersPage() {
     // TODO: wire factory order delete API
   }, []);
 
-  const getRowActions = useCallback(
+  const handleMarkPaid = useCallback((row) => {
+    setOrders((prev) =>
+      prev.map((item) =>
+        item.id === row.id ? { ...item, transportStatus: 'paid' } : item,
+      ),
+    );
+    // TODO: wire transport request paid API
+  }, []);
+
+  const handleDecline = useCallback((row) => {
+    setOrders((prev) => prev.filter((item) => item.id !== row.id));
+    // TODO: wire transport request decline API
+  }, []);
+
+  const getOrderRowActions = useCallback(
     () => [
       {
         id: 'see-details',
@@ -109,11 +123,40 @@ export default function FactoryOrdersPage() {
     [t, handleDelete, navigate, activeTab],
   );
 
+  const getTransportRowActions = useCallback(
+    () => [
+      {
+        id: 'paid',
+        label: t('panel.supplierFactoryOrders.actionPaid'),
+        variant: 'header',
+        onClick: handleMarkPaid,
+      },
+      {
+        id: 'decline',
+        label: t('panel.supplierFactoryOrders.actionDecline'),
+        onClick: handleDecline,
+      },
+    ],
+    [t, handleMarkPaid, handleDecline],
+  );
+
   const filteredOrders = useMemo(() => {
     return orders.filter((row) => {
       if (row.tab !== activeTab) return false;
+      if (
+        activeTab === TAB_IDS.transport &&
+        row.transportStatus === 'paid'
+      ) {
+        return false;
+      }
       if (companyFilter !== 'all' && row.companyId !== companyFilter) return false;
-      if (statusFilter !== 'all' && row.status !== statusFilter) return false;
+      if (
+        activeTab === TAB_IDS.orders &&
+        statusFilter !== 'all' &&
+        row.status !== statusFilter
+      ) {
+        return false;
+      }
       return true;
     });
   }, [orders, activeTab, companyFilter, statusFilter]);
@@ -129,7 +172,7 @@ export default function FactoryOrdersPage() {
     safePage * SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
   );
 
-  const columns = useMemo(
+  const orderColumns = useMemo(
     () => [
       {
         key: 'poNumber',
@@ -166,6 +209,44 @@ export default function FactoryOrdersPage() {
     [t],
   );
 
+  const transportColumns = useMemo(
+    () => [
+      {
+        key: 'poNumber',
+        header: t('panel.supplierFactoryOrders.colPoNumber'),
+      },
+      {
+        key: 'factoryName',
+        header: t('panel.supplierFactoryOrders.colFactoryName'),
+      },
+      {
+        key: 'product',
+        header: t('panel.supplierFactoryOrders.colProduct'),
+      },
+      {
+        key: 'qty',
+        header: t('panel.supplierFactoryOrders.colQty'),
+      },
+      {
+        key: 'weightSize',
+        header: t('panel.supplierFactoryOrders.colWeightSize'),
+        className: 'max-w-[200px] whitespace-normal',
+      },
+      {
+        key: 'shippingCharge',
+        header: t('panel.supplierFactoryOrders.colShippingCharge'),
+      },
+    ],
+    [t],
+  );
+
+  const columns =
+    activeTab === TAB_IDS.transport ? transportColumns : orderColumns;
+  const getRowActions =
+    activeTab === TAB_IDS.transport
+      ? getTransportRowActions
+      : getOrderRowActions;
+
   const from =
     total === 0 ? 0 : (safePage - 1) * SUPPLIER_FACTORY_ORDERS_PAGE_SIZE + 1;
   const to =
@@ -177,6 +258,8 @@ export default function FactoryOrdersPage() {
     activeTab === TAB_IDS.transport
       ? t('panel.supplierFactoryOrders.emptyTransport')
       : t('panel.supplierFactoryOrders.emptyOrders');
+
+  const isOrdersTab = activeTab === TAB_IDS.orders;
 
   return (
     <>
@@ -219,53 +302,55 @@ export default function FactoryOrdersPage() {
             })}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
-            <span className="text-sm font-medium text-[var(--primary-text)]">
-              {t('panel.supplierFactoryOrders.sortBy')}
-            </span>
-            <label className="relative inline-flex min-w-[140px] items-center">
-              <select
-                value={companyFilter}
-                onChange={(event) => {
-                  setCompanyFilter(event.target.value);
-                  setPage(1);
-                }}
-                className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                aria-label={t('panel.supplierFactoryOrders.allCompany')}
-              >
-                {companyOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                aria-hidden
-              />
-            </label>
-            <label className="relative inline-flex min-w-[140px] items-center">
-              <select
-                value={statusFilter}
-                onChange={(event) => {
-                  setStatusFilter(event.target.value);
-                  setPage(1);
-                }}
-                className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                aria-label={t('panel.supplierFactoryOrders.allStatus')}
-              >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                aria-hidden
-              />
-            </label>
-          </div>
+          {isOrdersTab ? (
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
+              <span className="text-sm font-medium text-[var(--primary-text)]">
+                {t('panel.supplierFactoryOrders.sortBy')}
+              </span>
+              <label className="relative inline-flex min-w-[140px] items-center">
+                <select
+                  value={companyFilter}
+                  onChange={(event) => {
+                    setCompanyFilter(event.target.value);
+                    setPage(1);
+                  }}
+                  className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
+                  aria-label={t('panel.supplierFactoryOrders.allCompany')}
+                >
+                  {companyOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <FiChevronDown
+                  className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
+                  aria-hidden
+                />
+              </label>
+              <label className="relative inline-flex min-w-[140px] items-center">
+                <select
+                  value={statusFilter}
+                  onChange={(event) => {
+                    setStatusFilter(event.target.value);
+                    setPage(1);
+                  }}
+                  className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
+                  aria-label={t('panel.supplierFactoryOrders.allStatus')}
+                >
+                  {statusOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <FiChevronDown
+                  className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
+                  aria-hidden
+                />
+              </label>
+            </div>
+          ) : null}
         </div>
 
         <DataTable

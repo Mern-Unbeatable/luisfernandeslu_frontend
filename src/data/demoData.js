@@ -1653,28 +1653,86 @@ export const DEMO_SUPPLIER_FACTORY_ORDERS = {
     {
       id: 'fo-tr-01',
       tab: 'transport',
-      companyId: 'swift-logistics',
-      poNumber: 'TR-1001',
-      factoryName: 'Swift Logistics',
-      total: '$120,000',
-      installmentAmount: '$40,000',
-      status: 'assigned',
-      statusLabel: 'Assigned',
-      installmentNumber: '1',
-      date: '2026-02-05',
+      companyId: 'abc-corp',
+      poNumber: 'PO-2001',
+      factoryName: 'ABC Corp',
+      product: 'UltraSet Portland Cement',
+      qty: '30 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$1200',
+      transportStatus: 'pending',
     },
     {
       id: 'fo-tr-02',
       tab: 'transport',
-      companyId: 'porto-haul',
-      poNumber: 'TR-1002',
-      factoryName: 'Porto Haul',
-      total: '$85,000',
-      installmentAmount: '$85,000',
-      status: 'in-production',
-      statusLabel: 'In Production',
-      installmentNumber: '1',
-      date: '2026-02-11',
+      companyId: 'xyz-industries',
+      poNumber: 'PO-2002',
+      factoryName: 'XYZ Industries',
+      product: 'UltraSet Portland Cement',
+      qty: '20 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$1000',
+      transportStatus: 'pending',
+    },
+    {
+      id: 'fo-tr-03',
+      tab: 'transport',
+      companyId: 'tech-solutions',
+      poNumber: 'PO-2003',
+      factoryName: 'Tech Solutions Ltd',
+      product: 'UltraSet Portland Cement',
+      qty: '50 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$800',
+      transportStatus: 'pending',
+    },
+    {
+      id: 'fo-tr-04',
+      tab: 'transport',
+      companyId: 'global-manufacturing',
+      poNumber: 'PO-2004',
+      factoryName: 'Global Manufacturing',
+      product: 'UltraSet Portland Cement',
+      qty: '70 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$4000',
+      transportStatus: 'pending',
+    },
+    {
+      id: 'fo-tr-05',
+      tab: 'transport',
+      companyId: 'maktach',
+      poNumber: 'PO-2004',
+      factoryName: 'MAKTACH',
+      product: 'UltraSet Portland Cement',
+      qty: '90 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$6000',
+      transportStatus: 'pending',
+    },
+    {
+      id: 'fo-tr-06',
+      tab: 'transport',
+      companyId: 'chowdhury',
+      poNumber: 'CO-1005',
+      factoryName: 'Chowdhury Industries',
+      product: 'UltraSet Portland Cement',
+      qty: '100 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$8000',
+      transportStatus: 'pending',
+    },
+    {
+      id: 'fo-tr-07',
+      tab: 'transport',
+      companyId: 'abc-corp',
+      poNumber: 'PO-2005',
+      factoryName: 'ABC Corp',
+      product: 'UltraSet Portland Cement',
+      qty: '40 Bags',
+      weightSize: '50 kg bag, OPC 53 grade',
+      shippingCharge: '$1500',
+      transportStatus: 'pending',
     },
   ],
 };
@@ -1772,6 +1830,12 @@ const FACTORY_ORDER_STATUS_LABELS = {
   completed: 'Completed',
 };
 
+const FACTORY_ORDER_DRIVER = {
+  name: 'John Smith',
+  phone: '+1 (555) 123-4567',
+  vehicle: 'Truck #TR-4523',
+};
+
 /** Full order payload for supplier factory order detail */
 export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
   const listOrder = DEMO_SUPPLIER_FACTORY_ORDERS.orders.find(
@@ -1782,6 +1846,8 @@ export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
   const status = statusOverride || listOrder.status;
   const statusLabel =
     FACTORY_ORDER_STATUS_LABELS[status] || listOrder.statusLabel;
+  const showTransporter =
+    status === 'assigned' || status === 'in-production' || status === 'ready';
 
   return {
     id: listOrder.id,
@@ -1793,7 +1859,7 @@ export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
     context: 'factory',
     recipientType: 'supplier',
     company: {
-      name: listOrder.factoryName.toUpperCase(),
+      name: 'ABC CORP',
       email: 'abccorp@gmail.com',
       phone: '+123 765 3490',
     },
@@ -1810,7 +1876,7 @@ export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
     products: FACTORY_ORDER_PRODUCTS,
     installmentBreakdown: FACTORY_ORDER_INSTALLMENT_BREAKDOWN,
     installments: DEMO_FACTORY_ORDER_INSTALLMENTS,
-    transporter: null,
+    transporter: showTransporter ? FACTORY_ORDER_DRIVER : null,
     cancelReason: status === 'cancel' ? DEMO_ORDER_CANCEL.cancelReason : null,
   };
 }

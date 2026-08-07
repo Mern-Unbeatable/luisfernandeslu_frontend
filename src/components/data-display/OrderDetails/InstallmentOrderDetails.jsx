@@ -20,8 +20,19 @@ import {
   normalizeStatus,
 } from './shared'
 
-function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false, downPayment = false }) {
+function PaymentSummary({
+  payment = {},
+  variant = 'bordered',
+  isNew = false,
+  downPayment = false,
+  remainingBalanceTone = 'active',
+}) {
   const showDownPayment = isNew || downPayment
+  const remainingBalanceClassName =
+    remainingBalanceTone === 'danger'
+      ? 'text-2xl font-bold text-red-500'
+      : 'text-2xl font-bold text-[var(--active)]'
+
   if (variant === 'split') {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50/40 px-5 py-4">
@@ -54,7 +65,7 @@ function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false, dow
 
   return (
     <div className="rounded-xl border border-amber-300 bg-white px-5 py-4">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm text-[var(--secondary-text)]">
             {showDownPayment ? 'Pay Now (Down Payment)' : 'Paid Amount'}
@@ -62,21 +73,21 @@ function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false, dow
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {payment.paidAmount}
           </p>
+          {payment.paidNote ? (
+            <p className="mt-1 text-xs text-[var(--secondary-text)]">
+              {payment.paidNote}
+            </p>
+          ) : null}
         </div>
         <div className="text-right">
           <p className="text-sm text-[var(--secondary-text)]">
             Remaining Balance
           </p>
-          <p className="mt-1 text-2xl font-bold text-[var(--active)]">
+          <p className={`mt-1 ${remainingBalanceClassName}`}>
             {payment.remainingBalance}
           </p>
         </div>
       </div>
-      {payment.paidNote ? (
-        <p className="mt-2 text-xs text-[var(--secondary-text)]">
-          {payment.paidNote}
-        </p>
-      ) : null}
     </div>
   )
 }
@@ -151,14 +162,20 @@ export default function InstallmentOrderDetails({
   const logistics = order.logistics || {}
   const payment = order.payment || {}
   const showTransporter =
-    !isFactory &&
     Boolean(order.transporter) &&
     status !== 'cancel' &&
-    status !== 'paid'
-  const paymentVariant = status === 'assigned' ? 'split' : 'bordered'
+    status !== 'paid' &&
+    status !== 'completed'
+  const paymentVariant =
+    isFactory || status !== 'assigned' ? 'bordered' : 'split'
   const isCompanyRecipient = !isCustomerRecipient && !isFactory
   const tableVariant = isFactory ? 'factory' : 'default'
-  const showDownPayment = isNew || (isFactory && status === 'produced')
+  const showDownPayment =
+    isNew ||
+    (isFactory &&
+      (status === 'produced' || status === 'assigned' || status === 'ready'))
+  const remainingBalanceTone =
+    isFactory && showDownPayment ? 'danger' : 'active'
 
   return (
     <div className="w-full">
@@ -182,7 +199,7 @@ export default function InstallmentOrderDetails({
         <SectionEyebrow>Recipient</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
           {isFactory
-            ? 'Supplier Info'
+            ? 'Supplier Information'
             : isCustomerRecipient
               ? 'Customer Information'
               : 'Company Information'}
@@ -281,6 +298,7 @@ export default function InstallmentOrderDetails({
           variant={paymentVariant}
           isNew={isNew}
           downPayment={showDownPayment}
+          remainingBalanceTone={remainingBalanceTone}
         />
       </div>
 

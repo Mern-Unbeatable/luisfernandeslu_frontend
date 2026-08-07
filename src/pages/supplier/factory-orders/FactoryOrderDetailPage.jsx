@@ -65,6 +65,10 @@ export default function FactoryOrderDetailPage() {
     // TODO: wire factory order installment cancel API
   };
 
+  const handleChat = () => {
+    // TODO: open chat with transporter when route is available
+  };
+
   return (
     <>
       <Seo title={t('panel.supplierFactoryOrders.orderDetailsTitle')} />
@@ -92,6 +96,7 @@ export default function FactoryOrderDetailPage() {
         hasInstallment
         context="factory"
         showPay
+        onChat={handleChat}
         onPayNow={handlePayNow}
         onCancelInstallment={handleCancelInstallment}
       />
