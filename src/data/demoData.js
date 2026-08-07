@@ -1186,6 +1186,35 @@ export const DEMO_SUPPLIER_PROMO_CODES = [
   },
 ]
 
+const DEMO_QUICK_SET_PRODUCT = DEMO_SUPPLIER_PRODUCTS.find(
+  (item) => item.product?.title === 'Portland Cement Quick Set',
+)
+
+export const DEMO_SUPPLIER_PROMO_PRODUCT_OPTIONS = Array.from(
+  new Map(
+    DEMO_SUPPLIER_PRODUCTS.map((item) => [
+      item.id,
+      {
+        value: item.id,
+        label: item.product?.title || item.id,
+      },
+    ]),
+  ).values(),
+)
+
+export const DEMO_CREATE_PROMO_CODE = {
+  code: 'SAVE10',
+  discountType: 'percentage',
+  discountValue: '10 %',
+  minOrderAmount: '$ 50',
+  expiryDate: '',
+  usageLimit: '100',
+  usageUnlimited: false,
+  applicableUsers: 'all',
+  applicableCategory: 'cement-mortar-concrete',
+  applicableProductIds: DEMO_QUICK_SET_PRODUCT ? [DEMO_QUICK_SET_PRODUCT.id] : [],
+}
+
 export const DEMO_FACTORY_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,
   bulkEnabled: false,

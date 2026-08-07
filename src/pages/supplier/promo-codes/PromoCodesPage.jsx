@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FiChevronDown, FiFilter } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import DataTable from '@/components/data-display/DataTable/DataTable';
@@ -19,6 +20,7 @@ const STATUS_LABEL_KEYS = {
 
 export default function PromoCodesPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TAB_IDS.promoCode);
   const [statusFilter, setStatusFilter] = useState('all');
   const [promoCodes, setPromoCodes] = useState(DEMO_SUPPLIER_PROMO_CODES);
@@ -187,9 +189,7 @@ export default function PromoCodesPage() {
 
         <button
           type="button"
-          onClick={() => {
-            // TODO: open create promo code flow when available
-          }}
+          onClick={() => navigate('/supplier/promo-codes/create')}
           className="inline-flex shrink-0 items-center justify-center self-start rounded-md bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
         >
           {t('panel.supplierPromoCodes.createPromoCode')}
