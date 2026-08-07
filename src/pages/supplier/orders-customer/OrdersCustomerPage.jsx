@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FiChevronDown, FiFilter } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
@@ -11,13 +11,31 @@ import {
   SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,
 } from '@/data/demoData';
 
+const STATUS_LABEL_KEYS = {
+  new: 'panel.supplierCustomerOrders.statusNew',
+  pending: 'panel.supplierCustomerOrders.statusPending',
+  processing: 'panel.supplierCustomerOrders.statusProcessing',
+  assigned: 'panel.supplierCustomerOrders.statusAssigned',
+  completed: 'panel.supplierCustomerOrders.statusCompleted',
+  cancel: 'panel.supplierCustomerOrders.statusCancel',
+};
+
+const APPROVED_STATUS_OPTIONS = [
+  'pending',
+  'processing',
+  'assigned',
+  'completed',
+  'cancel',
+];
+
 export default function OrdersCustomerPage() {
   const { t } = useTranslation();
   const [statusFilter, setStatusFilter] = useState('all');
   const [page, setPage] = useState(1);
+  const [orders, setOrders] = useState(DEMO_SUPPLIER_CUSTOMER_ORDERS.orders);
 
   // TODO: replace DEMO_* with supplier customer orders API fetch
-  const { stats, orders } = DEMO_SUPPLIER_CUSTOMER_ORDERS;
+  const { stats } = DEMO_SUPPLIER_CUSTOMER_ORDERS;
 
   const statusOptions = useMemo(
     () => [
@@ -36,6 +54,71 @@ export default function OrdersCustomerPage() {
       },
     ],
     [t],
+  );
+
+  const handleStatusChange = useCallback(
+    (row, status) => {
+      setOrders((prev) =>
+        prev.map((item) =>
+          item.id === row.id
+            ? {
+                ...item,
+                status,
+                statusLabel: t(STATUS_LABEL_KEYS[status]),
+              }
+            : item,
+        ),
+      );
+      // TODO: wire customer order status API
+    },
+    [t],
+  );
+
+  const handleAcceptOrder = useCallback(
+    (row) => {
+      handleStatusChange(row, 'pending');
+    },
+    [handleStatusChange],
+  );
+
+  const getRowActions = useCallback(
+    (row) => {
+      const seeDetails = {
+        id: 'see-details',
+        label: t('panel.supplierCustomerOrders.actionSeeDetails'),
+        variant: 'header',
+        onClick: (order) => {
+          // TODO: open order details when route is available
+          void order;
+        },
+      };
+
+      if (row.status === 'new') {
+        return [
+          seeDetails,
+          {
+            id: 'accept',
+            label: t('panel.supplierCustomerOrders.actionAccept'),
+            onClick: handleAcceptOrder,
+          },
+        ];
+      }
+
+      return [
+        seeDetails,
+        {
+          id: 'status-section',
+          label: t('panel.supplierCustomerOrders.statusSection'),
+          variant: 'section',
+        },
+        ...APPROVED_STATUS_OPTIONS.map((status) => ({
+          id: `set-${status}`,
+          label: t(STATUS_LABEL_KEYS[status]),
+          onClick: (order) => handleStatusChange(order, status),
+        })),
+      ];
+    },
+    [t, handleAcceptOrder, handleStatusChange],
   );
 
   const filteredOrders = useMemo(() => {
@@ -90,19 +173,6 @@ export default function OrdersCustomerPage() {
       {
         key: 'date',
         header: t('panel.supplierCustomerOrders.colDate'),
-      },
-    ],
-    [t],
-  );
-
-  const rowActions = useMemo(
-    () => [
-      {
-        id: 'view',
-        label: t('panel.supplierCustomerOrders.actionViewDetails'),
-        onClick: () => {
-          // TODO: open order details when route is available
-        },
       },
     ],
     [t],
@@ -184,7 +254,7 @@ export default function OrdersCustomerPage() {
           data={pagedOrders}
           getRowKey={(row) => row.id}
           showActions
-          actions={rowActions}
+          getActions={getRowActions}
           actionHeader={t('panel.supplierCustomerOrders.colAction')}
           emptyMessage={t('panel.supplierCustomerOrders.emptyOrders')}
           showPagination

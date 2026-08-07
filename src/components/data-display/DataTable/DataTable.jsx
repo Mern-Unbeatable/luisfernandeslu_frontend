@@ -35,6 +35,7 @@ export default function DataTable({
 
   showActions = false,
   actions = [],
+  getActions,
   actionType = 'menu',
   actionHeader = 'Action',
 
@@ -48,9 +49,10 @@ export default function DataTable({
 
   className = '',
 }) {
+  const showActionColumn =
+    showActions && (typeof getActions === 'function' || actions.length > 0)
   const showToolbar = showTabs || showSearch || showFilters
-  const colSpan =
-    columns.length + (showActions && actions.length > 0 ? 1 : 0)
+  const colSpan = columns.length + (showActionColumn ? 1 : 0)
 
   const wrapperClassName = [
     'w-full overflow-visible',
@@ -117,7 +119,7 @@ export default function DataTable({
                     {column.header}
                   </th>
                 ))}
-                {showActions && actions.length > 0 ? (
+                {showActionColumn ? (
                   <th className="px-3 py-3 font-semibold text-[var(--primary-text)] whitespace-nowrap sm:px-4">
                     {actionHeader}
                   </th>
@@ -139,7 +141,7 @@ export default function DataTable({
                         <Skeleton className="h-4 w-full max-w-[9rem]" />
                       </td>
                     ))}
-                    {showActions && actions.length > 0 ? (
+                    {showActionColumn ? (
                       <td className="px-3 py-3.5 sm:px-4">
                         <Skeleton className="mx-auto size-5 rounded-full" />
                       </td>
@@ -174,11 +176,15 @@ export default function DataTable({
                         </td>
                       )
                     })}
-                    {showActions && actions.length > 0 ? (
+                    {showActionColumn ? (
                       <td className="px-3 py-3.5 sm:px-4">
                         <RowActions
                           row={row}
-                          actions={actions}
+                          actions={
+                            typeof getActions === 'function'
+                              ? getActions(row)
+                              : actions
+                          }
                           actionType={actionType}
                         />
                       </td>
