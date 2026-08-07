@@ -240,6 +240,22 @@
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
     },
+    "supplierProducts": {
+      "title": "Gestão de produtos",
+      "subtitle": "Faça a gestão do catálogo de produtos para venda a clientes.",
+      "addProduct": "ADICIONAR PRODUTO",
+      "uploadCsv": "CARREGAR FICHEIRO CSV",
+      "tabAll": "Todos",
+      "tabPending": "Pendente",
+      "tabRejected": "Rejeitado",
+      "tabRegular": "Regular",
+      "tabBulkOrder": "Pedido em massa",
+      "tabFeatured": "Destaque",
+      "filters": "Filtros:",
+      "allCategories": "Todas as categorias",
+      "emptyTitle": "Nenhum produto encontrado",
+      "emptyHint": "Tente outro filtro ou adicione um novo produto."
+    },
     "profile": {
       "title": "O meu perfil",
       "subtitle": "Faça a gestão da sua conta e preferências da loja.",

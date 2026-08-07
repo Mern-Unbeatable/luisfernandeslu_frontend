@@ -240,6 +240,22 @@
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
     },
+    "supplierProducts": {
+      "title": "Product Management",
+      "subtitle": "Manage your product catalog for selling to customers.",
+      "addProduct": "ADD PRODUCT",
+      "uploadCsv": "UPLOAD CSV FILE",
+      "tabAll": "All",
+      "tabPending": "Pending",
+      "tabRejected": "Rejected",
+      "tabRegular": "Regular",
+      "tabBulkOrder": "Bulk Order",
+      "tabFeatured": "Featured",
+      "filters": "Filters:",
+      "allCategories": "All Categories",
+      "emptyTitle": "No products found",
+      "emptyHint": "Try a different filter or add a new product."
+    },
     "profile": {
       "title": "My Profile",
       "subtitle": "Manage your account and store preferences.",

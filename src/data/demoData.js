@@ -919,6 +919,85 @@ export const DEMO_SUPPLIER_DASHBOARD_STAT_CARDS = [
   },
 ]
 
+// ── Supplier products catalog ─────────────────────────────────────
+const SUPPLIER_PRODUCT_IMAGE =
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
+
+const SUPPLIER_PRODUCT_TITLES = [
+  'Portland Cement',
+  'Portland Cement Standard',
+  'Portland Cement Quick Set',
+]
+
+const SUPPLIER_PRODUCT_DESCRIPTION =
+  'High-strength building cement suitable for construction and masonry work.'
+
+const SUPPLIER_FEATURED_BADGE = {
+  label: 'Featured',
+  className: 'bg-sky-100 text-sky-700',
+}
+
+function buildSupplierCatalogProduct(id, config) {
+  const titleIndex = Number(id.replace(/\D/g, '')) % SUPPLIER_PRODUCT_TITLES.length
+
+  return {
+    id,
+    tab: config.tab,
+    categoryId: config.categoryId || 'cement-mortar-concrete',
+    cardType: config.cardType || 'dashboard',
+    tag: config.tag ?? null,
+    status: config.status ?? null,
+    badge: config.badge ?? null,
+    product: {
+      image: SUPPLIER_PRODUCT_IMAGE,
+      title: config.title || SUPPLIER_PRODUCT_TITLES[titleIndex],
+      description: config.description || SUPPLIER_PRODUCT_DESCRIPTION,
+      priceText: config.priceText || 'Price: $115 per bag (50 kg)',
+      expiryDate: config.expiryDate,
+    },
+  }
+}
+
+function buildSupplierCatalogBatch(tab, count, baseConfig = {}) {
+  return Array.from({ length: count }, (_, index) =>
+    buildSupplierCatalogProduct(`supplier-${tab}-${index + 1}`, {
+      ...baseConfig,
+      tab,
+    }),
+  )
+}
+
+export const DEMO_SUPPLIER_PRODUCTS = [
+  ...buildSupplierCatalogBatch('pending', 8, { status: 'pending' }),
+  ...buildSupplierCatalogBatch('rejected', 8, {
+    status: 'rejected',
+    title: 'Portland Cement Standard',
+    description: 'Reliable cement for all your everyday construction needs.',
+  }),
+  ...buildSupplierCatalogBatch('regular', 8, { tag: 'regular' }),
+  ...buildSupplierCatalogBatch('bulk_order', 8, {
+    tag: 'bulk_order',
+    priceText: 'Price: $135 per bag (50 kg)',
+  }),
+  ...buildSupplierCatalogBatch('featured', 8, {
+    cardType: 'featured',
+    badge: SUPPLIER_FEATURED_BADGE,
+    title: 'Portland Cement Quick Set',
+    description: 'Fast-setting cement for rapid construction work.',
+    priceText: 'Price: $130 per bag (50 kg)',
+    expiryDate: '5/4/2026',
+  }),
+]
+
+export const DEMO_SUPPLIER_PRODUCT_CATEGORIES = [
+  { value: 'all', labelKey: 'panel.supplierProducts.allCategories' },
+  { value: 'cement-mortar-concrete', label: 'Cement, Mortar & Concrete' },
+  { value: 'aggregates', label: 'Aggregates' },
+  { value: 'steel-rebar', label: 'Steel & Rebar' },
+]
+
+export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8
+
 // ── Add Product form demos ────────────────────────────────────────
 const EMPTY_ADD_PRODUCT = {
   warehouseLocation: '',

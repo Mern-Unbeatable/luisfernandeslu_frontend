@@ -1,125 +1,129 @@
-function buildPageList(currentPage, totalPages) {
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsLeft,
+  FiChevronsRight,
+} from 'react-icons/fi'
+
+function buildPageItems(page, totalPages) {
+  if (totalPages <= 1) return [1]
+
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
   }
 
-  if (currentPage <= 3) {
-    return [1, 2, 3, 'ellipsis', totalPages]
+  const items = [1]
+
+  if (page > 3) {
+    items.push('ellipsis')
   }
 
-  if (currentPage >= totalPages - 2) {
-    return [1, 'ellipsis', totalPages - 2, totalPages - 1, totalPages]
+  const start = Math.max(2, page - 1)
+  const end = Math.min(totalPages - 1, page + 1)
+
+  for (let current = start; current <= end; current += 1) {
+    items.push(current)
   }
 
-  return [
-    1,
-    'ellipsis',
-    currentPage - 1,
-    currentPage,
-    currentPage + 1,
-    'ellipsis',
-    totalPages,
-  ]
+  if (page < totalPages - 2) {
+    items.push('ellipsis')
+  }
+
+  if (totalPages > 1) {
+    items.push(totalPages)
+  }
+
+  return items
 }
 
-function PaginationButton({
-  children,
-  ariaLabel,
-  disabled = false,
-  active = false,
-  onClick,
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={ariaLabel}
-      aria-current={active ? 'page' : undefined}
-      disabled={disabled}
-      onClick={onClick}
-      className={[
-        'inline-flex size-9 items-center justify-center rounded-lg text-sm font-medium transition-colors sm:size-10',
-        active
-          ? 'bg-[var(--active)] text-white'
-          : 'border border-gray-200 bg-white text-[var(--primary-text)] hover:bg-gray-50',
-        disabled ? 'cursor-default opacity-50' : '',
-      ].join(' ')}
-    >
-      {children}
-    </button>
-  )
-}
-
+/**
+ * Numbered pagination with first/prev/next/last controls.
+ */
 export default function Pagination({
   page = 1,
   totalPages = 1,
   onPageChange,
   className = '',
 }) {
-  if (totalPages <= 1) return null
-
-  const currentPage = Math.min(Math.max(page, 1), totalPages)
-  const items = buildPageList(currentPage, totalPages)
+  const safePage = Math.min(Math.max(page, 1), totalPages)
+  const pageItems = buildPageItems(safePage, totalPages)
 
   const goTo = (nextPage) => {
-    if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) return
+    if (nextPage < 1 || nextPage > totalPages || nextPage === safePage) return
     onPageChange?.(nextPage)
   }
 
+  const navButtonClass =
+    'inline-flex size-8 items-center justify-center rounded-full text-[var(--primary-text)] transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-300 disabled:hover:bg-transparent'
+
   return (
     <nav
-      className={`flex flex-wrap items-center justify-center gap-2 ${className}`}
+      className={`flex items-center justify-center gap-1.5 sm:gap-2 ${className}`}
       aria-label="Pagination"
     >
-      <PaginationButton
-        ariaLabel="First page"
-        disabled={currentPage === 1}
+      <button
+        type="button"
         onClick={() => goTo(1)}
+        disabled={safePage <= 1}
+        className={navButtonClass}
+        aria-label="First page"
       >
-        «
-      </PaginationButton>
-      <PaginationButton
-        ariaLabel="Previous page"
-        disabled={currentPage === 1}
-        onClick={() => goTo(currentPage - 1)}
+        <FiChevronsLeft className="size-4" aria-hidden />
+      </button>
+      <button
+        type="button"
+        onClick={() => goTo(safePage - 1)}
+        disabled={safePage <= 1}
+        className={navButtonClass}
+        aria-label="Previous page"
       >
-        ‹
-      </PaginationButton>
+        <FiChevronLeft className="size-4" aria-hidden />
+      </button>
 
-      {items.map((item, index) =>
+      {pageItems.map((item, index) =>
         item === 'ellipsis' ? (
-          <PaginationButton
+          <span
             key={`ellipsis-${index}`}
-            ariaLabel="More pages"
-            disabled
+            className="inline-flex size-8 items-center justify-center text-sm text-[var(--secondary-text)]"
+            aria-hidden
           >
             …
-          </PaginationButton>
+          </span>
         ) : (
-          <PaginationButton
+          <button
             key={item}
-            ariaLabel={`Page ${item}`}
-            active={item === currentPage}
+            type="button"
             onClick={() => goTo(item)}
+            aria-current={item === safePage ? 'page' : undefined}
+            className={`inline-flex size-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
+              item === safePage
+                ? 'bg-[var(--active)] text-white'
+                : 'text-[var(--primary-text)] hover:bg-gray-100'
+            }`}
           >
             {item}
-          </PaginationButton>
+          </button>
         ),
       )}
 
-      <PaginationButton
-        ariaLabel="Next page"
-        disabled={currentPage === totalPages}
-        onClick={() => goTo(currentPage + 1)}
+      <button
+        type="button"
+        onClick={() => goTo(safePage + 1)}
+        disabled={safePage >= totalPages}
+        className={navButtonClass}
+        aria-label="Next page"
       >
-        ›
-      </PaginationButton>
-      <PaginationButton
-        ariaLabel="Last page"
-        disabled={currentPage === totalPages}
+        <FiChevronRight className="size-4" aria-hidden />
+      </button>
+      <button
+        type="button"
         onClick={() => goTo(totalPages)}
+        disabled={safePage >= totalPages}
+        className={navButtonClass}
+        aria-label="Last page"
       >
-        »
-      </PaginationButton>
+        <FiChevronsRight className="size-4" aria-hidden />
+      </button>
     </nav>
   )
 }

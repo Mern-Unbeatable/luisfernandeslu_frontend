@@ -1,39 +1,39 @@
-import { useMemo, useState } from 'react'
-import { FiChevronDown, FiEye } from 'react-icons/fi'
-import { useTranslation } from 'react-i18next'
-import Seo from '@/components/common/Seo/Seo'
-import DataTable from '@/components/data-display/DataTable/DataTable'
-import StatusBadge from '@/components/data-display/DataTable/StatusBadge'
-import StatusCard from '@/components/data-display/StatusCard'
+import { useMemo, useState } from 'react';
+import { FiChevronDown, FiEye } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
+import Seo from '@/components/common/Seo/Seo';
+import DataTable from '@/components/data-display/DataTable/DataTable';
+import StatusBadge from '@/components/data-display/DataTable/StatusBadge';
+import StatusCard from '@/components/data-display/StatusCard';
 import {
   DEMO_SUPPLIER_DASHBOARD,
   DEMO_SUPPLIER_DASHBOARD_STAT_CARDS,
-} from '@/data/demoData'
-import RevenueChart from './RevenueChart'
+} from '@/data/demoData';
+import RevenueChart from './RevenueChart';
 
 function formatStatValue(value, format) {
   if (format === 'currency') {
-    return `$${value.toLocaleString('en-US')}`
+    return `$${value.toLocaleString('en-US')}`;
   }
-  return String(value)
+  return String(value);
 }
 
 export default function DashboardPage() {
-  const { t } = useTranslation()
-  const [period, setPeriod] = useState('thisYear')
-  const [page, setPage] = useState(1)
+  const { t } = useTranslation();
+  const [period, setPeriod] = useState('thisYear');
+  const [page, setPage] = useState(1);
 
   // TODO: replace DEMO_* with supplier dashboard API fetch
-  const dashboard = DEMO_SUPPLIER_DASHBOARD
-  const orders = dashboard.orders || []
-  const pageSize = 7
-  const total = orders.length
-  const pageCount = Math.max(1, Math.ceil(total / pageSize))
-  const safePage = Math.min(page, pageCount)
+  const dashboard = DEMO_SUPPLIER_DASHBOARD;
+  const orders = dashboard.orders || [];
+  const pageSize = 7;
+  const total = orders.length;
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const safePage = Math.min(page, pageCount);
   const pagedOrders = orders.slice(
     (safePage - 1) * pageSize,
     safePage * pageSize,
-  )
+  );
 
   const columns = useMemo(
     () => [
@@ -65,7 +65,7 @@ export default function DashboardPage() {
             status={value}
             label={row.statusLabel}
             showChevron
-            className="rounded-full"
+            className='rounded-full'
           />
         ),
       },
@@ -76,90 +76,89 @@ export default function DashboardPage() {
         className: 'text-center',
         render: (_, row) => (
           <button
-            type="button"
+            type='button'
             onClick={() => {
               // TODO: navigate to order details when route exists
-              void row
+              void row;
             }}
-            className="inline-flex rounded-md p-1.5 text-[var(--primary-text)] transition-colors hover:bg-gray-100"
+            className='inline-flex rounded-md p-1.5 text-[var(--primary-text)] transition-colors hover:bg-gray-100'
             aria-label={t('panel.supplierDashboard.viewOrder')}
           >
-            <FiEye className="size-5" strokeWidth={1.75} aria-hidden />
+            <FiEye className='size-5' strokeWidth={1.75} aria-hidden />
           </button>
         ),
       },
     ],
     [t],
-  )
+  );
 
-  const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1
-  const to = total === 0 ? 0 : Math.min(safePage * pageSize, total)
+  const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1;
+  const to = total === 0 ? 0 : Math.min(safePage * pageSize, total);
 
   return (
     <>
       <Seo title={t('panel.supplierDashboard.title')} />
 
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+      <header className='mb-6'>
+        <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
           {t('panel.supplierDashboard.title')}
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className='mt-1 text-sm text-neutral-500'>
           {t('panel.supplierDashboard.subtitle')}
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5'>
         {DEMO_SUPPLIER_DASHBOARD_STAT_CARDS.map((card) => (
           <StatusCard
             key={card.id}
-            variant="default"
+            variant='default'
             label={t(card.labelKey)}
-            value={formatStatValue(
-              dashboard.stats[card.valueKey],
-              card.format,
-            )}
+            value={formatStatValue(dashboard.stats[card.valueKey], card.format)}
             icon={card.icon}
             iconTone={card.iconTone}
-            className="shadow-sm"
+            className='shadow-sm'
           />
         ))}
       </div>
 
       <section
-        className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
+        className='mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'
         aria-label={t('panel.supplierDashboard.revenueTitle')}
       >
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className='mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
           <div>
-            <h2 className="text-lg font-bold text-zinc-950 sm:text-xl">
+            <h2 className='text-lg font-bold text-zinc-950 sm:text-xl'>
               {t('panel.supplierDashboard.revenueTitle')}
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className='mt-1 text-sm text-neutral-500'>
               {t('panel.supplierDashboard.revenueSubtitle')}
             </p>
           </div>
 
-          <label className="relative inline-flex min-w-[140px] shrink-0 items-center self-start">
+          <label className='relative inline-flex min-w-[140px] shrink-0 items-center self-start'>
             <select
               value={period}
               onChange={(event) => setPeriod(event.target.value)}
-              className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
+              className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
               aria-label={t('panel.supplierDashboard.periodThisYear')}
             >
-              <option value="thisYear">
+              <option value='thisYear'>
                 {t('panel.supplierDashboard.periodThisYear')}
               </option>
             </select>
             <FiChevronDown
-              className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
+              className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
               aria-hidden
             />
           </label>
         </div>
 
         <RevenueChart revenue={dashboard.revenue} />
+      </section>
 
-        <div className="mt-6 border-t border-gray-200 pt-6">
+      <section className='mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>
+        <div className=''>
           <DataTable
             showCard={false}
             columns={columns}
@@ -187,5 +186,5 @@ export default function DashboardPage() {
         </div>
       </section>
     </>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
-import Pagination from '@/components/common/pagination/Pagination'
+import Pagination from '@/components/common/Pagination/Pagination'
 import HomeStatsBar from './HomeStatsBar'
 import {
   TOP_SELLING_PAGE_SIZE,
