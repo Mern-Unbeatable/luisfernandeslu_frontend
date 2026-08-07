@@ -943,6 +943,130 @@ export const DEMO_SUPPLIER_DASHBOARD_STAT_CARDS = [
   },
 ];
 
+// ── Supplier regular customer orders ──────────────────────────────
+export const DEMO_SUPPLIER_CUSTOMER_ORDERS = {
+  stats: {
+    totalOrders: 127,
+    pending: 18,
+    processing: 24,
+    completed: 85,
+  },
+  orders: [
+    {
+      id: 'co-001',
+      orderId: '#ORD-101',
+      customerName: 'Darlene Robertson',
+      email: 'darlene@example.com',
+      items: '3',
+      total: '$1,250.00',
+      status: 'new',
+      statusLabel: 'New',
+      date: '01/15/2026',
+    },
+    {
+      id: 'co-002',
+      orderId: '#ORD-102',
+      customerName: 'Cameron Williamson',
+      email: 'cameron@example.com',
+      items: '2',
+      total: '$890.00',
+      status: 'pending',
+      statusLabel: 'Pending',
+      date: '01/16/2026',
+    },
+    {
+      id: 'co-003',
+      orderId: '#ORD-103',
+      customerName: 'Theresa Webb',
+      email: 'theresa@example.com',
+      items: '5',
+      total: '$2,340.00',
+      status: 'processing',
+      statusLabel: 'Processing',
+      date: '01/17/2026',
+    },
+    {
+      id: 'co-004',
+      orderId: '#ORD-104',
+      customerName: 'Ronnie Rivers',
+      email: 'ronnie@example.com',
+      items: '1',
+      total: '$450.00',
+      status: 'assigned',
+      statusLabel: 'Assigned',
+      date: '01/18/2026',
+    },
+    {
+      id: 'co-005',
+      orderId: '#ORD-105',
+      customerName: 'Courtney Henry',
+      email: 'courtney@example.com',
+      items: '4',
+      total: '$3,120.00',
+      status: 'cancel',
+      statusLabel: 'Cancel',
+      date: '01/19/2026',
+    },
+    {
+      id: 'co-006',
+      orderId: '#ORD-106',
+      customerName: 'Frances Swann',
+      email: 'frances@example.com',
+      items: '6',
+      total: '$4,800.00',
+      status: 'completed',
+      statusLabel: 'Completed',
+      date: '01/20/2026',
+    },
+    {
+      id: 'co-007',
+      orderId: '#ORD-107',
+      customerName: 'Marvin Kinney',
+      email: 'marvin@example.com',
+      items: '2',
+      total: '$675.00',
+      status: 'pending',
+      statusLabel: 'Pending',
+      date: '01/21/2026',
+    },
+  ],
+};
+
+export const DEMO_SUPPLIER_CUSTOMER_ORDERS_STAT_CARDS = [
+  {
+    id: 'totalOrders',
+    labelKey: 'panel.supplierCustomerOrders.totalOrders',
+    valueKey: 'totalOrders',
+    variant: 'summary',
+    icon: FiPackage,
+    iconTone: 'blue',
+  },
+  {
+    id: 'pending',
+    labelKey: 'panel.supplierCustomerOrders.pending',
+    valueKey: 'pending',
+    variant: 'badge',
+    tone: 'warning',
+  },
+  {
+    id: 'processing',
+    labelKey: 'panel.supplierCustomerOrders.processing',
+    valueKey: 'processing',
+    variant: 'summary',
+    icon: FiShoppingBag,
+    iconTone: 'blue',
+  },
+  {
+    id: 'completed',
+    labelKey: 'panel.supplierCustomerOrders.completed',
+    valueKey: 'completed',
+    variant: 'badge',
+    tone: 'success',
+  },
+];
+
+export const SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE = 7;
+
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';

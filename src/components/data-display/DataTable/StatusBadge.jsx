@@ -14,6 +14,8 @@ const STATUS_STYLES = {
   cancel: 'bg-red-100 text-red-700',
   cancelled: 'bg-red-100 text-red-700',
   completed: 'bg-emerald-100 text-emerald-700',
+  new: 'bg-sky-100 text-sky-700',
+  processing: 'bg-pink-100 text-pink-700',
   active: 'bg-emerald-100 text-emerald-700',
   disabled: 'bg-gray-100 text-gray-600',
   expired: 'bg-red-100 text-red-700',
