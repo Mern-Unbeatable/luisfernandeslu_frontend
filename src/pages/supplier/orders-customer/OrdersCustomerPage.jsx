@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FiChevronDown, FiFilter } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import DataTable from '@/components/data-display/DataTable/DataTable';
@@ -30,6 +31,7 @@ const APPROVED_STATUS_OPTIONS = [
 
 export default function OrdersCustomerPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState('all');
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState(DEMO_SUPPLIER_CUSTOMER_ORDERS.orders);
@@ -41,13 +43,22 @@ export default function OrdersCustomerPage() {
     () => [
       { value: 'all', label: t('panel.supplierCustomerOrders.allStatus') },
       { value: 'new', label: t('panel.supplierCustomerOrders.statusNew') },
-      { value: 'pending', label: t('panel.supplierCustomerOrders.statusPending') },
+      {
+        value: 'pending',
+        label: t('panel.supplierCustomerOrders.statusPending'),
+      },
       {
         value: 'processing',
         label: t('panel.supplierCustomerOrders.statusProcessing'),
       },
-      { value: 'assigned', label: t('panel.supplierCustomerOrders.statusAssigned') },
-      { value: 'cancel', label: t('panel.supplierCustomerOrders.statusCancel') },
+      {
+        value: 'assigned',
+        label: t('panel.supplierCustomerOrders.statusAssigned'),
+      },
+      {
+        value: 'cancel',
+        label: t('panel.supplierCustomerOrders.statusCancel'),
+      },
       {
         value: 'completed',
         label: t('panel.supplierCustomerOrders.statusCompleted'),
@@ -88,8 +99,9 @@ export default function OrdersCustomerPage() {
         label: t('panel.supplierCustomerOrders.actionSeeDetails'),
         variant: 'header',
         onClick: (order) => {
-          // TODO: open order details when route is available
-          void order;
+          navigate(`/supplier/orders-customer/${order.id}`, {
+            state: { status: order.status },
+          });
         },
       };
 
@@ -118,7 +130,7 @@ export default function OrdersCustomerPage() {
         })),
       ];
     },
-    [t, handleAcceptOrder, handleStatusChange],
+    [t, handleAcceptOrder, handleStatusChange, navigate],
   );
 
   const filteredOrders = useMemo(() => {
@@ -166,7 +178,7 @@ export default function OrdersCustomerPage() {
           <StatusBadge
             status={value}
             label={row.statusLabel}
-            className="rounded-full"
+            className='rounded-full'
           />
         ),
       },
@@ -178,7 +190,8 @@ export default function OrdersCustomerPage() {
     [t],
   );
 
-  const from = total === 0 ? 0 : (safePage - 1) * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE + 1;
+  const from =
+    total === 0 ? 0 : (safePage - 1) * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE + 1;
   const to =
     total === 0
       ? 0
@@ -188,21 +201,19 @@ export default function OrdersCustomerPage() {
     <>
       <Seo title={t('panel.supplierCustomerOrders.title')} />
 
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between'>
         <header>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+          <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
             {t('panel.supplierCustomerOrders.title')}
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className='mt-1 text-sm text-neutral-500'>
             {t('panel.supplierCustomerOrders.subtitle')}
           </p>
         </header>
 
-        <label
-          className="relative inline-flex min-w-[160px] shrink-0 items-center gap-2 self-start rounded-md border border-gray-200 bg-white px-3 pr-9"
-        >
+        <label className='relative inline-flex min-w-[160px] shrink-0 items-center gap-2 self-start rounded-md border border-gray-200 bg-white px-3 pr-9'>
           <FiFilter
-            className="size-4 shrink-0 text-[var(--secondary-text)]"
+            className='size-4 shrink-0 text-[var(--secondary-text)]'
             aria-hidden
           />
           <select
@@ -211,7 +222,7 @@ export default function OrdersCustomerPage() {
               setStatusFilter(event.target.value);
               setPage(1);
             }}
-            className="h-10 w-full min-w-0 cursor-pointer appearance-none bg-transparent py-2 text-sm text-[var(--primary-text)] outline-none"
+            className='h-10 w-full min-w-0 cursor-pointer appearance-none bg-transparent py-2 text-sm text-[var(--primary-text)] outline-none'
             aria-label={t('panel.supplierCustomerOrders.allStatus')}
           >
             {statusOptions.map((option) => (
@@ -221,13 +232,13 @@ export default function OrdersCustomerPage() {
             ))}
           </select>
           <FiChevronDown
-            className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
+            className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
             aria-hidden
           />
         </label>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
         {DEMO_SUPPLIER_CUSTOMER_ORDERS_STAT_CARDS.map((card) => {
           const value = stats[card.valueKey];
 
@@ -241,13 +252,13 @@ export default function OrdersCustomerPage() {
               icon={card.icon}
               iconTone={card.iconTone}
               tone={card.tone}
-              className="shadow-sm"
+              className='shadow-sm'
             />
           );
         })}
       </div>
 
-      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+      <section className='rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>
         <DataTable
           showCard={false}
           columns={columns}

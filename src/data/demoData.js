@@ -15,6 +15,7 @@ import {
   FiBriefcase,
   FiDollarSign,
   FiHome,
+  FiInfo,
   FiPackage,
   FiShoppingBag,
   FiUser,
@@ -1066,6 +1067,599 @@ export const DEMO_SUPPLIER_CUSTOMER_ORDERS_STAT_CARDS = [
 ];
 
 export const SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE = 7;
+
+const SUPPLIER_CUSTOMER_ORDER_CUSTOMER = {
+  name: 'Zarah Islam',
+  email: 'zaraislam@gmail.com',
+  phone: '+123 765 3490',
+  region: 'America',
+  city: 'America',
+  zipCode: '095764',
+  address: '2118 Thornridge Cir. Syracuse, Connecticut 35624',
+};
+
+/** Full order payload for supplier customer order detail page */
+export function getSupplierCustomerOrderDetail(orderId, statusOverride) {
+  const listOrder = DEMO_SUPPLIER_CUSTOMER_ORDERS.orders.find(
+    (order) => order.id === orderId,
+  );
+  if (!listOrder) return null;
+
+  const status = statusOverride || listOrder.status;
+  const orderIdDisplay = listOrder.orderId.replace(/^#/, '');
+
+  const detail = {
+    id: listOrder.id,
+    orderId: orderIdDisplay,
+    orderDate: '2026-05-01',
+    status,
+    hasInstallment: false,
+    recipientType: 'customer',
+    customer: SUPPLIER_CUSTOMER_ORDER_CUSTOMER,
+    logistics: baseLogistics,
+    products: DEMO_ORDER_PRODUCTS,
+    totals: baseTotals,
+    transporter: null,
+    cancelReason: null,
+  };
+
+  if (status === 'assigned' || status === 'cancel') {
+    detail.transporter = baseTransporter;
+  }
+
+  if (status === 'cancel') {
+    detail.cancelReason =
+      'Order has been cancelled by the customer as the requirement has been updated and the purchase is no longer needed.';
+  }
+
+  return detail;
+}
+
+// ── Supplier company orders (B2B) ─────────────────────────────────
+export const DEMO_SUPPLIER_COMPANY_ORDER_COMPANIES = [
+  { value: 'abc-corp', label: 'ABC Corp' },
+  { value: 'xyz-industries', label: 'XYZ Industries' },
+  { value: 'global-builders', label: 'Global Builders' },
+  { value: 'prime-construct', label: 'Prime Construct' },
+  { value: 'metro-build', label: 'Metro Build Ltd' },
+];
+
+export const DEMO_SUPPLIER_COMPANY_ORDERS = {
+  stats: {
+    direct: {
+      totalOrders: 127,
+      pending: 18,
+      processing: 24,
+      completed: 85,
+    },
+    chat: {
+      activeCompanyOrders: 42,
+      totalB2bRevenue: '$128,940',
+      installmentActive: '18 orders',
+      paymentOverdue: '$12,400',
+      paymentOverdueOrders: '3 orders',
+    },
+  },
+  orders: [
+    {
+      id: 'b2b-d01',
+      tab: 'direct',
+      companyId: 'abc-corp',
+      orderId: 'COM-1001',
+      customerName: 'ABC Corp',
+      email: 'john@example.com',
+      items: '3',
+      total: '$450',
+      status: 'new',
+      statusLabel: 'New',
+      date: '2026-05-01',
+    },
+    {
+      id: 'b2b-d02',
+      tab: 'direct',
+      companyId: 'xyz-industries',
+      orderId: 'COM-1002',
+      customerName: 'XYZ Industries',
+      email: 'sarah@example.com',
+      items: '5',
+      total: '$320',
+      status: 'pending',
+      statusLabel: 'Pending',
+      date: '2026-05-02',
+    },
+    {
+      id: 'b2b-d03',
+      tab: 'direct',
+      companyId: 'global-builders',
+      orderId: 'COM-1003',
+      customerName: 'Global Builders',
+      email: 'mike@example.com',
+      items: '2',
+      total: '$890',
+      status: 'processing',
+      statusLabel: 'Processing',
+      date: '2026-05-03',
+    },
+    {
+      id: 'b2b-d04',
+      tab: 'direct',
+      companyId: 'prime-construct',
+      orderId: 'COM-1004',
+      customerName: 'Prime Construct',
+      email: 'lisa@example.com',
+      items: '4',
+      total: '$1,250',
+      status: 'assigned',
+      statusLabel: 'Assigned',
+      date: '2026-05-04',
+    },
+    {
+      id: 'b2b-d05',
+      tab: 'direct',
+      companyId: 'metro-build',
+      orderId: 'COM-1005',
+      customerName: 'Metro Build Ltd',
+      email: 'david@example.com',
+      items: '1',
+      total: '$675',
+      status: 'cancel',
+      statusLabel: 'Cancel',
+      date: '2026-05-05',
+    },
+    {
+      id: 'b2b-d06',
+      tab: 'direct',
+      companyId: 'abc-corp',
+      orderId: 'COM-1006',
+      customerName: 'ABC Corp',
+      email: 'emma@example.com',
+      items: '6',
+      total: '$4,800',
+      status: 'completed',
+      statusLabel: 'Completed',
+      date: '2026-05-06',
+    },
+    {
+      id: 'b2b-d07',
+      tab: 'direct',
+      companyId: 'xyz-industries',
+      orderId: 'COM-1007',
+      customerName: 'XYZ Industries',
+      email: 'james@example.com',
+      items: '2',
+      total: '$540',
+      status: 'pending',
+      statusLabel: 'Pending',
+      date: '2026-05-07',
+    },
+    {
+      id: 'b2b-c01',
+      tab: 'chat',
+      companyId: 'abc-corp',
+      orderId: 'CO-1001',
+      companyName: 'ABC Corp',
+      total: '$4,500,000',
+      installmentAmount: '$4,500',
+      status: 'new',
+      statusLabel: 'New',
+      installmentNumber: '1',
+      date: '2026-05-01',
+    },
+    {
+      id: 'b2b-c02',
+      tab: 'chat',
+      companyId: 'xyz-industries',
+      orderId: 'CO-1002',
+      companyName: 'XYZ Industries',
+      total: '$180,345,546',
+      installmentAmount: '$180,345',
+      status: 'pending',
+      statusLabel: 'Pending',
+      installmentNumber: '2',
+      date: '2026-05-02',
+    },
+    {
+      id: 'b2b-c03',
+      tab: 'chat',
+      companyId: 'global-builders',
+      orderId: 'CO-1003',
+      companyName: 'Global Builders',
+      total: '$2,890,000',
+      installmentAmount: '$481,667',
+      status: 'processing',
+      statusLabel: 'Processing',
+      installmentNumber: '3',
+      date: '2026-05-03',
+    },
+    {
+      id: 'b2b-c04',
+      tab: 'chat',
+      companyId: 'prime-construct',
+      orderId: 'CO-1004',
+      companyName: 'Prime Construct',
+      total: '$1,250,000',
+      installmentAmount: '$208,333',
+      status: 'assigned',
+      statusLabel: 'Assigned',
+      installmentNumber: '4',
+      date: '2026-05-04',
+    },
+    {
+      id: 'b2b-c05',
+      tab: 'chat',
+      companyId: 'metro-build',
+      orderId: 'CO-1005',
+      companyName: 'Metro Build Ltd',
+      total: '$675,000',
+      installmentAmount: '$112,500',
+      status: 'cancel',
+      statusLabel: 'Cancel',
+      installmentNumber: '5',
+      date: '2026-05-05',
+    },
+    {
+      id: 'b2b-c06',
+      tab: 'chat',
+      companyId: 'abc-corp',
+      orderId: 'CO-1006',
+      companyName: 'ABC Corp',
+      total: '$4,800,000',
+      installmentAmount: '$800,000',
+      status: 'completed',
+      statusLabel: 'Completed',
+      installmentNumber: '6',
+      date: '2026-05-06',
+    },
+    {
+      id: 'b2b-c07',
+      tab: 'chat',
+      companyId: 'xyz-industries',
+      orderId: 'CO-1007',
+      companyName: 'Tech Solutions Ltd',
+      total: '$540,000',
+      installmentAmount: '$90,000',
+      status: 'pending',
+      statusLabel: 'Pending',
+      installmentNumber: '7',
+      date: '2026-05-07',
+    },
+  ],
+};
+
+const CHAT_ORDER_INSTALLMENT_ORDINALS = [
+  '1st',
+  '2nd',
+  '3rd',
+  '4th',
+  '5th',
+  '6th',
+];
+
+const CHAT_ORDER_INSTALLMENT_BREAKDOWN = CHAT_ORDER_INSTALLMENT_ORDINALS.map(
+  (ordinal, index) => ({
+    id: `chat-ib-${index + 1}`,
+    product: 'UltraSet Portland Cement',
+    category: 'Binding Materials',
+    material: 'Cement',
+    weightSize: '50 kg bag, OPC 53 grade',
+    qty: '30 bags',
+    warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
+    installmentNumber: `${ordinal} Installment`,
+    amount: '$9,113.00',
+  }),
+);
+
+const CHAT_ORDER_PRODUCTS = [
+  {
+    id: 'chat-p1',
+    product: 'UltraSet Portland Cement',
+    category: 'Binding Materials',
+    material: 'Cement',
+    weightSize: '50 kg bag, OPC 53 grade',
+    qty: '180 bags',
+    unit: '$50.75',
+    warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
+    total: '$9,113.00',
+  },
+];
+
+const COMPANY_DIRECT_STATUS_TEMPLATES = {
+  new: { ...DEMO_ORDER_PENDING, status: 'new', transporter: null, cancelReason: null },
+  pending: { ...DEMO_ORDER_PENDING, transporter: null, cancelReason: null },
+  processing: {
+    ...DEMO_ORDER_PENDING,
+    status: 'processing',
+    transporter: null,
+    cancelReason: null,
+  },
+  assigned: DEMO_ORDER_ASSIGNED,
+  cancel: DEMO_ORDER_CANCEL,
+  completed: {
+    ...DEMO_ORDER_PENDING,
+    status: 'completed',
+    transporter: null,
+    cancelReason: null,
+  },
+};
+
+/** Full order payload for supplier company order detail (direct or chat) */
+export function getSupplierCompanyOrderDetail(orderId, statusOverride) {
+  const listOrder = DEMO_SUPPLIER_COMPANY_ORDERS.orders.find(
+    (order) => order.id === orderId,
+  );
+  if (!listOrder) return null;
+
+  const status = statusOverride || listOrder.status;
+  const orderDate = listOrder.date;
+
+  if (listOrder.tab === 'direct') {
+    const template =
+      COMPANY_DIRECT_STATUS_TEMPLATES[status] ||
+      COMPANY_DIRECT_STATUS_TEMPLATES.pending;
+
+    return {
+      ...template,
+      id: listOrder.id,
+      orderId: listOrder.orderId,
+      orderDate,
+      status,
+      hasInstallment: false,
+    };
+  }
+
+  const installmentStatus =
+    status === 'completed' ? 'paid' : status === 'cancel' ? 'cancel' : status;
+
+  const chatPaymentNew = {
+    totalPrice: '$125,500',
+    paidAmount: '$25,100',
+    remainingBalance: '$100,400',
+    paidNote: 'Pay $10,040/month for 10 months',
+    duration: '10 months',
+  };
+
+  const chatPaymentAssigned = {
+    totalPrice: '$125,500',
+    paidAmount: '$25,100',
+    remainingBalance: '$100,400',
+    paidNote: 'Last installment paid on 12-05-24',
+    nextDueLabel: 'Next installment due on May 15, 2024',
+    duration: '10 months',
+  };
+
+  const CHAT_ORDER_DRIVER = {
+    name: 'John Smith',
+    phone: '+1 (555) 123-4567',
+    vehicle: 'Truck #TR-4523',
+  };
+
+  const transporter =
+    installmentStatus === 'cancel' ? null : CHAT_ORDER_DRIVER;
+
+  const detailOrderId =
+    installmentStatus === 'new' ? 'ORD-001' : listOrder.orderId;
+
+  return {
+    ...DEMO_ORDER_INSTALLMENT_NEW,
+    id: listOrder.id,
+    orderId: detailOrderId,
+    orderDate,
+    status: installmentStatus,
+    hasInstallment: true,
+    role: 'company',
+    company: {
+      ...baseCompany,
+      email: 'abccorp@gmail.com',
+      phone: '+123 765 3490',
+    },
+    logistics: baseLogistics,
+    payment:
+      installmentStatus === 'new'
+        ? chatPaymentNew
+        : installmentStatus === 'assigned'
+          ? chatPaymentAssigned
+          : {
+              ...DEMO_ORDER_INSTALLMENT_NEW.payment,
+              totalPrice: listOrder.total,
+            },
+    products: CHAT_ORDER_PRODUCTS,
+    installmentBreakdown: CHAT_ORDER_INSTALLMENT_BREAKDOWN,
+    installments: DEMO_ORDER_INSTALLMENTS,
+    transporter,
+    totals: null,
+    cancelReason:
+      installmentStatus === 'cancel'
+        ? DEMO_ORDER_CANCEL.cancelReason
+        : null,
+  };
+}
+
+export const DEMO_SUPPLIER_COMPANY_ORDERS_DIRECT_STAT_CARDS = [
+  {
+    id: 'totalOrders',
+    labelKey: 'panel.supplierCompanyOrders.totalOrders',
+    valueKey: 'totalOrders',
+    variant: 'summary',
+    icon: FiPackage,
+    iconTone: 'blue',
+  },
+  {
+    id: 'pending',
+    labelKey: 'panel.supplierCompanyOrders.pending',
+    valueKey: 'pending',
+    variant: 'badge',
+    tone: 'warning',
+  },
+  {
+    id: 'processing',
+    labelKey: 'panel.supplierCompanyOrders.processing',
+    valueKey: 'processing',
+    variant: 'summary',
+    icon: FiShoppingBag,
+    iconTone: 'blue',
+  },
+  {
+    id: 'completed',
+    labelKey: 'panel.supplierCompanyOrders.completed',
+    valueKey: 'completed',
+    variant: 'badge',
+    tone: 'success',
+  },
+];
+
+export const DEMO_SUPPLIER_COMPANY_ORDERS_CHAT_STAT_CARDS = [
+  {
+    id: 'activeCompanyOrders',
+    labelKey: 'panel.supplierCompanyOrders.activeCompanyOrders',
+    valueKey: 'activeCompanyOrders',
+    variant: 'summary',
+    icon: FiPackage,
+    iconTone: 'blue',
+  },
+  {
+    id: 'totalB2bRevenue',
+    labelKey: 'panel.supplierCompanyOrders.totalB2bRevenue',
+    valueKey: 'totalB2bRevenue',
+    variant: 'summary',
+    icon: FiDollarSign,
+    iconTone: 'success',
+  },
+  {
+    id: 'installmentActive',
+    labelKey: 'panel.supplierCompanyOrders.installmentActive',
+    valueKey: 'installmentActive',
+    variant: 'summary',
+    icon: FiInfo,
+    iconTone: 'blue',
+  },
+  {
+    id: 'paymentOverdue',
+    labelKey: 'panel.supplierCompanyOrders.paymentOverdue',
+    valueKey: 'paymentOverdue',
+    descriptionKey: 'paymentOverdueOrders',
+    variant: 'status',
+    tone: 'danger',
+    icon: FiAlertCircle,
+  },
+];
+
+export const SUPPLIER_COMPANY_ORDERS_PAGE_SIZE = 7;
+
+// ── Supplier fiscal documents ─────────────────────────────────────
+export const DEMO_SUPPLIER_FISCAL_DOCUMENTS = {
+  stats: {
+    totalDocuments: 4,
+    thisMonth: 12,
+    invoices: 8,
+    totalValue: '$8,340',
+  },
+  documents: [
+    {
+      id: 'doc-2847',
+      documentId: 'DOC-2847',
+      type: 'invoice',
+      orderId: 'ORD-001',
+      customer: 'Downtown Construction Co.',
+      amount: '$285.00',
+      date: '2024-05-28',
+    },
+    {
+      id: 'doc-2848',
+      documentId: 'DOC-2848',
+      type: 'invoice',
+      orderId: 'ORD-002',
+      customer: 'Metro Builders Inc.',
+      amount: '$420.50',
+      date: '2024-05-27',
+    },
+    {
+      id: 'doc-2849',
+      documentId: 'DOC-2849',
+      type: 'invoice',
+      orderId: 'ORD-003',
+      customer: 'Summit Development',
+      amount: '$892.00',
+      date: '2024-05-26',
+    },
+    {
+      id: 'doc-2850',
+      documentId: 'DOC-2850',
+      type: 'invoice',
+      orderId: 'ORD-004',
+      customer: 'Coastal Contractors',
+      amount: '$156.75',
+      date: '2024-05-25',
+    },
+    {
+      id: 'doc-2851',
+      documentId: 'DOC-2851',
+      type: 'invoice',
+      orderId: 'ORD-005',
+      customer: 'Apex Construction',
+      amount: '$634.20',
+      date: '2024-05-24',
+    },
+    {
+      id: 'doc-2852',
+      documentId: 'DOC-2852',
+      type: 'invoice',
+      orderId: 'ORD-006',
+      customer: 'Harbor Building Co.',
+      amount: '$298.90',
+      date: '2024-05-23',
+    },
+    {
+      id: 'doc-2853',
+      documentId: 'DOC-2853',
+      type: 'invoice',
+      orderId: 'ORD-007',
+      customer: 'Valley Homes LLC',
+      amount: '$512.55',
+      date: '2024-05-22',
+    },
+  ],
+};
+
+export const DEMO_SUPPLIER_FISCAL_DOCUMENT_STAT_CARDS = [
+  {
+    id: 'totalDocuments',
+    labelKey: 'panel.supplierFiscalDocuments.totalDocuments',
+    valueKey: 'totalDocuments',
+    variant: 'filled',
+    tone: 'brand',
+  },
+  {
+    id: 'thisMonth',
+    labelKey: 'panel.supplierFiscalDocuments.thisMonth',
+    valueKey: 'thisMonth',
+    variant: 'badge',
+  },
+  {
+    id: 'invoices',
+    labelKey: 'panel.supplierFiscalDocuments.invoices',
+    valueKey: 'invoices',
+    variant: 'badge',
+  },
+  {
+    id: 'totalValue',
+    labelKey: 'panel.supplierFiscalDocuments.totalValue',
+    valueKey: 'totalValue',
+    variant: 'badge',
+  },
+];
+
+export const SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE = 7;
+
+/** Completed deliveries available for fiscal document generation */
+export const DEMO_SUPPLIER_FISCAL_DOCUMENT_ORDER_OPTIONS = [
+  { value: 'ORD-001', label: 'ORD-001' },
+  { value: 'ORD-002', label: 'ORD-002' },
+  { value: 'ORD-003', label: 'ORD-003' },
+  { value: 'ORD-004', label: 'ORD-004' },
+  { value: 'ORD-005', label: 'ORD-005' },
+  { value: 'ORD-006', label: 'ORD-006' },
+  { value: 'ORD-007', label: 'ORD-007' },
+];
 
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =

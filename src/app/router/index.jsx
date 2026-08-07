@@ -168,8 +168,20 @@ const SupplierOrdersCustomer = Loadable(
   lazy(() => import('../../pages/supplier/orders-customer/OrdersCustomerPage')),
   <PanelSkeleton />,
 )
+const SupplierOrderCustomerDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/orders-customer/OrderCustomerDetailPage'),
+  ),
+  <PanelSkeleton />,
+)
 const SupplierCompanyOrders = Loadable(
   lazy(() => import('../../pages/supplier/company-orders/CompanyOrdersPage')),
+  <PanelSkeleton />,
+)
+const SupplierOrderCompanyDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/company-orders/OrderCompanyDetailPage'),
+  ),
   <PanelSkeleton />,
 )
 const SupplierDocuments = Loadable(
@@ -678,9 +690,19 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.promoCode'),
               },
               {
+                path: 'orders-customer/:orderId',
+                element: <SupplierOrderCustomerDetail />,
+                handle: panelSeo('panel.supplierCustomerOrders.orderDetailsTitle'),
+              },
+              {
                 path: 'orders-customer',
                 element: <SupplierOrdersCustomer />,
                 handle: panelSeo('panel.nav.ordersCustomer'),
+              },
+              {
+                path: 'company-orders/:orderId',
+                element: <SupplierOrderCompanyDetail />,
+                handle: panelSeo('panel.supplierCompanyOrders.orderDetailsTitle'),
               },
               {
                 path: 'company-orders',

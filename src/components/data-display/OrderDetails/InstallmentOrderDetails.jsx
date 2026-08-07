@@ -1,4 +1,12 @@
-import { FiBox, FiMapPin, FiMessageSquare, FiTag } from 'react-icons/fi'
+import {
+  FiBox,
+  FiCalendar,
+  FiDollarSign,
+  FiMapPin,
+  FiMessageSquare,
+  FiPhone,
+  FiTruck,
+} from 'react-icons/fi'
 import InstallmentTimeline from '../InstallmentTimeline/InstallmentTimeline'
 import {
   AcceptButton,
@@ -12,7 +20,7 @@ import {
   normalizeStatus,
 } from './shared'
 
-function PaymentSummary({ payment = {}, variant = 'bordered' }) {
+function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false }) {
   if (variant === 'split') {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50/40 px-5 py-4">
@@ -44,11 +52,11 @@ function PaymentSummary({ payment = {}, variant = 'bordered' }) {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--active)] px-5 py-4">
+    <div className="rounded-xl border border-amber-300 bg-white px-5 py-4">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm text-[var(--secondary-text)]">
-            You have Done Payment
+            {isNew ? 'Pay Now (Down Payment)' : 'Paid Amount'}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {payment.paidAmount}
@@ -73,20 +81,14 @@ function PaymentSummary({ payment = {}, variant = 'bordered' }) {
 }
 
 function TransporterBanner({ transporter = {}, onChat }) {
-  const initials =
-    transporter.initials ||
-    (transporter.name || 'T')
-      .split(' ')
-      .map((p) => p[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase()
-
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-sky-100 bg-sky-50 px-4 py-4 sm:px-5">
       <div className="flex min-w-0 items-center gap-3">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-sky-200 text-sm font-bold text-sky-800">
-          {initials}
+        <span
+          className="flex size-12 shrink-0 items-center justify-center rounded-full bg-sky-500 text-white"
+          aria-hidden
+        >
+          <FiTruck className="size-5" strokeWidth={2} />
         </span>
         <div className="min-w-0">
           <p className="truncate font-bold text-[var(--primary-text)]">
@@ -97,23 +99,22 @@ function TransporterBanner({ transporter = {}, onChat }) {
               {transporter.vehicle}
             </p>
           ) : null}
+          {transporter.phone ? (
+            <p className="mt-0.5 inline-flex items-center gap-1 text-sm text-[var(--secondary-text)]">
+              <FiPhone className="size-3.5 shrink-0" aria-hidden />
+              {transporter.phone}
+            </p>
+          ) : null}
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-3">
-        {transporter.phone ? (
-          <p className="text-sm text-[var(--primary-text)]">
-            {transporter.phone}
-          </p>
-        ) : null}
-        <button
-          type="button"
-          onClick={() => onChat?.(transporter)}
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-        >
-          <FiMessageSquare className="size-4" aria-hidden />
-          Chat
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => onChat?.(transporter)}
+        className="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+      >
+        <FiMessageSquare className="size-4" aria-hidden />
+        Chat
+      </button>
     </div>
   )
 }
@@ -145,8 +146,10 @@ export default function InstallmentOrderDetails({
     )
   const logistics = order.logistics || {}
   const payment = order.payment || {}
-  const showTransporter = Boolean(order.transporter) && status === 'assigned'
-  const paymentVariant = showTransporter ? 'split' : 'bordered'
+  const showTransporter =
+    Boolean(order.transporter) && status !== 'cancel' && status !== 'paid'
+  const paymentVariant = status === 'assigned' ? 'split' : 'bordered'
+  const isCompanyRecipient = !isCustomerRecipient
 
   return (
     <div className="w-full">
@@ -160,6 +163,12 @@ export default function InstallmentOrderDetails({
         {isNew ? <AcceptButton onClick={() => onAccept?.(order)} /> : null}
       </div>
 
+      {order.cancelReason ? (
+        <div className="mb-6 rounded-lg border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">
+          {order.cancelReason}
+        </div>
+      ) : null}
+
       <section className="mb-6">
         <SectionEyebrow>Recipient</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
@@ -169,30 +178,58 @@ export default function InstallmentOrderDetails({
           {recipient.name}
         </p>
         <div className="mt-1">
-          <ContactLine
-            email={recipient.email || recipient.taxId}
-            phone={recipient.phone}
-          />
+          <ContactLine email={recipient.email} phone={recipient.phone} />
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-4">
+        {isCompanyRecipient ? (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <IconLabel
-              icon={FiMapPin}
-              label={isCustomerRecipient ? 'Address' : 'Project'}
-              value={recipient.project || recipient.address || logistics.pickupLocation}
+              icon={FiBox}
+              label="Project"
+              value={recipient.project || logistics.pickupLocation}
             />
-            <IconLabel icon={FiTag} label="Total Price" value={payment.totalPrice} />
-          </div>
-          <div className="flex flex-col gap-4">
             <IconLabel
               icon={FiMapPin}
               label="Delivery Location"
               value={logistics.deliveryLocation}
             />
-            <IconLabel icon={FiBox} label="Installment" value={payment.duration} />
+            <IconLabel
+              icon={FiDollarSign}
+              label="Total Price"
+              value={payment.totalPrice}
+              valueClassName="text-2xl font-bold text-[var(--primary-text)]"
+            />
+            <IconLabel
+              icon={FiCalendar}
+              label="Installment"
+              value={payment.duration}
+              valueClassName="text-sm font-bold text-[var(--primary-text)]"
+            />
           </div>
-        </div>
+        ) : (
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-4">
+              <IconLabel
+                icon={FiMapPin}
+                label="Address"
+                value={recipient.address || logistics.pickupLocation}
+              />
+              <IconLabel
+                icon={FiDollarSign}
+                label="Total Price"
+                value={payment.totalPrice}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <IconLabel
+                icon={FiMapPin}
+                label="Delivery Location"
+                value={logistics.deliveryLocation}
+              />
+              <IconLabel icon={FiBox} label="Installment" value={payment.duration} />
+            </div>
+          </div>
+        )}
       </section>
 
       {showTransporter ? (
@@ -202,16 +239,24 @@ export default function InstallmentOrderDetails({
       ) : null}
 
       <div className="mb-5">
-        <PaymentSummary payment={payment} variant={paymentVariant} />
+        <PaymentSummary
+          payment={payment}
+          variant={paymentVariant}
+          isNew={isNew}
+        />
       </div>
 
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StackLabel
-          label="Types of unloading / vehicles"
+          label={
+            isCompanyRecipient
+              ? 'Types of unloading Needed'
+              : 'Types of unloading / vehicles'
+          }
           value={logistics.unloadingType}
         />
         <StackLabel
-          label="Unload Condition"
+          label="Access Conditions"
           value={logistics.accessCondition}
         />
       </div>

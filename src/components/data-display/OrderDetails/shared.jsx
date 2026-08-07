@@ -78,27 +78,28 @@ export function SectionEyebrow({ children }) {
   )
 }
 
-export function IconLabel({ icon: Icon = FiMapPin, label, value }) {
+export function IconLabel({
+  icon: Icon = FiMapPin,
+  label,
+  value,
+  valueClassName = 'text-sm font-medium break-words text-[var(--primary-text)]',
+}) {
   return (
     <div className="min-w-0">
       <p className="mb-1 flex items-center gap-1.5 text-xs text-[var(--secondary-text)]">
         <Icon className="size-3.5 shrink-0" aria-hidden />
         {label}
       </p>
-      <p className="text-sm font-medium break-words text-[var(--primary-text)]">
-        {value || '—'}
-      </p>
+      <p className={valueClassName}>{value || '—'}</p>
     </div>
   )
 }
 
-export function StackLabel({ label, value }) {
+export function StackLabel({ label, value, valueClassName = 'mt-0.5 text-sm font-bold text-[var(--primary-text)]' }) {
   return (
     <div className="min-w-0">
       <p className="text-xs text-[var(--secondary-text)]">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-[var(--primary-text)]">
-        {value || '—'}
-      </p>
+      <p className={valueClassName}>{value || '—'}</p>
     </div>
   )
 }
