@@ -204,6 +204,10 @@ const SupplierFactoryOrders = Loadable(
   lazy(() => import('../../pages/supplier/factory-orders/FactoryOrdersPage')),
   <PanelSkeleton />,
 )
+const SupplierFactoryOrderDetail = Loadable(
+  lazy(() => import('../../pages/supplier/factory-orders/FactoryOrderDetailPage')),
+  <PanelSkeleton />,
+)
 const SupplierInventory = Loadable(
   lazy(() => import('../../pages/supplier/inventory/InventoryPage')),
   <PanelSkeleton />,
@@ -732,6 +736,11 @@ export const router = createBrowserRouter([
                 path: 'buy-from-factory',
                 element: <SupplierBuyFromFactory />,
                 handle: panelSeo('panel.nav.buyFromFactory'),
+              },
+              {
+                path: 'factory-orders/:orderId',
+                element: <SupplierFactoryOrderDetail />,
+                handle: panelSeo('panel.nav.factoryOrder'),
               },
               {
                 path: 'factory-orders',

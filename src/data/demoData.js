@@ -1545,6 +1545,276 @@ export const DEMO_SUPPLIER_COMPANY_ORDERS_CHAT_STAT_CARDS = [
 
 export const SUPPLIER_COMPANY_ORDERS_PAGE_SIZE = 7;
 
+// ── Supplier factory orders ───────────────────────────────────────
+export const DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES = [
+  { value: 'abc-corp', label: 'ABC Corp' },
+  { value: 'xyz-industries', label: 'XYZ Industries' },
+  { value: 'tech-solutions', label: 'Tech Solutions Ltd' },
+  { value: 'global-manufacturing', label: 'Global Manufacturing' },
+  { value: 'maktach', label: 'MAKTACH' },
+  { value: 'chowdhury', label: 'Chowdhury Industries' },
+  { value: 'swift-logistics', label: 'Swift Logistics' },
+  { value: 'porto-haul', label: 'Porto Haul' },
+];
+
+export const DEMO_SUPPLIER_FACTORY_ORDERS = {
+  orders: [
+    {
+      id: 'fo-01',
+      tab: 'orders',
+      companyId: 'abc-corp',
+      poNumber: 'PO-2001',
+      factoryName: 'ABC Corp',
+      total: '$4,500,000',
+      installmentAmount: '$4,500',
+      status: 'produced',
+      statusLabel: 'Produced',
+      installmentNumber: '1',
+      date: '2026-05-01',
+    },
+    {
+      id: 'fo-02',
+      tab: 'orders',
+      companyId: 'xyz-industries',
+      poNumber: 'PO-2002',
+      factoryName: 'XYZ Industries',
+      total: '$3,201,800',
+      installmentAmount: '$3,201',
+      status: 'in-production',
+      statusLabel: 'In Production',
+      installmentNumber: '2',
+      date: '2026-04-30',
+    },
+    {
+      id: 'fo-03',
+      tab: 'orders',
+      companyId: 'tech-solutions',
+      poNumber: 'PO-2003',
+      factoryName: 'Tech Solutions Ltd',
+      total: '$180,345,546',
+      installmentAmount: '$180,345',
+      status: 'ready',
+      statusLabel: 'Ready',
+      installmentNumber: '3',
+      date: '2026-04-29',
+    },
+    {
+      id: 'fo-04',
+      tab: 'orders',
+      companyId: 'global-manufacturing',
+      poNumber: 'PO-2004',
+      factoryName: 'Global Manufacturing',
+      total: '$56,037,890',
+      installmentAmount: '$5,600',
+      status: 'assigned',
+      statusLabel: 'Assigned',
+      installmentNumber: '4',
+      date: '2026-04-28',
+    },
+    {
+      id: 'fo-05',
+      tab: 'orders',
+      companyId: 'maktach',
+      poNumber: 'PO-2004',
+      factoryName: 'MAKTACH',
+      total: '$95,456,453',
+      installmentAmount: '$9,545',
+      status: 'cancel',
+      statusLabel: 'Cancel',
+      installmentNumber: '5',
+      date: '2026-04-27',
+    },
+    {
+      id: 'fo-06',
+      tab: 'orders',
+      companyId: 'chowdhury',
+      poNumber: 'CO-1005',
+      factoryName: 'Chowdhury Industries',
+      total: '$95,765,456',
+      installmentAmount: '$95,765',
+      status: 'completed',
+      statusLabel: 'Completed',
+      installmentNumber: '6',
+      date: '2026-04-30',
+    },
+    {
+      id: 'fo-07',
+      tab: 'orders',
+      companyId: 'abc-corp',
+      poNumber: 'PO-2005',
+      factoryName: 'ABC Corp',
+      total: '$870,000',
+      installmentAmount: '$870',
+      status: 'ready',
+      statusLabel: 'Ready',
+      installmentNumber: '2',
+      date: '2026-04-26',
+    },
+    {
+      id: 'fo-tr-01',
+      tab: 'transport',
+      companyId: 'swift-logistics',
+      poNumber: 'TR-1001',
+      factoryName: 'Swift Logistics',
+      total: '$120,000',
+      installmentAmount: '$40,000',
+      status: 'assigned',
+      statusLabel: 'Assigned',
+      installmentNumber: '1',
+      date: '2026-02-05',
+    },
+    {
+      id: 'fo-tr-02',
+      tab: 'transport',
+      companyId: 'porto-haul',
+      poNumber: 'TR-1002',
+      factoryName: 'Porto Haul',
+      total: '$85,000',
+      installmentAmount: '$85,000',
+      status: 'in-production',
+      statusLabel: 'In Production',
+      installmentNumber: '1',
+      date: '2026-02-11',
+    },
+  ],
+};
+
+export const SUPPLIER_FACTORY_ORDERS_PAGE_SIZE = 7;
+
+const FACTORY_ORDER_PRODUCTS = [
+  {
+    id: 'factory-p1',
+    product: 'UltraSet Portland Cement',
+    category: 'Binding Materials',
+    material: 'Cement',
+    weightSize: '50 kg bag, OPC 53 grade',
+    qty: '180 bags',
+    unit: '$50.75',
+    total: '$9,113.00',
+  },
+];
+
+const FACTORY_ORDER_INSTALLMENT_BREAKDOWN = CHAT_ORDER_INSTALLMENT_ORDINALS.map(
+  (ordinal, index) => ({
+    id: `factory-ib-${index + 1}`,
+    product: 'UltraSet Portland Cement',
+    category: 'Binding Materials',
+    material: 'Cement',
+    weightSize: '50 kg bag, OPC 53 grade',
+    qty: '30 bags',
+    installmentNumber: `${ordinal} Installment`,
+    amount: '$9,113.00',
+  }),
+);
+
+export const DEMO_FACTORY_ORDER_INSTALLMENTS = [
+  {
+    id: '1',
+    title: '1st Installment',
+    status: 'completed',
+    dueDate: 'Mar 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+  },
+  {
+    id: '2',
+    title: '2nd Installment',
+    status: 'pending',
+    dueDate: 'Apr 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+    canPayNow: true,
+  },
+  {
+    id: '3',
+    title: '3rd Installment',
+    status: 'pending',
+    dueDate: 'Apr 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+    canPayNow: true,
+  },
+  {
+    id: '4',
+    title: '4th Installment',
+    status: 'pending',
+    dueDate: 'Apr 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+    canPayNow: true,
+  },
+  {
+    id: '5',
+    title: '5th Installment',
+    status: 'pending',
+    dueDate: 'Apr 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+    canPayNow: true,
+  },
+  {
+    id: '6',
+    title: '6th Installment',
+    status: 'pending',
+    dueDate: 'Apr 15, 2026',
+    amount: '$8,333',
+    quantity: '30 bags',
+    canPayNow: true,
+  },
+];
+
+const FACTORY_ORDER_STATUS_LABELS = {
+  produced: 'Produced',
+  'in-production': 'In Production',
+  ready: 'Ready',
+  assigned: 'Assigned',
+  cancel: 'Cancel',
+  completed: 'Completed',
+};
+
+/** Full order payload for supplier factory order detail */
+export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
+  const listOrder = DEMO_SUPPLIER_FACTORY_ORDERS.orders.find(
+    (order) => order.id === orderId,
+  );
+  if (!listOrder) return null;
+
+  const status = statusOverride || listOrder.status;
+  const statusLabel =
+    FACTORY_ORDER_STATUS_LABELS[status] || listOrder.statusLabel;
+
+  return {
+    id: listOrder.id,
+    orderId: 'ORD-001',
+    orderDate: listOrder.date,
+    status,
+    statusLabel,
+    hasInstallment: true,
+    context: 'factory',
+    recipientType: 'supplier',
+    company: {
+      name: listOrder.factoryName.toUpperCase(),
+      email: 'abccorp@gmail.com',
+      phone: '+123 765 3490',
+    },
+    logistics: {
+      deliveryLocation: '123 Main St, Downtown',
+    },
+    payment: {
+      totalPrice: '$125,500',
+      paidAmount: '$25,100',
+      remainingBalance: '$100,400',
+      paidNote: 'Pay $10,040/month for 10 months',
+      duration: '10 months',
+    },
+    products: FACTORY_ORDER_PRODUCTS,
+    installmentBreakdown: FACTORY_ORDER_INSTALLMENT_BREAKDOWN,
+    installments: DEMO_FACTORY_ORDER_INSTALLMENTS,
+    transporter: null,
+    cancelReason: status === 'cancel' ? DEMO_ORDER_CANCEL.cancelReason : null,
+  };
+}
+
 // ── Supplier fiscal documents ─────────────────────────────────────
 export const DEMO_SUPPLIER_FISCAL_DOCUMENTS = {
   stats: {

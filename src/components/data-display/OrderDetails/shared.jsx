@@ -9,6 +9,10 @@ export function normalizeStatus(status = '') {
   if (s === 'new') return 'new'
   if (s === 'processing') return 'processing'
   if (s === 'paid') return 'paid'
+  if (s === 'produced') return 'produced'
+  if (s === 'in production' || s === 'in-production') return 'in-production'
+  if (s === 'ready') return 'ready'
+  if (s === 'completed') return 'completed'
   return s || 'pending'
 }
 
@@ -19,17 +23,31 @@ const BADGE = {
   new: 'bg-sky-100 text-sky-700',
   processing: 'bg-blue-100 text-blue-700',
   paid: 'bg-emerald-100 text-emerald-700',
+  produced: 'bg-sky-100 text-sky-700',
+  'in-production': 'bg-[color-mix(in_srgb,var(--active)_15%,transparent)] text-[var(--active)]',
+  ready: 'bg-pink-100 text-pink-700',
+  completed: 'bg-emerald-100 text-emerald-700',
 }
 
-export function StatusBadge({ status }) {
+const BADGE_LABELS = {
+  cancel: 'Cancel',
+  'in-production': 'In Production',
+  produced: 'Produced',
+  ready: 'Ready',
+  completed: 'Completed',
+}
+
+export function StatusBadge({ status, label }) {
   const key = normalizeStatus(status)
-  const label =
-    key === 'cancel' ? 'Cancel' : key.charAt(0).toUpperCase() + key.slice(1)
+  const resolvedLabel =
+    label ||
+    BADGE_LABELS[key] ||
+    (key === 'cancel' ? 'Cancel' : key.charAt(0).toUpperCase() + key.slice(1))
   return (
     <span
       className={`inline-flex rounded-md px-2.5 py-1 text-xs font-semibold ${BADGE[key] || BADGE.pending}`}
     >
-      {label}
+      {resolvedLabel}
     </span>
   )
 }
@@ -118,11 +136,11 @@ export function ContactLine({ email, phone }) {
   )
 }
 
-const PRODUCT_COLS = [
+const FACTORY_PRODUCT_COLS = [
   {
     key: 'product',
     header: 'PRODUCT',
-    className: 'max-w-[200px] whitespace-normal',
+    className: 'max-w-[200px] whitespace-normal font-semibold',
   },
   { key: 'category', header: 'CATEGORY' },
   { key: 'material', header: 'MATERIAL' },
@@ -134,20 +152,9 @@ const PRODUCT_COLS = [
   { key: 'qty', header: 'QTY' },
   { key: 'unit', header: 'UNIT' },
   {
-    key: 'warehouse',
-    header: 'WAREHOUSE LOCATION',
-    className: 'w-[160px]',
-    render: (value) => (
-      <span className="block w-[160px] truncate" title={value || '—'}>
-        {value || '—'}
-      </span>
-    ),
-  },
-  {
     key: 'total',
     header: 'TOTAL',
-    headerClassName: 'text-right',
-    className: 'min-w-[110px] text-right whitespace-nowrap',
+    className: 'min-w-[110px] whitespace-nowrap font-semibold',
   },
 ]
 
@@ -188,12 +195,73 @@ const BREAKDOWN_COLS = [
   },
 ]
 
-export function ProductsTable({ products = [] }) {
+const FACTORY_BREAKDOWN_COLS = [
+  {
+    key: 'product',
+    header: 'PRODUCT',
+    className: 'max-w-[200px] whitespace-normal font-semibold',
+  },
+  { key: 'category', header: 'CATEGORY' },
+  { key: 'material', header: 'MATERIAL' },
+  {
+    key: 'weightSize',
+    header: 'WEIGHT / SIZE',
+    className: 'max-w-[180px] whitespace-normal',
+  },
+  { key: 'qty', header: 'QTY' },
+  {
+    key: 'installmentNumber',
+    header: 'INSTALLMENT NUMBER',
+    className: 'min-w-[170px] whitespace-nowrap',
+  },
+  {
+    key: 'amount',
+    header: 'AMOUNT',
+    className: 'min-w-[110px] whitespace-nowrap font-semibold',
+  },
+]
+
+const DEFAULT_PRODUCT_COLS = [
+  {
+    key: 'product',
+    header: 'PRODUCT',
+    className: 'max-w-[200px] whitespace-normal',
+  },
+  { key: 'category', header: 'CATEGORY' },
+  { key: 'material', header: 'MATERIAL' },
+  {
+    key: 'weightSize',
+    header: 'WEIGHT / SIZE',
+    className: 'max-w-[180px] whitespace-normal',
+  },
+  { key: 'qty', header: 'QTY' },
+  { key: 'unit', header: 'UNIT' },
+  {
+    key: 'warehouse',
+    header: 'WAREHOUSE LOCATION',
+    className: 'w-[160px]',
+    render: (value) => (
+      <span className="block w-[160px] truncate" title={value || '—'}>
+        {value || '—'}
+      </span>
+    ),
+  },
+  {
+    key: 'total',
+    header: 'TOTAL',
+    headerClassName: 'text-right',
+    className: 'min-w-[110px] text-right whitespace-nowrap',
+  },
+]
+
+export function ProductsTable({ products = [], variant = 'default' }) {
+  const columns = variant === 'factory' ? FACTORY_PRODUCT_COLS : DEFAULT_PRODUCT_COLS
+
   return (
     <DataTable
       showCard
       bgClassName="bg-white"
-      columns={PRODUCT_COLS}
+      columns={columns}
       data={products}
       emptyMessage="No products"
       showTabs={false}
@@ -205,12 +273,14 @@ export function ProductsTable({ products = [] }) {
   )
 }
 
-export function InstallmentBreakdownTable({ rows = [] }) {
+export function InstallmentBreakdownTable({ rows = [], variant = 'default' }) {
+  const columns =
+    variant === 'factory' ? FACTORY_BREAKDOWN_COLS : BREAKDOWN_COLS
   return (
     <DataTable
       showCard
       bgClassName="bg-white"
-      columns={BREAKDOWN_COLS}
+      columns={columns}
       data={rows}
       emptyMessage="No installments"
       showTabs={false}

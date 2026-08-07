@@ -20,7 +20,8 @@ import {
   normalizeStatus,
 } from './shared'
 
-function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false }) {
+function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false, downPayment = false }) {
+  const showDownPayment = isNew || downPayment
   if (variant === 'split') {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50/40 px-5 py-4">
@@ -56,7 +57,7 @@ function PaymentSummary({ payment = {}, variant = 'bordered', isNew = false }) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm text-[var(--secondary-text)]">
-            {isNew ? 'Pay Now (Down Payment)' : 'Paid Amount'}
+            {showDownPayment ? 'Pay Now (Down Payment)' : 'Paid Amount'}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {payment.paidAmount}
@@ -131,25 +132,33 @@ export default function InstallmentOrderDetails({
   showPay = false,
   onPayNow,
   onCancelInstallment,
+  context = 'default',
 }) {
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
-  const recipient = order.customer || order.company || {}
+  const isFactory = context === 'factory' || order.context === 'factory'
+  const recipient = order.supplier || order.company || order.customer || {}
   const isCustomerRecipient =
-    order.recipientType === 'customer' ||
-    Boolean(order.customer) ||
-    Boolean(
-      recipient.region ||
-        recipient.city ||
-        recipient.zipCode ||
-        recipient.address,
-    )
+    !isFactory &&
+    (order.recipientType === 'customer' ||
+      Boolean(order.customer) ||
+      Boolean(
+        recipient.region ||
+          recipient.city ||
+          recipient.zipCode ||
+          recipient.address,
+      ))
   const logistics = order.logistics || {}
   const payment = order.payment || {}
   const showTransporter =
-    Boolean(order.transporter) && status !== 'cancel' && status !== 'paid'
+    !isFactory &&
+    Boolean(order.transporter) &&
+    status !== 'cancel' &&
+    status !== 'paid'
   const paymentVariant = status === 'assigned' ? 'split' : 'bordered'
-  const isCompanyRecipient = !isCustomerRecipient
+  const isCompanyRecipient = !isCustomerRecipient && !isFactory
+  const tableVariant = isFactory ? 'factory' : 'default'
+  const showDownPayment = isNew || (isFactory && status === 'produced')
 
   return (
     <div className="w-full">
@@ -158,7 +167,7 @@ export default function InstallmentOrderDetails({
           <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
             {order.orderId}
           </h1>
-          <StatusBadge status={status} />
+          <StatusBadge status={status} label={order.statusLabel} />
         </div>
         {isNew ? <AcceptButton onClick={() => onAccept?.(order)} /> : null}
       </div>
@@ -172,7 +181,11 @@ export default function InstallmentOrderDetails({
       <section className="mb-6">
         <SectionEyebrow>Recipient</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
-          {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
+          {isFactory
+            ? 'Supplier Info'
+            : isCustomerRecipient
+              ? 'Customer Information'
+              : 'Company Information'}
         </h2>
         <p className="text-base font-bold text-[var(--primary-text)]">
           {recipient.name}
@@ -181,7 +194,31 @@ export default function InstallmentOrderDetails({
           <ContactLine email={recipient.email} phone={recipient.phone} />
         </div>
 
-        {isCompanyRecipient ? (
+        {isFactory ? (
+          <>
+            <div className="mt-5">
+              <IconLabel
+                icon={FiMapPin}
+                label="Delivery Location"
+                value={logistics.deliveryLocation}
+              />
+            </div>
+            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <IconLabel
+                icon={FiDollarSign}
+                label="Total Price"
+                value={payment.totalPrice}
+                valueClassName="text-2xl font-bold text-[var(--primary-text)]"
+              />
+              <IconLabel
+                icon={FiCalendar}
+                label="Installment"
+                value={payment.duration}
+                valueClassName="text-sm font-bold text-[var(--primary-text)]"
+              />
+            </div>
+          </>
+        ) : isCompanyRecipient ? (
           <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <IconLabel
               icon={FiBox}
@@ -243,36 +280,43 @@ export default function InstallmentOrderDetails({
           payment={payment}
           variant={paymentVariant}
           isNew={isNew}
+          downPayment={showDownPayment}
         />
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <StackLabel
-          label={
-            isCompanyRecipient
-              ? 'Types of unloading Needed'
-              : 'Types of unloading / vehicles'
-          }
-          value={logistics.unloadingType}
-        />
-        <StackLabel
-          label="Access Conditions"
-          value={logistics.accessCondition}
-        />
-      </div>
+      {!isFactory ? (
+        <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <StackLabel
+            label={
+              isCompanyRecipient
+                ? 'Types of unloading Needed'
+                : 'Types of unloading / vehicles'
+            }
+            value={logistics.unloadingType}
+          />
+          <StackLabel
+            label="Access Conditions"
+            value={logistics.accessCondition}
+          />
+        </div>
+      ) : null}
 
       <section className="mb-8">
+        {isFactory ? <SectionEyebrow>Materials</SectionEyebrow> : null}
         <h2 className="mb-4 text-lg font-bold text-[var(--primary-text)]">
           Product Details
         </h2>
-        <ProductsTable products={order.products} />
+        <ProductsTable products={order.products} variant={tableVariant} />
       </section>
 
       <section className="mb-8">
         <h2 className="mb-4 text-lg font-bold text-[var(--primary-text)]">
           Installment Breakdown
         </h2>
-        <InstallmentBreakdownTable rows={order.installmentBreakdown} />
+        <InstallmentBreakdownTable
+          rows={order.installmentBreakdown}
+          variant={tableVariant}
+        />
       </section>
 
       <InstallmentTimeline
