@@ -83,8 +83,8 @@ export default function ChatArea({
   }
 
   return (
-    <div className="flex h-full flex-col bg-[#F8F8F8]">
-      <div className="flex items-center gap-3 border-b border-gray-200 bg-[#EEEEEE] px-3 py-3 sm:px-4">
+    <div className="flex h-full flex-col bg-white">
+      <div className="flex items-center gap-3 border-b border-gray-200 bg-[#F5F5F5] px-3 py-3 sm:px-4">
         <button
           type="button"
           onClick={onBack}
@@ -98,19 +98,31 @@ export default function ChatArea({
           <h2 className="truncate text-sm font-bold text-[var(--primary-text)] sm:text-base">
             {activeChat.name}
           </h2>
-          <p className="text-xs text-[var(--secondary-text)]">
+          <p className="text-xs">
             {isPartnerTyping
-              ? 'Typing...'
+              ? (
+                  <span className="text-[var(--secondary-text)]">Typing...</span>
+                )
               : activeChat.online
-                ? 'Active'
-                : 'Offline'}
+                ? (
+                    <span className="inline-flex items-center gap-1.5 font-medium text-emerald-600">
+                      <span
+                        className="size-2 rounded-full bg-emerald-500"
+                        aria-hidden
+                      />
+                      Active
+                    </span>
+                  )
+                : (
+                  <span className="text-[var(--secondary-text)]">Offline</span>
+                )}
           </p>
         </div>
       </div>
 
       <div
         ref={messagesContainerRef}
-        className="flex-1 space-y-4 overflow-y-auto bg-[#F8F8F8] px-3 py-4 sm:px-5"
+        className="flex-1 space-y-3 overflow-y-auto bg-white px-3 py-4 sm:px-5"
       >
         <p className="text-center text-xs text-[var(--secondary-text)]">
           Thursday, Jan 4 • 6:21 PM
@@ -121,18 +133,27 @@ export default function ChatArea({
             Loading messages...
           </p>
         ) : (
-          messages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              message={message}
-              onStartEdit={startEdit}
-              onDeleteMessage={onDeleteMessage}
-              onPayNow={onPayNow}
-              onNegotiate={onNegotiate}
-              actionMessageId={actionMessageId}
-              isBeingEdited={editingMessageId === message.id}
-            />
-          ))
+          messages.map((message, index) => {
+            const prev = messages[index - 1]
+            const showPartnerAvatar =
+              message.sender === 'them' &&
+              message.type !== 'offer' &&
+              (prev?.sender !== 'them' || prev?.type === 'offer')
+
+            return (
+              <MessageBubble
+                key={message.id}
+                message={message}
+                showPartnerAvatar={showPartnerAvatar}
+                onStartEdit={startEdit}
+                onDeleteMessage={onDeleteMessage}
+                onPayNow={onPayNow}
+                onNegotiate={onNegotiate}
+                actionMessageId={actionMessageId}
+                isBeingEdited={editingMessageId === message.id}
+              />
+            )
+          })
         )}
 
         {isPartnerTyping ? (
@@ -147,7 +168,7 @@ export default function ChatArea({
         ) : null}
       </div>
 
-      <div className="border-t border-gray-200 bg-[#F8F8F8] px-3 py-3 sm:px-4">
+      <div className="border-t border-gray-200 bg-white px-3 py-3 sm:px-4">
         {editingMessageId ? (
           <div className="mb-2 flex items-center justify-between rounded-md bg-[color-mix(in_srgb,var(--active)_10%,white)] px-3 py-1.5 text-xs text-[var(--primary-text)]">
             <span>Editing message</span>

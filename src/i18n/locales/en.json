@@ -436,6 +436,10 @@
       "modalSubmit": "Generate Document",
       "modalClose": "Close"
     },
+    "supplierChat": {
+      "title": "Chat",
+      "sidebarTitle": "Recent Messages"
+    },
     "profile": {
       "title": "My Profile",
       "subtitle": "Manage your account and store preferences.",

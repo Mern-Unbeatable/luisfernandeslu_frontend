@@ -1,4 +1,5 @@
 import Skeleton from '../../Skeleton/Skeleton'
+import { FiEdit2 } from 'react-icons/fi'
 import UserAvatar from './UserAvatar'
 
 export default function Sidebar({
@@ -7,13 +8,25 @@ export default function Sidebar({
   onSelectChat,
   isLoading = false,
   title = 'Recent Messages',
+  showEditButton = false,
+  onEditClick,
 }) {
   return (
-    <div className="flex h-full flex-col border-r border-gray-200 bg-[#EEEEEE]">
-      <div className="border-b border-gray-200 px-4 py-5">
+    <div className="flex h-full flex-col border-r border-gray-200 bg-[#F5F5F5]">
+      <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-4 py-5">
         <h2 className="text-base font-bold text-[var(--primary-text)]">
           {title}
         </h2>
+        {showEditButton ? (
+          <button
+            type="button"
+            onClick={onEditClick}
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-white/70 hover:text-[var(--primary-text)]"
+            aria-label="Edit conversations"
+          >
+            <FiEdit2 className="size-4" strokeWidth={1.75} aria-hidden />
+          </button>
+        ) : null}
       </div>
 
       <div className="flex-1 overflow-y-auto px-3 py-3">
@@ -34,14 +47,14 @@ export default function Sidebar({
                     onClick={() => onSelectChat?.(chat.id)}
                     className={`flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
                       isActive
-                        ? 'bg-[#FFFFFF] shadow-sm'
-                        : 'hover:bg-white/60'
+                        ? 'bg-[#ECECEC]'
+                        : 'hover:bg-white/80'
                     }`}
                   >
                     <div className="relative shrink-0">
                       <UserAvatar partner={chat.partner} />
                       {chat.online ? (
-                        <span className="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-[#EEEEEE] bg-emerald-500" />
+                        <span className="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-[#F5F5F5] bg-emerald-500" />
                       ) : null}
                     </div>
 

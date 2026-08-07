@@ -436,6 +436,10 @@
       "modalSubmit": "Gerar documento",
       "modalClose": "Fechar"
     },
+    "supplierChat": {
+      "title": "Chat",
+      "sidebarTitle": "Mensagens recentes"
+    },
     "profile": {
       "title": "O meu perfil",
       "subtitle": "Faça a gestão da sua conta e preferências da loja.",
