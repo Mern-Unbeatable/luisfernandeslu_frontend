@@ -998,6 +998,27 @@ export const DEMO_SUPPLIER_PRODUCT_CATEGORIES = [
 
 export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8
 
+/** Full PDP payload for supplier product details (API-ready shape). */
+export function getSupplierProductDetail(productId) {
+  const catalogItem = DEMO_SUPPLIER_PRODUCTS.find((item) => item.id === productId)
+  if (!catalogItem) return null
+
+  const image = catalogItem.product.image || DEMO_PRODUCT.images[0]
+  const images = image
+    ? [image, ...DEMO_PRODUCT.images.filter((src) => src !== image).slice(0, 3)]
+    : DEMO_PRODUCT.images
+
+  return {
+    ...DEMO_PRODUCT,
+    title: catalogItem.product.title || DEMO_PRODUCT.title,
+    description: catalogItem.product.description || DEMO_PRODUCT.descriptionParagraphs?.[0],
+    images,
+    image,
+    priceText: catalogItem.product.priceText || DEMO_PRODUCT.priceText,
+    expiryDate: catalogItem.product.expiryDate,
+  }
+}
+
 // ── Add Product form demos ────────────────────────────────────────
 const EMPTY_ADD_PRODUCT = {
   warehouseLocation: '',
@@ -1024,8 +1045,33 @@ const EMPTY_ADD_PRODUCT = {
   otherImages: [],
 }
 
+const DEMO_ADD_PRODUCT_LONG_TEXT =
+  'Portland Cement is a high-quality, versatile construction material designed for strong, durable, and long-lasting structures. It is widely used for concrete, mortar, plastering, and other construction applications, ensuring excellent bonding and superior performance. With its fine composition and consistent quality, this cement provides smooth workability and reliable strength development. It is suitable for residential, commercial, and industrial projects, making it an essential material for builders and contractors. Its advanced formulation ensures high compressive strength, resistance to cracks, and long-term durability. Whether used for foundations, walls, or finishing work, Portland Cement delivers dependable results for all types of construction needs.'
+
+export const DEMO_WAREHOUSE_OPTIONS = [
+  { value: '', label: 'Select warehouse' },
+  { value: 'wh-santa-ana', label: DEMO_PRODUCT.warehouse },
+]
+
 export const DEMO_ADD_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,
+  categoryId: 'cement-mortar-concrete',
+  subCategoryId: 'cements',
+  productTypeId: 'ordinary-portland-cement-cem-i',
+  title: 'Portland Cement Quick Set',
+  quantity: '800 Bags',
+  basePrice: '$120.00',
+  b2bDiscount: '20%',
+  minB2bQuantity: '10 pcs',
+  weight: '900 kg',
+  description: DEMO_PRODUCT.descriptionParagraphs.join('\n\n'),
+  feature: DEMO_PRODUCT.features.map((item) => `• ${item}`).join('\n'),
+  additionalInformation: DEMO_ADD_PRODUCT_LONG_TEXT,
+  specifications: DEMO_ADD_PRODUCT_LONG_TEXT,
+  bulkTiers: [
+    { id: 'tier-1', quantity: '1-20', price: '$40.00' },
+    { id: 'tier-2', quantity: '20-40', price: '$38.00' },
+  ],
 }
 
 export const DEMO_FACTORY_PRODUCT = {

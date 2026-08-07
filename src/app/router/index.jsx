@@ -148,6 +148,14 @@ const SupplierProducts = Loadable(
   lazy(() => import('../../pages/supplier/products/ProductsPage')),
   <PanelSkeleton />,
 )
+const SupplierProductDetail = Loadable(
+  lazy(() => import('../../pages/supplier/products/ProductDetailPage')),
+  <PanelSkeleton />,
+)
+const SupplierAddProduct = Loadable(
+  lazy(() => import('../../pages/supplier/products/AddProductPage')),
+  <PanelSkeleton />,
+)
 const SupplierPromoCodes = Loadable(
   lazy(() => import('../../pages/supplier/promo-codes/PromoCodesPage')),
   <PanelSkeleton />,
@@ -643,6 +651,16 @@ export const router = createBrowserRouter([
               {
                 path: 'products',
                 element: <SupplierProducts />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'products/add',
+                element: <SupplierAddProduct />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'products/:productId',
+                element: <SupplierProductDetail />,
                 handle: panelSeo('panel.nav.products'),
               },
               {

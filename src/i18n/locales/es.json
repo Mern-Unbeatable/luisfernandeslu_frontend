@@ -254,7 +254,9 @@
       "filters": "Filtros:",
       "allCategories": "Todas las categorías",
       "emptyTitle": "No se encontraron productos",
-      "emptyHint": "Prueba otro filtro o añade un nuevo producto."
+      "emptyHint": "Prueba otro filtro o añade un nuevo producto.",
+      "notFound": "Producto no encontrado.",
+      "backToProducts": "Volver a productos"
     },
     "profile": {
       "title": "Mi perfil",
