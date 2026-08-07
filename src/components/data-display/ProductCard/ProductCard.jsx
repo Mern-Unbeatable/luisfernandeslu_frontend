@@ -376,7 +376,7 @@ function ActionButton({ action, onClick, className = '' }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-center justify-center gap-1 rounded-md px-2 py-2 text-xs font-semibold transition-colors ${variants[action.variant] || variants.primary} ${className}`}
+      className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
     >
       {Icon ? <Icon className="size-4" /> : null}
       {action.label}

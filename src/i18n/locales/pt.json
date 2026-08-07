@@ -440,6 +440,13 @@
       "title": "Chat",
       "sidebarTitle": "Mensagens recentes"
     },
+    "supplierBuyFromFactory": {
+      "title": "Comprar da fábrica",
+      "subtitle": "Explore materiais de construção de fábricas verificadas e envie consultas diretamente",
+      "sendMessage": "Enviar mensagem",
+      "emptyTitle": "Nenhum produto de fábrica encontrado",
+      "emptyHint": "Volte mais tarde para novos anúncios de fábricas."
+    },
     "profile": {
       "title": "O meu perfil",
       "subtitle": "Faça a gestão da sua conta e preferências da loja.",

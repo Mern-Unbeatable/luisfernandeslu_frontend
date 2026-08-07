@@ -1661,6 +1661,147 @@ export const DEMO_SUPPLIER_FISCAL_DOCUMENT_ORDER_OPTIONS = [
   { value: 'ORD-007', label: 'ORD-007' },
 ];
 
+// ── Supplier buy from factory catalog ───────────────────────────────
+const FACTORY_PRODUCT_DESCRIPTION =
+  'High-strength building cement suitable for construction and masonry work.';
+
+export const DEMO_SUPPLIER_BUY_FROM_FACTORY_PRODUCTS = [
+  {
+    id: 'factory-p1',
+    factoryId: 'f-cement',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+      title: 'Portland Cement Quick Set',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $130 per bag (50 kg)',
+    },
+  },
+  {
+    id: 'factory-p2',
+    factoryId: 'f-steel',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
+      title: 'Reinforcing Steel Bar (Rebar)',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $90 per ton',
+    },
+  },
+  {
+    id: 'factory-p3',
+    factoryId: 'f-blocks',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80',
+      title: 'Concrete Blocks',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $2 per piece',
+    },
+  },
+  {
+    id: 'factory-p4',
+    factoryId: 'f-bricks',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+      title: 'Clay Bricks',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $0.50 per piece',
+    },
+  },
+  {
+    id: 'factory-p5',
+    factoryId: 'f-sand',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80',
+      title: 'Fine Sand',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $40 per ton',
+    },
+  },
+  {
+    id: 'factory-p6',
+    factoryId: 'f-gravel',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80',
+      title: 'Gravel Aggregate',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $55 per ton',
+    },
+  },
+  {
+    id: 'factory-p7',
+    factoryId: 'f-stone',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80',
+      title: 'Crushed Stone',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $60 per ton',
+    },
+  },
+  {
+    id: 'factory-p8',
+    factoryId: 'f-plywood',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
+      title: 'Plywood Sheet',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $25 per sheet',
+    },
+  },
+  {
+    id: 'factory-p9',
+    factoryId: 'f-cement',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+      title: 'Portland Cement Standard',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $115 per bag (50 kg)',
+    },
+  },
+  {
+    id: 'factory-p10',
+    factoryId: 'f-steel',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
+      title: 'Steel Mesh Sheet',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $75 per sheet',
+    },
+  },
+  {
+    id: 'factory-p11',
+    factoryId: 'f-tiles',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+      title: 'Roof Tiles',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $3 per piece',
+    },
+  },
+  {
+    id: 'factory-p12',
+    factoryId: 'f-tiles',
+    product: {
+      image:
+        'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80',
+      title: 'Ceramic Floor Tiles',
+      description: FACTORY_PRODUCT_DESCRIPTION,
+      priceText: 'Price: $18 per box',
+    },
+  },
+];
+
+export const SUPPLIER_BUY_FROM_FACTORY_PAGE_SIZE = 8;
+
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';
