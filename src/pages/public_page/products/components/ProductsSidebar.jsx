@@ -1,16 +1,92 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiChevronDown, FiChevronRight, FiSliders, FiX } from "react-icons/fi";
+import { FiCheck, FiChevronDown, FiChevronRight, FiSliders, FiX } from "react-icons/fi";
 import { PRODUCT_CATEGORIES } from "@/data/productCategories";
 import {
   PRODUCTS_PRICE_BRACKETS,
   PRODUCTS_PRICE_MAX,
 } from "../data/productsListing";
 
-const checkboxClass =
-  "mt-0.5 size-4 shrink-0 rounded-sm border-gray-300 accent-[var(--active)]";
+const priceInputClass =
+  "h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]";
 
-function RangeTrack({ max, valueMin, valueMax, onChangeMin, onChangeMax }) {
+function FilterCheckbox({ checked, onChange, label, labelClassName = "" }) {
+  return (
+    <label className="flex cursor-pointer items-start gap-2.5">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="peer sr-only"
+      />
+      <span
+        className={`mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-sm border ${
+          checked
+            ? "border-[var(--active)] bg-[var(--active)] text-white"
+            : "border-gray-300 bg-white text-transparent"
+        }`}
+        aria-hidden
+      >
+        <FiCheck className="size-3" strokeWidth={3} />
+      </span>
+      <span className={labelClassName}>{label}</span>
+    </label>
+  );
+}
+
+function FilterRadio({ checked, onChange, name, label }) {
+  return (
+    <label className="flex cursor-pointer items-center gap-3">
+      <input
+        type="radio"
+        name={name}
+        checked={checked}
+        onChange={onChange}
+        className="peer sr-only"
+      />
+      <span
+        className={`inline-flex size-4 shrink-0 items-center justify-center rounded-full border bg-white ${
+          checked
+            ? "border-[5px] border-[var(--active)]"
+            : "border-gray-300"
+        }`}
+        aria-hidden
+      />
+      <span
+        className={`text-sm ${
+          checked
+            ? "font-medium text-[var(--active)]"
+            : "text-[var(--primary-text)]"
+        }`}
+      >
+        {label}
+      </span>
+    </label>
+  );
+}
+
+function CategoryRow({ checked, onToggle, label }) {
+  return (
+    <FilterCheckbox
+      checked={checked}
+      onChange={onToggle}
+      label={label}
+      labelClassName={`text-left text-sm leading-snug ${
+        checked
+          ? "font-semibold text-[var(--active)]"
+          : "font-normal text-[var(--primary-text)]"
+      }`}
+    />
+  );
+}
+
+function RangeTrack({
+  max,
+  valueMin,
+  valueMax,
+  onChangeMin,
+  onChangeMax,
+}) {
   const left = `${(valueMin / max) * 100}%`;
   const right = `${100 - (valueMax / max) * 100}%`;
 
@@ -43,36 +119,6 @@ function RangeTrack({ max, valueMin, valueMax, onChangeMin, onChangeMax }) {
         className="absolute inset-0 z-20 h-7 w-full cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--active)] [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--active)]"
         aria-label="Maximum price"
       />
-    </div>
-  );
-}
-
-function CategoryRow({
-  checked,
-  onToggle,
-  onActivate,
-  label,
-}) {
-  return (
-    <div className="flex items-start gap-2.5">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onToggle}
-        className={checkboxClass}
-        aria-label={label}
-      />
-      <button
-        type="button"
-        onClick={onActivate}
-        className={`text-left text-sm leading-snug ${
-          checked
-            ? "font-semibold text-[var(--active)]"
-            : "font-normal text-[var(--primary-text)]"
-        }`}
-      >
-        {label}
-      </button>
     </div>
   );
 }
@@ -179,7 +225,7 @@ export default function ProductsSidebar({
                   ),
                 );
               }}
-              className="h-10 w-full rounded-md border border-gray-200 bg-gray-100 px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]"
+              className={priceInputClass}
             />
             <input
               type="number"
@@ -193,7 +239,7 @@ export default function ProductsSidebar({
                   Math.max(Number(event.target.value) || 0, minPrice),
                 );
               }}
-              className="h-10 w-full rounded-md border border-gray-200 bg-gray-100 px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]"
+              className={priceInputClass}
             />
           </div>
 
@@ -202,28 +248,16 @@ export default function ProductsSidebar({
               const selected = priceBracketId === bracket.id;
               return (
                 <li key={bracket.id}>
-                  <label className="flex cursor-pointer items-center gap-3">
-                    <input
-                      type="radio"
-                      name="products-price-bracket"
-                      checked={selected}
-                      onChange={() => {
-                        onPriceBracketChange(bracket.id);
-                        onMinPriceChange(bracket.min);
-                        onMaxPriceChange(bracket.max);
-                      }}
-                      className="size-4 shrink-0 accent-[var(--active)]"
-                    />
-                    <span
-                      className={`text-sm ${
-                        selected
-                          ? "font-medium text-[var(--active)]"
-                          : "text-[var(--primary-text)]"
-                      }`}
-                    >
-                      {t(bracket.labelKey)}
-                    </span>
-                  </label>
+                  <FilterRadio
+                    name="products-price-bracket"
+                    checked={selected}
+                    onChange={() => {
+                      onPriceBracketChange(bracket.id);
+                      onMinPriceChange(bracket.min);
+                      onMaxPriceChange(bracket.max);
+                    }}
+                    label={t(bracket.labelKey)}
+                  />
                 </li>
               );
             })}
@@ -245,8 +279,11 @@ export default function ProductsSidebar({
               <li key={category.id}>
                 <CategoryRow
                   checked={checked}
-                  onToggle={() => onToggleCategory(category.id)}
-                  onActivate={() => onActivateCategory(category.id)}
+                  onToggle={() => {
+                    const willCheck = !categoryIds.has(category.id);
+                    onToggleCategory(category.id);
+                    if (willCheck) onActivateCategory(category.id);
+                  }}
                   label={categoryLabel(category)}
                 />
 
@@ -284,19 +321,14 @@ export default function ProductsSidebar({
                             <ul className="space-y-2.5 pb-3 pl-6">
                               {subcategory.productTypes.map((productType) => (
                                 <li key={productType.id}>
-                                  <label className="flex cursor-pointer items-start gap-2.5">
-                                    <input
-                                      type="checkbox"
-                                      checked={typeIds.has(productType.id)}
-                                      onChange={() =>
-                                        onToggleType(productType.id)
-                                      }
-                                      className={checkboxClass}
-                                    />
-                                    <span className="text-xs leading-snug text-[var(--secondary-text)]">
-                                      {typeLabel(productType)}
-                                    </span>
-                                  </label>
+                                  <FilterCheckbox
+                                    checked={typeIds.has(productType.id)}
+                                    onChange={() =>
+                                      onToggleType(productType.id)
+                                    }
+                                    label={typeLabel(productType)}
+                                    labelClassName="text-xs leading-snug text-[var(--secondary-text)]"
+                                  />
                                 </li>
                               ))}
                             </ul>

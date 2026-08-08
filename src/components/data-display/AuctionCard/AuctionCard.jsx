@@ -324,12 +324,101 @@ function AdminAuctionCard({ auction, t }) {
   )
 }
 
+/** Image — auction ended (no bid input; highlights own bid with YOU) */
+function EndedAuctionCard({ auction, t }) {
+  return (
+    <CardShell accent>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-lg font-bold text-[var(--primary-text)]">
+            {auction.title}
+          </h3>
+          <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+            {t('auction.auctionId')}: {auction.auctionId}
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5 text-sm font-bold uppercase tracking-wide text-[var(--active)]">
+          <FiClock className="size-4" strokeWidth={2} aria-hidden />
+          {t('auction.ended')}
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-5 sm:grid-cols-2">
+        <div className="flex flex-col gap-3.5">
+          <AuctionDetailRow
+            icon={AuctionIcons.Package}
+            value={auction.quantity}
+          />
+          <AuctionDetailRow
+            icon={AuctionIcons.MapPin}
+            iconColor="green"
+            value={auction.pickupLocation}
+          />
+          <AuctionDetailRow
+            icon={AuctionIcons.MapPin}
+            iconColor="blue"
+            value={auction.deliveryLocation}
+          />
+          <AuctionDetailRow
+            icon={AuctionIcons.Distance}
+            value={auction.distance}
+          />
+        </div>
+
+        <div className="rounded-xl bg-gray-50 p-4">
+          <p className="mb-3 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
+            <FiDollarSign className="size-4 text-[var(--active)]" aria-hidden />
+            {t('auction.bidHistory')}
+          </p>
+          <ul className="flex flex-col gap-2">
+            {(auction.bids || []).slice(0, 4).map((bid) => {
+              const isYou = Boolean(bid.isYou)
+              return (
+                <li
+                  key={bid.id}
+                  className={[
+                    'flex items-center justify-between gap-2 text-sm',
+                    isYou
+                      ? 'rounded-lg bg-sky-50 px-2.5 py-2'
+                      : 'px-0.5 py-0.5',
+                  ].join(' ')}
+                >
+                  <span className="font-bold text-[var(--primary-text)]">
+                    {formatMoney(bid.amount)}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <span
+                      className={
+                        isYou
+                          ? 'text-xs font-medium text-sky-700'
+                          : 'text-xs text-[var(--secondary-text)]'
+                      }
+                    >
+                      {bid.label}
+                    </span>
+                    {isYou ? (
+                      <span className="text-xs font-bold uppercase tracking-wide text-sky-600">
+                        {t('auction.you')}
+                      </span>
+                    ) : null}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </div>
+    </CardShell>
+  )
+}
+
 /**
  * Common auction card — role + status driven.
  *
  * @example
  * <AuctionCard role="supplier" status="open" auction={data} onViewDetails={fn} />
  * <AuctionCard role="transporter" auction={data} onPlaceBid={fn} />
+ * <AuctionCard role="transporter" status="ended" auction={data} />
  * <AuctionCard role="admin" auction={data} />
  * <AuctionCard role="factory" status="assigned" auction={data} />
  */
@@ -352,7 +441,8 @@ export default function AuctionCard({
   const props = { auction, onViewDetails, onPlaceBid, bidValue, onBidChange, t }
 
   let body = null
-  if (view === 'transporter') body = <TransporterAuctionCard {...props} />
+  if (view === 'ended') body = <EndedAuctionCard {...props} />
+  else if (view === 'transporter') body = <TransporterAuctionCard {...props} />
   else if (view === 'admin') body = <AdminAuctionCard {...props} />
   else if (view === 'assigned') body = <AssignedAuctionCard {...props} />
   else body = <CreatedAuctionCard {...props} />

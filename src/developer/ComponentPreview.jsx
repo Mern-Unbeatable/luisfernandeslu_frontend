@@ -24,6 +24,7 @@ import {
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_AUCTION_DETAILS_TRANSPORTER,
   DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
+  DEMO_AUCTION_ENDED,
   DEMO_AUCTION_LIVE,
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
@@ -102,6 +103,11 @@ const AUCTION_CARD_VARIANTS = {
   'admin-bids': {
     role: 'admin',
     auction: DEMO_AUCTION_LIVE,
+  },
+  'transporter-ended': {
+    role: 'transporter',
+    status: 'ended',
+    auction: DEMO_AUCTION_ENDED,
   },
 }
 

@@ -6,12 +6,7 @@ import Seo from '@/components/common/Seo/Seo'
 import NotFoundPage from '../NotFoundPage'
 import SendQuoteModal from './components/SendQuoteModal'
 import { getProductDetailBySlug } from './data/productDetailData'
-
-function resolveDetailRole(user) {
-  if (user?.role === 'customer') return 'customer'
-  if (user?.role === 'company') return 'company'
-  return 'company'
-}
+import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
@@ -24,12 +19,12 @@ export default function ProductDetailPage() {
     return <NotFoundPage />
   }
 
-  const role = resolveDetailRole(user)
+  const role = resolveStorefrontBuyerRole(user)
 
   const handleAction = (actionId) => {
     if (actionId === 'send_quote') setQuoteOpen(true)
     if (actionId === 'buy_now') {
-      navigate(user?.role === 'customer' ? '/checkout' : '/checkout/company')
+      navigate(role === 'company' ? '/checkout/company' : '/checkout')
     }
   }
 

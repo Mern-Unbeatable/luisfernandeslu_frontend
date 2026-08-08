@@ -579,6 +579,8 @@
     "competingBids": "Competing Transporter Bids",
     "enterBid": "Enter your bid",
     "placeBid": "Place Bid",
+    "ended": "ENDED",
+    "you": "YOU",
     "details": {
       "back": "Back to Dashboard",
       "orderSummary": "Order Summary",

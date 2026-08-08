@@ -218,10 +218,10 @@ export const COMPONENT_DOCS = [
     name: 'AuctionCard',
     category: 'data-display',
     summary:
-      'Role + status driven auction card (supplier/factory created/assigned, transporter bid, admin bids).',
+      'Role + status driven auction card (created, assigned, live bid, ended, admin bids).',
     path: 'src/components/data-display/AuctionCard/',
     importExample:
-      "import AuctionCard from '@/components/data-display/AuctionCard'\nimport {\n  DEMO_AUCTION_CREATED,\n  DEMO_AUCTION_ASSIGNED,\n  DEMO_AUCTION_LIVE,\n} from '@/data/demoData'",
+      "import AuctionCard from '@/components/data-display/AuctionCard'\nimport {\n  DEMO_AUCTION_CREATED,\n  DEMO_AUCTION_ASSIGNED,\n  DEMO_AUCTION_LIVE,\n  DEMO_AUCTION_ENDED,\n} from '@/data/demoData'",
     props: [
       {
         name: 'auction',
@@ -238,9 +238,10 @@ export const COMPONENT_DOCS = [
       },
       {
         name: 'status',
-        type: "'open' | 'assigned' | string",
+        type: "'open' | 'assigned' | 'ended' | 'closed' | string",
         required: false,
-        description: 'supplier/factory: open → created card; assigned → assigned card.',
+        description:
+          'supplier/factory: open → created; assigned → assigned. ended/closed → ended card (no bid input).',
       },
       {
         name: 'onViewDetails',
@@ -326,6 +327,16 @@ export const COMPONENT_DOCS = [
   role="admin"
   auction={DEMO_AUCTION_LIVE}
   onViewDetails={(a) => open(a.id)}
+/>`,
+      },
+      {
+        id: 'transporter-ended',
+        name: 'Transporter · Ended',
+        description: 'status=ended → ENDED badge, bid history with YOU highlight, no bid input.',
+        example: `<AuctionCard
+  role="transporter"
+  status="ended"
+  auction={DEMO_AUCTION_ENDED}
 />`,
       },
     ],

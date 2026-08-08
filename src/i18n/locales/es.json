@@ -508,8 +508,10 @@
     "distance": "Distancia",
     "bidHistory": "Historial de ofertas",
     "competingBids": "Ofertas de transportistas",
-    "enterBid": "Introduce tu oferta",
+    "enterBid": "Introduzca su oferta",
     "placeBid": "Hacer oferta",
+    "ended": "FINALIZADO",
+    "you": "TÚ",
     "details": {
       "back": "Volver al panel",
       "orderSummary": "Resumen del pedido",

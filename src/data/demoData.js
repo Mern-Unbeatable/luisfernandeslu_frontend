@@ -558,6 +558,23 @@ export const DEMO_AUCTION_LIVE = {
   ],
 }
 
+export const DEMO_AUCTION_ENDED = {
+  id: 'auc-002',
+  auctionId: 'AUC-002',
+  title: 'TMT Steel Rods (12mm)',
+  quantity: '200 rods (12m each)',
+  pickupLocation: 'Tata Steel Depot, Turbhe',
+  deliveryLocation: 'Residential Project, Kharghar',
+  distance: '32 km',
+  status: 'ended',
+  bids: [
+    { id: 'b1', amount: 285, label: 'Just now' },
+    { id: 'b2', amount: 290, label: '1 min ago' },
+    { id: 'b3', amount: 310, label: '3 min ago' },
+    { id: 'b4', amount: 295, label: '2 min ago', isYou: true },
+  ],
+}
+
 // ── Auction details ───────────────────────────────────────────────
 export const DEMO_AUCTION_DETAILS_ACTIVE = {
   id: 'auc-det-001',

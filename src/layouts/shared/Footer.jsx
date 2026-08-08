@@ -19,26 +19,26 @@ const footerColumnDefs = [
   {
     titleKey: 'footer.businessman',
     links: [
-      { labelKey: 'footer.supplier', href: '#' },
-      { labelKey: 'footer.transporter', href: '#' },
-      { labelKey: 'footer.affiliates', href: '#' },
+      { labelKey: 'footer.supplier', href: '/signup/supplier' },
+      { labelKey: 'footer.transporter', href: '/signup/transporter' },
+      { labelKey: 'footer.affiliates', href: '/signup/affiliate' },
     ],
   },
   {
     titleKey: 'footer.support',
     links: [
-      { labelKey: 'footer.helpCenter', href: '#' },
+      { labelKey: 'footer.helpCenter', href: '/help-center' },
       { labelKey: 'footer.dispute', href: '/dispute-resolution' },
-      { labelKey: 'footer.returns', href: '#' },
+      { labelKey: 'footer.returns', href: '/returns' },
       { labelKey: 'footer.complaintBook', href: '#' },
     ],
   },
   {
     titleKey: 'footer.legal',
     links: [
-      { labelKey: 'footer.terms', href: '#' },
-      { labelKey: 'footer.privacy', href: '#' },
-      { labelKey: 'footer.returnPolicy', href: '#' },
+      { labelKey: 'footer.terms', href: '/terms-and-conditions' },
+      { labelKey: 'footer.privacy', href: '/privacy-policy' },
+      { labelKey: 'footer.returnPolicy', href: '/return-policy' },
     ],
   },
 ]

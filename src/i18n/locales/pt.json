@@ -510,6 +510,8 @@
     "competingBids": "Propostas de transportadores",
     "enterBid": "Introduza a sua proposta",
     "placeBid": "Fazer proposta",
+    "ended": "TERMINADO",
+    "you": "VOCÊ",
     "details": {
       "back": "Voltar ao painel",
       "orderSummary": "Resumo da encomenda",
