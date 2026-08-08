@@ -443,7 +443,11 @@
     "home": "Inicio",
     "dashboard": "Panel",
     "orders": "Pedidos",
+    "orderDetails": "Detalles del pedido",
+    "writeReview": "Escribir reseña",
     "projects": "Proyectos",
+    "projectDetails": "Detalles del proyecto",
+    "materialDetails": "Detalles del material",
     "productToReview": "Producto a valorar",
     "account": "Cuenta",
     "affiliates": "Afiliados",
@@ -461,6 +465,116 @@
     "sepAndTrackYour": ", Y seguir tus ",
     "introAfter": ".",
     "placeholderComingSoon": "Página de {{title}} — contenido próximamente."
+  },
+  "buyerOrders": {
+    "orderId": "ID del pedido: #{{id}}",
+    "trackOrder": "Rastrear pedido",
+    "cancelOrder": "Cancelar pedido",
+    "writeReview": "Escribir reseña",
+    "empty": "Aún no tienes pedidos.",
+    "status": {
+      "shipped": "Enviado",
+      "processing": "En procesamiento",
+      "delivered": "Entregado"
+    }
+  },
+  "buyerOrderDetail": {
+    "title": "Información del pedido #{{number}}",
+    "shippingAddress": "Dirección de envío",
+    "products": "Productos",
+    "productName": "Nombre del producto",
+    "quantity": "Cantidad",
+    "price": "Precio",
+    "total": "Total",
+    "chat": "Chat"
+  },
+  "cancelReasonModal": {
+    "title": "Motivo de cancelación",
+    "label": "Escriba el motivo de cancelación",
+    "placeholder": "",
+    "submit": "Enviar",
+    "close": "Cerrar"
+  },
+  "productToReview": {
+    "columnProducts": "Productos",
+    "columnShipping": "Estado del envío",
+    "columnAction": "Acción",
+    "writeReview": "Escribir reseña",
+    "empty": "No hay productos pendientes de reseña.",
+    "shippingStatus": {
+      "delivered": "Entregado"
+    }
+  },
+  "materialQualityFeedback": {
+    "title": "¿Cómo fue la calidad del material?",
+    "subtitle": "Sus comentarios ayudan a otros constructores y contratistas a decidir mejor.",
+    "rateLabel": "Valore su producto",
+    "reviewLabel": "Reseña",
+    "reviewPlaceholder": "Escriba aquí",
+    "submit": "Enviar"
+  },
+  "companyOrders": {
+    "colOrderId": "ID del pedido",
+    "colProduct": "Nombre del producto",
+    "colProject": "Proyecto",
+    "colQuantity": "Cantidad",
+    "colStatus": "Estado",
+    "colAction": "Acción",
+    "empty": "Ningún pedido coincide con este filtro.",
+    "showing": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "viewOrder": "Ver pedido {{id}}",
+    "quantityLabel": "Cantidad: {{value}}",
+    "project": "Proyecto",
+    "deliveryLocation": "Lugar de entrega",
+    "totalPrice": "Precio total",
+    "installment": "Plazos",
+    "payNowDownPayment": "Pagar ahora (entrada)",
+    "remainingBalance": "Saldo pendiente",
+    "unloadingNeeded": "Tipo de descarga necesaria",
+    "accessConditions": "Condiciones de acceso",
+    "filter": {
+      "all": "Todos los estados",
+      "progress": "En curso",
+      "pending": "Pendiente",
+      "assign": "Asignar",
+      "completed": "Completado"
+    },
+    "status": {
+      "progress": "En curso",
+      "pending": "Pendiente",
+      "assign": "Asignar",
+      "completed": "Completado",
+      "delivered": "Entregado"
+    }
+  },
+  "companyProjects": {
+    "backToProjects": "← Volver a proyectos",
+    "backToProjectDetails": "← Volver a detalles del proyecto",
+    "materialTypes": "Tipos de material",
+    "deliveredValue": "Valor entregado",
+    "duePayment": "Pago pendiente",
+    "materialTrackingTitle": "Requisitos y seguimiento de materiales",
+    "colMaterial": "Nombre del material",
+    "colOrderedQty": "Cantidad pedida",
+    "colDeliveredValue": "Valor entregado",
+    "colDuePayment": "Pago pendiente",
+    "colAction": "Acción",
+    "viewMaterial": "Ver {{name}}",
+    "showing": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "projectLabel": "Proyecto: {{name}}",
+    "totalOrderValue": "Valor total del pedido",
+    "paymentSummary": "Resumen de pago",
+    "totalAmount": "Importe total",
+    "paidAmount": "Importe pagado",
+    "remainingBalance": "Saldo pendiente",
+    "progress": "Progreso",
+    "nextInstallment": "Próximo plazo",
+    "monthlyPayment": "Pago mensual",
+    "installmentTimeline": "Cronología de plazos"
   },
   "returnPolicyPage": {
     "seoTitle": "Política de devoluciones y reembolsos",

@@ -214,6 +214,99 @@ export const COMPONENT_DOCS = [
     ],
   },
   {
+    id: 'buyer-order-card',
+    name: 'BuyerOrderCard',
+    category: 'data-display',
+    summary:
+      'Order row for customer/company account dashboards (/customer/orders). Status badge + primary action.',
+    path: 'src/components/data-display/BuyerOrderCard/',
+    importExample:
+      "import BuyerOrderCard from '@/components/data-display/BuyerOrderCard/BuyerOrderCard'",
+    props: [
+      {
+        name: 'order',
+        type: 'object',
+        required: true,
+        description:
+          'id, status (shipped|processing|delivered), image, title, description, priceDisplay, optional action override.',
+      },
+      {
+        name: 'onAction',
+        type: '(actionId, order) => void',
+        required: false,
+        description: 'track | cancel | review from status-driven button.',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        required: false,
+        description: 'Extra classes on the card root.',
+      },
+    ],
+    requiredExample: `<BuyerOrderCard order={order} onAction={(id, o) => handle(id, o)} />`,
+    optionalExample: `<BuyerOrderCard
+  order={{
+    ...order,
+    action: { id: 'track', labelKey: 'buyerOrders.trackOrder', variant: 'primary' },
+  }}
+/>`,
+    previewId: 'buyer-order-card',
+    variants: [
+      {
+        id: 'shipped',
+        name: 'Shipped',
+        description: 'Track Order (orange).',
+        example: `<BuyerOrderCard order={shippedOrder} />`,
+      },
+      {
+        id: 'processing',
+        name: 'Processing',
+        description: 'Cancel Order (red).',
+        example: `<BuyerOrderCard order={processingOrder} />`,
+      },
+      {
+        id: 'delivered',
+        name: 'Delivered',
+        description: 'Write a Review (red).',
+        example: `<BuyerOrderCard order={deliveredOrder} />`,
+      },
+    ],
+  },
+  {
+    id: 'buyer-order-information',
+    name: 'BuyerOrderInformation',
+    category: 'data-display',
+    summary:
+      'Customer/company order detail: shipping, line items, driver chat, delivery progress.',
+    path: 'src/components/data-display/BuyerOrderInformation/',
+    importExample:
+      "import BuyerOrderInformation from '@/components/data-display/BuyerOrderInformation/BuyerOrderInformation'",
+    props: [
+      {
+        name: 'order',
+        type: 'object',
+        required: true,
+        description: 'orderNumber, status, shippingAddress, lineItems, totalDisplay, driver, progressSteps.',
+      },
+      {
+        name: 'onChatDriver',
+        type: '(driver) => void',
+        required: false,
+        description: 'Chat button on driver card.',
+      },
+    ],
+    requiredExample: `<BuyerOrderInformation order={order} onChatDriver={() => navigate('/messages')} />`,
+    previewId: 'buyer-order-information',
+    variants: [
+      {
+        id: 'processing',
+        name: 'Processing',
+        description: 'Demo CP-992841 layout.',
+        example: `<BuyerOrderInformation order={DEMO_BUYER_ORDER_DETAIL} />`,
+      },
+    ],
+  },
+  {
     id: 'auction-card',
     name: 'AuctionCard',
     category: 'data-display',

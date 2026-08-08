@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import AuctionCard from '../components/data-display/AuctionCard'
 import AuctionDetails from '../components/data-display/AuctionDetails'
 import OrderDetails from '../components/data-display/OrderDetails'
+import BuyerOrderCard from '../components/data-display/BuyerOrderCard/BuyerOrderCard'
+import BuyerOrderInformation from '../components/data-display/BuyerOrderInformation/BuyerOrderInformation'
+import { DEMO_BUYER_ORDER_DETAIL } from '../pages/customer/orders/data/buyerOrderDetailDemo'
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
 import ProductListingCard from '../components/data-display/ProductListingCard/ProductListingCard'
 import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
@@ -17,6 +20,7 @@ import PanelProfile from '../components/forms/PanelProfile'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
 import Pagination from '../components/common/Pagination/Pagination'
+import { CUSTOMER_ORDERS_DEMO } from '../pages/customer/orders/data/customerOrdersDemo'
 import {
   ADMIN_PRODUCT,
   DEMO_ADD_PRODUCT,
@@ -162,6 +166,27 @@ function AuctionDetailsPreview({ variantId }) {
     AUCTION_DETAILS_VARIANTS[variantId] ??
     AUCTION_DETAILS_VARIANTS['supplier-active']
   return <AuctionDetails {...cfg} onBack={() => {}} />
+}
+
+/* ─── Buyer order card ──────────────────────────────────────────── */
+
+function BuyerOrderCardPreview({ variantId }) {
+  const order =
+    CUSTOMER_ORDERS_DEMO.find((item) => item.status === variantId)
+    ?? CUSTOMER_ORDERS_DEMO[0]
+  return (
+    <div className="max-w-2xl">
+      <BuyerOrderCard order={order} onAction={() => {}} />
+    </div>
+  )
+}
+
+function BuyerOrderInformationPreview() {
+  return (
+    <div className="max-w-5xl">
+      <BuyerOrderInformation order={DEMO_BUYER_ORDER_DETAIL} onChatDriver={() => {}} />
+    </div>
+  )
 }
 
 /* ─── Product Card ──────────────────────────────────────────────── */
@@ -913,6 +938,12 @@ export default function ComponentPreview({ previewId, variantId }) {
       return (
         <OrderDetailsPreview variantId={variantId || 'standard-new'} />
       )
+    case 'buyer-order-card':
+      return (
+        <BuyerOrderCardPreview variantId={variantId || 'shipped'} />
+      )
+    case 'buyer-order-information':
+      return <BuyerOrderInformationPreview />
     case 'auction-card':
       return (
         <AuctionCardPreview variantId={variantId || 'supplier-created'} />

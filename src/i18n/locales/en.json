@@ -510,7 +510,11 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "orders": "Orders",
+    "orderDetails": "Orders Details",
+    "writeReview": "Write a Review",
     "projects": "Projects",
+    "projectDetails": "Projects Details",
+    "materialDetails": "Material Details",
     "productToReview": "Product to review",
     "account": "Account",
     "affiliates": "Affiliates",
@@ -528,6 +532,116 @@
     "sepAndTrackYour": ", And Track Your ",
     "introAfter": ".",
     "placeholderComingSoon": "{{title}} page — content coming soon."
+  },
+  "buyerOrders": {
+    "orderId": "Order ID: #{{id}}",
+    "trackOrder": "Track Order",
+    "cancelOrder": "Cancel Order",
+    "writeReview": "Write a Review",
+    "empty": "You have no orders yet.",
+    "status": {
+      "shipped": "Shipped",
+      "processing": "Processing",
+      "delivered": "Delivered"
+    }
+  },
+  "buyerOrderDetail": {
+    "title": "Order Information #{{number}}",
+    "shippingAddress": "Shipping Address",
+    "products": "Products",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "price": "Price",
+    "total": "Total",
+    "chat": "Chat"
+  },
+  "cancelReasonModal": {
+    "title": "Cancel Reason",
+    "label": "Write cancel reason",
+    "placeholder": "",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "productToReview": {
+    "columnProducts": "Products",
+    "columnShipping": "Shipping status",
+    "columnAction": "Action",
+    "writeReview": "Write a review",
+    "empty": "No products waiting for a review.",
+    "shippingStatus": {
+      "delivered": "Delivered"
+    }
+  },
+  "materialQualityFeedback": {
+    "title": "How was your material quality?",
+    "subtitle": "Your feedback helps other builders and contractors make better decisions.",
+    "rateLabel": "Rate Your Product",
+    "reviewLabel": "Review",
+    "reviewPlaceholder": "Write here",
+    "submit": "Submit"
+  },
+  "companyOrders": {
+    "colOrderId": "Order ID",
+    "colProduct": "Product Name",
+    "colProject": "Project",
+    "colQuantity": "Quantity",
+    "colStatus": "Status",
+    "colAction": "Action",
+    "empty": "No orders match this filter.",
+    "showing": "Showing {{from}} to {{to}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next",
+    "viewOrder": "View order {{id}}",
+    "quantityLabel": "Quantity: {{value}}",
+    "project": "Project",
+    "deliveryLocation": "Delivery Location",
+    "totalPrice": "Total Price",
+    "installment": "Installment",
+    "payNowDownPayment": "Pay Now (Down Payment)",
+    "remainingBalance": "Remaining Balance",
+    "unloadingNeeded": "Types of unloading Needed",
+    "accessConditions": "Access Conditions",
+    "filter": {
+      "all": "All Status",
+      "progress": "Progress",
+      "pending": "Pending",
+      "assign": "Assign",
+      "completed": "Completed"
+    },
+    "status": {
+      "progress": "Progress",
+      "pending": "Pending",
+      "assign": "Assign",
+      "completed": "Completed",
+      "delivered": "Delivered"
+    }
+  },
+  "companyProjects": {
+    "backToProjects": "← Back to Projects",
+    "backToProjectDetails": "← Back to Project Details",
+    "materialTypes": "Material Types",
+    "deliveredValue": "Delivered Value",
+    "duePayment": "Due Payment",
+    "materialTrackingTitle": "Material Requirements & Tracking",
+    "colMaterial": "Material Name",
+    "colOrderedQty": "Ordered Quantity",
+    "colDeliveredValue": "Delivered Value",
+    "colDuePayment": "Due Payment",
+    "colAction": "Action",
+    "viewMaterial": "View {{name}}",
+    "showing": "Showing {{from}} to {{to}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next",
+    "projectLabel": "Project: {{name}}",
+    "totalOrderValue": "Total Order Value",
+    "paymentSummary": "Payment Summary",
+    "totalAmount": "Total Amount",
+    "paidAmount": "Paid Amount",
+    "remainingBalance": "Remaining Balance",
+    "progress": "Progress",
+    "nextInstallment": "Next Installment",
+    "monthlyPayment": "Monthly Payment",
+    "installmentTimeline": "Installment Timeline"
   },
   "returnPolicyPage": {
     "seoTitle": "Return & Refund Policy",

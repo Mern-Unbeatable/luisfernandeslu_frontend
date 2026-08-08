@@ -111,8 +111,16 @@ const CustomerOrders = Loadable(
   lazy(() => import('../../pages/customer/orders/OrdersPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
+const CustomerOrderDetail = Loadable(
+  lazy(() => import('../../pages/customer/orders/OrderDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
 const CustomerProductToReview = Loadable(
   lazy(() => import('../../pages/customer/product-to-review/ProductToReviewPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CustomerWriteReview = Loadable(
+  lazy(() => import('../../pages/customer/product-to-review/WriteReviewPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
 const CustomerProfile = Loadable(
@@ -134,8 +142,20 @@ const CompanyOrders = Loadable(
   lazy(() => import('../../pages/company/orders/OrdersPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
+const CompanyOrderDetail = Loadable(
+  lazy(() => import('../../pages/company/orders/OrderDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
 const CompanyProjects = Loadable(
   lazy(() => import('../../pages/company/projects/ProjectsPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CompanyProjectDetail = Loadable(
+  lazy(() => import('../../pages/company/projects/ProjectDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CompanyMaterialDetail = Loadable(
+  lazy(() => import('../../pages/company/projects/MaterialDetailPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
 const CompanyProfile = Loadable(
@@ -591,12 +611,22 @@ export const router = createBrowserRouter([
               {
                 path: 'orders',
                 element: <CustomerOrders />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerOrders },
+              },
+              {
+                path: 'orders/:orderId',
+                element: <CustomerOrderDetail />,
+                handle: { seo: routeSeo.buyerOrders },
               },
               {
                 path: 'product-to-review',
                 element: <CustomerProductToReview />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerProductToReview },
+              },
+              {
+                path: 'product-to-review/:reviewId',
+                element: <CustomerWriteReview />,
+                handle: { seo: routeSeo.buyerProductToReview },
               },
               {
                 path: 'profile',
@@ -629,12 +659,27 @@ export const router = createBrowserRouter([
               {
                 path: 'orders',
                 element: <CompanyOrders />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerOrders },
+              },
+              {
+                path: 'orders/:orderId',
+                element: <CompanyOrderDetail />,
+                handle: { seo: routeSeo.buyerOrders },
               },
               {
                 path: 'projects',
                 element: <CompanyProjects />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerProjects },
+              },
+              {
+                path: 'projects/:projectId',
+                element: <CompanyProjectDetail />,
+                handle: { seo: routeSeo.buyerProjects },
+              },
+              {
+                path: 'projects/:projectId/materials/:materialId',
+                element: <CompanyMaterialDetail />,
+                handle: { seo: routeSeo.buyerProjects },
               },
               {
                 path: 'profile',

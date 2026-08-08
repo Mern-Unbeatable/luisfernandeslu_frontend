@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { useSelector } from 'react-redux'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
+import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 import {
   SPONSORED_PRODUCTS,
   SPONSORED_PRODUCTS_PAGE_SIZE,
@@ -31,6 +34,8 @@ function CarouselNavButton({ direction, disabled, onClick }) {
 
 export default function SponsoredProductsSection() {
   const [page, setPage] = useState(0)
+  const user = useSelector((state) => state.auth.user)
+  const listingRole = resolveStorefrontBuyerRole(user)
 
   const totalPages = Math.max(
     1,
@@ -56,13 +61,18 @@ export default function SponsoredProductsSection() {
         <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {visibleProducts.map((product) => (
             <li key={product.id} className="flex min-w-0">
-              <ProductCard
-                type="sponsored"
-                role="customer"
-                tag="sponsored"
-                product={product}
-                className="h-full w-full"
-              />
+              <Link
+                to={`/products/${product.slug}`}
+                className="flex min-w-0 flex-1 transition-opacity hover:opacity-95"
+              >
+                <ProductCard
+                  type="sponsored"
+                  role={listingRole}
+                  tag="sponsored"
+                  product={product}
+                  className="h-full w-full"
+                />
+              </Link>
             </li>
           ))}
         </ul>
