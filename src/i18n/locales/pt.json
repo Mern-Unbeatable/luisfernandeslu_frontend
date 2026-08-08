@@ -136,6 +136,32 @@
     "pt": "Português",
     "es": "Espanhol"
   },
+  "constructionAssistant": {
+    "title": "Assistente de Construção",
+    "open": "Abrir chat do assistente de construção",
+    "close": "Fechar chat do assistente de construção",
+    "send": "Enviar mensagem",
+    "inputPlaceholder": "Que material procura?",
+    "welcome1": "Olá! Bem-vindo à Construpreço!",
+    "welcome2": "Posso ajudá-lo a encontrar os melhores materiais de construção com entrega rápida?",
+    "welcome3": "Para começar, diga o que procura.",
+    "fallbackReply": "Obrigado! Indique o material, quantidade ou tipo de obra e sugerirei produtos adequados.",
+    "priceLabel": "Preço: {{price}}",
+    "products": {
+      "basic": {
+        "title": "Kit LED básico",
+        "price": "€1.200"
+      },
+      "standard": {
+        "title": "Kit LED standard",
+        "price": "€1.450"
+      },
+      "premium": {
+        "title": "Sistema LED premium",
+        "price": "€1.890"
+      }
+    }
+  },
   "footer": {
     "description": "O marketplace de materiais de construção mais completo em Portugal. Entrega em 2 horas.",
     "follow": "Seguir :",
@@ -156,7 +182,63 @@
   },
   "home": {
     "title": "CONSTRUPRECO",
-    "subtitle": "Setup React + Tailwind com Redux Toolkit, RTK Query e Axios"
+    "subtitle": "Setup React + Tailwind com Redux Toolkit, RTK Query e Axios",
+    "sponsoredProductsTitle": "Produtos patrocinados",
+    "topSellingTitle": "Produtos mais vendidos",
+    "affiliateCta": {
+      "title": "Transforme partilhas em ganhos.",
+      "subtitle": "Partilhe o seu código de afiliado e ganhe 5% de comissão em cada venda.",
+      "button": "Registar no programa"
+    },
+    "hero": {
+      "prevSlide": "Slide anterior",
+      "nextSlide": "Slide seguinte",
+      "goToSlide": "Ir para o slide {{n}}",
+      "slides": {
+        "hero-1": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Poupe mais em", "encomendas em volume"],
+          "description": "Preços especiais para grandes quantidades. Ideal para empreiteiros e construtores.",
+          "ctaLabel": "Pedir orçamento em volume"
+        },
+        "hero-2": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Materiais de qualidade para", "cada projeto"],
+          "description": "Cimento, aço e ferramentas de fornecedores verificados em toda a região.",
+          "ctaLabel": "Comprar agora"
+        },
+        "hero-3": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Feito para empreiteiros", "e construtores"],
+          "description": "Encomendas simplificadas, preços em volume e entrega fiável na obra.",
+          "ctaLabel": "Pedir orçamento em volume"
+        }
+      },
+      "features": {
+        "delivery": {
+          "title": "ENTREGA RÁPIDA",
+          "subtitle": "Entrega em 24 h"
+        },
+        "return": {
+          "title": "DEVOLUÇÃO 24 H",
+          "subtitle": "Garantia de reembolso total"
+        },
+        "payment": {
+          "title": "PAGAMENTO SEGURO",
+          "subtitle": "O seu dinheiro está protegido"
+        },
+        "support": {
+          "title": "APOIO 24/7",
+          "subtitle": "Contacto e mensagens em tempo real"
+        }
+      }
+    },
+    "stats": {
+      "professionals": "Profissionais registados",
+      "products": "Produtos disponíveis",
+      "carriers": "Transportadores ativos",
+      "delivery": "Tempo médio de entrega"
+    }
   },
   "panel": {
     "mainMenu": "Menu Principal",
@@ -256,7 +338,22 @@
       "ibanPhonePlaceholderLong": "11+ caracteres",
       "saveIban": "GUARDAR",
       "showValue": "Mostrar valor",
-      "hideValue": "Ocultar valor"
+      "hideValue": "Ocultar valor",
+      "subtitleBuyer": "Atualize os seus dados, palavra-passe e moradas de entrega.",
+      "accountSetting": "Definições da conta",
+      "firstName": "Nome",
+      "lastName": "Apelido",
+      "lastNamePlaceholder": "Nome a apresentar",
+      "region": "Região/Distrito",
+      "city": "Cidade",
+      "zipCode": "Código postal",
+      "streetAddress": "Morada",
+      "passwordMinPlaceholder": "8+ caracteres",
+      "ibanPhoneEurope": "Número de telefone (número europeu)",
+      "billingAddress": "Morada de faturação",
+      "shippingAddress": "Morada de envio",
+      "companyOptional": "Nome da empresa (opcional)",
+      "changePasswordUpper": "ALTERAR PALAVRA-PASSE"
     }
   },
   "auth": {
@@ -428,7 +525,11 @@
     "home": "Início",
     "dashboard": "Painel",
     "orders": "Encomendas",
+    "orderDetails": "Detalhes da encomenda",
+    "writeReview": "Escrever avaliação",
     "projects": "Projetos",
+    "projectDetails": "Detalhes do projeto",
+    "materialDetails": "Detalhes do material",
     "productToReview": "Produto a avaliar",
     "account": "Conta",
     "affiliates": "Afiliados",
@@ -446,6 +547,655 @@
     "sepAndTrackYour": ", E acompanhar os seus ",
     "introAfter": ".",
     "placeholderComingSoon": "Página de {{title}} — conteúdo em breve."
+  },
+  "buyerOrders": {
+    "orderId": "ID da encomenda: #{{id}}",
+    "trackOrder": "Rastrear encomenda",
+    "cancelOrder": "Cancelar encomenda",
+    "writeReview": "Escrever avaliação",
+    "empty": "Ainda não tem encomendas.",
+    "status": {
+      "shipped": "Enviada",
+      "processing": "Em processamento",
+      "delivered": "Entregue"
+    }
+  },
+  "buyerOrderDetail": {
+    "title": "Informação da encomenda #{{number}}",
+    "shippingAddress": "Morada de envio",
+    "products": "Produtos",
+    "productName": "Nome do produto",
+    "quantity": "Quantidade",
+    "price": "Preço",
+    "total": "Total",
+    "chat": "Chat"
+  },
+  "cancelReasonModal": {
+    "title": "Motivo do cancelamento",
+    "label": "Escreva o motivo do cancelamento",
+    "placeholder": "",
+    "submit": "Enviar",
+    "close": "Fechar"
+  },
+  "productToReview": {
+    "columnProducts": "Produtos",
+    "columnShipping": "Estado de envio",
+    "columnAction": "Ação",
+    "writeReview": "Escrever avaliação",
+    "empty": "Não há produtos à espera de avaliação.",
+    "shippingStatus": {
+      "delivered": "Entregue"
+    }
+  },
+  "materialQualityFeedback": {
+    "title": "Como foi a qualidade do material?",
+    "subtitle": "O seu feedback ajuda outros profissionais da construção a decidir melhor.",
+    "rateLabel": "Avalie o seu produto",
+    "reviewLabel": "Avaliação",
+    "reviewPlaceholder": "Escreva aqui",
+    "submit": "Enviar"
+  },
+  "companyOrders": {
+    "colOrderId": "ID da encomenda",
+    "colProduct": "Nome do produto",
+    "colProject": "Projeto",
+    "colQuantity": "Quantidade",
+    "colStatus": "Estado",
+    "colAction": "Ação",
+    "empty": "Nenhuma encomenda corresponde a este filtro.",
+    "showing": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "viewOrder": "Ver encomenda {{id}}",
+    "quantityLabel": "Quantidade: {{value}}",
+    "project": "Projeto",
+    "deliveryLocation": "Local de entrega",
+    "totalPrice": "Preço total",
+    "installment": "Prestações",
+    "payNowDownPayment": "Pagar agora (entrada)",
+    "remainingBalance": "Saldo em falta",
+    "unloadingNeeded": "Tipo de descarga necessário",
+    "accessConditions": "Condições de acesso",
+    "filter": {
+      "all": "Todos os estados",
+      "progress": "Em progresso",
+      "pending": "Pendente",
+      "assign": "Atribuir",
+      "completed": "Concluído"
+    },
+    "status": {
+      "progress": "Em progresso",
+      "pending": "Pendente",
+      "assign": "Atribuir",
+      "completed": "Concluído",
+      "delivered": "Entregue"
+    }
+  },
+  "companyProjects": {
+    "backToProjects": "← Voltar aos projetos",
+    "backToProjectDetails": "← Voltar aos detalhes do projeto",
+    "materialTypes": "Tipos de material",
+    "deliveredValue": "Valor entregue",
+    "duePayment": "Pagamento em falta",
+    "materialTrackingTitle": "Requisitos e acompanhamento de materiais",
+    "colMaterial": "Nome do material",
+    "colOrderedQty": "Quantidade encomendada",
+    "colDeliveredValue": "Valor entregue",
+    "colDuePayment": "Pagamento em falta",
+    "colAction": "Ação",
+    "viewMaterial": "Ver {{name}}",
+    "showing": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "projectLabel": "Projeto: {{name}}",
+    "totalOrderValue": "Valor total da encomenda",
+    "paymentSummary": "Resumo de pagamento",
+    "totalAmount": "Montante total",
+    "paidAmount": "Montante pago",
+    "remainingBalance": "Saldo em falta",
+    "progress": "Progresso",
+    "nextInstallment": "Próxima prestação",
+    "monthlyPayment": "Pagamento mensal",
+    "installmentTimeline": "Cronologia de prestações"
+  },
+  "disputesCenter": {
+    "backToList": "Voltar às disputas",
+    "searchPlaceholder": "Pesquisar por ID, produto ou encomenda...",
+    "statusFilter": "Estado",
+    "newDispute": "Nova disputa",
+    "recentTitle": "Disputas recentes ({{count}})",
+    "empty": "Nenhuma disputa corresponde à pesquisa.",
+    "idLabel": "ID: {{id}}",
+    "orderMeta": "Encomenda: {{orderId}} ({{date}})",
+    "sellerLabel": "Vendedor: {{name}}",
+    "stats": {
+      "total": "Total de disputas",
+      "pendingAction": "Ação pendente",
+      "underReview": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "filter": {
+      "all": "TODOS",
+      "pending": "Pendente",
+      "under_review": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "status": {
+      "pending": "Pendente",
+      "under_review": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "modal": {
+      "title": "Abrir nova disputa",
+      "subtitle": "Indique os detalhes do problema com a sua encomenda.",
+      "selectOrder": "Selecionar encomenda",
+      "selectOrderPh": "Escolha uma encomenda",
+      "issueType": "Tipo de problema",
+      "issueTypePh": "Qual é o problema?",
+      "description": "Descrição",
+      "descriptionPh": "Descreva o problema em detalhe...",
+      "evidence": "Provas (fotos/vídeos)",
+      "uploadHint": "Clique para carregar ou arraste ficheiros",
+      "uploadTypes": "PNG, JPG, MP4 até 10MB",
+      "cancel": "CANCELAR",
+      "submit": "SUBMETER DISPUTA",
+      "close": "Fechar"
+    }
+  },
+  "returnsCenter": {
+    "tabOrders": "As minhas encomendas",
+    "tabReturn": "Devolução",
+    "searchPlaceholder": "Pesquisar por ID, produto ou encomenda...",
+    "filter": "Filtrar encomendas",
+    "returnTabHint": "Selecione uma encomenda em As minhas encomendas para iniciar uma devolução.",
+    "orderNumber": "Encomenda #{{id}}",
+    "itemCount": "{{count}} artigos",
+    "viewDetails": "Ver detalhes >",
+    "backToOrders": "Voltar às encomendas",
+    "placedOn": "Realizada em {{date}}",
+    "viewReturnStatus": "Ver estado da devolução",
+    "lineMeta": "Qtd: {{qty}} · {{price}}",
+    "returnRefund": "Devolver/Reembolsar",
+    "myReturnsTitle": "As minhas devoluções",
+    "returnsEmpty": "Nenhum pedido de devolução corresponde à pesquisa.",
+    "reasonInline": "Motivo: {{reason}}",
+    "updatedOn": "ATUALIZAÇÃO {{date}}",
+    "requestTitle": "Pedido de devolução #{{id}}",
+    "submittedOn": "Submetido em {{date}}",
+    "orderIdLabel": "ID encomenda: {{id}}",
+    "reasonLabel": "Motivo: {{reason}}",
+    "descriptionHeading": "Descrição",
+    "evidenceHeading": "Provas",
+    "timelineTitle": "Cronologia",
+    "needHelpTitle": "Precisa de ajuda?",
+    "needHelpBody": "A nossa equipa de apoio está disponível 24/7 para ajudar com disputas de devolução.",
+    "contactSupport": "Contactar apoio",
+    "returnStatus": {
+      "pending": "Pendente",
+      "under_review": "Em análise"
+    },
+    "modal": {
+      "title": "Pedir devolução",
+      "close": "Fechar",
+      "productMeta": "Qtd: {{qty}}, {{price}}",
+      "reason": "Motivo da devolução",
+      "reasonPh": "Danificado",
+      "description": "Descrição",
+      "descriptionPh": "Descreva o problema em detalhe...",
+      "damagedItem": "Artigo danificado",
+      "damagedItemPh": "Quantos artigos estão danificados?",
+      "refundAccount": "Número de conta para reembolso",
+      "refundAccountPh": "Indique o número da conta",
+      "evidence": "Carregar provas",
+      "uploadHint": "Clique para carregar ou arraste ficheiros",
+      "uploadTypes": "PNG, JPG, MP4 até 10MB",
+      "submit": "SUBMETER DEVOLUÇÃO"
+    },
+    "status": {
+      "delivered": "ENTREGUE"
+    }
+  },
+  "helpCenterPage": {
+    "seoTitle": "Centro de Ajuda",
+    "seoDescription": "Encontre respostas sobre encomendas, pagamentos, devoluções, entregas e apoio CONSTRUPRECO.",
+    "title": "Centro de Ajuda",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "welcomeTitle": "Bem-vindo ao Centro de Ajuda",
+    "welcomeBody": "Como podemos ajudá-lo hoje? Encontre respostas a perguntas frequentes ou obtenha apoio para encomendas, pagamentos e entregas.",
+    "sections": {
+      "search": {
+        "title": "Pesquisar ajuda",
+        "description": "Pesquise tópicos de ajuda, guias ou perguntas frequentes.",
+        "items": []
+      },
+      "orders": {
+        "title": "Encomendas e compras",
+        "items": [
+          "Como fazer uma encomenda",
+          "Como acompanhar a minha encomenda",
+          "Como cancelar uma encomenda",
+          "Compreender o estado da encomenda"
+        ]
+      },
+      "payments": {
+        "title": "Pagamentos e faturação",
+        "items": [
+          "Métodos de pagamento disponíveis",
+          "Pagamento falhou — o que fazer",
+          "Processo e prazos de reembolso",
+          "Como usar códigos promocionais"
+        ]
+      },
+      "returns": {
+        "title": "Devoluções e reembolsos",
+        "items": [
+          "Como pedir uma devolução",
+          "Critérios de elegibilidade para devolução",
+          { "label": "Métodos e estado do reembolso", "href": "/return-policy" },
+          "Produtos não returnáveis"
+        ]
+      },
+      "delivery": {
+        "title": "Entrega e logística",
+        "items": [
+          "Prazos de entrega",
+          "Cálculo do custo de entrega",
+          "Acompanhamento do transportador",
+          "Entregas falhadas ou atrasadas"
+        ]
+      },
+      "contact": {
+        "title": "Contactar apoio",
+        "items": [
+          {
+            "icon": "mail",
+            "label": "Email: support@construpreco.com",
+            "href": "mailto:support@construpreco.com"
+          },
+          {
+            "icon": "chat",
+            "label": "Chat ao vivo: Disponível 24/7",
+            "href": "/messages"
+          },
+          {
+            "icon": "phone",
+            "label": "Telefone: +351 210 000 000",
+            "href": "tel:+351210000000"
+          }
+        ]
+      }
+    }
+  },
+  "returnPolicyPage": {
+    "seoTitle": "Política de devoluções e reembolsos",
+    "seoDescription": "Regras de devolução e reembolso de encomendas na CONSTRUPRECO.",
+    "title": "Política de devoluções e reembolsos",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "overview": {
+        "title": "1. Visão geral",
+        "paragraphs": [
+          "Esta política descreve em que condições os produtos comprados no nosso marketplace podem ser devolvidos ou reembolsados. Devido à natureza dos materiais de construção e encomendas a granel, aplicam-se regras específicas."
+        ]
+      },
+      "eligibility": {
+        "title": "2. Elegibilidade para devolução",
+        "blocks": [
+          {
+            "heading": "Os produtos podem ser elegíveis para devolução se:",
+            "items": [
+              "O artigo chegar danificado",
+              "For entregue o produto errado",
+              "O produto não corresponder à descrição"
+            ]
+          },
+          {
+            "heading": "Para ser elegível:",
+            "items": [
+              "O pedido de devolução deve ser enviado dentro de 3–7 dias após a entrega",
+              "O produto deve estar por usar e nas condições originais",
+              "Deve ser fornecida prova (fotos/vídeos)"
+            ]
+          }
+        ]
+      },
+      "nonReturnable": {
+        "title": "3. Artigos não devolvíveis",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Materiais usados ou parcialmente usados",
+              "Materiais a granel após entrega (ex.: areia, cimento, agregados)",
+              "Produtos personalizados ou por encomenda",
+              "Betão pronto após entrega",
+              "Produtos danificados por manuseamento inadequado do cliente"
+            ]
+          }
+        ]
+      },
+      "process": {
+        "title": "4. Processo de pedido de devolução",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Aceda a A Minha Conta → Encomendas",
+              "Selecione a encomenda relevante",
+              "Clique em \"Pedir devolução\"",
+              "Indique o motivo e carregue provas"
+            ]
+          }
+        ]
+      },
+      "approval": {
+        "title": "5. Aprovação e rejeição",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os fornecedores analisam o pedido e aprovam ou rejeitam",
+              "Pode ser pedida informação adicional",
+              "A plataforma pode intervir em caso de disputa"
+            ]
+          }
+        ]
+      },
+      "refund": {
+        "title": "6. Processo de reembolso",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Reembolsos aprovados são processados para o método de pagamento original",
+              "Podem demorar 5–14 dias úteis após aprovação",
+              "Reembolsos parciais podem aplicar-se se só parte da encomenda for devolvida",
+              "Encomendas a prestações seguem as regras do financiador quando aplicável"
+            ]
+          }
+        ]
+      },
+      "shippingCosts": {
+        "title": "7. Custos de envio",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os custos de devolução dependem do motivo e da política do fornecedor",
+              "Em caso de erro ou dano do fornecedor, o envio de devolução pode ser coberto",
+              "Devoluções iniciadas pelo cliente podem exigir transporte à custa do comprador",
+              "Materiais volumosos podem exigir recolha especial — confirmada após aprovação"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "privacyPolicyPage": {
+    "seoTitle": "Política de privacidade",
+    "seoDescription": "Como a CONSTRUPRECO recolhe, utiliza e protege os seus dados pessoais.",
+    "title": "Política de privacidade",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introdução",
+        "paragraphs": [
+          "Estamos empenhados em proteger a sua privacidade. Esta política explica como recolhemos, utilizamos, armazenamos e protegemos a sua informação quando usa a nossa plataforma."
+        ]
+      },
+      "informationWeCollect": {
+        "title": "2. Informação que recolhemos",
+        "blocks": [
+          {
+            "heading": "a) Informação pessoal",
+            "items": [
+              "Nome",
+              "Endereço de email",
+              "Número de telefone",
+              "Dados da empresa (utilizadores empresariais)",
+              "Morada de faturação e envio"
+            ]
+          },
+          {
+            "heading": "b) Informação da conta",
+            "items": [
+              "Credenciais de acesso (encriptadas)",
+              "Detalhes do perfil",
+              "Histórico de encomendas"
+            ]
+          },
+          {
+            "heading": "c) Informação de transações",
+            "items": [
+              "Dados de pagamento (processados de forma segura)",
+              "Dados de compras e encomendas"
+            ]
+          },
+          {
+            "heading": "d) Informação técnica",
+            "items": [
+              "Endereço IP",
+              "Tipo de browser",
+              "Informação do dispositivo",
+              "Cookies e dados de utilização"
+            ]
+          }
+        ]
+      },
+      "howWeUse": {
+        "title": "3. Como utilizamos a sua informação",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Processar encomendas e transações",
+              "Prestar apoio ao cliente",
+              "Melhorar o desempenho e a experiência na plataforma",
+              "Enviar atualizações e notificações de encomendas",
+              "Prevenir fraude e garantir segurança"
+            ]
+          }
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Segurança dos dados",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Implementamos medidas técnicas e organizacionais para proteger os seus dados",
+              "O acesso a dados pessoais é limitado a pessoal autorizado",
+              "Nenhum sistema é 100% seguro — use palavras-passe fortes e proteja a sua conta"
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "title": "5. Cookies e rastreamento",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Melhorar a experiência do utilizador",
+              "Recordar preferências",
+              "Analisar tráfego do site"
+            ]
+          }
+        ]
+      },
+      "dataSharing": {
+        "title": "6. Partilha de dados",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Podemos partilhar dados com fornecedores e transportadores para cumprir encomendas",
+              "Processadores de pagamento recebem apenas os dados necessários",
+              "Não vendemos a sua informação pessoal a terceiros",
+              "Podemos divulgar dados quando exigido por lei"
+            ]
+          }
+        ]
+      },
+      "userRights": {
+        "title": "7. Direitos do utilizador",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Solicitar acesso aos seus dados pessoais",
+              "Solicitar correção de informação inexata",
+              "Solicitar eliminação quando aplicável por lei",
+              "Opor-se ou restringir certos tratamentos",
+              "Retirar consentimento quando o tratamento se baseia no consentimento"
+            ]
+          }
+        ]
+      },
+      "dataRetention": {
+        "title": "8. Conservação de dados",
+        "paragraphs": [
+          "Conservamos dados pessoais apenas pelo tempo necessário para prestar serviços, cumprir obrigações legais, resolver disputas e fazer cumprir acordos. Registos de conta e encomendas podem ser mantidos pelos prazos legais aplicáveis."
+        ]
+      },
+      "policyUpdates": {
+        "title": "9. Atualizações da política",
+        "paragraphs": [
+          "Podemos atualizar esta política periodicamente. A data «Última atualização» no topo desta página será alterada. A utilização continuada da plataforma após alterações constitui aceitação da política atualizada."
+        ]
+      },
+      "contact": {
+        "title": "10. Contacte-nos",
+        "paragraphs": [
+          "Para questões de privacidade ou para exercer os seus direitos, contacte privacy@construpreco.com ou o Centro de Ajuda no rodapé do site."
+        ]
+      }
+    }
+  },
+  "termsPage": {
+    "seoTitle": "Termos e condições gerais",
+    "seoDescription": "Termos e condições de utilização do marketplace CONSTRUPRECO.",
+    "title": "Termos e condições gerais",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introdução",
+        "paragraphs": [
+          "Estes Termos e Condições Gerais regem o seu acesso e utilização do marketplace CONSTRUPRECO. Ao registar-se, navegar ou efetuar uma encomenda, concorda com estes termos."
+        ]
+      },
+      "useOfPlatform": {
+        "title": "2. Utilização da plataforma",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "A plataforma liga compradores, fornecedores, transportadores e outros utilizadores empresariais",
+              "Deve utilizar o serviço de forma lícita e de boa-fé",
+              "Podemos atualizar funcionalidades, políticas ou disponibilidade com aviso razoável quando exigido"
+            ]
+          }
+        ]
+      },
+      "accounts": {
+        "title": "3. Contas e registo",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Deve fornecer informações de registo e perfil corretas",
+              "É responsável por proteger as suas credenciais de acesso",
+              "Contas empresariais podem exigir verificação adicional (ex.: empresa ou NIF)",
+              "Podemos suspender contas que violem estes termos ou a lei aplicável"
+            ]
+          }
+        ]
+      },
+      "productInformation": {
+        "title": "4. Informação de produtos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Descrições, especificações e preços são fornecidos pelos fornecedores",
+              "A plataforma não garante a exatidão mas facilita a transação",
+              "Os fornecedores são responsáveis pela conformidade e qualidade dos produtos"
+            ]
+          }
+        ]
+      },
+      "ordersPayments": {
+        "title": "5. Encomendas e pagamentos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "As encomendas só são confirmadas após pagamento bem-sucedido ou aprovação (no caso de crédito)",
+              "A plataforma suporta vários métodos de pagamento via gateways seguros",
+              "Os preços podem variar consoante quantidade, entrega ou condições do fornecedor"
+            ]
+          }
+        ]
+      },
+      "deliveryLogistics": {
+        "title": "6. Entrega e logística",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os prazos de entrega são estimativas e podem variar consoante localização e tipo de produto",
+              "O transporte pode ser efetuado por transportadores terceiros",
+              "A plataforma não é responsável por atrasos causados por circunstâncias imprevistas"
+            ]
+          }
+        ]
+      },
+      "returnsRefunds": {
+        "title": "7. Devoluções e reembolsos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os pedidos de devolução devem ser enviados dentro do prazo indicado",
+              "Os produtos devem estar por usar e em condição original, salvo defeito",
+              "Os reembolsos são processados após aprovação e verificação pelo fornecedor"
+            ]
+          }
+        ]
+      },
+      "b2bCredit": {
+        "title": "8. Transações B2B e condições de crédito",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Clientes empresariais podem solicitar cotações e condições de crédito (30/60/90 dias)",
+              "A aprovação de crédito depende da avaliação do fornecedor",
+              "Pagamentos em atraso podem resultar em penalizações ou suspensão de serviços"
+            ]
+          }
+        ]
+      },
+      "prohibitedActivities": {
+        "title": "9. Atividades proibidas",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Fornecer informação falsa",
+              "Envolver-se em transações fraudulentas",
+              "Abusar da plataforma ou tentar perturbar os serviços"
+            ]
+          }
+        ]
+      },
+      "contact": {
+        "title": "10. Informações de contacto",
+        "paragraphs": [
+          "Para questões sobre estes Termos e Condições, contacte-nos através dos nossos canais de apoio ou do Centro de Ajuda no rodapé do site."
+        ]
+      }
+    }
   },
   "seo": {
     "homeTitle": "Início",
@@ -466,6 +1216,16 @@
     "cartDescription": "Revise e atualize o seu carrinho na CONSTRUPRECO.",
     "disputeResolutionTitle": "Resolução de disputas",
     "disputeResolutionDescription": "Acompanhe e resolva disputas de encomendas no CONSTRUPRECO.",
+    "returnPolicyTitle": "Política de devoluções e reembolsos",
+    "returnPolicyDescription": "Regras de devolução e reembolso na CONSTRUPRECO.",
+    "helpCenterTitle": "Centro de Ajuda",
+    "helpCenterDescription": "Obtenha ajuda com encomendas, pagamentos, entregas e apoio na CONSTRUPRECO.",
+    "returnsCenterTitle": "Devoluções e encomendas",
+    "returnsCenterDescription": "Consulte encomendas e peça devoluções ou reembolsos na CONSTRUPRECO.",
+    "privacyPolicyTitle": "Política de privacidade",
+    "privacyPolicyDescription": "Como a CONSTRUPRECO trata os seus dados pessoais.",
+    "termsTitle": "Termos e condições gerais",
+    "termsDescription": "Termos e condições de utilização da CONSTRUPRECO.",
     "buyerDashboardTitle": "A Minha Conta",
     "buyerDashboardDescription": "Faça a gestão da sua conta, encomendas e projetos no CONSTRUPRECO.",
     "buyerOrdersTitle": "Encomendas",

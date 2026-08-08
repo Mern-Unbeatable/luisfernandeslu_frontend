@@ -178,6 +178,7 @@ export const TOP_SELLING_PRODUCTS = Array.from(
     return {
       ...template,
       id: `${template.slug}-${index}`,
+      minOrderLabel: 'Min ord 10 pcs',
     }
   },
 )

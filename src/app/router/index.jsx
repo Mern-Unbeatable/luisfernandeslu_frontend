@@ -54,8 +54,32 @@ const PublicCart = Loadable(
 const PublicMessages = Loadable(
   lazy(() => import('../../pages/public_page/messages/MessagesPage')),
 )
-const DisputeResolution = Loadable(
-  lazy(() => import('../../pages/public_page/DisputeResolutionPage')),
+const DisputeResolutionList = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/DisputesListPage')),
+)
+const DisputeResolutionDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/DisputeDetailPage')),
+)
+const ReturnsOrders = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnsOrdersPage')),
+)
+const ReturnOrderDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnOrderDetailPage')),
+)
+const ReturnRequestDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnRequestDetailPage')),
+)
+const HelpCenter = Loadable(
+  lazy(() => import('../../pages/public_page/legal/HelpCenterPage')),
+)
+const ReturnPolicy = Loadable(
+  lazy(() => import('../../pages/public_page/legal/ReturnPolicyPage')),
+)
+const PrivacyPolicy = Loadable(
+  lazy(() => import('../../pages/public_page/legal/PrivacyPolicyPage')),
+)
+const TermsAndConditions = Loadable(
+  lazy(() => import('../../pages/public_page/legal/TermsAndConditionsPage')),
 )
 const Developer = Loadable(
   lazy(() => import('../../pages/public_page/DeveloperPage')),
@@ -102,8 +126,16 @@ const CustomerOrders = Loadable(
   lazy(() => import('../../pages/customer/orders/OrdersPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
+const CustomerOrderDetail = Loadable(
+  lazy(() => import('../../pages/customer/orders/OrderDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
 const CustomerProductToReview = Loadable(
   lazy(() => import('../../pages/customer/product-to-review/ProductToReviewPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CustomerWriteReview = Loadable(
+  lazy(() => import('../../pages/customer/product-to-review/WriteReviewPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
 const CustomerProfile = Loadable(
@@ -125,8 +157,20 @@ const CompanyOrders = Loadable(
   lazy(() => import('../../pages/company/orders/OrdersPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
+const CompanyOrderDetail = Loadable(
+  lazy(() => import('../../pages/company/orders/OrderDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
 const CompanyProjects = Loadable(
   lazy(() => import('../../pages/company/projects/ProjectsPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CompanyProjectDetail = Loadable(
+  lazy(() => import('../../pages/company/projects/ProjectDetailPage')),
+  <BuyerSkeleton variant="placeholder" />,
+)
+const CompanyMaterialDetail = Loadable(
+  lazy(() => import('../../pages/company/projects/MaterialDetailPage')),
   <BuyerSkeleton variant="placeholder" />,
 )
 const CompanyProfile = Loadable(
@@ -488,9 +532,49 @@ export const router = createBrowserRouter([
             handle: { seo: routeSeo.userCheckout },
           },
           {
+            path: '/terms-and-conditions',
+            element: <TermsAndConditions />,
+            handle: { seo: routeSeo.termsAndConditions },
+          },
+          {
+            path: '/privacy-policy',
+            element: <PrivacyPolicy />,
+            handle: { seo: routeSeo.privacyPolicy },
+          },
+          {
+            path: '/help-center',
+            element: <HelpCenter />,
+            handle: { seo: routeSeo.helpCenter },
+          },
+          {
+            path: '/return-policy',
+            element: <ReturnPolicy />,
+            handle: { seo: routeSeo.returnPolicy },
+          },
+          {
             path: '/dispute-resolution',
-            element: <DisputeResolution />,
+            element: <DisputeResolutionList />,
             handle: { seo: routeSeo.disputeResolution },
+          },
+          {
+            path: '/dispute-resolution/:disputeId',
+            element: <DisputeResolutionDetail />,
+            handle: { seo: routeSeo.disputeResolution },
+          },
+          {
+            path: '/returns',
+            element: <ReturnsOrders />,
+            handle: { seo: routeSeo.returnsCenter },
+          },
+          {
+            path: '/returns/request/:returnId',
+            element: <ReturnRequestDetail />,
+            handle: { seo: routeSeo.returnsCenter },
+          },
+          {
+            path: '/returns/:orderId',
+            element: <ReturnOrderDetail />,
+            handle: { seo: routeSeo.returnsCenter },
           },
         ],
       },
@@ -567,12 +651,22 @@ export const router = createBrowserRouter([
               {
                 path: 'orders',
                 element: <CustomerOrders />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerOrders },
+              },
+              {
+                path: 'orders/:orderId',
+                element: <CustomerOrderDetail />,
+                handle: { seo: routeSeo.buyerOrders },
               },
               {
                 path: 'product-to-review',
                 element: <CustomerProductToReview />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerProductToReview },
+              },
+              {
+                path: 'product-to-review/:reviewId',
+                element: <CustomerWriteReview />,
+                handle: { seo: routeSeo.buyerProductToReview },
               },
               {
                 path: 'profile',
@@ -605,12 +699,27 @@ export const router = createBrowserRouter([
               {
                 path: 'orders',
                 element: <CompanyOrders />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerOrders },
+              },
+              {
+                path: 'orders/:orderId',
+                element: <CompanyOrderDetail />,
+                handle: { seo: routeSeo.buyerOrders },
               },
               {
                 path: 'projects',
                 element: <CompanyProjects />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerProjects },
+              },
+              {
+                path: 'projects/:projectId',
+                element: <CompanyProjectDetail />,
+                handle: { seo: routeSeo.buyerProjects },
+              },
+              {
+                path: 'projects/:projectId/materials/:materialId',
+                element: <CompanyMaterialDetail />,
+                handle: { seo: routeSeo.buyerProjects },
               },
               {
                 path: 'profile',
