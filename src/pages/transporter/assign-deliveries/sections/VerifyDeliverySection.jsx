@@ -37,20 +37,20 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
       {/* Order Summary Box */}
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="text-base font-bold text-gray-800">Order Summary</h2>
-        <div className="mt-4 divide-y divide-gray-100 text-sm">
-          <div className="flex justify-between py-2.5">
-            <span className="text-gray-400">Auction ID:</span>
-            <span className="font-semibold text-gray-800">
+        <div className="mt-4 space-y-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Auction ID:</span>
+            <span className="font-semibold text-slate-700">
               {delivery.orderLabel?.replace('Auction ID: ', '') || 'AUC-001'}
             </span>
           </div>
-          <div className="flex justify-between py-2.5">
-            <span className="text-gray-400">Product:</span>
-            <span className="font-semibold text-gray-800">{delivery.title}</span>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Product</span>
+            <span className="font-semibold text-slate-700">{delivery.title}</span>
           </div>
-          <div className="flex justify-between py-2.5">
-            <span className="text-gray-400">Quantity:</span>
-            <span className="font-semibold text-gray-800">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Quantity</span>
+            <span className="font-semibold text-slate-700">
               {delivery.title.includes('Cement')
                 ? '500 bags (50kg each)'
                 : delivery.title.includes('Steel')
@@ -58,12 +58,12 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
                 : '10,000 pieces'}
             </span>
           </div>
-          <div className="flex justify-between py-2.5">
-            <span className="text-gray-400">Customer:</span>
-            <span className="font-semibold text-gray-800">{delivery.delivery.title}</span>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Customer</span>
+            <span className="font-semibold text-slate-700">{delivery.delivery.title}</span>
           </div>
-          <div className="flex justify-between pt-3">
-            <span className="text-gray-400">Earnings:</span>
+          <div className="border-t border-gray-100 pt-3 flex justify-between items-center">
+            <span className="text-slate-400">Earnings</span>
             <span className="text-base font-bold text-amber-500">{delivery.price}</span>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="text-base font-bold text-gray-800">Customer PIN</h2>
         <p className="mt-1 text-xs text-gray-400">Ask the customer for their 4-digit delivery PIN</p>
-        <div className="mt-5 flex justify-center gap-4">
+        <div className="mt-5 grid grid-cols-4 gap-4">
           {pin.map((val, idx) => (
             <input
               key={idx}
@@ -82,7 +82,7 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
               maxLength={1}
               value={val}
               onChange={(e) => handlePinChange(e.target.value, idx)}
-              className="size-14 rounded-xl border border-gray-200 text-center text-xl font-bold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 sm:size-16"
+              className="w-full h-12 rounded-xl border border-gray-200 text-center text-xl font-bold outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             />
           ))}
         </div>
