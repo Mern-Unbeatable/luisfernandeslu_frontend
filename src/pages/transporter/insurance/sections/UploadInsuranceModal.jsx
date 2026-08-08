@@ -57,7 +57,7 @@ export default function UploadInsuranceModal({ isOpen, onClose, onSubmit }) {
               onChange={(e) => setInsuranceType(e.target.value)}
               className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-gray-500"
             >
-              <option value="">Select Insurance type..</option>
+              <option value="">Select Insurance type</option>
               <option value="civil">Civil Liability Insurance</option>
               <option value="cargo">Cargo Liability Insurance</option>
             </select>
