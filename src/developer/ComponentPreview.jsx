@@ -2,11 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import AuctionCard from '../components/data-display/AuctionCard'
 import AuctionDetails from '../components/data-display/AuctionDetails'
 import OrderDetails from '../components/data-display/OrderDetails'
-import BuyerOrderCard from '../components/data-display/BuyerOrderCard/BuyerOrderCard'
-import BuyerOrderInformation from '../components/data-display/BuyerOrderInformation/BuyerOrderInformation'
-import { DEMO_BUYER_ORDER_DETAIL } from '../pages/customer/orders/data/buyerOrderDetailDemo'
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
-import ProductListingCard from '../components/data-display/ProductListingCard/ProductListingCard'
 import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
 import DataTable from '../components/data-display/DataTable/DataTable'
 import StatusBadge from '../components/data-display/DataTable/StatusBadge'
@@ -19,8 +15,6 @@ import AddProduct from '../components/forms/AddProduct/AddProduct'
 import PanelProfile from '../components/forms/PanelProfile'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
-import Pagination from '../components/common/Pagination/Pagination'
-import { CUSTOMER_ORDERS_DEMO } from '../pages/customer/orders/data/customerOrdersDemo'
 import {
   ADMIN_PRODUCT,
   DEMO_ADD_PRODUCT,
@@ -30,6 +24,7 @@ import {
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_AUCTION_DETAILS_TRANSPORTER,
   DEMO_AUCTION_DETAILS_TRANSPORTER_COMPLETE,
+  DEMO_AUCTION_ENDED,
   DEMO_AUCTION_LIVE,
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
@@ -47,7 +42,6 @@ import {
   DEMO_ORDER_PENDING,
   DEMO_PANEL_PROFILE_ADMIN,
   DEMO_PANEL_PROFILE_AFFILIATE,
-  DEMO_PANEL_PROFILE_CUSTOMER,
   DEMO_PANEL_PROFILE_FACTORY,
   DEMO_PANEL_PROFILE_SUPPLIER,
   DEMO_PANEL_PROFILE_TRANSPORTER,
@@ -110,6 +104,11 @@ const AUCTION_CARD_VARIANTS = {
     role: 'admin',
     auction: DEMO_AUCTION_LIVE,
   },
+  'transporter-ended': {
+    role: 'transporter',
+    status: 'ended',
+    auction: DEMO_AUCTION_ENDED,
+  },
 }
 
 function AuctionCardPreview({ variantId }) {
@@ -166,27 +165,6 @@ function AuctionDetailsPreview({ variantId }) {
     AUCTION_DETAILS_VARIANTS[variantId] ??
     AUCTION_DETAILS_VARIANTS['supplier-active']
   return <AuctionDetails {...cfg} onBack={() => {}} />
-}
-
-/* ─── Buyer order card ──────────────────────────────────────────── */
-
-function BuyerOrderCardPreview({ variantId }) {
-  const order =
-    CUSTOMER_ORDERS_DEMO.find((item) => item.status === variantId)
-    ?? CUSTOMER_ORDERS_DEMO[0]
-  return (
-    <div className="max-w-2xl">
-      <BuyerOrderCard order={order} onAction={() => {}} />
-    </div>
-  )
-}
-
-function BuyerOrderInformationPreview() {
-  return (
-    <div className="max-w-5xl">
-      <BuyerOrderInformation order={DEMO_BUYER_ORDER_DETAIL} onChatDriver={() => {}} />
-    </div>
-  )
 }
 
 /* ─── Product Card ──────────────────────────────────────────────── */
@@ -400,53 +378,6 @@ function ProductCardPreview({ variantId }) {
   return (
     <div className="max-w-xs">
       <ProductCard {...cfg} onAction={() => {}} />
-    </div>
-  )
-}
-
-const LISTING_CARD_DEMO_PRODUCT = {
-  image: CARD_IMG,
-  title: 'Portland Cement Standard',
-  description: 'Reliable cement for all your everyday construction needs.',
-  bulkOptionLabel: 'Bulk option Open',
-  priceText: 'Price: $115 per bag (50 kg)',
-  companyPriceText: 'Company: $98 per bag (50 kg)',
-}
-
-const COMPANY_LISTING_DEMO_PRODUCT = {
-  image:
-    'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop',
-  title: 'Gypsum Board',
-  description: 'Lightweight panels for interior walls.',
-  minOrderLabel: 'Min ord 10 pcs',
-  priceText: 'Price: $10 per sheet',
-}
-
-function ProductListingCardPreview({ variantId }) {
-  const withActions = variantId === 'with-actions'
-  const isCompany = variantId === 'default'
-  const role = isCompany ? 'company' : 'customer'
-  const product = isCompany ? COMPANY_LISTING_DEMO_PRODUCT : LISTING_CARD_DEMO_PRODUCT
-  return (
-    <div className="max-w-xs">
-      <ProductListingCard
-        product={product}
-        role={role}
-        showQuantity={withActions ? false : undefined}
-        actions={
-          withActions
-            ? [
-                {
-                  id: 'view_details',
-                  kind: 'full',
-                  label: 'View Details',
-                  variant: 'primary',
-                },
-              ]
-            : []
-        }
-        onAction={() => {}}
-      />
     </div>
   )
 }
@@ -768,7 +699,6 @@ function PanelProfilePreview({ variantId }) {
     'transporter',
     'factory',
     'supplier',
-    'customer',
   ].includes(variantId)
     ? variantId
     : 'admin'
@@ -779,7 +709,6 @@ function PanelProfilePreview({ variantId }) {
     transporter: DEMO_PANEL_PROFILE_TRANSPORTER,
     factory: DEMO_PANEL_PROFILE_FACTORY,
     supplier: DEMO_PANEL_PROFILE_SUPPLIER,
-    customer: DEMO_PANEL_PROFILE_CUSTOMER,
   }
 
   return (
@@ -895,40 +824,6 @@ function MessengerPreview({ variantId }) {
   )
 }
 
-/* ─── Pagination ────────────────────────────────────────────────── */
-
-function PaginationPreview({ variantId }) {
-  const config = useMemo(() => {
-    switch (variantId) {
-      case 'start':
-        return { page: 2, totalPages: 28 }
-      case 'end':
-        return { page: 27, totalPages: 28 }
-      case 'few':
-        return { page: 2, totalPages: 4 }
-      case 'middle':
-      default:
-        return { page: 5, totalPages: 28 }
-    }
-  }, [variantId])
-
-  const [page, setPage] = useState(config.page)
-
-  useEffect(() => {
-    setPage(config.page)
-  }, [config.page])
-
-  return (
-    <div className="flex w-full justify-center py-8">
-      <Pagination
-        page={page}
-        totalPages={config.totalPages}
-        onPageChange={setPage}
-      />
-    </div>
-  )
-}
-
 /* ─── Router ────────────────────────────────────────────────────── */
 
 /** Live preview for a catalog component id (+ optional variantId) */
@@ -938,12 +833,6 @@ export default function ComponentPreview({ previewId, variantId }) {
       return (
         <OrderDetailsPreview variantId={variantId || 'standard-new'} />
       )
-    case 'buyer-order-card':
-      return (
-        <BuyerOrderCardPreview variantId={variantId || 'shipped'} />
-      )
-    case 'buyer-order-information':
-      return <BuyerOrderInformationPreview />
     case 'auction-card':
       return (
         <AuctionCardPreview variantId={variantId || 'supplier-created'} />
@@ -955,10 +844,6 @@ export default function ComponentPreview({ previewId, variantId }) {
     case 'product-card':
       return (
         <ProductCardPreview variantId={variantId || 'normal-customer'} />
-      )
-    case 'product-listing-card':
-      return (
-        <ProductListingCardPreview variantId={variantId || 'customer'} />
       )
     case 'product-details':
       return (
@@ -990,8 +875,6 @@ export default function ComponentPreview({ previewId, variantId }) {
       )
     case 'messenger':
       return <MessengerPreview variantId={variantId || 'inbox'} />
-    case 'pagination':
-      return <PaginationPreview variantId={variantId || 'middle'} />
     default:
       return (
         <p className="text-sm text-[var(--secondary-text)]">

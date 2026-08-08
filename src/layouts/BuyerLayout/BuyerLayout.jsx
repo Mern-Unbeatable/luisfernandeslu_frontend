@@ -9,90 +9,6 @@ import Seo from '../../components/common/Seo/Seo'
 import BuyerSidebar from './BuyerSidebar'
 import { getBuyerRoleConfig } from '../../roles'
 
-function resolveBuyerBreadcrumbs(pathname, roleConfig) {
-  const base = roleConfig.basePath
-  const escapeBase = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-
-  const orderDetail = pathname.match(
-    new RegExp(`^${escapeBase}/orders/([^/]+)$`),
-  )
-  if (orderDetail) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { to: `${base}/orders`, labelKey: 'buyer.orders' },
-      { labelKey: 'buyer.orderDetails' },
-    ]
-  }
-
-  if (pathname === `${base}/orders`) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { labelKey: 'buyer.orders' },
-    ]
-  }
-
-  const materialDetail = pathname.match(
-    new RegExp(`^${escapeBase}/projects/([^/]+)/materials/([^/]+)$`),
-  )
-  if (materialDetail) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { to: `${base}/projects`, labelKey: 'buyer.projects' },
-      {
-        to: `${base}/projects/${materialDetail[1]}`,
-        labelKey: 'buyer.projectDetails',
-      },
-      { labelKey: 'buyer.materialDetails' },
-    ]
-  }
-
-  const projectDetail = pathname.match(
-    new RegExp(`^${escapeBase}/projects/([^/]+)$`),
-  )
-  if (projectDetail) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { to: `${base}/projects`, labelKey: 'buyer.projects' },
-      { labelKey: 'buyer.projectDetails' },
-    ]
-  }
-
-  if (pathname === `${base}/projects`) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { labelKey: 'buyer.projects' },
-    ]
-  }
-
-  const writeReview = pathname.match(
-    new RegExp(`^${escapeBase}/product-to-review/([^/]+)$`),
-  )
-  if (writeReview) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      {
-        to: `${base}/product-to-review`,
-        labelKey: 'buyer.productToReview',
-      },
-      { labelKey: 'buyer.writeReview' },
-    ]
-  }
-
-  const mappedKey = roleConfig.breadcrumbs[pathname]
-  if (pathname === base || mappedKey === 'buyer.dashboard') {
-    return [{ labelKey: 'buyer.dashboard' }]
-  }
-
-  if (mappedKey) {
-    return [
-      { to: base, labelKey: 'buyer.dashboard' },
-      { labelKey: mappedKey },
-    ]
-  }
-
-  return [{ labelKey: 'buyer.dashboard' }]
-}
-
 /**
  * BuyerLayout — customer + company account shell.
  * Widths use % so small devices keep content visible.
@@ -106,7 +22,8 @@ export default function BuyerLayout({
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const roleConfig = getBuyerRoleConfig(role)
-  const breadcrumbs = resolveBuyerBreadcrumbs(pathname, roleConfig)
+  const crumbKey =
+    roleConfig.breadcrumbs[pathname] || 'buyer.dashboard'
 
   useEffect(() => {
     setMenuOpen(false)
@@ -149,34 +66,12 @@ export default function BuyerLayout({
                   {t('buyer.home')}
                 </NavLink>
               </li>
-              {breadcrumbs.map((crumb, index) => {
-                const isLast = index === breadcrumbs.length - 1
-                return (
-                  <li key={crumb.labelKey} className="flex items-center gap-1.5">
-                    <span aria-hidden className="text-gray-400">
-                      &gt;
-                    </span>
-                    {crumb.to && !isLast ? (
-                      <NavLink
-                        to={crumb.to}
-                        className="hover:text-[var(--active)]"
-                      >
-                        {t(crumb.labelKey)}
-                      </NavLink>
-                    ) : (
-                      <span
-                        className={
-                          isLast
-                            ? 'font-medium text-[var(--primary-text)]'
-                            : undefined
-                        }
-                      >
-                        {t(crumb.labelKey)}
-                      </span>
-                    )}
-                  </li>
-                )
-              })}
+              <li aria-hidden className="text-gray-400">
+                &gt;
+              </li>
+              <li className="font-medium text-[var(--primary-text)]">
+                {t(crumbKey)}
+              </li>
             </ol>
           </nav>
 

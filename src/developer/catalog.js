@@ -214,107 +214,14 @@ export const COMPONENT_DOCS = [
     ],
   },
   {
-    id: 'buyer-order-card',
-    name: 'BuyerOrderCard',
-    category: 'data-display',
-    summary:
-      'Order row for customer/company account dashboards (/customer/orders). Status badge + primary action.',
-    path: 'src/components/data-display/BuyerOrderCard/',
-    importExample:
-      "import BuyerOrderCard from '@/components/data-display/BuyerOrderCard/BuyerOrderCard'",
-    props: [
-      {
-        name: 'order',
-        type: 'object',
-        required: true,
-        description:
-          'id, status (shipped|processing|delivered), image, title, description, priceDisplay, optional action override.',
-      },
-      {
-        name: 'onAction',
-        type: '(actionId, order) => void',
-        required: false,
-        description: 'track | cancel | review from status-driven button.',
-      },
-      {
-        name: 'className',
-        type: 'string',
-        required: false,
-        description: 'Extra classes on the card root.',
-      },
-    ],
-    requiredExample: `<BuyerOrderCard order={order} onAction={(id, o) => handle(id, o)} />`,
-    optionalExample: `<BuyerOrderCard
-  order={{
-    ...order,
-    action: { id: 'track', labelKey: 'buyerOrders.trackOrder', variant: 'primary' },
-  }}
-/>`,
-    previewId: 'buyer-order-card',
-    variants: [
-      {
-        id: 'shipped',
-        name: 'Shipped',
-        description: 'Track Order (orange).',
-        example: `<BuyerOrderCard order={shippedOrder} />`,
-      },
-      {
-        id: 'processing',
-        name: 'Processing',
-        description: 'Cancel Order (red).',
-        example: `<BuyerOrderCard order={processingOrder} />`,
-      },
-      {
-        id: 'delivered',
-        name: 'Delivered',
-        description: 'Write a Review (red).',
-        example: `<BuyerOrderCard order={deliveredOrder} />`,
-      },
-    ],
-  },
-  {
-    id: 'buyer-order-information',
-    name: 'BuyerOrderInformation',
-    category: 'data-display',
-    summary:
-      'Customer/company order detail: shipping, line items, driver chat, delivery progress.',
-    path: 'src/components/data-display/BuyerOrderInformation/',
-    importExample:
-      "import BuyerOrderInformation from '@/components/data-display/BuyerOrderInformation/BuyerOrderInformation'",
-    props: [
-      {
-        name: 'order',
-        type: 'object',
-        required: true,
-        description: 'orderNumber, status, shippingAddress, lineItems, totalDisplay, driver, progressSteps.',
-      },
-      {
-        name: 'onChatDriver',
-        type: '(driver) => void',
-        required: false,
-        description: 'Chat button on driver card.',
-      },
-    ],
-    requiredExample: `<BuyerOrderInformation order={order} onChatDriver={() => navigate('/messages')} />`,
-    previewId: 'buyer-order-information',
-    variants: [
-      {
-        id: 'processing',
-        name: 'Processing',
-        description: 'Demo CP-992841 layout.',
-        example: `<BuyerOrderInformation order={DEMO_BUYER_ORDER_DETAIL} />`,
-      },
-    ],
-  },
-  {
     id: 'auction-card',
     name: 'AuctionCard',
     category: 'data-display',
     summary:
-      'Role + status driven auction card (supplier/factory created/assigned, transporter bid, admin bids).',
+      'Role + status driven auction card (created, assigned, live bid, ended, admin bids).',
     path: 'src/components/data-display/AuctionCard/',
     importExample:
-      "import AuctionCard from '@/components/data-display/AuctionCard'\nimport {\n  DEMO_AUCTION_CREATED,\n  DEMO_AUCTION_ASSIGNED,\n  DEMO_AUCTION_LIVE,\n} from '@/data/demoData'",
+      "import AuctionCard from '@/components/data-display/AuctionCard'\nimport {\n  DEMO_AUCTION_CREATED,\n  DEMO_AUCTION_ASSIGNED,\n  DEMO_AUCTION_LIVE,\n  DEMO_AUCTION_ENDED,\n} from '@/data/demoData'",
     props: [
       {
         name: 'auction',
@@ -331,9 +238,10 @@ export const COMPONENT_DOCS = [
       },
       {
         name: 'status',
-        type: "'open' | 'assigned' | string",
+        type: "'open' | 'assigned' | 'ended' | 'closed' | string",
         required: false,
-        description: 'supplier/factory: open → created card; assigned → assigned card.',
+        description:
+          'supplier/factory: open → created; assigned → assigned. ended/closed → ended card (no bid input).',
       },
       {
         name: 'onViewDetails',
@@ -419,6 +327,16 @@ export const COMPONENT_DOCS = [
   role="admin"
   auction={DEMO_AUCTION_LIVE}
   onViewDetails={(a) => open(a.id)}
+/>`,
+      },
+      {
+        id: 'transporter-ended',
+        name: 'Transporter · Ended',
+        description: 'status=ended → ENDED badge, bid history with YOU highlight, no bid input.',
+        example: `<AuctionCard
+  role="transporter"
+  status="ended"
+  auction={DEMO_AUCTION_ENDED}
 />`,
       },
     ],
@@ -760,86 +678,6 @@ export const COMPONENT_DOCS = [
         name: 'Admin promo · Completed',
         description: 'context=promotion, status=completed.',
         example: `<ProductCard type="dashboard" role="admin" context="promotion" status="completed" product={product} />`,
-      },
-    ],
-  },
-  {
-    id: 'product-listing-card',
-    name: 'ProductListingCard',
-    category: 'data-display',
-    summary:
-      'Public /products grid: customer/guest → Bulk option + qty + Add to Cart; company → Min ord + price (link to PDP).',
-    path: 'src/components/data-display/ProductListingCard/',
-    importExample:
-      "import ProductListingCard from '@/components/data-display/ProductListingCard/ProductListingCard'",
-    props: [
-      {
-        name: 'product',
-        type: 'object',
-        required: true,
-        description: 'image, title, description, priceText, bulkOptionLabel, companyPriceText, …',
-      },
-      {
-        name: 'role',
-        type: 'string',
-        required: false,
-        defaultValue: "'customer'",
-        description:
-          'customer (guest/retail) or company — use resolveStorefrontBuyerRole(auth user) on /products.',
-      },
-      {
-        name: 'showQuantity',
-        type: 'boolean',
-        required: false,
-        defaultValue: '(auto)',
-        description:
-          'Omitted: false for company, true for customer/guest. Set explicitly to override.',
-      },
-      {
-        name: 'actions',
-        type: 'array',
-        required: false,
-        defaultValue: '[]',
-        description: 'Optional footer actions (e.g. View Details when showQuantity is false).',
-      },
-      {
-        name: 'onAction',
-        type: '(actionId, product) => void',
-        required: false,
-        description: 'Action handler when actions are shown.',
-      },
-      {
-        name: 'className',
-        type: 'string',
-        required: false,
-        description: 'Extra classes on the card root.',
-      },
-    ],
-    requiredExample: `<ProductListingCard product={product} />`,
-    optionalExample: `<ProductListingCard
-  product={product}
-  actions={[{ id: 'view_details', kind: 'full', label: 'View Details', variant: 'primary' }]}
-  onAction={(id) => navigate(\`/products/\${product.slug}\`)}
-/>`,
-    previewId: 'product-listing-card',
-    variants: [
-      {
-        id: 'customer',
-        name: 'Catalog · Customer (guest)',
-        description: 'Default /products layout with qty + Add to Cart.',
-        example: `<ProductListingCard product={product} role="customer" onAction={handle} />`,
-      },
-      {
-        id: 'default',
-        name: 'Catalog · Company',
-        description: 'Min ord + price; no qty/cart (logged-in company).',
-        example: `<ProductListingCard product={product} role="company" />`,
-      },
-      {
-        id: 'with-actions',
-        name: 'With View Details',
-        description: 'Same card with a primary footer action.',
-        example: `<ProductListingCard product={product} actions={viewDetailsAction} onAction={onAction} />`,
       },
     ],
   },
@@ -1773,7 +1611,7 @@ export const COMPONENT_DOCS = [
       'Shared My Profile for panel roles. Mockups: admin, affiliate, transporter (split cards), factory, supplier.',
     path: 'src/components/forms/PanelProfile/',
     importExample:
-      "import PanelProfile from '@/components/forms/PanelProfile'\nimport {\n  DEMO_PANEL_PROFILE_ADMIN,\n  DEMO_PANEL_PROFILE_AFFILIATE,\n  DEMO_PANEL_PROFILE_CUSTOMER,\n  DEMO_PANEL_PROFILE_TRANSPORTER,\n  DEMO_PANEL_PROFILE_FACTORY,\n  DEMO_PANEL_PROFILE_SUPPLIER,\n} from '@/data/demoData'",
+      "import PanelProfile from '@/components/forms/PanelProfile'\nimport {\n  DEMO_PANEL_PROFILE_ADMIN,\n  DEMO_PANEL_PROFILE_AFFILIATE,\n  DEMO_PANEL_PROFILE_TRANSPORTER,\n  DEMO_PANEL_PROFILE_FACTORY,\n  DEMO_PANEL_PROFILE_SUPPLIER,\n} from '@/data/demoData'",
     props: [
       {
         name: 'role',
@@ -1896,13 +1734,6 @@ export const COMPONENT_DOCS = [
         name: '5 · Supplier',
         description: 'Phone + warehouses; full password (3 fields); IBAN.',
         example: `<PanelProfile role="supplier" defaultValue={DEMO_PANEL_PROFILE_SUPPLIER} />`,
-      },
-      {
-        id: 'customer',
-        name: '6 · Customer (buyer account)',
-        description:
-          'Account setting, password, IBAN, billing & shipping address cards.',
-        example: `<PanelProfile role="customer" defaultValue={DEMO_PANEL_PROFILE_CUSTOMER} />`,
       },
     ],
   },
@@ -2048,85 +1879,6 @@ export const COMPONENT_DOCS = [
   onPayNow={(msg) => pay(msg)}
   onNegotiate={(msg) => negotiate(msg)}
 />`,
-      },
-    ],
-  },
-  {
-    id: 'pagination',
-    name: 'Pagination',
-    category: 'common',
-    summary:
-      'Page navigation with first/prev/numbered/next/last controls. Hides when totalPages ≤ 1. Ellipsis for long ranges.',
-    path: 'src/components/common/Pagination/',
-    importExample:
-      "import Pagination from '@/components/common/Pagination/Pagination'",
-    props: [
-      {
-        name: 'page',
-        type: 'number',
-        required: false,
-        defaultValue: '1',
-        description: 'Current page (clamped to 1…totalPages).',
-      },
-      {
-        name: 'totalPages',
-        type: 'number',
-        required: false,
-        defaultValue: '1',
-        description: 'Total page count. Renders nothing when ≤ 1.',
-      },
-      {
-        name: 'onPageChange',
-        type: '(page: number) => void',
-        required: false,
-        description: 'Called when the user selects a valid page.',
-      },
-      {
-        name: 'className',
-        type: 'string',
-        required: false,
-        defaultValue: "''",
-        description: 'Extra classes on the nav wrapper.',
-      },
-    ],
-    requiredExample: `const [page, setPage] = useState(1)
-
-<Pagination
-  page={page}
-  totalPages={12}
-  onPageChange={setPage}
-/>`,
-    optionalExample: `<Pagination
-  page={page}
-  totalPages={totalPages}
-  onPageChange={setPage}
-  className="mt-8"
-/>`,
-    previewId: 'pagination',
-    variants: [
-      {
-        id: 'middle',
-        name: 'Many pages · middle',
-        description: 'Ellipsis on both sides (page 5 of 28).',
-        example: `<Pagination page={5} totalPages={28} onPageChange={setPage} />`,
-      },
-      {
-        id: 'start',
-        name: 'Many pages · start',
-        description: 'Leading pages without left ellipsis (page 2 of 28).',
-        example: `<Pagination page={2} totalPages={28} onPageChange={setPage} />`,
-      },
-      {
-        id: 'end',
-        name: 'Many pages · end',
-        description: 'Trailing pages (page 27 of 28).',
-        example: `<Pagination page={27} totalPages={28} onPageChange={setPage} />`,
-      },
-      {
-        id: 'few',
-        name: 'Few pages',
-        description: 'All page numbers shown (no ellipsis).',
-        example: `<Pagination page={2} totalPages={4} onPageChange={setPage} />`,
       },
     ],
   },

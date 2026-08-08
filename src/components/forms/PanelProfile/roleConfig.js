@@ -7,31 +7,8 @@
  * 3 transporter — split cards, avatar upload, personal info, IBAN
  * 4 factory     — phone + warehouses, simple password, IBAN
  * 5 supplier    — phone + warehouses, full password, IBAN
- * 6 customer    — buyer account: avatar, address fields, password, IBAN, billing/shipping
  */
 export const PANEL_PROFILE_ROLE_CONFIG = {
-  customer: {
-    layout: 'buyer',
-    showPageHeader: false,
-    showAvatarActions: false,
-    showAccountPhone: true,
-    showWarehouses: false,
-    passwordMode: 'full',
-    showIban: true,
-    showAddressCards: true,
-    subtitleKey: 'panel.profile.subtitleBuyer',
-    accountTitleKey: 'panel.profile.accountSetting',
-    nameLabelKey: 'panel.profile.name',
-    passwordTitleKey: 'panel.profile.changePassword',
-    newPasswordLabelKey: 'panel.profile.newPassword',
-    confirmPasswordLabelKey: 'panel.profile.confirmNewPassword',
-    updateProfileLabelKey: 'panel.profile.saveChanges',
-    changePasswordLabelKey: 'panel.profile.changePasswordUpper',
-    profileActionsAlign: 'start',
-    passwordActionsAlign: 'start',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneEurope',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
-  },
   admin: {
     layout: 'combined',
     showAvatarActions: false,
