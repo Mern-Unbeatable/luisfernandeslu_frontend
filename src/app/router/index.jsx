@@ -508,29 +508,54 @@ export const router = createBrowserRouter([
           },
           {
             path: '/cart',
-            element: <PublicCart />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.cart },
           },
+          // {
+          //   path: '/cart',
+          //   element: <PublicCart />,
+          //   handle: { seo: routeSeo.cart },
+          // },
           {
             path: '/messages',
-            element: <PublicMessages />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.messages },
           },
+          // {
+          //   path: '/messages',
+          //   element: <PublicMessages />,
+          //   handle: { seo: routeSeo.messages },
+          // },
           {
             path: '/order/confirmation',
-            element: <OrderConfirmation />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.orderConfirmation },
           },
+          // {
+          //   path: '/order/confirmation',
+          //   element: <OrderConfirmation />,
+          //   handle: { seo: routeSeo.orderConfirmation },
+          // },
           {
             path: '/checkout/company',
-            element: <CompanyCheckout />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.companyCheckout },
           },
+          // {
+          //   path: '/checkout/company',
+          //   element: <CompanyCheckout />,
+          //   handle: { seo: routeSeo.companyCheckout },
+          // },
           {
             path: '/checkout',
-            element: <UserCheckout />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.userCheckout },
           },
+          // {
+          //   path: '/checkout',
+          //   element: <UserCheckout />,
+          //   handle: { seo: routeSeo.userCheckout },
+          // },
           {
             path: '/terms-and-conditions',
             element: <TermsAndConditions />,
@@ -543,9 +568,14 @@ export const router = createBrowserRouter([
           },
           {
             path: '/help-center',
-            element: <HelpCenter />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.helpCenter },
           },
+          // {
+          //   path: '/help-center',
+          //   element: <HelpCenter />,
+          //   handle: { seo: routeSeo.helpCenter },
+          // },
           {
             path: '/return-policy',
             element: <ReturnPolicy />,
@@ -553,29 +583,54 @@ export const router = createBrowserRouter([
           },
           {
             path: '/dispute-resolution',
-            element: <DisputeResolutionList />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.disputeResolution },
           },
+          // {
+          //   path: '/dispute-resolution',
+          //   element: <DisputeResolutionList />,
+          //   handle: { seo: routeSeo.disputeResolution },
+          // },
           {
             path: '/dispute-resolution/:disputeId',
-            element: <DisputeResolutionDetail />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.disputeResolution },
           },
+          // {
+          //   path: '/dispute-resolution/:disputeId',
+          //   element: <DisputeResolutionDetail />,
+          //   handle: { seo: routeSeo.disputeResolution },
+          // },
           {
             path: '/returns',
-            element: <ReturnsOrders />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.returnsCenter },
           },
+          // {
+          //   path: '/returns',
+          //   element: <ReturnsOrders />,
+          //   handle: { seo: routeSeo.returnsCenter },
+          // },
           {
             path: '/returns/request/:returnId',
-            element: <ReturnRequestDetail />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.returnsCenter },
           },
+          // {
+          //   path: '/returns/request/:returnId',
+          //   element: <ReturnRequestDetail />,
+          //   handle: { seo: routeSeo.returnsCenter },
+          // },
           {
             path: '/returns/:orderId',
-            element: <ReturnOrderDetail />,
+            element: <ComingSoon hideTitle />,
             handle: { seo: routeSeo.returnsCenter },
           },
+          // {
+          //   path: '/returns/:orderId',
+          //   element: <ReturnOrderDetail />,
+          //   handle: { seo: routeSeo.returnsCenter },
+          // },
         ],
       },
 
@@ -588,48 +643,98 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: '/signup',
-                element: <RoleSelect />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.signup },
               },
               {
                 path: '/signup/:role',
-                element: <Register />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.signup },
               },
               {
                 path: '/admin/login',
-                element: <Login />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
               {
                 path: '/login',
-                element: <RoleSelect />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
               {
                 path: '/login/:role',
-                element: <Login />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
               {
                 path: '/forgot-password',
-                element: <ForgotPassword />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: '/forgot-password/otp',
-                element: <OtpVerification />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: '/forgot-password/reset',
-                element: <ResetPassword />,
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.forgotPassword },
               },
             ],
           },
         ],
       },
+      // {
+      //   element: <PublicRoute />,
+      //   children: [
+      //     {
+      //       element: <AuthLayout />,
+      //       children: [
+      //         {
+      //           path: '/signup',
+      //           element: <RoleSelect />,
+      //           handle: { seo: routeSeo.signup },
+      //         },
+      //         {
+      //           path: '/signup/:role',
+      //           element: <Register />,
+      //           handle: { seo: routeSeo.signup },
+      //         },
+      //         {
+      //           path: '/admin/login',
+      //           element: <Login />,
+      //           handle: { seo: routeSeo.login },
+      //         },
+      //         {
+      //           path: '/login',
+      //           element: <RoleSelect />,
+      //           handle: { seo: routeSeo.login },
+      //         },
+      //         {
+      //           path: '/login/:role',
+      //           element: <Login />,
+      //           handle: { seo: routeSeo.login },
+      //         },
+      //         {
+      //           path: '/forgot-password',
+      //           element: <ForgotPassword />,
+      //           handle: { seo: routeSeo.forgotPassword },
+      //         },
+      //         {
+      //           path: '/forgot-password/otp',
+      //           element: <OtpVerification />,
+      //           handle: { seo: routeSeo.forgotPassword },
+      //         },
+      //         {
+      //           path: '/forgot-password/reset',
+      //           element: <ResetPassword />,
+      //           handle: { seo: routeSeo.forgotPassword },
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
 
       /* Developer docs */
       { path: '/developer', element: <Developer /> },
