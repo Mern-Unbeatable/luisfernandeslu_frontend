@@ -1187,3 +1187,25 @@ export const DEMO_PANEL_PROFILE_AFFILIATE = {
   phone: '+1 (555) 440-5566',
   warehouses: [],
 }
+
+export const DEMO_PANEL_PROFILE_CUSTOMER = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'Alex Customer',
+  displayEmail: 'customer@demo.com',
+  name: 'Alex Customer',
+  email: 'customer@demo.com',
+  phone: '+1 (555) 660-7788',
+  warehouses: [],
+  companyName: '',
+}
+
+export const DEMO_PANEL_PROFILE_COMPANY = {
+  ...DEMO_PANEL_PROFILE,
+  displayName: 'Acme Construction Co.',
+  displayEmail: 'company@demo.com',
+  name: 'Acme Construction Co.',
+  email: 'company@demo.com',
+  phone: '+1 (555) 770-8899',
+  warehouses: [],
+  companyName: 'Acme Construction Co.',
+}
