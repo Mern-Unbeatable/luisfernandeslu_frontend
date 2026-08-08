@@ -167,7 +167,7 @@ export default function AssignDeliveriesPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Assigned Deliveries
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-base text-gray-500">
             {filteredDeliveries.length} active deliveries
           </p>
         </div>

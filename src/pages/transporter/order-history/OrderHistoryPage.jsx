@@ -91,7 +91,7 @@ export default function OrderHistoryPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Delivery History
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-base text-gray-500">
             {completedDeliveries.length} completed deliveries
           </p>
         </div>
