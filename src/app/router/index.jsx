@@ -54,8 +54,23 @@ const PublicCart = Loadable(
 const PublicMessages = Loadable(
   lazy(() => import('../../pages/public_page/messages/MessagesPage')),
 )
-const DisputeResolution = Loadable(
-  lazy(() => import('../../pages/public_page/DisputeResolutionPage')),
+const DisputeResolutionList = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/DisputesListPage')),
+)
+const DisputeResolutionDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/DisputeDetailPage')),
+)
+const ReturnsOrders = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnsOrdersPage')),
+)
+const ReturnOrderDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnOrderDetailPage')),
+)
+const ReturnRequestDetail = Loadable(
+  lazy(() => import('../../pages/public_page/disputes/ReturnRequestDetailPage')),
+)
+const HelpCenter = Loadable(
+  lazy(() => import('../../pages/public_page/legal/HelpCenterPage')),
 )
 const ReturnPolicy = Loadable(
   lazy(() => import('../../pages/public_page/legal/ReturnPolicyPage')),
@@ -527,14 +542,39 @@ export const router = createBrowserRouter([
             handle: { seo: routeSeo.privacyPolicy },
           },
           {
+            path: '/help-center',
+            element: <HelpCenter />,
+            handle: { seo: routeSeo.helpCenter },
+          },
+          {
             path: '/return-policy',
             element: <ReturnPolicy />,
             handle: { seo: routeSeo.returnPolicy },
           },
           {
             path: '/dispute-resolution',
-            element: <DisputeResolution />,
+            element: <DisputeResolutionList />,
             handle: { seo: routeSeo.disputeResolution },
+          },
+          {
+            path: '/dispute-resolution/:disputeId',
+            element: <DisputeResolutionDetail />,
+            handle: { seo: routeSeo.disputeResolution },
+          },
+          {
+            path: '/returns',
+            element: <ReturnsOrders />,
+            handle: { seo: routeSeo.returnsCenter },
+          },
+          {
+            path: '/returns/request/:returnId',
+            element: <ReturnRequestDetail />,
+            handle: { seo: routeSeo.returnsCenter },
+          },
+          {
+            path: '/returns/:orderId',
+            element: <ReturnOrderDetail />,
+            handle: { seo: routeSeo.returnsCenter },
           },
         ],
       },

@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import ProductListingCard from '@/components/data-display/ProductListingCard/ProductListingCard'
 import Pagination from '@/components/common/Pagination/Pagination'
@@ -12,6 +13,7 @@ import {
 } from '../data/topSellingProducts'
 
 export default function TopSellingProductsSection() {
+  const { t } = useTranslation()
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
@@ -43,7 +45,7 @@ export default function TopSellingProductsSection() {
 
         <div>
           <h2 className="mb-6 text-xl font-bold text-(--primary-text) sm:mb-8 sm:text-2xl">
-            Top Selling Product
+            {t('home.topSellingTitle')}
           </h2>
 
           <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">

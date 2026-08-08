@@ -10,3 +10,25 @@ body {
 button {
   cursor: pointer;
 }
+
+@keyframes construction-assistant-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  75%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+.construction-assistant-fab-ping {
+  animation: construction-assistant-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .construction-assistant-fab-ping {
+    animation: none;
+  }
+}

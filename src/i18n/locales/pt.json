@@ -136,6 +136,32 @@
     "pt": "Português",
     "es": "Espanhol"
   },
+  "constructionAssistant": {
+    "title": "Assistente de Construção",
+    "open": "Abrir chat do assistente de construção",
+    "close": "Fechar chat do assistente de construção",
+    "send": "Enviar mensagem",
+    "inputPlaceholder": "Que material procura?",
+    "welcome1": "Olá! Bem-vindo à Construpreço!",
+    "welcome2": "Posso ajudá-lo a encontrar os melhores materiais de construção com entrega rápida?",
+    "welcome3": "Para começar, diga o que procura.",
+    "fallbackReply": "Obrigado! Indique o material, quantidade ou tipo de obra e sugerirei produtos adequados.",
+    "priceLabel": "Preço: {{price}}",
+    "products": {
+      "basic": {
+        "title": "Kit LED básico",
+        "price": "€1.200"
+      },
+      "standard": {
+        "title": "Kit LED standard",
+        "price": "€1.450"
+      },
+      "premium": {
+        "title": "Sistema LED premium",
+        "price": "€1.890"
+      }
+    }
+  },
   "footer": {
     "description": "O marketplace de materiais de construção mais completo em Portugal. Entrega em 2 horas.",
     "follow": "Seguir :",
@@ -156,7 +182,63 @@
   },
   "home": {
     "title": "CONSTRUPRECO",
-    "subtitle": "Setup React + Tailwind com Redux Toolkit, RTK Query e Axios"
+    "subtitle": "Setup React + Tailwind com Redux Toolkit, RTK Query e Axios",
+    "sponsoredProductsTitle": "Produtos patrocinados",
+    "topSellingTitle": "Produtos mais vendidos",
+    "affiliateCta": {
+      "title": "Transforme partilhas em ganhos.",
+      "subtitle": "Partilhe o seu código de afiliado e ganhe 5% de comissão em cada venda.",
+      "button": "Registar no programa"
+    },
+    "hero": {
+      "prevSlide": "Slide anterior",
+      "nextSlide": "Slide seguinte",
+      "goToSlide": "Ir para o slide {{n}}",
+      "slides": {
+        "hero-1": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Poupe mais em", "encomendas em volume"],
+          "description": "Preços especiais para grandes quantidades. Ideal para empreiteiros e construtores.",
+          "ctaLabel": "Pedir orçamento em volume"
+        },
+        "hero-2": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Materiais de qualidade para", "cada projeto"],
+          "description": "Cimento, aço e ferramentas de fornecedores verificados em toda a região.",
+          "ctaLabel": "Comprar agora"
+        },
+        "hero-3": {
+          "badge": "Entrega rápida",
+          "titleLines": ["Feito para empreiteiros", "e construtores"],
+          "description": "Encomendas simplificadas, preços em volume e entrega fiável na obra.",
+          "ctaLabel": "Pedir orçamento em volume"
+        }
+      },
+      "features": {
+        "delivery": {
+          "title": "ENTREGA RÁPIDA",
+          "subtitle": "Entrega em 24 h"
+        },
+        "return": {
+          "title": "DEVOLUÇÃO 24 H",
+          "subtitle": "Garantia de reembolso total"
+        },
+        "payment": {
+          "title": "PAGAMENTO SEGURO",
+          "subtitle": "O seu dinheiro está protegido"
+        },
+        "support": {
+          "title": "APOIO 24/7",
+          "subtitle": "Contacto e mensagens em tempo real"
+        }
+      }
+    },
+    "stats": {
+      "professionals": "Profissionais registados",
+      "products": "Produtos disponíveis",
+      "carriers": "Transportadores ativos",
+      "delivery": "Tempo médio de entrega"
+    }
   },
   "panel": {
     "mainMenu": "Menu Principal",
@@ -576,6 +658,174 @@
     "monthlyPayment": "Pagamento mensal",
     "installmentTimeline": "Cronologia de prestações"
   },
+  "disputesCenter": {
+    "backToList": "Voltar às disputas",
+    "searchPlaceholder": "Pesquisar por ID, produto ou encomenda...",
+    "statusFilter": "Estado",
+    "newDispute": "Nova disputa",
+    "recentTitle": "Disputas recentes ({{count}})",
+    "empty": "Nenhuma disputa corresponde à pesquisa.",
+    "idLabel": "ID: {{id}}",
+    "orderMeta": "Encomenda: {{orderId}} ({{date}})",
+    "sellerLabel": "Vendedor: {{name}}",
+    "stats": {
+      "total": "Total de disputas",
+      "pendingAction": "Ação pendente",
+      "underReview": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "filter": {
+      "all": "TODOS",
+      "pending": "Pendente",
+      "under_review": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "status": {
+      "pending": "Pendente",
+      "under_review": "Em análise",
+      "resolved": "Resolvido"
+    },
+    "modal": {
+      "title": "Abrir nova disputa",
+      "subtitle": "Indique os detalhes do problema com a sua encomenda.",
+      "selectOrder": "Selecionar encomenda",
+      "selectOrderPh": "Escolha uma encomenda",
+      "issueType": "Tipo de problema",
+      "issueTypePh": "Qual é o problema?",
+      "description": "Descrição",
+      "descriptionPh": "Descreva o problema em detalhe...",
+      "evidence": "Provas (fotos/vídeos)",
+      "uploadHint": "Clique para carregar ou arraste ficheiros",
+      "uploadTypes": "PNG, JPG, MP4 até 10MB",
+      "cancel": "CANCELAR",
+      "submit": "SUBMETER DISPUTA",
+      "close": "Fechar"
+    }
+  },
+  "returnsCenter": {
+    "tabOrders": "As minhas encomendas",
+    "tabReturn": "Devolução",
+    "searchPlaceholder": "Pesquisar por ID, produto ou encomenda...",
+    "filter": "Filtrar encomendas",
+    "returnTabHint": "Selecione uma encomenda em As minhas encomendas para iniciar uma devolução.",
+    "orderNumber": "Encomenda #{{id}}",
+    "itemCount": "{{count}} artigos",
+    "viewDetails": "Ver detalhes >",
+    "backToOrders": "Voltar às encomendas",
+    "placedOn": "Realizada em {{date}}",
+    "viewReturnStatus": "Ver estado da devolução",
+    "lineMeta": "Qtd: {{qty}} · {{price}}",
+    "returnRefund": "Devolver/Reembolsar",
+    "myReturnsTitle": "As minhas devoluções",
+    "returnsEmpty": "Nenhum pedido de devolução corresponde à pesquisa.",
+    "reasonInline": "Motivo: {{reason}}",
+    "updatedOn": "ATUALIZAÇÃO {{date}}",
+    "requestTitle": "Pedido de devolução #{{id}}",
+    "submittedOn": "Submetido em {{date}}",
+    "orderIdLabel": "ID encomenda: {{id}}",
+    "reasonLabel": "Motivo: {{reason}}",
+    "descriptionHeading": "Descrição",
+    "evidenceHeading": "Provas",
+    "timelineTitle": "Cronologia",
+    "needHelpTitle": "Precisa de ajuda?",
+    "needHelpBody": "A nossa equipa de apoio está disponível 24/7 para ajudar com disputas de devolução.",
+    "contactSupport": "Contactar apoio",
+    "returnStatus": {
+      "pending": "Pendente",
+      "under_review": "Em análise"
+    },
+    "modal": {
+      "title": "Pedir devolução",
+      "close": "Fechar",
+      "productMeta": "Qtd: {{qty}}, {{price}}",
+      "reason": "Motivo da devolução",
+      "reasonPh": "Danificado",
+      "description": "Descrição",
+      "descriptionPh": "Descreva o problema em detalhe...",
+      "damagedItem": "Artigo danificado",
+      "damagedItemPh": "Quantos artigos estão danificados?",
+      "refundAccount": "Número de conta para reembolso",
+      "refundAccountPh": "Indique o número da conta",
+      "evidence": "Carregar provas",
+      "uploadHint": "Clique para carregar ou arraste ficheiros",
+      "uploadTypes": "PNG, JPG, MP4 até 10MB",
+      "submit": "SUBMETER DEVOLUÇÃO"
+    },
+    "status": {
+      "delivered": "ENTREGUE"
+    }
+  },
+  "helpCenterPage": {
+    "seoTitle": "Centro de Ajuda",
+    "seoDescription": "Encontre respostas sobre encomendas, pagamentos, devoluções, entregas e apoio CONSTRUPRECO.",
+    "title": "Centro de Ajuda",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "welcomeTitle": "Bem-vindo ao Centro de Ajuda",
+    "welcomeBody": "Como podemos ajudá-lo hoje? Encontre respostas a perguntas frequentes ou obtenha apoio para encomendas, pagamentos e entregas.",
+    "sections": {
+      "search": {
+        "title": "Pesquisar ajuda",
+        "description": "Pesquise tópicos de ajuda, guias ou perguntas frequentes.",
+        "items": []
+      },
+      "orders": {
+        "title": "Encomendas e compras",
+        "items": [
+          "Como fazer uma encomenda",
+          "Como acompanhar a minha encomenda",
+          "Como cancelar uma encomenda",
+          "Compreender o estado da encomenda"
+        ]
+      },
+      "payments": {
+        "title": "Pagamentos e faturação",
+        "items": [
+          "Métodos de pagamento disponíveis",
+          "Pagamento falhou — o que fazer",
+          "Processo e prazos de reembolso",
+          "Como usar códigos promocionais"
+        ]
+      },
+      "returns": {
+        "title": "Devoluções e reembolsos",
+        "items": [
+          "Como pedir uma devolução",
+          "Critérios de elegibilidade para devolução",
+          { "label": "Métodos e estado do reembolso", "href": "/return-policy" },
+          "Produtos não returnáveis"
+        ]
+      },
+      "delivery": {
+        "title": "Entrega e logística",
+        "items": [
+          "Prazos de entrega",
+          "Cálculo do custo de entrega",
+          "Acompanhamento do transportador",
+          "Entregas falhadas ou atrasadas"
+        ]
+      },
+      "contact": {
+        "title": "Contactar apoio",
+        "items": [
+          {
+            "icon": "mail",
+            "label": "Email: support@construpreco.com",
+            "href": "mailto:support@construpreco.com"
+          },
+          {
+            "icon": "chat",
+            "label": "Chat ao vivo: Disponível 24/7",
+            "href": "/messages"
+          },
+          {
+            "icon": "phone",
+            "label": "Telefone: +351 210 000 000",
+            "href": "tel:+351210000000"
+          }
+        ]
+      }
+    }
+  },
   "returnPolicyPage": {
     "seoTitle": "Política de devoluções e reembolsos",
     "seoDescription": "Regras de devolução e reembolso de encomendas na CONSTRUPRECO.",
@@ -968,6 +1218,10 @@
     "disputeResolutionDescription": "Acompanhe e resolva disputas de encomendas no CONSTRUPRECO.",
     "returnPolicyTitle": "Política de devoluções e reembolsos",
     "returnPolicyDescription": "Regras de devolução e reembolso na CONSTRUPRECO.",
+    "helpCenterTitle": "Centro de Ajuda",
+    "helpCenterDescription": "Obtenha ajuda com encomendas, pagamentos, entregas e apoio na CONSTRUPRECO.",
+    "returnsCenterTitle": "Devoluções e encomendas",
+    "returnsCenterDescription": "Consulte encomendas e peça devoluções ou reembolsos na CONSTRUPRECO.",
     "privacyPolicyTitle": "Política de privacidade",
     "privacyPolicyDescription": "Como a CONSTRUPRECO trata os seus dados pessoais.",
     "termsTitle": "Termos e condições gerais",

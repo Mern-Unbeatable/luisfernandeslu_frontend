@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   FiAward,
   FiChevronLeft,
@@ -26,9 +27,22 @@ function HeroFeatureIcon({ name }) {
   return <Icon className="size-8 shrink-0 text-[#6B7280]" strokeWidth={1.5} aria-hidden />
 }
 
+function slideCopy(t, slideId) {
+  const base = `home.hero.slides.${slideId}`
+  const titleLines = t(`${base}.titleLines`, { returnObjects: true })
+  return {
+    badge: t(`${base}.badge`),
+    titleLines: Array.isArray(titleLines) ? titleLines : [titleLines],
+    description: t(`${base}.description`),
+    ctaLabel: t(`${base}.ctaLabel`),
+  }
+}
+
 export default function HeroSection() {
+  const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState(0)
   const slide = HERO_SLIDES[activeIndex]
+  const copy = slideCopy(t, slide.id)
   const slideCount = HERO_SLIDES.length
 
   const goTo = (index) => {
@@ -65,11 +79,11 @@ export default function HeroSection() {
                   className="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 font-['Barlow',sans-serif] text-[11px] font-semibold leading-none text-white sm:mb-4 sm:px-4 sm:py-1.5 sm:text-sm sm:font-bold"
                   style={{ backgroundColor: HERO_BADGE_BG }}
                 >
-                  {slide.badge}
+                  {copy.badge}
                 </span>
 
                 <h1 className="font-['Barlow',sans-serif] text-[26px] font-black leading-[1.12] text-white sm:text-5xl lg:text-[72px] lg:leading-[79.2px]">
-                  {slide.title.map((line) => (
+                  {copy.titleLines.map((line) => (
                     <span key={line} className="block">
                       {line}
                     </span>
@@ -77,7 +91,7 @@ export default function HeroSection() {
                 </h1>
 
                 <p className="mt-3 max-w-[520px] font-['Barlow',sans-serif] text-sm leading-snug text-white sm:mt-4 sm:text-base sm:leading-relaxed lg:text-lg">
-                  {slide.description}
+                  {copy.description}
                 </p>
 
                 <Link
@@ -85,7 +99,7 @@ export default function HeroSection() {
                   className="mt-5 inline-flex w-fit items-center rounded-full px-6 py-2.5 font-['Barlow',sans-serif] text-sm font-bold leading-none text-white transition-opacity hover:opacity-90 sm:mt-7 sm:px-8 sm:py-3.5 sm:text-base lg:mt-8"
                   style={{ backgroundColor: HERO_CTA_BG }}
                 >
-                  {slide.ctaLabel}
+                  {copy.ctaLabel}
                 </Link>
               </div>
 
@@ -94,7 +108,7 @@ export default function HeroSection() {
                   <button
                     key={item.id}
                     type="button"
-                    aria-label={`Go to slide ${index + 1}`}
+                    aria-label={t('home.hero.goToSlide', { n: index + 1 })}
                     aria-current={index === activeIndex ? 'true' : undefined}
                     onClick={() => goTo(index)}
                     className={[
@@ -111,7 +125,7 @@ export default function HeroSection() {
                 <button
                   key={item.id}
                   type="button"
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-label={t('home.hero.goToSlide', { n: index + 1 })}
                   aria-current={index === activeIndex ? 'true' : undefined}
                   onClick={() => goTo(index)}
                   className={[
@@ -123,11 +137,10 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Half on hero, half on cream — centered on left/right edges */}
           <button
             type="button"
             onClick={() => goTo(activeIndex - 1)}
-            aria-label="Previous slide"
+            aria-label={t('home.hero.prevSlide')}
             className="absolute top-1/2 left-0 z-30 hidden size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[var(--primary-text)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-gray-50 sm:inline-flex"
           >
             <FiChevronLeft className="size-6" strokeWidth={2.5} />
@@ -135,7 +148,7 @@ export default function HeroSection() {
           <button
             type="button"
             onClick={() => goTo(activeIndex + 1)}
-            aria-label="Next slide"
+            aria-label={t('home.hero.nextSlide')}
             className="absolute top-1/2 right-0 z-30 hidden size-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[var(--primary-text)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-gray-50 sm:inline-flex"
           >
             <FiChevronRight className="size-6" strokeWidth={2.5} />
@@ -152,10 +165,10 @@ export default function HeroSection() {
                 <HeroFeatureIcon name={feature.icon} />
                 <div className="min-w-0 font-['Barlow',sans-serif]">
                   <p className="text-xs font-bold tracking-wide text-[var(--primary-text)]">
-                    {feature.title}
+                    {t(`home.hero.features.${feature.id}.title`)}
                   </p>
                   <p className="mt-1 text-xs text-[var(--secondary-text)]">
-                    {feature.subtitle}
+                    {t(`home.hero.features.${feature.id}.subtitle`)}
                   </p>
                 </div>
               </li>

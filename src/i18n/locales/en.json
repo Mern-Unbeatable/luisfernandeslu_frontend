@@ -136,6 +136,32 @@
     "pt": "Portuguese",
     "es": "Spanish"
   },
+  "constructionAssistant": {
+    "title": "Construction Assistant",
+    "open": "Open construction assistant chat",
+    "close": "Close construction assistant chat",
+    "send": "Send message",
+    "inputPlaceholder": "What material are you looking for?",
+    "welcome1": "Hello! Welcome to Construpreço!",
+    "welcome2": "Can I help you find the best building materials with fast delivery?",
+    "welcome3": "To begin, tell me what you are looking for.",
+    "fallbackReply": "Thanks! Tell me more about the material, quantity, or project type and I will suggest matching products.",
+    "priceLabel": "Price: {{price}}",
+    "products": {
+      "basic": {
+        "title": "Basic LED Setup",
+        "price": "€1,200"
+      },
+      "standard": {
+        "title": "Standard LED Lighting Kit",
+        "price": "€1,450"
+      },
+      "premium": {
+        "title": "Premium LED Light System",
+        "price": "€1,890"
+      }
+    }
+  },
   "footer": {
     "description": "The most complete building materials marketplace in Portugal. Delivery within 2 hours.",
     "follow": "Follow :",
@@ -156,7 +182,63 @@
   },
   "home": {
     "title": "CONSTRUPRECO",
-    "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios"
+    "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios",
+    "sponsoredProductsTitle": "Sponsored Products",
+    "topSellingTitle": "Top Selling Product",
+    "affiliateCta": {
+      "title": "It transforms sharing into gains.",
+      "subtitle": "Share your affiliate code and earn a 5% commission on every sale.",
+      "button": "Register For the Program"
+    },
+    "hero": {
+      "prevSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {{n}}",
+      "slides": {
+        "hero-1": {
+          "badge": "Fast Delivery",
+          "titleLines": ["Save More on Bulk", "Orders"],
+          "description": "Special pricing for large quantity orders. Perfect for contractors & builders.",
+          "ctaLabel": "Get Bulk Quote"
+        },
+        "hero-2": {
+          "badge": "Fast Delivery",
+          "titleLines": ["Quality Materials for", "Every Project"],
+          "description": "Source cement, steel, and tools from verified suppliers across the region.",
+          "ctaLabel": "Shop Now"
+        },
+        "hero-3": {
+          "badge": "Fast Delivery",
+          "titleLines": ["Built for Contractors", "& Builders"],
+          "description": "Streamlined ordering, bulk pricing, and reliable delivery to your job site.",
+          "ctaLabel": "Get Bulk Quote"
+        }
+      },
+      "features": {
+        "delivery": {
+          "title": "FASTED DELIVERY",
+          "subtitle": "Delivery in 24/H"
+        },
+        "return": {
+          "title": "24 HOURS RETURN",
+          "subtitle": "100% money-back guarantee"
+        },
+        "payment": {
+          "title": "SECURE PAYMENT",
+          "subtitle": "Your money is safe"
+        },
+        "support": {
+          "title": "SUPPORT 24/7",
+          "subtitle": "Live contact/message"
+        }
+      }
+    },
+    "stats": {
+      "professionals": "Registered Professionals",
+      "products": "Products Available",
+      "carriers": "Active Carriers",
+      "delivery": "Average Delivery Time"
+    }
   },
   "panel": {
     "mainMenu": "Main Menu",
@@ -643,6 +725,174 @@
     "monthlyPayment": "Monthly Payment",
     "installmentTimeline": "Installment Timeline"
   },
+  "disputesCenter": {
+    "backToList": "Back to Disputes",
+    "searchPlaceholder": "Search by ID, product, or order...",
+    "statusFilter": "Status",
+    "newDispute": "New Dispute",
+    "recentTitle": "Recent Disputes ({{count}})",
+    "empty": "No disputes match your search.",
+    "idLabel": "ID: {{id}}",
+    "orderMeta": "Order: {{orderId}} ({{date}})",
+    "sellerLabel": "Seller: {{name}}",
+    "stats": {
+      "total": "Total Disputes",
+      "pendingAction": "Pending Action",
+      "underReview": "Under Review",
+      "resolved": "Resolved"
+    },
+    "filter": {
+      "all": "ALL",
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "modal": {
+      "title": "Raise a New Dispute",
+      "subtitle": "Provide details about the issue you're experiencing with your order.",
+      "selectOrder": "Select Order",
+      "selectOrderPh": "Choose an order to dispute",
+      "issueType": "Issue Type",
+      "issueTypePh": "What is the problem?",
+      "description": "Description",
+      "descriptionPh": "Please describe the issue in detail...",
+      "evidence": "Evidence (Photos/Videos)",
+      "uploadHint": "Click to upload or drag and drop",
+      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "cancel": "CANCEL",
+      "submit": "SUBMIT DISPUTE",
+      "close": "Close"
+    }
+  },
+  "returnsCenter": {
+    "tabOrders": "My Order",
+    "tabReturn": "Return",
+    "searchPlaceholder": "Search by ID, product, or order...",
+    "filter": "Filter orders",
+    "returnTabHint": "Select an order under My Order to start a return or refund.",
+    "orderNumber": "Order #{{id}}",
+    "itemCount": "{{count}} Items",
+    "viewDetails": "View Details >",
+    "backToOrders": "Back to Orders",
+    "placedOn": "Placed on {{date}}",
+    "viewReturnStatus": "View Return Status",
+    "lineMeta": "Qty: {{qty}} · {{price}}",
+    "returnRefund": "Return/Refund",
+    "myReturnsTitle": "My Returns",
+    "returnsEmpty": "No return requests match your search.",
+    "reasonInline": "Reason: {{reason}}",
+    "updatedOn": "UPDATE {{date}}",
+    "requestTitle": "Return Request #{{id}}",
+    "submittedOn": "Submitted on {{date}}",
+    "orderIdLabel": "Order ID: {{id}}",
+    "reasonLabel": "Reason: {{reason}}",
+    "descriptionHeading": "Description",
+    "evidenceHeading": "Evidence",
+    "timelineTitle": "Time Line",
+    "needHelpTitle": "Need Help?",
+    "needHelpBody": "Our support team is available 24/7 to assist with return disputes.",
+    "contactSupport": "Contact Support",
+    "returnStatus": {
+      "pending": "Pending",
+      "under_review": "under Review"
+    },
+    "modal": {
+      "title": "Request Return",
+      "close": "Close",
+      "productMeta": "Qty: {{qty}}, {{price}}",
+      "reason": "Reason for Return",
+      "reasonPh": "Damaged",
+      "description": "Description",
+      "descriptionPh": "Please describe the issue in detail...",
+      "damagedItem": "Damaged Item",
+      "damagedItemPh": "How many item/s are damaged?",
+      "refundAccount": "Refund Account Number",
+      "refundAccountPh": "Put your Account Number",
+      "evidence": "Upload Evidence",
+      "uploadHint": "Click to upload or drag and drop",
+      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "submit": "SUBMIT RETURN"
+    },
+    "status": {
+      "delivered": "DELIVERED"
+    }
+  },
+  "helpCenterPage": {
+    "seoTitle": "Help Center",
+    "seoDescription": "Find answers about orders, payments, returns, delivery, and how to contact CONSTRUPRECO support.",
+    "title": "Help Center",
+    "lastUpdated": "Last update 09 march, 2026",
+    "welcomeTitle": "Welcome to Help Center",
+    "welcomeBody": "How can we help you today? Find answers to common questions or get support for your orders, payments, and deliveries.",
+    "sections": {
+      "search": {
+        "title": "Search Help",
+        "description": "Search for help topics, guides, or frequently asked questions.",
+        "items": []
+      },
+      "orders": {
+        "title": "Orders & Purchases",
+        "items": [
+          "How to place an order",
+          "How to track my order",
+          "How to cancel an order",
+          "Understanding order status"
+        ]
+      },
+      "payments": {
+        "title": "Payments & Billing",
+        "items": [
+          "Available payment methods",
+          "Payment failed — what to do",
+          "Refund process and timelines",
+          "How to use promo codes"
+        ]
+      },
+      "returns": {
+        "title": "Returns & Refunds",
+        "items": [
+          "How to request a return",
+          "Return eligibility criteria",
+          { "label": "Refund methods and status", "href": "/return-policy" },
+          "Non-returnable products"
+        ]
+      },
+      "delivery": {
+        "title": "Delivery & Logistics",
+        "items": [
+          "Delivery timelines",
+          "Delivery cost calculation",
+          "Transporter tracking",
+          "Missed or delayed deliveries"
+        ]
+      },
+      "contact": {
+        "title": "Contact Support",
+        "items": [
+          {
+            "icon": "mail",
+            "label": "Email Support: support@construpreco.com",
+            "href": "mailto:support@construpreco.com"
+          },
+          {
+            "icon": "chat",
+            "label": "Live Chat: Available 24/7",
+            "href": "/messages"
+          },
+          {
+            "icon": "phone",
+            "label": "Phone: +351 210 000 000",
+            "href": "tel:+351210000000"
+          }
+        ]
+      }
+    }
+  },
   "returnPolicyPage": {
     "seoTitle": "Return & Refund Policy",
     "seoDescription": "Read CONSTRUPRECO return, refund and eligibility rules for construction materials.",
@@ -1035,6 +1285,10 @@
     "disputeResolutionDescription": "Track and resolve order disputes on CONSTRUPRECO.",
     "returnPolicyTitle": "Return & Refund Policy",
     "returnPolicyDescription": "Return and refund rules for orders on CONSTRUPRECO.",
+    "helpCenterTitle": "Help Center",
+    "helpCenterDescription": "Get help with orders, payments, deliveries, and support on CONSTRUPRECO.",
+    "returnsCenterTitle": "Returns & orders",
+    "returnsCenterDescription": "View orders and request returns or refunds on CONSTRUPRECO.",
     "privacyPolicyTitle": "Privacy Policy",
     "privacyPolicyDescription": "How CONSTRUPRECO handles your personal data.",
     "termsTitle": "General Terms & Conditions",

@@ -15,6 +15,8 @@ const STATUS_STYLES = {
   delivered: 'bg-emerald-100 text-emerald-700',
   progress: 'bg-cyan-100 text-cyan-800',
   pending: 'bg-[color-mix(in_srgb,var(--active)_18%,white)] text-[var(--active)]',
+  under_review: 'bg-sky-100 text-sky-800',
+  resolved: 'bg-emerald-100 text-emerald-700',
   assign: 'bg-violet-100 text-violet-700',
   default: 'bg-gray-100 text-[var(--secondary-text)]',
 }

@@ -44,6 +44,14 @@ export const routeSeo = {
     titleKey: 'seo.returnPolicyTitle',
     descriptionKey: 'seo.returnPolicyDescription',
   },
+  helpCenter: {
+    titleKey: 'seo.helpCenterTitle',
+    descriptionKey: 'seo.helpCenterDescription',
+  },
+  returnsCenter: {
+    titleKey: 'seo.returnsCenterTitle',
+    descriptionKey: 'seo.returnsCenterDescription',
+  },
   privacyPolicy: {
     titleKey: 'seo.privacyPolicyTitle',
     descriptionKey: 'seo.privacyPolicyDescription',
