@@ -57,6 +57,15 @@ const PublicMessages = Loadable(
 const DisputeResolution = Loadable(
   lazy(() => import('../../pages/public_page/DisputeResolutionPage')),
 )
+const ReturnPolicy = Loadable(
+  lazy(() => import('../../pages/public_page/legal/ReturnPolicyPage')),
+)
+const PrivacyPolicy = Loadable(
+  lazy(() => import('../../pages/public_page/legal/PrivacyPolicyPage')),
+)
+const TermsAndConditions = Loadable(
+  lazy(() => import('../../pages/public_page/legal/TermsAndConditionsPage')),
+)
 const Developer = Loadable(
   lazy(() => import('../../pages/public_page/DeveloperPage')),
 )
@@ -486,6 +495,21 @@ export const router = createBrowserRouter([
             path: '/checkout',
             element: <UserCheckout />,
             handle: { seo: routeSeo.userCheckout },
+          },
+          {
+            path: '/terms-and-conditions',
+            element: <TermsAndConditions />,
+            handle: { seo: routeSeo.termsAndConditions },
+          },
+          {
+            path: '/privacy-policy',
+            element: <PrivacyPolicy />,
+            handle: { seo: routeSeo.privacyPolicy },
+          },
+          {
+            path: '/return-policy',
+            element: <ReturnPolicy />,
+            handle: { seo: routeSeo.returnPolicy },
           },
           {
             path: '/dispute-resolution',

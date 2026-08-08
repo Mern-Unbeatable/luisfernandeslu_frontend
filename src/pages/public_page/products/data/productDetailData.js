@@ -2,7 +2,7 @@ import { DEMO_PRODUCT } from '@/data/demoData'
 import { LISTING_TEMPLATES } from './productsListing'
 
 export function normalizeProductSlug(param = '') {
-  return param.replace(/-\d+$/, '')
+  return param.replace(/-v\d+$/i, '').replace(/-\d+$/, '')
 }
 
 function formatDetailPrice(priceText, priceValue) {

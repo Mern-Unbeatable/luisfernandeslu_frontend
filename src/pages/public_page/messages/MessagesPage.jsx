@@ -5,19 +5,14 @@ import { useSelector } from 'react-redux'
 import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
 import useMessages from '@/components/common/messenger/useMessages'
-
-function resolveMessagingRole(user) {
-  if (user?.role === 'customer') return 'customer'
-  if (user?.role === 'company') return 'company'
-  return 'customer'
-}
+import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 
 export default function MessagesPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user } = useSelector((state) => state.auth)
-  const role = resolveMessagingRole(user)
+  const role = resolveStorefrontBuyerRole(user)
   const isCompany = role === 'company'
 
   const state = useMessages()

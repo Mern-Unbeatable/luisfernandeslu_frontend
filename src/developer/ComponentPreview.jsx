@@ -3,6 +3,7 @@ import AuctionCard from '../components/data-display/AuctionCard'
 import AuctionDetails from '../components/data-display/AuctionDetails'
 import OrderDetails from '../components/data-display/OrderDetails'
 import ProductCard from '../components/data-display/ProductCard/ProductCard'
+import ProductListingCard from '../components/data-display/ProductListingCard/ProductListingCard'
 import ProductDetails from '../components/data-display/ProductDetails/ProductDetails'
 import DataTable from '../components/data-display/DataTable/DataTable'
 import StatusBadge from '../components/data-display/DataTable/StatusBadge'
@@ -15,6 +16,7 @@ import AddProduct from '../components/forms/AddProduct/AddProduct'
 import PanelProfile from '../components/forms/PanelProfile'
 import Messenger from '../components/common/messenger/Messenger'
 import useMessages from '../components/common/messenger/useMessages'
+import Pagination from '../components/common/Pagination/Pagination'
 import {
   ADMIN_PRODUCT,
   DEMO_ADD_PRODUCT,
@@ -41,6 +43,7 @@ import {
   DEMO_ORDER_PENDING,
   DEMO_PANEL_PROFILE_ADMIN,
   DEMO_PANEL_PROFILE_AFFILIATE,
+  DEMO_PANEL_PROFILE_CUSTOMER,
   DEMO_PANEL_PROFILE_FACTORY,
   DEMO_PANEL_PROFILE_SUPPLIER,
   DEMO_PANEL_PROFILE_TRANSPORTER,
@@ -376,6 +379,53 @@ function ProductCardPreview({ variantId }) {
   )
 }
 
+const LISTING_CARD_DEMO_PRODUCT = {
+  image: CARD_IMG,
+  title: 'Portland Cement Standard',
+  description: 'Reliable cement for all your everyday construction needs.',
+  bulkOptionLabel: 'Bulk option Open',
+  priceText: 'Price: $115 per bag (50 kg)',
+  companyPriceText: 'Company: $98 per bag (50 kg)',
+}
+
+const COMPANY_LISTING_DEMO_PRODUCT = {
+  image:
+    'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop',
+  title: 'Gypsum Board',
+  description: 'Lightweight panels for interior walls.',
+  minOrderLabel: 'Min ord 10 pcs',
+  priceText: 'Price: $10 per sheet',
+}
+
+function ProductListingCardPreview({ variantId }) {
+  const withActions = variantId === 'with-actions'
+  const isCompany = variantId === 'default'
+  const role = isCompany ? 'company' : 'customer'
+  const product = isCompany ? COMPANY_LISTING_DEMO_PRODUCT : LISTING_CARD_DEMO_PRODUCT
+  return (
+    <div className="max-w-xs">
+      <ProductListingCard
+        product={product}
+        role={role}
+        showQuantity={withActions ? false : undefined}
+        actions={
+          withActions
+            ? [
+                {
+                  id: 'view_details',
+                  kind: 'full',
+                  label: 'View Details',
+                  variant: 'primary',
+                },
+              ]
+            : []
+        }
+        onAction={() => {}}
+      />
+    </div>
+  )
+}
+
 /* ─── Product Details ───────────────────────────────────────────── */
 
 const PRODUCT_DETAILS_VARIANTS = {
@@ -693,6 +743,7 @@ function PanelProfilePreview({ variantId }) {
     'transporter',
     'factory',
     'supplier',
+    'customer',
   ].includes(variantId)
     ? variantId
     : 'admin'
@@ -703,6 +754,7 @@ function PanelProfilePreview({ variantId }) {
     transporter: DEMO_PANEL_PROFILE_TRANSPORTER,
     factory: DEMO_PANEL_PROFILE_FACTORY,
     supplier: DEMO_PANEL_PROFILE_SUPPLIER,
+    customer: DEMO_PANEL_PROFILE_CUSTOMER,
   }
 
   return (
@@ -818,6 +870,40 @@ function MessengerPreview({ variantId }) {
   )
 }
 
+/* ─── Pagination ────────────────────────────────────────────────── */
+
+function PaginationPreview({ variantId }) {
+  const config = useMemo(() => {
+    switch (variantId) {
+      case 'start':
+        return { page: 2, totalPages: 28 }
+      case 'end':
+        return { page: 27, totalPages: 28 }
+      case 'few':
+        return { page: 2, totalPages: 4 }
+      case 'middle':
+      default:
+        return { page: 5, totalPages: 28 }
+    }
+  }, [variantId])
+
+  const [page, setPage] = useState(config.page)
+
+  useEffect(() => {
+    setPage(config.page)
+  }, [config.page])
+
+  return (
+    <div className="flex w-full justify-center py-8">
+      <Pagination
+        page={page}
+        totalPages={config.totalPages}
+        onPageChange={setPage}
+      />
+    </div>
+  )
+}
+
 /* ─── Router ────────────────────────────────────────────────────── */
 
 /** Live preview for a catalog component id (+ optional variantId) */
@@ -838,6 +924,10 @@ export default function ComponentPreview({ previewId, variantId }) {
     case 'product-card':
       return (
         <ProductCardPreview variantId={variantId || 'normal-customer'} />
+      )
+    case 'product-listing-card':
+      return (
+        <ProductListingCardPreview variantId={variantId || 'customer'} />
       )
     case 'product-details':
       return (
@@ -869,6 +959,8 @@ export default function ComponentPreview({ previewId, variantId }) {
       )
     case 'messenger':
       return <MessengerPreview variantId={variantId || 'inbox'} />
+    case 'pagination':
+      return <PaginationPreview variantId={variantId || 'middle'} />
     default:
       return (
         <p className="text-sm text-[var(--secondary-text)]">

@@ -1170,3 +1170,39 @@ export const DEMO_PANEL_PROFILE_AFFILIATE = {
   phone: '+1 (555) 440-5566',
   warehouses: [],
 }
+
+const DEMO_BUYER_ADDRESS_BASE = {
+  firstName: 'Kevin',
+  lastName: 'Gilbert',
+  companyName: '',
+  address: 'Road No. 13/x, House no. 1320/C, Flat No. 5D',
+  region: 'lisbon',
+  city: 'lisbon-city',
+  zipCode: '1207',
+  phone: '+1-202-555-0118',
+}
+
+export const DEMO_PANEL_PROFILE_CUSTOMER = {
+  firstName: 'Kevin',
+  lastName: '',
+  email: 'customer@gmail.com',
+  phone: '+1-202-555-0118',
+  region: 'lisbon',
+  city: 'lisbon-city',
+  zipCode: '1000',
+  address: 'Road No. 13/x, House no. 1320/C, Flat No. 5D',
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  iban: '',
+  ibanPhone: '',
+  avatarUrl: null,
+  billingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    email: 'customer@example.com',
+  },
+  shippingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    email: 'customer@gmail.com',
+  },
+}

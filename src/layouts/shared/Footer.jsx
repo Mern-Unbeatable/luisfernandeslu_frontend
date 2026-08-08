@@ -29,16 +29,16 @@ const footerColumnDefs = [
     links: [
       { labelKey: 'footer.helpCenter', href: '#' },
       { labelKey: 'footer.dispute', href: '/dispute-resolution' },
-      { labelKey: 'footer.returns', href: '#' },
+      { labelKey: 'footer.returns', href: '/return-policy' },
       { labelKey: 'footer.complaintBook', href: '#' },
     ],
   },
   {
     titleKey: 'footer.legal',
     links: [
-      { labelKey: 'footer.terms', href: '#' },
-      { labelKey: 'footer.privacy', href: '#' },
-      { labelKey: 'footer.returnPolicy', href: '#' },
+      { labelKey: 'footer.terms', href: '/terms-and-conditions' },
+      { labelKey: 'footer.privacy', href: '/privacy-policy' },
+      { labelKey: 'footer.returnPolicy', href: '/return-policy' },
     ],
   },
 ]

@@ -256,7 +256,22 @@
       "ibanPhonePlaceholderLong": "11+ caracteres",
       "saveIban": "GUARDAR",
       "showValue": "Mostrar valor",
-      "hideValue": "Ocultar valor"
+      "hideValue": "Ocultar valor",
+      "subtitleBuyer": "Atualize os seus dados, palavra-passe e moradas de entrega.",
+      "accountSetting": "Definições da conta",
+      "firstName": "Nome",
+      "lastName": "Apelido",
+      "lastNamePlaceholder": "Nome a apresentar",
+      "region": "Região/Distrito",
+      "city": "Cidade",
+      "zipCode": "Código postal",
+      "streetAddress": "Morada",
+      "passwordMinPlaceholder": "8+ caracteres",
+      "ibanPhoneEurope": "Número de telefone (número europeu)",
+      "billingAddress": "Morada de faturação",
+      "shippingAddress": "Morada de envio",
+      "companyOptional": "Nome da empresa (opcional)",
+      "changePasswordUpper": "ALTERAR PALAVRA-PASSE"
     }
   },
   "auth": {
@@ -447,6 +462,377 @@
     "introAfter": ".",
     "placeholderComingSoon": "Página de {{title}} — conteúdo em breve."
   },
+  "returnPolicyPage": {
+    "seoTitle": "Política de devoluções e reembolsos",
+    "seoDescription": "Regras de devolução e reembolso de encomendas na CONSTRUPRECO.",
+    "title": "Política de devoluções e reembolsos",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "overview": {
+        "title": "1. Visão geral",
+        "paragraphs": [
+          "Esta política descreve em que condições os produtos comprados no nosso marketplace podem ser devolvidos ou reembolsados. Devido à natureza dos materiais de construção e encomendas a granel, aplicam-se regras específicas."
+        ]
+      },
+      "eligibility": {
+        "title": "2. Elegibilidade para devolução",
+        "blocks": [
+          {
+            "heading": "Os produtos podem ser elegíveis para devolução se:",
+            "items": [
+              "O artigo chegar danificado",
+              "For entregue o produto errado",
+              "O produto não corresponder à descrição"
+            ]
+          },
+          {
+            "heading": "Para ser elegível:",
+            "items": [
+              "O pedido de devolução deve ser enviado dentro de 3–7 dias após a entrega",
+              "O produto deve estar por usar e nas condições originais",
+              "Deve ser fornecida prova (fotos/vídeos)"
+            ]
+          }
+        ]
+      },
+      "nonReturnable": {
+        "title": "3. Artigos não devolvíveis",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Materiais usados ou parcialmente usados",
+              "Materiais a granel após entrega (ex.: areia, cimento, agregados)",
+              "Produtos personalizados ou por encomenda",
+              "Betão pronto após entrega",
+              "Produtos danificados por manuseamento inadequado do cliente"
+            ]
+          }
+        ]
+      },
+      "process": {
+        "title": "4. Processo de pedido de devolução",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Aceda a A Minha Conta → Encomendas",
+              "Selecione a encomenda relevante",
+              "Clique em \"Pedir devolução\"",
+              "Indique o motivo e carregue provas"
+            ]
+          }
+        ]
+      },
+      "approval": {
+        "title": "5. Aprovação e rejeição",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os fornecedores analisam o pedido e aprovam ou rejeitam",
+              "Pode ser pedida informação adicional",
+              "A plataforma pode intervir em caso de disputa"
+            ]
+          }
+        ]
+      },
+      "refund": {
+        "title": "6. Processo de reembolso",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Reembolsos aprovados são processados para o método de pagamento original",
+              "Podem demorar 5–14 dias úteis após aprovação",
+              "Reembolsos parciais podem aplicar-se se só parte da encomenda for devolvida",
+              "Encomendas a prestações seguem as regras do financiador quando aplicável"
+            ]
+          }
+        ]
+      },
+      "shippingCosts": {
+        "title": "7. Custos de envio",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os custos de devolução dependem do motivo e da política do fornecedor",
+              "Em caso de erro ou dano do fornecedor, o envio de devolução pode ser coberto",
+              "Devoluções iniciadas pelo cliente podem exigir transporte à custa do comprador",
+              "Materiais volumosos podem exigir recolha especial — confirmada após aprovação"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "privacyPolicyPage": {
+    "seoTitle": "Política de privacidade",
+    "seoDescription": "Como a CONSTRUPRECO recolhe, utiliza e protege os seus dados pessoais.",
+    "title": "Política de privacidade",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introdução",
+        "paragraphs": [
+          "Estamos empenhados em proteger a sua privacidade. Esta política explica como recolhemos, utilizamos, armazenamos e protegemos a sua informação quando usa a nossa plataforma."
+        ]
+      },
+      "informationWeCollect": {
+        "title": "2. Informação que recolhemos",
+        "blocks": [
+          {
+            "heading": "a) Informação pessoal",
+            "items": [
+              "Nome",
+              "Endereço de email",
+              "Número de telefone",
+              "Dados da empresa (utilizadores empresariais)",
+              "Morada de faturação e envio"
+            ]
+          },
+          {
+            "heading": "b) Informação da conta",
+            "items": [
+              "Credenciais de acesso (encriptadas)",
+              "Detalhes do perfil",
+              "Histórico de encomendas"
+            ]
+          },
+          {
+            "heading": "c) Informação de transações",
+            "items": [
+              "Dados de pagamento (processados de forma segura)",
+              "Dados de compras e encomendas"
+            ]
+          },
+          {
+            "heading": "d) Informação técnica",
+            "items": [
+              "Endereço IP",
+              "Tipo de browser",
+              "Informação do dispositivo",
+              "Cookies e dados de utilização"
+            ]
+          }
+        ]
+      },
+      "howWeUse": {
+        "title": "3. Como utilizamos a sua informação",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Processar encomendas e transações",
+              "Prestar apoio ao cliente",
+              "Melhorar o desempenho e a experiência na plataforma",
+              "Enviar atualizações e notificações de encomendas",
+              "Prevenir fraude e garantir segurança"
+            ]
+          }
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Segurança dos dados",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Implementamos medidas técnicas e organizacionais para proteger os seus dados",
+              "O acesso a dados pessoais é limitado a pessoal autorizado",
+              "Nenhum sistema é 100% seguro — use palavras-passe fortes e proteja a sua conta"
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "title": "5. Cookies e rastreamento",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Melhorar a experiência do utilizador",
+              "Recordar preferências",
+              "Analisar tráfego do site"
+            ]
+          }
+        ]
+      },
+      "dataSharing": {
+        "title": "6. Partilha de dados",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Podemos partilhar dados com fornecedores e transportadores para cumprir encomendas",
+              "Processadores de pagamento recebem apenas os dados necessários",
+              "Não vendemos a sua informação pessoal a terceiros",
+              "Podemos divulgar dados quando exigido por lei"
+            ]
+          }
+        ]
+      },
+      "userRights": {
+        "title": "7. Direitos do utilizador",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Solicitar acesso aos seus dados pessoais",
+              "Solicitar correção de informação inexata",
+              "Solicitar eliminação quando aplicável por lei",
+              "Opor-se ou restringir certos tratamentos",
+              "Retirar consentimento quando o tratamento se baseia no consentimento"
+            ]
+          }
+        ]
+      },
+      "dataRetention": {
+        "title": "8. Conservação de dados",
+        "paragraphs": [
+          "Conservamos dados pessoais apenas pelo tempo necessário para prestar serviços, cumprir obrigações legais, resolver disputas e fazer cumprir acordos. Registos de conta e encomendas podem ser mantidos pelos prazos legais aplicáveis."
+        ]
+      },
+      "policyUpdates": {
+        "title": "9. Atualizações da política",
+        "paragraphs": [
+          "Podemos atualizar esta política periodicamente. A data «Última atualização» no topo desta página será alterada. A utilização continuada da plataforma após alterações constitui aceitação da política atualizada."
+        ]
+      },
+      "contact": {
+        "title": "10. Contacte-nos",
+        "paragraphs": [
+          "Para questões de privacidade ou para exercer os seus direitos, contacte privacy@construpreco.com ou o Centro de Ajuda no rodapé do site."
+        ]
+      }
+    }
+  },
+  "termsPage": {
+    "seoTitle": "Termos e condições gerais",
+    "seoDescription": "Termos e condições de utilização do marketplace CONSTRUPRECO.",
+    "title": "Termos e condições gerais",
+    "lastUpdated": "Última atualização 09 março, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introdução",
+        "paragraphs": [
+          "Estes Termos e Condições Gerais regem o seu acesso e utilização do marketplace CONSTRUPRECO. Ao registar-se, navegar ou efetuar uma encomenda, concorda com estes termos."
+        ]
+      },
+      "useOfPlatform": {
+        "title": "2. Utilização da plataforma",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "A plataforma liga compradores, fornecedores, transportadores e outros utilizadores empresariais",
+              "Deve utilizar o serviço de forma lícita e de boa-fé",
+              "Podemos atualizar funcionalidades, políticas ou disponibilidade com aviso razoável quando exigido"
+            ]
+          }
+        ]
+      },
+      "accounts": {
+        "title": "3. Contas e registo",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Deve fornecer informações de registo e perfil corretas",
+              "É responsável por proteger as suas credenciais de acesso",
+              "Contas empresariais podem exigir verificação adicional (ex.: empresa ou NIF)",
+              "Podemos suspender contas que violem estes termos ou a lei aplicável"
+            ]
+          }
+        ]
+      },
+      "productInformation": {
+        "title": "4. Informação de produtos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Descrições, especificações e preços são fornecidos pelos fornecedores",
+              "A plataforma não garante a exatidão mas facilita a transação",
+              "Os fornecedores são responsáveis pela conformidade e qualidade dos produtos"
+            ]
+          }
+        ]
+      },
+      "ordersPayments": {
+        "title": "5. Encomendas e pagamentos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "As encomendas só são confirmadas após pagamento bem-sucedido ou aprovação (no caso de crédito)",
+              "A plataforma suporta vários métodos de pagamento via gateways seguros",
+              "Os preços podem variar consoante quantidade, entrega ou condições do fornecedor"
+            ]
+          }
+        ]
+      },
+      "deliveryLogistics": {
+        "title": "6. Entrega e logística",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os prazos de entrega são estimativas e podem variar consoante localização e tipo de produto",
+              "O transporte pode ser efetuado por transportadores terceiros",
+              "A plataforma não é responsável por atrasos causados por circunstâncias imprevistas"
+            ]
+          }
+        ]
+      },
+      "returnsRefunds": {
+        "title": "7. Devoluções e reembolsos",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Os pedidos de devolução devem ser enviados dentro do prazo indicado",
+              "Os produtos devem estar por usar e em condição original, salvo defeito",
+              "Os reembolsos são processados após aprovação e verificação pelo fornecedor"
+            ]
+          }
+        ]
+      },
+      "b2bCredit": {
+        "title": "8. Transações B2B e condições de crédito",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Clientes empresariais podem solicitar cotações e condições de crédito (30/60/90 dias)",
+              "A aprovação de crédito depende da avaliação do fornecedor",
+              "Pagamentos em atraso podem resultar em penalizações ou suspensão de serviços"
+            ]
+          }
+        ]
+      },
+      "prohibitedActivities": {
+        "title": "9. Atividades proibidas",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Fornecer informação falsa",
+              "Envolver-se em transações fraudulentas",
+              "Abusar da plataforma ou tentar perturbar os serviços"
+            ]
+          }
+        ]
+      },
+      "contact": {
+        "title": "10. Informações de contacto",
+        "paragraphs": [
+          "Para questões sobre estes Termos e Condições, contacte-nos através dos nossos canais de apoio ou do Centro de Ajuda no rodapé do site."
+        ]
+      }
+    }
+  },
   "seo": {
     "homeTitle": "Início",
     "homeDescription": "CONSTRUPRECO — compre materiais de construção online com entrega rápida em Portugal.",
@@ -466,6 +852,12 @@
     "cartDescription": "Revise e atualize o seu carrinho na CONSTRUPRECO.",
     "disputeResolutionTitle": "Resolução de disputas",
     "disputeResolutionDescription": "Acompanhe e resolva disputas de encomendas no CONSTRUPRECO.",
+    "returnPolicyTitle": "Política de devoluções e reembolsos",
+    "returnPolicyDescription": "Regras de devolução e reembolso na CONSTRUPRECO.",
+    "privacyPolicyTitle": "Política de privacidade",
+    "privacyPolicyDescription": "Como a CONSTRUPRECO trata os seus dados pessoais.",
+    "termsTitle": "Termos e condições gerais",
+    "termsDescription": "Termos e condições de utilização da CONSTRUPRECO.",
     "buyerDashboardTitle": "A Minha Conta",
     "buyerDashboardDescription": "Faça a gestão da sua conta, encomendas e projetos no CONSTRUPRECO.",
     "buyerOrdersTitle": "Encomendas",

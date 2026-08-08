@@ -256,7 +256,22 @@
       "ibanPhonePlaceholderLong": "11+ characters",
       "saveIban": "SAVE",
       "showValue": "Show value",
-      "hideValue": "Hide value"
+      "hideValue": "Hide value",
+      "subtitleBuyer": "Update your personal details, password, and delivery addresses.",
+      "accountSetting": "Account Setting",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Display name",
+      "region": "Region/State",
+      "city": "City",
+      "zipCode": "Zip Code",
+      "streetAddress": "Address",
+      "passwordMinPlaceholder": "8+ characters",
+      "ibanPhoneEurope": "Phone number (Europe number)",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "companyOptional": "Company Name (Optional)",
+      "changePasswordUpper": "CHANGE PASSWORD"
     }
   },
   "auth": {
@@ -514,6 +529,377 @@
     "introAfter": ".",
     "placeholderComingSoon": "{{title}} page — content coming soon."
   },
+  "returnPolicyPage": {
+    "seoTitle": "Return & Refund Policy",
+    "seoDescription": "Read CONSTRUPRECO return, refund and eligibility rules for construction materials.",
+    "title": "Return & Refund Policy",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "overview": {
+        "title": "1. Overview",
+        "paragraphs": [
+          "This Return & Refund Policy outlines the conditions under which products purchased through our marketplace can be returned or refunded. Due to the nature of construction materials and bulk orders, specific rules apply."
+        ]
+      },
+      "eligibility": {
+        "title": "2. Return Eligibility",
+        "blocks": [
+          {
+            "heading": "Products may be eligible for return if:",
+            "items": [
+              "The item is damaged upon delivery",
+              "The wrong product was delivered",
+              "The product does not match the description"
+            ]
+          },
+          {
+            "heading": "To be eligible:",
+            "items": [
+              "The return request must be submitted within 3–7 days of delivery",
+              "The product must be unused and in its original condition",
+              "Proof (photos/videos) must be provided"
+            ]
+          }
+        ]
+      },
+      "nonReturnable": {
+        "title": "3. Non-Returnable Items",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Used or partially used materials",
+              "Bulk materials once delivered (e.g., sand, cement, aggregates)",
+              "Custom-made or made-to-order products",
+              "Ready-mix concrete after delivery",
+              "Products damaged due to improper handling by the customer"
+            ]
+          }
+        ]
+      },
+      "process": {
+        "title": "4. Return Request Process",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Go to My Account → Orders",
+              "Select the relevant order",
+              "Click \"Request Return\"",
+              "Provide reason and upload supporting evidence"
+            ]
+          }
+        ]
+      },
+      "approval": {
+        "title": "5. Approval & Rejection",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Suppliers will review the request and either approve or reject it",
+              "Additional information may be requested if necessary",
+              "The platform may intervene in case of disputes"
+            ]
+          }
+        ]
+      },
+      "refund": {
+        "title": "6. Refund Process",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Approved refunds are processed to the original payment method",
+              "Refunds may take 5–14 business days after approval",
+              "Partial refunds may apply if only part of an order is returned",
+              "Installment or financed orders follow the same lender rules where applicable"
+            ]
+          }
+        ]
+      },
+      "shippingCosts": {
+        "title": "7. Shipping Costs",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Return shipping costs depend on the reason for return and supplier policy",
+              "If the return is due to supplier error or damage, return shipping may be covered",
+              "Customer-initiated returns may require the buyer to arrange and pay for transport",
+              "Bulk or heavy materials may need special collection — details are confirmed after approval"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "privacyPolicyPage": {
+    "seoTitle": "Privacy Policy",
+    "seoDescription": "How CONSTRUPRECO collects, uses and protects your personal data.",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "paragraphs": [
+          "We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, store and safeguard your information when you use our marketplace platform."
+        ]
+      },
+      "informationWeCollect": {
+        "title": "2. Information We Collect",
+        "blocks": [
+          {
+            "heading": "a) Personal Information",
+            "items": [
+              "Name",
+              "Email address",
+              "Phone number",
+              "Company details (for business users)",
+              "Billing and shipping address"
+            ]
+          },
+          {
+            "heading": "b) Account Information",
+            "items": [
+              "Login credentials (encrypted)",
+              "Profile details",
+              "Order history"
+            ]
+          },
+          {
+            "heading": "c) Transaction Information",
+            "items": [
+              "Payment details (processed securely via payment gateway)",
+              "Purchase and order data"
+            ]
+          },
+          {
+            "heading": "d) Technical Information",
+            "items": [
+              "IP address",
+              "Browser type",
+              "Device information",
+              "Cookies and usage data"
+            ]
+          }
+        ]
+      },
+      "howWeUse": {
+        "title": "3. How We Use Your Information",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Process orders and transactions",
+              "Provide customer support",
+              "Improve platform performance and user experience",
+              "Send order updates and notifications",
+              "Prevent fraud and ensure security"
+            ]
+          }
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Data Security",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "We implement technical and organizational measures to protect your data",
+              "Access to personal data is restricted to authorized personnel",
+              "No system is 100% secure — use strong passwords and protect your account"
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "title": "5. Cookies & Tracking",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Improve user experience",
+              "Remember preferences",
+              "Analyze site traffic"
+            ]
+          }
+        ]
+      },
+      "dataSharing": {
+        "title": "6. Data Sharing",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "We may share data with suppliers and transporters to fulfil orders",
+              "Payment processors receive only the data needed to complete transactions",
+              "We do not sell your personal information to third parties",
+              "We may disclose data when required by law or to protect our rights"
+            ]
+          }
+        ]
+      },
+      "userRights": {
+        "title": "7. User Rights",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Request access to your personal data",
+              "Request correction of inaccurate information",
+              "Request deletion where applicable under law",
+              "Object to or restrict certain processing",
+              "Withdraw consent where processing is consent-based"
+            ]
+          }
+        ]
+      },
+      "dataRetention": {
+        "title": "8. Data Retention",
+        "paragraphs": [
+          "We retain personal data only as long as necessary to provide our services, comply with legal obligations, resolve disputes and enforce agreements. Account and order records may be kept for statutory periods required for tax and commercial law."
+        ]
+      },
+      "policyUpdates": {
+        "title": "9. Policy Updates",
+        "paragraphs": [
+          "We may update this Privacy Policy from time to time. The “Last update” date at the top of this page will change when we do. Continued use of the platform after changes constitutes acceptance of the updated policy."
+        ]
+      },
+      "contact": {
+        "title": "10. Contact Us",
+        "paragraphs": [
+          "For privacy-related questions or to exercise your rights, contact us at privacy@construpreco.com or through the Help Center in the site footer."
+        ]
+      }
+    }
+  },
+  "termsPage": {
+    "seoTitle": "General Terms & Conditions",
+    "seoDescription": "Terms and conditions for using the CONSTRUPRECO marketplace.",
+    "title": "General Terms & Conditions",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "paragraphs": [
+          "These General Terms & Conditions govern your access to and use of the CONSTRUPRECO marketplace. By registering, browsing or placing an order, you agree to these terms."
+        ]
+      },
+      "useOfPlatform": {
+        "title": "2. Use of the Platform",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "The platform connects buyers, suppliers, transporters and other business users",
+              "You must use the service lawfully and in good faith",
+              "We may update features, policies or availability with reasonable notice where required"
+            ]
+          }
+        ]
+      },
+      "accounts": {
+        "title": "3. Accounts & Registration",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "You must provide accurate registration and profile information",
+              "You are responsible for safeguarding your login credentials",
+              "Business accounts may require additional verification (e.g. company or VAT details)",
+              "We may suspend accounts that violate these terms or applicable law"
+            ]
+          }
+        ]
+      },
+      "productInformation": {
+        "title": "4. Product Information",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "All product descriptions, specifications, and prices are provided by suppliers",
+              "The platform does not guarantee the accuracy but facilitates the transaction",
+              "Suppliers are responsible for ensuring product compliance and quality"
+            ]
+          }
+        ]
+      },
+      "ordersPayments": {
+        "title": "5. Orders & Payments",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Orders are confirmed only after successful payment or approval (in case of credit)",
+              "The platform supports multiple payment methods via secure payment gateways",
+              "Prices may vary based on quantity, delivery, or supplier terms"
+            ]
+          }
+        ]
+      },
+      "deliveryLogistics": {
+        "title": "6. Delivery & Logistics",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Delivery timelines are estimated and may vary depending on location and product type",
+              "Transport may be handled by third-party transporters",
+              "The platform is not liable for delays caused by unforeseen circumstances"
+            ]
+          }
+        ]
+      },
+      "returnsRefunds": {
+        "title": "7. Returns & Refunds",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Return requests must be submitted within the specified return period",
+              "Products must be unused and in original condition unless defective",
+              "Refunds will be processed after approval and verification by the supplier"
+            ]
+          }
+        ]
+      },
+      "b2bCredit": {
+        "title": "8. B2B Transactions & Credit Terms",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Business customers may request quotations and credit terms (30/60/90 days)",
+              "Credit approval is subject to supplier evaluation",
+              "Late payments may result in penalties or suspension of services"
+            ]
+          }
+        ]
+      },
+      "prohibitedActivities": {
+        "title": "9. Prohibited Activities",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Provide false information",
+              "Engage in fraudulent transactions",
+              "Misuse the platform or attempt to disrupt services"
+            ]
+          }
+        ]
+      },
+      "contact": {
+        "title": "10. Contact Information",
+        "paragraphs": [
+          "For any questions regarding these Terms & Conditions, please contact us through our support channels or the Help Center linked in the site footer."
+        ]
+      }
+    }
+  },
   "seo": {
     "homeTitle": "Home",
     "homeDescription": "CONSTRUPRECO — shop building materials online with fast delivery across Portugal.",
@@ -533,6 +919,12 @@
     "cartDescription": "Review and update your cart on CONSTRUPRECO.",
     "disputeResolutionTitle": "Dispute resolution",
     "disputeResolutionDescription": "Track and resolve order disputes on CONSTRUPRECO.",
+    "returnPolicyTitle": "Return & Refund Policy",
+    "returnPolicyDescription": "Return and refund rules for orders on CONSTRUPRECO.",
+    "privacyPolicyTitle": "Privacy Policy",
+    "privacyPolicyDescription": "How CONSTRUPRECO handles your personal data.",
+    "termsTitle": "General Terms & Conditions",
+    "termsDescription": "Terms and conditions for using CONSTRUPRECO.",
     "buyerDashboardTitle": "My Account",
     "buyerDashboardDescription": "Manage your CONSTRUPRECO account, orders and projects.",
     "buyerOrdersTitle": "Orders",
