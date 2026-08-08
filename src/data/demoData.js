@@ -558,6 +558,23 @@ export const DEMO_AUCTION_LIVE = {
   ],
 }
 
+export const DEMO_AUCTION_ENDED = {
+  id: 'auc-002',
+  auctionId: 'AUC-002',
+  title: 'TMT Steel Rods (12mm)',
+  quantity: '200 rods (12m each)',
+  pickupLocation: 'Tata Steel Depot, Turbhe',
+  deliveryLocation: 'Residential Project, Kharghar',
+  distance: '32 km',
+  status: 'ended',
+  bids: [
+    { id: 'b1', amount: 285, label: 'Just now' },
+    { id: 'b2', amount: 290, label: '1 min ago' },
+    { id: 'b3', amount: 310, label: '3 min ago' },
+    { id: 'b4', amount: 295, label: '2 min ago', isYou: true },
+  ],
+}
+
 // ── Auction details ───────────────────────────────────────────────
 export const DEMO_AUCTION_DETAILS_ACTIVE = {
   id: 'auc-det-001',
@@ -1169,40 +1186,4 @@ export const DEMO_PANEL_PROFILE_AFFILIATE = {
   email: 'affiliate@demo.com',
   phone: '+1 (555) 440-5566',
   warehouses: [],
-}
-
-const DEMO_BUYER_ADDRESS_BASE = {
-  firstName: 'Kevin',
-  lastName: 'Gilbert',
-  companyName: '',
-  address: 'Road No. 13/x, House no. 1320/C, Flat No. 5D',
-  region: 'lisbon',
-  city: 'lisbon-city',
-  zipCode: '1207',
-  phone: '+1-202-555-0118',
-}
-
-export const DEMO_PANEL_PROFILE_CUSTOMER = {
-  firstName: 'Kevin',
-  lastName: '',
-  email: 'customer@gmail.com',
-  phone: '+1-202-555-0118',
-  region: 'lisbon',
-  city: 'lisbon-city',
-  zipCode: '1000',
-  address: 'Road No. 13/x, House no. 1320/C, Flat No. 5D',
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-  iban: '',
-  ibanPhone: '',
-  avatarUrl: null,
-  billingAddress: {
-    ...DEMO_BUYER_ADDRESS_BASE,
-    email: 'customer@example.com',
-  },
-  shippingAddress: {
-    ...DEMO_BUYER_ADDRESS_BASE,
-    email: 'customer@gmail.com',
-  },
 }
