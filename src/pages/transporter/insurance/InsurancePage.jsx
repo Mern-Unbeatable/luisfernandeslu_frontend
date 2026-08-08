@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import { FiCheckCircle, FiShield, FiUpload } from "react-icons/fi";
 import PolicyListSection from "./sections/PolicyListSection";
+import UploadInsuranceModal from './sections/UploadInsuranceModal'
 
 export default function InsurancePage() {
+  const [showUploadModal, setShowUploadModal] = useState(false)
+
   const policies = [
     {
       id: "pol-001",
@@ -35,6 +39,7 @@ export default function InsurancePage() {
         </div>
         <button
           type="button"
+          onClick={() => setShowUploadModal(true)}
           className="inline-flex items-center gap-2 self-start rounded-xl bg-[var(--active)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 sm:self-auto"
         >
           <FiUpload className="size-4" />
@@ -96,6 +101,13 @@ export default function InsurancePage() {
 
       {/* Policy Details List */}
       <PolicyListSection policies={policies} />
+
+      {/* Upload Insurance Modal */}
+      <UploadInsuranceModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onSubmit={() => setShowUploadModal(false)}
+      />
     </div>
   );
 }
