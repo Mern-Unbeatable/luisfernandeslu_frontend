@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import VerifyDeliverySection from './sections/VerifyDeliverySection'
 
 export default function AssignDeliveriesPage() {
   const [filter, setFilter] = useState('All Deliveries')
   const [selectedDelivery, setSelectedDelivery] = useState(null)
+  const [verifyingDelivery, setVerifyingDelivery] = useState(null)
 
   // Initialize mock deliveries representing the three main status steps
   const initialDeliveries = [
@@ -80,10 +82,19 @@ export default function AssignDeliveriesPage() {
     )
   }
 
-  const handleVerifyDelivery = (item) => {
-    setDeliveries((prev) =>
-      prev.map((d) => (d.id === item.id ? { ...d, status: 'delivered' } : d))
-    )
+  const handleVerifyDeliveryClick = (item) => {
+    setVerifyingDelivery(item)
+  }
+
+  const handleVerifyComplete = () => {
+    if (verifyingDelivery) {
+      setDeliveries((prev) =>
+        prev.map((d) =>
+          d.id === verifyingDelivery.id ? { ...d, status: 'delivered' } : d
+        )
+      )
+      setVerifyingDelivery(null)
+    }
   }
 
   const handleSeeDetails = (item) => {
@@ -102,7 +113,7 @@ export default function AssignDeliveriesPage() {
       product: {
         name: item.title,
         sku: 'EXC-HD-2024',
-        quantity: item.title.includes('Cement') ? '500 bags (50kg each)' : item.title.includes('Steel') ? '200 rods (12m each)' : '5000 bricks',
+        quantity: item.title.includes('Cement') ? '500 bags (50kg each)' : item.title.includes('Steel') ? '200 rods (12m each)' : '10,000 pieces',
         weight: '25000 kg',
         price: item.price,
       },
@@ -124,6 +135,17 @@ export default function AssignDeliveriesPage() {
     if (filter === 'Delivered') return d.status === 'delivered'
     return true // 'All Deliveries'
   })
+
+  // Render Verify Delivery view if active
+  if (verifyingDelivery) {
+    return (
+      <VerifyDeliverySection
+        delivery={verifyingDelivery}
+        onCancel={() => setVerifyingDelivery(null)}
+        onComplete={handleVerifyComplete}
+      />
+    )
+  }
 
   // Render detail view if clicked
   if (selectedDelivery) {
@@ -170,7 +192,7 @@ export default function AssignDeliveriesPage() {
         onStartTrip={handleStartTrip}
         onMarkPickedUp={handleMarkPickedUp}
         onNavigateToDelivery={handleNavigateToDelivery}
-        onVerifyDelivery={handleVerifyDelivery}
+        onVerifyDelivery={handleVerifyDeliveryClick}
         onSeeDetails={handleSeeDetails}
       />
     </div>
