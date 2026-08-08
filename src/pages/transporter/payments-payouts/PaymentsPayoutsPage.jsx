@@ -1,5 +1,6 @@
 import StatsSection from './sections/StatsSection'
 import RevenueSection from './sections/RevenueSection'
+import HistorySection from './sections/HistorySection'
 
 export default function PaymentsPayoutsPage() {
   return (
@@ -19,6 +20,9 @@ export default function PaymentsPayoutsPage() {
 
       {/* Row 2: Revenue Overview Chart */}
       <RevenueSection />
+
+      {/* Row 3: Transaction History Table */}
+      <HistorySection />
     </div>
   )
 }
