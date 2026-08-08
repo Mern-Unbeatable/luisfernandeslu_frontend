@@ -841,6 +841,7 @@ function DeliveryTimelinePreview({ variantId }) {
     items = DEMO_DELIVERY_TIMELINE_ITEMS.filter((x) => x.status === 'delivered')
   }
 
+  
   return (
     <DeliveryTimeline
       items={items}
