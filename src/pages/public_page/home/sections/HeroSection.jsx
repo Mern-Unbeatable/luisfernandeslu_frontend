@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -14,12 +14,29 @@ import { HERO_FEATURES, HERO_SLIDES } from '../data/heroSlides'
 /** Figma: badge = saturated orange; CTA = golden amber (both pill, white bold text). */
 const HERO_BADGE_BG = '#F64C00'
 const HERO_CTA_BG = '#FFB020'
+const HERO_AUTOPLAY_MS = 6000
 
 const FEATURE_ICONS = {
   package: FiPackage,
   trophy: FiAward,
   card: FiCreditCard,
   headset: FiHeadphones,
+}
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => setReduced(media.matches)
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [])
+
+  return reduced
 }
 
 function HeroFeatureIcon({ name }) {
@@ -40,41 +57,101 @@ function slideCopy(t, slideId) {
 
 export default function HeroSection() {
   const { t } = useTranslation()
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
+  const [hoverPaused, setHoverPaused] = useState(false)
+  const [hiddenPaused, setHiddenPaused] = useState(false)
   const slide = HERO_SLIDES[activeIndex]
   const copy = slideCopy(t, slide.id)
   const slideCount = HERO_SLIDES.length
 
-  const goTo = (index) => {
-    if (index < 0) setActiveIndex(slideCount - 1)
-    else if (index >= slideCount) setActiveIndex(0)
-    else setActiveIndex(index)
-  }
+  const goToSlide = useCallback(
+    (index) => {
+      setActiveIndex(((index % slideCount) + slideCount) % slideCount)
+    },
+    [slideCount],
+  )
+
+  const goNext = useCallback(() => {
+    goToSlide(activeIndex + 1)
+  }, [activeIndex, goToSlide])
+
+  const goPrev = useCallback(() => {
+    goToSlide(activeIndex - 1)
+  }, [activeIndex, goToSlide])
+
+  useEffect(() => {
+    const onVisibility = () => {
+      setHiddenPaused(document.visibilityState !== 'visible')
+    }
+    onVisibility()
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
+
+  useEffect(() => {
+    if (prefersReducedMotion || hoverPaused || hiddenPaused || slideCount <= 1) {
+      return undefined
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % slideCount)
+    }, HERO_AUTOPLAY_MS)
+
+    return () => window.clearInterval(timer)
+  }, [
+    activeIndex,
+    hiddenPaused,
+    hoverPaused,
+    prefersReducedMotion,
+    slideCount,
+  ])
+
+  const autoplayPaused = hoverPaused || hiddenPaused
 
   return (
     <section className="w-full bg-[#FEF5E7] pb-4 pt-5 sm:pt-6 ">
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="relative">
-          <div className="relative overflow-hidden rounded-lg sm:h-95 lg:h-120">
-            {HERO_SLIDES.map((item, index) => (
-              <div
-                key={item.id}
-                className={[
-                  'absolute inset-0 bg-cover bg-center transition-opacity duration-500',
-                  index === activeIndex ? 'opacity-100' : 'pointer-events-none opacity-0',
-                ].join(' ')}
-                style={{ backgroundImage: `url(${item.image})` }}
-                aria-hidden={index !== activeIndex}
-              />
-            ))}
+          <div
+            className="relative overflow-hidden rounded-lg sm:h-95 lg:h-120"
+            onMouseEnter={() => setHoverPaused(true)}
+            onMouseLeave={() => setHoverPaused(false)}
+            onFocusCapture={() => setHoverPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setHoverPaused(false)
+              }
+            }}
+          >
+            {HERO_SLIDES.map((item, index) => {
+              const isActive = index === activeIndex
+              return (
+                <div
+                  key={item.id}
+                  className={[
+                    'hero-slide-bg absolute inset-0 bg-cover bg-center',
+                    isActive ? 'opacity-100' : 'pointer-events-none opacity-0',
+                    isActive && !prefersReducedMotion
+                      ? 'hero-slide-bg-active'
+                      : '',
+                  ].join(' ')}
+                  style={{ backgroundImage: `url(${item.image})` }}
+                  aria-hidden={!isActive}
+                />
+              )
+            })}
 
             <div
-              className="absolute inset-0 bg-linear-to-r from-black/80 via-black/70 to-black/40 sm:from-black/80 sm:via-black/70 sm:to-black/40"
+              className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/80 via-black/70 to-black/40 sm:from-black/80 sm:via-black/70 sm:to-black/40"
               aria-hidden
             />
 
             <div className="relative z-10 flex flex-col px-6 pt-6 pb-5 sm:absolute sm:inset-0 sm:justify-center sm:px-12 sm:pb-14 sm:pt-8 lg:pl-20 lg:pr-24 lg:pb-16">
-              <div className="flex flex-col sm:min-h-0 sm:flex-1 sm:justify-center">
+              <div
+                key={slide.id}
+                className="hero-slide-content-enter flex flex-col sm:min-h-0 sm:flex-1 sm:justify-center"
+              >
                 <span
                   className="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 font-['Barlow',sans-serif] text-[11px] font-semibold leading-none text-white sm:mb-4 sm:px-4 sm:py-1.5 sm:text-sm sm:font-bold"
                   style={{ backgroundColor: HERO_BADGE_BG }}
@@ -110,10 +187,12 @@ export default function HeroSection() {
                     type="button"
                     aria-label={t('home.hero.goToSlide', { n: index + 1 })}
                     aria-current={index === activeIndex ? 'true' : undefined}
-                    onClick={() => goTo(index)}
+                    onClick={() => goToSlide(index)}
                     className={[
-                      'size-2.5 rounded-full transition-colors',
-                      index === activeIndex ? 'bg-[#FFB020]' : 'bg-white',
+                      'size-2.5 rounded-full transition-[transform,background-color] duration-300',
+                      index === activeIndex
+                        ? 'scale-110 bg-[#FFB020]'
+                        : 'bg-white/90 hover:bg-white',
                     ].join(' ')}
                   />
                 ))}
@@ -127,19 +206,36 @@ export default function HeroSection() {
                   type="button"
                   aria-label={t('home.hero.goToSlide', { n: index + 1 })}
                   aria-current={index === activeIndex ? 'true' : undefined}
-                  onClick={() => goTo(index)}
+                  onClick={() => goToSlide(index)}
                   className={[
-                    'size-2.5 rounded-full transition-colors',
-                    index === activeIndex ? 'bg-[#FFB020]' : 'bg-white',
+                    'size-2.5 rounded-full transition-[transform,background-color] duration-300',
+                    index === activeIndex
+                      ? 'scale-110 bg-[#FFB020]'
+                      : 'bg-white/90 hover:bg-white',
                   ].join(' ')}
                 />
               ))}
             </div>
+
+            {!prefersReducedMotion && !autoplayPaused ? (
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-0.5 origin-left bg-white/25"
+                aria-hidden
+              >
+                <div
+                  key={`progress-${activeIndex}`}
+                  className="h-full origin-left bg-[#FFB020]"
+                  style={{
+                    animation: `hero-progress ${HERO_AUTOPLAY_MS}ms linear forwards`,
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
 
           <button
             type="button"
-            onClick={() => goTo(activeIndex - 1)}
+            onClick={goPrev}
             aria-label={t('home.hero.prevSlide')}
             className="absolute top-1/2 left-0 z-30 hidden size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[var(--primary-text)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-gray-50 sm:inline-flex"
           >
@@ -147,7 +243,7 @@ export default function HeroSection() {
           </button>
           <button
             type="button"
-            onClick={() => goTo(activeIndex + 1)}
+            onClick={goNext}
             aria-label={t('home.hero.nextSlide')}
             className="absolute top-1/2 right-0 z-30 hidden size-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[var(--primary-text)] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition hover:bg-gray-50 sm:inline-flex"
           >
