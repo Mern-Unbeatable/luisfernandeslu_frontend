@@ -197,19 +197,28 @@
       "slides": {
         "hero-1": {
           "badge": "Entrega rápida",
-          "titleLines": ["Poupe mais em", "encomendas em volume"],
+          "titleLines": [
+            "Poupe mais em",
+            "encomendas em volume"
+          ],
           "description": "Preços especiais para grandes quantidades. Ideal para empreiteiros e construtores.",
           "ctaLabel": "Pedir orçamento em volume"
         },
         "hero-2": {
           "badge": "Entrega rápida",
-          "titleLines": ["Materiais de qualidade para", "cada projeto"],
+          "titleLines": [
+            "Materiais de qualidade para",
+            "cada projeto"
+          ],
           "description": "Cimento, aço e ferramentas de fornecedores verificados em toda a região.",
           "ctaLabel": "Comprar agora"
         },
         "hero-3": {
           "badge": "Entrega rápida",
-          "titleLines": ["Feito para empreiteiros", "e construtores"],
+          "titleLines": [
+            "Feito para empreiteiros",
+            "e construtores"
+          ],
           "description": "Encomendas simplificadas, preços em volume e entrega fiável na obra.",
           "ctaLabel": "Pedir orçamento em volume"
         }
@@ -791,7 +800,10 @@
         "items": [
           "Como pedir uma devolução",
           "Critérios de elegibilidade para devolução",
-          { "label": "Métodos e estado do reembolso", "href": "/return-policy" },
+          {
+            "label": "Métodos e estado do reembolso",
+            "href": "/return-policy"
+          },
           "Produtos não returnáveis"
         ]
       },

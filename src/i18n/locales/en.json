@@ -197,19 +197,28 @@
       "slides": {
         "hero-1": {
           "badge": "Fast Delivery",
-          "titleLines": ["Save More on Bulk", "Orders"],
+          "titleLines": [
+            "Save More on Bulk",
+            "Orders"
+          ],
           "description": "Special pricing for large quantity orders. Perfect for contractors & builders.",
           "ctaLabel": "Get Bulk Quote"
         },
         "hero-2": {
           "badge": "Fast Delivery",
-          "titleLines": ["Quality Materials for", "Every Project"],
+          "titleLines": [
+            "Quality Materials for",
+            "Every Project"
+          ],
           "description": "Source cement, steel, and tools from verified suppliers across the region.",
           "ctaLabel": "Shop Now"
         },
         "hero-3": {
           "badge": "Fast Delivery",
-          "titleLines": ["Built for Contractors", "& Builders"],
+          "titleLines": [
+            "Built for Contractors",
+            "& Builders"
+          ],
           "description": "Streamlined ordering, bulk pricing, and reliable delivery to your job site.",
           "ctaLabel": "Get Bulk Quote"
         }
@@ -858,7 +867,10 @@
         "items": [
           "How to request a return",
           "Return eligibility criteria",
-          { "label": "Refund methods and status", "href": "/return-policy" },
+          {
+            "label": "Refund methods and status",
+            "href": "/return-policy"
+          },
           "Non-returnable products"
         ]
       },
