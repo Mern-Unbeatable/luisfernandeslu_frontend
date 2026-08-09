@@ -1517,5 +1517,48 @@
       "amount": "Importe",
       "date": "Fecha"
     }
+  },
+  "affiliateOverview": {
+    "title": "Panel de ganancias de afiliados",
+    "subtitle": "Monitorea el rendimiento y maximiza las ganancias.",
+    "cards": {
+      "totalReferredClient": "Total de clientes referidos",
+      "activeClient": "Cliente activo",
+      "pendingCommissions": "Comisiones pendientes",
+      "paidCommission": "Comisión pagada",
+      "totalEarnings": "Ganancias totales"
+    },
+    "tier": {
+      "label": "Estado del nivel activo",
+      "tierName": "Nivel Starter",
+      "headline": "¡Recibes una comisión del 5%!",
+      "description": "Sigue invitando clientes para desbloquear niveles superiores con comisiones aún mayores.",
+      "progressLabel": "Progreso al nivel Bronze (10%)",
+      "clients": "{{current}}/{{target}} clientes",
+      "helpText": "Necesitas {{count}} clientes activos más para alcanzar el nivel Bronze."
+    },
+    "earningAnalytics": {
+      "title": "Análisis de ganancias",
+      "subtitle": "Seguimiento de ganancias",
+      "filterAria": "Filtro del período de análisis de ganancias"
+    },
+    "filters": {
+      "thisYear": "Este año",
+      "lastYear": "El año pasado"
+    },
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    }
   }
 }

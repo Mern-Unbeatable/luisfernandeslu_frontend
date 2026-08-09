@@ -1517,5 +1517,48 @@
       "amount": "Montante",
       "date": "Data"
     }
+  },
+  "affiliateOverview": {
+    "title": "Painel de ganhos de afiliados",
+    "subtitle": "Monitorize o desempenho e maximize os ganhos.",
+    "cards": {
+      "totalReferredClient": "Total de clientes referidos",
+      "activeClient": "Cliente ativo",
+      "pendingCommissions": "Comissões pendentes",
+      "paidCommission": "Comissão paga",
+      "totalEarnings": "Ganhos totais"
+    },
+    "tier": {
+      "label": "Estado do nível ativo",
+      "tierName": "Nível Starter",
+      "headline": "Recebe uma taxa de comissão de 5%!",
+      "description": "Continue a convidar clientes para desbloquear níveis superiores com comissões ainda maiores.",
+      "progressLabel": "Progresso para o nível Bronze (10%)",
+      "clients": "{{current}}/{{target}} clientes",
+      "helpText": "Precisa de mais {{count}} clientes ativos para alcançar o nível Bronze."
+    },
+    "earningAnalytics": {
+      "title": "Análise de ganhos",
+      "subtitle": "Acompanhar ganhos",
+      "filterAria": "Filtro do período da análise de ganhos"
+    },
+    "filters": {
+      "thisYear": "Este ano",
+      "lastYear": "Ano passado"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Set",
+      "oct": "Out",
+      "nov": "Nov",
+      "dec": "Dez"
+    }
   }
 }

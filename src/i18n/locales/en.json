@@ -1586,5 +1586,48 @@
       "amount": "Amount",
       "date": "Date"
     }
+  },
+  "affiliateOverview": {
+    "title": "Affiliate Earnings Dashboard",
+    "subtitle": "Monitor performance and maximize earnings.",
+    "cards": {
+      "totalReferredClient": "Total Referred Client",
+      "activeClient": "Active Client",
+      "pendingCommissions": "Pending Commissions",
+      "paidCommission": "Paid Commission",
+      "totalEarnings": "Total Earnings"
+    },
+    "tier": {
+      "label": "Active Tier Status",
+      "tierName": "Starter Level",
+      "headline": "You receive a 5% commission rate!",
+      "description": "Keep inviting customers to unlock higher tiers with even higher commission rates.",
+      "progressLabel": "Progress to Bronze Level (10%)",
+      "clients": "{{current}}/{{target}} Clients",
+      "helpText": "You need {{count}} more active clients to reach Bronze Level."
+    },
+    "earningAnalytics": {
+      "title": "Earning Analytics",
+      "subtitle": "Track earning",
+      "filterAria": "Earning analytics period filter"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "July",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
   }
 }
