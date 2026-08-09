@@ -1,5 +1,4 @@
 import {
-  FiAward,
   FiCreditCard,
   FiDollarSign,
   FiTrendingUp,
@@ -7,11 +6,44 @@ import {
   FiUserPlus,
 } from 'react-icons/fi'
 import StatusCard from '@/components/data-display/StatusCard'
+import ActiveTierStatus from './ActiveTierStatus'
+import EarningAnalytics from './EarningAnalytics'
 
-const PROGRESS_CURRENT = 12
-const PROGRESS_TARGET = 100
-const PROGRESS_PERCENT = Math.round((PROGRESS_CURRENT / PROGRESS_TARGET) * 100)
-const CLIENTS_NEEDED = PROGRESS_TARGET - PROGRESS_CURRENT
+const TIER_STATUS = {
+  label: 'Active Tier Status',
+  tierName: 'Starter Level',
+  headline: 'You receive a 5% commission rate!',
+  description:
+    'Keep inviting customers to unlock higher tiers with even higher commission rates.',
+  progressLabel: 'Progress to Bronze Level (10%)',
+  currentClients: 12,
+  targetClients: 100,
+  helpText: 'You need 88 more active clients to reach Bronze Level.',
+}
+
+const EARNING_LABELS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'July',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]
+
+const EARNING_SERIES = {
+  'This year': [
+    0, 250, 600, 900, 1500, 1700, 1600, 1000, 500, 400, 1400, 1500,
+  ],
+  'Last year': [
+    120, 300, 480, 720, 980, 1250, 1180, 900, 650, 780, 1100, 1320,
+  ],
+}
 
 export default function OverviewDashboardPage() {
   return (
@@ -63,55 +95,25 @@ export default function OverviewDashboardPage() {
         />
       </div>
 
-      {/* Active Tier Status — design image 2 */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex min-w-0 items-start gap-4">
-            <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[var(--active)]">
-              <FiAward className="size-5" strokeWidth={1.75} aria-hidden />
-            </span>
+      <ActiveTierStatus
+        label={TIER_STATUS.label}
+        tierName={TIER_STATUS.tierName}
+        headline={TIER_STATUS.headline}
+        description={TIER_STATUS.description}
+        progressLabel={TIER_STATUS.progressLabel}
+        currentClients={TIER_STATUS.currentClients}
+        targetClients={TIER_STATUS.targetClients}
+        helpText={TIER_STATUS.helpText}
+      />
 
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-xs font-medium tracking-wide text-[var(--secondary-text)] uppercase">
-                  Active Tier Status
-                </p>
-                <span className="inline-flex rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-[var(--primary-text)]">
-                  Starter Level
-                </span>
-              </div>
-              <p className="mt-2 text-xl font-bold text-[var(--primary-text)] sm:text-2xl">
-                You receive a 5% commission rate!
-              </p>
-              <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                Keep inviting customers to unlock higher tiers with even higher
-                commission rates.
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full shrink-0 rounded-xl border border-gray-100 bg-gray-50 p-4 lg:max-w-md">
-            <div className="flex items-center justify-between gap-3 text-sm text-[var(--secondary-text)]">
-              <span>Progress to Bronze Level (10%)</span>
-              <span>
-                {PROGRESS_CURRENT}/{PROGRESS_TARGET} Clients
-              </span>
-            </div>
-
-            <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
-              <div
-                className="h-full rounded-full bg-[var(--primary-text)]"
-                style={{ width: `${PROGRESS_PERCENT}%` }}
-              />
-            </div>
-
-            <p className="mt-3 text-sm text-[var(--secondary-text)] italic">
-              You need {CLIENTS_NEEDED} more active clients to reach Bronze
-              Level.
-            </p>
-          </div>
-        </div>
-      </div>
+      <EarningAnalytics
+        title="Earning Analytics"
+        subtitle="Track earning"
+        labels={EARNING_LABELS}
+        series={EARNING_SERIES}
+        filterOptions={['This year', 'Last year']}
+        defaultFilter="This year"
+      />
     </div>
   )
 }

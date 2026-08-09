@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { FiChevronDown, FiFilter } from 'react-icons/fi'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
+import Pagination from '@/components/common/Pagination/Pagination'
 import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
+
+const PAGE_SIZE = 12
 
 const PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80'
@@ -376,6 +379,7 @@ function toCardProduct(payload, previous = {}) {
 
 export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all')
+  const [page, setPage] = useState(1)
   const [products, setProducts] = useState(DUMMY_PRODUCTS)
   const [formMode, setFormMode] = useState(null)
   const [editingProduct, setEditingProduct] = useState(null)
@@ -387,10 +391,17 @@ export default function ProductsPage() {
     rejected: products.filter((p) => p.status === 'rejected').length,
   }
 
-  const visibleProducts =
+  const filteredProducts =
     activeTab === 'all'
       ? products
       : products.filter((p) => p.status === activeTab)
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const visibleProducts = filteredProducts.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  )
 
   const closeForm = () => {
     setFormMode(null)
@@ -485,7 +496,10 @@ export default function ProductsPage() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id)
+                  setPage(1)
+                }}
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                   isActive
                     ? 'bg-[var(--active)] text-white'
@@ -523,6 +537,12 @@ export default function ProductsPage() {
           />
         ))}
       </div>
+
+      <Pagination
+        page={safePage}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </div>
   )
 }

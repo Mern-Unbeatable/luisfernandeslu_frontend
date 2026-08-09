@@ -2,6 +2,7 @@ import { useState } from 'react'
 import AuctionCard from '@/components/data-display/AuctionCard'
 import AuctionDetails from '@/components/data-display/AuctionDetails'
 import CreateAuction from '@/components/forms/CreateAuction'
+import Pagination from '@/components/common/Pagination/Pagination'
 import {
   DEMO_AUCTION_ASSIGNED,
   DEMO_AUCTION_CREATED,
@@ -9,6 +10,8 @@ import {
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
 } from '@/data/demoData'
+
+const PAGE_SIZE = 6
 
 const ACTIVE_AUCTIONS = [
   DEMO_AUCTION_CREATED,
@@ -199,8 +202,30 @@ function buildDetailsAuction(auction) {
 export default function DeliveryLogisticsPage() {
   const [activeAuctions, setActiveAuctions] = useState(ACTIVE_AUCTIONS)
   const [assignedDeliveries] = useState(ASSIGNED_DELIVERIES)
+  const [activePage, setActivePage] = useState(1)
+  const [assignedPage, setAssignedPage] = useState(1)
   const [view, setView] = useState('list')
   const [selectedAuction, setSelectedAuction] = useState(null)
+
+  const activeTotalPages = Math.max(
+    1,
+    Math.ceil(activeAuctions.length / PAGE_SIZE),
+  )
+  const assignedTotalPages = Math.max(
+    1,
+    Math.ceil(assignedDeliveries.length / PAGE_SIZE),
+  )
+  const safeActivePage = Math.min(activePage, activeTotalPages)
+  const safeAssignedPage = Math.min(assignedPage, assignedTotalPages)
+
+  const pagedActiveAuctions = activeAuctions.slice(
+    (safeActivePage - 1) * PAGE_SIZE,
+    safeActivePage * PAGE_SIZE,
+  )
+  const pagedAssignedDeliveries = assignedDeliveries.slice(
+    (safeAssignedPage - 1) * PAGE_SIZE,
+    safeAssignedPage * PAGE_SIZE,
+  )
 
   const openDetails = (auction) => {
     setSelectedAuction(auction)
@@ -223,6 +248,7 @@ export default function DeliveryLogisticsPage() {
       status: 'open',
     }
     setActiveAuctions((prev) => [next, ...prev])
+    setActivePage(1)
     setView('list')
   }
 
@@ -282,7 +308,7 @@ export default function DeliveryLogisticsPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {activeAuctions.map((auction) => (
+          {pagedActiveAuctions.map((auction) => (
             <AuctionCard
               key={auction.id}
               role="factory"
@@ -292,6 +318,12 @@ export default function DeliveryLogisticsPage() {
             />
           ))}
         </div>
+
+        <Pagination
+          page={safeActivePage}
+          totalPages={activeTotalPages}
+          onPageChange={setActivePage}
+        />
       </section>
 
       <section className="space-y-4">
@@ -305,7 +337,7 @@ export default function DeliveryLogisticsPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {assignedDeliveries.map((auction) => (
+          {pagedAssignedDeliveries.map((auction) => (
             <AuctionCard
               key={auction.id}
               role="factory"
@@ -315,6 +347,12 @@ export default function DeliveryLogisticsPage() {
             />
           ))}
         </div>
+
+        <Pagination
+          page={safeAssignedPage}
+          totalPages={assignedTotalPages}
+          onPageChange={setAssignedPage}
+        />
       </section>
     </div>
   )
