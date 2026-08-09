@@ -1431,5 +1431,49 @@
     "details": {
       "back": "Back"
     }
+  },
+  "factoryDashboard": {
+    "title": "Dashboard Overview",
+    "subtitle": "Welcome back! Here's what's happening with your factory today.",
+    "cards": {
+      "totalOrders": "Total Orders",
+      "pendingOrders": "Pending Orders",
+      "completedOrders": "Completed Orders",
+      "totalRevenue": "Total Revenue",
+      "adminCommission": "Admin Commission",
+      "adminCommissionDesc": "20% per order"
+    },
+    "revenueOverview": {
+      "title": "Revenue Overview",
+      "subtitle": "Monthly revenue for the last 6 months",
+      "filterAria": "Revenue period filter"
+    },
+    "orderStatus": {
+      "title": "Order Status",
+      "filterAria": "Order status period filter",
+      "completed": "Completed",
+      "inProduction": "In Production",
+      "pending": "Pending"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year",
+      "thisMonth": "This month",
+      "thisWeek": "This week"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
   }
 }

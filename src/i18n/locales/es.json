@@ -1362,5 +1362,49 @@
     "details": {
       "back": "Volver"
     }
+  },
+  "factoryDashboard": {
+    "title": "Resumen del panel",
+    "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",
+    "cards": {
+      "totalOrders": "Pedidos totales",
+      "pendingOrders": "Pedidos pendientes",
+      "completedOrders": "Pedidos completados",
+      "totalRevenue": "Ingresos totales",
+      "adminCommission": "Comisión admin",
+      "adminCommissionDesc": "20% por pedido"
+    },
+    "revenueOverview": {
+      "title": "Resumen de ingresos",
+      "subtitle": "Ingresos mensuales de los últimos 6 meses",
+      "filterAria": "Filtro del período de ingresos"
+    },
+    "orderStatus": {
+      "title": "Estado de pedidos",
+      "filterAria": "Filtro del período del estado de pedidos",
+      "completed": "Completados",
+      "inProduction": "En producción",
+      "pending": "Pendientes"
+    },
+    "filters": {
+      "thisYear": "Este año",
+      "lastYear": "El año pasado",
+      "thisMonth": "Este mes",
+      "thisWeek": "Esta semana"
+    },
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    }
   }
 }

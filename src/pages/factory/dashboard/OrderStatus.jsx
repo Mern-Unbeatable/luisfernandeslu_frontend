@@ -5,14 +5,23 @@ import { ArcElement, Chart as ChartJS, Tooltip } from 'chart.js'
 
 ChartJS.register(ArcElement, Tooltip)
 
+function getFilterValue(option) {
+  return typeof option === 'string' ? option : option.value
+}
+
+function getFilterLabel(option) {
+  return typeof option === 'string' ? option : option.label
+}
+
 export default function OrderStatus({
   title = 'Order Status',
+  filterAriaLabel = 'Order status period filter',
   series = {},
   filterOptions = ['This month', 'This week'],
   defaultFilter,
 }) {
   const [filter, setFilter] = useState(
-    defaultFilter || filterOptions[0] || 'This month',
+    defaultFilter || getFilterValue(filterOptions[0]) || 'This month',
   )
 
   const items = series[filter] || Object.values(series)[0] || []
@@ -59,13 +68,16 @@ export default function OrderStatus({
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
             className="h-9 cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
-            aria-label="Order status period filter"
+            aria-label={filterAriaLabel}
           >
-            {filterOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {filterOptions.map((option) => {
+              const value = getFilterValue(option)
+              return (
+                <option key={value} value={value}>
+                  {getFilterLabel(option)}
+                </option>
+              )
+            })}
           </select>
           <FiChevronDown
             className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
@@ -81,7 +93,7 @@ export default function OrderStatus({
       <ul className="mt-6 space-y-3">
         {items.map((item) => (
           <li
-            key={item.label}
+            key={item.key || item.label}
             className="flex items-center justify-between gap-3 text-sm"
           >
             <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">

@@ -22,16 +22,25 @@ ChartJS.register(
 
 const BRAND = '#DF900A'
 
+function getFilterValue(option) {
+  return typeof option === 'string' ? option : option.value
+}
+
+function getFilterLabel(option) {
+  return typeof option === 'string' ? option : option.label
+}
+
 export default function RevenueOverview({
   title = 'Revenue Overview',
   subtitle = 'Monthly revenue for the last 6 months',
+  filterAriaLabel = 'Revenue period filter',
   labels = [],
   series = {},
   filterOptions = ['This year', 'Last year'],
   defaultFilter,
 }) {
   const [filter, setFilter] = useState(
-    defaultFilter || filterOptions[0] || 'This year',
+    defaultFilter || getFilterValue(filterOptions[0]) || 'This year',
   )
 
   const values = series[filter] || Object.values(series)[0] || []
@@ -140,13 +149,16 @@ export default function RevenueOverview({
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
             className="h-9 w-full max-w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:w-auto"
-            aria-label="Revenue period filter"
+            aria-label={filterAriaLabel}
           >
-            {filterOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {filterOptions.map((option) => {
+              const value = getFilterValue(option)
+              return (
+                <option key={value} value={value}>
+                  {getFilterLabel(option)}
+                </option>
+              )
+            })}
           </select>
           <FiChevronDown
             className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
