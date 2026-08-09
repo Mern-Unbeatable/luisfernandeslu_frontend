@@ -11,7 +11,10 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Seo title={t('panel.profile.title')} />
+      <Seo
+        title={t('panel.profile.title')}
+        description={t('panel.profile.subtitle')}
+      />
       <PanelProfile role="admin" defaultValue={profile} />
     </>
   )

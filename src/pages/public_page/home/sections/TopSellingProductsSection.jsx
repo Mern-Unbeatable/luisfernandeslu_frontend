@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useCallback, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import ProductListingCard from '@/components/data-display/ProductListingCard/ProductListingCard'
+import StorefrontProductListingCell from '../../components/StorefrontProductListingCell'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
+import useHomeSectionPagination from '../hooks/useHomeSectionPagination'
 import HomeStatsBar from './HomeStatsBar'
 import {
   TOP_SELLING_PAGE_SIZE,
@@ -14,11 +15,19 @@ import {
 
 export default function TopSellingProductsSection() {
   const { t } = useTranslation()
-  const [page, setPage] = useState(1)
+  const { page, changePage, anchorRef } = useHomeSectionPagination(1)
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
   const listingRole = resolveStorefrontBuyerRole(user)
-  const isCompanyBuyer = listingRole === 'company'
+
+  const totalPages = Math.max(
+    1,
+    Math.min(
+      TOP_SELLING_TOTAL_PAGES,
+      Math.ceil(TOP_SELLING_PRODUCTS.length / TOP_SELLING_PAGE_SIZE),
+    ),
+  )
+  const safePage = Math.min(page, totalPages)
 
   const handleListingAction = useCallback(
     (actionId, product) => {
@@ -34,9 +43,9 @@ export default function TopSellingProductsSection() {
   )
 
   const visibleProducts = useMemo(() => {
-    const start = (page - 1) * TOP_SELLING_PAGE_SIZE
+    const start = (safePage - 1) * TOP_SELLING_PAGE_SIZE
     return TOP_SELLING_PRODUCTS.slice(start, start + TOP_SELLING_PAGE_SIZE)
-  }, [page])
+  }, [safePage])
 
   return (
     <section className="w-full bg-[#F9FAFB] py-10 sm:py-12">
@@ -44,44 +53,30 @@ export default function TopSellingProductsSection() {
         <HomeStatsBar />
 
         <div>
-          <h2 className="mb-6 text-xl font-bold text-(--primary-text) sm:mb-8 sm:text-2xl">
+          <h2
+            ref={anchorRef}
+            className="mb-6 scroll-mt-[8.5rem] text-xl font-bold text-(--primary-text) sm:mb-8 sm:scroll-mt-[10rem] sm:text-2xl"
+          >
             {t('home.topSellingTitle')}
           </h2>
 
           <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
-            {visibleProducts.map((product) => {
-              const card = (
-                <ProductListingCard
+            {visibleProducts.map((product) => (
+              <li key={product.id} className="flex min-w-0">
+                <StorefrontProductListingCell
                   product={product}
                   role={listingRole}
-                  actions={isCompanyBuyer ? [] : undefined}
                   onAction={handleListingAction}
-                  className="h-full w-full"
                 />
-              )
-
-              return (
-                <li key={product.id} className="flex min-w-0">
-                  {isCompanyBuyer ? (
-                    <Link
-                      to={`/products/${product.slug}`}
-                      className="flex min-w-0 flex-1"
-                    >
-                      {card}
-                    </Link>
-                  ) : (
-                    card
-                  )}
-                </li>
-              )
-            })}
+              </li>
+            ))}
           </ul>
 
           <Pagination
             className="mt-8 sm:mt-10"
-            page={page}
-            totalPages={TOP_SELLING_TOTAL_PAGES}
-            onPageChange={setPage}
+            page={safePage}
+            totalPages={totalPages}
+            onPageChange={changePage}
           />
         </div>
       </div>
