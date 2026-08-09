@@ -1714,5 +1714,41 @@
       "closeOverlay": "Close overlay",
       "close": "Close"
     }
+  },
+  "affiliateLevels": {
+    "title": "Affiliate Levels",
+    "subtitle": "Unlock new tiers and enjoy greater rewards as your referrals grow.",
+    "gamifiedAchievements": "Gamified Achievements",
+    "tierStatusTitle": "Affiliate Tier Status",
+    "tierStatusDescription": "As your referred client base grows, you automatically advance to higher tiers and unlock better commission splits!",
+    "activeReferrals": "Active referrals:",
+    "clientsCount": "{{count}} clients",
+    "progressToBronze": "Progress to Bronze Level",
+    "helpText": "You need {{count}} more clients to unlock the 10% commission spot!",
+    "active": "Active",
+    "commissionSplit": "Commission Split",
+    "commissionSplitDesc": "Recurring Lifetime payout split",
+    "tiers": {
+      "starter": {
+        "name": "Starter Level",
+        "requirement": "ENTRY LEVEL TIER"
+      },
+      "bronze": {
+        "name": "Bronze Level",
+        "requirement": "100+ Active Clients Required"
+      },
+      "silver": {
+        "name": "Silver Level",
+        "requirement": "200+ Active Clients Required"
+      },
+      "gold": {
+        "name": "Gold Level",
+        "requirement": "300+ Active Clients Required"
+      },
+      "premium": {
+        "name": "Premium Level",
+        "requirement": "500+ Active Clients Required"
+      }
+    }
   }
 }

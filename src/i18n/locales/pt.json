@@ -1645,5 +1645,41 @@
       "closeOverlay": "Fechar sobreposição",
       "close": "Fechar"
     }
+  },
+  "affiliateLevels": {
+    "title": "Níveis de afiliados",
+    "subtitle": "Desbloqueie novos níveis e aproveite maiores recompensas à medida que as suas referências crescem.",
+    "gamifiedAchievements": "Conquistas gamificadas",
+    "tierStatusTitle": "Estado do nível de afiliado",
+    "tierStatusDescription": "À medida que a sua base de clientes referidos cresce, avança automaticamente para níveis superiores e desbloqueia melhores comissões!",
+    "activeReferrals": "Referências ativas:",
+    "clientsCount": "{{count}} clientes",
+    "progressToBronze": "Progresso para o nível Bronze",
+    "helpText": "Precisa de mais {{count}} clientes para desbloquear a comissão de 10%!",
+    "active": "Ativo",
+    "commissionSplit": "Divisão de comissão",
+    "commissionSplitDesc": "Divisão de pagamento recorrente vitalício",
+    "tiers": {
+      "starter": {
+        "name": "Nível Starter",
+        "requirement": "NÍVEL DE ENTRADA"
+      },
+      "bronze": {
+        "name": "Nível Bronze",
+        "requirement": "São necessários 100+ clientes ativos"
+      },
+      "silver": {
+        "name": "Nível Silver",
+        "requirement": "São necessários 200+ clientes ativos"
+      },
+      "gold": {
+        "name": "Nível Gold",
+        "requirement": "São necessários 300+ clientes ativos"
+      },
+      "premium": {
+        "name": "Nível Premium",
+        "requirement": "São necessários 500+ clientes ativos"
+      }
+    }
   }
 }
