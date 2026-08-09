@@ -1406,5 +1406,30 @@
       "nov": "Nov",
       "dec": "Dez"
     }
+  },
+  "factoryProducts": {
+    "title": "Gestão de produtos",
+    "subtitle": "Faça a gestão do seu catálogo de produtos para venda a clientes.",
+    "addProduct": "Adicionar produto",
+    "uploadCsv": "Carregar ficheiro CSV",
+    "filters": "Filtros:",
+    "allCategories": "Todas as categorias",
+    "tabs": {
+      "all": "Todos",
+      "active": "Ativos",
+      "pending": "Pendentes",
+      "rejected": "Rejeitados"
+    },
+    "form": {
+      "addTitle": "Adicionar produto",
+      "editTitle": "Editar produto",
+      "addBreadcrumb": "Produto > Adicionar produto",
+      "editBreadcrumb": "Produto > Editar produto",
+      "submit": "Submeter",
+      "update": "Atualizar"
+    },
+    "priceText": "Preço: {{price}} por saco (50 kg)",
+    "priceFallback": "Preço: —",
+    "untitled": "Sem título"
   }
 }

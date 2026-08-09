@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiChevronDown, FiFilter } from 'react-icons/fi'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
@@ -283,12 +284,7 @@ const DUMMY_PRODUCTS = [
   },
 ]
 
-const TABS = [
-  { id: 'all', label: 'All' },
-  { id: 'active', label: 'Active' },
-  { id: 'pending', label: 'Pending' },
-  { id: 'rejected', label: 'Rejected' },
-]
+const TAB_IDS = ['all', 'active', 'pending', 'rejected']
 
 const CSV_HEADERS = [
   'id',
@@ -352,10 +348,10 @@ function toFormValue(product) {
   }
 }
 
-function toCardProduct(payload, previous = {}) {
+function toCardProduct(payload, previous = {}, t) {
   const price = payload.basePrice
-    ? `Price: ${payload.basePrice} per bag (50 kg)`
-    : previous.priceText || 'Price: —'
+    ? t('factoryProducts.priceText', { price: payload.basePrice })
+    : previous.priceText || t('factoryProducts.priceFallback')
 
   const image =
     typeof payload.bannerImage === 'string'
@@ -364,7 +360,7 @@ function toCardProduct(payload, previous = {}) {
 
   return {
     ...previous,
-    title: payload.title || previous.title || 'Untitled',
+    title: payload.title || previous.title || t('factoryProducts.untitled'),
     description: payload.description || '',
     priceText: price,
     image,
@@ -378,6 +374,7 @@ function toCardProduct(payload, previous = {}) {
 }
 
 export default function ProductsPage() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
   const [page, setPage] = useState(1)
   const [products, setProducts] = useState(DUMMY_PRODUCTS)
@@ -413,7 +410,7 @@ export default function ProductsPage() {
       setProducts((prev) =>
         prev.map((item) =>
           item.id === editingProduct.id
-            ? toCardProduct(payload, item)
+            ? toCardProduct(payload, item, t)
             : item,
         ),
       )
@@ -423,7 +420,7 @@ export default function ProductsPage() {
         {
           id: Date.now(),
           status: 'pending',
-          ...toCardProduct(payload),
+          ...toCardProduct(payload, {}, t),
         },
       ])
     }
@@ -446,9 +443,21 @@ export default function ProductsPage() {
         defaultValue={
           isEdit ? toFormValue(editingProduct) : DEMO_FACTORY_PRODUCT
         }
-        title={isEdit ? 'Edit Product' : 'Add Product'}
-        breadcrumb={isEdit ? 'Product > Edit Product' : 'Product > Add Product'}
-        submitLabel={isEdit ? 'Update' : 'Submit'}
+        title={
+          isEdit
+            ? t('factoryProducts.form.editTitle')
+            : t('factoryProducts.form.addTitle')
+        }
+        breadcrumb={
+          isEdit
+            ? t('factoryProducts.form.editBreadcrumb')
+            : t('factoryProducts.form.addBreadcrumb')
+        }
+        submitLabel={
+          isEdit
+            ? t('factoryProducts.form.update')
+            : t('factoryProducts.form.submit')
+        }
         onBack={closeForm}
         onSubmit={handleSubmit}
       />
@@ -460,10 +469,10 @@ export default function ProductsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-            Product Management
+            {t('factoryProducts.title')}
           </h1>
           <p className="mt-1 text-sm text-[var(--secondary-text)]">
-            Manage your product catalog for selling to customers.
+            {t('factoryProducts.subtitle')}
           </p>
         </div>
 
@@ -476,28 +485,28 @@ export default function ProductsPage() {
             }}
             className="rounded-full bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
           >
-            Add Product
+            {t('factoryProducts.addProduct')}
           </button>
           <button
             type="button"
             onClick={() => downloadProductsCsv(products)}
             className="rounded-full border border-[var(--active)] bg-white px-5 py-2.5 text-sm font-semibold text-[var(--active)] transition hover:bg-[#FFFBF5]"
           >
-            Upload CSV File
+            {t('factoryProducts.uploadCsv')}
           </button>
         </div>
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="inline-flex flex-wrap items-center gap-1 rounded-xl bg-white p-1 shadow-sm ring-1 ring-gray-100">
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.id
+          {TAB_IDS.map((tabId) => {
+            const isActive = activeTab === tabId
             return (
               <button
-                key={tab.id}
+                key={tabId}
                 type="button"
                 onClick={() => {
-                  setActiveTab(tab.id)
+                  setActiveTab(tabId)
                   setPage(1)
                 }}
                 className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
@@ -506,7 +515,7 @@ export default function ProductsPage() {
                     : 'text-[var(--secondary-text)] hover:bg-gray-50'
                 }`}
               >
-                {tab.label} ({counts[tab.id]})
+                {t(`factoryProducts.tabs.${tabId}`)} ({counts[tabId]})
               </button>
             )
           })}
@@ -514,12 +523,12 @@ export default function ProductsPage() {
 
         <div className="flex items-center gap-2 text-sm text-[var(--secondary-text)]">
           <FiFilter className="size-4 shrink-0" aria-hidden />
-          <span className="font-medium">Filters:</span>
+          <span className="font-medium">{t('factoryProducts.filters')}</span>
           <button
             type="button"
             className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-[var(--primary-text)]"
           >
-            All Categories
+            {t('factoryProducts.allCategories')}
             <FiChevronDown className="size-4 text-gray-400" aria-hidden />
           </button>
         </div>

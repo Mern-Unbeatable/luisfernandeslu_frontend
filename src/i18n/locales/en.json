@@ -1475,5 +1475,30 @@
       "nov": "Nov",
       "dec": "Dec"
     }
+  },
+  "factoryProducts": {
+    "title": "Product Management",
+    "subtitle": "Manage your product catalog for selling to customers.",
+    "addProduct": "Add Product",
+    "uploadCsv": "Upload CSV File",
+    "filters": "Filters:",
+    "allCategories": "All Categories",
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "form": {
+      "addTitle": "Add Product",
+      "editTitle": "Edit Product",
+      "addBreadcrumb": "Product > Add Product",
+      "editBreadcrumb": "Product > Edit Product",
+      "submit": "Submit",
+      "update": "Update"
+    },
+    "priceText": "Price: {{price}} per bag (50 kg)",
+    "priceFallback": "Price: —",
+    "untitled": "Untitled"
   }
 }
