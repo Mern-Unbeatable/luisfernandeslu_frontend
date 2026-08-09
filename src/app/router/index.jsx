@@ -556,51 +556,51 @@ export const router = createBrowserRouter([
             element: <PublicProducts />,
             handle: { seo: routeSeo.products },
           },
-          {
-            path: "/cart",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.cart },
-          },
+          // {
+          //   path: "/cart",
+          //   element: <ComingSoon hideTitle />,
+          //   handle: { seo: routeSeo.cart },
+          // },
           // {
           //   path: '/cart',
           //   element: <PublicCart />,
           //   handle: { seo: routeSeo.cart },
           // },
-          {
-            path: "/messages",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.messages },
-          },
+          // {
+          //   path: "/messages",
+          //   element: <ComingSoon hideTitle />,
+          //   handle: { seo: routeSeo.messages },
+          // },
           // {
           //   path: '/messages',
           //   element: <PublicMessages />,
           //   handle: { seo: routeSeo.messages },
           // },
-          {
-            path: "/order/confirmation",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.orderConfirmation },
-          },
+          // {
+          //   path: "/order/confirmation",
+          //   element: <ComingSoon hideTitle />,
+          //   handle: { seo: routeSeo.orderConfirmation },
+          // },
           // {
           //   path: '/order/confirmation',
           //   element: <OrderConfirmation />,
           //   handle: { seo: routeSeo.orderConfirmation },
           // },
-          {
-            path: "/checkout/company",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.companyCheckout },
-          },
+          // {
+          //   path: "/checkout/company",
+          //   element: <ComingSoon hideTitle />,
+          //   handle: { seo: routeSeo.companyCheckout },
+          // },
           // {
           //   path: '/checkout/company',
           //   element: <CompanyCheckout />,
           //   handle: { seo: routeSeo.companyCheckout },
           // },
-          {
-            path: "/checkout",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.userCheckout },
-          },
+          // {
+          //   path: "/checkout",
+          //   element: <ComingSoon hideTitle />,
+          //   handle: { seo: routeSeo.userCheckout },
+          // },
           // {
           //   path: '/checkout',
           //   element: <UserCheckout />,
@@ -651,10 +651,19 @@ export const router = createBrowserRouter([
             element: <ReturnOrderDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
+          {
+            path: "*",
+            element: <ComingSoon hideTitle />,
+            handle: { seo: routeSeo.notFound },
+          },
         ],
       },
 
-      /* Auth (guest only) */
+      /*
+      Remaining routes are intentionally commented out so only the requested public pages stay active.
+      Other paths will continue to fall back to the ComingSoon view.
+
+      // Auth (guest only)
       {
         element: <PublicRoute />,
         children: [
@@ -671,22 +680,6 @@ export const router = createBrowserRouter([
                 element: <Register />,
                 handle: { seo: routeSeo.signup },
               },
-              // {
-              //   path: "/admin/login",
-              //   element: <ComingSoon hideTitle />,
-              //   handle: { seo: routeSeo.login },
-              // },
-
-              // {
-              //   path: "/login",
-              //   element: <ComingSoon hideTitle />,
-              //   handle: { seo: routeSeo.login },
-              // },
-              // {
-              //   path: "/login/:role",
-              //   element: <ComingSoon hideTitle />,
-              //   handle: { seo: routeSeo.login },
-              // },
               {
                 path: "/login",
                 element: <RoleSelect />,
@@ -716,112 +709,12 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   element: <PublicRoute />,
-      //   children: [
-      //     {
-      //       element: <AuthLayout />,
-      //       children: [
-      //         {
-      //           path: "/signup",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.signup },
-      //         },
-      //         {
-      //           path: "/signup/:role",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.signup },
-      //         },
-      //         {
-      //           path: "/admin/login",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.login },
-      //         },
-      // {
-      //   path: "/login",
-      //   element: <RoleSelect />,
-      //   handle: { seo: routeSeo.login },
-      // },
-      // {
-      //   path: "/login/:role",
-      //   element: <Login />,
-      //   handle: { seo: routeSeo.login },
-      // },
-      //         {
-      //           path: "/forgot-password",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.forgotPassword },
-      //         },
-      //         {
-      //           path: "/forgot-password/otp",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.forgotPassword },
-      //         },
-      //         {
-      //           path: "/forgot-password/reset",
-      //           element: <ComingSoon hideTitle />,
-      //           handle: { seo: routeSeo.forgotPassword },
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      {
-        element: <PublicRoute />,
-        children: [
-          {
-            element: <AuthLayout />,
-            children: [
-              {
-                path: "/signup",
-                element: <RoleSelect />,
-                handle: { seo: routeSeo.signup },
-              },
-              {
-                path: "/signup/:role",
-                element: <Register />,
-                handle: { seo: routeSeo.signup },
-              },
-              {
-                path: "/admin/login",
-                element: <Login />,
-                handle: { seo: routeSeo.login },
-              },
-              {
-                path: "/login",
-                element: <RoleSelect />,
-                handle: { seo: routeSeo.login },
-              },
-              {
-                path: "/login/:role",
-                element: <Login />,
-                handle: { seo: routeSeo.login },
-              },
-              {
-                path: "/forgot-password",
-                element: <ForgotPassword />,
-                handle: { seo: routeSeo.forgotPassword },
-              },
-              {
-                path: "/forgot-password/otp",
-                element: <OtpVerification />,
-                handle: { seo: routeSeo.forgotPassword },
-              },
-              {
-                path: "/forgot-password/reset",
-                element: <ResetPassword />,
-                handle: { seo: routeSeo.forgotPassword },
-              },
-            ],
-          },
-        ],
-      },
 
-      /* Developer docs */
+      // Developer docs
       { path: "/developer", element: <Developer /> },
       { path: "/developer/:componentId", element: <Developer /> },
 
-      /* Customer */
+      // Customer
       {
         path: "/customer",
         element: <ProtectedRoute allowedRoles={["customer"]} />,
@@ -869,7 +762,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Company */
+      // Company
       {
         path: "/company",
         element: <ProtectedRoute allowedRoles={["company"]} />,
@@ -922,7 +815,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Supplier */
+      // Supplier
       {
         path: "/supplier",
         element: <ProtectedRoute allowedRoles={["supplier"]} />,
@@ -1030,7 +923,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Factory */
+      // Factory
       {
         path: "/factory",
         element: <ProtectedRoute allowedRoles={["factory"]} />,
@@ -1083,7 +976,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Transporter */
+      // Transporter
       {
         path: "/transporter",
         element: <ProtectedRoute allowedRoles={["transporter"]} />,
@@ -1146,7 +1039,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Affiliate */
+      // Affiliate
       {
         path: "/affiliate",
         element: <ProtectedRoute allowedRoles={["affiliate"]} />,
@@ -1194,7 +1087,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Admin */
+      // Admin
       {
         path: "/admin",
         element: (
@@ -1299,7 +1192,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* 404 */
+      // 404
       {
         element: <PublicLayout />,
         children: [
@@ -1310,6 +1203,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      */
     ],
   },
 ]);
