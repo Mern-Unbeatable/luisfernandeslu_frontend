@@ -723,18 +723,18 @@ export const router = createBrowserRouter([
       //       element: <AuthLayout />,
       //       children: [
       //         {
-      //           path: '/signup',
-      //           element: <RoleSelect />,
+      //           path: "/signup",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.signup },
       //         },
       //         {
-      //           path: '/signup/:role',
-      //           element: <Register />,
+      //           path: "/signup/:role",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.signup },
       //         },
       //         {
-      //           path: '/admin/login',
-      //           element: <Login />,
+      //           path: "/admin/login",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.login },
       //         },
       // {
@@ -748,24 +748,74 @@ export const router = createBrowserRouter([
       //   handle: { seo: routeSeo.login },
       // },
       //         {
-      //           path: '/forgot-password',
-      //           element: <ForgotPassword />,
+      //           path: "/forgot-password",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.forgotPassword },
       //         },
       //         {
-      //           path: '/forgot-password/otp',
-      //           element: <OtpVerification />,
+      //           path: "/forgot-password/otp",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.forgotPassword },
       //         },
       //         {
-      //           path: '/forgot-password/reset',
-      //           element: <ResetPassword />,
+      //           path: "/forgot-password/reset",
+      //           element: <ComingSoon hideTitle />,
       //           handle: { seo: routeSeo.forgotPassword },
       //         },
       //       ],
       //     },
       //   ],
       // },
+      {
+        element: <PublicRoute />,
+        children: [
+          {
+            element: <AuthLayout />,
+            children: [
+              {
+                path: "/signup",
+                element: <RoleSelect />,
+                handle: { seo: routeSeo.signup },
+              },
+              {
+                path: "/signup/:role",
+                element: <Register />,
+                handle: { seo: routeSeo.signup },
+              },
+              {
+                path: "/admin/login",
+                element: <Login />,
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: "/login",
+                element: <RoleSelect />,
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: "/login/:role",
+                element: <Login />,
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
+                handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: "/forgot-password/otp",
+                element: <OtpVerification />,
+                handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: "/forgot-password/reset",
+                element: <ResetPassword />,
+                handle: { seo: routeSeo.forgotPassword },
+              },
+            ],
+          },
+        ],
+      },
 
       /* Developer docs */
       { path: "/developer", element: <Developer /> },

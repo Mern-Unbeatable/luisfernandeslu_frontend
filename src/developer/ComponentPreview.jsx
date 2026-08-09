@@ -864,7 +864,7 @@ function MessengerPreview({ variantId }) {
   useEffect(() => {
     if (variantId === 'conversation') state.selectChat('c1')
     else if (variantId === 'offer-sent') state.selectChat('c2')
-    else if (variantId === 'offer-received') state.selectChat('c4')
+    else if (variantId === 'offer-received') state.selectChat('c5')
     else state.selectChat(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only sync on variant change
   }, [variantId])

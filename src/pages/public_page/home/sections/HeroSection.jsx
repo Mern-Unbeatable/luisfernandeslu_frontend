@@ -55,14 +55,64 @@ function slideCopy(t, slideId) {
   }
 }
 
+function HeroSlidePanel({ slide, copy, isActive }) {
+  const TitleTag = isActive ? 'h1' : 'div'
+
+  return (
+    <article
+      className="relative min-h-[22rem] shrink-0 grow-0 basis-full sm:min-h-0 sm:h-95 lg:h-120"
+      aria-hidden={!isActive}
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${slide.image})` }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/80 via-black/70 to-black/40 sm:to-black/30"
+        aria-hidden
+      />
+      <div className="relative z-10 flex h-full flex-col px-6 pt-6 pb-14 sm:justify-center sm:px-12 sm:pb-16 sm:pt-8 lg:pl-20 lg:pr-24">
+        <div className="flex flex-col sm:min-h-0 sm:flex-1 sm:justify-center">
+          <span
+            className="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 font-['Barlow',sans-serif] text-[11px] font-semibold leading-none text-white sm:mb-4 sm:px-4 sm:py-1.5 sm:text-sm sm:font-bold"
+            style={{ backgroundColor: HERO_BADGE_BG }}
+          >
+            {copy.badge}
+          </span>
+
+          <TitleTag className="font-['Barlow',sans-serif] text-[26px] font-black leading-[1.12] text-white sm:text-5xl lg:text-[72px] lg:leading-[79.2px]">
+            {copy.titleLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </TitleTag>
+
+          <p className="mt-3 max-w-[520px] font-['Barlow',sans-serif] text-sm leading-snug text-white sm:mt-4 sm:text-base sm:leading-relaxed lg:text-lg">
+            {copy.description}
+          </p>
+
+          <Link
+            to={slide.ctaTo}
+            className="mt-5 inline-flex w-fit items-center rounded-full px-6 py-2.5 font-['Barlow',sans-serif] text-sm font-bold leading-none text-white transition-opacity hover:opacity-90 sm:mt-7 sm:px-8 sm:py-3.5 sm:text-base lg:mt-8"
+            style={{ backgroundColor: HERO_CTA_BG }}
+            tabIndex={isActive ? undefined : -1}
+          >
+            {copy.ctaLabel}
+          </Link>
+        </div>
+      </div>
+    </article>
+  )
+}
+
 export default function HeroSection() {
   const { t } = useTranslation()
   const prefersReducedMotion = usePrefersReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
   const [hoverPaused, setHoverPaused] = useState(false)
   const [hiddenPaused, setHiddenPaused] = useState(false)
-  const slide = HERO_SLIDES[activeIndex]
-  const copy = slideCopy(t, slide.id)
   const slideCount = HERO_SLIDES.length
 
   const goToSlide = useCallback(
@@ -107,14 +157,12 @@ export default function HeroSection() {
     slideCount,
   ])
 
-  const autoplayPaused = hoverPaused || hiddenPaused
-
   return (
     <section className="w-full bg-[#FEF5E7] pb-4 pt-5 sm:pt-6 ">
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="relative">
           <div
-            className="relative overflow-hidden rounded-lg sm:h-95 lg:h-120"
+            className="relative overflow-hidden rounded-lg"
             onMouseEnter={() => setHoverPaused(true)}
             onMouseLeave={() => setHoverPaused(false)}
             onFocusCapture={() => setHoverPaused(true)}
@@ -123,83 +171,27 @@ export default function HeroSection() {
                 setHoverPaused(false)
               }
             }}
+            aria-roledescription="carousel"
+            aria-label={t('home.hero.carouselLabel', { defaultValue: 'Featured offers' })}
           >
-            {HERO_SLIDES.map((item, index) => {
-              const isActive = index === activeIndex
-              return (
-                <div
-                  key={item.id}
-                  className={[
-                    'hero-slide-bg absolute inset-0 bg-cover bg-center',
-                    isActive ? 'opacity-100' : 'pointer-events-none opacity-0',
-                    isActive && !prefersReducedMotion
-                      ? 'hero-slide-bg-active'
-                      : '',
-                  ].join(' ')}
-                  style={{ backgroundImage: `url(${item.image})` }}
-                  aria-hidden={!isActive}
-                />
-              )
-            })}
-
             <div
-              className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/80 via-black/70 to-black/40 sm:from-black/80 sm:via-black/70 sm:to-black/40"
-              aria-hidden
-            />
-
-            <div className="relative z-10 flex flex-col px-6 pt-6 pb-5 sm:absolute sm:inset-0 sm:justify-center sm:px-12 sm:pb-14 sm:pt-8 lg:pl-20 lg:pr-24 lg:pb-16">
-              <div
-                key={slide.id}
-                className="hero-slide-content-enter flex flex-col sm:min-h-0 sm:flex-1 sm:justify-center"
-              >
-                <span
-                  className="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 font-['Barlow',sans-serif] text-[11px] font-semibold leading-none text-white sm:mb-4 sm:px-4 sm:py-1.5 sm:text-sm sm:font-bold"
-                  style={{ backgroundColor: HERO_BADGE_BG }}
-                >
-                  {copy.badge}
-                </span>
-
-                <h1 className="font-['Barlow',sans-serif] text-[26px] font-black leading-[1.12] text-white sm:text-5xl lg:text-[72px] lg:leading-[79.2px]">
-                  {copy.titleLines.map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </h1>
-
-                <p className="mt-3 max-w-[520px] font-['Barlow',sans-serif] text-sm leading-snug text-white sm:mt-4 sm:text-base sm:leading-relaxed lg:text-lg">
-                  {copy.description}
-                </p>
-
-                <Link
-                  to={slide.ctaTo}
-                  className="mt-5 inline-flex w-fit items-center rounded-full px-6 py-2.5 font-['Barlow',sans-serif] text-sm font-bold leading-none text-white transition-opacity hover:opacity-90 sm:mt-7 sm:px-8 sm:py-3.5 sm:text-base lg:mt-8"
-                  style={{ backgroundColor: HERO_CTA_BG }}
-                >
-                  {copy.ctaLabel}
-                </Link>
-              </div>
-
-              <div className="mt-4 flex shrink-0 justify-center gap-2.5 sm:mt-0 sm:hidden">
-                {HERO_SLIDES.map((item, index) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    aria-label={t('home.hero.goToSlide', { n: index + 1 })}
-                    aria-current={index === activeIndex ? 'true' : undefined}
-                    onClick={() => goToSlide(index)}
-                    className={[
-                      'size-2.5 rounded-full transition-[transform,background-color] duration-300',
-                      index === activeIndex
-                        ? 'scale-110 bg-[#FFB020]'
-                        : 'bg-white/90 hover:bg-white',
-                    ].join(' ')}
-                  />
-                ))}
-              </div>
+              className={[
+                'hero-slide-track flex',
+                prefersReducedMotion ? 'hero-slide-track-reduced' : '',
+              ].join(' ')}
+              style={{ transform: `translate3d(-${activeIndex * 100}%, 0, 0)` }}
+            >
+              {HERO_SLIDES.map((item, index) => (
+                <HeroSlidePanel
+                  key={item.id}
+                  slide={item}
+                  copy={slideCopy(t, item.id)}
+                  isActive={index === activeIndex}
+                />
+              ))}
             </div>
 
-            <div className="absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-2.5 sm:flex lg:bottom-6">
+            <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5 lg:bottom-6">
               {HERO_SLIDES.map((item, index) => (
                 <button
                   key={item.id}
@@ -216,21 +208,6 @@ export default function HeroSection() {
                 />
               ))}
             </div>
-
-            {!prefersReducedMotion && !autoplayPaused ? (
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-0.5 origin-left bg-white/25"
-                aria-hidden
-              >
-                <div
-                  key={`progress-${activeIndex}`}
-                  className="h-full origin-left bg-[#FFB020]"
-                  style={{
-                    animation: `hero-progress ${HERO_AUTOPLAY_MS}ms linear forwards`,
-                  }}
-                />
-              </div>
-            ) : null}
           </div>
 
           <button
