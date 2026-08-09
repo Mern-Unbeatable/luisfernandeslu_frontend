@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../../components/StorefrontProductListingCell'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
+import useScrollToSectionOnPageChange from '../hooks/useScrollToSectionOnPageChange'
 import HomeStatsBar from './HomeStatsBar'
 import {
   TOP_SELLING_PAGE_SIZE,
@@ -18,6 +19,18 @@ export default function TopSellingProductsSection() {
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
   const listingRole = resolveStorefrontBuyerRole(user)
+
+  const totalPages = Math.max(
+    1,
+    Math.min(
+      TOP_SELLING_TOTAL_PAGES,
+      Math.ceil(TOP_SELLING_PRODUCTS.length / TOP_SELLING_PAGE_SIZE),
+    ),
+  )
+  const safePage = Math.min(page, totalPages)
+
+  const listingRef = useScrollToSectionOnPageChange(safePage)
+
   const handleListingAction = useCallback(
     (actionId, product) => {
       if (actionId === 'add_to_cart') {
@@ -32,9 +45,9 @@ export default function TopSellingProductsSection() {
   )
 
   const visibleProducts = useMemo(() => {
-    const start = (page - 1) * TOP_SELLING_PAGE_SIZE
+    const start = (safePage - 1) * TOP_SELLING_PAGE_SIZE
     return TOP_SELLING_PRODUCTS.slice(start, start + TOP_SELLING_PAGE_SIZE)
-  }, [page])
+  }, [safePage])
 
   return (
     <section className="w-full bg-[#F9FAFB] py-10 sm:py-12">
@@ -42,7 +55,10 @@ export default function TopSellingProductsSection() {
         <HomeStatsBar />
 
         <div>
-          <h2 className="mb-6 text-xl font-bold text-(--primary-text) sm:mb-8 sm:text-2xl">
+          <h2
+            ref={listingRef}
+            className="mb-6 scroll-mt-[5rem] text-xl font-bold text-(--primary-text) sm:mb-8 sm:scroll-mt-[10rem] sm:text-2xl"
+          >
             {t('home.topSellingTitle')}
           </h2>
 
@@ -60,8 +76,8 @@ export default function TopSellingProductsSection() {
 
           <Pagination
             className="mt-8 sm:mt-10"
-            page={page}
-            totalPages={TOP_SELLING_TOTAL_PAGES}
+            page={safePage}
+            totalPages={totalPages}
             onPageChange={setPage}
           />
         </div>

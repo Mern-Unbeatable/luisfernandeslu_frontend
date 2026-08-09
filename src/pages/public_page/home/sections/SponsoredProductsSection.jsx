@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
+import useScrollToSectionOnPageChange from '../hooks/useScrollToSectionOnPageChange'
 import {
   SPONSORED_PRODUCTS,
   SPONSORED_PRODUCTS_PAGE_SIZE,
@@ -20,14 +21,20 @@ export default function SponsoredProductsSection() {
     1,
     Math.ceil(SPONSORED_PRODUCTS.length / SPONSORED_PRODUCTS_PAGE_SIZE),
   )
+  const safePage = Math.min(page, totalPages)
+
+  const sectionRef = useScrollToSectionOnPageChange(safePage)
 
   const visibleProducts = useMemo(() => {
-    const start = (page - 1) * SPONSORED_PRODUCTS_PAGE_SIZE
+    const start = (safePage - 1) * SPONSORED_PRODUCTS_PAGE_SIZE
     return SPONSORED_PRODUCTS.slice(start, start + SPONSORED_PRODUCTS_PAGE_SIZE)
-  }, [page])
+  }, [safePage])
 
   return (
-    <section className="w-full bg-[#FEF5E7] py-10 sm:py-12">
+    <section
+      ref={sectionRef}
+      className="w-full scroll-mt-24 bg-[#FEF5E7] py-10 sm:scroll-mt-28 sm:py-12"
+    >
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         <h2 className="mb-6 text-xl font-bold text-(--primary-text) sm:mb-8 sm:text-2xl">
           {t('home.sponsoredProductsTitle')}
@@ -54,7 +61,7 @@ export default function SponsoredProductsSection() {
 
         <Pagination
           className="mt-8 sm:mt-10"
-          page={page}
+          page={safePage}
           totalPages={totalPages}
           onPageChange={setPage}
         />
