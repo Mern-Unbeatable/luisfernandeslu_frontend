@@ -1584,5 +1584,66 @@
       "closeOverlay": "Fechar sobreposição",
       "close": "Fechar"
     }
+  },
+  "affiliateReferredClients": {
+    "title": "Os seus clientes referidos",
+    "subtitle": "Monitorize a atividade dos clientes, a receita gerada, as comissões e o desempenho de referência num só lugar.",
+    "searchPlaceholder": "Pesquisar nome, estado, data, receita...",
+    "columns": {
+      "name": "Nome",
+      "registeredDate": "Data de registo",
+      "revenueGenerated": "Receita gerada",
+      "commissionEarned": "Comissão ganha",
+      "commissionExpiry": "Validade da comissão",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Ativo",
+      "expired": "Expirado"
+    }
+  },
+  "affiliateCommissions": {
+    "title": "Ganhos e pagamentos",
+    "subtitle": "Faça a gestão dos seus ganhos e informações de pagamento",
+    "paymentHistory": "Histórico de pagamentos",
+    "searchPlaceholder": "Pesquisar data, tipo, conta, montante, estado...",
+    "cards": {
+      "totalEarnings": "Ganhos totais",
+      "thisMonth": "Este mês",
+      "availableBalance": "Saldo disponível",
+      "withdrawFunds": "Levantar fundos",
+      "pendingAmount": "Montante pendente",
+      "lifeTime": "Vitalício"
+    },
+    "columns": {
+      "date": "Data",
+      "type": "Tipo",
+      "accountType": "Tipo de conta",
+      "accountNumber": "Número da conta",
+      "amount": "Montante",
+      "status": "Estado"
+    },
+    "type": {
+      "withdrawal": "Levantamento"
+    },
+    "accountType": {
+      "stripe": "Stripe",
+      "bankTransfer": "Transferência bancária"
+    },
+    "status": {
+      "approved": "Aprovado",
+      "pending": "Pendente"
+    },
+    "withdraw": {
+      "title": "Levantar fundos",
+      "amount": "Montante",
+      "businessName": "Nome da empresa/organização",
+      "routingNumber": "Número de routing",
+      "accountNumber": "Número da conta",
+      "cancel": "Cancelar",
+      "submit": "Submeter",
+      "closeOverlay": "Fechar sobreposição",
+      "close": "Fechar"
+    }
   }
 }

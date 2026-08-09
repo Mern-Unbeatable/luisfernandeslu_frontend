@@ -1653,5 +1653,66 @@
       "closeOverlay": "Close overlay",
       "close": "Close"
     }
+  },
+  "affiliateReferredClients": {
+    "title": "Your Referred Clients",
+    "subtitle": "Monitor client activity, generated revenue, commission earnings, and referral performance in one place.",
+    "searchPlaceholder": "Search name, status, date, revenue...",
+    "columns": {
+      "name": "Name",
+      "registeredDate": "Registered Date",
+      "revenueGenerated": "Revenue Generated",
+      "commissionEarned": "Commission Earned",
+      "commissionExpiry": "Commission Expiry",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "expired": "Expired"
+    }
+  },
+  "affiliateCommissions": {
+    "title": "Earnings & Payment",
+    "subtitle": "Manage your earnings and payment information",
+    "paymentHistory": "Payment History",
+    "searchPlaceholder": "Search date, type, account, amount, status...",
+    "cards": {
+      "totalEarnings": "Total Earnings",
+      "thisMonth": "This Month",
+      "availableBalance": "Available Balance",
+      "withdrawFunds": "Withdraw Funds",
+      "pendingAmount": "Pending Amount",
+      "lifeTime": "Life Time"
+    },
+    "columns": {
+      "date": "Date",
+      "type": "Type",
+      "accountType": "Account Type",
+      "accountNumber": "Account Number",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "type": {
+      "withdrawal": "Withdrawal"
+    },
+    "accountType": {
+      "stripe": "Stripe",
+      "bankTransfer": "Bank Transfer"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "withdraw": {
+      "title": "Withdraw Funds",
+      "amount": "Amount",
+      "businessName": "Name of the business/organisation",
+      "routingNumber": "Routing Number",
+      "accountNumber": "Account Number",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "closeOverlay": "Close overlay",
+      "close": "Close"
+    }
   }
 }

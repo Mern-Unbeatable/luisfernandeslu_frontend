@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 
 const DUMMY_CLIENTS = [
@@ -132,7 +133,17 @@ const DUMMY_CLIENTS = [
 
 const PAGE_SIZE = 7
 
-function StatusPill({ status }) {
+const STATUS_I18N_KEYS = {
+  Active: 'active',
+  Expired: 'expired',
+}
+
+function getStatusLabel(status, t) {
+  const key = STATUS_I18N_KEYS[status]
+  return key ? t(`affiliateReferredClients.status.${key}`) : status
+}
+
+function StatusPill({ status, label }) {
   const isActive = String(status).toLowerCase() === 'active'
   return (
     <span
@@ -142,31 +153,52 @@ function StatusPill({ status }) {
           : 'bg-red-100 text-red-600'
       }`}
     >
-      {status}
+      {label || status}
     </span>
   )
 }
 
-const COLUMNS = [
-  { key: 'name', header: 'Name' },
-  { key: 'registeredDate', header: 'Registered Date' },
-  { key: 'revenueGenerated', header: 'Revenue Generated' },
-  { key: 'commissionEarned', header: 'Commission Earned' },
-  { key: 'commissionExpiry', header: 'Commission Expiry' },
-  {
-    key: 'status',
-    header: 'Status',
-    render: (value) => <StatusPill status={value} />,
-  },
-]
+function getColumns(t) {
+  return [
+    { key: 'name', header: t('affiliateReferredClients.columns.name') },
+    {
+      key: 'registeredDate',
+      header: t('affiliateReferredClients.columns.registeredDate'),
+    },
+    {
+      key: 'revenueGenerated',
+      header: t('affiliateReferredClients.columns.revenueGenerated'),
+    },
+    {
+      key: 'commissionEarned',
+      header: t('affiliateReferredClients.columns.commissionEarned'),
+    },
+    {
+      key: 'commissionExpiry',
+      header: t('affiliateReferredClients.columns.commissionExpiry'),
+    },
+    {
+      key: 'status',
+      header: t('affiliateReferredClients.columns.status'),
+      render: (value) => (
+        <StatusPill status={value} label={getStatusLabel(value, t)} />
+      ),
+    },
+  ]
+}
 
 export default function ReferredClientsPage() {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+
+  const columns = getColumns(t)
 
   const filtered = DUMMY_CLIENTS.filter((row) => {
     const q = search.trim().toLowerCase()
     if (!q) return true
+
+    const statusLabel = getStatusLabel(row.status, t).toLowerCase()
 
     return (
       String(row.name).toLowerCase().includes(q) ||
@@ -174,7 +206,8 @@ export default function ReferredClientsPage() {
       String(row.revenueGenerated).toLowerCase().includes(q) ||
       String(row.commissionEarned).toLowerCase().includes(q) ||
       String(row.commissionExpiry).toLowerCase().includes(q) ||
-      String(row.status).toLowerCase().includes(q)
+      String(row.status).toLowerCase().includes(q) ||
+      statusLabel.includes(q)
     )
   })
 
@@ -189,16 +222,15 @@ export default function ReferredClientsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-          Your Referred Clients
+          {t('affiliateReferredClients.title')}
         </h1>
         <p className="mt-1 text-sm text-[var(--secondary-text)]">
-          Monitor client activity, generated revenue, commission earnings, and
-          referral performance in one place.
+          {t('affiliateReferredClients.subtitle')}
         </p>
       </div>
 
       <DataTable
-        columns={COLUMNS}
+        columns={columns}
         data={paged}
         showSearch
         searchValue={search}
@@ -206,7 +238,7 @@ export default function ReferredClientsPage() {
           setSearch(value)
           setPage(1)
         }}
-        searchPlaceholder="Search name, status, date, revenue..."
+        searchPlaceholder={t('affiliateReferredClients.searchPlaceholder')}
         showPagination
         pagination={{
           page: safePage,

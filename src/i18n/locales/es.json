@@ -1584,5 +1584,66 @@
       "closeOverlay": "Cerrar superposición",
       "close": "Cerrar"
     }
+  },
+  "affiliateReferredClients": {
+    "title": "Tus clientes referidos",
+    "subtitle": "Monitorea la actividad de clientes, los ingresos generados, las comisiones y el rendimiento de referidos en un solo lugar.",
+    "searchPlaceholder": "Buscar nombre, estado, fecha, ingresos...",
+    "columns": {
+      "name": "Nombre",
+      "registeredDate": "Fecha de registro",
+      "revenueGenerated": "Ingresos generados",
+      "commissionEarned": "Comisión ganada",
+      "commissionExpiry": "Vencimiento de comisión",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Activo",
+      "expired": "Expirado"
+    }
+  },
+  "affiliateCommissions": {
+    "title": "Ganancias y pagos",
+    "subtitle": "Gestiona tus ganancias e información de pago",
+    "paymentHistory": "Historial de pagos",
+    "searchPlaceholder": "Buscar fecha, tipo, cuenta, importe, estado...",
+    "cards": {
+      "totalEarnings": "Ganancias totales",
+      "thisMonth": "Este mes",
+      "availableBalance": "Saldo disponible",
+      "withdrawFunds": "Retirar fondos",
+      "pendingAmount": "Importe pendiente",
+      "lifeTime": "De por vida"
+    },
+    "columns": {
+      "date": "Fecha",
+      "type": "Tipo",
+      "accountType": "Tipo de cuenta",
+      "accountNumber": "Número de cuenta",
+      "amount": "Importe",
+      "status": "Estado"
+    },
+    "type": {
+      "withdrawal": "Retiro"
+    },
+    "accountType": {
+      "stripe": "Stripe",
+      "bankTransfer": "Transferencia bancaria"
+    },
+    "status": {
+      "approved": "Aprobado",
+      "pending": "Pendiente"
+    },
+    "withdraw": {
+      "title": "Retirar fondos",
+      "amount": "Importe",
+      "businessName": "Nombre de la empresa/organización",
+      "routingNumber": "Número de ruta",
+      "accountNumber": "Número de cuenta",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "closeOverlay": "Cerrar superposición",
+      "close": "Cerrar"
+    }
   }
 }
