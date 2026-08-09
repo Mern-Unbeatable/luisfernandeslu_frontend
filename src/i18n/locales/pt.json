@@ -1431,5 +1431,66 @@
     "priceText": "Preço: {{price}} por saco (50 kg)",
     "priceFallback": "Preço: —",
     "untitled": "Sem título"
+  },
+  "factoryOrders": {
+    "title": "Encomendas de fornecedores",
+    "subtitle": "Encomendas em volume com preços personalizados e pagamentos a prestações",
+    "cards": {
+      "activeSupplierOrders": "Encomendas ativas de fornecedores",
+      "totalB2bRevenue": "Receita B2B total",
+      "installmentActive": "Prestações ativas",
+      "installmentActiveDesc": "encomendas",
+      "paymentOverdue": "Pagamentos em atraso",
+      "paymentOverdueDesc": "3 encomendas"
+    },
+    "columns": {
+      "orderId": "ID da encomenda",
+      "supplierName": "Nome do fornecedor",
+      "total": "Total",
+      "installmentAmount": "Valor da prestação",
+      "status": "Estado",
+      "installmentNumber": "Número da prestação",
+      "date": "Data"
+    },
+    "searchPlaceholder": "Pesquisar encomenda, fornecedor, estado...",
+    "sortBy": "Ordenar por:",
+    "allSupplier": "Todos os fornecedores",
+    "allStatus": "Todos os estados",
+    "seeDetails": "Ver detalhes",
+    "status": {
+      "produced": "Produzido",
+      "inProduction": "Em produção",
+      "ready": "Pronto",
+      "assigned": "Atribuído",
+      "cancel": "Cancelado",
+      "completed": "Concluído"
+    },
+    "installments": {
+      "1": "1.ª prestação",
+      "2": "2.ª prestação",
+      "3": "3.ª prestação",
+      "4": "4.ª prestação",
+      "5": "5.ª prestação",
+      "6": "6.ª prestação"
+    },
+    "details": {
+      "unloadingType": "Camião basculante",
+      "accessCondition": "Descarga manual",
+      "paidNote": "Pague $10,040/mês durante 10 meses",
+      "duration": "10 meses"
+    }
+  },
+  "factoryDeliveryLogistics": {
+    "title": "Entrega e logística",
+    "subtitle": "Faça a gestão de envios e atribua transportadores",
+    "requestDelivery": "+ Solicitar entrega",
+    "activeAuctions": {
+      "title": "Leilões ativos",
+      "subtitle": "Propostas pendentes e itens em leilão"
+    },
+    "assignedDeliveries": {
+      "title": "Entregas atribuídas",
+      "subtitle": "Acompanhe encomendas já aceites por transportadores"
+    }
   }
 }

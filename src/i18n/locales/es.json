@@ -1431,5 +1431,66 @@
     "priceText": "Precio: {{price}} por saco (50 kg)",
     "priceFallback": "Precio: —",
     "untitled": "Sin título"
+  },
+  "factoryOrders": {
+    "title": "Pedidos de proveedores",
+    "subtitle": "Pedidos al por mayor con precios personalizados y pagos a plazos",
+    "cards": {
+      "activeSupplierOrders": "Pedidos activos de proveedores",
+      "totalB2bRevenue": "Ingresos B2B totales",
+      "installmentActive": "Plazos activos",
+      "installmentActiveDesc": "pedidos",
+      "paymentOverdue": "Pagos atrasados",
+      "paymentOverdueDesc": "3 pedidos"
+    },
+    "columns": {
+      "orderId": "ID del pedido",
+      "supplierName": "Nombre del proveedor",
+      "total": "Total",
+      "installmentAmount": "Importe del plazo",
+      "status": "Estado",
+      "installmentNumber": "Número de plazo",
+      "date": "Fecha"
+    },
+    "searchPlaceholder": "Buscar pedido, proveedor, estado...",
+    "sortBy": "Ordenar por:",
+    "allSupplier": "Todos los proveedores",
+    "allStatus": "Todos los estados",
+    "seeDetails": "Ver detalles",
+    "status": {
+      "produced": "Producido",
+      "inProduction": "En producción",
+      "ready": "Listo",
+      "assigned": "Asignado",
+      "cancel": "Cancelado",
+      "completed": "Completado"
+    },
+    "installments": {
+      "1": "1.er plazo",
+      "2": "2.º plazo",
+      "3": "3.er plazo",
+      "4": "4.º plazo",
+      "5": "5.º plazo",
+      "6": "6.º plazo"
+    },
+    "details": {
+      "unloadingType": "Camión volquete",
+      "accessCondition": "Descarga manual",
+      "paidNote": "Paga $10,040/mes durante 10 meses",
+      "duration": "10 meses"
+    }
+  },
+  "factoryDeliveryLogistics": {
+    "title": "Entrega y logística",
+    "subtitle": "Gestiona envíos y asigna transportistas",
+    "requestDelivery": "+ Solicitar entrega",
+    "activeAuctions": {
+      "title": "Subastas activas",
+      "subtitle": "Pujas pendientes y elementos en subasta"
+    },
+    "assignedDeliveries": {
+      "title": "Entregas asignadas",
+      "subtitle": "Sigue los pedidos ya aceptados por transportistas"
+    }
   }
 }

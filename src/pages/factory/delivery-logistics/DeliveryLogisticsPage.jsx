@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import AuctionCard from '@/components/data-display/AuctionCard'
 import AuctionDetails from '@/components/data-display/AuctionDetails'
 import CreateAuction from '@/components/forms/CreateAuction'
@@ -200,6 +201,7 @@ function buildDetailsAuction(auction) {
 }
 
 export default function DeliveryLogisticsPage() {
+  const { t } = useTranslation()
   const [activeAuctions, setActiveAuctions] = useState(ACTIVE_AUCTIONS)
   const [assignedDeliveries] = useState(ASSIGNED_DELIVERIES)
   const [activePage, setActivePage] = useState(1)
@@ -281,10 +283,10 @@ export default function DeliveryLogisticsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-            Delivery & Logistic
+            {t('factoryDeliveryLogistics.title')}
           </h1>
           <p className="mt-1 text-sm text-[var(--secondary-text)]">
-            Manage shipments, assign transporter
+            {t('factoryDeliveryLogistics.subtitle')}
           </p>
         </div>
 
@@ -293,17 +295,17 @@ export default function DeliveryLogisticsPage() {
           onClick={() => setView('create')}
           className="inline-flex items-center justify-center rounded-full bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
         >
-          + Request Delivery
+          {t('factoryDeliveryLogistics.requestDelivery')}
         </button>
       </div>
 
       <section className="space-y-4">
         <div>
           <h2 className="text-lg font-bold text-[var(--primary-text)]">
-            Active Auctions
+            {t('factoryDeliveryLogistics.activeAuctions.title')}
           </h2>
           <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-            Pending bids and auction items
+            {t('factoryDeliveryLogistics.activeAuctions.subtitle')}
           </p>
         </div>
 
@@ -329,10 +331,10 @@ export default function DeliveryLogisticsPage() {
       <section className="space-y-4">
         <div>
           <h2 className="text-lg font-bold text-[var(--primary-text)]">
-            Assigned Deliveries
+            {t('factoryDeliveryLogistics.assignedDeliveries.title')}
           </h2>
           <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-            Track orders already accepted by transporters
+            {t('factoryDeliveryLogistics.assignedDeliveries.subtitle')}
           </p>
         </div>
 

@@ -1500,5 +1500,66 @@
     "priceText": "Price: {{price}} per bag (50 kg)",
     "priceFallback": "Price: —",
     "untitled": "Untitled"
+  },
+  "factoryOrders": {
+    "title": "Suppliers order",
+    "subtitle": "Bulk orders with custom pricing and installment payments",
+    "cards": {
+      "activeSupplierOrders": "Active Supplier Orders",
+      "totalB2bRevenue": "Total B2B Revenue",
+      "installmentActive": "Installment Active",
+      "installmentActiveDesc": "orders",
+      "paymentOverdue": "Payment Overdue",
+      "paymentOverdueDesc": "3 orders"
+    },
+    "columns": {
+      "orderId": "Order ID",
+      "supplierName": "Supplier Name",
+      "total": "Total",
+      "installmentAmount": "Installment Amount",
+      "status": "Status",
+      "installmentNumber": "Installment Number",
+      "date": "Date"
+    },
+    "searchPlaceholder": "Search order, supplier, status...",
+    "sortBy": "Sort By:",
+    "allSupplier": "All Supplier",
+    "allStatus": "All Status",
+    "seeDetails": "See Details",
+    "status": {
+      "produced": "Produced",
+      "inProduction": "In Production",
+      "ready": "Ready",
+      "assigned": "Assigned",
+      "cancel": "Cancel",
+      "completed": "Completed"
+    },
+    "installments": {
+      "1": "1st Installment",
+      "2": "2nd Installment",
+      "3": "3rd Installment",
+      "4": "4th Installment",
+      "5": "5th Installment",
+      "6": "6th Installment"
+    },
+    "details": {
+      "unloadingType": "Tipper truck",
+      "accessCondition": "Manual Unloading",
+      "paidNote": "Pay $10,040/month for 10 months",
+      "duration": "10 months"
+    }
+  },
+  "factoryDeliveryLogistics": {
+    "title": "Delivery & Logistic",
+    "subtitle": "Manage shipments, assign transporter",
+    "requestDelivery": "+ Request Delivery",
+    "activeAuctions": {
+      "title": "Active Auctions",
+      "subtitle": "Pending bids and auction items"
+    },
+    "assignedDeliveries": {
+      "title": "Assigned Deliveries",
+      "subtitle": "Track orders already accepted by transporters"
+    }
   }
 }

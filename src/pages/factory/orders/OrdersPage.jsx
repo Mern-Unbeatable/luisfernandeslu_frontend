@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   FiAlertCircle,
   FiDollarSign,
@@ -20,6 +21,15 @@ const STATUS_OPTIONS = [
   'Cancel',
   'Completed',
 ]
+
+const STATUS_I18N_KEYS = {
+  Produced: 'produced',
+  'In Production': 'inProduction',
+  Ready: 'ready',
+  Assigned: 'assigned',
+  Cancel: 'cancel',
+  Completed: 'completed',
+}
 
 const DUMMY_ORDERS = [
   {
@@ -324,20 +334,6 @@ const DUMMY_ORDERS = [
   },
 ];
 
-const COLUMNS = [
-  { key: 'orderId', header: 'Order ID' },
-  { key: 'supplierName', header: 'Supplier Name' },
-  { key: 'total', header: 'Total' },
-  { key: 'installmentAmount', header: 'Installment Amount' },
-  {
-    key: 'status',
-    header: 'Status',
-    render: (value) => <StatusBadge status={value} />,
-  },
-  { key: 'installmentNumber', header: 'Installment Number' },
-  { key: 'date', header: 'Date' },
-]
-
 const PAGE_SIZE = 7
 
 const FACTORY_PRODUCT = {
@@ -352,26 +348,34 @@ const FACTORY_PRODUCT = {
   total: '$9,113.00',
 }
 
-const INSTALLMENT_LABELS = [
-  '1st Installment',
-  '2nd Installment',
-  '3rd Installment',
-  '4th Installment',
-  '5th Installment',
-  '6th Installment',
-]
+function getStatusLabel(status, t) {
+  const key = STATUS_I18N_KEYS[status]
+  return key ? t(`factoryOrders.status.${key}`) : status
+}
 
-const FACTORY_BREAKDOWN = INSTALLMENT_LABELS.map((label, index) => ({
-  id: `ib-${index + 1}`,
-  product: FACTORY_PRODUCT.product,
-  category: FACTORY_PRODUCT.category,
-  material: FACTORY_PRODUCT.material,
-  weightSize: FACTORY_PRODUCT.weightSize,
-  qty: '30 bags',
-  warehouse: '',
-  installmentNumber: label,
-  amount: '$9,113.00',
-}))
+function getColumns(t) {
+  return [
+    { key: 'orderId', header: t('factoryOrders.columns.orderId') },
+    { key: 'supplierName', header: t('factoryOrders.columns.supplierName') },
+    { key: 'total', header: t('factoryOrders.columns.total') },
+    {
+      key: 'installmentAmount',
+      header: t('factoryOrders.columns.installmentAmount'),
+    },
+    {
+      key: 'status',
+      header: t('factoryOrders.columns.status'),
+      render: (value) => (
+        <StatusBadge status={value} label={getStatusLabel(value, t)} />
+      ),
+    },
+    {
+      key: 'installmentNumber',
+      header: t('factoryOrders.columns.installmentNumber'),
+    },
+    { key: 'date', header: t('factoryOrders.columns.date') },
+  ]
+}
 
 function toDetailsStatus(tableStatus) {
   const key = String(tableStatus || '').toLowerCase()
@@ -380,9 +384,21 @@ function toDetailsStatus(tableStatus) {
   return tableStatus
 }
 
-function buildOrderDetails(row) {
+function buildOrderDetails(row, t) {
   const isAssigned = row.status === 'Assigned'
   const email = `${row.supplierName.toLowerCase().replace(/\s+/g, '.')}@gmail.com`
+
+  const installmentBreakdown = [1, 2, 3, 4, 5, 6].map((n) => ({
+    id: `ib-${n}`,
+    product: FACTORY_PRODUCT.product,
+    category: FACTORY_PRODUCT.category,
+    material: FACTORY_PRODUCT.material,
+    weightSize: FACTORY_PRODUCT.weightSize,
+    qty: '30 bags',
+    warehouse: '',
+    installmentNumber: t(`factoryOrders.installments.${n}`),
+    amount: '$9,113.00',
+  }))
 
   return {
     id: row.orderId,
@@ -399,18 +415,18 @@ function buildOrderDetails(row) {
     logistics: {
       deliveryLocation: '123 Main St, Downtown',
       pickupLocation: '123 Main St, Downtown',
-      unloadingType: 'Tipper truck',
-      accessCondition: 'Manual Unloading',
+      unloadingType: t('factoryOrders.details.unloadingType'),
+      accessCondition: t('factoryOrders.details.accessCondition'),
     },
     payment: {
       totalPrice: '$125,500',
       paidAmount: '$25,100',
       remainingBalance: '$100,400',
-      paidNote: 'Pay $10,040/month for 10 months',
-      duration: '10 months',
+      paidNote: t('factoryOrders.details.paidNote'),
+      duration: t('factoryOrders.details.duration'),
     },
     products: [FACTORY_PRODUCT],
-    installmentBreakdown: FACTORY_BREAKDOWN,
+    installmentBreakdown,
     installments: DEMO_ORDER_INSTALLMENTS,
     transporter: isAssigned
       ? {
@@ -424,6 +440,7 @@ function buildOrderDetails(row) {
 }
 
 export default function OrdersPage() {
+  const { t } = useTranslation()
   const [orders, setOrders] = useState(DUMMY_ORDERS)
   const [search, setSearch] = useState('')
   const [supplier, setSupplier] = useState('all')
@@ -431,8 +448,10 @@ export default function OrdersPage() {
   const [page, setPage] = useState(1)
   const [selectedOrder, setSelectedOrder] = useState(null)
 
+  const columns = getColumns(t)
+
   const supplierOptions = [
-    { value: 'all', label: 'All Supplier' },
+    { value: 'all', label: t('factoryOrders.allSupplier') },
     ...[...new Set(orders.map((row) => row.supplierName))].map((name) => ({
       value: name,
       label: name,
@@ -446,10 +465,13 @@ export default function OrdersPage() {
     const q = search.trim().toLowerCase()
     if (!q) return true
 
+    const statusLabel = getStatusLabel(row.status, t).toLowerCase()
+
     return (
       String(row.orderId).toLowerCase().includes(q) ||
       String(row.supplierName).toLowerCase().includes(q) ||
       String(row.status).toLowerCase().includes(q) ||
+      statusLabel.includes(q) ||
       String(row.total).toLowerCase().includes(q) ||
       String(row.installmentAmount).toLowerCase().includes(q) ||
       String(row.installmentNumber).toLowerCase().includes(q) ||
@@ -475,18 +497,18 @@ export default function OrdersPage() {
   const actions = [
     {
       id: 'see-details',
-      label: 'See Details',
+      label: t('factoryOrders.seeDetails'),
       onClick: (row) => setSelectedOrder(row),
     },
     ...STATUS_OPTIONS.map((option) => ({
       id: `status-${option.toLowerCase().replace(/\s+/g, '-')}`,
-      label: option,
+      label: getStatusLabel(option, t),
       onClick: (row) => updateStatus(row, option),
     })),
   ]
 
   if (selectedOrder) {
-    const order = buildOrderDetails(selectedOrder)
+    const order = buildOrderDetails(selectedOrder, t)
     const isAssigned = selectedOrder.status === 'Assigned'
 
     return (
@@ -504,48 +526,48 @@ export default function OrdersPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-          Suppliers order
+          {t('factoryOrders.title')}
         </h1>
         <p className="mt-1 text-sm text-[var(--secondary-text)]">
-          Bulk orders with custom pricing and installment payments
+          {t('factoryOrders.subtitle')}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatusCard
           variant="inline"
-          label="Active Supplier Orders"
+          label={t('factoryOrders.cards.activeSupplierOrders')}
           value="42"
           icon={FiHome}
           iconTone="teal"
         />
         <StatusCard
           variant="inline"
-          label="Total B2B Revenue"
+          label={t('factoryOrders.cards.totalB2bRevenue')}
           value="$128,940"
           icon={FiDollarSign}
           iconTone="teal"
         />
         <StatusCard
           variant="summary"
-          label="Installment Active"
+          label={t('factoryOrders.cards.installmentActive')}
           value="18"
-          description="orders"
+          description={t('factoryOrders.cards.installmentActiveDesc')}
           icon={FiInfo}
           iconTone="purple"
         />
         <StatusCard
           variant="status"
-          label="Payment Overdue"
+          label={t('factoryOrders.cards.paymentOverdue')}
           value="$12,400"
-          description="3 orders"
+          description={t('factoryOrders.cards.paymentOverdueDesc')}
           tone="danger"
           icon={FiAlertCircle}
         />
       </div>
 
       <DataTable
-        columns={COLUMNS}
+        columns={columns}
         data={paged}
         showSearch
         searchValue={search}
@@ -553,9 +575,9 @@ export default function OrdersPage() {
           setSearch(value)
           setPage(1)
         }}
-        searchPlaceholder="Search order, supplier, status..."
+        searchPlaceholder={t('factoryOrders.searchPlaceholder')}
         showFilters
-        filterLabel="Sort By:"
+        filterLabel={t('factoryOrders.sortBy')}
         filters={[
           {
             id: 'supplier',
@@ -574,10 +596,10 @@ export default function OrdersPage() {
               setPage(1)
             },
             options: [
-              { value: 'all', label: 'All Status' },
+              { value: 'all', label: t('factoryOrders.allStatus') },
               ...STATUS_OPTIONS.map((option) => ({
                 value: option,
-                label: option,
+                label: getStatusLabel(option, t),
               })),
             ],
           },
