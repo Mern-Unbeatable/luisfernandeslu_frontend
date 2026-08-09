@@ -676,27 +676,18 @@ export const router = createBrowserRouter([
                 element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
-              // {
-              //   path: "/login",
-              //   element: <ComingSoon hideTitle />,
-              //   handle: { seo: routeSeo.login },
-              // },
-              // {
-              //   path: "/login/:role",
-              //   element: <ComingSoon hideTitle />,
-              //   handle: { seo: routeSeo.login },
-              // },
-
-                        {
-                path: '/login',
-                element: <RoleSelect />,
+              {
+                path: "/login",
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
               {
-                path: '/login/:role',
-                element: <Login />,
+                path: "/login/:role",
+                element: <ComingSoon hideTitle />,
                 handle: { seo: routeSeo.login },
               },
+
+          
               {
                 path: "/forgot-password",
                 element: <ComingSoon hideTitle />,
