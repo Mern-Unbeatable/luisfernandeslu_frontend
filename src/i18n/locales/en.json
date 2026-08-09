@@ -1629,5 +1629,29 @@
       "nov": "Nov",
       "dec": "Dec"
     }
+  },
+  "affiliateReferralChannels": {
+    "title": "Referral Channels",
+    "subtitle": "Create, manage, and track your referral links across multiple channels.",
+    "primaryChannel": "Primary Channel",
+    "active": "ACTIVE",
+    "referralCodeTitle": "Your Referral Code",
+    "referralCodeSubtitle": "Share this promo code with clients.",
+    "promotionalCode": "Promotional Code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "directShareLink": "Direct Share Link",
+    "shareProposal": "Share Proposal",
+    "showQrAria": "Show QR code",
+    "proposalLinkCopied": "Proposal link copied",
+    "shareTitle": "Referral Proposal",
+    "shareText": "Use my promo code {{code}} to get started.",
+    "qr": {
+      "title": "Referral QR Code",
+      "subtitle": "Scan to open your referral link.",
+      "alt": "QR code for {{link}}",
+      "closeOverlay": "Close overlay",
+      "close": "Close"
+    }
   }
 }

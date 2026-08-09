@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import {
   FiCheck,
   FiCopy,
@@ -16,6 +17,7 @@ function QrIcon({ className = 'size-5' }) {
 }
 
 export default function ReferralChannelsPage() {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
   const [qrOpen, setQrOpen] = useState(false)
   const [shareHint, setShareHint] = useState('')
@@ -57,8 +59,8 @@ export default function ReferralChannelsPage() {
 
   const shareProposal = async () => {
     const payload = {
-      title: 'Referral Proposal',
-      text: `Use my promo code ${PROMO_CODE} to get started.`,
+      title: t('affiliateReferralChannels.shareTitle'),
+      text: t('affiliateReferralChannels.shareText', { code: PROMO_CODE }),
       url: SHARE_LINK,
     }
 
@@ -67,10 +69,8 @@ export default function ReferralChannelsPage() {
         await navigator.share(payload)
         return
       }
-      await navigator.clipboard.writeText(
-        `${payload.text}\n${SHARE_LINK}`,
-      )
-      setShareHint('Proposal link copied')
+      await navigator.clipboard.writeText(`${payload.text}\n${SHARE_LINK}`)
+      setShareHint(t('affiliateReferralChannels.proposalLinkCopied'))
     } catch {
       // user cancelled share — ignore
     }
@@ -82,37 +82,36 @@ export default function ReferralChannelsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-          Referral Channels
+          {t('affiliateReferralChannels.title')}
         </h1>
         <p className="mt-1 text-sm text-[var(--secondary-text)]">
-          Create, manage, and track your referral links across multiple
-          channels.
+          {t('affiliateReferralChannels.subtitle')}
         </p>
       </div>
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold tracking-wide text-[var(--active)] uppercase">
-            Primary Channel
+            {t('affiliateReferralChannels.primaryChannel')}
           </span>
           <span className="inline-flex rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-            ACTIVE
+            {t('affiliateReferralChannels.active')}
           </span>
         </div>
 
         <div className="mt-4">
           <h2 className="text-lg font-bold text-[var(--primary-text)]">
-            Your Referral Code
+            {t('affiliateReferralChannels.referralCodeTitle')}
           </h2>
           <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-            Share this promo code with clients.
+            {t('affiliateReferralChannels.referralCodeSubtitle')}
           </p>
         </div>
 
         <div className="mt-4 flex flex-col gap-3 rounded-xl border border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-[11px] font-medium tracking-wide text-[var(--secondary-text)] uppercase">
-              Promotional Code
+              {t('affiliateReferralChannels.promotionalCode')}
             </p>
             <p className="mt-1 text-3xl font-bold tracking-wide text-[var(--primary-text)]">
               {PROMO_CODE}
@@ -129,7 +128,9 @@ export default function ReferralChannelsPage() {
             ) : (
               <FiCopy className="size-4" aria-hidden />
             )}
-            {copied ? 'Copied' : 'Copy'}
+            {copied
+              ? t('affiliateReferralChannels.copied')
+              : t('affiliateReferralChannels.copy')}
           </button>
         </div>
 
@@ -138,7 +139,7 @@ export default function ReferralChannelsPage() {
             htmlFor="direct-share-link"
             className="text-sm font-semibold text-[var(--primary-text)]"
           >
-            Direct Share Link
+            {t('affiliateReferralChannels.directShareLink')}
           </label>
           <input
             id="direct-share-link"
@@ -158,13 +159,13 @@ export default function ReferralChannelsPage() {
           className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50"
         >
           <FiShare2 className="size-4" aria-hidden />
-          Share Proposal
+          {t('affiliateReferralChannels.shareProposal')}
         </button>
 
         <button
           type="button"
           onClick={() => setQrOpen(true)}
-          aria-label="Show QR code"
+          aria-label={t('affiliateReferralChannels.showQrAria')}
           className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-[var(--primary-text)] transition hover:bg-gray-50"
         >
           <QrIcon className="size-6" />
@@ -180,7 +181,7 @@ export default function ReferralChannelsPage() {
             <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
               <button
                 type="button"
-                aria-label="Close overlay"
+                aria-label={t('affiliateReferralChannels.qr.closeOverlay')}
                 className="absolute inset-0 bg-black/45"
                 onClick={() => setQrOpen(false)}
               />
@@ -196,15 +197,15 @@ export default function ReferralChannelsPage() {
                       id="referral-qr-title"
                       className="text-lg font-bold text-[var(--primary-text)]"
                     >
-                      Referral QR Code
+                      {t('affiliateReferralChannels.qr.title')}
                     </h2>
                     <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-                      Scan to open your referral link.
+                      {t('affiliateReferralChannels.qr.subtitle')}
                     </p>
                   </div>
                   <button
                     type="button"
-                    aria-label="Close"
+                    aria-label={t('affiliateReferralChannels.qr.close')}
                     onClick={() => setQrOpen(false)}
                     className="rounded-md p-1 text-[var(--secondary-text)] hover:bg-gray-100"
                   >
@@ -215,7 +216,9 @@ export default function ReferralChannelsPage() {
                 <div className="flex flex-col items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <img
                     src={qrSrc}
-                    alt={`QR code for ${SHARE_LINK}`}
+                    alt={t('affiliateReferralChannels.qr.alt', {
+                      link: SHARE_LINK,
+                    })}
                     className="size-[220px] rounded-lg bg-white p-2"
                   />
                   <p className="break-all text-center text-xs text-[var(--secondary-text)]">
@@ -229,7 +232,7 @@ export default function ReferralChannelsPage() {
                   className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--active)] text-sm font-semibold text-white transition hover:brightness-95"
                 >
                   <FiShare2 className="size-4" aria-hidden />
-                  Share Proposal
+                  {t('affiliateReferralChannels.shareProposal')}
                 </button>
               </div>
             </div>,

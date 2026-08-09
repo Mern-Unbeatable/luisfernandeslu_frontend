@@ -1560,5 +1560,29 @@
       "nov": "Nov",
       "dec": "Dic"
     }
+  },
+  "affiliateReferralChannels": {
+    "title": "Canales de referidos",
+    "subtitle": "Crea, gestiona y rastrea tus enlaces de referidos en múltiples canales.",
+    "primaryChannel": "Canal principal",
+    "active": "ACTIVO",
+    "referralCodeTitle": "Tu código de referidos",
+    "referralCodeSubtitle": "Comparte este código promocional con clientes.",
+    "promotionalCode": "Código promocional",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "directShareLink": "Enlace de compartir directo",
+    "shareProposal": "Compartir propuesta",
+    "showQrAria": "Mostrar código QR",
+    "proposalLinkCopied": "Enlace de la propuesta copiado",
+    "shareTitle": "Propuesta de referidos",
+    "shareText": "Usa mi código promocional {{code}} para empezar.",
+    "qr": {
+      "title": "Código QR de referidos",
+      "subtitle": "Escanea para abrir tu enlace de referidos.",
+      "alt": "Código QR para {{link}}",
+      "closeOverlay": "Cerrar superposición",
+      "close": "Cerrar"
+    }
   }
 }

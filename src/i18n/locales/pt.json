@@ -1560,5 +1560,29 @@
       "nov": "Nov",
       "dec": "Dez"
     }
+  },
+  "affiliateReferralChannels": {
+    "title": "Canais de referência",
+    "subtitle": "Crie, faça a gestão e acompanhe os seus links de referência em vários canais.",
+    "primaryChannel": "Canal principal",
+    "active": "ATIVO",
+    "referralCodeTitle": "O seu código de referência",
+    "referralCodeSubtitle": "Partilhe este código promocional com clientes.",
+    "promotionalCode": "Código promocional",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "directShareLink": "Link de partilha direta",
+    "shareProposal": "Partilhar proposta",
+    "showQrAria": "Mostrar código QR",
+    "proposalLinkCopied": "Link da proposta copiado",
+    "shareTitle": "Proposta de referência",
+    "shareText": "Use o meu código promocional {{code}} para começar.",
+    "qr": {
+      "title": "Código QR de referência",
+      "subtitle": "Leia para abrir o seu link de referência.",
+      "alt": "Código QR para {{link}}",
+      "closeOverlay": "Fechar sobreposição",
+      "close": "Fechar"
+    }
   }
 }
