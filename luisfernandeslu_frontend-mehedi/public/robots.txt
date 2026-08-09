@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://construpreco.com/sitemap.xml
