@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiCalendar, FiDownload, FiEye, FiFileText } from 'react-icons/fi'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 
@@ -119,14 +120,17 @@ const DUMMY_INVOICES = [
 
 const PAGE_SIZE = 7
 
-function downloadInvoice(row) {
+function downloadInvoice(row, t) {
+  const typeLabel =
+    row.type === 'Invoice' ? t('factoryInvoices.typeInvoice') : row.type
+
   const content = [
-    `Invoice ID: ${row.id}`,
-    `Type: ${row.type}`,
-    `Order ID: ${row.orderId}`,
-    `Customer: ${row.customer}`,
-    `Amount: ${row.amount}`,
-    `Date: ${row.date}`,
+    `${t('factoryInvoices.download.invoiceId')}: ${row.id}`,
+    `${t('factoryInvoices.download.type')}: ${typeLabel}`,
+    `${t('factoryInvoices.download.orderId')}: ${row.orderId}`,
+    `${t('factoryInvoices.download.customer')}: ${row.customer}`,
+    `${t('factoryInvoices.download.amount')}: ${row.amount}`,
+    `${t('factoryInvoices.download.date')}: ${row.date}`,
   ].join('\n')
 
   const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' })
@@ -138,74 +142,79 @@ function downloadInvoice(row) {
   URL.revokeObjectURL(url)
 }
 
-const COLUMNS = [
-  {
-    key: 'id',
-    header: 'INVOICES ID',
-    render: (value) => (
-      <span className="inline-flex items-center gap-2 font-medium text-[var(--primary-text)]">
-        <FiFileText className="size-4 shrink-0 text-[var(--secondary-text)]" />
-        {value}
-      </span>
-    ),
-  },
-  {
-    key: 'type',
-    header: 'TYPE',
-    render: (value) => (
-      <span className="inline-flex rounded-md border border-[color-mix(in_srgb,var(--active)_45%,white)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-2.5 py-1 text-xs font-medium text-[var(--active)]">
-        {value}
-      </span>
-    ),
-  },
-  { key: 'orderId', header: 'ORDER ID' },
-  { key: 'customer', header: 'CUSTOMER' },
-  {
-    key: 'amount',
-    header: 'AMOUNT',
-    render: (value) => (
-      <span className="font-bold text-[var(--primary-text)]">{value}</span>
-    ),
-  },
-  {
-    key: 'date',
-    header: 'DATE',
-    render: (value) => (
-      <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
-        <FiCalendar className="size-4 shrink-0 text-[var(--secondary-text)]" />
-        {value}
-      </span>
-    ),
-  },
-  {
-    key: 'actions',
-    header: 'ACTIONS',
-    render: (_value, row) => (
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label={`View ${row.id}`}
-          onClick={() => {}}
-          className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-        >
-          <FiEye className="size-4" />
-        </button>
-        <button
-          type="button"
-          aria-label={`Download ${row.id}`}
-          onClick={() => downloadInvoice(row)}
-          className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-        >
-          <FiDownload className="size-4" />
-        </button>
-      </div>
-    ),
-  },
-]
+function getColumns(t) {
+  return [
+    {
+      key: 'id',
+      header: t('factoryInvoices.columns.invoiceId'),
+      render: (value) => (
+        <span className="inline-flex items-center gap-2 font-medium text-[var(--primary-text)]">
+          <FiFileText className="size-4 shrink-0 text-[var(--secondary-text)]" />
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'type',
+      header: t('factoryInvoices.columns.type'),
+      render: (value) => (
+        <span className="inline-flex rounded-md border border-[color-mix(in_srgb,var(--active)_45%,white)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-2.5 py-1 text-xs font-medium text-[var(--active)]">
+          {value === 'Invoice' ? t('factoryInvoices.typeInvoice') : value}
+        </span>
+      ),
+    },
+    { key: 'orderId', header: t('factoryInvoices.columns.orderId') },
+    { key: 'customer', header: t('factoryInvoices.columns.customer') },
+    {
+      key: 'amount',
+      header: t('factoryInvoices.columns.amount'),
+      render: (value) => (
+        <span className="font-bold text-[var(--primary-text)]">{value}</span>
+      ),
+    },
+    {
+      key: 'date',
+      header: t('factoryInvoices.columns.date'),
+      render: (value) => (
+        <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
+          <FiCalendar className="size-4 shrink-0 text-[var(--secondary-text)]" />
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'actions',
+      header: t('factoryInvoices.columns.actions'),
+      render: (_value, row) => (
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label={t('factoryInvoices.viewAria', { id: row.id })}
+            onClick={() => {}}
+            className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
+          >
+            <FiEye className="size-4" />
+          </button>
+          <button
+            type="button"
+            aria-label={t('factoryInvoices.downloadAria', { id: row.id })}
+            onClick={() => downloadInvoice(row, t)}
+            className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
+          >
+            <FiDownload className="size-4" />
+          </button>
+        </div>
+      ),
+    },
+  ]
+}
 
 export default function InvoicesPage() {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+
+  const columns = getColumns(t)
 
   const filtered = DUMMY_INVOICES.filter((row) => {
     const q = search.trim().toLowerCase()
@@ -229,16 +238,15 @@ export default function InvoicesPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-          Commission Invoices
+          {t('factoryInvoices.title')}
         </h1>
         <p className="mt-1 text-sm text-[var(--secondary-text)]">
-          Manage and track all commission invoices generated from marketplace
-          orders.
+          {t('factoryInvoices.subtitle')}
         </p>
       </div>
 
       <DataTable
-        columns={COLUMNS}
+        columns={columns}
         data={paged}
         showSearch
         searchValue={search}
@@ -246,7 +254,7 @@ export default function InvoicesPage() {
           setSearch(value)
           setPage(1)
         }}
-        searchPlaceholder="Search invoice ID, order ID, customer..."
+        searchPlaceholder={t('factoryInvoices.searchPlaceholder')}
         showPagination
         pagination={{
           page: safePage,

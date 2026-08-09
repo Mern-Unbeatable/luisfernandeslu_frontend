@@ -1492,5 +1492,30 @@
       "title": "Entregas atribuídas",
       "subtitle": "Acompanhe encomendas já aceites por transportadores"
     }
+  },
+  "factoryInvoices": {
+    "title": "Faturas de comissão",
+    "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",
+    "searchPlaceholder": "Pesquisar ID da fatura, ID da encomenda, cliente...",
+    "typeInvoice": "Fatura",
+    "viewAria": "Ver {{id}}",
+    "downloadAria": "Descarregar {{id}}",
+    "columns": {
+      "invoiceId": "ID DA FATURA",
+      "type": "TIPO",
+      "orderId": "ID DA ENCOMENDA",
+      "customer": "CLIENTE",
+      "amount": "MONTANTE",
+      "date": "DATA",
+      "actions": "AÇÕES"
+    },
+    "download": {
+      "invoiceId": "ID da fatura",
+      "type": "Tipo",
+      "orderId": "ID da encomenda",
+      "customer": "Cliente",
+      "amount": "Montante",
+      "date": "Data"
+    }
   }
 }

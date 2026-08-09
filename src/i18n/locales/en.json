@@ -1561,5 +1561,30 @@
       "title": "Assigned Deliveries",
       "subtitle": "Track orders already accepted by transporters"
     }
+  },
+  "factoryInvoices": {
+    "title": "Commission Invoices",
+    "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "searchPlaceholder": "Search invoice ID, order ID, customer...",
+    "typeInvoice": "Invoice",
+    "viewAria": "View {{id}}",
+    "downloadAria": "Download {{id}}",
+    "columns": {
+      "invoiceId": "INVOICES ID",
+      "type": "TYPE",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "amount": "AMOUNT",
+      "date": "DATE",
+      "actions": "ACTIONS"
+    },
+    "download": {
+      "invoiceId": "Invoice ID",
+      "type": "Type",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "amount": "Amount",
+      "date": "Date"
+    }
   }
 }

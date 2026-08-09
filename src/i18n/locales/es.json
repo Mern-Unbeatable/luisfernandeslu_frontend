@@ -1492,5 +1492,30 @@
       "title": "Entregas asignadas",
       "subtitle": "Sigue los pedidos ya aceptados por transportistas"
     }
+  },
+  "factoryInvoices": {
+    "title": "Facturas de comisión",
+    "subtitle": "Gestiona y rastrea todas las facturas de comisión generadas desde pedidos del marketplace.",
+    "searchPlaceholder": "Buscar ID de factura, ID de pedido, cliente...",
+    "typeInvoice": "Factura",
+    "viewAria": "Ver {{id}}",
+    "downloadAria": "Descargar {{id}}",
+    "columns": {
+      "invoiceId": "ID DE FACTURA",
+      "type": "TIPO",
+      "orderId": "ID DE PEDIDO",
+      "customer": "CLIENTE",
+      "amount": "IMPORTE",
+      "date": "FECHA",
+      "actions": "ACCIONES"
+    },
+    "download": {
+      "invoiceId": "ID de factura",
+      "type": "Tipo",
+      "orderId": "ID de pedido",
+      "customer": "Cliente",
+      "amount": "Importe",
+      "date": "Fecha"
+    }
   }
 }
