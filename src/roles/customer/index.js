@@ -12,6 +12,7 @@ const customerRole = {
       labelKey: 'buyer.productToReview',
     },
     { to: '/customer/profile', labelKey: 'buyer.account' },
+    { to: '/customer/affiliates', labelKey: 'buyer.affiliates' },
   ],
   breadcrumbs: {
     '/customer': 'buyer.dashboard',

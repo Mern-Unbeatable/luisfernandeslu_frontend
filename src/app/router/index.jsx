@@ -671,7 +671,7 @@ export const router = createBrowserRouter([
               {
                 path: 'profile',
                 element: <CustomerProfile />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerAccount },
               },
               {
                 path: 'affiliates',
@@ -724,7 +724,7 @@ export const router = createBrowserRouter([
               {
                 path: 'profile',
                 element: <CompanyProfile />,
-                handle: { seo: routeSeo.buyerDashboard },
+                handle: { seo: routeSeo.buyerAccount },
               },
               {
                 path: 'affiliates',

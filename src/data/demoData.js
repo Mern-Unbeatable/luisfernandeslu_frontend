@@ -1206,3 +1206,19 @@ export const DEMO_PANEL_PROFILE_CUSTOMER = {
     email: 'customer@gmail.com',
   },
 }
+
+export const DEMO_PANEL_PROFILE_COMPANY = {
+  ...DEMO_PANEL_PROFILE_CUSTOMER,
+  firstName: 'Maria',
+  email: 'company@construpreco.pt',
+  billingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    email: 'billing@construpreco.pt',
+    address: 'Avenida da Liberdade 120, 4º',
+  },
+  shippingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    email: 'company@construpreco.pt',
+    address: 'Zona Industrial de Bobadela, Lote 8',
+  },
+}

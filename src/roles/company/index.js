@@ -9,6 +9,7 @@ const companyRole = {
     { to: '/company/orders', labelKey: 'buyer.orders' },
     { to: '/company/projects', labelKey: 'buyer.projects' },
     { to: '/company/profile', labelKey: 'buyer.account' },
+    { to: '/company/affiliates', labelKey: 'buyer.affiliates' },
   ],
   breadcrumbs: {
     '/company': 'buyer.dashboard',
@@ -45,6 +46,16 @@ const companyRole = {
   ],
   introLinks: [
     { labelKey: 'buyer.recentOrders', to: '/company/orders' },
+    {
+      labelKey: 'buyer.shippingAddresses',
+      to: '/company/profile',
+      separatorKey: 'buyer.sepManageYour',
+    },
+    {
+      labelKey: 'buyer.bulkQuotes',
+      to: '/company/projects',
+      separatorKey: 'buyer.sepAndTrackYour',
+    },
   ],
 }
 
