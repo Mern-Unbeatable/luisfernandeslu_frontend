@@ -662,32 +662,41 @@ export const router = createBrowserRouter([
             element: <AuthLayout />,
             children: [
               {
-                path: "/signup",
-                element: <ComingSoon hideTitle />,
+                path: '/signup',
+                element: <RoleSelect />,
                 handle: { seo: routeSeo.signup },
               },
               {
-                path: "/signup/:role",
-                element: <ComingSoon hideTitle />,
+                path: '/signup/:role',
+                element: <Register />,
                 handle: { seo: routeSeo.signup },
               },
-              {
-                path: "/admin/login",
-                element: <ComingSoon hideTitle />,
-                handle: { seo: routeSeo.login },
-              },
+              // {
+              //   path: "/admin/login",
+              //   element: <ComingSoon hideTitle />,
+              //   handle: { seo: routeSeo.login },
+              // },
+
+              // {
+              //   path: "/login",
+              //   element: <ComingSoon hideTitle />,
+              //   handle: { seo: routeSeo.login },
+              // },
+              // {
+              //   path: "/login/:role",
+              //   element: <ComingSoon hideTitle />,
+              //   handle: { seo: routeSeo.login },
+              // },
               {
                 path: "/login",
-                element: <ComingSoon hideTitle />,
+                element: <RoleSelect />,
                 handle: { seo: routeSeo.login },
               },
               {
                 path: "/login/:role",
-                element: <ComingSoon hideTitle />,
+                element: <Login />,
                 handle: { seo: routeSeo.login },
               },
-
-          
               {
                 path: "/forgot-password",
                 element: <ComingSoon hideTitle />,
@@ -728,16 +737,16 @@ export const router = createBrowserRouter([
       //           element: <Login />,
       //           handle: { seo: routeSeo.login },
       //         },
-      //         {
-      //           path: '/login',
-      //           element: <RoleSelect />,
-      //           handle: { seo: routeSeo.login },
-      //         },
-      //         {
-      //           path: '/login/:role',
-      //           element: <Login />,
-      //           handle: { seo: routeSeo.login },
-      //         },
+      // {
+      //   path: "/login",
+      //   element: <RoleSelect />,
+      //   handle: { seo: routeSeo.login },
+      // },
+      // {
+      //   path: "/login/:role",
+      //   element: <Login />,
+      //   handle: { seo: routeSeo.login },
+      // },
       //         {
       //           path: '/forgot-password',
       //           element: <ForgotPassword />,
