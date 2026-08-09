@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../../components/StorefrontProductListingCell'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
-import useScrollToSectionOnPageChange from '../hooks/useScrollToSectionOnPageChange'
+import useHomeSectionPagination from '../hooks/useHomeSectionPagination'
 import HomeStatsBar from './HomeStatsBar'
 import {
   TOP_SELLING_PAGE_SIZE,
@@ -15,7 +15,7 @@ import {
 
 export default function TopSellingProductsSection() {
   const { t } = useTranslation()
-  const [page, setPage] = useState(1)
+  const { page, changePage, anchorRef } = useHomeSectionPagination(1)
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
   const listingRole = resolveStorefrontBuyerRole(user)
@@ -28,8 +28,6 @@ export default function TopSellingProductsSection() {
     ),
   )
   const safePage = Math.min(page, totalPages)
-
-  const listingRef = useScrollToSectionOnPageChange(safePage)
 
   const handleListingAction = useCallback(
     (actionId, product) => {
@@ -56,8 +54,8 @@ export default function TopSellingProductsSection() {
 
         <div>
           <h2
-            ref={listingRef}
-            className="mb-6 scroll-mt-[5rem] text-xl font-bold text-(--primary-text) sm:mb-8 sm:scroll-mt-[10rem] sm:text-2xl"
+            ref={anchorRef}
+            className="mb-6 scroll-mt-[8.5rem] text-xl font-bold text-(--primary-text) sm:mb-8 sm:scroll-mt-[10rem] sm:text-2xl"
           >
             {t('home.topSellingTitle')}
           </h2>
@@ -78,7 +76,7 @@ export default function TopSellingProductsSection() {
             className="mt-8 sm:mt-10"
             page={safePage}
             totalPages={totalPages}
-            onPageChange={setPage}
+            onPageChange={changePage}
           />
         </div>
       </div>
