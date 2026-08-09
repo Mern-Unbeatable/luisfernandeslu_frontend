@@ -249,6 +249,785 @@
       "delivery": "Tempo médio de entrega"
     }
   },
+  "adminDashboard": {
+    "title": "Visão geral do painel",
+    "subtitle": "Resumo executivo e indicadores-chave de desempenho.",
+    "quickActionSectionTitle": "Ação rápida",
+    "takeAction": "Tomar ação →",
+    "channels": {
+      "label": "Canal de vendas",
+      "all": "Todos os canais",
+      "b2b": "Apenas B2B",
+      "b2c": "Apenas B2C"
+    },
+    "metrics": {
+      "totalGmv": "GMV total",
+      "b2bGmv": "GMV B2B",
+      "b2cGmv": "GMV B2C",
+      "totalRevenue": "Receita total",
+      "commission": "Comissão",
+      "avgOrderValue": "Valor médio do pedido",
+      "activeUsers": "Utilizadores ativos",
+      "newRegistrations": "Novos registos",
+      "activeSuppliers": "Fornecedores ativos",
+      "activeFactories": "Fábricas ativas",
+      "activeTransporters": "Transportadores ativos",
+      "openDisputes": "Disputas abertas"
+    },
+    "quickActions": {
+      "transporterPayments": {
+        "title": "Aprovar pagamentos a transportadores",
+        "subtitleLine": "4 pedidos aguardam revisão"
+      },
+      "affiliatePayouts": {
+        "title": "Processar pagamentos a afiliados",
+        "subtitleLine": "2 pendentes — 2 prontos para marcar como pagos"
+      },
+      "affiliateAnalytics": {
+        "title": "Ver analítica de afiliados",
+        "subtitleLine": "Acompanhar melhores desempenhos e conversão"
+      }
+    },
+    "charts": {
+      "revenueTrend": "Tendência de receita",
+      "orderVolume": "Volume de pedidos",
+      "thisYear": "Este ano",
+      "b2bRevenue": "Receita B2B",
+      "b2cRevenue": "Receita B2C",
+      "b2bOrders": "Pedidos B2B",
+      "b2cOrders": "Pedidos B2C"
+    },
+    "performance": {
+      "retentionTitle": "Taxa de retenção",
+      "b2bRetention": "Retenção B2B",
+      "b2cRetention": "Retenção B2C",
+      "ltvTitle": "LTV do cliente",
+      "b2bLtv": "LTV médio B2B",
+      "b2cLtv": "LTV médio B2C",
+      "repurchaseTitle": "Taxa de recompra",
+      "b2bRepurchase": "Recompra B2B",
+      "b2cRepurchase": "Recompra B2C"
+    }
+  },
+  "adminUserManagement": {
+    "title": "Gestão de utilizadores",
+    "subtitle": "Gerir clientes, empresas e todas as contas de utilizador",
+    "tabs": {
+      "customer": "Cliente",
+      "company": "Empresa"
+    },
+    "stats": {
+      "totalUsers": "Total de utilizadores",
+      "b2cCustomers": "Clientes B2C",
+      "b2bCompanies": "Empresas B2B",
+      "pendingVerification": "Verificação pendente"
+    },
+    "filters": {
+      "allStatus": "Todos os estados",
+      "active": "Ativo",
+      "suspended": "Suspenso"
+    },
+    "searchPlaceholder": "Pesquisar nome, e-mail, telefone...",
+    "columns": {
+      "name": "NOME",
+      "phone": "TELEFONE",
+      "email": "E-MAIL",
+      "type": "TIPO",
+      "status": "ESTADO",
+      "vatRate": "Taxa de IVA",
+      "registered": "REGISTO"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "suspend": "Suspender",
+      "delete": "Eliminar",
+      "message": "Mensagem"
+    },
+    "modal": {
+      "title": "Detalhes do utilizador",
+      "close": "Fechar",
+      "registeredOn": "Registado em {{date}}",
+      "address": "Morada"
+    }
+  },
+  "adminSupplierManagement": {
+    "title": "Gestão de fornecedores",
+    "subtitle": "Monitorizar e gerir fornecedores.",
+    "tabs": {
+      "all": "Todos os fornecedores",
+      "pending": "Fornecedores pendentes",
+      "suspended": "Fornecedores suspensos"
+    },
+    "stats": {
+      "totalSuppliers": "Total de fornecedores",
+      "active": "Ativos",
+      "underReview": "Em revisão",
+      "suspended": "Suspensos"
+    },
+    "searchPlaceholder": "Pesquisar nome, e-mail, telefone...",
+    "empty": "Nenhum fornecedor encontrado",
+    "columns": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "registered": "Data de registo",
+      "commission": "Comissão",
+      "status": "Estado",
+      "action": "Ação"
+    },
+    "commission": {
+      "title": "Adicionar comissão",
+      "custom": "Personalizado",
+      "placeholder": "Percentagem %",
+      "set": "Definir"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "suspend": "Suspender",
+      "approved": "Aprovar",
+      "reject": "Rejeitar",
+      "renew": "Renovar",
+      "delete": "Eliminar",
+      "message": "Mensagem"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "modal": {
+      "title": "Detalhes do fornecedor",
+      "close": "Fechar",
+      "registeredOn": "Registado em {{date}}",
+      "documentsTitle": "Certificado e comprovativo de ID"
+    }
+  },
+  "adminFactoryManagement": {
+    "title": "Gestão de fábricas",
+    "subtitle": "Monitorizar e gerir fábricas.",
+    "tabs": {
+      "all": "Todas as fábricas",
+      "pending": "Fábricas pendentes",
+      "suspended": "Fábricas suspensas"
+    },
+    "stats": {
+      "totalFactories": "Total de fábricas",
+      "active": "Ativas",
+      "underReview": "Em revisão",
+      "suspended": "Suspensas"
+    },
+    "searchPlaceholder": "Pesquisar nome, e-mail, telefone...",
+    "empty": "Nenhuma fábrica encontrada",
+    "columns": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "registered": "Data de registo",
+      "commission": "Comissão",
+      "status": "Estado",
+      "action": "Ação"
+    },
+    "commission": {
+      "title": "Adicionar comissão",
+      "custom": "Personalizado",
+      "placeholder": "Percentagem %",
+      "set": "Definir"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "suspend": "Suspender",
+      "approved": "Aprovar",
+      "reject": "Rejeitar",
+      "renew": "Renovar",
+      "delete": "Eliminar",
+      "message": "Mensagem"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "modal": {
+      "title": "Detalhes da fábrica",
+      "close": "Fechar",
+      "registeredOn": "Registado em {{date}}",
+      "documentsTitle": "Certificado e comprovativo de ID"
+    }
+  },
+  "adminTransporterManagement": {
+    "title": "Gestão de transportadores",
+    "subtitle": "Monitorizar e gerir transportadores.",
+    "tabs": {
+      "all": "Todos os transportadores",
+      "pending": "Transportadores pendentes",
+      "suspended": "Transportadores suspensos"
+    },
+    "stats": {
+      "totalTransporters": "Total de transportadores",
+      "active": "Ativos",
+      "underReview": "Em revisão",
+      "suspended": "Suspensos"
+    },
+    "searchPlaceholder": "Pesquisar nome, e-mail, telefone...",
+    "empty": "Nenhum transportador encontrado",
+    "columns": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "registered": "Data de registo",
+      "status": "Estado",
+      "action": "Ação"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "suspend": "Suspender",
+      "approved": "Aprovar",
+      "reject": "Rejeitar",
+      "renew": "Renovar",
+      "delete": "Eliminar",
+      "message": "Mensagem"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "modal": {
+      "title": "Detalhes do transportador",
+      "close": "Fechar",
+      "registeredOn": "Registado em {{date}}",
+      "documentsTitle": "Certificado e comprovativo de ID"
+    }
+  },
+  "adminProductModeration": {
+    "title": "Moderação de produtos",
+    "subtitle": "Rever e moderar produtos carregados pelos utilizadores",
+    "tabs": {
+      "all": "Todos {{count}}",
+      "pending": "Pendentes ({{count}})",
+      "accepted": "Aceites ({{count}})",
+      "rejected": "Rejeitados ({{count}})"
+    },
+    "filters": {
+      "label": "Filtros:",
+      "allCategories": "Todas as categorias",
+      "buildingMaterials": "Materiais de construção",
+      "structuralSteel": "Aço estrutural",
+      "masonry": "Alvenaria",
+      "electrical": "Equipamentos elétricos"
+    },
+    "empty": "Nenhum produto corresponde aos filtros.",
+    "detail": {
+      "back": "Voltar à moderação de produtos",
+      "title": "{{name}} · Moderação",
+      "notFound": "Produto não encontrado."
+    }
+  },
+  "adminChat": {
+    "subtitle": "Mensagens com fornecedores, compradores e parceiros num único inbox."
+  },
+  "adminMarketingManagement": {
+    "title": "Gestão de marketing",
+    "subtitle": "Gerir pacotes de visibilidade e pedidos de publicidade de fornecedores.",
+    "stats": {
+      "totalRevenue": "Receita total",
+      "pendingRequests": "Pedidos pendentes",
+      "activeBoosts": "Boosts ativos",
+      "totalFeatured": "Total de produtos em destaque"
+    },
+    "tabs": {
+      "all": "Todos os pedidos",
+      "pending": "Pendentes ({{count}})",
+      "active": "Ativos ({{count}})",
+      "completed": "Concluídos"
+    },
+    "pendingBoostTitle": "Pedidos de boost pendentes",
+    "actionRequired": "Ação necessária",
+    "featuredTitle": "Produtos atualmente em destaque",
+    "boostTier": "Nível de boost",
+    "duration": "Duração",
+    "emptyRequests": "Nenhum pedido de boost corresponde a este filtro.",
+    "actions": {
+      "accept": "Aceitar",
+      "reject": "Rejeitar"
+    }
+  },
+  "adminFinancePayments": {
+    "title": "Finanças e pagamentos",
+    "subtitle": "Receita do marketplace, pagamentos a vendedores e saúde financeira.",
+    "stats": {
+      "totalRevenue": "Receita total",
+      "commissionRevenue": "Receita de comissões",
+      "pendingPayouts": "Pagamentos pendentes",
+      "marketingRevenue": "Receita de marketing"
+    },
+    "charts": {
+      "revenueTrend": "Tendência de receita",
+      "commission": "Comissão",
+      "marketing": "Marketing",
+      "thisYear": "Este ano",
+      "lastYear": "Ano anterior"
+    },
+    "payoutSection": {
+      "title": "Pedidos de pagamento",
+      "subtitle": "Reveja pedidos de pagamento de transportadores e respetivo estado."
+    },
+    "payoutSearchPlaceholder": "Pesquisar nome ou e-mail do transportador...",
+    "payoutEmpty": "Nenhum pedido corresponde aos filtros.",
+    "payoutFilters": {
+      "allRequests": "Todos os pedidos"
+    },
+    "payoutColumns": {
+      "transporter": "Transportador",
+      "totalEarnings": "Ganhos totais",
+      "requested": "Solicitado",
+      "pending": "Pendente",
+      "requestDate": "Data do pedido",
+      "status": "Estado",
+      "action": "Ação"
+    },
+    "payoutStatus": {
+      "paid": "Pago",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado",
+      "pending": "Pendente"
+    },
+    "payoutActions": {
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "markPaid": "Marcar como pago",
+      "viewDetails": "Ver detalhes"
+    },
+    "invoiceSection": {
+      "title": "Faturas de comissão",
+      "subtitle": "Gerir e acompanhar todas as faturas de comissão de vendedores geradas por encomendas concluídas."
+    },
+    "invoiceSearchPlaceholder": "Pesquisar ID de fatura, encomenda ou participante...",
+    "invoiceEmpty": "Nenhuma fatura corresponde aos filtros.",
+    "invoiceFilters": {
+      "sortLabel": "Ordenar por:",
+      "allTypes": "Tipo de utilizador"
+    },
+    "invoiceColumns": {
+      "invoiceId": "ID da fatura",
+      "userType": "Tipo de utilizador",
+      "orderId": "ID da encomenda",
+      "participant": "Participante",
+      "amount": "Montante",
+      "date": "Data",
+      "actions": "Ações"
+    },
+    "userTypes": {
+      "supplier": "Fornecedor",
+      "factory": "Fábrica",
+      "transporter": "Transportador"
+    },
+    "invoiceActions": {
+      "view": "Ver fatura",
+      "download": "Transferir fatura"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    }
+  },
+  "adminDisputesResolution": {
+    "title": "Resolução de disputas",
+    "subtitle": "Gerir disputas de clientes, devoluções e casos de resolução",
+    "searchPlaceholder": "Pesquisar ID de disputa, encomenda, cliente, fornecedor...",
+    "empty": "Nenhuma disputa corresponde aos filtros.",
+    "filters": {
+      "allStatus": "Todos os estados"
+    },
+    "columns": {
+      "disputeId": "ID da disputa",
+      "orderId": "ID da encomenda",
+      "customer": "Cliente",
+      "supplier": "Fornecedor",
+      "issue": "Problema",
+      "status": "Estado",
+      "registered": "Registado",
+      "action": "Ação"
+    },
+    "status": {
+      "pending": "Pendente",
+      "under_review": "Em revisão",
+      "resolved": "Resolvido"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "status": "Estado"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "detail": {
+      "back": "Voltar à resolução de disputas",
+      "title": "{{id}} · Disputa",
+      "notFound": "Disputa não encontrada."
+    }
+  },
+  "adminAuction": {
+    "title": "Painel de leilões",
+    "subtitle": "{{count}} leilões ativos na sua área de serviço",
+    "filterLabel": "Filtro:",
+    "dateLabel": "Data do painel",
+    "empty": "Nenhum leilão corresponde a este filtro.",
+    "filters": {
+      "all": "Todos",
+      "endingSoon": "A terminar em breve",
+      "nearestFirst": "Mais próximos",
+      "ended": "Terminados"
+    }
+  },
+  "adminOrders": {
+    "title": "Encomendas",
+    "subtitle": "Todas as encomendas",
+    "filterLabel": "Filtro:",
+    "empty": "Nenhuma encomenda corresponde aos filtros.",
+    "tabs": {
+      "supplier": "Encomenda de fornecedor",
+      "factory": "Encomenda de fábrica"
+    },
+    "filters": {
+      "allCustomerType": "Todos os tipos de cliente",
+      "allStatus": "Todos os estados"
+    },
+    "columns": {
+      "orderId": "ID da encomenda",
+      "customerName": "Nome do cliente",
+      "customerType": "Tipo de cliente",
+      "items": "Itens",
+      "total": "Total",
+      "commission": "Comissão",
+      "status": "Estado",
+      "date": "Data",
+      "action": "Ação"
+    },
+    "customerTypes": {
+      "company": "Empresa",
+      "customer": "Cliente"
+    },
+    "status": {
+      "new": "Nova",
+      "pending": "Pendente",
+      "processing": "Em processamento",
+      "assigned": "Atribuída",
+      "completed": "Concluída",
+      "cancel": "Cancelada"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "delete": "Eliminar"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "detail": {
+      "back": "Voltar às encomendas",
+      "title": "{{id}} · Encomenda",
+      "notFound": "Encomenda não encontrada.",
+      "supplierSection": "Informações do fornecedor",
+      "factorySection": "Informações da fábrica",
+      "produced": "Produzido",
+      "assigned": "Atribuído"
+    }
+  },
+  "adminDeliveryLogistics": {
+    "title": "Entrega e logística",
+    "subtitle": "Monitorize entregas ativas e detalhes de envio.",
+    "status": {
+      "assigned": "Atribuído",
+      "pickedUp": "Recolhido",
+      "inTransit": "Em trânsito",
+      "delivered": "Entregue"
+    },
+    "detail": {
+      "back": "Voltar a entrega e logística",
+      "title": "{{id}} · Entrega",
+      "notFound": "Entrega não encontrada."
+    }
+  },
+  "adminAffiliateDirectory": {
+    "title": "Diretório de afiliados",
+    "subtitle": "Explore, gira e ligue-se à sua rede de afiliados num só lugar.",
+    "sortLabel": "ORDENAR:",
+    "searchPlaceholder": "Pesquisar afiliados…",
+    "empty": "Nenhum registo corresponde aos filtros.",
+    "tabs": {
+      "members": "Membro afiliado",
+      "payoutControl": "Controlo de pagamentos",
+      "levelControl": "Controlo de níveis"
+    },
+    "stats": {
+      "totalAffiliates": "Total de afiliados",
+      "totalAffiliatesHint": "Parceiros registados",
+      "activeAffiliates": "Afiliados ativos",
+      "activeAffiliatesHint": "A gerar tráfego",
+      "referredClients": "Clientes referidos",
+      "referredClientsHint": "Subscrições ativas",
+      "marketplaceRevenue": "Receita do marketplace",
+      "marketplaceRevenueHint": "Gerada por afiliados",
+      "totalCommissionPaid": "Comissão total paga",
+      "totalCommissionPaidHint": "Processada com sucesso",
+      "pendingCommission": "Comissão pendente",
+      "pendingCommissionHint": "Aguarda aprovação de pagamento"
+    },
+    "columns": {
+      "affiliateName": "Nome do afiliado",
+      "affiliateId": "ID do afiliado",
+      "code": "Código",
+      "level": "Nível",
+      "tierRate": "Taxa de nível",
+      "totalClients": "Total de clientes",
+      "activeClients": "Clientes ativos",
+      "revenueGenerated": "Receita gerada",
+      "commissionEarned": "Comissão ganha",
+      "pending": "Pendente",
+      "status": "ESTADO",
+      "action": "AÇÃO"
+    },
+    "filters": {
+      "allStatus": "Todos os estados",
+      "allPlans": "Todos",
+      "customer": "Cliente",
+      "company": "Empresa"
+    },
+    "status": {
+      "active": "Ativo",
+      "suspended": "Suspenso"
+    },
+    "clientStatus": {
+      "active": "Ativo",
+      "suspended": "Suspenso"
+    },
+    "commissionStatus": {
+      "approved": "Aprovado"
+    },
+    "payoutStatus": {
+      "pending": "Pendente",
+      "paid": "Pago",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado"
+    },
+    "levelStatus": {
+      "active": "Ativo",
+      "inactive": "Inativo"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "suspend": "Suspender",
+      "delete": "Eliminar"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "payoutControl": {
+      "pageTitle": "Centro de controlo de pagamentos",
+      "pageSubtitle": "Audite saldos pendentes, autorize transferências e reveja históricos de conformidade.",
+      "requestsTitle": "Pedidos de pagamento",
+      "filters": { "allRequests": "Todos os pedidos" },
+      "actions": {
+        "paid": "Pago",
+        "rejected": "Rejeitado",
+        "approved": "Aprovado"
+      },
+      "columns": {
+        "affiliate": "Afiliado",
+        "totalEarnings": "GANHOS TOTAIS",
+        "requested": "Pedido",
+        "pending": "PENDENTE",
+        "accountNumber": "Número de conta",
+        "requestDate": "Data do pedido",
+        "status": "ESTADO"
+      }
+    },
+    "levelControl": {
+      "pageTitle": "Sistema de marcos de níveis de comissão",
+      "pageSubtitle": "Defina níveis, metas de referência e taxas de comissão correspondentes.",
+      "activeBadge": "Ativo",
+      "commissionSplit": "Divisão de comissão",
+      "payoutNote": "Divisão vitalícia recorrente",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "createTitle": "Criar novo nível de comissão",
+      "tierSubtitles": {
+        "entryLevel": "Nível inicial",
+        "bronzeTier": "Nível bronze",
+        "silverTier": "Nível prata",
+        "goldTier": "Nível ouro",
+        "premiumTier": "Nível premium",
+        "customTier": "Nível personalizado"
+      },
+      "form": {
+        "levelName": "Nome do nível",
+        "levelNamePlaceholder": "ex. Diamond",
+        "commission": "Comissão %",
+        "membersRequired": "Membros necessários",
+        "description": "Descrição",
+        "cancel": "Cancelar",
+        "save": "Guardar nível"
+      }
+    },
+    "detail": {
+      "back": "Voltar",
+      "title": "{{name}} · Afiliado",
+      "notFound": "Afiliado não encontrado.",
+      "joined": "Adesão",
+      "code": "Código",
+      "tier": "Nível",
+      "stats": {
+        "revenue": "Receita",
+        "earned": "Ganho",
+        "clients": "Clientes"
+      },
+      "tabs": {
+        "clients": "Clientes referidos",
+        "analytics": "Análise de receita",
+        "commissions": "Histórico de comissões",
+        "payouts": "Histórico de pagamentos"
+      },
+      "clients": {
+        "sectionTitle": "Clientes referidos",
+        "columns": {
+          "clientInfo": "Info do cliente",
+          "phone": "Telefone",
+          "joinDate": "Data de adesão",
+          "plan": "Plano de subscrição",
+          "generatedRevenue": "Receita gerada",
+          "affiliateCommission": "Comissão do afiliado",
+          "expiryDate": "Data de expiração",
+          "status": "ESTADO",
+          "action": "AÇÃO"
+        }
+      },
+      "commissions": {
+        "sectionTitle": "Registo de comissões",
+        "columns": {
+          "transactionId": "ID da transação",
+          "date": "Data",
+          "sourceClient": "Cliente de origem",
+          "purchaseSize": "Valor da compra",
+          "rate": "Taxa percentual",
+          "earned": "Comissão ganha",
+          "status": "Estado"
+        }
+      },
+      "payouts": {
+        "sectionTitle": "Registo de comissões",
+        "columns": {
+          "referenceId": "ID de referência",
+          "requestedDate": "Data pedida",
+          "method": "Método",
+          "accountNumber": "Número de conta",
+          "amount": "Valor do pagamento",
+          "status": "Estado do processamento"
+        }
+      },
+      "chart": {
+        "eyebrow": "Ganhos históricos",
+        "title": "Ganhos históricos e receita gerada",
+        "subtitle": "Receita do marketplace e comissão mês a mês.",
+        "timeframe": "Intervalo",
+        "thisYear": "Este ano",
+        "marketplaceRev": "Receita marketplace",
+        "affiliateCommission": "Comissão do afiliado"
+      }
+    }
+  },
+  "adminRolesPermissions": {
+    "title": "Estratégia de funções e permissões",
+    "subtitle": "Documentação das camadas de controlo de acesso implementadas na Construpreco. Garante a segurança dos dados e uma experiência focada para cada função da equipa.",
+    "roles": {
+      "moderator": "Moderador",
+      "admin": "Administrador",
+      "viewer": "Visualizador"
+    },
+    "invite": {
+      "title": "Convide a sua equipa",
+      "description": "Adicione facilmente novos membros a uma função introduzindo os respetivos endereços de e-mail abaixo. Após o convite, receberão um e-mail com um link para aderir.",
+      "emailLabel": "Endereço de e-mail",
+      "emailPlaceholder": "nome@empresa.com",
+      "roleLabel": "Função",
+      "send": "Enviar convite"
+    },
+    "editMatrix": {
+      "title": "Matriz de edição",
+      "empty": "Nenhum módulo nesta matriz.",
+      "toggleAria": "Alternar acesso de edição para {{module}}",
+      "deleteAria": "Remover {{module}} da matriz de edição"
+    },
+    "visibilityMatrix": {
+      "title": "Matriz de visibilidade",
+      "download": "Transferir",
+      "visible": "Visível",
+      "hidden": "Oculto"
+    },
+    "columns": {
+      "modulePage": "Módulo / Página",
+      "moderator": "Moderador",
+      "action": "Ação"
+    },
+    "modules": {
+      "dashboardOverview": "Painel / Visão geral",
+      "productManagement": "Gestão de produtos",
+      "supplierManagement": "Gestão de fornecedores",
+      "factoryManagement": "Gestão de fábricas",
+      "transporterManagement": "Gestão de transportadores",
+      "productModeration": "Moderação de produtos"
+    },
+    "visibilityModules": {
+      "overviewAnalytics": "Visão geral / Analítica",
+      "classesCourses": "Turmas e cursos",
+      "memberDatabase": "Base de membros",
+      "instructorDirectory": "Diretório de instrutores"
+    }
+  },
+  "adminSettings": {
+    "title": "Definições",
+    "subtitle": "Configure envio, impostos e leilões da plataforma.",
+    "unsaved": "Por guardar",
+    "saveChange": "Guardar alteração",
+    "reset": "Repor",
+    "calculate": "Calcular",
+    "shipping": {
+      "title": "Gestão de taxas de envio",
+      "description": "Defina taxas por quilómetro e pré-visualize custos.",
+      "baseRateTitle": "Taxa base de envio",
+      "perKmLabel": "Taxa por quilómetro",
+      "calculatorTitle": "Calculadora de envio",
+      "distanceLabel": "Distância",
+      "currentRateLabel": "Taxa atual",
+      "resultTitle": "Custo de envio",
+      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}"
+    },
+    "vat": {
+      "title": "IVA e impostos",
+      "description": "Gerir IVA predefinido e pré-visualizar impostos.",
+      "configTitle": "Configuração de IVA atual",
+      "defaultRateLabel": "Taxa de IVA predefinida",
+      "previewTitle": "Pré-visualização de impostos",
+      "productPriceLabel": "Preço do produto",
+      "previewShippingCost": "Custo de envio",
+      "previewRate": "Taxa de IVA",
+      "previewAmount": "Valor do IVA",
+      "previewFinal": "Preço final ao cliente"
+    },
+    "auction": {
+      "title": "Definições de leilão de transporte",
+      "description": "Duração dos leilões para transportadores.",
+      "durationTitle": "Duração do leilão",
+      "hoursLabel": "Horas",
+      "minutesLabel": "Minutos"
+    }
+  },
   "panel": {
     "mainMenu": "Menu Principal",
     "openMenu": "Abrir menu",

@@ -249,6 +249,787 @@
       "delivery": "Average Delivery Time"
     }
   },
+  "adminDashboard": {
+    "title": "Dashboard Overview",
+    "subtitle": "Executive summary and key performance indicators.",
+    "quickActionSectionTitle": "Quick Action",
+    "takeAction": "Take action →",
+    "channels": {
+      "label": "Sales channel",
+      "all": "All Channels",
+      "b2b": "B2B Only",
+      "b2c": "B2C Only"
+    },
+    "metrics": {
+      "totalGmv": "Total GMV",
+      "b2bGmv": "B2B GMV",
+      "b2cGmv": "B2C GMV",
+      "totalRevenue": "Total Revenue",
+      "commission": "Commission",
+      "avgOrderValue": "Avg Order Value",
+      "activeUsers": "Active Users",
+      "newRegistrations": "New Registrations",
+      "activeSuppliers": "Active Suppliers",
+      "activeFactories": "Active Factories",
+      "activeTransporters": "Active Transporters",
+      "openDisputes": "Open Disputes"
+    },
+    "quickActions": {
+      "transporterPayments": {
+        "title": "Approve Transporter Payments",
+        "subtitleLine": "4 requests awaiting your review"
+      },
+      "affiliatePayouts": {
+        "title": "Process Affiliate Payouts",
+        "subtitleLine": "2 pending · 2 ready to mark paid"
+      },
+      "affiliateAnalytics": {
+        "title": "View Affiliate Analytics",
+        "subtitleLine": "Track top performers & conversion"
+      }
+    },
+    "charts": {
+      "revenueTrend": "Revenue Trend",
+      "orderVolume": "Order Volume",
+      "thisYear": "This year",
+      "b2bRevenue": "B2B Revenue",
+      "b2cRevenue": "B2C Revenue",
+      "b2bOrders": "B2B Orders",
+      "b2cOrders": "B2C Orders"
+    },
+    "performance": {
+      "retentionTitle": "Retention Rate",
+      "b2bRetention": "B2B Retention",
+      "b2cRetention": "B2C Retention",
+      "ltvTitle": "Customer LTV",
+      "b2bLtv": "B2B Average LTV",
+      "b2cLtv": "B2C Average LTV",
+      "repurchaseTitle": "Repurchase Rate",
+      "b2bRepurchase": "B2B Repurchase",
+      "b2cRepurchase": "B2C Repurchase"
+    }
+  },
+  "adminUserManagement": {
+    "title": "User Management",
+    "subtitle": "Manage customers, companies, and all user accounts",
+    "tabs": {
+      "customer": "Customer",
+      "company": "Company"
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "b2cCustomers": "B2C Customers",
+      "b2bCompanies": "B2B Companies",
+      "pendingVerification": "Pending Verification"
+    },
+    "filters": {
+      "allStatus": "All Status",
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "columns": {
+      "name": "NAME",
+      "phone": "PHONE",
+      "email": "E-MAIL",
+      "type": "TYPE",
+      "status": "STATUS",
+      "vatRate": "Vat Rate",
+      "registered": "REGISTERED"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "suspend": "Suspend",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "modal": {
+      "title": "User Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "address": "Address"
+    }
+  },
+  "adminSupplierManagement": {
+    "title": "Supplier Management",
+    "subtitle": "Monitor and manage supplier.",
+    "tabs": {
+      "all": "All Supplier",
+      "pending": "Pending Supplier",
+      "suspended": "Suspended Supplier"
+    },
+    "stats": {
+      "totalSuppliers": "Total Suppliers",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No suppliers found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "commission": "Commission",
+      "status": "Status",
+      "action": "Action"
+    },
+    "commission": {
+      "title": "Add Commission",
+      "custom": "Custom",
+      "placeholder": "Percentage %",
+      "set": "Set"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Supplier Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminFactoryManagement": {
+    "title": "Factory Management",
+    "subtitle": "Monitor and manage Factory.",
+    "tabs": {
+      "all": "All Factory",
+      "pending": "Pending Factory",
+      "suspended": "Suspended Factory"
+    },
+    "stats": {
+      "totalFactories": "Total Factory",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No factories found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "commission": "Commission",
+      "status": "Status",
+      "action": "Action"
+    },
+    "commission": {
+      "title": "Add Commission",
+      "custom": "Custom",
+      "placeholder": "Percentage %",
+      "set": "Set"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Factory Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminTransporterManagement": {
+    "title": "Transporter Management",
+    "subtitle": "Monitor and manage Transporter.",
+    "tabs": {
+      "all": "All Transporter",
+      "pending": "Pending Transporter",
+      "suspended": "Suspended Transporter"
+    },
+    "stats": {
+      "totalTransporters": "Total Transporter",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No transporters found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "status": "Status",
+      "action": "Action"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Transporter Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminProductModeration": {
+    "title": "Product Moderation",
+    "subtitle": "Review and moderate user-uploaded products",
+    "tabs": {
+      "all": "All {{count}}",
+      "pending": "Pending ({{count}})",
+      "accepted": "Accepted ({{count}})",
+      "rejected": "Rejected ({{count}})"
+    },
+    "filters": {
+      "label": "Filters:",
+      "allCategories": "All Categories",
+      "buildingMaterials": "Building Materials",
+      "structuralSteel": "Structural Steel",
+      "masonry": "Masonry",
+      "electrical": "Electrical Devices"
+    },
+    "empty": "No products match your filters.",
+    "detail": {
+      "back": "Back to Product Moderation",
+      "title": "{{name}} · Moderation",
+      "notFound": "Product not found."
+    }
+  },
+  "adminChat": {
+    "subtitle": "Message suppliers, buyers, and partners from one inbox."
+  },
+  "adminMarketingManagement": {
+    "title": "Marketing Management",
+    "subtitle": "Manage product visibility packages and supplier advertising requests.",
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "pendingRequests": "Pending Requests",
+      "activeBoosts": "Active Boosts",
+      "totalFeatured": "Total Featured Products"
+    },
+    "tabs": {
+      "all": "All Requests",
+      "pending": "Pending ({{count}})",
+      "active": "Active ({{count}})",
+      "completed": "Completed"
+    },
+    "pendingBoostTitle": "Pending Boost Requests",
+    "actionRequired": "Action Required",
+    "featuredTitle": "Currently Featured Products",
+    "boostTier": "Boost Tier",
+    "duration": "Duration",
+    "emptyRequests": "No boost requests match this filter.",
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject"
+    }
+  },
+  "adminFinancePayments": {
+    "title": "Finance & Payments",
+    "subtitle": "Marketplace revenue, vendor payouts, and financial health.",
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "commissionRevenue": "Commission Revenue",
+      "pendingPayouts": "Pending Payouts",
+      "marketingRevenue": "Marketing Revenue"
+    },
+    "charts": {
+      "revenueTrend": "Revenue Trend",
+      "commission": "Commission",
+      "marketing": "Marketing",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "payoutSection": {
+      "title": "Payout Requests",
+      "subtitle": "Review transporter payout requests and payment status."
+    },
+    "payoutSearchPlaceholder": "Search transporter name or email...",
+    "payoutEmpty": "No payout requests match your filters.",
+    "payoutFilters": {
+      "allRequests": "All Requests"
+    },
+    "payoutColumns": {
+      "transporter": "Transporter",
+      "totalEarnings": "Total Earnings",
+      "requested": "Requested",
+      "pending": "Pending",
+      "requestDate": "Request Date",
+      "status": "Status",
+      "action": "Action"
+    },
+    "payoutStatus": {
+      "paid": "Paid",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "payoutActions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "markPaid": "Mark as paid",
+      "viewDetails": "View details"
+    },
+    "invoiceSection": {
+      "title": "Commission Invoices",
+      "subtitle": "Manage and track all seller commission invoices generated from completed marketplace orders."
+    },
+    "invoiceSearchPlaceholder": "Search invoice ID, order, or participant...",
+    "invoiceEmpty": "No commission invoices match your filters.",
+    "invoiceFilters": {
+      "sortLabel": "Sort By:",
+      "allTypes": "User Type"
+    },
+    "invoiceColumns": {
+      "invoiceId": "Invoices ID",
+      "userType": "User Type",
+      "orderId": "Order ID",
+      "participant": "Participant",
+      "amount": "Amount",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "userTypes": {
+      "supplier": "Supplier",
+      "factory": "Factory",
+      "transporter": "Transporter"
+    },
+    "invoiceActions": {
+      "view": "View invoice",
+      "download": "Download invoice"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "adminDisputesResolution": {
+    "title": "Disputes Resolution",
+    "subtitle": "Manage customer disputes, returns, and resolution cases",
+    "searchPlaceholder": "Search dispute ID, order, customer, supplier...",
+    "empty": "No disputes match your filters.",
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "disputeId": "Dispute ID",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "supplier": "Supplier",
+      "issue": "Issue",
+      "status": "Status",
+      "registered": "Registered",
+      "action": "Action"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "status": "Status"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "back": "Back to Disputes Resolution",
+      "title": "{{id}} · Dispute",
+      "notFound": "Dispute not found."
+    }
+  },
+  "adminAuction": {
+    "title": "Auction Board",
+    "subtitle": "{{count}} active auctions in your service area",
+    "filterLabel": "Filter:",
+    "dateLabel": "Board date",
+    "empty": "No auctions match this filter.",
+    "filters": {
+      "all": "All",
+      "endingSoon": "Ending Soon",
+      "nearestFirst": "Nearest First",
+      "ended": "Ended"
+    }
+  },
+  "adminOrders": {
+    "title": "Orders",
+    "subtitle": "All orders",
+    "filterLabel": "Filter:",
+    "empty": "No orders match your filters.",
+    "tabs": {
+      "supplier": "Supplier Order",
+      "factory": "Factory Order"
+    },
+    "filters": {
+      "allCustomerType": "All Customer Type",
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "orderId": "Order ID",
+      "customerName": "Customer Name",
+      "customerType": "Customer Type",
+      "items": "Items",
+      "total": "Total",
+      "commission": "Comission",
+      "status": "Status",
+      "date": "Date",
+      "action": "Action"
+    },
+    "customerTypes": {
+      "company": "Company",
+      "customer": "Customer"
+    },
+    "status": {
+      "new": "New",
+      "pending": "Pending",
+      "processing": "Processing",
+      "assigned": "Assigned",
+      "completed": "Completed",
+      "cancel": "Cancel"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "back": "Back to Orders",
+      "title": "{{id}} · Order",
+      "notFound": "Order not found.",
+      "supplierSection": "Supplier Information",
+      "factorySection": "Factory Information",
+      "produced": "Produced",
+      "assigned": "Assigned"
+    }
+  },
+  "adminDeliveryLogistics": {
+    "title": "Delivery & Logistics",
+    "subtitle": "Monitor active deliveries and shipment details.",
+    "status": {
+      "assigned": "Assigned",
+      "pickedUp": "Picked Up",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
+    },
+    "detail": {
+      "back": "Back to Delivery & Logistics",
+      "title": "{{id}} · Delivery",
+      "notFound": "Delivery not found."
+    }
+  },
+  "adminAffiliateDirectory": {
+    "title": "Affiliate Directory",
+    "subtitle": "Browse, manage, and connect with your affiliate network from one place.",
+    "sortLabel": "SORT BY:",
+    "searchPlaceholder": "Search affiliates…",
+    "empty": "No records match your filters.",
+    "tabs": {
+      "members": "Affiliate member",
+      "payoutControl": "Payout Control",
+      "levelControl": "Level Control"
+    },
+    "stats": {
+      "totalAffiliates": "Total Affiliates",
+      "totalAffiliatesHint": "Registered partners",
+      "activeAffiliates": "Active Affiliates",
+      "activeAffiliatesHint": "Currently generating traffic",
+      "referredClients": "Referred Clients",
+      "referredClientsHint": "Active paying subscriptions",
+      "marketplaceRevenue": "Marketplace Revenue",
+      "marketplaceRevenueHint": "Generated from affiliates",
+      "totalCommissionPaid": "Total Commission Paid",
+      "totalCommissionPaidHint": "Successfully processed",
+      "pendingCommission": "Pending Commission",
+      "pendingCommissionHint": "Awaiting payout approval"
+    },
+    "columns": {
+      "affiliateName": "Affiliates Name",
+      "affiliateId": "Affiliates ID",
+      "code": "Code",
+      "level": "Level",
+      "tierRate": "Tier Rate",
+      "totalClients": "Total Clients",
+      "activeClients": "Active Clients",
+      "revenueGenerated": "Revenue Generated",
+      "commissionEarned": "Commission Earned",
+      "pending": "Pending",
+      "status": "STATUS",
+      "action": "ACTION"
+    },
+    "filters": {
+      "allStatus": "All Status",
+      "allPlans": "All",
+      "customer": "Customer",
+      "company": "Company"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "clientStatus": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "commissionStatus": {
+      "approved": "Approved"
+    },
+    "payoutStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "levelStatus": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "suspend": "Suspend",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "payoutControl": {
+      "pageTitle": "Financial Payout Control Center",
+      "pageSubtitle": "Audit pending partner balances, authorize bank releases, and review compliance histories.",
+      "requestsTitle": "Payout Requests",
+      "filters": {
+        "allRequests": "All Requests"
+      },
+      "actions": {
+        "paid": "Paid",
+        "rejected": "Rejected",
+        "approved": "Approved"
+      },
+      "columns": {
+        "affiliate": "Affiliate",
+        "totalEarnings": "TOTAL EARNINGS",
+        "requested": "Requested",
+        "pending": "PENDING",
+        "accountNumber": "Account Number",
+        "requestDate": "Request Date",
+        "status": "STATUS"
+      }
+    },
+    "levelControl": {
+      "pageTitle": "Commission Level Milestone System",
+      "pageSubtitle": "Define milestone tiers, required referral targets, and corresponding payout rate commissions.",
+      "activeBadge": "Active",
+      "commissionSplit": "Commission Split",
+      "payoutNote": "Recurring Lifetime payout spilt",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createTitle": "Create New Commission Level",
+      "tierSubtitles": {
+        "entryLevel": "Entry Level Tier",
+        "bronzeTier": "Bronze Tier",
+        "silverTier": "Silver Tier",
+        "goldTier": "Gold Tier",
+        "premiumTier": "Premium Tier",
+        "customTier": "Custom Tier"
+      },
+      "form": {
+        "levelName": "Level Name",
+        "levelNamePlaceholder": "e.g. Diamond",
+        "commission": "Commission %",
+        "membersRequired": "Member Required",
+        "description": "Description",
+        "cancel": "Cancel",
+        "save": "Save Level"
+      }
+    },
+    "detail": {
+      "back": "Back",
+      "title": "{{name}} · Affiliate",
+      "notFound": "Affiliate not found.",
+      "joined": "Joined",
+      "code": "Code",
+      "tier": "Tier",
+      "stats": {
+        "revenue": "Revenue",
+        "earned": "Earned",
+        "clients": "Clients"
+      },
+      "tabs": {
+        "clients": "Referred Clients",
+        "analytics": "Revenue Analytics",
+        "commissions": "Commissions History",
+        "payouts": "Payouts History"
+      },
+      "clients": {
+        "sectionTitle": "Referred Clients",
+        "columns": {
+          "clientInfo": "Client Info",
+          "phone": "Phone Number",
+          "joinDate": "Join Date",
+          "plan": "Subscription Plan",
+          "generatedRevenue": "Generated Revenue",
+          "affiliateCommission": "Affiliate Commission",
+          "expiryDate": "Expiry Date",
+          "status": "STATUS",
+          "action": "ACTION"
+        }
+      },
+      "commissions": {
+        "sectionTitle": "Commission Log Ledger",
+        "columns": {
+          "transactionId": "Transaction ID",
+          "date": "Date",
+          "sourceClient": "Source Client",
+          "purchaseSize": "Referral Purchase Size",
+          "rate": "Percentage Rate",
+          "earned": "Earned Commission",
+          "status": "Status"
+        }
+      },
+      "payouts": {
+        "sectionTitle": "Commission Log Ledger",
+        "columns": {
+          "referenceId": "Refernce ID",
+          "requestedDate": "Requested Date",
+          "method": "Method",
+          "accountNumber": "Account Number",
+          "amount": "Payout Amount",
+          "status": "Processing Status"
+        }
+      },
+      "chart": {
+        "eyebrow": "Historical earnings",
+        "title": "Historical Earnings & Generated Revenue",
+        "subtitle": "Month-over-month marketplace revenue and affiliate commission.",
+        "timeframe": "Time range",
+        "thisYear": "This year",
+        "marketplaceRev": "Marketplace Rev",
+        "affiliateCommission": "Affiliate Commission"
+      }
+    }
+  },
+  "adminRolesPermissions": {
+    "title": "Role & Permission Strategy",
+    "subtitle": "Documentation of the access control layers implemented in Construpreco. This ensures data security and a focused user experience for each staff role.",
+    "roles": {
+      "moderator": "Moderator",
+      "admin": "Admin",
+      "viewer": "Viewer"
+    },
+    "invite": {
+      "title": "Invite your team",
+      "description": "Easily add new members to a role by entering their email addresses below. Once invited, they'll receive an email with a link to join.",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "name@company.com",
+      "roleLabel": "Role",
+      "send": "Send Invite"
+    },
+    "editMatrix": {
+      "title": "Edit Matrix",
+      "empty": "No modules in this matrix.",
+      "toggleAria": "Toggle edit access for {{module}}",
+      "deleteAria": "Remove {{module}} from edit matrix"
+    },
+    "visibilityMatrix": {
+      "title": "Visibility Matrix",
+      "download": "Download",
+      "visible": "Visible",
+      "hidden": "Hidden"
+    },
+    "columns": {
+      "modulePage": "Module / Page",
+      "moderator": "Moderator",
+      "action": "Action"
+    },
+    "modules": {
+      "dashboardOverview": "Dashboard/ Overview",
+      "productManagement": "Product Management",
+      "supplierManagement": "Supplier Management",
+      "factoryManagement": "Factory Management",
+      "transporterManagement": "Transporter Management",
+      "productModeration": "Product Moderation"
+    },
+    "visibilityModules": {
+      "overviewAnalytics": "Overview / Analytics",
+      "classesCourses": "Classes & Courses",
+      "memberDatabase": "Member Database",
+      "instructorDirectory": "Instructor Directory"
+    }
+  },
+  "adminSettings": {
+    "title": "Settings",
+    "subtitle": "Configure platform shipping, tax, and auction defaults.",
+    "unsaved": "Unsaved",
+    "saveChange": "Save Change",
+    "reset": "Reset",
+    "calculate": "Calculate",
+    "shipping": {
+      "title": "Shipping Charge Management",
+      "description": "Set base per-kilometer rates and preview shipping costs.",
+      "baseRateTitle": "Base Shipping Rate",
+      "perKmLabel": "Per Kilometer Charge",
+      "calculatorTitle": "Shipping Cost Calculator",
+      "distanceLabel": "Distance",
+      "currentRateLabel": "Current Rate",
+      "resultTitle": "Shipping Cost",
+      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}"
+    },
+    "vat": {
+      "title": "VAT & Tax Settings",
+      "description": "Manage default VAT and preview tax on product prices.",
+      "configTitle": "Current VAT configuration",
+      "defaultRateLabel": "Default VAT rate",
+      "previewTitle": "Tax calculation preview",
+      "productPriceLabel": "Product price",
+      "previewShippingCost": "Shipping cost",
+      "previewRate": "VAT rate",
+      "previewAmount": "VAT amount",
+      "previewFinal": "Final customer price"
+    },
+    "auction": {
+      "title": "Transportation Auction Settings",
+      "description": "Control how long transporter auctions stay open.",
+      "durationTitle": "Auction Duration",
+      "hoursLabel": "Hours",
+      "minutesLabel": "Minutes"
+    }
+  },
   "panel": {
     "mainMenu": "Main Menu",
     "openMenu": "Open menu",

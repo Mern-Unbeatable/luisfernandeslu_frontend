@@ -829,8 +829,8 @@ export const DEMO_MESSENGER_CHATS = [
   {
     id: 'c1',
     name: 'TechPrint Hub',
-    lastMessage: 'Offer sent for Portland Cement',
-    time: '7:25pm',
+    lastMessage: 'Last one from the batch, best deal ever.',
+    time: '4:17pm',
     unreadCount: 0,
     online: true,
     partner: { id: 'p1', name: 'TechPrint Hub', avatar: null },
@@ -838,7 +838,7 @@ export const DEMO_MESSENGER_CHATS = [
   {
     id: 'c2',
     name: 'Ope',
-    lastMessage: 'Looking forward to your reply',
+    lastMessage: 'You dey hung dier you kai say house dey',
     time: '6:21pm',
     unreadCount: 0,
     online: true,
@@ -847,20 +847,29 @@ export const DEMO_MESSENGER_CHATS = [
   {
     id: 'c3',
     name: '3D Maker Store',
-    lastMessage: 'Thanks for the update',
-    time: 'Yesterday',
+    lastMessage: "Can't wait to see it",
+    time: '12:33pm',
     unreadCount: 0,
     online: false,
     partner: { id: 'p3', name: '3D Maker Store', avatar: null },
   },
   {
     id: 'c4',
-    name: 'SteelWorks Inc',
-    lastMessage: 'Offer received — Pending Response',
-    time: 'Mon',
+    name: 'Printify Zone',
+    lastMessage: 'Thanks for the update',
+    time: '9:07pm',
+    unreadCount: 0,
+    online: false,
+    partner: { id: 'p4', name: 'Printify Zone', avatar: null },
+  },
+  {
+    id: 'c5',
+    name: "Maker's Market",
+    lastMessage: 'Offer sent for PLA filament.',
+    time: 'Yesterday',
     unreadCount: 1,
     online: false,
-    partner: { id: 'p4', name: 'SteelWorks Inc', avatar: null },
+    partner: { id: 'p5', name: "Maker's Market", avatar: null },
   },
 ]
 
@@ -909,48 +918,68 @@ export const DEMO_MESSENGER_MESSAGES = {
     {
       id: 'm10',
       sender: 'them',
-      text: 'Hey, are you available for a quick quote on bulk cement?',
-      time: '6:05 PM',
+      text: 'Yo mandem',
+      time: '6:18 PM',
+      partner: { id: 'p2', name: 'Ope' },
+    },
+    {
+      id: 'm10b',
+      sender: 'them',
+      text: 'Cho dey house?',
+      time: '6:19 PM',
       partner: { id: 'p2', name: 'Ope' },
     },
     {
       id: 'm11',
       sender: 'me',
-      text: 'Yes — here is a detailed offer for your project.',
-      time: '6:12 PM',
+      text: 'Kwasia 😂😅',
+      time: '6:20 PM',
       status: 'Read',
     },
     {
-      id: 'm12',
+      id: 'm11b',
       sender: 'me',
-      type: 'offer',
+      text: 'You dey hung dier you kai say house dey',
       time: '6:21 PM',
-      status: 'Delivered',
-      offer: {
-        ...DEMO_MESSENGER_OFFER,
-        statusLabel: 'Awaiting their response',
-      },
+      status: 'Read',
     },
   ],
   /** Buyer view: partner sent the offer → Pay Now / Negotiate */
-  c4: [
+  c5: [
     {
       id: 'm20',
       sender: 'them',
-      text: 'Here is our offer for the steel order.',
+      text: 'Here is our offer for PLA filament.',
       time: '5:10 PM',
-      partner: { id: 'p4', name: 'SteelWorks Inc' },
+      partner: { id: 'p5', name: "Maker's Market" },
     },
     {
       id: 'm21',
       sender: 'them',
       type: 'offer',
       time: '5:12 PM',
-      partner: { id: 'p4', name: 'SteelWorks Inc' },
+      partner: { id: 'p5', name: "Maker's Market" },
       offer: {
         ...DEMO_MESSENGER_OFFER,
         statusLabel: 'Pending Response',
+        product: 'PLA filament',
       },
+    },
+  ],
+  c4: [
+    {
+      id: 'm30',
+      sender: 'them',
+      text: 'Thanks for the update',
+      time: '9:07 PM',
+      partner: { id: 'p4', name: 'Printify Zone' },
+    },
+    {
+      id: 'm31',
+      sender: 'me',
+      text: 'Anytime — let me know if you need anything else.',
+      time: '9:10 PM',
+      status: 'Read',
     },
   ],
 }
@@ -1155,10 +1184,6 @@ export const DEMO_PANEL_PROFILE_TRANSPORTER = {
 }
 export const DEMO_PANEL_PROFILE_ADMIN = {
   ...DEMO_PANEL_PROFILE,
-  displayName: 'Platform Admin',
-  displayEmail: 'admin@demo.com',
-  name: 'Platform Admin',
-  email: 'admin@demo.com',
   warehouses: [],
 }
 export const DEMO_PANEL_PROFILE_AFFILIATE = {
