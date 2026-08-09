@@ -309,13 +309,28 @@ const inputClass =
 
 export default function CommissionsPage() {
   const [history, setHistory] = useState(INITIAL_HISTORY)
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
   const [withdrawForm, setWithdrawForm] = useState(EMPTY_WITHDRAW)
 
-  const pageCount = Math.max(1, Math.ceil(history.length / PAGE_SIZE))
+  const filtered = history.filter((row) => {
+    const q = search.trim().toLowerCase()
+    if (!q) return true
+
+    return (
+      String(row.date).toLowerCase().includes(q) ||
+      String(row.type).toLowerCase().includes(q) ||
+      String(row.accountType).toLowerCase().includes(q) ||
+      String(row.accountNumber).toLowerCase().includes(q) ||
+      String(row.amount).toLowerCase().includes(q) ||
+      String(row.status).toLowerCase().includes(q)
+    )
+  })
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
-  const paged = history.slice(
+  const paged = filtered.slice(
     (safePage - 1) * PAGE_SIZE,
     safePage * PAGE_SIZE,
   )
@@ -397,11 +412,18 @@ export default function CommissionsPage() {
         <DataTable
           columns={COLUMNS}
           data={paged}
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value)
+            setPage(1)
+          }}
+          searchPlaceholder="Search date, type, account, amount, status..."
           showPagination
           pagination={{
             page: safePage,
             pageSize: PAGE_SIZE,
-            total: history.length,
+            total: filtered.length,
             onPageChange: setPage,
           }}
         />

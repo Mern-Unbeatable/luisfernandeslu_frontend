@@ -425,6 +425,7 @@ function buildOrderDetails(row) {
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState(DUMMY_ORDERS)
+  const [search, setSearch] = useState('')
   const [supplier, setSupplier] = useState('all')
   const [status, setStatus] = useState('all')
   const [page, setPage] = useState(1)
@@ -441,7 +442,19 @@ export default function OrdersPage() {
   const filtered = orders.filter((row) => {
     if (supplier !== 'all' && row.supplierName !== supplier) return false
     if (status !== 'all' && row.status !== status) return false
-    return true
+
+    const q = search.trim().toLowerCase()
+    if (!q) return true
+
+    return (
+      String(row.orderId).toLowerCase().includes(q) ||
+      String(row.supplierName).toLowerCase().includes(q) ||
+      String(row.status).toLowerCase().includes(q) ||
+      String(row.total).toLowerCase().includes(q) ||
+      String(row.installmentAmount).toLowerCase().includes(q) ||
+      String(row.installmentNumber).toLowerCase().includes(q) ||
+      String(row.date).toLowerCase().includes(q)
+    )
   })
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
@@ -534,6 +547,13 @@ export default function OrdersPage() {
       <DataTable
         columns={COLUMNS}
         data={paged}
+        showSearch
+        searchValue={search}
+        onSearchChange={(value) => {
+          setSearch(value)
+          setPage(1)
+        }}
+        searchPlaceholder="Search order, supplier, status..."
         showFilters
         filterLabel="Sort By:"
         filters={[

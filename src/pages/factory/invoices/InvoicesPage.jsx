@@ -204,11 +204,23 @@ const COLUMNS = [
 ]
 
 export default function InvoicesPage() {
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const pageCount = Math.max(1, Math.ceil(DUMMY_INVOICES.length / PAGE_SIZE))
+  const filtered = DUMMY_INVOICES.filter((row) => {
+    const q = search.trim().toLowerCase()
+    if (!q) return true
+
+    return (
+      String(row.id).toLowerCase().includes(q) ||
+      String(row.orderId).toLowerCase().includes(q) ||
+      String(row.customer).toLowerCase().includes(q)
+    )
+  })
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
-  const paged = DUMMY_INVOICES.slice(
+  const paged = filtered.slice(
     (safePage - 1) * PAGE_SIZE,
     safePage * PAGE_SIZE,
   )
@@ -228,11 +240,18 @@ export default function InvoicesPage() {
       <DataTable
         columns={COLUMNS}
         data={paged}
+        showSearch
+        searchValue={search}
+        onSearchChange={(value) => {
+          setSearch(value)
+          setPage(1)
+        }}
+        searchPlaceholder="Search invoice ID, order ID, customer..."
         showPagination
         pagination={{
           page: safePage,
           pageSize: PAGE_SIZE,
-          total: DUMMY_INVOICES.length,
+          total: filtered.length,
           onPageChange: setPage,
         }}
       />

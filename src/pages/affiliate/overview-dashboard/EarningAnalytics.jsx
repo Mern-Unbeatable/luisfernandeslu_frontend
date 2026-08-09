@@ -124,8 +124,8 @@ export default function EarningAnalytics({
 
   return (
     <div className="rounded-2xl border border-[#00000026] bg-white p-5 sm:p-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+      <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <h2 className="text-lg font-bold text-[var(--primary-text)]">
             {title}
           </h2>
@@ -134,11 +134,11 @@ export default function EarningAnalytics({
           </p>
         </div>
 
-        <label className="relative inline-flex shrink-0">
+        <label className="relative inline-flex w-full max-w-full shrink-0 overflow-hidden self-start sm:w-auto">
           <select
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
-            className="h-9 cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+            className="h-9 w-full max-w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:w-auto"
             aria-label="Earning analytics period filter"
           >
             {filterOptions.map((option) => (

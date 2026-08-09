@@ -75,7 +75,7 @@ export default function AffiliateLevelsPage() {
             </p>
           </div>
 
-          <div className="w-full shrink-0 rounded-xl bg-[#EEF2F6] p-4 lg:max-w-md">
+          <div className="w-full shrink-0 rounded-xl bg-[#F8FAFC] border border-[#00000024] p-4 lg:max-w-md">
             <div className="flex items-center justify-between gap-3 text-sm">
               <span className="font-semibold text-[var(--primary-text)]">
                 Active referrals:

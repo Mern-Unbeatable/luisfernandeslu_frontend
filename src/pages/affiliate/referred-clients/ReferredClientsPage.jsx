@@ -161,11 +161,26 @@ const COLUMNS = [
 ]
 
 export default function ReferredClientsPage() {
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const pageCount = Math.max(1, Math.ceil(DUMMY_CLIENTS.length / PAGE_SIZE))
+  const filtered = DUMMY_CLIENTS.filter((row) => {
+    const q = search.trim().toLowerCase()
+    if (!q) return true
+
+    return (
+      String(row.name).toLowerCase().includes(q) ||
+      String(row.registeredDate).toLowerCase().includes(q) ||
+      String(row.revenueGenerated).toLowerCase().includes(q) ||
+      String(row.commissionEarned).toLowerCase().includes(q) ||
+      String(row.commissionExpiry).toLowerCase().includes(q) ||
+      String(row.status).toLowerCase().includes(q)
+    )
+  })
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
-  const paged = DUMMY_CLIENTS.slice(
+  const paged = filtered.slice(
     (safePage - 1) * PAGE_SIZE,
     safePage * PAGE_SIZE,
   )
@@ -185,11 +200,18 @@ export default function ReferredClientsPage() {
       <DataTable
         columns={COLUMNS}
         data={paged}
+        showSearch
+        searchValue={search}
+        onSearchChange={(value) => {
+          setSearch(value)
+          setPage(1)
+        }}
+        searchPlaceholder="Search name, status, date, revenue..."
         showPagination
         pagination={{
           page: safePage,
           pageSize: PAGE_SIZE,
-          total: DUMMY_CLIENTS.length,
+          total: filtered.length,
           onPageChange: setPage,
         }}
       />
