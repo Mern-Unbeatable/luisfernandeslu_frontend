@@ -568,14 +568,9 @@ export const router = createBrowserRouter([
           },
           {
             path: '/help-center',
-            element: <ComingSoon hideTitle />,
+            element: <HelpCenter />,
             handle: { seo: routeSeo.helpCenter },
           },
-          // {
-          //   path: '/help-center',
-          //   element: <HelpCenter />,
-          //   handle: { seo: routeSeo.helpCenter },
-          // },
           {
             path: '/return-policy',
             element: <ReturnPolicy />,
@@ -583,54 +578,29 @@ export const router = createBrowserRouter([
           },
           {
             path: '/dispute-resolution',
-            element: <ComingSoon hideTitle />,
+            element: <DisputeResolutionList />,
             handle: { seo: routeSeo.disputeResolution },
           },
-          // {
-          //   path: '/dispute-resolution',
-          //   element: <DisputeResolutionList />,
-          //   handle: { seo: routeSeo.disputeResolution },
-          // },
           {
             path: '/dispute-resolution/:disputeId',
-            element: <ComingSoon hideTitle />,
+            element: <DisputeResolutionDetail />,
             handle: { seo: routeSeo.disputeResolution },
           },
-          // {
-          //   path: '/dispute-resolution/:disputeId',
-          //   element: <DisputeResolutionDetail />,
-          //   handle: { seo: routeSeo.disputeResolution },
-          // },
           {
             path: '/returns',
-            element: <ComingSoon hideTitle />,
+            element: <ReturnsOrders />,
             handle: { seo: routeSeo.returnsCenter },
           },
-          // {
-          //   path: '/returns',
-          //   element: <ReturnsOrders />,
-          //   handle: { seo: routeSeo.returnsCenter },
-          // },
           {
             path: '/returns/request/:returnId',
-            element: <ComingSoon hideTitle />,
+            element: <ReturnRequestDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
-          // {
-          //   path: '/returns/request/:returnId',
-          //   element: <ReturnRequestDetail />,
-          //   handle: { seo: routeSeo.returnsCenter },
-          // },
           {
             path: '/returns/:orderId',
-            element: <ComingSoon hideTitle />,
+            element: <ReturnOrderDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
-          // {
-          //   path: '/returns/:orderId',
-          //   element: <ReturnOrderDetail />,
-          //   handle: { seo: routeSeo.returnsCenter },
-          // },
         ],
       },
 

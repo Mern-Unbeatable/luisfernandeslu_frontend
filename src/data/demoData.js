@@ -1206,3 +1206,18 @@ export const DEMO_PANEL_PROFILE_CUSTOMER = {
     email: 'customer@gmail.com',
   },
 }
+
+export const DEMO_PANEL_PROFILE_COMPANY = {
+  ...DEMO_PANEL_PROFILE_CUSTOMER,
+  email: 'company@construpreco.com',
+  billingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    companyName: 'Chowdhury Construction Ltd.',
+    email: 'company@construpreco.com',
+  },
+  shippingAddress: {
+    ...DEMO_BUYER_ADDRESS_BASE,
+    companyName: 'Chowdhury Construction Ltd.',
+    email: 'company@construpreco.com',
+  },
+}
