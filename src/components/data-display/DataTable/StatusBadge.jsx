@@ -19,6 +19,10 @@ const STATUS_STYLES = {
   active: 'bg-emerald-100 text-emerald-700',
   disabled: 'bg-gray-100 text-gray-600',
   expired: 'bg-red-100 text-red-700',
+  good: 'bg-emerald-100 text-emerald-700',
+  low: 'bg-amber-100 text-amber-700',
+  'out-of-stock': 'bg-red-100 text-red-700',
+  'out of stock': 'bg-red-100 text-red-700',
   default: 'bg-gray-100 text-[var(--secondary-text)]',
 };
 

@@ -1883,6 +1883,198 @@ export function getSupplierFactoryOrderDetail(orderId, statusOverride) {
   };
 }
 
+// ── Supplier inventory ────────────────────────────────────────────
+export const DEMO_SUPPLIER_INVENTORY_WAREHOUSES = [
+  {
+    value: 'wh-richardson',
+    label: '3891 Ranchview Dr. Richardson, California 62639',
+  },
+  {
+    value: 'wh-syracuse',
+    label: '2118 Thornridge Cir. Syracuse, Connecticut 35624',
+  },
+  {
+    value: 'wh-inglewood',
+    label: '8502 Preston Rd. Inglewood, Maine 98380',
+  },
+  {
+    value: 'wh-mesa',
+    label: '2464 Royal Ln. Mesa, New Jersey 45463',
+  },
+];
+
+export const DEMO_SUPPLIER_INVENTORY_CATEGORIES = [
+  { value: 'cement', label: 'Cement' },
+  { value: 'mortars-concretes', label: 'Mortars & Concretes' },
+  { value: 'dry-structure', label: 'Dry Structure' },
+];
+
+export const DEMO_SUPPLIER_INVENTORY_FACTORIES = [
+  { value: 'all', label: 'All Factory' },
+  { value: 'steelco-manufacturing', label: 'Steelco Manufacturing' },
+  { value: 'novabrick-industries', label: 'NovaBrick Industries' },
+  { value: 'ferromax-ltd', label: 'FerroMax Ltd' },
+  { value: 'tuffcrete-works', label: 'TuffCrete Works' },
+  { value: 'buildpro-components', label: 'BuildPro Components' },
+  { value: 'structuraform-llc', label: 'StructuraForm LLC' },
+];
+
+export const DEMO_SUPPLIER_INVENTORY = {
+  stats: {
+    totalProducts: 42,
+    totalStockValue: '$428,950',
+    lowStockItems: 5,
+    outOfStock: 2,
+  },
+  products: [
+    {
+      id: 'inv-1001',
+      inventoryNumber: 'INV-1001',
+      category: 'Cement',
+      productName: 'Premium Steel Sheets',
+      sku: 'PSS-2024',
+      currentStock: 1200,
+      price: '$50.00',
+      factoryId: 'steelco-manufacturing',
+      factoryName: 'Steelco Manufacturing',
+      warehouseLocation: '3891 Ranchview Dr. Richardson, California 62639',
+      status: 'good',
+      statusLabel: 'Good',
+      approved: true,
+    },
+    {
+      id: 'inv-1002',
+      inventoryNumber: 'INV-1002',
+      category: 'Mortars & Concretes',
+      productName: 'Industrial Bolts Set',
+      sku: 'IBS-2024',
+      currentStock: 1000,
+      price: '$30.00',
+      factoryId: 'novabrick-industries',
+      factoryName: 'NovaBrick Industries',
+      warehouseLocation: '2118 Thornridge Cir. Syracuse, Connecticut 35624',
+      status: 'low',
+      statusLabel: 'Low',
+      approved: true,
+    },
+    {
+      id: 'inv-1003',
+      inventoryNumber: 'INV-1003',
+      category: 'Cement',
+      productName: 'Corrugated Metal Roofing',
+      sku: 'CMR-2024',
+      currentStock: 0,
+      price: '$50.00',
+      factoryId: 'ferromax-ltd',
+      factoryName: 'FerroMax Ltd',
+      warehouseLocation: '8502 Preston Rd. Inglewood, Maine 98380',
+      status: 'out-of-stock',
+      statusLabel: 'Out of stock',
+      approved: true,
+    },
+    {
+      id: 'inv-1004',
+      inventoryNumber: 'INV-1004',
+      category: 'Mortars & Concretes',
+      productName: 'Heavy-Duty Concrete Mix',
+      sku: 'HDCM-2024',
+      currentStock: 200,
+      price: '$30.00',
+      factoryId: 'tuffcrete-works',
+      factoryName: 'TuffCrete Works',
+      warehouseLocation: '2464 Royal Ln. Mesa, New Jersey 45463',
+      status: 'good',
+      statusLabel: 'Good',
+      approved: true,
+    },
+    {
+      id: 'inv-1005',
+      inventoryNumber: 'INV-1005',
+      category: 'Dry Structure',
+      productName: 'Galvanized Steel Beams',
+      sku: 'GSB-2024',
+      currentStock: 200,
+      price: '$30.00',
+      factoryId: 'buildpro-components',
+      factoryName: 'BuildPro Components',
+      warehouseLocation: '6391 Elgin St. Celina, Delaware 10299',
+      status: 'low',
+      statusLabel: 'Low',
+      approved: true,
+    },
+    {
+      id: 'inv-1006',
+      inventoryNumber: 'INV-1006',
+      category: 'Cement',
+      productName: 'Cold-Formed Metal Studs',
+      sku: 'CFMS-2024',
+      currentStock: 0,
+      price: '$50.00',
+      factoryId: 'structuraform-llc',
+      factoryName: 'StructuraForm LLC',
+      warehouseLocation: '3568 Green Rd. Orange, Florida 78345',
+      status: 'out-of-stock',
+      statusLabel: 'Out of stock',
+      approved: true,
+    },
+    {
+      id: 'inv-1007',
+      inventoryNumber: 'INV-1007',
+      category: 'Dry Structure',
+      productName: 'Structural Angle Brackets',
+      sku: 'SAB-2024',
+      currentStock: 450,
+      price: '$35.00',
+      factoryId: 'steelco-manufacturing',
+      factoryName: 'Steelco Manufacturing',
+      warehouseLocation: '3891 Ranchview Dr. Richardson, California 62639',
+      status: 'good',
+      statusLabel: 'Good',
+      approved: true,
+    },
+  ],
+};
+
+export const DEMO_SUPPLIER_INVENTORY_STAT_CARDS = [
+  {
+    id: 'totalProducts',
+    labelKey: 'panel.supplierInventory.totalProducts',
+    descriptionKey: 'panel.supplierInventory.activeSkus',
+    valueKey: 'totalProducts',
+    variant: 'summary',
+    icon: FiPackage,
+    iconTone: 'blue',
+  },
+  {
+    id: 'totalStockValue',
+    labelKey: 'panel.supplierInventory.totalStockValue',
+    valueKey: 'totalStockValue',
+    variant: 'summary',
+    icon: FiDollarSign,
+    iconTone: 'blue',
+  },
+  {
+    id: 'lowStockItems',
+    labelKey: 'panel.supplierInventory.lowStockItems',
+    descriptionKey: 'panel.supplierInventory.needReorder',
+    valueKey: 'lowStockItems',
+    variant: 'status',
+    tone: 'warning',
+    icon: FiAlertCircle,
+  },
+  {
+    id: 'outOfStock',
+    labelKey: 'panel.supplierInventory.outOfStock',
+    descriptionKey: 'panel.supplierInventory.urgentAction',
+    valueKey: 'outOfStock',
+    variant: 'status',
+    tone: 'danger',
+    icon: FiAlertCircle,
+  },
+];
+
+export const SUPPLIER_INVENTORY_PAGE_SIZE = 7;
+
 // ── Supplier fiscal documents ─────────────────────────────────────
 export const DEMO_SUPPLIER_FISCAL_DOCUMENTS = {
   stats: {

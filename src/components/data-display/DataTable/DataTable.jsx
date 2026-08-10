@@ -48,6 +48,8 @@ export default function DataTable({
   bgClassName = 'bg-white',
 
   className = '',
+  /** Minimum table width before horizontal scroll (inventory-wide tables). */
+  tableMinWidth = '900px',
 }) {
   const showActionColumn =
     showActions && (typeof getActions === 'function' || actions.length > 0)
@@ -108,7 +110,10 @@ export default function DataTable({
 
       {showTable ? (
         <div className="w-full overflow-x-auto overflow-y-visible">
-          <table className="w-full min-w-[900px] border-collapse text-left text-sm">
+          <table
+            className="w-full border-collapse text-left text-sm"
+            style={{ minWidth: tableMinWidth }}
+          >
             <thead>
               <tr className="border-b border-gray-200 bg-[#F6FBFF]">
                 {columns.map((column) => (
@@ -165,10 +170,13 @@ export default function DataTable({
                   >
                     {columns.map((column) => {
                       const value = row?.[column.key]
+                      const wrapClass = column.wrap
+                        ? 'whitespace-normal break-words'
+                        : 'whitespace-nowrap'
                       return (
                         <td
                           key={column.key}
-                          className={`px-3 py-3.5 text-[var(--primary-text)] whitespace-nowrap sm:px-4 ${column.className || ''}`}
+                          className={`px-3 py-3.5 text-[var(--primary-text)] sm:px-4 ${wrapClass} ${column.className || ''}`}
                         >
                           {typeof column.render === 'function'
                             ? column.render(value, row, rowIndex)
