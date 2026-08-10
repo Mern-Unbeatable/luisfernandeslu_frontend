@@ -604,12 +604,13 @@ export const DEMO_AUCTION_DETAILS_ACTIVE = {
     name: 'Heavy Machinery - Excavator',
     sku: 'EXC-HD-2024',
     quantity: '500 bags (50kg each)',
-    weight: '25000 kg',
+    weight: '18000 kg',
     price: '$85,000',
   },
   shipping: {
-    pickupLocation: 'Ambuja Cement Factory, Kalyan',
-    unloadingInstructions: 'Metro Construction Site, Andheri West',
+    pickupLocation: '890 Industrial Blvd, Houston, TX',
+    unloadingInstructions:
+      'Requires heavy-duty crane. Access via south gate.',
     accessCondition: 'Loading dock with ramp',
     additionalNotes:
       'Delivery must be coordinated with site manager. Contact 24 hours before arrival.',
@@ -618,17 +619,17 @@ export const DEMO_AUCTION_DETAILS_ACTIVE = {
     {
       id: 'b1',
       transporterName: 'FastShip Logistics',
-      at: '5/20/2026, 4:16:01 PM',
+      at: '5/20/2026, 4:18:01 PM',
     },
     {
       id: 'b2',
       transporterName: 'QuickDelivery Express',
-      at: '5/20/2026, 3:45:01 PM',
+      at: '5/20/2026, 4:17:01 PM',
     },
     {
       id: 'b3',
       transporterName: 'BulkFreight Co',
-      at: '5/20/2026, 2:30:01 PM',
+      at: '5/20/2026, 4:16:01 PM',
     },
   ],
   transporter: null,

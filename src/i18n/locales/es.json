@@ -2615,6 +2615,22 @@
       "subtitle": "Sigue los pedidos ya aceptados por transportistas"
     }
   },
+  "supplierDeliveryLogistics": {
+    "title": "Entrega y logística",
+    "subtitle": "Gestiona envíos y asigna transportistas",
+    "startAuction": "+ Iniciar subasta",
+    "startAuctionTitle": "Iniciar subasta",
+    "activeDetailTitle": "Subastas activas",
+    "assignedDetailTitle": "Detalles de entregas asignadas",
+    "activeAuctions": {
+      "title": "Subastas activas",
+      "subtitle": "Pujas pendientes y elementos en subasta"
+    },
+    "assignedDeliveries": {
+      "title": "Entregas asignadas",
+      "subtitle": "Sigue los pedidos ya aceptados por transportistas"
+    }
+  },
   "factoryInvoices": {
     "title": "Facturas de comisión",
     "subtitle": "Gestiona y rastrea todas las facturas de comisión generadas desde pedidos del marketplace.",

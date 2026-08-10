@@ -2615,6 +2615,22 @@
       "subtitle": "Acompanhe encomendas já aceites por transportadores"
     }
   },
+  "supplierDeliveryLogistics": {
+    "title": "Entrega e logística",
+    "subtitle": "Faça a gestão de envios e atribua transportadores",
+    "startAuction": "+ Iniciar leilão",
+    "startAuctionTitle": "Iniciar leilão",
+    "activeDetailTitle": "Leilões ativos",
+    "assignedDetailTitle": "Detalhes das entregas atribuídas",
+    "activeAuctions": {
+      "title": "Leilões ativos",
+      "subtitle": "Propostas pendentes e itens em leilão"
+    },
+    "assignedDeliveries": {
+      "title": "Entregas atribuídas",
+      "subtitle": "Acompanhe encomendas já aceites por transportadores"
+    }
+  },
   "factoryInvoices": {
     "title": "Faturas de comissão",
     "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",

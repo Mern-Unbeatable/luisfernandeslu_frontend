@@ -2686,6 +2686,22 @@
       "subtitle": "Track orders already accepted by transporters"
     }
   },
+  "supplierDeliveryLogistics": {
+    "title": "Delivery & Logistic",
+    "subtitle": "Manage shipments, assign transporter",
+    "startAuction": "+ Start Auction",
+    "startAuctionTitle": "Start Auction",
+    "activeDetailTitle": "Active Auctions",
+    "assignedDetailTitle": "Assigned Delivers Details",
+    "activeAuctions": {
+      "title": "Active Auctions",
+      "subtitle": "Pending bids and auction items"
+    },
+    "assignedDeliveries": {
+      "title": "Assigned Deliveries",
+      "subtitle": "Track orders already accepted by transporters"
+    }
+  },
   "factoryInvoices": {
     "title": "Commission Invoices",
     "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
