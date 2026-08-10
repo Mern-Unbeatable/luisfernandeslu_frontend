@@ -606,54 +606,30 @@ export const router = createBrowserRouter([
           },
           {
             path: '/cart',
-            element: <ComingSoon hideTitle />,
+            element: <PublicCart />,
             handle: { seo: routeSeo.cart },
           },
-          // {
-          //   path: '/cart',
-          //   element: <PublicCart />,
-          //   handle: { seo: routeSeo.cart },
-          // },
+
           {
             path: '/messages',
-            element: <ComingSoon hideTitle />,
+            element: <PublicMessages />,
             handle: { seo: routeSeo.messages },
           },
-          // {
-          //   path: '/messages',
-          //   element: <PublicMessages />,
-          //   handle: { seo: routeSeo.messages },
-          // },
           {
             path: '/order/confirmation',
-            element: <ComingSoon hideTitle />,
+            element: <OrderConfirmation />,
             handle: { seo: routeSeo.orderConfirmation },
           },
-          // {
-          //   path: '/order/confirmation',
-          //   element: <OrderConfirmation />,
-          //   handle: { seo: routeSeo.orderConfirmation },
-          // },
           {
             path: '/checkout/company',
-            element: <ComingSoon hideTitle />,
+            element: <CompanyCheckout />,
             handle: { seo: routeSeo.companyCheckout },
           },
-          // {
-          //   path: '/checkout/company',
-          //   element: <CompanyCheckout />,
-          //   handle: { seo: routeSeo.companyCheckout },
-          // },
           {
             path: '/checkout',
-            element: <ComingSoon hideTitle />,
+            element: <UserCheckout />,
             handle: { seo: routeSeo.userCheckout },
           },
-          // {
-          //   path: '/checkout',
-          //   element: <UserCheckout />,
-          //   handle: { seo: routeSeo.userCheckout },
-          // },
           {
             path: '/terms-and-conditions',
             element: <TermsAndConditions />,
@@ -747,17 +723,17 @@ export const router = createBrowserRouter([
               },
               {
                 path: '/forgot-password',
-                element: <ComingSoon hideTitle />,
+                element: <ForgotPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: '/forgot-password/otp',
-                element: <ComingSoon hideTitle />,
+                element: <OtpVerification />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: '/forgot-password/reset',
-                element: <ComingSoon hideTitle />,
+                element: <ResetPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
             ],
