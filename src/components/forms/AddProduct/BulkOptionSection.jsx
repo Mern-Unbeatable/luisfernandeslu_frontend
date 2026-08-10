@@ -54,7 +54,7 @@ export default function BulkOptionSection({
           <button
             type="button"
             onClick={onAddTier}
-            className="self-start text-sm font-normal text-amber-500 hover:underline"
+            className="self-start text-sm font-normal text-[var(--active)] hover:underline"
           >
             Add Another condition
           </button>

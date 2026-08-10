@@ -1,21 +1,21 @@
-import { Suspense, lazy } from "react";
-import { createBrowserRouter, Outlet, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import PublicLayout from "../../layouts/PublicLayout/PublicLayout";
-import BuyerLayout from "../../layouts/BuyerLayout/BuyerLayout";
-import PanelLayout from "../../layouts/PanelLayout/PanelLayout";
-import AuthLayout from "../../layouts/AuthLayout/AuthLayout";
-import PageSkeleton from "../../components/common/Skeleton/PageSkeleton";
-import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
-import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
-import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
-import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
-import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
-import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
-import { routeSeo } from "../../config/seo";
-import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from "../../roles";
-import { logout } from "../../features/auth/authSlice";
+import { Suspense, lazy } from 'react';
+import { createBrowserRouter, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import PublicLayout from '../../layouts/PublicLayout/PublicLayout';
+import BuyerLayout from '../../layouts/BuyerLayout/BuyerLayout';
+import PanelLayout from '../../layouts/PanelLayout/PanelLayout';
+import AuthLayout from '../../layouts/AuthLayout/AuthLayout';
+import PageSkeleton from '../../components/common/Skeleton/PageSkeleton';
+import AuthSkeleton from '../../components/common/Skeleton/AuthSkeleton';
+import BuyerSkeleton from '../../components/common/Skeleton/BuyerSkeleton';
+import PanelSkeleton from '../../components/common/Skeleton/PanelSkeleton';
+import HomeSkeleton from '../../components/common/Skeleton/HomeSkeleton';
+import ScrollToTop from '../../components/common/ScrollToTop/ScrollToTop';
+import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
+import { routeSeo } from '../../config/seo';
+import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from '../../roles';
+import { logout } from '../../features/auth/authSlice';
 
 /* ─── Loadable (lazy + Suspense) ─────────────────────────────────── */
 
@@ -30,320 +30,368 @@ const Loadable =
 /* ─── Public / auth / shared ─────────────────────────────────────── */
 
 const Home = Loadable(
-  lazy(() => import("../../pages/public_page/HomePage")),
+  lazy(() => import('../../pages/public_page/HomePage')),
   <HomeSkeleton />,
 );
 const PublicProducts = Loadable(
-  lazy(() => import("../../pages/public_page/products/ProductsPage")),
+  lazy(() => import('../../pages/public_page/products/ProductsPage')),
 );
 const PublicProductDetail = Loadable(
-  lazy(() => import("../../pages/public_page/products/ProductDetailPage")),
+  lazy(() => import('../../pages/public_page/products/ProductDetailPage')),
 );
 const UserCheckout = Loadable(
-  lazy(() => import("../../pages/public_page/checkout/UserCheckoutPage")),
+  lazy(() => import('../../pages/public_page/checkout/UserCheckoutPage')),
 );
 const CompanyCheckout = Loadable(
-  lazy(() => import("../../pages/public_page/checkout/CompanyCheckoutPage")),
+  lazy(() => import('../../pages/public_page/checkout/CompanyCheckoutPage')),
 );
 const OrderConfirmation = Loadable(
-  lazy(() => import("../../pages/public_page/checkout/OrderConfirmationPage")),
+  lazy(() => import('../../pages/public_page/checkout/OrderConfirmationPage')),
 );
 const PublicCart = Loadable(
-  lazy(() => import("../../pages/public_page/cart/CartPage")),
+  lazy(() => import('../../pages/public_page/cart/CartPage')),
 );
 const PublicMessages = Loadable(
-  lazy(() => import("../../pages/public_page/messages/MessagesPage")),
+  lazy(() => import('../../pages/public_page/messages/MessagesPage')),
 );
 const DisputeResolutionList = Loadable(
-  lazy(() => import("../../pages/public_page/disputes/DisputesListPage")),
+  lazy(() => import('../../pages/public_page/disputes/DisputesListPage')),
 );
 const DisputeResolutionDetail = Loadable(
-  lazy(() => import("../../pages/public_page/disputes/DisputeDetailPage")),
+  lazy(() => import('../../pages/public_page/disputes/DisputeDetailPage')),
 );
 const ReturnsOrders = Loadable(
-  lazy(() => import("../../pages/public_page/disputes/ReturnsOrdersPage")),
+  lazy(() => import('../../pages/public_page/disputes/ReturnsOrdersPage')),
 );
 const ReturnOrderDetail = Loadable(
-  lazy(() => import("../../pages/public_page/disputes/ReturnOrderDetailPage")),
+  lazy(() => import('../../pages/public_page/disputes/ReturnOrderDetailPage')),
 );
 const ReturnRequestDetail = Loadable(
   lazy(
-    () => import("../../pages/public_page/disputes/ReturnRequestDetailPage"),
+    () => import('../../pages/public_page/disputes/ReturnRequestDetailPage'),
   ),
 );
 const HelpCenter = Loadable(
-  lazy(() => import("../../pages/public_page/legal/HelpCenterPage")),
+  lazy(() => import('../../pages/public_page/legal/HelpCenterPage')),
 );
 const ReturnPolicy = Loadable(
-  lazy(() => import("../../pages/public_page/legal/ReturnPolicyPage")),
+  lazy(() => import('../../pages/public_page/legal/ReturnPolicyPage')),
 );
 const PrivacyPolicy = Loadable(
-  lazy(() => import("../../pages/public_page/legal/PrivacyPolicyPage")),
+  lazy(() => import('../../pages/public_page/legal/PrivacyPolicyPage')),
 );
 const TermsAndConditions = Loadable(
-  lazy(() => import("../../pages/public_page/legal/TermsAndConditionsPage")),
+  lazy(() => import('../../pages/public_page/legal/TermsAndConditionsPage')),
 );
 const Developer = Loadable(
-  lazy(() => import("../../pages/public_page/DeveloperPage")),
+  lazy(() => import('../../pages/public_page/DeveloperPage')),
 );
 const NotFound = Loadable(
-  lazy(() => import("../../pages/public_page/NotFoundPage")),
+  lazy(() => import('../../pages/public_page/NotFoundPage')),
 );
 const ComingSoon = Loadable(
-  lazy(() => import("../../pages/shared/ComingSoonPage")),
+  lazy(() => import('../../pages/shared/ComingSoonPage')),
   <PanelSkeleton />,
 );
 const RoleSelect = Loadable(
-  lazy(() => import("../../pages/auth/RoleSelectPage")),
+  lazy(() => import('../../pages/auth/RoleSelectPage')),
   <AuthSkeleton />,
 );
 const Login = Loadable(
-  lazy(() => import("../../pages/auth/LoginPage")),
+  lazy(() => import('../../pages/auth/LoginPage')),
   <AuthSkeleton />,
 );
 const Register = Loadable(
-  lazy(() => import("../../pages/auth/RegisterPage")),
+  lazy(() => import('../../pages/auth/RegisterPage')),
   <AuthSkeleton />,
 );
 const ForgotPassword = Loadable(
-  lazy(() => import("../../pages/auth/ForgotPasswordPage")),
+  lazy(() => import('../../pages/auth/ForgotPasswordPage')),
   <AuthSkeleton />,
 );
 const OtpVerification = Loadable(
-  lazy(() => import("../../pages/auth/OtpVerificationPage")),
+  lazy(() => import('../../pages/auth/OtpVerificationPage')),
   <AuthSkeleton />,
 );
 const ResetPassword = Loadable(
-  lazy(() => import("../../pages/auth/ResetPasswordPage")),
+  lazy(() => import('../../pages/auth/ResetPasswordPage')),
   <AuthSkeleton />,
 );
 
 /* ─── Customer ───────────────────────────────────────────────────── */
 
 const CustomerDashboard = Loadable(
-  lazy(() => import("../../pages/customer/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/customer/dashboard/DashboardPage')),
   <BuyerSkeleton />,
 );
 const CustomerOrders = Loadable(
-  lazy(() => import("../../pages/customer/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/customer/orders/OrdersPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CustomerOrderDetail = Loadable(
-  lazy(() => import("../../pages/customer/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/customer/orders/OrderDetailPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CustomerProductToReview = Loadable(
   lazy(
-    () => import("../../pages/customer/product-to-review/ProductToReviewPage"),
+    () => import('../../pages/customer/product-to-review/ProductToReviewPage'),
   ),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CustomerWriteReview = Loadable(
-  lazy(() => import("../../pages/customer/product-to-review/WriteReviewPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/customer/product-to-review/WriteReviewPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CustomerProfile = Loadable(
-  lazy(() => import("../../pages/customer/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/customer/profile/ProfilePage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CustomerAffiliates = Loadable(
-  lazy(() => import("../../pages/customer/affiliates/AffiliatesPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/customer/affiliates/AffiliatesPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 
 /* ─── Company ────────────────────────────────────────────────────── */
 
 const CompanyDashboard = Loadable(
-  lazy(() => import("../../pages/company/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/company/dashboard/DashboardPage')),
   <BuyerSkeleton />,
 );
 const CompanyOrders = Loadable(
-  lazy(() => import("../../pages/company/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/orders/OrdersPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyOrderDetail = Loadable(
-  lazy(() => import("../../pages/company/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/orders/OrderDetailPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyProjects = Loadable(
-  lazy(() => import("../../pages/company/projects/ProjectsPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/projects/ProjectsPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyProjectDetail = Loadable(
-  lazy(() => import("../../pages/company/projects/ProjectDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/projects/ProjectDetailPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyMaterialDetail = Loadable(
-  lazy(() => import("../../pages/company/projects/MaterialDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/projects/MaterialDetailPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyProfile = Loadable(
-  lazy(() => import("../../pages/company/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/profile/ProfilePage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 const CompanyAffiliates = Loadable(
-  lazy(() => import("../../pages/company/affiliates/AffiliatesPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  lazy(() => import('../../pages/company/affiliates/AffiliatesPage')),
+  <BuyerSkeleton variant='placeholder' />,
 );
 
 /* ─── Supplier ───────────────────────────────────────────────────── */
 
 const SupplierDashboard = Loadable(
-  lazy(() => import("../../pages/supplier/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/supplier/dashboard/DashboardPage')),
   <PanelSkeleton />,
 );
 const SupplierProducts = Loadable(
-  lazy(() => import("../../pages/supplier/products/ProductsPage")),
+  lazy(() => import('../../pages/supplier/products/ProductsPage')),
+  <PanelSkeleton />,
+);
+const SupplierProductDetail = Loadable(
+  lazy(() => import('../../pages/supplier/products/ProductDetailPage')),
+  <PanelSkeleton />,
+);
+const SupplierAddProduct = Loadable(
+  lazy(() => import('../../pages/supplier/products/AddProductPage')),
   <PanelSkeleton />,
 );
 const SupplierPromoCodes = Loadable(
-  lazy(() => import("../../pages/supplier/promo-codes/PromoCodesPage")),
+  lazy(() => import('../../pages/supplier/promo-codes/PromoCodesPage')),
+  <PanelSkeleton />,
+);
+const SupplierCreatePromoCode = Loadable(
+  lazy(() => import('../../pages/supplier/promo-codes/CreatePromoCodePage')),
   <PanelSkeleton />,
 );
 const SupplierOrdersCustomer = Loadable(
-  lazy(() => import("../../pages/supplier/orders-customer/OrdersCustomerPage")),
+  lazy(() => import('../../pages/supplier/orders-customer/OrdersCustomerPage')),
+  <PanelSkeleton />,
+);
+const SupplierOrderCustomerDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/supplier/orders-customer/OrderCustomerDetailPage'),
+  ),
   <PanelSkeleton />,
 );
 const SupplierCompanyOrders = Loadable(
-  lazy(() => import("../../pages/supplier/company-orders/CompanyOrdersPage")),
+  lazy(() => import('../../pages/supplier/company-orders/CompanyOrdersPage')),
+  <PanelSkeleton />,
+);
+const SupplierOrderCompanyDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/company-orders/OrderCompanyDetailPage'),
+  ),
   <PanelSkeleton />,
 );
 const SupplierDocuments = Loadable(
-  lazy(() => import("../../pages/supplier/documents/DocumentsPage")),
+  lazy(() => import('../../pages/supplier/documents/DocumentsPage')),
   <PanelSkeleton />,
 );
 const SupplierChat = Loadable(
-  lazy(() => import("../../pages/supplier/chat/ChatPage")),
+  lazy(() => import('../../pages/supplier/chat/ChatPage')),
   <PanelSkeleton />,
 );
 const SupplierBuyFromFactory = Loadable(
   lazy(
-    () => import("../../pages/supplier/buy-from-factory/BuyFromFactoryPage"),
+    () => import('../../pages/supplier/buy-from-factory/BuyFromFactoryPage'),
+  ),
+  <PanelSkeleton />,
+);
+const SupplierBuyFromFactoryDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/supplier/buy-from-factory/BuyFromFactoryDetailPage'),
   ),
   <PanelSkeleton />,
 );
 const SupplierFactoryOrders = Loadable(
-  lazy(() => import("../../pages/supplier/factory-orders/FactoryOrdersPage")),
+  lazy(() => import('../../pages/supplier/factory-orders/FactoryOrdersPage')),
+  <PanelSkeleton />,
+);
+const SupplierFactoryOrderDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/factory-orders/FactoryOrderDetailPage'),
+  ),
   <PanelSkeleton />,
 );
 const SupplierInventory = Loadable(
-  lazy(() => import("../../pages/supplier/inventory/InventoryPage")),
+  lazy(() => import('../../pages/supplier/inventory/InventoryPage')),
   <PanelSkeleton />,
 );
 const SupplierDeliveryLogistics = Loadable(
   lazy(
     () =>
-      import("../../pages/supplier/delivery-logistics/DeliveryLogisticsPage"),
+      import('../../pages/supplier/delivery-logistics/DeliveryLogisticsPage'),
   ),
   <PanelSkeleton />,
 );
 const SupplierPaymentsFinance = Loadable(
   lazy(
-    () => import("../../pages/supplier/payments-finance/PaymentsFinancePage"),
+    () => import('../../pages/supplier/payments-finance/PaymentsFinancePage'),
   ),
   <PanelSkeleton />,
 );
 const SupplierAnalytics = Loadable(
-  lazy(() => import("../../pages/supplier/analytics/AnalyticsPage")),
+  lazy(() => import('../../pages/supplier/analytics/AnalyticsPage')),
   <PanelSkeleton />,
 );
 const SupplierReviews = Loadable(
-  lazy(() => import("../../pages/supplier/reviews/ReviewsPage")),
+  lazy(() => import('../../pages/supplier/reviews/ReviewsPage')),
   <PanelSkeleton />,
 );
 const SupplierReturnRequests = Loadable(
-  lazy(() => import("../../pages/supplier/return-requests/ReturnRequestsPage")),
+  lazy(() => import('../../pages/supplier/return-requests/ReturnRequestsPage')),
+  <PanelSkeleton />,
+);
+const SupplierReturnRequestDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/return-requests/ReturnRequestDetailPage'),
+  ),
   <PanelSkeleton />,
 );
 const SupplierDisputes = Loadable(
-  lazy(() => import("../../pages/supplier/disputes/DisputesPage")),
+  lazy(() => import('../../pages/supplier/disputes/DisputesPage')),
+  <PanelSkeleton />,
+);
+const SupplierDisputeDetail = Loadable(
+  lazy(() => import('../../pages/supplier/disputes/DisputeDetailPage')),
   <PanelSkeleton />,
 );
 const SupplierInvoices = Loadable(
-  lazy(() => import("../../pages/supplier/invoices/InvoicesPage")),
+  lazy(() => import('../../pages/supplier/invoices/InvoicesPage')),
   <PanelSkeleton />,
 );
 const SupplierProfile = Loadable(
-  lazy(() => import("../../pages/supplier/profile/ProfilePage")),
+  lazy(() => import('../../pages/supplier/profile/ProfilePage')),
   <PanelSkeleton />,
 );
 
 /* ─── Factory ────────────────────────────────────────────────────── */
 
 const FactoryDashboard = Loadable(
-  lazy(() => import("../../pages/factory/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/factory/dashboard/DashboardPage')),
   <PanelSkeleton />,
 );
 const FactoryProducts = Loadable(
-  lazy(() => import("../../pages/factory/products/ProductsPage")),
+  lazy(() => import('../../pages/factory/products/ProductsPage')),
   <PanelSkeleton />,
 );
 const FactoryOrders = Loadable(
-  lazy(() => import("../../pages/factory/orders/OrdersPage")),
+  lazy(() => import('../../pages/factory/orders/OrdersPage')),
   <PanelSkeleton />,
 );
 const FactoryChat = Loadable(
-  lazy(() => import("../../pages/factory/chat/ChatPage")),
+  lazy(() => import('../../pages/factory/chat/ChatPage')),
   <PanelSkeleton />,
 );
 const FactoryDeliveryLogistics = Loadable(
   lazy(
     () =>
-      import("../../pages/factory/delivery-logistics/DeliveryLogisticsPage"),
+      import('../../pages/factory/delivery-logistics/DeliveryLogisticsPage'),
   ),
   <PanelSkeleton />,
 );
 const FactoryInvoices = Loadable(
-  lazy(() => import("../../pages/factory/invoices/InvoicesPage")),
+  lazy(() => import('../../pages/factory/invoices/InvoicesPage')),
   <PanelSkeleton />,
 );
 const FactoryProfile = Loadable(
-  lazy(() => import("../../pages/factory/profile/ProfilePage")),
+  lazy(() => import('../../pages/factory/profile/ProfilePage')),
   <PanelSkeleton />,
 );
 
 /* ─── Transporter ────────────────────────────────────────────────── */
 
 const TransporterDashboard = Loadable(
-  lazy(() => import("../../pages/transporter/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/transporter/dashboard/DashboardPage')),
   <PanelSkeleton />,
 );
 const TransporterAuctionBoard = Loadable(
-  lazy(() => import("../../pages/transporter/auction-board/AuctionBoardPage")),
+  lazy(() => import('../../pages/transporter/auction-board/AuctionBoardPage')),
   <PanelSkeleton />,
 );
 const TransporterAssignDeliveries = Loadable(
   lazy(
     () =>
-      import("../../pages/transporter/assign-deliveries/AssignDeliveriesPage"),
+      import('../../pages/transporter/assign-deliveries/AssignDeliveriesPage'),
   ),
   <PanelSkeleton />,
 );
 const TransporterPaymentsPayouts = Loadable(
   lazy(
     () =>
-      import("../../pages/transporter/payments-payouts/PaymentsPayoutsPage"),
+      import('../../pages/transporter/payments-payouts/PaymentsPayoutsPage'),
   ),
   <PanelSkeleton />,
 );
 const TransporterOrderHistory = Loadable(
-  lazy(() => import("../../pages/transporter/order-history/OrderHistoryPage")),
+  lazy(() => import('../../pages/transporter/order-history/OrderHistoryPage')),
   <PanelSkeleton />,
 );
 const TransporterInsurance = Loadable(
-  lazy(() => import("../../pages/transporter/insurance/InsurancePage")),
+  lazy(() => import('../../pages/transporter/insurance/InsurancePage')),
   <PanelSkeleton />,
 );
 const TransporterMap = Loadable(
-  lazy(() => import("../../pages/transporter/map/MapPage")),
+  lazy(() => import('../../pages/transporter/map/MapPage')),
   <PanelSkeleton />,
 );
 const TransporterInvoices = Loadable(
-  lazy(() => import("../../pages/transporter/invoices/InvoicesPage")),
+  lazy(() => import('../../pages/transporter/invoices/InvoicesPage')),
   <PanelSkeleton />,
 );
 const TransporterProfile = Loadable(
-  lazy(() => import("../../pages/transporter/profile/ProfilePage")),
+  lazy(() => import('../../pages/transporter/profile/ProfilePage')),
   <PanelSkeleton />,
 );
 
@@ -352,126 +400,126 @@ const TransporterProfile = Loadable(
 const AffiliateOverview = Loadable(
   lazy(
     () =>
-      import("../../pages/affiliate/overview-dashboard/OverviewDashboardPage"),
+      import('../../pages/affiliate/overview-dashboard/OverviewDashboardPage'),
   ),
   <PanelSkeleton />,
 );
 const AffiliateReferralChannels = Loadable(
   lazy(
     () =>
-      import("../../pages/affiliate/referral-channels/ReferralChannelsPage"),
+      import('../../pages/affiliate/referral-channels/ReferralChannelsPage'),
   ),
   <PanelSkeleton />,
 );
 const AffiliateReferredClients = Loadable(
   lazy(
-    () => import("../../pages/affiliate/referred-clients/ReferredClientsPage"),
+    () => import('../../pages/affiliate/referred-clients/ReferredClientsPage'),
   ),
   <PanelSkeleton />,
 );
 const AffiliateCommissions = Loadable(
-  lazy(() => import("../../pages/affiliate/commissions/CommissionsPage")),
+  lazy(() => import('../../pages/affiliate/commissions/CommissionsPage')),
   <PanelSkeleton />,
 );
 const AffiliateLevels = Loadable(
   lazy(
-    () => import("../../pages/affiliate/affiliate-levels/AffiliateLevelsPage"),
+    () => import('../../pages/affiliate/affiliate-levels/AffiliateLevelsPage'),
   ),
   <PanelSkeleton />,
 );
 const AffiliateSettings = Loadable(
-  lazy(() => import("../../pages/affiliate/settings/SettingsPage")),
+  lazy(() => import('../../pages/affiliate/settings/SettingsPage')),
   <PanelSkeleton />,
 );
 
 /* ─── Admin ──────────────────────────────────────────────────────── */
 
 const AdminDashboard = Loadable(
-  lazy(() => import("../../pages/admin/dashboard/DashboardPage")),
+  lazy(() => import('../../pages/admin/dashboard/DashboardPage')),
   <PanelSkeleton />,
 );
 const AdminUserManagement = Loadable(
-  lazy(() => import("../../pages/admin/user-management/UserManagementPage")),
+  lazy(() => import('../../pages/admin/user-management/UserManagementPage')),
   <PanelSkeleton />,
 );
 const AdminSupplierManagement = Loadable(
   lazy(
     () =>
-      import("../../pages/admin/supplier-management/SupplierManagementPage"),
+      import('../../pages/admin/supplier-management/SupplierManagementPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminFactoryManagement = Loadable(
   lazy(
-    () => import("../../pages/admin/factory-management/FactoryManagementPage"),
+    () => import('../../pages/admin/factory-management/FactoryManagementPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminTransporterManagement = Loadable(
   lazy(
     () =>
-      import("../../pages/admin/transporter-management/TransporterManagementPage"),
+      import('../../pages/admin/transporter-management/TransporterManagementPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminProductModeration = Loadable(
   lazy(
-    () => import("../../pages/admin/product-moderation/ProductModerationPage"),
+    () => import('../../pages/admin/product-moderation/ProductModerationPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminChat = Loadable(
-  lazy(() => import("../../pages/admin/chat/ChatPage")),
+  lazy(() => import('../../pages/admin/chat/ChatPage')),
   <PanelSkeleton />,
 );
 const AdminMarketingManagement = Loadable(
   lazy(
     () =>
-      import("../../pages/admin/marketing-management/MarketingManagementPage"),
+      import('../../pages/admin/marketing-management/MarketingManagementPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminFinancePayments = Loadable(
-  lazy(() => import("../../pages/admin/finance-payments/FinancePaymentsPage")),
+  lazy(() => import('../../pages/admin/finance-payments/FinancePaymentsPage')),
   <PanelSkeleton />,
 );
 const AdminDisputes = Loadable(
-  lazy(() => import("../../pages/admin/disputes/DisputesPage")),
+  lazy(() => import('../../pages/admin/disputes/DisputesPage')),
   <PanelSkeleton />,
 );
 const AdminAuction = Loadable(
-  lazy(() => import("../../pages/admin/auction/AuctionPage")),
+  lazy(() => import('../../pages/admin/auction/AuctionPage')),
   <PanelSkeleton />,
 );
 const AdminOrders = Loadable(
-  lazy(() => import("../../pages/admin/orders/OrdersPage")),
+  lazy(() => import('../../pages/admin/orders/OrdersPage')),
   <PanelSkeleton />,
 );
 const AdminDeliveryLogistics = Loadable(
   lazy(
-    () => import("../../pages/admin/delivery-logistics/DeliveryLogisticsPage"),
+    () => import('../../pages/admin/delivery-logistics/DeliveryLogisticsPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminAffiliateDirectory = Loadable(
   lazy(
     () =>
-      import("../../pages/admin/affiliate-directory/AffiliateDirectoryPage"),
+      import('../../pages/admin/affiliate-directory/AffiliateDirectoryPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminRolesPermissions = Loadable(
   lazy(
-    () => import("../../pages/admin/roles-permissions/RolesPermissionsPage"),
+    () => import('../../pages/admin/roles-permissions/RolesPermissionsPage'),
   ),
   <PanelSkeleton />,
 );
 const AdminSettings = Loadable(
-  lazy(() => import("../../pages/admin/settings/SettingsPage")),
+  lazy(() => import('../../pages/admin/settings/SettingsPage')),
   <PanelSkeleton />,
 );
 const AdminProfile = Loadable(
-  lazy(() => import("../../pages/admin/profile/ProfilePage")),
+  lazy(() => import('../../pages/admin/profile/ProfilePage')),
   <PanelSkeleton />,
 );
 
@@ -492,7 +540,7 @@ function useAuthLogout() {
   const user = useSelector((state) => state.auth.user);
   return () => {
     dispatch(logout());
-    navigate(user?.role === "admin" ? "/admin/login" : "/login", {
+    navigate(user?.role === 'admin' ? '/admin/login' : '/login', {
       replace: true,
     });
   };
@@ -501,12 +549,12 @@ function useAuthLogout() {
 function BuyerShell() {
   const user = useSelector((state) => state.auth.user);
   const onLogout = useAuthLogout();
-  const role = BUYER_ROLE_IDS.includes(user?.role) ? user.role : "company";
+  const role = BUYER_ROLE_IDS.includes(user?.role) ? user.role : 'company';
 
   return (
     <BuyerLayout
       role={role}
-      userName={user?.name?.split(" ")[0] || "User"}
+      userName={user?.name?.split(' ')[0] || 'User'}
       onLogout={onLogout}
     />
   );
@@ -515,12 +563,12 @@ function BuyerShell() {
 function PanelShell() {
   const user = useSelector((state) => state.auth.user);
   const onLogout = useAuthLogout();
-  const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : "supplier";
+  const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : 'supplier';
 
   return (
     <PanelLayout
       role={role}
-      userName={user?.name || "User"}
+      userName={user?.name || 'User'}
       onLogout={onLogout}
     />
   );
@@ -530,7 +578,7 @@ function panelSeo(titleKey) {
   return {
     seo: {
       titleKey,
-      descriptionKey: "seo.panelDescription",
+      descriptionKey: 'seo.panelDescription',
     },
   };
 }
@@ -545,14 +593,14 @@ export const router = createBrowserRouter([
       {
         element: <PublicLayout />,
         children: [
-          { path: "/", element: <Home />, handle: { seo: routeSeo.home } },
+          { path: '/', element: <Home />, handle: { seo: routeSeo.home } },
           {
-            path: "/products/:slug",
+            path: '/products/:slug',
             element: <PublicProductDetail />,
             handle: { seo: routeSeo.productDetail },
           },
           {
-            path: "/products",
+            path: '/products',
             element: <PublicProducts />,
             handle: { seo: routeSeo.products },
           },
@@ -561,93 +609,93 @@ export const router = createBrowserRouter([
           //   element: <ComingSoon hideTitle />,
           //   handle: { seo: routeSeo.cart },
           // },
-          // {
-          //   path: '/cart',
-          //   element: <PublicCart />,
-          //   handle: { seo: routeSeo.cart },
-          // },
+          {
+            path: '/cart',
+            element: <PublicCart />,
+            handle: { seo: routeSeo.cart },
+          },
           // {
           //   path: "/messages",
           //   element: <ComingSoon hideTitle />,
           //   handle: { seo: routeSeo.messages },
           // },
-          // {
-          //   path: '/messages',
-          //   element: <PublicMessages />,
-          //   handle: { seo: routeSeo.messages },
-          // },
+          {
+            path: '/messages',
+            element: <PublicMessages />,
+            handle: { seo: routeSeo.messages },
+          },
           // {
           //   path: "/order/confirmation",
           //   element: <ComingSoon hideTitle />,
           //   handle: { seo: routeSeo.orderConfirmation },
           // },
-          // {
-          //   path: '/order/confirmation',
-          //   element: <OrderConfirmation />,
-          //   handle: { seo: routeSeo.orderConfirmation },
-          // },
+          {
+            path: '/order/confirmation',
+            element: <OrderConfirmation />,
+            handle: { seo: routeSeo.orderConfirmation },
+          },
           // {
           //   path: "/checkout/company",
           //   element: <ComingSoon hideTitle />,
           //   handle: { seo: routeSeo.companyCheckout },
           // },
-          // {
-          //   path: '/checkout/company',
-          //   element: <CompanyCheckout />,
-          //   handle: { seo: routeSeo.companyCheckout },
-          // },
+          {
+            path: '/checkout/company',
+            element: <CompanyCheckout />,
+            handle: { seo: routeSeo.companyCheckout },
+          },
           // {
           //   path: "/checkout",
           //   element: <ComingSoon hideTitle />,
           //   handle: { seo: routeSeo.userCheckout },
           // },
-          // {
-          //   path: '/checkout',
-          //   element: <UserCheckout />,
-          //   handle: { seo: routeSeo.userCheckout },
-          // },
           {
-            path: "/terms-and-conditions",
+            path: '/checkout',
+            element: <UserCheckout />,
+            handle: { seo: routeSeo.userCheckout },
+          },
+          {
+            path: '/terms-and-conditions',
             element: <TermsAndConditions />,
             handle: { seo: routeSeo.termsAndConditions },
           },
           {
-            path: "/privacy-policy",
+            path: '/privacy-policy',
             element: <PrivacyPolicy />,
             handle: { seo: routeSeo.privacyPolicy },
           },
           {
-            path: "/help-center",
+            path: '/help-center',
             element: <HelpCenter />,
             handle: { seo: routeSeo.helpCenter },
           },
           {
-            path: "/return-policy",
+            path: '/return-policy',
             element: <ReturnPolicy />,
             handle: { seo: routeSeo.returnPolicy },
           },
           {
-            path: "/dispute-resolution",
+            path: '/dispute-resolution',
             element: <DisputeResolutionList />,
             handle: { seo: routeSeo.disputeResolution },
           },
           {
-            path: "/dispute-resolution/:disputeId",
+            path: '/dispute-resolution/:disputeId',
             element: <DisputeResolutionDetail />,
             handle: { seo: routeSeo.disputeResolution },
           },
           {
-            path: "/returns",
+            path: '/returns',
             element: <ReturnsOrders />,
             handle: { seo: routeSeo.returnsCenter },
           },
           {
-            path: "/returns/request/:returnId",
+            path: '/returns/request/:returnId',
             element: <ReturnRequestDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
           {
-            path: "/returns/:orderId",
+            path: '/returns/:orderId',
             element: <ReturnOrderDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
@@ -681,28 +729,28 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.signup },
               },
               {
-                path: "/login",
+                path: '/login',
                 element: <RoleSelect />,
                 handle: { seo: routeSeo.login },
               },
               {
-                path: "/login/:role",
+                path: '/login/:role',
                 element: <Login />,
                 handle: { seo: routeSeo.login },
               },
               {
-                path: "/forgot-password",
-                element: <ComingSoon hideTitle />,
+                path: '/forgot-password',
+                element: <ForgotPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
-                path: "/forgot-password/otp",
-                element: <ComingSoon hideTitle />,
+                path: '/forgot-password/otp',
+                element: <OtpVerification />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
-                path: "/forgot-password/reset",
-                element: <ComingSoon hideTitle />,
+                path: '/forgot-password/reset',
+                element: <ResetPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
             ],
@@ -716,8 +764,8 @@ export const router = createBrowserRouter([
 
       // Customer
       {
-        path: "/customer",
-        element: <ProtectedRoute allowedRoles={["customer"]} />,
+        path: '/customer',
+        element: <ProtectedRoute allowedRoles={['customer']} />,
         children: [
           {
             element: <BuyerShell />,
@@ -728,32 +776,32 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <CustomerOrders />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "orders/:orderId",
+                path: 'orders/:orderId',
                 element: <CustomerOrderDetail />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "product-to-review",
+                path: 'product-to-review',
                 element: <CustomerProductToReview />,
                 handle: { seo: routeSeo.buyerProductToReview },
               },
               {
-                path: "product-to-review/:reviewId",
+                path: 'product-to-review/:reviewId',
                 element: <CustomerWriteReview />,
                 handle: { seo: routeSeo.buyerProductToReview },
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <CustomerProfile />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "affiliates",
+                path: 'affiliates',
                 element: <CustomerAffiliates />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
@@ -764,8 +812,8 @@ export const router = createBrowserRouter([
 
       // Company
       {
-        path: "/company",
-        element: <ProtectedRoute allowedRoles={["company"]} />,
+        path: '/company',
+        element: <ProtectedRoute allowedRoles={['company']} />,
         children: [
           {
             element: <BuyerShell />,
@@ -776,37 +824,37 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <CompanyOrders />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "orders/:orderId",
+                path: 'orders/:orderId',
                 element: <CompanyOrderDetail />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "projects",
+                path: 'projects',
                 element: <CompanyProjects />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "projects/:projectId",
+                path: 'projects/:projectId',
                 element: <CompanyProjectDetail />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "projects/:projectId/materials/:materialId",
+                path: 'projects/:projectId/materials/:materialId',
                 element: <CompanyMaterialDetail />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <CompanyProfile />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "affiliates",
+                path: 'affiliates',
                 element: <CompanyAffiliates />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
@@ -817,8 +865,8 @@ export const router = createBrowserRouter([
 
       // Supplier
       {
-        path: "/supplier",
-        element: <ProtectedRoute allowedRoles={["supplier"]} />,
+        path: '/supplier',
+        element: <ProtectedRoute allowedRoles={['supplier']} />,
         children: [
           {
             element: <PanelShell />,
@@ -826,97 +874,146 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <SupplierDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "products",
+                path: 'products',
                 element: <SupplierProducts />,
-                handle: panelSeo("panel.nav.products"),
+                handle: panelSeo('panel.nav.products'),
               },
               {
-                path: "promo-codes",
+                path: 'products/add',
+                element: <SupplierAddProduct />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'products/:productId',
+                element: <SupplierProductDetail />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'promo-codes',
                 element: <SupplierPromoCodes />,
-                handle: panelSeo("panel.nav.promoCode"),
+                handle: panelSeo('panel.nav.promoCode'),
               },
               {
-                path: "orders-customer",
+                path: 'promo-codes/create',
+                element: <SupplierCreatePromoCode />,
+                handle: panelSeo('panel.nav.promoCode'),
+              },
+              {
+                path: 'orders-customer/:orderId',
+                element: <SupplierOrderCustomerDetail />,
+                handle: panelSeo(
+                  'panel.supplierCustomerOrders.orderDetailsTitle',
+                ),
+              },
+              {
+                path: 'orders-customer',
                 element: <SupplierOrdersCustomer />,
-                handle: panelSeo("panel.nav.ordersCustomer"),
+                handle: panelSeo('panel.nav.ordersCustomer'),
               },
               {
-                path: "company-orders",
+                path: 'company-orders/:orderId',
+                element: <SupplierOrderCompanyDetail />,
+                handle: panelSeo(
+                  'panel.supplierCompanyOrders.orderDetailsTitle',
+                ),
+              },
+              {
+                path: 'company-orders',
                 element: <SupplierCompanyOrders />,
-                handle: panelSeo("panel.nav.companyOrders"),
+                handle: panelSeo('panel.nav.companyOrders'),
               },
               {
-                path: "documents",
+                path: 'documents',
                 element: <SupplierDocuments />,
-                handle: panelSeo("panel.nav.document"),
+                handle: panelSeo('panel.nav.document'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <SupplierChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "buy-from-factory",
+                path: 'buy-from-factory/:productId',
+                element: <SupplierBuyFromFactoryDetail />,
+                handle: panelSeo('panel.nav.buyFromFactory'),
+              },
+              {
+                path: 'buy-from-factory',
                 element: <SupplierBuyFromFactory />,
-                handle: panelSeo("panel.nav.buyFromFactory"),
+                handle: panelSeo('panel.nav.buyFromFactory'),
               },
               {
-                path: "factory-orders",
+                path: 'factory-orders/:orderId',
+                element: <SupplierFactoryOrderDetail />,
+                handle: panelSeo('panel.nav.factoryOrder'),
+              },
+              {
+                path: 'factory-orders',
                 element: <SupplierFactoryOrders />,
-                handle: panelSeo("panel.nav.factoryOrder"),
+                handle: panelSeo('panel.nav.factoryOrder'),
               },
               {
-                path: "inventory",
+                path: 'inventory',
                 element: <SupplierInventory />,
-                handle: panelSeo("panel.nav.inventory"),
+                handle: panelSeo('panel.nav.inventory'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <SupplierDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogistics"),
+                handle: panelSeo('panel.nav.deliveryLogistics'),
               },
               {
-                path: "payments-finance",
+                path: 'payments-finance',
                 element: <SupplierPaymentsFinance />,
-                handle: panelSeo("panel.nav.paymentsFinance"),
+                handle: panelSeo('panel.nav.paymentsFinance'),
               },
               {
-                path: "analytics",
+                path: 'analytics',
                 element: <SupplierAnalytics />,
-                handle: panelSeo("panel.nav.analytics"),
+                handle: panelSeo('panel.nav.analytics'),
               },
               {
-                path: "reviews",
+                path: 'reviews',
                 element: <SupplierReviews />,
-                handle: panelSeo("panel.nav.reviews"),
+                handle: panelSeo('panel.nav.reviews'),
               },
               {
-                path: "return-requests",
+                path: 'return-requests/:returnId',
+                element: <SupplierReturnRequestDetail />,
+                handle: panelSeo('panel.nav.returnRequests'),
+              },
+              {
+                path: 'return-requests',
                 element: <SupplierReturnRequests />,
-                handle: panelSeo("panel.nav.returnRequests"),
+                handle: panelSeo('panel.nav.returnRequests'),
               },
               {
-                path: "disputes",
+                path: 'disputes/:disputeId',
+                element: <SupplierDisputeDetail />,
+                handle: panelSeo('panel.nav.disputesResolution'),
+              },
+              {
+                path: 'disputes',
                 element: <SupplierDisputes />,
-                handle: panelSeo("panel.nav.disputesResolution"),
+                handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <SupplierInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <SupplierProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -925,8 +1022,8 @@ export const router = createBrowserRouter([
 
       // Factory
       {
-        path: "/factory",
-        element: <ProtectedRoute allowedRoles={["factory"]} />,
+        path: '/factory',
+        element: <ProtectedRoute allowedRoles={['factory']} />,
         children: [
           {
             element: <PanelShell />,
@@ -934,42 +1031,42 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <FactoryDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "products",
+                path: 'products',
                 element: <FactoryProducts />,
-                handle: panelSeo("panel.nav.products"),
+                handle: panelSeo('panel.nav.products'),
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <FactoryOrders />,
-                handle: panelSeo("panel.nav.orders"),
+                handle: panelSeo('panel.nav.orders'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <FactoryChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <FactoryDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogistics"),
+                handle: panelSeo('panel.nav.deliveryLogistics'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <FactoryInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <FactoryProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -978,8 +1075,8 @@ export const router = createBrowserRouter([
 
       // Transporter
       {
-        path: "/transporter",
-        element: <ProtectedRoute allowedRoles={["transporter"]} />,
+        path: '/transporter',
+        element: <ProtectedRoute allowedRoles={['transporter']} />,
         children: [
           {
             element: <PanelShell />,
@@ -987,52 +1084,52 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <TransporterDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "auction-board",
+                path: 'auction-board',
                 element: <TransporterAuctionBoard />,
-                handle: panelSeo("panel.nav.auctionBoard"),
+                handle: panelSeo('panel.nav.auctionBoard'),
               },
               {
-                path: "assign-deliveries",
+                path: 'assign-deliveries',
                 element: <TransporterAssignDeliveries />,
-                handle: panelSeo("panel.nav.assignDeliveries"),
+                handle: panelSeo('panel.nav.assignDeliveries'),
               },
               {
-                path: "payments-payouts",
+                path: 'payments-payouts',
                 element: <TransporterPaymentsPayouts />,
-                handle: panelSeo("panel.nav.paymentsPayouts"),
+                handle: panelSeo('panel.nav.paymentsPayouts'),
               },
               {
-                path: "order-history",
+                path: 'order-history',
                 element: <TransporterOrderHistory />,
-                handle: panelSeo("panel.nav.orderHistory"),
+                handle: panelSeo('panel.nav.orderHistory'),
               },
               {
-                path: "insurance",
+                path: 'insurance',
                 element: <TransporterInsurance />,
-                handle: panelSeo("panel.nav.insurance"),
+                handle: panelSeo('panel.nav.insurance'),
               },
               {
-                path: "map",
+                path: 'map',
                 element: <TransporterMap />,
-                handle: panelSeo("panel.nav.map"),
+                handle: panelSeo('panel.nav.map'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <TransporterInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <TransporterProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1041,8 +1138,8 @@ export const router = createBrowserRouter([
 
       // Affiliate
       {
-        path: "/affiliate",
-        element: <ProtectedRoute allowedRoles={["affiliate"]} />,
+        path: '/affiliate',
+        element: <ProtectedRoute allowedRoles={['affiliate']} />,
         children: [
           {
             element: <PanelShell />,
@@ -1050,37 +1147,37 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <AffiliateOverview />,
-                handle: panelSeo("panel.nav.overviewDashboard"),
+                handle: panelSeo('panel.nav.overviewDashboard'),
               },
               {
-                path: "referral-channels",
+                path: 'referral-channels',
                 element: <AffiliateReferralChannels />,
-                handle: panelSeo("panel.nav.referralChannels"),
+                handle: panelSeo('panel.nav.referralChannels'),
               },
               {
-                path: "referred-clients",
+                path: 'referred-clients',
                 element: <AffiliateReferredClients />,
-                handle: panelSeo("panel.nav.referredClients"),
+                handle: panelSeo('panel.nav.referredClients'),
               },
               {
-                path: "commissions",
+                path: 'commissions',
                 element: <AffiliateCommissions />,
-                handle: panelSeo("panel.nav.commissions"),
+                handle: panelSeo('panel.nav.commissions'),
               },
               {
-                path: "affiliate-levels",
+                path: 'affiliate-levels',
                 element: <AffiliateLevels />,
-                handle: panelSeo("panel.nav.affiliateLevels"),
+                handle: panelSeo('panel.nav.affiliateLevels'),
               },
               {
-                path: "settings",
+                path: 'settings',
                 element: <AffiliateSettings />,
-                handle: panelSeo("panel.nav.settings"),
+                handle: panelSeo('panel.nav.settings'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1089,9 +1186,9 @@ export const router = createBrowserRouter([
 
       // Admin
       {
-        path: "/admin",
+        path: '/admin',
         element: (
-          <ProtectedRoute allowedRoles={["admin"]} redirectTo="/admin/login" />
+          <ProtectedRoute allowedRoles={['admin']} redirectTo='/admin/login' />
         ),
         children: [
           {
@@ -1100,92 +1197,92 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <AdminDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "user-management",
+                path: 'user-management',
                 element: <AdminUserManagement />,
-                handle: panelSeo("panel.nav.userManagement"),
+                handle: panelSeo('panel.nav.userManagement'),
               },
               {
-                path: "supplier-management",
+                path: 'supplier-management',
                 element: <AdminSupplierManagement />,
-                handle: panelSeo("panel.nav.supplierManagement"),
+                handle: panelSeo('panel.nav.supplierManagement'),
               },
               {
-                path: "factory-management",
+                path: 'factory-management',
                 element: <AdminFactoryManagement />,
-                handle: panelSeo("panel.nav.factoryManagement"),
+                handle: panelSeo('panel.nav.factoryManagement'),
               },
               {
-                path: "transporter-management",
+                path: 'transporter-management',
                 element: <AdminTransporterManagement />,
-                handle: panelSeo("panel.nav.transporterManagement"),
+                handle: panelSeo('panel.nav.transporterManagement'),
               },
               {
-                path: "product-moderation",
+                path: 'product-moderation',
                 element: <AdminProductModeration />,
-                handle: panelSeo("panel.nav.productModeration"),
+                handle: panelSeo('panel.nav.productModeration'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <AdminChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "marketing-management",
+                path: 'marketing-management',
                 element: <AdminMarketingManagement />,
-                handle: panelSeo("panel.nav.marketingManagement"),
+                handle: panelSeo('panel.nav.marketingManagement'),
               },
               {
-                path: "finance-payments",
+                path: 'finance-payments',
                 element: <AdminFinancePayments />,
-                handle: panelSeo("panel.nav.financePayments"),
+                handle: panelSeo('panel.nav.financePayments'),
               },
               {
-                path: "disputes",
+                path: 'disputes',
                 element: <AdminDisputes />,
-                handle: panelSeo("panel.nav.disputesResolution"),
+                handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
-                path: "auction",
+                path: 'auction',
                 element: <AdminAuction />,
-                handle: panelSeo("panel.nav.auction"),
+                handle: panelSeo('panel.nav.auction'),
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <AdminOrders />,
-                handle: panelSeo("panel.nav.orders"),
+                handle: panelSeo('panel.nav.orders'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <AdminDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
               },
               {
-                path: "affiliate-directory",
+                path: 'affiliate-directory',
                 element: <AdminAffiliateDirectory />,
-                handle: panelSeo("panel.nav.affiliateDirectory"),
+                handle: panelSeo('panel.nav.affiliateDirectory'),
               },
               {
-                path: "roles-permissions",
+                path: 'roles-permissions',
                 element: <AdminRolesPermissions />,
-                handle: panelSeo("panel.nav.rolesPermissions"),
+                handle: panelSeo('panel.nav.rolesPermissions'),
               },
               {
-                path: "settings",
+                path: 'settings',
                 element: <AdminSettings />,
-                handle: panelSeo("panel.nav.settings"),
+                handle: panelSeo('panel.nav.settings'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <AdminProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1197,7 +1294,7 @@ export const router = createBrowserRouter([
         element: <PublicLayout />,
         children: [
           {
-            path: "*",
+            path: '*',
             element: <NotFound />,
             handle: { seo: routeSeo.notFound },
           },

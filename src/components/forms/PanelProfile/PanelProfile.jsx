@@ -152,11 +152,11 @@ function AccountFields({
   )
 }
 
-function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, t }) {
+function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, warehouseTitleKey, t }) {
   return (
     <div className="mt-8 border-t border-gray-100 pt-8">
       <h3 className="text-sm font-semibold text-[var(--primary-text)]">
-        {t('panel.profile.warehouseLocation')}
+        {t(warehouseTitleKey || 'panel.profile.warehouseLocation')}
       </h3>
       <div className="mt-4 space-y-4">
         {warehouses.map((item, index) => (
@@ -245,6 +245,8 @@ function PasswordFields({
 }
 
 function IbanCard({ cfg, form, setField, onSave, t }) {
+  const ibanAlign = cfg.ibanActionsAlign || 'end'
+
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 px-5 py-4 sm:px-8">
@@ -253,12 +255,13 @@ function IbanCard({ cfg, form, setField, onSave, t }) {
         </h3>
       </div>
       <div className="space-y-4 p-5 sm:p-8">
-        <SecretInput
-          value={form.iban}
-          onChange={setField('iban')}
-          placeholder={t('panel.profile.ibanPlaceholder')}
-          aria-label={t('panel.profile.ibanNumber')}
-        />
+        <Field label={t('panel.profile.ibanNumber')}>
+          <SecretInput
+            value={form.iban}
+            onChange={setField('iban')}
+            placeholder={t('panel.profile.ibanPlaceholder')}
+          />
+        </Field>
         <Field label={t(cfg.ibanPhoneLabelKey)}>
           <SecretInput
             value={form.ibanPhone}
@@ -266,7 +269,7 @@ function IbanCard({ cfg, form, setField, onSave, t }) {
             placeholder={t(cfg.ibanPhonePlaceholderKey)}
           />
         </Field>
-        <div className="flex justify-end pt-2">
+        <div className={`flex pt-2 ${alignClass(ibanAlign)}`}>
           <PrimaryButton onClick={onSave}>
             {t('panel.profile.saveIban')}
           </PrimaryButton>
@@ -537,6 +540,7 @@ export default function PanelProfile({
                 onUpdate={updateWarehouse}
                 onAdd={addWarehouse}
                 onSave={handleSaveWarehouses}
+                warehouseTitleKey={cfg.warehouseTitleKey}
                 t={t}
               />
             ) : null}

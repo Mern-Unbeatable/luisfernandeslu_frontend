@@ -12,7 +12,22 @@ export default function ProfilePage() {
   return (
     <>
       <Seo title={t('panel.profile.title')} />
-      <PanelProfile role="supplier" defaultValue={profile} />
+      <PanelProfile
+        role="supplier"
+        defaultValue={profile}
+        onUpdateProfile={() => {
+          // TODO: wire supplier profile update API
+        }}
+        onSaveWarehouses={() => {
+          // TODO: wire supplier warehouse API
+        }}
+        onChangePassword={() => {
+          // TODO: wire supplier password change API
+        }}
+        onSaveIban={() => {
+          // TODO: wire supplier IBAN API
+        }}
+      />
     </>
   )
 }

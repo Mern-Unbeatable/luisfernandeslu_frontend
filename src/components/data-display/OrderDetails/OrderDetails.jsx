@@ -28,6 +28,7 @@ export default function OrderDetails({
   showPay = false,
   onPayNow,
   onCancelInstallment,
+  context = 'default',
   className = '',
 }) {
   const { t } = useTranslation()
@@ -61,6 +62,7 @@ export default function OrderDetails({
           showPay={showPay}
           onPayNow={onPayNow}
           onCancelInstallment={onCancelInstallment}
+          context={context}
         />
       ) : (
         <StandardOrderDetails
