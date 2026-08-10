@@ -4,6 +4,11 @@ import { FiUser } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
 import { Field, PrimaryButton, SecretInput, TextInput } from './FormControls'
 import { resolveProfileConfig } from './roleConfig'
+import {
+  BuyerAccountSection,
+  BuyerAddressCard,
+  BuyerPasswordSection,
+} from './BuyerProfileSections'
 
 function emptyPassword() {
   return { currentPassword: '', newPassword: '', confirmPassword: '' }
@@ -248,13 +253,12 @@ function IbanCard({ cfg, form, setField, onSave, t }) {
         </h3>
       </div>
       <div className="space-y-4 p-5 sm:p-8">
-        <Field label={t('panel.profile.ibanNumber')}>
-          <SecretInput
-            value={form.iban}
-            onChange={setField('iban')}
-            placeholder={t('panel.profile.ibanPlaceholder')}
-          />
-        </Field>
+        <SecretInput
+          value={form.iban}
+          onChange={setField('iban')}
+          placeholder={t('panel.profile.ibanPlaceholder')}
+          aria-label={t('panel.profile.ibanNumber')}
+        />
         <Field label={t(cfg.ibanPhoneLabelKey)}>
           <SecretInput
             value={form.ibanPhone}
@@ -285,6 +289,8 @@ export default function PanelProfile({
   onSaveWarehouses,
   onChangePassword,
   onSaveIban,
+  onSaveBillingAddress,
+  onSaveShippingAddress,
   onUploadAvatar,
   onRemoveAvatar,
   title,
@@ -362,6 +368,19 @@ export default function PanelProfile({
   }
 
   const handleUpdateProfile = () => {
+    if (cfg.layout === 'buyer') {
+      onUpdateProfile?.({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        region: form.region,
+        city: form.city,
+        zipCode: form.zipCode,
+        address: form.address,
+      })
+      return
+    }
     onUpdateProfile?.({
       name: form.name,
       email: form.email,
@@ -391,21 +410,76 @@ export default function PanelProfile({
 
   const warehouses = form.warehouses || []
   const isSplit = cfg.layout === 'split'
+  const isBuyer = cfg.layout === 'buyer'
   const pageTitle = title || t('panel.profile.title')
+  const showHeader = cfg.showPageHeader !== false
 
   return (
     <div className={`w-full ${className}`}>
-      <header className="mb-6 sm:mb-8">
-        <h1 className="font-serif text-3xl font-bold tracking-tight text-[var(--primary-text)] sm:text-4xl">
-          {pageTitle}
-        </h1>
-        <p className="mt-1.5 text-sm text-[var(--secondary-text)]">
-          {t(cfg.subtitleKey)}
-        </p>
-      </header>
+      {showHeader ? (
+        <header className="mb-6 sm:mb-8">
+          <h1 className="font-serif text-3xl font-bold tracking-tight text-[var(--primary-text)] sm:text-4xl">
+            {pageTitle}
+          </h1>
+          <p className="mt-1.5 text-sm text-[var(--secondary-text)]">
+            {t(cfg.subtitleKey)}
+          </p>
+        </header>
+      ) : null}
 
       <div className="space-y-6">
-        {isSplit ? (
+        {isBuyer ? (
+          <>
+            <Card>
+              <BuyerAccountSection
+                form={form}
+                setField={setField}
+                onSave={handleUpdateProfile}
+                fileRef={fileRef}
+                fileInputId={fileInputId}
+                onPick={handleAvatarPick}
+                cfg={cfg}
+                t={t}
+              />
+              <BuyerPasswordSection
+                cfg={cfg}
+                form={form}
+                setField={setField}
+                onSave={handleChangePassword}
+                t={t}
+              />
+            </Card>
+
+            {cfg.showIban ? (
+              <IbanCard
+                cfg={cfg}
+                form={form}
+                setField={setField}
+                onSave={handleSaveIban}
+                t={t}
+              />
+            ) : null}
+
+            {cfg.showAddressCards ? (
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <BuyerAddressCard
+                  titleKey="panel.profile.billingAddress"
+                  values={form.billingAddress || {}}
+                  onChange={(billingAddress) => patch({ billingAddress })}
+                  onSave={() => onSaveBillingAddress?.(form.billingAddress)}
+                  t={t}
+                />
+                <BuyerAddressCard
+                  titleKey="panel.profile.shippingAddress"
+                  values={form.shippingAddress || {}}
+                  onChange={(shippingAddress) => patch({ shippingAddress })}
+                  onSave={() => onSaveShippingAddress?.(form.shippingAddress)}
+                  t={t}
+                />
+              </div>
+            ) : null}
+          </>
+        ) : isSplit ? (
           <>
             <Card>
               <AvatarBlock
@@ -476,7 +550,7 @@ export default function PanelProfile({
           </Card>
         )}
 
-        {cfg.showIban ? (
+        {!isBuyer && cfg.showIban ? (
           <IbanCard
             cfg={cfg}
             form={form}

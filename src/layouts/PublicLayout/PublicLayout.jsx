@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Header from '../shared/Header'
 import CategoryBar from '../shared/CategoryBar'
 import Footer from '../shared/Footer'
+import ConstructionAssistantWidget from '../../components/common/ConstructionAssistant/ConstructionAssistantWidget'
 import Seo from '../../components/common/Seo/Seo'
 
 export default function PublicLayout() {
@@ -14,6 +15,7 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <ConstructionAssistantWidget />
     </div>
   )
 }

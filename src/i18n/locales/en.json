@@ -136,6 +136,32 @@
     "pt": "Portuguese",
     "es": "Spanish"
   },
+  "constructionAssistant": {
+    "title": "Construction Assistant",
+    "open": "Open construction assistant chat",
+    "close": "Close construction assistant chat",
+    "send": "Send message",
+    "inputPlaceholder": "What material are you looking for?",
+    "welcome1": "Hello! Welcome to Construpreço!",
+    "welcome2": "Can I help you find the best building materials with fast delivery?",
+    "welcome3": "To begin, tell me what you are looking for.",
+    "fallbackReply": "Thanks! Tell me more about the material, quantity, or project type and I will suggest matching products.",
+    "priceLabel": "Price: {{price}}",
+    "products": {
+      "basic": {
+        "title": "Basic LED Setup",
+        "price": "€1,200"
+      },
+      "standard": {
+        "title": "Standard LED Lighting Kit",
+        "price": "€1,450"
+      },
+      "premium": {
+        "title": "Premium LED Light System",
+        "price": "€1,890"
+      }
+    }
+  },
   "footer": {
     "description": "The most complete building materials marketplace in Portugal. Delivery within 2 hours.",
     "follow": "Follow :",
@@ -156,7 +182,853 @@
   },
   "home": {
     "title": "CONSTRUPRECO",
-    "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios"
+    "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios",
+    "sponsoredProductsTitle": "Sponsored Products",
+    "topSellingTitle": "Top Selling Product",
+    "affiliateCta": {
+      "title": "It transforms sharing into gains.",
+      "subtitle": "Share your affiliate code and earn a 5% commission on every sale.",
+      "button": "Register For the Program"
+    },
+    "hero": {
+      "prevSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {{n}}",
+      "slides": {
+        "hero-1": {
+          "badge": "Fast Delivery",
+          "titleLines": [
+            "Save More on Bulk",
+            "Orders"
+          ],
+          "description": "Special pricing for large quantity orders. Perfect for contractors & builders.",
+          "ctaLabel": "Get Bulk Quote"
+        },
+        "hero-2": {
+          "badge": "Fast Delivery",
+          "titleLines": [
+            "Quality Materials for",
+            "Every Project"
+          ],
+          "description": "Source cement, steel, and tools from verified suppliers across the region.",
+          "ctaLabel": "Shop Now"
+        },
+        "hero-3": {
+          "badge": "Fast Delivery",
+          "titleLines": [
+            "Built for Contractors",
+            "& Builders"
+          ],
+          "description": "Streamlined ordering, bulk pricing, and reliable delivery to your job site.",
+          "ctaLabel": "Get Bulk Quote"
+        }
+      },
+      "features": {
+        "delivery": {
+          "title": "FASTED DELIVERY",
+          "subtitle": "Delivery in 24/H"
+        },
+        "return": {
+          "title": "24 HOURS RETURN",
+          "subtitle": "100% money-back guarantee"
+        },
+        "payment": {
+          "title": "SECURE PAYMENT",
+          "subtitle": "Your money is safe"
+        },
+        "support": {
+          "title": "SUPPORT 24/7",
+          "subtitle": "Live contact/message"
+        }
+      }
+    },
+    "stats": {
+      "professionals": "Registered Professionals",
+      "products": "Products Available",
+      "carriers": "Active Carriers",
+      "delivery": "Average Delivery Time"
+    }
+  },
+  "adminDashboard": {
+    "title": "Dashboard Overview",
+    "subtitle": "Executive summary and key performance indicators.",
+    "quickActionSectionTitle": "Quick Action",
+    "takeAction": "Take action →",
+    "channels": {
+      "label": "Sales channel",
+      "all": "All Channels",
+      "b2b": "B2B Only",
+      "b2c": "B2C Only"
+    },
+    "metrics": {
+      "totalGmv": "Total GMV",
+      "b2bGmv": "B2B GMV",
+      "b2cGmv": "B2C GMV",
+      "totalRevenue": "Total Revenue",
+      "commission": "Commission",
+      "avgOrderValue": "Avg Order Value",
+      "activeUsers": "Active Users",
+      "newRegistrations": "New Registrations",
+      "activeSuppliers": "Active Suppliers",
+      "activeFactories": "Active Factories",
+      "activeTransporters": "Active Transporters",
+      "openDisputes": "Open Disputes"
+    },
+    "quickActions": {
+      "transporterPayments": {
+        "title": "Approve Transporter Payments",
+        "subtitleLine": "4 requests awaiting your review"
+      },
+      "affiliatePayouts": {
+        "title": "Process Affiliate Payouts",
+        "subtitleLine": "2 pending · 2 ready to mark paid"
+      },
+      "affiliateAnalytics": {
+        "title": "View Affiliate Analytics",
+        "subtitleLine": "Track top performers & conversion"
+      }
+    },
+    "charts": {
+      "revenueTrend": "Revenue Trend",
+      "orderVolume": "Order Volume",
+      "thisYear": "This year",
+      "b2bRevenue": "B2B Revenue",
+      "b2cRevenue": "B2C Revenue",
+      "b2bOrders": "B2B Orders",
+      "b2cOrders": "B2C Orders"
+    },
+    "performance": {
+      "retentionTitle": "Retention Rate",
+      "b2bRetention": "B2B Retention",
+      "b2cRetention": "B2C Retention",
+      "ltvTitle": "Customer LTV",
+      "b2bLtv": "B2B Average LTV",
+      "b2cLtv": "B2C Average LTV",
+      "repurchaseTitle": "Repurchase Rate",
+      "b2bRepurchase": "B2B Repurchase",
+      "b2cRepurchase": "B2C Repurchase"
+    }
+  },
+  "adminUserManagement": {
+    "title": "User Management",
+    "subtitle": "Manage customers, companies, and all user accounts",
+    "tabs": {
+      "customer": "Customer",
+      "company": "Company"
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "b2cCustomers": "B2C Customers",
+      "b2bCompanies": "B2B Companies",
+      "pendingVerification": "Pending Verification"
+    },
+    "filters": {
+      "allStatus": "All Status",
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "columns": {
+      "name": "NAME",
+      "phone": "PHONE",
+      "email": "E-MAIL",
+      "type": "TYPE",
+      "status": "STATUS",
+      "vatRate": "Vat Rate",
+      "registered": "REGISTERED"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "suspend": "Suspend",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "modal": {
+      "title": "User Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "address": "Address"
+    }
+  },
+  "adminSupplierManagement": {
+    "title": "Supplier Management",
+    "subtitle": "Monitor and manage supplier.",
+    "tabs": {
+      "all": "All Supplier",
+      "pending": "Pending Supplier",
+      "suspended": "Suspended Supplier"
+    },
+    "stats": {
+      "totalSuppliers": "Total Suppliers",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No suppliers found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "commission": "Commission",
+      "status": "Status",
+      "action": "Action"
+    },
+    "commission": {
+      "title": "Add Commission",
+      "custom": "Custom",
+      "placeholder": "Percentage %",
+      "set": "Set"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Supplier Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminFactoryManagement": {
+    "title": "Factory Management",
+    "subtitle": "Monitor and manage Factory.",
+    "tabs": {
+      "all": "All Factory",
+      "pending": "Pending Factory",
+      "suspended": "Suspended Factory"
+    },
+    "stats": {
+      "totalFactories": "Total Factory",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No factories found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "commission": "Commission",
+      "status": "Status",
+      "action": "Action"
+    },
+    "commission": {
+      "title": "Add Commission",
+      "custom": "Custom",
+      "placeholder": "Percentage %",
+      "set": "Set"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Factory Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminTransporterManagement": {
+    "title": "Transporter Management",
+    "subtitle": "Monitor and manage Transporter.",
+    "tabs": {
+      "all": "All Transporter",
+      "pending": "Pending Transporter",
+      "suspended": "Suspended Transporter"
+    },
+    "stats": {
+      "totalTransporters": "Total Transporter",
+      "active": "Active",
+      "underReview": "Under Review",
+      "suspended": "Suspended"
+    },
+    "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No transporters found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "registered": "Registered Date",
+      "status": "Status",
+      "action": "Action"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "suspend": "Suspend",
+      "approved": "Approved",
+      "reject": "Reject",
+      "renew": "Renew",
+      "delete": "Delete",
+      "message": "Message"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "modal": {
+      "title": "Transporter Details",
+      "close": "Close",
+      "registeredOn": "Registered on {{date}}",
+      "documentsTitle": "Certificate & ID Proof"
+    }
+  },
+  "adminProductModeration": {
+    "title": "Product Moderation",
+    "subtitle": "Review and moderate user-uploaded products",
+    "tabs": {
+      "all": "All {{count}}",
+      "pending": "Pending ({{count}})",
+      "accepted": "Accepted ({{count}})",
+      "rejected": "Rejected ({{count}})"
+    },
+    "filters": {
+      "label": "Filters:",
+      "allCategories": "All Categories",
+      "buildingMaterials": "Building Materials",
+      "structuralSteel": "Structural Steel",
+      "masonry": "Masonry",
+      "electrical": "Electrical Devices"
+    },
+    "empty": "No products match your filters.",
+    "detail": {
+      "back": "Back to Product Moderation",
+      "title": "{{name}} · Moderation",
+      "notFound": "Product not found."
+    }
+  },
+  "adminChat": {
+    "subtitle": "Message suppliers, buyers, and partners from one inbox."
+  },
+  "adminMarketingManagement": {
+    "title": "Marketing Management",
+    "subtitle": "Manage product visibility packages and supplier advertising requests.",
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "pendingRequests": "Pending Requests",
+      "activeBoosts": "Active Boosts",
+      "totalFeatured": "Total Featured Products"
+    },
+    "tabs": {
+      "all": "All Requests",
+      "pending": "Pending ({{count}})",
+      "active": "Active ({{count}})",
+      "completed": "Completed"
+    },
+    "pendingBoostTitle": "Pending Boost Requests",
+    "actionRequired": "Action Required",
+    "featuredTitle": "Currently Featured Products",
+    "boostTier": "Boost Tier",
+    "duration": "Duration",
+    "emptyRequests": "No boost requests match this filter.",
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject"
+    }
+  },
+  "adminFinancePayments": {
+    "title": "Finance & Payments",
+    "subtitle": "Marketplace revenue, vendor payouts, and financial health.",
+    "stats": {
+      "totalRevenue": "Total Revenue",
+      "commissionRevenue": "Commission Revenue",
+      "pendingPayouts": "Pending Payouts",
+      "marketingRevenue": "Marketing Revenue"
+    },
+    "charts": {
+      "revenueTrend": "Revenue Trend",
+      "commission": "Commission",
+      "marketing": "Marketing",
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "payoutSection": {
+      "title": "Payout Requests",
+      "subtitle": "Review transporter payout requests and payment status."
+    },
+    "payoutSearchPlaceholder": "Search transporter name or email...",
+    "payoutEmpty": "No payout requests match your filters.",
+    "payoutFilters": {
+      "allRequests": "All Requests"
+    },
+    "payoutColumns": {
+      "transporter": "Transporter",
+      "totalEarnings": "Total Earnings",
+      "requested": "Requested",
+      "pending": "Pending",
+      "requestDate": "Request Date",
+      "status": "Status",
+      "action": "Action"
+    },
+    "payoutStatus": {
+      "paid": "Paid",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "payoutActions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "markPaid": "Mark as paid",
+      "viewDetails": "View details"
+    },
+    "invoiceSection": {
+      "title": "Commission Invoices",
+      "subtitle": "Manage and track all seller commission invoices generated from completed marketplace orders."
+    },
+    "invoiceSearchPlaceholder": "Search invoice ID, order, or participant...",
+    "invoiceEmpty": "No commission invoices match your filters.",
+    "invoiceFilters": {
+      "sortLabel": "Sort By:",
+      "allTypes": "User Type"
+    },
+    "invoiceColumns": {
+      "invoiceId": "Invoices ID",
+      "userType": "User Type",
+      "orderId": "Order ID",
+      "participant": "Participant",
+      "amount": "Amount",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "userTypes": {
+      "supplier": "Supplier",
+      "factory": "Factory",
+      "transporter": "Transporter"
+    },
+    "invoiceActions": {
+      "view": "View invoice",
+      "download": "Download invoice"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "adminDisputesResolution": {
+    "title": "Disputes Resolution",
+    "subtitle": "Manage customer disputes, returns, and resolution cases",
+    "searchPlaceholder": "Search dispute ID, order, customer, supplier...",
+    "empty": "No disputes match your filters.",
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "disputeId": "Dispute ID",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "supplier": "Supplier",
+      "issue": "Issue",
+      "status": "Status",
+      "registered": "Registered",
+      "action": "Action"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "status": "Status"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "back": "Back to Disputes Resolution",
+      "title": "{{id}} · Dispute",
+      "notFound": "Dispute not found."
+    }
+  },
+  "adminAuction": {
+    "title": "Auction Board",
+    "subtitle": "{{count}} active auctions in your service area",
+    "filterLabel": "Filter:",
+    "dateLabel": "Board date",
+    "empty": "No auctions match this filter.",
+    "filters": {
+      "all": "All",
+      "endingSoon": "Ending Soon",
+      "nearestFirst": "Nearest First",
+      "ended": "Ended"
+    }
+  },
+  "adminOrders": {
+    "title": "Orders",
+    "subtitle": "All orders",
+    "filterLabel": "Filter:",
+    "empty": "No orders match your filters.",
+    "tabs": {
+      "supplier": "Supplier Order",
+      "factory": "Factory Order"
+    },
+    "filters": {
+      "allCustomerType": "All Customer Type",
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "orderId": "Order ID",
+      "customerName": "Customer Name",
+      "customerType": "Customer Type",
+      "items": "Items",
+      "total": "Total",
+      "commission": "Comission",
+      "status": "Status",
+      "date": "Date",
+      "action": "Action"
+    },
+    "customerTypes": {
+      "company": "Company",
+      "customer": "Customer"
+    },
+    "status": {
+      "new": "New",
+      "pending": "Pending",
+      "processing": "Processing",
+      "assigned": "Assigned",
+      "completed": "Completed",
+      "cancel": "Cancel"
+    },
+    "actions": {
+      "seeDetails": "See Details",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "back": "Back to Orders",
+      "title": "{{id}} · Order",
+      "notFound": "Order not found.",
+      "supplierSection": "Supplier Information",
+      "factorySection": "Factory Information",
+      "produced": "Produced",
+      "assigned": "Assigned"
+    }
+  },
+  "adminDeliveryLogistics": {
+    "title": "Delivery & Logistics",
+    "subtitle": "Monitor active deliveries and shipment details.",
+    "status": {
+      "assigned": "Assigned",
+      "pickedUp": "Picked Up",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
+    },
+    "detail": {
+      "back": "Back to Delivery & Logistics",
+      "title": "{{id}} · Delivery",
+      "notFound": "Delivery not found."
+    }
+  },
+  "adminAffiliateDirectory": {
+    "title": "Affiliate Directory",
+    "subtitle": "Browse, manage, and connect with your affiliate network from one place.",
+    "sortLabel": "SORT BY:",
+    "searchPlaceholder": "Search affiliates…",
+    "empty": "No records match your filters.",
+    "tabs": {
+      "members": "Affiliate member",
+      "payoutControl": "Payout Control",
+      "levelControl": "Level Control"
+    },
+    "stats": {
+      "totalAffiliates": "Total Affiliates",
+      "totalAffiliatesHint": "Registered partners",
+      "activeAffiliates": "Active Affiliates",
+      "activeAffiliatesHint": "Currently generating traffic",
+      "referredClients": "Referred Clients",
+      "referredClientsHint": "Active paying subscriptions",
+      "marketplaceRevenue": "Marketplace Revenue",
+      "marketplaceRevenueHint": "Generated from affiliates",
+      "totalCommissionPaid": "Total Commission Paid",
+      "totalCommissionPaidHint": "Successfully processed",
+      "pendingCommission": "Pending Commission",
+      "pendingCommissionHint": "Awaiting payout approval"
+    },
+    "columns": {
+      "affiliateName": "Affiliates Name",
+      "affiliateId": "Affiliates ID",
+      "code": "Code",
+      "level": "Level",
+      "tierRate": "Tier Rate",
+      "totalClients": "Total Clients",
+      "activeClients": "Active Clients",
+      "revenueGenerated": "Revenue Generated",
+      "commissionEarned": "Commission Earned",
+      "pending": "Pending",
+      "status": "STATUS",
+      "action": "ACTION"
+    },
+    "filters": {
+      "allStatus": "All Status",
+      "allPlans": "All",
+      "customer": "Customer",
+      "company": "Company"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "clientStatus": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "commissionStatus": {
+      "approved": "Approved"
+    },
+    "payoutStatus": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "levelStatus": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "suspend": "Suspend",
+      "delete": "Delete"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "payoutControl": {
+      "pageTitle": "Financial Payout Control Center",
+      "pageSubtitle": "Audit pending partner balances, authorize bank releases, and review compliance histories.",
+      "requestsTitle": "Payout Requests",
+      "filters": {
+        "allRequests": "All Requests"
+      },
+      "actions": {
+        "paid": "Paid",
+        "rejected": "Rejected",
+        "approved": "Approved"
+      },
+      "columns": {
+        "affiliate": "Affiliate",
+        "totalEarnings": "TOTAL EARNINGS",
+        "requested": "Requested",
+        "pending": "PENDING",
+        "accountNumber": "Account Number",
+        "requestDate": "Request Date",
+        "status": "STATUS"
+      }
+    },
+    "levelControl": {
+      "pageTitle": "Commission Level Milestone System",
+      "pageSubtitle": "Define milestone tiers, required referral targets, and corresponding payout rate commissions.",
+      "activeBadge": "Active",
+      "commissionSplit": "Commission Split",
+      "payoutNote": "Recurring Lifetime payout spilt",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createTitle": "Create New Commission Level",
+      "tierSubtitles": {
+        "entryLevel": "Entry Level Tier",
+        "bronzeTier": "Bronze Tier",
+        "silverTier": "Silver Tier",
+        "goldTier": "Gold Tier",
+        "premiumTier": "Premium Tier",
+        "customTier": "Custom Tier"
+      },
+      "form": {
+        "levelName": "Level Name",
+        "levelNamePlaceholder": "e.g. Diamond",
+        "commission": "Commission %",
+        "membersRequired": "Member Required",
+        "description": "Description",
+        "cancel": "Cancel",
+        "save": "Save Level"
+      }
+    },
+    "detail": {
+      "back": "Back",
+      "title": "{{name}} · Affiliate",
+      "notFound": "Affiliate not found.",
+      "joined": "Joined",
+      "code": "Code",
+      "tier": "Tier",
+      "stats": {
+        "revenue": "Revenue",
+        "earned": "Earned",
+        "clients": "Clients"
+      },
+      "tabs": {
+        "clients": "Referred Clients",
+        "analytics": "Revenue Analytics",
+        "commissions": "Commissions History",
+        "payouts": "Payouts History"
+      },
+      "clients": {
+        "sectionTitle": "Referred Clients",
+        "columns": {
+          "clientInfo": "Client Info",
+          "phone": "Phone Number",
+          "joinDate": "Join Date",
+          "plan": "Subscription Plan",
+          "generatedRevenue": "Generated Revenue",
+          "affiliateCommission": "Affiliate Commission",
+          "expiryDate": "Expiry Date",
+          "status": "STATUS",
+          "action": "ACTION"
+        }
+      },
+      "commissions": {
+        "sectionTitle": "Commission Log Ledger",
+        "columns": {
+          "transactionId": "Transaction ID",
+          "date": "Date",
+          "sourceClient": "Source Client",
+          "purchaseSize": "Referral Purchase Size",
+          "rate": "Percentage Rate",
+          "earned": "Earned Commission",
+          "status": "Status"
+        }
+      },
+      "payouts": {
+        "sectionTitle": "Commission Log Ledger",
+        "columns": {
+          "referenceId": "Refernce ID",
+          "requestedDate": "Requested Date",
+          "method": "Method",
+          "accountNumber": "Account Number",
+          "amount": "Payout Amount",
+          "status": "Processing Status"
+        }
+      },
+      "chart": {
+        "eyebrow": "Historical earnings",
+        "title": "Historical Earnings & Generated Revenue",
+        "subtitle": "Month-over-month marketplace revenue and affiliate commission.",
+        "timeframe": "Time range",
+        "thisYear": "This year",
+        "marketplaceRev": "Marketplace Rev",
+        "affiliateCommission": "Affiliate Commission"
+      }
+    }
+  },
+  "adminRolesPermissions": {
+    "title": "Role & Permission Strategy",
+    "subtitle": "Documentation of the access control layers implemented in Construpreco. This ensures data security and a focused user experience for each staff role.",
+    "roles": {
+      "moderator": "Moderator",
+      "admin": "Admin",
+      "viewer": "Viewer"
+    },
+    "invite": {
+      "title": "Invite your team",
+      "description": "Easily add new members to a role by entering their email addresses below. Once invited, they'll receive an email with a link to join.",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "name@company.com",
+      "roleLabel": "Role",
+      "send": "Send Invite"
+    },
+    "editMatrix": {
+      "title": "Edit Matrix",
+      "empty": "No modules in this matrix.",
+      "toggleAria": "Toggle edit access for {{module}}",
+      "deleteAria": "Remove {{module}} from edit matrix"
+    },
+    "visibilityMatrix": {
+      "title": "Visibility Matrix",
+      "download": "Download",
+      "visible": "Visible",
+      "hidden": "Hidden"
+    },
+    "columns": {
+      "modulePage": "Module / Page",
+      "moderator": "Moderator",
+      "action": "Action"
+    },
+    "modules": {
+      "dashboardOverview": "Dashboard/ Overview",
+      "productManagement": "Product Management",
+      "supplierManagement": "Supplier Management",
+      "factoryManagement": "Factory Management",
+      "transporterManagement": "Transporter Management",
+      "productModeration": "Product Moderation"
+    },
+    "visibilityModules": {
+      "overviewAnalytics": "Overview / Analytics",
+      "classesCourses": "Classes & Courses",
+      "memberDatabase": "Member Database",
+      "instructorDirectory": "Instructor Directory"
+    }
+  },
+  "adminSettings": {
+    "title": "Settings",
+    "subtitle": "Configure platform shipping, tax, and auction defaults.",
+    "unsaved": "Unsaved",
+    "saveChange": "Save Change",
+    "reset": "Reset",
+    "calculate": "Calculate",
+    "shipping": {
+      "title": "Shipping Charge Management",
+      "description": "Set base per-kilometer rates and preview shipping costs.",
+      "baseRateTitle": "Base Shipping Rate",
+      "perKmLabel": "Per Kilometer Charge",
+      "calculatorTitle": "Shipping Cost Calculator",
+      "distanceLabel": "Distance",
+      "currentRateLabel": "Current Rate",
+      "resultTitle": "Shipping Cost",
+      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}"
+    },
+    "vat": {
+      "title": "VAT & Tax Settings",
+      "description": "Manage default VAT and preview tax on product prices.",
+      "configTitle": "Current VAT configuration",
+      "defaultRateLabel": "Default VAT rate",
+      "previewTitle": "Tax calculation preview",
+      "productPriceLabel": "Product price",
+      "previewShippingCost": "Shipping cost",
+      "previewRate": "VAT rate",
+      "previewAmount": "VAT amount",
+      "previewFinal": "Final customer price"
+    },
+    "auction": {
+      "title": "Transportation Auction Settings",
+      "description": "Control how long transporter auctions stay open.",
+      "durationTitle": "Auction Duration",
+      "hoursLabel": "Hours",
+      "minutesLabel": "Minutes"
+    }
   },
   "panel": {
     "mainMenu": "Main Menu",
@@ -533,7 +1405,22 @@
       "ibanPhonePlaceholderLong": "11+ characters",
       "saveIban": "SAVE",
       "showValue": "Show value",
-      "hideValue": "Hide value"
+      "hideValue": "Hide value",
+      "subtitleBuyer": "Update your personal details, password, and delivery addresses.",
+      "accountSetting": "Account Setting",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Display name",
+      "region": "Region/State",
+      "city": "City",
+      "zipCode": "Zip Code",
+      "streetAddress": "Address",
+      "passwordMinPlaceholder": "8+ characters",
+      "ibanPhoneEurope": "Phone number (Europe number)",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "companyOptional": "Company Name (Optional)",
+      "changePasswordUpper": "CHANGE PASSWORD"
     }
   },
   "auth": {
@@ -772,7 +1659,11 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "orders": "Orders",
+    "orderDetails": "Orders Details",
+    "writeReview": "Write a Review",
     "projects": "Projects",
+    "projectDetails": "Projects Details",
+    "materialDetails": "Material Details",
     "productToReview": "Product to review",
     "account": "Account",
     "affiliates": "Affiliates",
@@ -790,6 +1681,658 @@
     "sepAndTrackYour": ", And Track Your ",
     "introAfter": ".",
     "placeholderComingSoon": "{{title}} page — content coming soon."
+  },
+  "buyerOrders": {
+    "orderId": "Order ID: #{{id}}",
+    "trackOrder": "Track Order",
+    "cancelOrder": "Cancel Order",
+    "writeReview": "Write a Review",
+    "empty": "You have no orders yet.",
+    "status": {
+      "shipped": "Shipped",
+      "processing": "Processing",
+      "delivered": "Delivered"
+    }
+  },
+  "buyerOrderDetail": {
+    "title": "Order Information #{{number}}",
+    "shippingAddress": "Shipping Address",
+    "products": "Products",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "price": "Price",
+    "total": "Total",
+    "chat": "Chat"
+  },
+  "cancelReasonModal": {
+    "title": "Cancel Reason",
+    "label": "Write cancel reason",
+    "placeholder": "",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "productToReview": {
+    "columnProducts": "Products",
+    "columnShipping": "Shipping status",
+    "columnAction": "Action",
+    "writeReview": "Write a review",
+    "empty": "No products waiting for a review.",
+    "shippingStatus": {
+      "delivered": "Delivered"
+    }
+  },
+  "materialQualityFeedback": {
+    "title": "How was your material quality?",
+    "subtitle": "Your feedback helps other builders and contractors make better decisions.",
+    "rateLabel": "Rate Your Product",
+    "reviewLabel": "Review",
+    "reviewPlaceholder": "Write here",
+    "submit": "Submit"
+  },
+  "companyOrders": {
+    "colOrderId": "Order ID",
+    "colProduct": "Product Name",
+    "colProject": "Project",
+    "colQuantity": "Quantity",
+    "colStatus": "Status",
+    "colAction": "Action",
+    "empty": "No orders match this filter.",
+    "showing": "Showing {{from}} to {{to}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next",
+    "viewOrder": "View order {{id}}",
+    "quantityLabel": "Quantity: {{value}}",
+    "project": "Project",
+    "deliveryLocation": "Delivery Location",
+    "totalPrice": "Total Price",
+    "installment": "Installment",
+    "payNowDownPayment": "Pay Now (Down Payment)",
+    "remainingBalance": "Remaining Balance",
+    "unloadingNeeded": "Types of unloading Needed",
+    "accessConditions": "Access Conditions",
+    "filter": {
+      "all": "All Status",
+      "progress": "Progress",
+      "pending": "Pending",
+      "assign": "Assign",
+      "completed": "Completed"
+    },
+    "status": {
+      "progress": "Progress",
+      "pending": "Pending",
+      "assign": "Assign",
+      "completed": "Completed",
+      "delivered": "Delivered"
+    }
+  },
+  "companyProjects": {
+    "backToProjects": "← Back to Projects",
+    "backToProjectDetails": "← Back to Project Details",
+    "materialTypes": "Material Types",
+    "deliveredValue": "Delivered Value",
+    "duePayment": "Due Payment",
+    "materialTrackingTitle": "Material Requirements & Tracking",
+    "colMaterial": "Material Name",
+    "colOrderedQty": "Ordered Quantity",
+    "colDeliveredValue": "Delivered Value",
+    "colDuePayment": "Due Payment",
+    "colAction": "Action",
+    "viewMaterial": "View {{name}}",
+    "showing": "Showing {{from}} to {{to}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next",
+    "projectLabel": "Project: {{name}}",
+    "totalOrderValue": "Total Order Value",
+    "paymentSummary": "Payment Summary",
+    "totalAmount": "Total Amount",
+    "paidAmount": "Paid Amount",
+    "remainingBalance": "Remaining Balance",
+    "progress": "Progress",
+    "nextInstallment": "Next Installment",
+    "monthlyPayment": "Monthly Payment",
+    "installmentTimeline": "Installment Timeline"
+  },
+  "disputesCenter": {
+    "backToList": "Back to Disputes",
+    "searchPlaceholder": "Search by ID, product, or order...",
+    "statusFilter": "Status",
+    "newDispute": "New Dispute",
+    "recentTitle": "Recent Disputes ({{count}})",
+    "empty": "No disputes match your search.",
+    "idLabel": "ID: {{id}}",
+    "orderMeta": "Order: {{orderId}} ({{date}})",
+    "sellerLabel": "Seller: {{name}}",
+    "stats": {
+      "total": "Total Disputes",
+      "pendingAction": "Pending Action",
+      "underReview": "Under Review",
+      "resolved": "Resolved"
+    },
+    "filter": {
+      "all": "ALL",
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "modal": {
+      "title": "Raise a New Dispute",
+      "subtitle": "Provide details about the issue you're experiencing with your order.",
+      "selectOrder": "Select Order",
+      "selectOrderPh": "Choose an order to dispute",
+      "issueType": "Issue Type",
+      "issueTypePh": "What is the problem?",
+      "description": "Description",
+      "descriptionPh": "Please describe the issue in detail...",
+      "evidence": "Evidence (Photos/Videos)",
+      "uploadHint": "Click to upload or drag and drop",
+      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "cancel": "CANCEL",
+      "submit": "SUBMIT DISPUTE",
+      "close": "Close"
+    }
+  },
+  "returnsCenter": {
+    "tabOrders": "My Order",
+    "tabReturn": "Return",
+    "searchPlaceholder": "Search by ID, product, or order...",
+    "filter": "Filter orders",
+    "returnTabHint": "Select an order under My Order to start a return or refund.",
+    "orderNumber": "Order #{{id}}",
+    "itemCount": "{{count}} Items",
+    "viewDetails": "View Details >",
+    "backToOrders": "Back to Orders",
+    "placedOn": "Placed on {{date}}",
+    "viewReturnStatus": "View Return Status",
+    "lineMeta": "Qty: {{qty}} · {{price}}",
+    "returnRefund": "Return/Refund",
+    "myReturnsTitle": "My Returns",
+    "returnsEmpty": "No return requests match your search.",
+    "reasonInline": "Reason: {{reason}}",
+    "updatedOn": "UPDATE {{date}}",
+    "requestTitle": "Return Request #{{id}}",
+    "submittedOn": "Submitted on {{date}}",
+    "orderIdLabel": "Order ID: {{id}}",
+    "reasonLabel": "Reason: {{reason}}",
+    "descriptionHeading": "Description",
+    "evidenceHeading": "Evidence",
+    "timelineTitle": "Time Line",
+    "needHelpTitle": "Need Help?",
+    "needHelpBody": "Our support team is available 24/7 to assist with return disputes.",
+    "contactSupport": "Contact Support",
+    "returnStatus": {
+      "pending": "Pending",
+      "under_review": "under Review"
+    },
+    "modal": {
+      "title": "Request Return",
+      "close": "Close",
+      "productMeta": "Qty: {{qty}}, {{price}}",
+      "reason": "Reason for Return",
+      "reasonPh": "Damaged",
+      "description": "Description",
+      "descriptionPh": "Please describe the issue in detail...",
+      "damagedItem": "Damaged Item",
+      "damagedItemPh": "How many item/s are damaged?",
+      "refundAccount": "Refund Account Number",
+      "refundAccountPh": "Put your Account Number",
+      "evidence": "Upload Evidence",
+      "uploadHint": "Click to upload or drag and drop",
+      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "submit": "SUBMIT RETURN"
+    },
+    "status": {
+      "delivered": "DELIVERED"
+    }
+  },
+  "helpCenterPage": {
+    "seoTitle": "Help Center",
+    "seoDescription": "Find answers about orders, payments, returns, delivery, and how to contact CONSTRUPRECO support.",
+    "title": "Help Center",
+    "lastUpdated": "Last update 09 march, 2026",
+    "welcomeTitle": "Welcome to Help Center",
+    "welcomeBody": "How can we help you today? Find answers to common questions or get support for your orders, payments, and deliveries.",
+    "sections": {
+      "search": {
+        "title": "Search Help",
+        "description": "Search for help topics, guides, or frequently asked questions.",
+        "items": []
+      },
+      "orders": {
+        "title": "Orders & Purchases",
+        "items": [
+          "How to place an order",
+          "How to track my order",
+          "How to cancel an order",
+          "Understanding order status"
+        ]
+      },
+      "payments": {
+        "title": "Payments & Billing",
+        "items": [
+          "Available payment methods",
+          "Payment failed — what to do",
+          "Refund process and timelines",
+          "How to use promo codes"
+        ]
+      },
+      "returns": {
+        "title": "Returns & Refunds",
+        "items": [
+          "How to request a return",
+          "Return eligibility criteria",
+          {
+            "label": "Refund methods and status",
+            "href": "/return-policy"
+          },
+          "Non-returnable products"
+        ]
+      },
+      "delivery": {
+        "title": "Delivery & Logistics",
+        "items": [
+          "Delivery timelines",
+          "Delivery cost calculation",
+          "Transporter tracking",
+          "Missed or delayed deliveries"
+        ]
+      },
+      "contact": {
+        "title": "Contact Support",
+        "items": [
+          {
+            "icon": "mail",
+            "label": "Email Support: support@construpreco.com",
+            "href": "mailto:support@construpreco.com"
+          },
+          {
+            "icon": "chat",
+            "label": "Live Chat: Available 24/7",
+            "href": "/messages"
+          },
+          {
+            "icon": "phone",
+            "label": "Phone: +351 210 000 000",
+            "href": "tel:+351210000000"
+          }
+        ]
+      }
+    }
+  },
+  "returnPolicyPage": {
+    "seoTitle": "Return & Refund Policy",
+    "seoDescription": "Read CONSTRUPRECO return, refund and eligibility rules for construction materials.",
+    "title": "Return & Refund Policy",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "overview": {
+        "title": "1. Overview",
+        "paragraphs": [
+          "This Return & Refund Policy outlines the conditions under which products purchased through our marketplace can be returned or refunded. Due to the nature of construction materials and bulk orders, specific rules apply."
+        ]
+      },
+      "eligibility": {
+        "title": "2. Return Eligibility",
+        "blocks": [
+          {
+            "heading": "Products may be eligible for return if:",
+            "items": [
+              "The item is damaged upon delivery",
+              "The wrong product was delivered",
+              "The product does not match the description"
+            ]
+          },
+          {
+            "heading": "To be eligible:",
+            "items": [
+              "The return request must be submitted within 3–7 days of delivery",
+              "The product must be unused and in its original condition",
+              "Proof (photos/videos) must be provided"
+            ]
+          }
+        ]
+      },
+      "nonReturnable": {
+        "title": "3. Non-Returnable Items",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Used or partially used materials",
+              "Bulk materials once delivered (e.g., sand, cement, aggregates)",
+              "Custom-made or made-to-order products",
+              "Ready-mix concrete after delivery",
+              "Products damaged due to improper handling by the customer"
+            ]
+          }
+        ]
+      },
+      "process": {
+        "title": "4. Return Request Process",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Go to My Account → Orders",
+              "Select the relevant order",
+              "Click \"Request Return\"",
+              "Provide reason and upload supporting evidence"
+            ]
+          }
+        ]
+      },
+      "approval": {
+        "title": "5. Approval & Rejection",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Suppliers will review the request and either approve or reject it",
+              "Additional information may be requested if necessary",
+              "The platform may intervene in case of disputes"
+            ]
+          }
+        ]
+      },
+      "refund": {
+        "title": "6. Refund Process",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Approved refunds are processed to the original payment method",
+              "Refunds may take 5–14 business days after approval",
+              "Partial refunds may apply if only part of an order is returned",
+              "Installment or financed orders follow the same lender rules where applicable"
+            ]
+          }
+        ]
+      },
+      "shippingCosts": {
+        "title": "7. Shipping Costs",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Return shipping costs depend on the reason for return and supplier policy",
+              "If the return is due to supplier error or damage, return shipping may be covered",
+              "Customer-initiated returns may require the buyer to arrange and pay for transport",
+              "Bulk or heavy materials may need special collection — details are confirmed after approval"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "privacyPolicyPage": {
+    "seoTitle": "Privacy Policy",
+    "seoDescription": "How CONSTRUPRECO collects, uses and protects your personal data.",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "paragraphs": [
+          "We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, store and safeguard your information when you use our marketplace platform."
+        ]
+      },
+      "informationWeCollect": {
+        "title": "2. Information We Collect",
+        "blocks": [
+          {
+            "heading": "a) Personal Information",
+            "items": [
+              "Name",
+              "Email address",
+              "Phone number",
+              "Company details (for business users)",
+              "Billing and shipping address"
+            ]
+          },
+          {
+            "heading": "b) Account Information",
+            "items": [
+              "Login credentials (encrypted)",
+              "Profile details",
+              "Order history"
+            ]
+          },
+          {
+            "heading": "c) Transaction Information",
+            "items": [
+              "Payment details (processed securely via payment gateway)",
+              "Purchase and order data"
+            ]
+          },
+          {
+            "heading": "d) Technical Information",
+            "items": [
+              "IP address",
+              "Browser type",
+              "Device information",
+              "Cookies and usage data"
+            ]
+          }
+        ]
+      },
+      "howWeUse": {
+        "title": "3. How We Use Your Information",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Process orders and transactions",
+              "Provide customer support",
+              "Improve platform performance and user experience",
+              "Send order updates and notifications",
+              "Prevent fraud and ensure security"
+            ]
+          }
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Data Security",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "We implement technical and organizational measures to protect your data",
+              "Access to personal data is restricted to authorized personnel",
+              "No system is 100% secure — use strong passwords and protect your account"
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "title": "5. Cookies & Tracking",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Improve user experience",
+              "Remember preferences",
+              "Analyze site traffic"
+            ]
+          }
+        ]
+      },
+      "dataSharing": {
+        "title": "6. Data Sharing",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "We may share data with suppliers and transporters to fulfil orders",
+              "Payment processors receive only the data needed to complete transactions",
+              "We do not sell your personal information to third parties",
+              "We may disclose data when required by law or to protect our rights"
+            ]
+          }
+        ]
+      },
+      "userRights": {
+        "title": "7. User Rights",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Request access to your personal data",
+              "Request correction of inaccurate information",
+              "Request deletion where applicable under law",
+              "Object to or restrict certain processing",
+              "Withdraw consent where processing is consent-based"
+            ]
+          }
+        ]
+      },
+      "dataRetention": {
+        "title": "8. Data Retention",
+        "paragraphs": [
+          "We retain personal data only as long as necessary to provide our services, comply with legal obligations, resolve disputes and enforce agreements. Account and order records may be kept for statutory periods required for tax and commercial law."
+        ]
+      },
+      "policyUpdates": {
+        "title": "9. Policy Updates",
+        "paragraphs": [
+          "We may update this Privacy Policy from time to time. The “Last update” date at the top of this page will change when we do. Continued use of the platform after changes constitutes acceptance of the updated policy."
+        ]
+      },
+      "contact": {
+        "title": "10. Contact Us",
+        "paragraphs": [
+          "For privacy-related questions or to exercise your rights, contact us at privacy@construpreco.com or through the Help Center in the site footer."
+        ]
+      }
+    }
+  },
+  "termsPage": {
+    "seoTitle": "General Terms & Conditions",
+    "seoDescription": "Terms and conditions for using the CONSTRUPRECO marketplace.",
+    "title": "General Terms & Conditions",
+    "lastUpdated": "Last update 09 march, 2026",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "paragraphs": [
+          "These General Terms & Conditions govern your access to and use of the CONSTRUPRECO marketplace. By registering, browsing or placing an order, you agree to these terms."
+        ]
+      },
+      "useOfPlatform": {
+        "title": "2. Use of the Platform",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "The platform connects buyers, suppliers, transporters and other business users",
+              "You must use the service lawfully and in good faith",
+              "We may update features, policies or availability with reasonable notice where required"
+            ]
+          }
+        ]
+      },
+      "accounts": {
+        "title": "3. Accounts & Registration",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "You must provide accurate registration and profile information",
+              "You are responsible for safeguarding your login credentials",
+              "Business accounts may require additional verification (e.g. company or VAT details)",
+              "We may suspend accounts that violate these terms or applicable law"
+            ]
+          }
+        ]
+      },
+      "productInformation": {
+        "title": "4. Product Information",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "All product descriptions, specifications, and prices are provided by suppliers",
+              "The platform does not guarantee the accuracy but facilitates the transaction",
+              "Suppliers are responsible for ensuring product compliance and quality"
+            ]
+          }
+        ]
+      },
+      "ordersPayments": {
+        "title": "5. Orders & Payments",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Orders are confirmed only after successful payment or approval (in case of credit)",
+              "The platform supports multiple payment methods via secure payment gateways",
+              "Prices may vary based on quantity, delivery, or supplier terms"
+            ]
+          }
+        ]
+      },
+      "deliveryLogistics": {
+        "title": "6. Delivery & Logistics",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Delivery timelines are estimated and may vary depending on location and product type",
+              "Transport may be handled by third-party transporters",
+              "The platform is not liable for delays caused by unforeseen circumstances"
+            ]
+          }
+        ]
+      },
+      "returnsRefunds": {
+        "title": "7. Returns & Refunds",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Return requests must be submitted within the specified return period",
+              "Products must be unused and in original condition unless defective",
+              "Refunds will be processed after approval and verification by the supplier"
+            ]
+          }
+        ]
+      },
+      "b2bCredit": {
+        "title": "8. B2B Transactions & Credit Terms",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Business customers may request quotations and credit terms (30/60/90 days)",
+              "Credit approval is subject to supplier evaluation",
+              "Late payments may result in penalties or suspension of services"
+            ]
+          }
+        ]
+      },
+      "prohibitedActivities": {
+        "title": "9. Prohibited Activities",
+        "blocks": [
+          {
+            "heading": "",
+            "items": [
+              "Provide false information",
+              "Engage in fraudulent transactions",
+              "Misuse the platform or attempt to disrupt services"
+            ]
+          }
+        ]
+      },
+      "contact": {
+        "title": "10. Contact Information",
+        "paragraphs": [
+          "For any questions regarding these Terms & Conditions, please contact us through our support channels or the Help Center linked in the site footer."
+        ]
+      }
+    }
   },
   "seo": {
     "homeTitle": "Home",
@@ -810,6 +2353,16 @@
     "cartDescription": "Review and update your cart on CONSTRUPRECO.",
     "disputeResolutionTitle": "Dispute resolution",
     "disputeResolutionDescription": "Track and resolve order disputes on CONSTRUPRECO.",
+    "returnPolicyTitle": "Return & Refund Policy",
+    "returnPolicyDescription": "Return and refund rules for orders on CONSTRUPRECO.",
+    "helpCenterTitle": "Help Center",
+    "helpCenterDescription": "Get help with orders, payments, deliveries, and support on CONSTRUPRECO.",
+    "returnsCenterTitle": "Returns & orders",
+    "returnsCenterDescription": "View orders and request returns or refunds on CONSTRUPRECO.",
+    "privacyPolicyTitle": "Privacy Policy",
+    "privacyPolicyDescription": "How CONSTRUPRECO handles your personal data.",
+    "termsTitle": "General Terms & Conditions",
+    "termsDescription": "Terms and conditions for using CONSTRUPRECO.",
     "buyerDashboardTitle": "My Account",
     "buyerDashboardDescription": "Manage your CONSTRUPRECO account, orders and projects.",
     "buyerOrdersTitle": "Orders",
@@ -935,6 +2488,325 @@
   "order": {
     "details": {
       "back": "Back"
+    }
+  },
+  "factoryDashboard": {
+    "title": "Dashboard Overview",
+    "subtitle": "Welcome back! Here's what's happening with your factory today.",
+    "cards": {
+      "totalOrders": "Total Orders",
+      "pendingOrders": "Pending Orders",
+      "completedOrders": "Completed Orders",
+      "totalRevenue": "Total Revenue",
+      "adminCommission": "Admin Commission",
+      "adminCommissionDesc": "20% per order"
+    },
+    "revenueOverview": {
+      "title": "Revenue Overview",
+      "subtitle": "Monthly revenue for the last 6 months",
+      "filterAria": "Revenue period filter"
+    },
+    "orderStatus": {
+      "title": "Order Status",
+      "filterAria": "Order status period filter",
+      "completed": "Completed",
+      "inProduction": "In Production",
+      "pending": "Pending"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year",
+      "thisMonth": "This month",
+      "thisWeek": "This week"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
+  "factoryProducts": {
+    "title": "Product Management",
+    "subtitle": "Manage your product catalog for selling to customers.",
+    "addProduct": "Add Product",
+    "uploadCsv": "Upload CSV File",
+    "filters": "Filters:",
+    "allCategories": "All Categories",
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "form": {
+      "addTitle": "Add Product",
+      "editTitle": "Edit Product",
+      "addBreadcrumb": "Product > Add Product",
+      "editBreadcrumb": "Product > Edit Product",
+      "submit": "Submit",
+      "update": "Update"
+    },
+    "priceText": "Price: {{price}} per bag (50 kg)",
+    "priceFallback": "Price: —",
+    "untitled": "Untitled"
+  },
+  "factoryOrders": {
+    "title": "Suppliers order",
+    "subtitle": "Bulk orders with custom pricing and installment payments",
+    "cards": {
+      "activeSupplierOrders": "Active Supplier Orders",
+      "totalB2bRevenue": "Total B2B Revenue",
+      "installmentActive": "Installment Active",
+      "installmentActiveDesc": "orders",
+      "paymentOverdue": "Payment Overdue",
+      "paymentOverdueDesc": "3 orders"
+    },
+    "columns": {
+      "orderId": "Order ID",
+      "supplierName": "Supplier Name",
+      "total": "Total",
+      "installmentAmount": "Installment Amount",
+      "status": "Status",
+      "installmentNumber": "Installment Number",
+      "date": "Date"
+    },
+    "searchPlaceholder": "Search order, supplier, status...",
+    "sortBy": "Sort By:",
+    "allSupplier": "All Supplier",
+    "allStatus": "All Status",
+    "seeDetails": "See Details",
+    "status": {
+      "produced": "Produced",
+      "inProduction": "In Production",
+      "ready": "Ready",
+      "assigned": "Assigned",
+      "cancel": "Cancel",
+      "completed": "Completed"
+    },
+    "installments": {
+      "1": "1st Installment",
+      "2": "2nd Installment",
+      "3": "3rd Installment",
+      "4": "4th Installment",
+      "5": "5th Installment",
+      "6": "6th Installment"
+    },
+    "details": {
+      "unloadingType": "Tipper truck",
+      "accessCondition": "Manual Unloading",
+      "paidNote": "Pay $10,040/month for 10 months",
+      "duration": "10 months"
+    }
+  },
+  "factoryDeliveryLogistics": {
+    "title": "Delivery & Logistic",
+    "subtitle": "Manage shipments, assign transporter",
+    "requestDelivery": "+ Request Delivery",
+    "activeAuctions": {
+      "title": "Active Auctions",
+      "subtitle": "Pending bids and auction items"
+    },
+    "assignedDeliveries": {
+      "title": "Assigned Deliveries",
+      "subtitle": "Track orders already accepted by transporters"
+    }
+  },
+  "factoryInvoices": {
+    "title": "Commission Invoices",
+    "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "searchPlaceholder": "Search invoice ID, order ID, customer...",
+    "typeInvoice": "Invoice",
+    "viewAria": "View {{id}}",
+    "downloadAria": "Download {{id}}",
+    "columns": {
+      "invoiceId": "INVOICES ID",
+      "type": "TYPE",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "amount": "AMOUNT",
+      "date": "DATE",
+      "actions": "ACTIONS"
+    },
+    "download": {
+      "invoiceId": "Invoice ID",
+      "type": "Type",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "amount": "Amount",
+      "date": "Date"
+    }
+  },
+  "affiliateOverview": {
+    "title": "Affiliate Earnings Dashboard",
+    "subtitle": "Monitor performance and maximize earnings.",
+    "cards": {
+      "totalReferredClient": "Total Referred Client",
+      "activeClient": "Active Client",
+      "pendingCommissions": "Pending Commissions",
+      "paidCommission": "Paid Commission",
+      "totalEarnings": "Total Earnings"
+    },
+    "tier": {
+      "label": "Active Tier Status",
+      "tierName": "Starter Level",
+      "headline": "You receive a 5% commission rate!",
+      "description": "Keep inviting customers to unlock higher tiers with even higher commission rates.",
+      "progressLabel": "Progress to Bronze Level (10%)",
+      "clients": "{{current}}/{{target}} Clients",
+      "helpText": "You need {{count}} more active clients to reach Bronze Level."
+    },
+    "earningAnalytics": {
+      "title": "Earning Analytics",
+      "subtitle": "Track earning",
+      "filterAria": "Earning analytics period filter"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "July",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
+  "affiliateReferralChannels": {
+    "title": "Referral Channels",
+    "subtitle": "Create, manage, and track your referral links across multiple channels.",
+    "primaryChannel": "Primary Channel",
+    "active": "ACTIVE",
+    "referralCodeTitle": "Your Referral Code",
+    "referralCodeSubtitle": "Share this promo code with clients.",
+    "promotionalCode": "Promotional Code",
+    "copy": "Copy",
+    "copied": "Copied",
+    "directShareLink": "Direct Share Link",
+    "shareProposal": "Share Proposal",
+    "showQrAria": "Show QR code",
+    "proposalLinkCopied": "Proposal link copied",
+    "shareTitle": "Referral Proposal",
+    "shareText": "Use my promo code {{code}} to get started.",
+    "qr": {
+      "title": "Referral QR Code",
+      "subtitle": "Scan to open your referral link.",
+      "alt": "QR code for {{link}}",
+      "closeOverlay": "Close overlay",
+      "close": "Close"
+    }
+  },
+  "affiliateReferredClients": {
+    "title": "Your Referred Clients",
+    "subtitle": "Monitor client activity, generated revenue, commission earnings, and referral performance in one place.",
+    "searchPlaceholder": "Search name, status, date, revenue...",
+    "columns": {
+      "name": "Name",
+      "registeredDate": "Registered Date",
+      "revenueGenerated": "Revenue Generated",
+      "commissionEarned": "Commission Earned",
+      "commissionExpiry": "Commission Expiry",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "expired": "Expired"
+    }
+  },
+  "affiliateCommissions": {
+    "title": "Earnings & Payment",
+    "subtitle": "Manage your earnings and payment information",
+    "paymentHistory": "Payment History",
+    "searchPlaceholder": "Search date, type, account, amount, status...",
+    "cards": {
+      "totalEarnings": "Total Earnings",
+      "thisMonth": "This Month",
+      "availableBalance": "Available Balance",
+      "withdrawFunds": "Withdraw Funds",
+      "pendingAmount": "Pending Amount",
+      "lifeTime": "Life Time"
+    },
+    "columns": {
+      "date": "Date",
+      "type": "Type",
+      "accountType": "Account Type",
+      "accountNumber": "Account Number",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "type": {
+      "withdrawal": "Withdrawal"
+    },
+    "accountType": {
+      "stripe": "Stripe",
+      "bankTransfer": "Bank Transfer"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "withdraw": {
+      "title": "Withdraw Funds",
+      "amount": "Amount",
+      "businessName": "Name of the business/organisation",
+      "routingNumber": "Routing Number",
+      "accountNumber": "Account Number",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "closeOverlay": "Close overlay",
+      "close": "Close"
+    }
+  },
+  "affiliateLevels": {
+    "title": "Affiliate Levels",
+    "subtitle": "Unlock new tiers and enjoy greater rewards as your referrals grow.",
+    "gamifiedAchievements": "Gamified Achievements",
+    "tierStatusTitle": "Affiliate Tier Status",
+    "tierStatusDescription": "As your referred client base grows, you automatically advance to higher tiers and unlock better commission splits!",
+    "activeReferrals": "Active referrals:",
+    "clientsCount": "{{count}} clients",
+    "progressToBronze": "Progress to Bronze Level",
+    "helpText": "You need {{count}} more clients to unlock the 10% commission spot!",
+    "active": "Active",
+    "commissionSplit": "Commission Split",
+    "commissionSplitDesc": "Recurring Lifetime payout split",
+    "tiers": {
+      "starter": {
+        "name": "Starter Level",
+        "requirement": "ENTRY LEVEL TIER"
+      },
+      "bronze": {
+        "name": "Bronze Level",
+        "requirement": "100+ Active Clients Required"
+      },
+      "silver": {
+        "name": "Silver Level",
+        "requirement": "200+ Active Clients Required"
+      },
+      "gold": {
+        "name": "Gold Level",
+        "requirement": "300+ Active Clients Required"
+      },
+      "premium": {
+        "name": "Premium Level",
+        "requirement": "500+ Active Clients Required"
+      }
     }
   }
 }

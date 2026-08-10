@@ -1,4 +1,4 @@
-import { FiChevronDown } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi';
 
 const STATUS_STYLES = {
   produced: 'bg-sky-100 text-sky-700',
@@ -20,7 +20,7 @@ const STATUS_STYLES = {
   disabled: 'bg-gray-100 text-gray-600',
   expired: 'bg-red-100 text-red-700',
   default: 'bg-gray-100 text-[var(--secondary-text)]',
-}
+};
 
 export default function StatusBadge({
   status,
@@ -30,8 +30,8 @@ export default function StatusBadge({
 }) {
   const key = String(status || label || '')
     .trim()
-    .toLowerCase()
-  const styles = STATUS_STYLES[key] || STATUS_STYLES.default
+    .toLowerCase();
+  const styles = STATUS_STYLES[key] || STATUS_STYLES.default;
 
   return (
     <span
@@ -39,8 +39,8 @@ export default function StatusBadge({
     >
       {label || status}
       {showChevron ? (
-        <FiChevronDown className="size-3.5 shrink-0 opacity-80" aria-hidden />
+        <FiChevronDown className='size-3.5 shrink-0 opacity-80' aria-hidden />
       ) : null}
     </span>
-  )
+  );
 }

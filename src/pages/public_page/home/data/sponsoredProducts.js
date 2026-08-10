@@ -16,6 +16,7 @@ const IMAGES = {
 const CORE_SPONSORED = [
   {
     id: 'industrial-steel-beams',
+    slug: 'reinforcing-steel-bar',
     image: IMAGES.steel,
     title: 'Industrial Steel Beams',
     description:
@@ -28,6 +29,7 @@ const CORE_SPONSORED = [
   },
   {
     id: 'industrial-led-lighting',
+    slug: 'electrical-wires',
     image: IMAGES.lighting,
     title: 'Industrial LED Lighting System',
     description:
@@ -40,6 +42,7 @@ const CORE_SPONSORED = [
   },
   {
     id: 'hydraulic-forklift',
+    slug: 'concrete-blocks',
     image: IMAGES.forklift,
     title: 'Hydraulic Forklift 3-Ton',
     description:
@@ -52,6 +55,7 @@ const CORE_SPONSORED = [
   },
   {
     id: 'portland-cement',
+    slug: 'portland-cement-quick-set',
     image: IMAGES.cement,
     title: 'Portland Cement',
     description:
@@ -64,6 +68,7 @@ const CORE_SPONSORED = [
   },
   {
     id: 'safety-helmets',
+    slug: 'insulation-material',
     image: IMAGES.safety,
     title: 'Safety Helmets Bulk Pack',
     description:
@@ -76,6 +81,7 @@ const CORE_SPONSORED = [
   },
   {
     id: 'warehouse-pallets',
+    slug: 'gravel-aggregate',
     image: IMAGES.pallets,
     title: 'Heavy-Duty Warehouse Pallets',
     description:

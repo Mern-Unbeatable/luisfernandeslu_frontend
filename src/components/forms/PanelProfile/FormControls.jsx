@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { FiChevronDown, FiEye, FiEyeOff } from 'react-icons/fi'
 
 export function Field({ label, children, className = '' }) {
   return (
@@ -35,6 +35,28 @@ export function TextInput({
       className={`${controlBase} h-11 px-3 ${className}`}
       {...rest}
     />
+  )
+}
+
+export function SelectInput({ value, onChange, options = [], className = '' }) {
+  return (
+    <div className={`relative w-full ${className}`}>
+      <select
+        value={value ?? ''}
+        onChange={(event) => onChange?.(event.target.value)}
+        className={`${controlBase} h-11 appearance-none px-3 pr-9`}
+      >
+        {options.map((option) => (
+          <option key={option.value || 'empty'} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <FiChevronDown
+        className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
+        aria-hidden
+      />
+    </div>
   )
 }
 

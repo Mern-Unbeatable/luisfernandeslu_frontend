@@ -40,6 +40,26 @@ export const routeSeo = {
     titleKey: 'seo.disputeResolutionTitle',
     descriptionKey: 'seo.disputeResolutionDescription',
   },
+  returnPolicy: {
+    titleKey: 'seo.returnPolicyTitle',
+    descriptionKey: 'seo.returnPolicyDescription',
+  },
+  helpCenter: {
+    titleKey: 'seo.helpCenterTitle',
+    descriptionKey: 'seo.helpCenterDescription',
+  },
+  returnsCenter: {
+    titleKey: 'seo.returnsCenterTitle',
+    descriptionKey: 'seo.returnsCenterDescription',
+  },
+  privacyPolicy: {
+    titleKey: 'seo.privacyPolicyTitle',
+    descriptionKey: 'seo.privacyPolicyDescription',
+  },
+  termsAndConditions: {
+    titleKey: 'seo.termsTitle',
+    descriptionKey: 'seo.termsDescription',
+  },
   buyerDashboard: {
     titleKey: 'seo.buyerDashboardTitle',
     descriptionKey: 'seo.buyerDashboardDescription',

@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ProductCard from '@/components/data-display/ProductCard/ProductCard'
+import { useSelector } from 'react-redux'
+import StorefrontProductListingCell from '../components/StorefrontProductListingCell'
 import Pagination from '@/components/common/Pagination/Pagination'
+import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 import ProductsSidebar from './components/ProductsSidebar'
 import {
   PRODUCTS_LIST,
@@ -11,11 +13,26 @@ import {
 } from './data/productsListing'
 import { filterProducts } from './utils/filterProducts'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
-import { normalizeProductSlug } from './data/productDetailData'
 
 export default function ProductsPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const user = useSelector((state) => state.auth.user)
+  const listingRole = resolveStorefrontBuyerRole(user)
+
+  const handleListingAction = useCallback(
+    (actionId, product) => {
+      if (actionId === 'add_to_cart') {
+        navigate('/cart')
+        return
+      }
+      if (actionId === 'view_details' && product?.slug) {
+        navigate(`/products/${product.slug}`)
+      }
+    },
+    [navigate],
+  )
 
   const [minPrice, setMinPrice] = useState(300)
   const [maxPrice, setMaxPrice] = useState(500)
@@ -176,18 +193,11 @@ export default function ProductsPage() {
               <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6">
                 {visibleProducts.map((product) => (
                   <li key={product.id} className="flex min-w-0">
-                    <Link
-                      to={`/products/${normalizeProductSlug(product.id)}`}
-                      className="flex min-w-0 flex-1"
-                    >
-                      <ProductCard
-                        type="normal"
-                        role="customer"
-                        actions={[]}
-                        product={product}
-                        className="h-full w-full"
-                      />
-                    </Link>
+                    <StorefrontProductListingCell
+                      product={product}
+                      role={listingRole}
+                      onAction={handleListingAction}
+                    />
                   </li>
                 ))}
               </ul>
@@ -202,12 +212,14 @@ export default function ProductsPage() {
               </div>
             )}
 
-            <Pagination
-              className="mt-8 sm:mt-10"
-              page={safePage}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
+            {filteredProducts.length > 0 ? (
+              <Pagination
+                className="mt-8 sm:mt-10"
+                page={safePage}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            ) : null}
           </div>
         </div>
       </div>

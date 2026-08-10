@@ -38,7 +38,7 @@ export const LISTING_TEMPLATES = [
       'Fast-setting cement for rapid construction work and tight project schedules.',
     priceText: 'Price: $130 per bag (50 kg)',
     priceValue: 130,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'reinforcing-steel-bar',
@@ -51,7 +51,7 @@ export const LISTING_TEMPLATES = [
       'High-strength steel bars for reinforced concrete structures and foundations.',
     priceText: 'Price: $90 per ton',
     priceValue: 90,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'concrete-blocks',
@@ -64,7 +64,7 @@ export const LISTING_TEMPLATES = [
       'Durable concrete blocks for walls and foundations on residential sites.',
     priceText: 'Price: $2 per piece',
     priceValue: 2,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'fine-sand',
@@ -77,7 +77,7 @@ export const LISTING_TEMPLATES = [
       'Clean fine sand for mortar, plaster and precision finishing work.',
     priceText: 'Price: $45 per cubic meter',
     priceValue: 45,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'gravel-aggregate',
@@ -90,7 +90,7 @@ export const LISTING_TEMPLATES = [
       'Versatile gravel for concrete mixes, drainage and base layers.',
     priceText: 'Price: $60 per cubic meter',
     priceValue: 60,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'crushed-stone',
@@ -103,7 +103,7 @@ export const LISTING_TEMPLATES = [
       'Crushed stone aggregate for roads, driveways and structural fill.',
     priceText: 'Price: $75 per cubic meter',
     priceValue: 75,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'timber-wood',
@@ -116,7 +116,7 @@ export const LISTING_TEMPLATES = [
       'Quality timber for framing, formwork and general carpentry projects.',
     priceText: 'Price: $500 per cubic meter',
     priceValue: 500,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'gypsum-board',
@@ -129,7 +129,7 @@ export const LISTING_TEMPLATES = [
       'Standard gypsum boards for interior partitions and ceiling systems.',
     priceText: 'Price: $12 per sheet',
     priceValue: 12,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'granite-stone',
@@ -142,7 +142,7 @@ export const LISTING_TEMPLATES = [
       'Premium granite for flooring and countertops in modern interior spaces.',
     priceText: 'Price: $80 per square meter',
     priceValue: 380,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'glass-panels',
@@ -155,7 +155,7 @@ export const LISTING_TEMPLATES = [
       'Tempered glass panels for facades, partitions and storefront glazing.',
     priceText: 'Price: $120 per panel',
     priceValue: 420,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'pvc-pipes',
@@ -168,7 +168,7 @@ export const LISTING_TEMPLATES = [
       'Lightweight PVC pipes for plumbing in residential and commercial builds.',
     priceText: 'Price: $15 per meter',
     priceValue: 15,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'electrical-wires',
@@ -181,7 +181,7 @@ export const LISTING_TEMPLATES = [
       'Safe electrical wiring for homes, offices and industrial building projects.',
     priceText: 'Price: $100 per roll',
     priceValue: 100,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'wall-paint',
@@ -194,7 +194,7 @@ export const LISTING_TEMPLATES = [
       'Interior wall paint for homes, offices and retail spaces nationwide.',
     priceText: 'Price: $35 per gallon',
     priceValue: 35,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'roofing-sheets',
@@ -207,7 +207,7 @@ export const LISTING_TEMPLATES = [
       'Corrugated sheets for durable roofs on barns and industrial buildings.',
     priceText: 'Price: $18 per sheet',
     priceValue: 18,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'waterproof-membrane',
@@ -220,7 +220,7 @@ export const LISTING_TEMPLATES = [
       'Waterproof membrane for roofs, basements and foundation walls on sites.',
     priceText: 'Price: $55 per roll',
     priceValue: 320,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'clay-bricks',
@@ -233,7 +233,7 @@ export const LISTING_TEMPLATES = [
       'Traditional clay bricks for masonry on homes and commercial sites.',
     priceText: 'Price: $0.50 per piece',
     priceValue: 1,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'insulation-material',
@@ -246,7 +246,7 @@ export const LISTING_TEMPLATES = [
       'Thermal insulation for energy efficiency in walls, roofs and floors.',
     priceText: 'Price: $40 per sheet',
     priceValue: 40,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
   {
     slug: 'wall-primer',
@@ -259,7 +259,7 @@ export const LISTING_TEMPLATES = [
       'Primer for interior and exterior wall surfaces on construction projects.',
     priceText: 'Price: $28 per gallon',
     priceValue: 28,
-    bulkOptionLabel: 'Min ord 10 pcs',
+    bulkOptionLabel: 'Bulk option Open',
   },
 ]
 
@@ -297,18 +297,21 @@ export const PRODUCTS_PRICE_BRACKETS = [
 
 export const PRODUCTS_PAGE_SIZE = 9
 
-export const PRODUCTS_LIST = Array.from({ length: 90 }, (_, index) => {
-  const template = LISTING_TEMPLATES[index % LISTING_TEMPLATES.length]
-  const priceOffset = Math.floor(index / LISTING_TEMPLATES.length) * 15
-  return {
-    ...template,
-    id: `${template.slug}-${index}`,
-    priceValue: Math.min(
-      PRODUCTS_PRICE_MAX,
-      template.priceValue + (index % 3) * 5 + priceOffset,
-    ),
-  }
-})
+/** Enough variants per catalog template so category + price filters still paginate. */
+export const VARIANTS_PER_TEMPLATE = 24
+
+export const PRODUCTS_LIST = LISTING_TEMPLATES.flatMap((template) =>
+  Array.from({ length: VARIANTS_PER_TEMPLATE }, (_, variantIndex) => {
+    const spread =
+      80 + variantIndex * 18 + (template.priceValue % 7) * 3
+    return {
+      ...template,
+      id: `${template.slug}-v${variantIndex}`,
+      priceValue: Math.min(PRODUCTS_PRICE_MAX, spread),
+      minOrderLabel: template.minOrderLabel ?? 'Min ord 10 pcs',
+    }
+  }),
+)
 
 export function getProductsTotalPages(count) {
   return Math.max(1, Math.ceil(count / PRODUCTS_PAGE_SIZE))
