@@ -31,6 +31,7 @@ export default function AddProduct({
   categoryOptions,
   subCategoryOptions,
   productTypeOptions,
+  warehouseOptions,
   className = '',
 }) {
   const isFactory = role === 'factory'
@@ -155,20 +156,21 @@ export default function AddProduct({
           </>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              <Field label="SKU">
-                <TextInput
-                  value={form.sku}
-                  onChange={setField('sku')}
-                  placeholder="SKU number"
-                />
-              </Field>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <Field label="Warehouse Location">
-                <TextInput
-                  value={form.warehouseLocation}
-                  onChange={setField('warehouseLocation')}
-                  placeholder="Enter warehouse location"
-                />
+                {warehouseOptions ? (
+                  <SelectInput
+                    value={form.warehouseLocation}
+                    onChange={setField('warehouseLocation')}
+                    options={warehouseOptions}
+                  />
+                ) : (
+                  <TextInput
+                    value={form.warehouseLocation}
+                    onChange={setField('warehouseLocation')}
+                    placeholder="Enter warehouse location"
+                  />
+                )}
               </Field>
               <Field label="Category">
                 <SelectInput
@@ -203,7 +205,7 @@ export default function AddProduct({
               />
             </Field>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               <Field label="Quantity">
                 <TextInput
                   value={form.quantity}
@@ -230,6 +232,13 @@ export default function AddProduct({
                   value={form.minB2bQuantity}
                   onChange={setField('minB2bQuantity')}
                   placeholder="10 pcs"
+                />
+              </Field>
+              <Field label="SKU">
+                <TextInput
+                  value={form.sku}
+                  onChange={setField('sku')}
+                  placeholder="SKU number"
                 />
               </Field>
               <Field label="Weight">

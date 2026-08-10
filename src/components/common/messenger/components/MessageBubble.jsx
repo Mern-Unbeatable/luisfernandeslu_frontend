@@ -12,6 +12,7 @@ export default function MessageBubble({
   onNegotiate,
   actionMessageId,
   isBeingEdited,
+  showPartnerAvatar = true,
 }) {
   const isOutgoing = message.sender === 'me'
   const isBusy = actionMessageId === message.id
@@ -57,10 +58,10 @@ export default function MessageBubble({
               />
             ) : null}
             <div
-              className={`rounded-2xl rounded-br-md px-3.5 py-2.5 text-sm leading-relaxed ${
+              className={`rounded-2xl rounded-br-sm px-3.5 py-2.5 text-sm leading-relaxed ${
                 message.isDeleted
                   ? 'bg-gray-100 italic text-[var(--secondary-text)]'
-                  : 'bg-[#E8EEF5] text-[var(--primary-text)]'
+                  : 'bg-[#D9D9D9] text-[var(--primary-text)]'
               } ${isBeingEdited ? 'ring-2 ring-[var(--active)]' : ''}`}
             >
               {displayText}
@@ -79,17 +80,21 @@ export default function MessageBubble({
 
   return (
     <div className="flex items-end gap-2">
-      <UserAvatar
-        partner={message.partner}
-        className="size-8"
-        textClassName="text-[10px]"
-      />
+      {showPartnerAvatar ? (
+        <UserAvatar
+          partner={message.partner}
+          className="size-8"
+          textClassName="text-[10px]"
+        />
+      ) : (
+        <span className="size-8 shrink-0" aria-hidden />
+      )}
       <div className="flex max-w-[75%] flex-col gap-1">
         <div
-          className={`rounded-2xl rounded-bl-md border border-gray-100 bg-white px-3.5 py-2.5 text-sm leading-relaxed shadow-sm ${
+          className={`rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-sm leading-relaxed ${
             message.isDeleted
               ? 'italic text-[var(--secondary-text)]'
-              : 'text-[var(--primary-text)]'
+              : 'bg-[#ECECEC] text-[var(--primary-text)]'
           }`}
         >
           {displayText}

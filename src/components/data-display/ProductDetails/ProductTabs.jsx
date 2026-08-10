@@ -32,6 +32,57 @@ function DescriptionPanel({ product }) {
   )
 }
 
+function AdditionalInfoPanel({ product }) {
+  if (product.overviewItems?.length) {
+    return (
+      <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+        <div className="lg:pr-6">
+          <h3 className="mb-4 text-base font-bold text-[var(--primary-text)]">
+            Overview
+          </h3>
+          <div className="space-y-3 text-sm">
+            {product.overviewItems.map((item) => (
+              <p key={item.label}>
+                <span className="font-semibold text-[var(--primary-text)]">
+                  {item.label}:{' '}
+                </span>
+                <span className="text-[var(--secondary-text)]">
+                  {item.value}
+                </span>
+              </p>
+            ))}
+          </div>
+        </div>
+        {product.technicalSpecs?.length ? (
+          <div className="border-t border-gray-200 pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+            <div className="space-y-5">
+              {product.technicalSpecs.map((spec) => (
+                <div key={spec.title}>
+                  <h4 className="text-sm font-bold text-[var(--primary-text)]">
+                    {spec.title}
+                  </h4>
+                  <div className="mt-1 space-y-1 text-sm text-[var(--secondary-text)]">
+                    {spec.lines.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    )
+  }
+
+  return (
+    <PlainTextPanel
+      text={product.additionalText}
+      paragraphs={product.additionalParagraphs}
+    />
+  )
+}
+
 function PlainTextPanel({ text, paragraphs }) {
   const lines = paragraphs?.length
     ? paragraphs
@@ -120,12 +171,7 @@ export default function ProductTabs({ tabs = [], product = {}, defaultTab }) {
       case 'description':
         return <DescriptionPanel product={product} />
       case 'additional':
-        return (
-          <PlainTextPanel
-            text={product.additionalText}
-            paragraphs={product.additionalParagraphs}
-          />
-        )
+        return <AdditionalInfoPanel product={product} />
       case 'specification':
         return (
           <PlainTextPanel

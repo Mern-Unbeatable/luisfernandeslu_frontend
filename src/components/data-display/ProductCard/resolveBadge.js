@@ -25,7 +25,7 @@ const STATUS_BADGES = {
  * Prefer promo discount badge; else moderation status; else listing tag; else type-based.
  */
 export function resolveBadge({ type, status, tag, badge, context, product }) {
-  if (badge === false || badge === null) return null
+  if (badge === false) return null
   if (badge && typeof badge === 'object') return badge
 
   if (context === 'promo_code') {
