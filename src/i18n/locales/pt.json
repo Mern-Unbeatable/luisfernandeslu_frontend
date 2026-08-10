@@ -2631,6 +2631,104 @@
       "subtitle": "Acompanhe encomendas já aceites por transportadores"
     }
   },
+  "supplierPaymentsFinance": {
+    "title": "Ganhos e pagamentos",
+    "subtitle": "Faça a gestão dos seus ganhos e informações de pagamento",
+    "paymentHistory": "Histórico de pagamentos",
+    "cards": {
+      "totalEarnings": "Ganhos totais",
+      "thisMonth": "Este mês",
+      "adminCommission": "Comissão admin",
+      "adminCommissionDesc": "20% por encomenda",
+      "availableBalance": "Saldo disponível",
+      "withdrawFunds": "Levantar fundos",
+      "pendingAmount": "Montante pendente"
+    },
+    "columns": {
+      "date": "Data",
+      "type": "Tipo",
+      "accountType": "Tipo de conta",
+      "accountNumber": "Número de conta",
+      "amount": "Montante",
+      "status": "Estado"
+    },
+    "type": {
+      "withdrawal": "Levantamento"
+    },
+    "accountType": {
+      "stripe": "Stripe",
+      "bankTransfer": "Transferência bancária"
+    },
+    "status": {
+      "approved": "Aprovado",
+      "pending": "Pendente"
+    },
+    "withdraw": {
+      "title": "Levantar fundos",
+      "amount": "Montante",
+      "businessName": "Nome da empresa/organização",
+      "routingNumber": "Número de routing",
+      "accountNumber": "Número de conta",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "closeOverlay": "Fechar overlay",
+      "close": "Fechar"
+    }
+  },
+  "supplierAnalytics": {
+    "title": "Analítica",
+    "subtitle": "Informações abrangentes sobre o negócio e métricas de desempenho",
+    "cards": {
+      "totalRevenue": "Receita total",
+      "procurementExpenses": "Despesas de compras",
+      "factoryPurchases": "Compras de fábrica",
+      "netProfit": "Lucro líquido",
+      "outstandingDues": "Dívidas pendentes",
+      "fromCompanyClients": "De clientes empresariais"
+    },
+    "charts": {
+      "revenueExpensesProfit": "Receita, despesas e lucro",
+      "revenue": "Receita",
+      "expenses": "Despesas",
+      "profit": "Lucro",
+      "revenueBreakdown": "Distribuição da receita",
+      "regularSales": "Vendas regulares",
+      "companySales": "Vendas empresariais",
+      "salesByCustomerType": "Vendas por tipo de cliente",
+      "regularCustomers": "Clientes regulares",
+      "companyCustomers": "Clientes empresariais (B2B)",
+      "insight": "Insight: as vendas empresariais (B2B) representam 74% da receita total, mostrando forte adoção empresarial. As vendas a clientes regulares cresceram 7,7% mês a mês."
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Set",
+      "oct": "Out",
+      "nov": "Nov",
+      "dec": "Dez"
+    }
+  },
+  "supplierReviews": {
+    "title": "Avaliações de clientes",
+    "subtitle": "Faça a gestão das classificações e feedback dos clientes para os seus produtos",
+    "averageRating": "Classificação média",
+    "basedOnReviews": "Baseado em {{count}} avaliações",
+    "ratingDistribution": "Distribuição de classificações",
+    "totalReviews": "Total de avaliações",
+    "positiveReviews": "Avaliações positivas",
+    "positiveReviewsDesc": "Classificações de 4-5 estrelas",
+    "orderLabel": "Encomenda",
+    "customerType": {
+      "regular": "Regular",
+      "company": "Empresa"
+    }
+  },
   "factoryInvoices": {
     "title": "Faturas de comissão",
     "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",
