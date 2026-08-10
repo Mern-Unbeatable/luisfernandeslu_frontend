@@ -486,13 +486,13 @@ function PaginationBar({ pagination }) {
   }
 
   return (
-    <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm font-medium text-[var(--active)]">
+    <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <p className="min-w-0 text-sm font-medium text-[var(--active)]">
         {pagination.summaryLabel
           || `Showing ${from} to ${to} of ${total} results`}
       </p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={goPrevious}
