@@ -2283,6 +2283,199 @@ export const DEMO_SUPPLIER_REVIEWS = {
   ],
 };
 
+const RETURN_EVIDENCE_IMG =
+  'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80';
+const RETURN_PRODUCT_IMG =
+  'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=200&q=80';
+
+export const SUPPLIER_RETURN_REQUESTS_PAGE_SIZE = 8;
+
+export const DEMO_SUPPLIER_RETURN_REQUESTS = {
+  stats: {
+    total: 5,
+    pendingReview: 1,
+    approved: 3,
+    rejected: 1,
+  },
+  returns: [
+    {
+      id: 'ret-2024-001',
+      returnId: 'RET-2024-001',
+      orderId: 'ORD-2024-001',
+      customerName: 'Rahim Uddin',
+      customerEmail: 'rahim@example.com',
+      productName: 'Premium Cotton T-Shirt',
+      reason: 'Damaged Product',
+      requestDate: '1/20/2026',
+      status: 'item_received',
+    },
+    {
+      id: 'ret-2024-002',
+      returnId: 'RET-2024-002',
+      orderId: 'ORD-2024-002',
+      customerName: 'Karim Hassan',
+      customerEmail: 'karim@example.com',
+      productName: 'Portland Cement',
+      reason: 'Wrong Item',
+      requestDate: '2/15/2026',
+      status: 'inspection_pass',
+    },
+    {
+      id: 'ret-2024-003',
+      returnId: 'RET-2024-003',
+      orderId: 'ORD-2024-003',
+      customerName: 'Sultana Begum',
+      customerEmail: 'sultana@example.com',
+      productName: 'Wireless Earbuds',
+      reason: 'Not as Described',
+      requestDate: '3/20/2026',
+      status: 'under_review',
+    },
+    {
+      id: 'ret-2024-004',
+      returnId: 'RET-2024-004',
+      orderId: 'ORD-2024-004',
+      customerName: 'Ahmed Khan',
+      customerEmail: 'ahmed@example.com',
+      productName: 'Steel Rebar Bundle',
+      reason: 'Damaged Product',
+      requestDate: '4/02/2026',
+      status: 'inspection_progress',
+    },
+    {
+      id: 'ret-2024-005',
+      returnId: 'RET-2024-005',
+      orderId: 'ORD-2024-005',
+      customerName: 'Fatima Ali',
+      customerEmail: 'fatima@example.com',
+      productName: 'Clay Bricks',
+      reason: 'Size Issue',
+      requestDate: '4/10/2026',
+      status: 'pending',
+    },
+    {
+      id: 'ret-2024-006',
+      returnId: 'RET-2024-006',
+      orderId: 'ORD-2024-006',
+      customerName: 'Nadia Rahman',
+      customerEmail: 'nadia@example.com',
+      productName: 'Roofing Sheets',
+      reason: 'Quality Issue',
+      requestDate: '4/18/2026',
+      status: 'rejected',
+    },
+    {
+      id: 'ret-2024-007',
+      returnId: 'RET-2024-007',
+      orderId: 'ORD-2024-007',
+      customerName: 'Imran Chowdhury',
+      customerEmail: 'imran@example.com',
+      productName: 'PVC Piping',
+      reason: 'Damaged Product',
+      requestDate: '5/01/2026',
+      status: 'approved',
+    },
+    {
+      id: 'ret-2024-008',
+      returnId: 'RET-2024-008',
+      orderId: 'ORD-2024-008',
+      customerName: 'Layla Ahmed',
+      customerEmail: 'layla@example.com',
+      productName: 'Fine Sand Bulk Load',
+      reason: 'Wrong Item',
+      requestDate: '5/08/2026',
+      status: 'inspection_rejected',
+    },
+  ],
+};
+
+export const DEMO_SUPPLIER_RETURN_REQUEST_DETAILS = {
+  'ret-2024-001': {
+    id: 'ret-2024-001',
+    returnId: 'RET-2024-001',
+    orderId: 'ORD-2024-001',
+    receivedDate: '2024-06-01',
+    requestDate: '2024-06-01',
+    status: 'item_received',
+    reason: 'Damaged Product',
+    description:
+      'The cement arrived with visible tears near the collar and sleeve. One cement has a large stain that cannot be washed off.',
+    refundAccountNumber: '123456789012',
+    refundAmount: '$1,200',
+    products: [
+      {
+        id: 'rp-1',
+        name: 'Portland Cement',
+        sku: 'TSH-COT-L-WHT',
+        quantity: 2,
+        price: '$1,200',
+        image: RETURN_PRODUCT_IMG,
+      },
+    ],
+    evidence: [
+      RETURN_EVIDENCE_IMG,
+      'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80',
+    ],
+    customer: {
+      id: 'CUST-001',
+      name: 'Rahim Uddin',
+      email: 'rahim@example.com',
+      phone: '01712345678',
+      address: '42, Mirpur Road, Dhaka 1216',
+      avatarColor: '#3B82F6',
+    },
+    orderSummary: {
+      orderId: 'ORD-2024-001',
+      itemCount: 1,
+      requestDate: '2024-06-01',
+      totalValue: '$2,400',
+    },
+  },
+};
+
+export function getSupplierReturnRequestDetail(returnId) {
+  const detail = DEMO_SUPPLIER_RETURN_REQUEST_DETAILS[returnId];
+  if (detail) return detail;
+
+  const listItem = DEMO_SUPPLIER_RETURN_REQUESTS.returns.find(
+    (row) => row.id === returnId,
+  );
+  if (!listItem) return null;
+
+  return {
+    ...DEMO_SUPPLIER_RETURN_REQUEST_DETAILS['ret-2024-001'],
+    id: listItem.id,
+    returnId: listItem.returnId,
+    orderId: listItem.orderId,
+    status: listItem.status,
+    reason: listItem.reason,
+    receivedDate: listItem.requestDate,
+    requestDate: listItem.requestDate,
+    customer: {
+      ...DEMO_SUPPLIER_RETURN_REQUEST_DETAILS['ret-2024-001'].customer,
+      name: listItem.customerName,
+      email: listItem.customerEmail,
+    },
+    products: [
+      {
+        id: `rp-${listItem.id}`,
+        name: listItem.productName,
+        sku: 'SKU-001',
+        quantity: 1,
+        price: '$1,200',
+        image: RETURN_PRODUCT_IMG,
+      },
+    ],
+    orderSummary: {
+      orderId: listItem.orderId,
+      itemCount: 1,
+      requestDate: listItem.requestDate,
+      totalValue: '$2,400',
+    },
+  };
+}
+
 // ── Supplier fiscal documents ─────────────────────────────────────
 export const DEMO_SUPPLIER_FISCAL_DOCUMENTS = {
   stats: {
@@ -3430,6 +3623,116 @@ export const DEMO_DISPUTE_DASHBOARD = {
   ],
 };
 
+export const SUPPLIER_DISPUTES_PAGE_SIZE = 7;
+
+/** TODO: replace with supplier disputes API */
+export const DEMO_SUPPLIER_DISPUTES = [
+  {
+    id: 'dis-001',
+    disputeId: 'DIS-001',
+    orderId: 'ORD-001',
+    customer: 'Marvin McKinney',
+    supplier: 'Wade Warren',
+    issue: 'Damaged goods received',
+    status: 'pending',
+    registered: '2026-01-12',
+    receivedDate: 'Feb 2, 2026',
+  },
+  {
+    id: 'dis-002',
+    disputeId: 'DIS-002',
+    orderId: 'ORD-002',
+    customer: 'Jenny Wilson',
+    supplier: 'Robert Fox',
+    issue: 'Late delivery — 5 days overdue',
+    status: 'under_review',
+    registered: '2026-01-18',
+    receivedDate: 'Feb 4, 2026',
+  },
+  {
+    id: 'dis-003',
+    disputeId: 'DIS-003',
+    orderId: 'ORD-003',
+    customer: 'Cameron Williamson',
+    supplier: 'Leslie Alexander',
+    issue: 'Wrong item shipped',
+    status: 'resolved',
+    registered: '2026-01-22',
+    receivedDate: 'Feb 6, 2026',
+  },
+  {
+    id: 'dis-004',
+    disputeId: 'DIS-004',
+    orderId: 'ORD-004',
+    customer: 'Eleanor Pena',
+    supplier: 'Floyd Miles',
+    issue: 'Missing items in order',
+    status: 'pending',
+    registered: '2026-02-01',
+    receivedDate: 'Feb 8, 2026',
+  },
+  {
+    id: 'dis-005',
+    disputeId: 'DIS-005',
+    orderId: 'ORD-005',
+    customer: 'Jacob Jones',
+    supplier: 'Kristin Watson',
+    issue: 'Quality does not match listing',
+    status: 'under_review',
+    registered: '2026-02-08',
+    receivedDate: 'Feb 10, 2026',
+  },
+  {
+    id: 'dis-006',
+    disputeId: 'DIS-006',
+    orderId: 'ORD-006',
+    customer: 'Courtney Henry',
+    supplier: 'Devon Lane',
+    issue: 'Invoice amount mismatch',
+    status: 'resolved',
+    registered: '2026-02-14',
+    receivedDate: 'Feb 12, 2026',
+  },
+  {
+    id: 'dis-007',
+    disputeId: 'DIS-007',
+    orderId: 'ORD-007',
+    customer: 'Brooklyn Simmons',
+    supplier: 'Theresa Webb',
+    issue: 'Packaging severely damaged',
+    status: 'pending',
+    registered: '2026-02-20',
+    receivedDate: 'Feb 18, 2026',
+  },
+];
+
+export function getSupplierDisputeDetail(id) {
+  const row = DEMO_SUPPLIER_DISPUTES.find((entry) => entry.id === id);
+  if (!row) return null;
+
+  return {
+    ...DEMO_DISPUTE_DASHBOARD,
+    id: row.id,
+    disputeId: row.disputeId,
+    orderId: row.orderId,
+    status: row.status,
+    receivedDate: row.receivedDate,
+    createdAt: `${row.registered}, 2:10 PM`,
+    description: DEMO_DISPUTE_PUBLIC.description,
+    evidence: DEMO_DISPUTE_PUBLIC.evidence,
+    messages: DEMO_DISPUTE_MESSAGES,
+    items: [
+      {
+        id: 'di1',
+        productName: 'Premium Marble Slabs',
+        orderId: row.orderId,
+        reason: row.issue.includes('Damaged') ? 'Damaged Item' : 'Order Issue',
+        image: DISPUTE_IMG_MARBLE,
+      },
+    ],
+  };
+}
+
 // ── Delivery timeline ──────────────────────────────────────────────
 export const DEMO_DELIVERY_TIMELINE_ITEMS = [
   {
@@ -3520,7 +3823,16 @@ export const DEMO_PANEL_PROFILE = {
   avatarUrl: null,
 };
 
-export const DEMO_PANEL_PROFILE_SUPPLIER = { ...DEMO_PANEL_PROFILE };
+export const DEMO_PANEL_PROFILE_SUPPLIER = {
+  ...DEMO_PANEL_PROFILE,
+  warehouses: [
+    {
+      id: 'wh-1',
+      label: 'Warehouse 1',
+      address: '4140 Parker Rd. Allentown, New Mexico 31134',
+    },
+  ],
+};
 export const DEMO_PANEL_PROFILE_FACTORY = {
   ...DEMO_PANEL_PROFILE,
   displayName: 'UltraMix Concrete Plant',
@@ -3601,3 +3913,66 @@ export const DEMO_PANEL_PROFILE_COMPANY = {
     email: 'company@construpreco.com',
   },
 };
+
+// ── Supplier commission invoices ───────────────────────────────────
+export const SUPPLIER_INVOICES_PAGE_SIZE = 7;
+
+/** TODO: replace with supplier invoices API */
+export const DEMO_SUPPLIER_INVOICES = [
+  {
+    id: 'CI-01063',
+    type: 'Invoice',
+    orderId: 'ORD-001',
+    customer: 'Downtown Construction Co.',
+    amount: '$285.00',
+    date: '2024-05-28',
+  },
+  {
+    id: 'CI-01064',
+    type: 'Invoice',
+    orderId: 'ORD-002',
+    customer: 'West Side Building Project',
+    amount: '$180.00',
+    date: '2024-05-27',
+  },
+  {
+    id: 'CI-01065',
+    type: 'Invoice',
+    orderId: 'ORD-003',
+    customer: 'Suburban Housing Development',
+    amount: '$420.00',
+    date: '2024-05-26',
+  },
+  {
+    id: 'CI-01066',
+    type: 'Invoice',
+    orderId: 'ORD-004',
+    customer: 'Tax Authority',
+    amount: '$3,450.00',
+    date: '2024-05-01',
+  },
+  {
+    id: 'CI-01087',
+    type: 'Invoice',
+    orderId: 'ORD-025',
+    customer: 'Content Creation',
+    amount: '$4,250.00',
+    date: '2024-05-22',
+  },
+  {
+    id: 'CI-01088',
+    type: 'Invoice',
+    orderId: 'ORD-026',
+    customer: 'Harbor Bridge Works',
+    amount: '$960.00',
+    date: '2024-05-20',
+  },
+  {
+    id: 'CI-01089',
+    type: 'Invoice',
+    orderId: 'ORD-027',
+    customer: 'Metro Construction LLC',
+    amount: '$1,120.00',
+    date: '2024-05-18',
+  },
+];

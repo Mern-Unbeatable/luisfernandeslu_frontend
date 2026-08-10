@@ -1448,6 +1448,7 @@
       "updateProfile": "Atualizar perfil",
       "saveChanges": "GUARDAR ALTERAÇÕES",
       "warehouseLocation": "Localização do armazém",
+      "warehouseLocationSupplier": "Localização do armazém",
       "warehouseN": "Armazém {{n}}",
       "warehousePlaceholder": "Rua, cidade, região, código postal",
       "addWarehouse": "+ Adicionar novo armazém",
@@ -2727,6 +2728,134 @@
     "customerType": {
       "regular": "Regular",
       "company": "Empresa"
+    }
+  },
+  "supplierReturnRequests": {
+    "title": "Pedidos de devolução",
+    "subtitle": "Faça a gestão e responda a pedidos de devolução de clientes",
+    "sortBy": "ORDENAR POR:",
+    "stats": {
+      "total": "Total de pedidos",
+      "pendingReview": "Revisão pendente",
+      "approved": "Aprovados",
+      "rejected": "Rejeitados"
+    },
+    "filters": {
+      "allStatus": "Todos os estados"
+    },
+    "columns": {
+      "returnId": "ID DE DEVOLUÇÃO",
+      "orderId": "ID DA ENCOMENDA",
+      "customer": "CLIENTE",
+      "products": "PRODUTOS",
+      "reason": "MOTIVO",
+      "requestDate": "DATA DO PEDIDO",
+      "status": "ESTADO",
+      "action": "AÇÃO"
+    },
+    "status": {
+      "pending": "Pendente",
+      "under_review": "Em revisão",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado",
+      "item_received": "Item recebido",
+      "inspection_progress": "Inspeção em progresso",
+      "inspection_pass": "Inspeção aprovada",
+      "inspection_rejected": "Inspeção rejeitada"
+    },
+    "actionSeeDetails": "Ver detalhes",
+    "actionReject": "Rejeitar",
+    "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "detail": {
+      "title": "Devolução {{id}}",
+      "back": "Voltar à lista de devoluções",
+      "notFound": "Pedido de devolução não encontrado.",
+      "orderReceived": "Encomenda {{orderId}} - Recebido {{date}}",
+      "returnDetails": "Detalhes da devolução",
+      "returnedProducts": "Produtos devolvidos",
+      "productMeta": "SKU: {{sku}} - Qtd: {{qty}}",
+      "refundAccount": "Número da conta de reembolso",
+      "totalRefund": "Valor total do reembolso",
+      "customerEvidence": "Evidência do cliente",
+      "customerInfo": "Informações do cliente",
+      "customerId": "ID: {{id}}",
+      "orderSummary": "Resumo da encomenda",
+      "orderId": "ID da encomenda",
+      "items": "Itens",
+      "itemCount": "{{count}} item(ns)",
+      "requestDate": "Data do pedido",
+      "totalValue": "Valor total",
+      "prevImage": "Imagem anterior",
+      "nextImage": "Próxima imagem"
+    }
+  },
+  "supplierDisputesResolution": {
+    "title": "Resolução de disputas",
+    "subtitle": "Faça a gestão de disputas, devoluções e casos de resolução de clientes",
+    "sortBy": "ORDENAR POR:",
+    "empty": "Nenhuma disputa corresponde aos seus filtros.",
+    "filters": {
+      "allStatus": "Todos os estados"
+    },
+    "columns": {
+      "disputeId": "ID DA DISPUTA",
+      "orderId": "ID DA ENCOMENDA",
+      "customer": "CLIENTE",
+      "supplier": "FORNECEDOR",
+      "issue": "PROBLEMA",
+      "status": "ESTADO",
+      "registered": "REGISTADO",
+      "action": "AÇÃO"
+    },
+    "status": {
+      "pending": "Pendente",
+      "under_review": "Em revisão",
+      "resolved": "Resolvido"
+    },
+    "actions": {
+      "seeDetails": "Ver detalhes",
+      "status": "Estado"
+    },
+    "pagination": {
+      "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "detail": {
+      "back": "Voltar à lista de disputas",
+      "title": "{{id}} · Disputa",
+      "notFound": "Disputa não encontrada."
+    }
+  },
+  "supplierInvoices": {
+    "title": "Faturas de comissão",
+    "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",
+    "typeInvoice": "Fatura",
+    "viewAria": "Ver {{id}}",
+    "downloadAria": "Descarregar {{id}}",
+    "columns": {
+      "invoiceId": "ID DA FATURA",
+      "type": "TIPO",
+      "orderId": "ID DA ENCOMENDA",
+      "customer": "CLIENTE",
+      "amount": "MONTANTE",
+      "date": "DATA",
+      "actions": "AÇÕES"
+    },
+    "download": {
+      "invoiceId": "ID da fatura",
+      "type": "Tipo",
+      "orderId": "ID da encomenda",
+      "customer": "Cliente",
+      "amount": "Montante",
+      "date": "Data"
+    },
+    "pagination": {
+      "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Próximo"
     }
   },
   "factoryInvoices": {

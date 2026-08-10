@@ -293,8 +293,18 @@ const SupplierReturnRequests = Loadable(
   lazy(() => import('../../pages/supplier/return-requests/ReturnRequestsPage')),
   <PanelSkeleton />,
 );
+const SupplierReturnRequestDetail = Loadable(
+  lazy(
+    () => import('../../pages/supplier/return-requests/ReturnRequestDetailPage'),
+  ),
+  <PanelSkeleton />,
+);
 const SupplierDisputes = Loadable(
   lazy(() => import('../../pages/supplier/disputes/DisputesPage')),
+  <PanelSkeleton />,
+);
+const SupplierDisputeDetail = Loadable(
+  lazy(() => import('../../pages/supplier/disputes/DisputeDetailPage')),
   <PanelSkeleton />,
 );
 const SupplierInvoices = Loadable(
@@ -1078,9 +1088,19 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.reviews'),
               },
               {
+                path: 'return-requests/:returnId',
+                element: <SupplierReturnRequestDetail />,
+                handle: panelSeo('panel.nav.returnRequests'),
+              },
+              {
                 path: 'return-requests',
                 element: <SupplierReturnRequests />,
                 handle: panelSeo('panel.nav.returnRequests'),
+              },
+              {
+                path: 'disputes/:disputeId',
+                element: <SupplierDisputeDetail />,
+                handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
                 path: 'disputes',

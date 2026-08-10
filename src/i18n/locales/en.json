@@ -1450,6 +1450,7 @@
       "updateProfile": "Update Profile",
       "saveChanges": "SAVE CHANGES",
       "warehouseLocation": "Warehouse Location",
+      "warehouseLocationSupplier": "Ware House Location",
       "warehouseN": "Warehouse {{n}}",
       "warehousePlaceholder": "Street, city, region, postal code",
       "addWarehouse": "+ Add New Warehouse",
@@ -2798,6 +2799,134 @@
     "customerType": {
       "regular": "Regular",
       "company": "Company"
+    }
+  },
+  "supplierReturnRequests": {
+    "title": "Return Requests",
+    "subtitle": "Manage and respond to customer return request",
+    "sortBy": "SORT BY:",
+    "stats": {
+      "total": "Total Requests",
+      "pendingReview": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "returnId": "RETURN ID",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "products": "PRODUCTS",
+      "reason": "REASON",
+      "requestDate": "REQUEST DATE",
+      "status": "STATUS",
+      "action": "ACTION"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "item_received": "Item Received",
+      "inspection_progress": "Inspection Progress",
+      "inspection_pass": "Inspection Pass",
+      "inspection_rejected": "Inspection Rejected"
+    },
+    "actionSeeDetails": "See Details",
+    "actionReject": "Reject",
+    "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next",
+    "detail": {
+      "title": "Return {{id}}",
+      "back": "Back to Return List",
+      "notFound": "Return request not found.",
+      "orderReceived": "Order {{orderId}} - Received {{date}}",
+      "returnDetails": "Return Details",
+      "returnedProducts": "Returned Products",
+      "productMeta": "SKU: {{sku}} - Qty: {{qty}}",
+      "refundAccount": "Refund Account Number",
+      "totalRefund": "Total Refund Value",
+      "customerEvidence": "Customer Evidence",
+      "customerInfo": "Customer Information",
+      "customerId": "ID: {{id}}",
+      "orderSummary": "Order Summary",
+      "orderId": "Order ID",
+      "items": "Items",
+      "itemCount": "{{count}} item(s)",
+      "requestDate": "Request Date",
+      "totalValue": "Total Value",
+      "prevImage": "Previous image",
+      "nextImage": "Next image"
+    }
+  },
+  "supplierDisputesResolution": {
+    "title": "Disputes Resolution",
+    "subtitle": "Manage customer disputes, returns, and resolution cases",
+    "sortBy": "SORT BY:",
+    "empty": "No disputes match your filters.",
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "columns": {
+      "disputeId": "DISPUTE ID",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "supplier": "SUPPLIER",
+      "issue": "ISSUE",
+      "status": "STATUS",
+      "registered": "REGISTERED",
+      "action": "ACTION"
+    },
+    "status": {
+      "pending": "Pending",
+      "under_review": "Under Review",
+      "resolved": "Resolved"
+    },
+    "actions": {
+      "seeDetails": "See details",
+      "status": "Status"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "back": "Back to Dispute List",
+      "title": "{{id}} · Dispute",
+      "notFound": "Dispute not found."
+    }
+  },
+  "supplierInvoices": {
+    "title": "Commission Invoices",
+    "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "typeInvoice": "Invoice",
+    "viewAria": "View {{id}}",
+    "downloadAria": "Download {{id}}",
+    "columns": {
+      "invoiceId": "INVOICES ID",
+      "type": "TYPE",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "amount": "AMOUNT",
+      "date": "DATE",
+      "actions": "ACTIONS"
+    },
+    "download": {
+      "invoiceId": "Invoice ID",
+      "type": "Type",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "amount": "Amount",
+      "date": "Date"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
     }
   },
   "factoryInvoices": {
