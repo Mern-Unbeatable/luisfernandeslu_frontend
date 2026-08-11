@@ -141,7 +141,7 @@ export default function Header() {
         </div>
       ) : null}
 
-      <header ref={headerRef} className="sticky top-0 z-50 w-full">
+      <header ref={headerRef} className="sticky top-0 z-50 w-full shrink-0">
 
       {/* Mobile header */}
       <div className="relative z-50 w-full overflow-visible border-b border-gray-100 bg-white md:hidden">
