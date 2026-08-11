@@ -38,6 +38,7 @@ export default function StandardOrderDetails({
         recipient.zipCode ||
         recipient.address,
     )
+  const showCompanyLogistics = !isCustomerRecipient && !showTransporter
   const logistics = order.logistics || {}
   const transporter = order.transporter || {}
 
@@ -70,7 +71,9 @@ export default function StandardOrderDetails({
       ) : null}
 
       <div
-        className={`mb-8 grid grid-cols-1 gap-8 ${showTransporter ? 'lg:grid-cols-2' : ''}`}
+        className={`mb-8 grid grid-cols-1 gap-8 ${
+          showTransporter || showCompanyLogistics ? 'lg:grid-cols-2' : ''
+        }`}
       >
         <div>
           <SectionEyebrow>Recipient</SectionEyebrow>
@@ -122,17 +125,31 @@ export default function StandardOrderDetails({
                 phone={transporter.phone}
               />
             </div>
-            <div className="mt-4 flex flex-col gap-3">
-              <IconLabel
-                icon={FiMapPin}
-                label="Delivery Location"
-                value={logistics.deliveryLocation}
-              />
-              <StackLabel
-                label="Access Conditions"
-                value={logistics.accessCondition}
-              />
-            </div>
+            {!isCustomerRecipient ? (
+              <div className="mt-4 flex flex-col gap-3">
+                <IconLabel
+                  icon={FiMapPin}
+                  label="Delivery Location"
+                  value={logistics.deliveryLocation}
+                />
+                <StackLabel
+                  label="Access Conditions"
+                  value={logistics.accessCondition}
+                />
+              </div>
+            ) : null}
+          </div>
+        ) : showCompanyLogistics ? (
+          <div className="flex flex-col gap-3">
+            <IconLabel
+              icon={FiMapPin}
+              label="Delivery Location"
+              value={logistics.deliveryLocation}
+            />
+            <StackLabel
+              label="Access Conditions"
+              value={logistics.accessCondition}
+            />
           </div>
         ) : null}
       </div>

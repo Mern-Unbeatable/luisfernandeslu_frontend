@@ -196,16 +196,41 @@ const SupplierProducts = Loadable(
   lazy(() => import("../../pages/supplier/products/ProductsPage")),
   <PanelSkeleton />,
 );
+const SupplierProductDetail = Loadable(
+  lazy(() => import("../../pages/supplier/products/ProductDetailPage")),
+  <PanelSkeleton />,
+);
+const SupplierAddProduct = Loadable(
+  lazy(() => import("../../pages/supplier/products/AddProductPage")),
+  <PanelSkeleton />,
+);
 const SupplierPromoCodes = Loadable(
   lazy(() => import("../../pages/supplier/promo-codes/PromoCodesPage")),
+  <PanelSkeleton />,
+);
+const SupplierCreatePromoCode = Loadable(
+  lazy(() => import("../../pages/supplier/promo-codes/CreatePromoCodePage")),
   <PanelSkeleton />,
 );
 const SupplierOrdersCustomer = Loadable(
   lazy(() => import("../../pages/supplier/orders-customer/OrdersCustomerPage")),
   <PanelSkeleton />,
 );
+const SupplierOrderCustomerDetail = Loadable(
+  lazy(
+    () =>
+      import("../../pages/supplier/orders-customer/OrderCustomerDetailPage"),
+  ),
+  <PanelSkeleton />,
+);
 const SupplierCompanyOrders = Loadable(
   lazy(() => import("../../pages/supplier/company-orders/CompanyOrdersPage")),
+  <PanelSkeleton />,
+);
+const SupplierOrderCompanyDetail = Loadable(
+  lazy(
+    () => import("../../pages/supplier/company-orders/OrderCompanyDetailPage"),
+  ),
   <PanelSkeleton />,
 );
 const SupplierDocuments = Loadable(
@@ -222,8 +247,21 @@ const SupplierBuyFromFactory = Loadable(
   ),
   <PanelSkeleton />,
 );
+const SupplierBuyFromFactoryDetail = Loadable(
+  lazy(
+    () =>
+      import("../../pages/supplier/buy-from-factory/BuyFromFactoryDetailPage"),
+  ),
+  <PanelSkeleton />,
+);
 const SupplierFactoryOrders = Loadable(
   lazy(() => import("../../pages/supplier/factory-orders/FactoryOrdersPage")),
+  <PanelSkeleton />,
+);
+const SupplierFactoryOrderDetail = Loadable(
+  lazy(
+    () => import("../../pages/supplier/factory-orders/FactoryOrderDetailPage"),
+  ),
   <PanelSkeleton />,
 );
 const SupplierInventory = Loadable(
@@ -255,8 +293,19 @@ const SupplierReturnRequests = Loadable(
   lazy(() => import("../../pages/supplier/return-requests/ReturnRequestsPage")),
   <PanelSkeleton />,
 );
+const SupplierReturnRequestDetail = Loadable(
+  lazy(
+    () =>
+      import("../../pages/supplier/return-requests/ReturnRequestDetailPage"),
+  ),
+  <PanelSkeleton />,
+);
 const SupplierDisputes = Loadable(
   lazy(() => import("../../pages/supplier/disputes/DisputesPage")),
+  <PanelSkeleton />,
+);
+const SupplierDisputeDetail = Loadable(
+  lazy(() => import("../../pages/supplier/disputes/DisputeDetailPage")),
   <PanelSkeleton />,
 );
 const SupplierInvoices = Loadable(
@@ -659,10 +708,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /*
-      Remaining routes are intentionally commented out so only the requested public pages stay active.
-      Other paths will continue to fall back to the ComingSoon view.
-
       // Auth (guest only)
       {
         element: <PublicRoute />,
@@ -671,12 +716,12 @@ export const router = createBrowserRouter([
             element: <AuthLayout />,
             children: [
               {
-                path: '/signup',
+                path: "/signup",
                 element: <RoleSelect />,
                 handle: { seo: routeSeo.signup },
               },
               {
-                path: '/signup/:role',
+                path: "/signup/:role",
                 element: <Register />,
                 handle: { seo: routeSeo.signup },
               },
@@ -692,17 +737,17 @@ export const router = createBrowserRouter([
               },
               {
                 path: "/forgot-password",
-                element: <ComingSoon hideTitle />,
+                element: <ForgotPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: "/forgot-password/otp",
-                element: <ComingSoon hideTitle />,
+                element: <OtpVerification />,
                 handle: { seo: routeSeo.forgotPassword },
               },
               {
                 path: "/forgot-password/reset",
-                element: <ComingSoon hideTitle />,
+                element: <ResetPassword />,
                 handle: { seo: routeSeo.forgotPassword },
               },
             ],
@@ -710,14 +755,17 @@ export const router = createBrowserRouter([
         ],
       },
 
+      /*
+      Remaining routes are intentionally commented out so only the requested public pages stay active.
+      Other paths will continue to fall back to the ComingSoon view.
       // Developer docs
       { path: "/developer", element: <Developer /> },
       { path: "/developer/:componentId", element: <Developer /> },
 
       // Customer
       {
-        path: "/customer",
-        element: <ProtectedRoute allowedRoles={["customer"]} />,
+        path: '/customer',
+        element: <ProtectedRoute allowedRoles={['customer']} />,
         children: [
           {
             element: <BuyerShell />,
@@ -728,32 +776,32 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <CustomerOrders />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "orders/:orderId",
+                path: 'orders/:orderId',
                 element: <CustomerOrderDetail />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "product-to-review",
+                path: 'product-to-review',
                 element: <CustomerProductToReview />,
                 handle: { seo: routeSeo.buyerProductToReview },
               },
               {
-                path: "product-to-review/:reviewId",
+                path: 'product-to-review/:reviewId',
                 element: <CustomerWriteReview />,
                 handle: { seo: routeSeo.buyerProductToReview },
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <CustomerProfile />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "affiliates",
+                path: 'affiliates',
                 element: <CustomerAffiliates />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
@@ -764,8 +812,8 @@ export const router = createBrowserRouter([
 
       // Company
       {
-        path: "/company",
-        element: <ProtectedRoute allowedRoles={["company"]} />,
+        path: '/company',
+        element: <ProtectedRoute allowedRoles={['company']} />,
         children: [
           {
             element: <BuyerShell />,
@@ -776,37 +824,37 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <CompanyOrders />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "orders/:orderId",
+                path: 'orders/:orderId',
                 element: <CompanyOrderDetail />,
                 handle: { seo: routeSeo.buyerOrders },
               },
               {
-                path: "projects",
+                path: 'projects',
                 element: <CompanyProjects />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "projects/:projectId",
+                path: 'projects/:projectId',
                 element: <CompanyProjectDetail />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "projects/:projectId/materials/:materialId",
+                path: 'projects/:projectId/materials/:materialId',
                 element: <CompanyMaterialDetail />,
                 handle: { seo: routeSeo.buyerProjects },
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <CompanyProfile />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
               {
-                path: "affiliates",
+                path: 'affiliates',
                 element: <CompanyAffiliates />,
                 handle: { seo: routeSeo.buyerDashboard },
               },
@@ -817,8 +865,8 @@ export const router = createBrowserRouter([
 
       // Supplier
       {
-        path: "/supplier",
-        element: <ProtectedRoute allowedRoles={["supplier"]} />,
+        path: '/supplier',
+        element: <ProtectedRoute allowedRoles={['supplier']} />,
         children: [
           {
             element: <PanelShell />,
@@ -826,97 +874,146 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <SupplierDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "products",
+                path: 'products',
                 element: <SupplierProducts />,
-                handle: panelSeo("panel.nav.products"),
+                handle: panelSeo('panel.nav.products'),
               },
               {
-                path: "promo-codes",
+                path: 'products/add',
+                element: <SupplierAddProduct />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'products/:productId',
+                element: <SupplierProductDetail />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
+                path: 'promo-codes',
                 element: <SupplierPromoCodes />,
-                handle: panelSeo("panel.nav.promoCode"),
+                handle: panelSeo('panel.nav.promoCode'),
               },
               {
-                path: "orders-customer",
+                path: 'promo-codes/create',
+                element: <SupplierCreatePromoCode />,
+                handle: panelSeo('panel.nav.promoCode'),
+              },
+              {
+                path: 'orders-customer/:orderId',
+                element: <SupplierOrderCustomerDetail />,
+                handle: panelSeo(
+                  'panel.supplierCustomerOrders.orderDetailsTitle',
+                ),
+              },
+              {
+                path: 'orders-customer',
                 element: <SupplierOrdersCustomer />,
-                handle: panelSeo("panel.nav.ordersCustomer"),
+                handle: panelSeo('panel.nav.ordersCustomer'),
               },
               {
-                path: "company-orders",
+                path: 'company-orders/:orderId',
+                element: <SupplierOrderCompanyDetail />,
+                handle: panelSeo(
+                  'panel.supplierCompanyOrders.orderDetailsTitle',
+                ),
+              },
+              {
+                path: 'company-orders',
                 element: <SupplierCompanyOrders />,
-                handle: panelSeo("panel.nav.companyOrders"),
+                handle: panelSeo('panel.nav.companyOrders'),
               },
               {
-                path: "documents",
+                path: 'documents',
                 element: <SupplierDocuments />,
-                handle: panelSeo("panel.nav.document"),
+                handle: panelSeo('panel.nav.document'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <SupplierChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "buy-from-factory",
+                path: 'buy-from-factory/:productId',
+                element: <SupplierBuyFromFactoryDetail />,
+                handle: panelSeo('panel.nav.buyFromFactory'),
+              },
+              {
+                path: 'buy-from-factory',
                 element: <SupplierBuyFromFactory />,
-                handle: panelSeo("panel.nav.buyFromFactory"),
+                handle: panelSeo('panel.nav.buyFromFactory'),
               },
               {
-                path: "factory-orders",
+                path: 'factory-orders/:orderId',
+                element: <SupplierFactoryOrderDetail />,
+                handle: panelSeo('panel.nav.factoryOrder'),
+              },
+              {
+                path: 'factory-orders',
                 element: <SupplierFactoryOrders />,
-                handle: panelSeo("panel.nav.factoryOrder"),
+                handle: panelSeo('panel.nav.factoryOrder'),
               },
               {
-                path: "inventory",
+                path: 'inventory',
                 element: <SupplierInventory />,
-                handle: panelSeo("panel.nav.inventory"),
+                handle: panelSeo('panel.nav.inventory'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <SupplierDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogistics"),
+                handle: panelSeo('panel.nav.deliveryLogistics'),
               },
               {
-                path: "payments-finance",
+                path: 'payments-finance',
                 element: <SupplierPaymentsFinance />,
-                handle: panelSeo("panel.nav.paymentsFinance"),
+                handle: panelSeo('panel.nav.paymentsFinance'),
               },
               {
-                path: "analytics",
+                path: 'analytics',
                 element: <SupplierAnalytics />,
-                handle: panelSeo("panel.nav.analytics"),
+                handle: panelSeo('panel.nav.analytics'),
               },
               {
-                path: "reviews",
+                path: 'reviews',
                 element: <SupplierReviews />,
-                handle: panelSeo("panel.nav.reviews"),
+                handle: panelSeo('panel.nav.reviews'),
               },
               {
-                path: "return-requests",
+                path: 'return-requests/:returnId',
+                element: <SupplierReturnRequestDetail />,
+                handle: panelSeo('panel.nav.returnRequests'),
+              },
+              {
+                path: 'return-requests',
                 element: <SupplierReturnRequests />,
-                handle: panelSeo("panel.nav.returnRequests"),
+                handle: panelSeo('panel.nav.returnRequests'),
               },
               {
-                path: "disputes",
+                path: 'disputes/:disputeId',
+                element: <SupplierDisputeDetail />,
+                handle: panelSeo('panel.nav.disputesResolution'),
+              },
+              {
+                path: 'disputes',
                 element: <SupplierDisputes />,
-                handle: panelSeo("panel.nav.disputesResolution"),
+                handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <SupplierInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <SupplierProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -925,8 +1022,8 @@ export const router = createBrowserRouter([
 
       // Factory
       {
-        path: "/factory",
-        element: <ProtectedRoute allowedRoles={["factory"]} />,
+        path: '/factory',
+        element: <ProtectedRoute allowedRoles={['factory']} />,
         children: [
           {
             element: <PanelShell />,
@@ -934,42 +1031,42 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <FactoryDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "products",
+                path: 'products',
                 element: <FactoryProducts />,
-                handle: panelSeo("panel.nav.products"),
+                handle: panelSeo('panel.nav.products'),
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <FactoryOrders />,
-                handle: panelSeo("panel.nav.orders"),
+                handle: panelSeo('panel.nav.orders'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <FactoryChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <FactoryDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogistics"),
+                handle: panelSeo('panel.nav.deliveryLogistics'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <FactoryInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <FactoryProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -978,8 +1075,8 @@ export const router = createBrowserRouter([
 
       // Transporter
       {
-        path: "/transporter",
-        element: <ProtectedRoute allowedRoles={["transporter"]} />,
+        path: '/transporter',
+        element: <ProtectedRoute allowedRoles={['transporter']} />,
         children: [
           {
             element: <PanelShell />,
@@ -987,52 +1084,52 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <TransporterDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "auction-board",
+                path: 'auction-board',
                 element: <TransporterAuctionBoard />,
-                handle: panelSeo("panel.nav.auctionBoard"),
+                handle: panelSeo('panel.nav.auctionBoard'),
               },
               {
-                path: "assign-deliveries",
+                path: 'assign-deliveries',
                 element: <TransporterAssignDeliveries />,
-                handle: panelSeo("panel.nav.assignDeliveries"),
+                handle: panelSeo('panel.nav.assignDeliveries'),
               },
               {
-                path: "payments-payouts",
+                path: 'payments-payouts',
                 element: <TransporterPaymentsPayouts />,
-                handle: panelSeo("panel.nav.paymentsPayouts"),
+                handle: panelSeo('panel.nav.paymentsPayouts'),
               },
               {
-                path: "order-history",
+                path: 'order-history',
                 element: <TransporterOrderHistory />,
-                handle: panelSeo("panel.nav.orderHistory"),
+                handle: panelSeo('panel.nav.orderHistory'),
               },
               {
-                path: "insurance",
+                path: 'insurance',
                 element: <TransporterInsurance />,
-                handle: panelSeo("panel.nav.insurance"),
+                handle: panelSeo('panel.nav.insurance'),
               },
               {
-                path: "map",
+                path: 'map',
                 element: <TransporterMap />,
-                handle: panelSeo("panel.nav.map"),
+                handle: panelSeo('panel.nav.map'),
               },
               {
-                path: "invoices",
+                path: 'invoices',
                 element: <TransporterInvoices />,
-                handle: panelSeo("panel.nav.invoices"),
+                handle: panelSeo('panel.nav.invoices'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <TransporterProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1041,8 +1138,8 @@ export const router = createBrowserRouter([
 
       // Affiliate
       {
-        path: "/affiliate",
-        element: <ProtectedRoute allowedRoles={["affiliate"]} />,
+        path: '/affiliate',
+        element: <ProtectedRoute allowedRoles={['affiliate']} />,
         children: [
           {
             element: <PanelShell />,
@@ -1050,37 +1147,37 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <AffiliateOverview />,
-                handle: panelSeo("panel.nav.overviewDashboard"),
+                handle: panelSeo('panel.nav.overviewDashboard'),
               },
               {
-                path: "referral-channels",
+                path: 'referral-channels',
                 element: <AffiliateReferralChannels />,
-                handle: panelSeo("panel.nav.referralChannels"),
+                handle: panelSeo('panel.nav.referralChannels'),
               },
               {
-                path: "referred-clients",
+                path: 'referred-clients',
                 element: <AffiliateReferredClients />,
-                handle: panelSeo("panel.nav.referredClients"),
+                handle: panelSeo('panel.nav.referredClients'),
               },
               {
-                path: "commissions",
+                path: 'commissions',
                 element: <AffiliateCommissions />,
-                handle: panelSeo("panel.nav.commissions"),
+                handle: panelSeo('panel.nav.commissions'),
               },
               {
-                path: "affiliate-levels",
+                path: 'affiliate-levels',
                 element: <AffiliateLevels />,
-                handle: panelSeo("panel.nav.affiliateLevels"),
+                handle: panelSeo('panel.nav.affiliateLevels'),
               },
               {
-                path: "settings",
+                path: 'settings',
                 element: <AffiliateSettings />,
-                handle: panelSeo("panel.nav.settings"),
+                handle: panelSeo('panel.nav.settings'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1089,9 +1186,9 @@ export const router = createBrowserRouter([
 
       // Admin
       {
-        path: "/admin",
+        path: '/admin',
         element: (
-          <ProtectedRoute allowedRoles={["admin"]} redirectTo="/admin/login" />
+          <ProtectedRoute allowedRoles={['admin']} redirectTo='/admin/login' />
         ),
         children: [
           {
@@ -1100,92 +1197,92 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <AdminDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
               {
-                path: "user-management",
+                path: 'user-management',
                 element: <AdminUserManagement />,
-                handle: panelSeo("panel.nav.userManagement"),
+                handle: panelSeo('panel.nav.userManagement'),
               },
               {
-                path: "supplier-management",
+                path: 'supplier-management',
                 element: <AdminSupplierManagement />,
-                handle: panelSeo("panel.nav.supplierManagement"),
+                handle: panelSeo('panel.nav.supplierManagement'),
               },
               {
-                path: "factory-management",
+                path: 'factory-management',
                 element: <AdminFactoryManagement />,
-                handle: panelSeo("panel.nav.factoryManagement"),
+                handle: panelSeo('panel.nav.factoryManagement'),
               },
               {
-                path: "transporter-management",
+                path: 'transporter-management',
                 element: <AdminTransporterManagement />,
-                handle: panelSeo("panel.nav.transporterManagement"),
+                handle: panelSeo('panel.nav.transporterManagement'),
               },
               {
-                path: "product-moderation",
+                path: 'product-moderation',
                 element: <AdminProductModeration />,
-                handle: panelSeo("panel.nav.productModeration"),
+                handle: panelSeo('panel.nav.productModeration'),
               },
               {
-                path: "chat",
+                path: 'chat',
                 element: <AdminChat />,
-                handle: panelSeo("panel.nav.chat"),
+                handle: panelSeo('panel.nav.chat'),
               },
               {
-                path: "marketing-management",
+                path: 'marketing-management',
                 element: <AdminMarketingManagement />,
-                handle: panelSeo("panel.nav.marketingManagement"),
+                handle: panelSeo('panel.nav.marketingManagement'),
               },
               {
-                path: "finance-payments",
+                path: 'finance-payments',
                 element: <AdminFinancePayments />,
-                handle: panelSeo("panel.nav.financePayments"),
+                handle: panelSeo('panel.nav.financePayments'),
               },
               {
-                path: "disputes",
+                path: 'disputes',
                 element: <AdminDisputes />,
-                handle: panelSeo("panel.nav.disputesResolution"),
+                handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
-                path: "auction",
+                path: 'auction',
                 element: <AdminAuction />,
-                handle: panelSeo("panel.nav.auction"),
+                handle: panelSeo('panel.nav.auction'),
               },
               {
-                path: "orders",
+                path: 'orders',
                 element: <AdminOrders />,
-                handle: panelSeo("panel.nav.orders"),
+                handle: panelSeo('panel.nav.orders'),
               },
               {
-                path: "delivery-logistics",
+                path: 'delivery-logistics',
                 element: <AdminDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
               },
               {
-                path: "affiliate-directory",
+                path: 'affiliate-directory',
                 element: <AdminAffiliateDirectory />,
-                handle: panelSeo("panel.nav.affiliateDirectory"),
+                handle: panelSeo('panel.nav.affiliateDirectory'),
               },
               {
-                path: "roles-permissions",
+                path: 'roles-permissions',
                 element: <AdminRolesPermissions />,
-                handle: panelSeo("panel.nav.rolesPermissions"),
+                handle: panelSeo('panel.nav.rolesPermissions'),
               },
               {
-                path: "settings",
+                path: 'settings',
                 element: <AdminSettings />,
-                handle: panelSeo("panel.nav.settings"),
+                handle: panelSeo('panel.nav.settings'),
               },
               {
-                path: "profile",
+                path: 'profile',
                 element: <AdminProfile />,
-                handle: panelSeo("panel.nav.profile"),
+                handle: panelSeo('panel.nav.profile'),
               },
               {
-                path: "*",
+                path: '*',
                 element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                handle: panelSeo('panel.nav.dashboard'),
               },
             ],
           },
@@ -1197,7 +1294,7 @@ export const router = createBrowserRouter([
         element: <PublicLayout />,
         children: [
           {
-            path: "*",
+            path: '*',
             element: <NotFound />,
             handle: { seo: routeSeo.notFound },
           },

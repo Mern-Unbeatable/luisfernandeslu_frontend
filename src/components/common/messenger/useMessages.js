@@ -2,15 +2,26 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   DEMO_MESSENGER_CHATS,
   DEMO_MESSENGER_MESSAGES,
+  DEMO_SUPPLIER_MESSENGER_CHATS,
+  DEMO_SUPPLIER_MESSENGER_MESSAGES,
 } from '@/data/demoData'
 
 /**
  * Frontend-only chat state (mock). Swap internals later for API.
  */
-export default function useMessages() {
-  const [chats, setChats] = useState(DEMO_MESSENGER_CHATS)
-  const [messagesByChat, setMessagesByChat] = useState(DEMO_MESSENGER_MESSAGES)
-  const [activePartnerId, setActivePartnerId] = useState(null)
+export default function useMessages({ variant = 'default' } = {}) {
+  const isSupplier = variant === 'supplier'
+  const initialChats = isSupplier
+    ? DEMO_SUPPLIER_MESSENGER_CHATS
+    : DEMO_MESSENGER_CHATS
+  const initialMessages = isSupplier
+    ? DEMO_SUPPLIER_MESSENGER_MESSAGES
+    : DEMO_MESSENGER_MESSAGES
+  const defaultActiveId = isSupplier ? 'c-ope' : null
+
+  const [chats, setChats] = useState(initialChats)
+  const [messagesByChat, setMessagesByChat] = useState(initialMessages)
+  const [activePartnerId, setActivePartnerId] = useState(defaultActiveId)
   const [isSending, setIsSending] = useState(false)
   const [isPartnerTyping] = useState(false)
   const [actionMessageId, setActionMessageId] = useState(null)
@@ -120,7 +131,8 @@ export default function useMessages() {
         return [
           {
             label: `${ord} Installment`,
-            value: row.price ? `$${row.price}` : '—',
+            value: row.price ? `€${row.price}` : '—',
+            icon: 'dollar',
           },
           {
             label: 'Quantity',
@@ -131,12 +143,13 @@ export default function useMessages() {
 
       if (form.totalPrice) {
         pricing.unshift(
-          { label: 'Total Price', value: `$${form.totalPrice}` },
+          { label: 'Total Price', value: `€${form.totalPrice}`, icon: 'dollar' },
           {
             label: 'Installment',
             value: form.installmentMonths
               ? `${form.installmentMonths} months`
               : '—',
+            icon: 'calendar',
           },
         )
       }
@@ -154,9 +167,9 @@ export default function useMessages() {
         pricing,
         summary: firstPrice
           ? {
-              firstInstallment: `$${firstPrice}`,
+              firstInstallment: `€${firstPrice}`,
               remainingBalance: form.totalPrice
-                ? `$${Math.max(
+                ? `€${Math.max(
                     Number(form.totalPrice) - Number(firstPrice),
                     0,
                   )}`

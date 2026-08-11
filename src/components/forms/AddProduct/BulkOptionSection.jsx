@@ -39,11 +39,11 @@ export default function BulkOptionSection({
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>
-                <Field label="Price ($)">
+                <Field label="Price (€)">
                   <TextInput
                     value={tier.price}
                     onChange={(value) => updateTier(tier.id, 'price', value)}
-                    placeholder="$40.00"
+                    placeholder="€40.00"
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>
@@ -54,7 +54,7 @@ export default function BulkOptionSection({
           <button
             type="button"
             onClick={onAddTier}
-            className="self-start text-sm font-normal text-amber-500 hover:underline"
+            className="self-start text-sm font-normal text-[var(--active)] hover:underline"
           >
             Add Another condition
           </button>

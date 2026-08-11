@@ -27,6 +27,7 @@ export default function Messenger({
   actionMessageId = null,
   sharedInbox = false,
   sidebarTitle = 'Recent Messages',
+  showSidebarEdit = false,
   className = '',
 }) {
   const [offerModalOpen, setOfferModalOpen] = useState(false)
@@ -42,7 +43,7 @@ export default function Messenger({
 
   return (
     <div
-      className={`flex h-full w-full overflow-hidden rounded-xl border border-gray-200 bg-[#F8F8F8] ${className}`}
+      className={`flex h-full w-full overflow-hidden rounded-xl border border-gray-200 bg-white ${className}`}
     >
       <div
         className={`w-full shrink-0 md:w-80 lg:w-96 ${
@@ -55,6 +56,7 @@ export default function Messenger({
           onSelectChat={onSelectChat}
           isLoading={isLoading && !chats.length}
           title={sidebarTitle}
+          showEditButton={showSidebarEdit}
         />
       </div>
 

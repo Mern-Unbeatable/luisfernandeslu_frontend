@@ -9,7 +9,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-001',
       customer: 'Downtown Construction Co.',
-      amount: '$285.00',
+      amount: '€285.00',
       date: '2024-05-28',
     },
     {
@@ -18,7 +18,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-002',
       customer: 'West Side Building Project',
-      amount: '$180.00',
+      amount: '€180.00',
       date: '2024-05-27',
     },
     {
@@ -27,7 +27,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-003',
       customer: 'Suburban Housing Development',
-      amount: '$420.00',
+      amount: '€420.00',
       date: '2024-05-26',
     },
     {
@@ -36,7 +36,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-004',
       customer: 'Tax Authority',
-      amount: '$3,450.00',
+      amount: '€3,450.00',
       date: '2024-05-01',
     },
     {
@@ -45,7 +45,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-025',
       customer: 'Content Creation',
-      amount: '$4,250.00',
+      amount: '€4,250.00',
       date: '2024-05-22',
     },
     {
@@ -55,7 +55,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-001',
       customer: 'Downtown Construction Co.',
-      amount: '$285.00',
+      amount: '€285.00',
       date: '2024-05-28',
     },
     {
@@ -65,7 +65,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-002',
       customer: 'West Side Building Project',
-      amount: '$180.00',
+      amount: '€180.00',
       date: '2024-05-27',
     },
     {
@@ -75,7 +75,7 @@ export default function InvoicesTableSection() {
       type: 'Invoice',
       orderId: 'ORD-025',
       customer: 'Content Creation',
-      amount: '$4,250.00',
+      amount: '€4,250.00',
       date: '2024-05-22',
     },
   ]

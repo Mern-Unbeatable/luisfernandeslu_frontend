@@ -2,15 +2,15 @@ function buildPageList(currentPage, totalPages) {
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
   }
-
+ 
   if (currentPage <= 3) {
     return [1, 2, 3, 'ellipsis', totalPages]
   }
-
+ 
   if (currentPage >= totalPages - 2) {
     return [1, 'ellipsis', totalPages - 2, totalPages - 1, totalPages]
   }
-
+ 
   return [
     1,
     'ellipsis',
@@ -21,7 +21,7 @@ function buildPageList(currentPage, totalPages) {
     totalPages,
   ]
 }
-
+ 
 function PaginationButton({
   children,
   ariaLabel,
@@ -48,7 +48,7 @@ function PaginationButton({
     </button>
   )
 }
-
+ 
 export default function Pagination({
   page = 1,
   totalPages = 1,
@@ -56,15 +56,15 @@ export default function Pagination({
   className = '',
 }) {
   if (totalPages <= 1) return null
-
+ 
   const currentPage = Math.min(Math.max(page, 1), totalPages)
   const items = buildPageList(currentPage, totalPages)
-
+ 
   const goTo = (nextPage) => {
     if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) return
     onPageChange?.(nextPage)
   }
-
+ 
   return (
     <nav
       className={`flex flex-wrap items-center justify-center gap-2 ${className}`}
@@ -84,7 +84,7 @@ export default function Pagination({
       >
         ‹
       </PaginationButton>
-
+ 
       {items.map((item, index) =>
         item === 'ellipsis' ? (
           <PaginationButton
@@ -105,7 +105,7 @@ export default function Pagination({
           </PaginationButton>
         ),
       )}
-
+ 
       <PaginationButton
         ariaLabel="Next page"
         disabled={currentPage === totalPages}

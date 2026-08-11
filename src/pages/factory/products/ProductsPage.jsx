@@ -17,7 +17,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -26,7 +26,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -35,7 +35,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -44,7 +44,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -53,7 +53,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -62,7 +62,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -71,7 +71,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -80,7 +80,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -89,7 +89,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -98,7 +98,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -107,7 +107,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -116,7 +116,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -125,7 +125,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -134,7 +134,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -143,7 +143,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -152,7 +152,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -161,7 +161,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -170,7 +170,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -179,7 +179,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -188,7 +188,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -197,7 +197,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -206,7 +206,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -215,7 +215,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -224,7 +224,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -233,7 +233,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -242,7 +242,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -251,7 +251,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -260,7 +260,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'active',
   },
@@ -269,7 +269,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement Standard',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'pending',
   },
@@ -278,7 +278,7 @@ const DUMMY_PRODUCTS = [
     title: 'Portland Cement',
     description:
       'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
+    priceText: 'Price: €115 per bag (50 kg)',
     image: PRODUCT_IMAGE,
     status: 'rejected',
   },
@@ -298,7 +298,7 @@ const CSV_HEADERS = [
 ]
 
 function extractPrice(priceText = '') {
-  return priceText.match(/\$[\d,.]+/)?.[0] || ''
+  return priceText.match(/[€$][\d,.]+/)?.[0] || ''
 }
 
 function escapeCsv(value) {

@@ -1061,7 +1061,7 @@ export const COMPONENT_DOCS = [
         example: `<StatusCard
   variant="action"
   label="Available Balance"
-  value="$67,400.00"
+  value="€67,400.00"
   icon={FiDollarSign}
   actionLabel="Withdraw Funds"
   onAction={withdraw}
@@ -1074,7 +1074,7 @@ export const COMPONENT_DOCS = [
         example: `<StatusCard
   variant="filled"
   label="Total Earnings"
-  value="$580K"
+  value="€580K"
   description="All time"
   icon={FiDollarSign}
   tone="brand"
@@ -1097,7 +1097,7 @@ export const COMPONENT_DOCS = [
         example: `<StatusCard
   variant="status"
   label="Payment Overdue"
-  value="$12,400"
+  value="€12,400"
   description="3 orders"
   tone="danger"
 />`,

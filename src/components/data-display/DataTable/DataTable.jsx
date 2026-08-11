@@ -35,6 +35,7 @@ export default function DataTable({
 
   showActions = false,
   actions = [],
+  getActions,
   actionType = 'menu',
   actionHeader = 'Action',
 
@@ -47,10 +48,13 @@ export default function DataTable({
   bgClassName = 'bg-white',
 
   className = '',
+  /** Minimum table width before horizontal scroll (inventory-wide tables). */
+  tableMinWidth = '900px',
 }) {
+  const showActionColumn =
+    showActions && (typeof getActions === 'function' || actions.length > 0)
   const showToolbar = showTabs || showSearch || showFilters
-  const colSpan =
-    columns.length + (showActions && actions.length > 0 ? 1 : 0)
+  const colSpan = columns.length + (showActionColumn ? 1 : 0)
 
   const wrapperClassName = [
     'w-full overflow-visible',
@@ -85,7 +89,9 @@ export default function DataTable({
                   />
                 </label>
                 {showFilters && filters.length > 0 ? (
-                  <FiltersBar filterLabel={filterLabel} filters={filters} />
+                  <div className="order-last self-end sm:order-none sm:self-auto">
+                    <FiltersBar filterLabel={filterLabel} filters={filters} />
+                  </div>
                 ) : null}
               </div>
             </>
@@ -106,7 +112,10 @@ export default function DataTable({
 
       {showTable ? (
         <div className="w-full overflow-x-auto overflow-y-visible">
-          <table className="w-full min-w-[900px] border-collapse text-left text-sm">
+          <table
+            className="w-full border-collapse text-left text-sm"
+            style={{ minWidth: tableMinWidth }}
+          >
             <thead>
               <tr className="border-b border-gray-200 bg-[#F6FBFF]">
                 {columns.map((column) => (
@@ -117,7 +126,7 @@ export default function DataTable({
                     {column.header}
                   </th>
                 ))}
-                {showActions && actions.length > 0 ? (
+                {showActionColumn ? (
                   <th className="px-3 py-3 font-semibold text-[var(--primary-text)] whitespace-nowrap sm:px-4">
                     {actionHeader}
                   </th>
@@ -139,7 +148,7 @@ export default function DataTable({
                         <Skeleton className="h-4 w-full max-w-[9rem]" />
                       </td>
                     ))}
-                    {showActions && actions.length > 0 ? (
+                    {showActionColumn ? (
                       <td className="px-3 py-3.5 sm:px-4">
                         <Skeleton className="mx-auto size-5 rounded-full" />
                       </td>
@@ -163,10 +172,13 @@ export default function DataTable({
                   >
                     {columns.map((column) => {
                       const value = row?.[column.key]
+                      const wrapClass = column.wrap
+                        ? 'whitespace-normal break-words'
+                        : 'whitespace-nowrap'
                       return (
                         <td
                           key={column.key}
-                          className={`px-3 py-3.5 text-[var(--primary-text)] whitespace-nowrap sm:px-4 ${column.className || ''}`}
+                          className={`px-3 py-3.5 text-[var(--primary-text)] sm:px-4 ${wrapClass} ${column.className || ''}`}
                         >
                           {typeof column.render === 'function'
                             ? column.render(value, row, rowIndex)
@@ -174,11 +186,15 @@ export default function DataTable({
                         </td>
                       )
                     })}
-                    {showActions && actions.length > 0 ? (
+                    {showActionColumn ? (
                       <td className="px-3 py-3.5 sm:px-4">
                         <RowActions
                           row={row}
-                          actions={actions}
+                          actions={
+                            typeof getActions === 'function'
+                              ? getActions(row)
+                              : actions
+                          }
                           actionType={actionType}
                         />
                       </td>
@@ -378,28 +394,60 @@ function ActionMenu({ row, actions }) {
               id={menuId}
               role="menu"
               style={{ top: coords.top, left: coords.left }}
-              className="fixed z-[9999] min-w-[148px] overflow-hidden rounded-md border border-gray-200 bg-white py-1 shadow-lg"
+              className="fixed z-[9999] min-w-[160px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg"
             >
-              {actions.map((action) => (
-                <button
-                  key={action.id || action.label}
-                  type="button"
-                  role="menuitem"
-                  disabled={action.disabled?.(row)}
-                  onClick={() => {
-                    action.onClick?.(row)
-                    setOpen(false)
-                  }}
-                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-                    action.variant === 'danger'
-                      ? 'text-red-600 hover:bg-red-50'
-                      : 'text-[var(--primary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {action.icon}
-                  {action.label}
-                </button>
-              ))}
+              {actions.map((action) => {
+                if (action.variant === 'header') {
+                  return (
+                    <button
+                      key={action.id || action.label}
+                      type="button"
+                      role="menuitem"
+                      disabled={action.disabled?.(row)}
+                      onClick={() => {
+                        action.onClick?.(row)
+                        setOpen(false)
+                      }}
+                      className="flex w-full items-center bg-[var(--active)] px-4 py-3 text-left text-sm font-medium text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {action.icon}
+                      {action.label}
+                    </button>
+                  )
+                }
+
+                if (action.variant === 'section') {
+                  return (
+                    <p
+                      key={action.id || action.label}
+                      className="px-4 py-2.5 text-sm font-semibold text-[var(--primary-text)]"
+                    >
+                      {action.label}
+                    </p>
+                  )
+                }
+
+                return (
+                  <button
+                    key={action.id || action.label}
+                    type="button"
+                    role="menuitem"
+                    disabled={action.disabled?.(row)}
+                    onClick={() => {
+                      action.onClick?.(row)
+                      setOpen(false)
+                    }}
+                    className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                      action.variant === 'danger'
+                        ? 'text-red-600 hover:bg-red-50'
+                        : 'text-[var(--primary-text)] hover:bg-gray-50'
+                    }`}
+                  >
+                    {action.icon}
+                    {action.label}
+                  </button>
+                )
+              })}
             </div>,
             document.body,
           )
@@ -440,13 +488,13 @@ function PaginationBar({ pagination }) {
   }
 
   return (
-    <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm font-medium text-[var(--active)]">
+    <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <p className="min-w-0 text-sm font-medium text-[var(--active)]">
         {pagination.summaryLabel
           || `Showing ${from} to ${to} of ${total} results`}
       </p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={goPrevious}

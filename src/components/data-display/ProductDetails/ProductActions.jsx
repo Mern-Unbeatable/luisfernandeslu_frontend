@@ -14,7 +14,7 @@ const ICON_MAP = {
 function ActionButton({ action, onClick, className = '' }) {
   const Icon = action.icon ? ICON_MAP[action.icon] : null
   const base =
-    'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5'
+    'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5'
 
   const variants = {
     primary: 'bg-[var(--active)] text-white hover:brightness-95',

@@ -22,19 +22,19 @@ export default function CartTotalsCard({
         <div className="flex justify-between gap-4">
           <dt className="text-[var(--secondary-text)]">{t('checkoutPage.subtotal')}</dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${subtotal.toFixed(2)}
+            €{subtotal.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
           <dt className="text-[var(--secondary-text)]">{t('checkoutPage.shipping')}</dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${shipping.toFixed(2)}
+            €{shipping.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
           <dt className="text-[var(--secondary-text)]">{t('checkoutPage.vat')}</dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${vat.toFixed(2)}
+            €{vat.toFixed(2)}
           </dd>
         </div>
       </dl>
@@ -60,7 +60,7 @@ export default function CartTotalsCard({
           {t('cartPage.totalLabel')}
         </span>
         <span className="text-lg font-bold text-[var(--primary-text)]">
-          ${total.toFixed(2)} {currency}
+          €{total.toFixed(2)} {currency}
         </span>
       </div>
 
