@@ -7,7 +7,7 @@ import { resolveAuctionView } from './resolveAuctionView'
 function formatMoney(amount, currency = 'EUR') {
   if (amount == null || Number.isNaN(Number(amount))) return '—'
   try {
-    return new Intl.NumberFormat('de-DE', {
+    return new Intl.NumberFormat('en-IE', {
       style: 'currency',
       currency,
       maximumFractionDigits: 0,
