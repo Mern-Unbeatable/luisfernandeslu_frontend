@@ -1,7 +1,7 @@
 export const ADMIN_SETTINGS_DEFAULTS = {
   shipping: {
     perKmCharge: '100',
-    perKmChargeDisplay: '$100 / KM',
+    perKmChargeDisplay: '€100 / KM',
   },
   shippingCalculator: {
     distanceKm: '25',
@@ -29,7 +29,7 @@ export function parseMoneyInput(value) {
 }
 
 export function formatUsd(amount) {
-  return `$${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString('en-US', {
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

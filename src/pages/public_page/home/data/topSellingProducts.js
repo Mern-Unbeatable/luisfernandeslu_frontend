@@ -28,7 +28,7 @@ const CATALOG = [
     title: 'Portland Cement Quick Set',
     description:
       'Fast setting cement for rapid construction on busy commercial sites.',
-    priceText: 'Price: $130 per bag (50 kg)',
+    priceText: 'Price: €130 per bag (50 kg)',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -37,7 +37,7 @@ const CATALOG = [
     title: 'Reinforcing Steel Bar (Rebar)',
     description:
       'High strength steel bars for reinforced concrete structures and foundations.',
-    priceText: 'Price: $90 per ton',
+    priceText: 'Price: €90 per ton',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -46,7 +46,7 @@ const CATALOG = [
     title: 'Concrete Blocks',
     description:
       'Durable concrete blocks for walls and foundations on residential sites.',
-    priceText: 'Price: $2 per piece',
+    priceText: 'Price: €2 per piece',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -55,7 +55,7 @@ const CATALOG = [
     title: 'Clay Bricks',
     description:
       'Traditional clay bricks for masonry on homes and commercial sites.',
-    priceText: 'Price: $0.50 per piece',
+    priceText: 'Price: €0.50 per piece',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -64,7 +64,7 @@ const CATALOG = [
     title: 'Granite Stone',
     description:
       'Premium granite for flooring and countertops in modern interior spaces.',
-    priceText: 'Price: $45 per sq ft',
+    priceText: 'Price: €45 per sq ft',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -73,7 +73,7 @@ const CATALOG = [
     title: 'Glass Panels',
     description:
       'Tempered glass for modern facades on offices and retail stores.',
-    priceText: 'Price: $120 per panel',
+    priceText: 'Price: €120 per panel',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -82,7 +82,7 @@ const CATALOG = [
     title: 'PVC Pipes',
     description:
       'Lightweight PVC pipes for plumbing in residential and commercial builds.',
-    priceText: 'Price: $15 per meter',
+    priceText: 'Price: €15 per meter',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -91,7 +91,7 @@ const CATALOG = [
     title: 'CPVC Pipes',
     description:
       'Hot water CPVC pipes for kitchen and bathroom areas nationwide.',
-    priceText: 'Price: $22 per meter',
+    priceText: 'Price: €22 per meter',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -100,7 +100,7 @@ const CATALOG = [
     title: 'Electrical Wires',
     description:
       'Safe electrical wiring for homes offices and industrial building projects.',
-    priceText: 'Price: $100 per roll',
+    priceText: 'Price: €100 per roll',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -109,7 +109,7 @@ const CATALOG = [
     title: 'Switches & Sockets',
     description:
       'Reliable switches and sockets for homes offices and workshop spaces.',
-    priceText: 'Price: $8 per unit',
+    priceText: 'Price: €8 per unit',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -118,7 +118,7 @@ const CATALOG = [
     title: 'Wall Paint',
     description:
       'Interior wall paint for homes offices and retail spaces nationwide.',
-    priceText: 'Price: $35 per gallon',
+    priceText: 'Price: €35 per gallon',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -127,7 +127,7 @@ const CATALOG = [
     title: 'Wall Primer',
     description:
       'Primer for interior and exterior wall surfaces on construction projects.',
-    priceText: 'Price: $28 per gallon',
+    priceText: 'Price: €28 per gallon',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -136,7 +136,7 @@ const CATALOG = [
     title: 'Waterproof Membrane',
     description:
       'Waterproof membrane for roofs basements and foundation walls on sites.',
-    priceText: 'Price: $55 per roll',
+    priceText: 'Price: €55 per roll',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -145,7 +145,7 @@ const CATALOG = [
     title: 'Insulation Material',
     description:
       'Thermal insulation for energy efficiency in walls roofs and floors.',
-    priceText: 'Price: $40 per sheet',
+    priceText: 'Price: €40 per sheet',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -154,7 +154,7 @@ const CATALOG = [
     title: 'Bitumen',
     description:
       'Waterproofing bitumen for roofing projects on commercial and residential buildings.',
-    priceText: 'Price: $65 per drum',
+    priceText: 'Price: €65 per drum',
     bulkOptionLabel: 'Bulk option Open',
   },
   {
@@ -163,7 +163,7 @@ const CATALOG = [
     title: 'Roofing Sheets',
     description:
       'Corrugated sheets for durable roofs on barns and industrial buildings.',
-    priceText: 'Price: $18 per sheet',
+    priceText: 'Price: €18 per sheet',
     bulkOptionLabel: 'Bulk option Open',
   },
 ]

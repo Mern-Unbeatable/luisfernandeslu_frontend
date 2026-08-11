@@ -92,7 +92,7 @@ export default function EarningAnalytics({
         padding: 10,
         displayColors: false,
         callbacks: {
-          label: (context) => `$${Number(context.raw).toLocaleString()}`,
+          label: (context) => `€${Number(context.raw).toLocaleString()}`,
         },
       },
     },
@@ -116,7 +116,7 @@ export default function EarningAnalytics({
           font: { size: 11 },
           callback: (value) => {
             const rounded = Math.round(value)
-            return rounded === 0 ? '$0' : `$${rounded.toLocaleString()}`
+            return rounded === 0 ? '€0' : `€${rounded.toLocaleString()}`
           },
         },
         grid: {

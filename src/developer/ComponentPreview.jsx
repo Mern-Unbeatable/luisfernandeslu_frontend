@@ -199,10 +199,10 @@ const BASE_CARD_PRODUCT = {
   title: 'Portland Cement',
   description:
     'High-strength building cement suitable for construction and masonry work.',
-  price: '$115',
-  priceText: 'Price: $115 per bag (50 kg)',
-  companyPrice: '$98',
-  companyPriceText: 'Company: $98 per bag (50 kg)',
+  price: '€115',
+  priceText: 'Price: €115 per bag (50 kg)',
+  companyPrice: '€98',
+  companyPriceText: 'Company: €98 per bag (50 kg)',
   unit: 'bag (50 kg)',
 }
 
@@ -210,13 +210,13 @@ const SPONSORED_CARD_PRODUCT = {
   image: CARD_IMG,
   title: 'Industrial Steel Beams',
   description: 'High-quality steel beams for construction. Grade A certified.',
-  price: '$150',
+  price: '€150',
   unit: 'units',
   minOrder: '10 units',
   company: 'SteelWorks Inc',
   rating: 4.8,
-  companyPrice: '$135',
-  companyPriceText: 'Company: $135 /units',
+  companyPrice: '€135',
+  companyPriceText: 'Company: €135 /units',
 }
 
 const PRODUCT_CARD_VARIANTS = {
@@ -232,7 +232,7 @@ const PRODUCT_CARD_VARIANTS = {
     tag: 'sponsored',
     product: {
       ...SPONSORED_CARD_PRODUCT,
-      priceText: 'Price: $150 /units',
+      priceText: 'Price: €150 /units',
     },
   },
   'normal-customer': {
@@ -253,7 +253,7 @@ const PRODUCT_CARD_VARIANTS = {
       ...BASE_CARD_PRODUCT,
       title: 'Portland Cement Quick Set',
       description: 'Fast-setting cement for rapid construction work.',
-      priceText: 'Price: $130 per bag (50 kg)',
+      priceText: 'Price: €130 per bag (50 kg)',
       bulkOptionLabel: 'Bulk option Open',
     },
   },
@@ -269,7 +269,7 @@ const PRODUCT_CARD_VARIANTS = {
     tag: 'bulk_order',
     product: {
       ...BASE_CARD_PRODUCT,
-      priceText: 'Price: $135 per bag (50 kg)',
+      priceText: 'Price: €135 per bag (50 kg)',
     },
   },
   'supplier-pending': {
@@ -295,7 +295,7 @@ const PRODUCT_CARD_VARIANTS = {
       ...BASE_CARD_PRODUCT,
       title: 'Portland Cement Quick Set',
       description: 'Fast-setting cement for rapid construction work.',
-      priceText: 'Price: $130 per bag (50 kg)',
+      priceText: 'Price: €130 per bag (50 kg)',
       expiryDate: '5/4/2026',
     },
   },
@@ -307,7 +307,7 @@ const PRODUCT_CARD_VARIANTS = {
       ...BASE_CARD_PRODUCT,
       title: 'Portland Cement Quick Set',
       description: 'Fast-setting cement for rapid construction work.',
-      priceText: 'Price: $130 per bag (50 kg)',
+      priceText: 'Price: €130 per bag (50 kg)',
       bulkOptionLabel: 'Bulk option Open',
       promoLabel: '25% Off',
     },
@@ -319,7 +319,7 @@ const PRODUCT_CARD_VARIANTS = {
       ...BASE_CARD_PRODUCT,
       title: 'Portland Cement Quick Set',
       description: 'Fast-setting cement for rapid construction work.',
-      priceText: 'Price: $130 per bag (50 kg)',
+      priceText: 'Price: €130 per bag (50 kg)',
     },
   },
   'factory-active': {
@@ -409,8 +409,8 @@ const LISTING_CARD_DEMO_PRODUCT = {
   title: 'Portland Cement Standard',
   description: 'Reliable cement for all your everyday construction needs.',
   bulkOptionLabel: 'Bulk option Open',
-  priceText: 'Price: $115 per bag (50 kg)',
-  companyPriceText: 'Company: $98 per bag (50 kg)',
+  priceText: 'Price: €115 per bag (50 kg)',
+  companyPriceText: 'Company: €98 per bag (50 kg)',
 }
 
 const COMPANY_LISTING_DEMO_PRODUCT = {
@@ -419,7 +419,7 @@ const COMPANY_LISTING_DEMO_PRODUCT = {
   title: 'Gypsum Board',
   description: 'Lightweight panels for interior walls.',
   minOrderLabel: 'Min ord 10 pcs',
-  priceText: 'Price: $10 per sheet',
+  priceText: 'Price: €10 per sheet',
 }
 
 function ProductListingCardPreview({ variantId }) {
@@ -485,7 +485,7 @@ const DT_ROWS = [
     id: 1,
     poNumber: 'PO-2001',
     factoryName: 'ABC Corp',
-    total: '$4,500,000',
+    total: '€4,500,000',
     status: 'Produced',
     date: '12/01/2026',
   },
@@ -493,7 +493,7 @@ const DT_ROWS = [
     id: 2,
     poNumber: 'PO-2002',
     factoryName: 'XYZ Ltd',
-    total: '$2,100,000',
+    total: '€2,100,000',
     status: 'In Production',
     date: '18/01/2026',
   },
@@ -501,7 +501,7 @@ const DT_ROWS = [
     id: 3,
     poNumber: 'PO-2003',
     factoryName: 'ABC Corp',
-    total: '$980,000',
+    total: '€980,000',
     status: 'Ready',
     date: '22/01/2026',
   },

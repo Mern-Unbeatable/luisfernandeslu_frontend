@@ -103,7 +103,7 @@ function buildDetailsAuction(auction) {
         name: auction.assignedTransporter || 'Swift Transport Co.',
         bidAmount:
           auction.bidPrice != null
-            ? `$${Number(auction.bidPrice).toLocaleString()}`
+            ? `€${Number(auction.bidPrice).toLocaleString()}`
             : DEMO_AUCTION_DETAILS_ASSIGNED.transporter.bidAmount,
       },
     }

@@ -88,7 +88,7 @@ export default function AffiliateRevenueChartSection() {
           callbacks: {
             label(context) {
               const value = context.parsed.y ?? 0
-              return `${context.dataset.label}: $${Number(value).toLocaleString('en-US')}`
+              return `${context.dataset.label}: €${Number(value).toLocaleString('en-US')}`
             },
           },
         },
@@ -105,7 +105,7 @@ export default function AffiliateRevenueChartSection() {
             color: '#6B7280',
             font: { size: 11 },
             callback: (value) =>
-              `$${Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              `€${Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
           },
           grid: { color: 'rgba(0,0,0,0.06)' },
         },

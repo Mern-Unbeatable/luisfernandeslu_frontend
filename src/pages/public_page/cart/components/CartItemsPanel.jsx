@@ -64,11 +64,11 @@ export default function CartItemsPanel({
                 <div className="text-sm md:text-center">
                   {item.compareAtPrice ? (
                     <span className="mr-1.5 text-[var(--secondary-text)] line-through">
-                      ${item.compareAtPrice}
+                      €{item.compareAtPrice}
                     </span>
                   ) : null}
                   <span className="font-semibold text-[var(--primary-text)]">
-                    ${item.unitPrice}
+                    €{item.unitPrice}
                   </span>
                 </div>
 
@@ -82,7 +82,7 @@ export default function CartItemsPanel({
                 </div>
 
                 <p className="text-sm font-semibold text-[var(--primary-text)] md:text-right">
-                  ${lineSubtotal(item)}
+                  €{lineSubtotal(item)}
                 </p>
 
                 <button

@@ -73,7 +73,7 @@ export default function RevenueSection() {
         displayColors: false,
         callbacks: {
           title: (context) => `${context[0].label}, 2026`,
-          label: (context) => `$${context.raw.toFixed(2)}`,
+          label: (context) => `€${context.raw.toFixed(2)}`,
         },
       },
     },
@@ -101,7 +101,7 @@ export default function RevenueSection() {
           font: {
             size: 11,
           },
-          callback: (value) => `$${value}`,
+          callback: (value) => `€${value}`,
         },
         grid: {
           color: '#f3f4f6',

@@ -70,21 +70,21 @@ export default function OverviewDashboardPage() {
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.pendingCommissions')}
-          value="$1010.00"
+          value="€1010.00"
           icon={FiDollarSign}
           iconTone="brand"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.paidCommission')}
-          value="$355.00"
+          value="€355.00"
           icon={FiCreditCard}
           iconTone="gray"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.totalEarnings')}
-          value="$1365.00"
+          value="€1365.00"
           icon={FiTrendingUp}
           iconTone="purple"
         />

@@ -44,13 +44,13 @@ function formToOffer(form) {
   const firstNum = Number(String(first || '').replace(/[^0-9.]/g, ''))
   const remaining =
     totalNum && firstNum
-      ? `$${(totalNum - firstNum).toLocaleString()}`
+      ? `€${(totalNum - firstNum).toLocaleString()}`
       : ''
 
   const months = Number(form.installmentMonths) || 0
   const monthly =
     remaining && months > 0
-      ? `$${(Math.round(((totalNum - firstNum) / months) * 100) / 100).toLocaleString()}`
+      ? `€${(Math.round(((totalNum - firstNum) / months) * 100) / 100).toLocaleString()}`
       : ''
 
   return {

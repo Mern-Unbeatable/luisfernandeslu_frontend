@@ -12,7 +12,7 @@ export default function InsurancePage() {
       title: "Civil Liability Insurance",
       provider: "SafeGuard Insurance Co.",
       policyNumber: "POL-CL-849372",
-      coverageAmount: "$1,000,000",
+      coverageAmount: "€1,000,000",
       expiryDate: "2026-01-15",
     },
     {
@@ -20,7 +20,7 @@ export default function InsurancePage() {
       title: "Cargo Liability Insurance",
       provider: "FreightSecure Insurance",
       policyNumber: "POL-CG-394821",
-      coverageAmount: "$500,000",
+      coverageAmount: "€500,000",
       expiryDate: "2026-01-15",
     },
   ];

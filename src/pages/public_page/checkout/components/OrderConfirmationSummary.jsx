@@ -28,7 +28,7 @@ export default function OrderConfirmationSummary() {
                 {item.title}
               </p>
               <p className="mt-1 text-sm font-medium text-[var(--active)]">
-                {item.quantity} x ${item.unitPrice}
+                {item.quantity} x €{item.unitPrice}
               </p>
             </div>
           </li>
@@ -41,7 +41,7 @@ export default function OrderConfirmationSummary() {
             {t('checkoutPage.subtotal')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${subtotal.toFixed(2)}
+            €{subtotal.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
@@ -49,7 +49,7 @@ export default function OrderConfirmationSummary() {
             {t('checkoutPage.shipping')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${shipping.toFixed(2)}
+            €{shipping.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
@@ -57,13 +57,13 @@ export default function OrderConfirmationSummary() {
             {t('checkoutPage.vat')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${vat.toFixed(2)}
+            €{vat.toFixed(2)}
           </dd>
         </div>
       </dl>
 
       <p className="mt-5 text-xl font-bold text-[var(--primary-text)]">
-        ${total.toFixed(2)} {currency}
+        €{total.toFixed(2)} {currency}
       </p>
 
       <p className="mt-4 text-center text-sm font-medium text-[var(--active)]">
