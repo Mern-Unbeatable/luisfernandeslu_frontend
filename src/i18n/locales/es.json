@@ -1464,7 +1464,7 @@
       "ibanNumber": "Número IBAN",
       "ibanPlaceholder": "PT50 0000 0000 0000 0000 0000 0",
       "ibanPhoneEupago": "Número de teléfono ( número Eupago )",
-      "ibanPhoneEpagar": "Número de teléfono ( número E-pagar )",
+      "ibanPhoneEpagar": "Número de teléfono ( número E-pago )",
       "ibanPhoneBackup": "Número de teléfono ( número de respaldo )",
       "ibanPhonePlaceholder": "8+ caracteres",
       "ibanPhonePlaceholderLong": "11+ caracteres",
