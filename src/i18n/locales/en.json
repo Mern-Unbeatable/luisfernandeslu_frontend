@@ -1180,12 +1180,12 @@
         "promoCodePlaceholder": "SAVE10",
         "discountType": "Discount Type",
         "discountTypePercentage": "Percentage (%)",
-        "discountTypeFixed": "Fixed Amount ($)",
+        "discountTypeFixed": "Fixed Amount (€)",
         "discountValue": "Discount Value",
         "discountValuePercentagePlaceholder": "10 %",
-        "discountValueFixedPlaceholder": "$ 10",
+        "discountValueFixedPlaceholder": "€ 10",
         "minOrderAmount": "Minimum Order Amount",
-        "minOrderPlaceholder": "$ 50",
+        "minOrderPlaceholder": "€ 50",
         "expiryDate": "Expiry Date",
         "usageLimit": "Usage Limit",
         "usageLimitPlaceholder": "100",
@@ -2538,7 +2538,7 @@
       "sku": "SKU",
       "skuPlaceholder": "Enter SKU",
       "price": "Price",
-      "pricePlaceholder": "$0.00",
+      "pricePlaceholder": "€0.00",
       "shippingDetails": "Shipping & Unloading Details",
       "unloadingNeeds": "Types of Unloading Needs",
       "unloadingPlaceholder": "e.g., Forklift, Manual, Crane",
@@ -2670,7 +2670,7 @@
     "details": {
       "unloadingType": "Tipper truck",
       "accessCondition": "Manual Unloading",
-      "paidNote": "Pay $10,040/month for 10 months",
+      "paidNote": "Pay €10,040/month for 10 months",
       "duration": "10 months"
     }
   },

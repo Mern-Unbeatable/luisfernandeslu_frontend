@@ -1178,12 +1178,12 @@
         "promoCodePlaceholder": "SAVE10",
         "discountType": "Tipo de descuento",
         "discountTypePercentage": "Porcentaje (%)",
-        "discountTypeFixed": "Importe fijo ($)",
+        "discountTypeFixed": "Importe fijo (€)",
         "discountValue": "Valor del descuento",
         "discountValuePercentagePlaceholder": "10 %",
-        "discountValueFixedPlaceholder": "$ 10",
+        "discountValueFixedPlaceholder": "€ 10",
         "minOrderAmount": "Importe mínimo del pedido",
-        "minOrderPlaceholder": "$ 50",
+        "minOrderPlaceholder": "€ 50",
         "expiryDate": "Fecha de vencimiento",
         "usageLimit": "Límite de uso",
         "usageLimitPlaceholder": "100",
@@ -2467,7 +2467,7 @@
       "sku": "SKU",
       "skuPlaceholder": "Introduce el SKU",
       "price": "Precio",
-      "pricePlaceholder": "$0.00",
+      "pricePlaceholder": "€0.00",
       "shippingDetails": "Detalles de envío y descarga",
       "unloadingNeeds": "Tipos de necesidades de descarga",
       "unloadingPlaceholder": "ej.: Montacargas, Manual, Grúa",
@@ -2599,7 +2599,7 @@
     "details": {
       "unloadingType": "Camión volquete",
       "accessCondition": "Descarga manual",
-      "paidNote": "Paga $10,040/mes durante 10 meses",
+      "paidNote": "Paga €10,040/mes durante 10 meses",
       "duration": "10 meses"
     }
   },

@@ -7,7 +7,7 @@ export const ORDER_CONFIRMATION_TOTALS = {
   subtotal: 320,
   shipping: 100,
   vat: 4,
-  currency: 'USD',
+  currency: 'EUR',
   total: 357.99,
 }
 

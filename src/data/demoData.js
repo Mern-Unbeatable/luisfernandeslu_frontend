@@ -2781,7 +2781,7 @@ function parseFactoryListPrice(priceText) {
   }
 
   const cleaned = priceText.replace(/^Price:\s*/i, '').trim();
-  const match = cleaned.match(/^\$?([\d.]+)\s+per\s+(.+)$/i);
+  const match = cleaned.match(/^[€$]?([\d.]+)\s+per\s+(.+)$/i);
   if (match) {
     return { price: `€${match[1]}`, unit: match[2] };
   }

@@ -39,7 +39,7 @@ export default function BulkOptionSection({
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>
-                <Field label="Price ($)">
+                <Field label="Price (€)">
                   <TextInput
                     value={tier.price}
                     onChange={(value) => updateTier(tier.id, 'price', value)}

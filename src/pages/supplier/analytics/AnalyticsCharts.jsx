@@ -131,7 +131,7 @@ export function RevenueExpensesProfitChart() {
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
           },
         },
       },
@@ -300,7 +300,7 @@ export function SalesByCustomerTypeChart() {
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
           },
         },
       },

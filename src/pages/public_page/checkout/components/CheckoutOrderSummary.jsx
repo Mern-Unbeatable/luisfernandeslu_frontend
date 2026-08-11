@@ -32,7 +32,7 @@ export default function CheckoutOrderSummary({ backTo = '/products' }) {
                 {item.title}
               </p>
               <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                {item.quantity} x ${item.unitPrice}
+                {item.quantity} x €{item.unitPrice}
               </p>
             </div>
           </li>
@@ -45,7 +45,7 @@ export default function CheckoutOrderSummary({ backTo = '/products' }) {
             {t('checkoutPage.subtotal')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${subtotal.toFixed(2)}
+            €{subtotal.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
@@ -53,7 +53,7 @@ export default function CheckoutOrderSummary({ backTo = '/products' }) {
             {t('checkoutPage.shipping')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${shipping.toFixed(2)}
+            €{shipping.toFixed(2)}
           </dd>
         </div>
         <div className="flex justify-between gap-4">
@@ -61,7 +61,7 @@ export default function CheckoutOrderSummary({ backTo = '/products' }) {
             {t('checkoutPage.vat')}
           </dt>
           <dd className="font-medium text-[var(--primary-text)]">
-            ${vat.toFixed(2)}
+            €{vat.toFixed(2)}
           </dd>
         </div>
       </dl>
@@ -83,7 +83,7 @@ export default function CheckoutOrderSummary({ backTo = '/products' }) {
       </div>
 
       <p className="mt-5 text-lg font-bold text-[var(--primary-text)]">
-        ${total.toFixed(2)} {currency}
+        €{total.toFixed(2)} {currency}
       </p>
 
       <div className="mt-5 space-y-3">

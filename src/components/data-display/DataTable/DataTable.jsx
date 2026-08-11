@@ -89,7 +89,9 @@ export default function DataTable({
                   />
                 </label>
                 {showFilters && filters.length > 0 ? (
-                  <FiltersBar filterLabel={filterLabel} filters={filters} />
+                  <div className="order-last self-end sm:order-none sm:self-auto">
+                    <FiltersBar filterLabel={filterLabel} filters={filters} />
+                  </div>
                 ) : null}
               </div>
             </>

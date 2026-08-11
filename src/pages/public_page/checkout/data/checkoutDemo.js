@@ -21,7 +21,7 @@ export const CHECKOUT_TOTALS = {
   subtotal: 320,
   shipping: 20,
   vat: 4,
-  currency: 'USD',
+  currency: 'EUR',
   total: 357.99,
 }
 

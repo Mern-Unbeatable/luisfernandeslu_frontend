@@ -4,10 +4,10 @@ import { FiClock, FiCalendar, FiTruck, FiDollarSign } from 'react-icons/fi'
 import AuctionDetailRow, { AuctionIcons } from './AuctionDetailRow'
 import { resolveAuctionView } from './resolveAuctionView'
 
-function formatMoney(amount, currency = 'USD') {
+function formatMoney(amount, currency = 'EUR') {
   if (amount == null || Number.isNaN(Number(amount))) return '—'
   try {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency,
       maximumFractionDigits: 0,
