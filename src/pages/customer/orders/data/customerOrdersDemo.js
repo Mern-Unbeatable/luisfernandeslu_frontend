@@ -8,7 +8,7 @@ export const CUSTOMER_ORDERS_DEMO = [
     title: 'High-Performance Portland Cement',
     description:
       'Premium-grade Portland cement designed for high-strength concrete applications, foundations, and structural work.',
-    priceDisplay: '$1,300',
+    priceDisplay: '€1,300',
     detailRef: 'CP-992841',
   },
   {
@@ -19,7 +19,7 @@ export const CUSTOMER_ORDERS_DEMO = [
     title: 'Premium Clay Red Bricks',
     description:
       'High-quality clay bricks with excellent thermal insulation and durability for residential and commercial masonry.',
-    priceDisplay: '$2,500',
+    priceDisplay: '€2,500',
     detailRef: 'CP-992841',
   },
   {
@@ -30,7 +30,7 @@ export const CUSTOMER_ORDERS_DEMO = [
     title: 'Industrial Grade I-Beam Steel',
     description:
       'Heavy-duty I-beam steel sections for industrial construction, warehouses, and large-span structural frameworks.',
-    priceDisplay: '$5,450',
+    priceDisplay: '€5,450',
   },
   {
     id: 'ORD-CP2026-004',
@@ -40,7 +40,7 @@ export const CUSTOMER_ORDERS_DEMO = [
     title: 'Industrial LED Lighting System',
     description:
       'Energy-efficient LED fixtures for warehouses, factories, and commercial sites with long service life.',
-    priceDisplay: '$850',
+    priceDisplay: '€850',
     detailRef: 'CP-992841',
   },
 ]

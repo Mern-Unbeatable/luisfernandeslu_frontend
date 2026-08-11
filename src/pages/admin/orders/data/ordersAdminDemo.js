@@ -14,9 +14,9 @@ const ADMIN_INSTALLMENT_PRODUCTS = [
     material: 'Cement',
     weightSize: '50 kg bag, OPC 53 grade',
     qty: '180 bags',
-    unit: '$50.75',
+    unit: '€50.75',
     warehouse: '3464 Royal Ln. Mesa, New Jersey 45463',
-    total: '$9,113.00',
+    total: '€9,113.00',
   },
 ]
 
@@ -30,7 +30,7 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '1st Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
   {
     id: 'aib2',
@@ -41,7 +41,7 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '2nd Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
   {
     id: 'aib3',
@@ -52,7 +52,7 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '3rd Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
   {
     id: 'aib4',
@@ -63,7 +63,7 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '4th Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
   {
     id: 'aib5',
@@ -74,7 +74,7 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '5th Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
   {
     id: 'aib6',
@@ -85,15 +85,15 @@ const ADMIN_INSTALLMENT_BREAKDOWN = [
     qty: '30 bags',
     warehouse: '4140 Parker Rd. Allentown, New Mexico 31134',
     installmentNumber: '6th Installment',
-    amount: '$9,113.00',
+    amount: '€9,113.00',
   },
 ]
 
 const ADMIN_INSTALLMENT_PAYMENT = {
-  totalPrice: '$125,500',
-  paidAmount: '$25,100',
-  remainingBalance: '$100,400',
-  paidNote: 'Pay $10,040/month for 10 months',
+  totalPrice: '€125,500',
+  paidAmount: '€25,100',
+  remainingBalance: '€100,400',
+  paidNote: 'Pay €10,040/month for 10 months',
   duration: '10 months',
 }
 
@@ -263,7 +263,7 @@ export const ADMIN_ORDERS = [
 export function formatOrderMoney(value) {
   const n = Number(value)
   if (Number.isNaN(n)) return String(value)
-  return `$${n.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+  return `€${n.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
 }
 
 export function filterOrdersByTab(rows, tab) {

@@ -29,7 +29,7 @@ const COMMISSION_COLOR = '#F59E0B'
 const MARKETING_COLOR = '#10B981'
 
 function formatTooltipAmount(value) {
-  return `$${Number(value).toLocaleString('en-US', {
+  return `€${Number(value).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`

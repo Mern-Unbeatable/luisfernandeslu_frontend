@@ -17,7 +17,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0122',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -26,7 +26,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0120',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -35,7 +35,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0100',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -44,7 +44,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0118',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -53,7 +53,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0144',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -62,7 +62,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0166',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -71,7 +71,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0188',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -80,7 +80,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0199',
-    amount: '$980.00',
+    amount: '€980.00',
     status: 'Approved',
   },
   {
@@ -89,7 +89,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0133',
-    amount: '$2,100.00',
+    amount: '€2,100.00',
     status: 'Pending',
   },
   {
@@ -98,7 +98,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0155',
-    amount: '$750.00',
+    amount: '€750.00',
     status: 'Approved',
   },
   {
@@ -107,7 +107,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Bank Transfer',
     accountNumber: '458721369845',
-    amount: '$400.00',
+    amount: '€400.00',
     status: 'Approved',
   },
   {
@@ -116,7 +116,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0177',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
   {
@@ -125,7 +125,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0201',
-    amount: '$1,500.00',
+    amount: '€1,500.00',
     status: 'Pending',
   },
   {
@@ -134,7 +134,7 @@ const INITIAL_HISTORY = [
     type: 'Withdrawal',
     accountType: 'Stripe',
     accountNumber: '(702) 555-0212',
-    amount: '$1,250.00',
+    amount: '€1,250.00',
     status: 'Approved',
   },
 ]
@@ -142,7 +142,7 @@ const INITIAL_HISTORY = [
 const PAGE_SIZE = 7
 
 const EMPTY_WITHDRAW = {
-  amount: '$ 400.00',
+  amount: '€ 400.00',
   businessName: 'Marlin Transport & Logistics',
   routingNumber: '021000021',
   accountNumber: '458721369845',
@@ -406,7 +406,7 @@ export default function CommissionsPage() {
       type: 'Withdrawal',
       accountType: 'Bank Transfer',
       accountNumber: form.accountNumber || '—',
-      amount: form.amount || '$0.00',
+      amount: form.amount || '€0.00',
       status: 'Pending',
     }
     setHistory((prev) => [next, ...prev])
@@ -428,7 +428,7 @@ export default function CommissionsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value="$84250.00"
+          value="€84250.00"
           description={t('affiliateCommissions.cards.thisMonth')}
           icon={FiArrowDownLeft}
           iconTone="brand"
@@ -436,7 +436,7 @@ export default function CommissionsPage() {
         <StatusCard
           variant="action"
           label={t('affiliateCommissions.cards.availableBalance')}
-          value="$67,400.00"
+          value="€67,400.00"
           icon={FiDollarSign}
           iconTone="brand"
           actionLabel={t('affiliateCommissions.cards.withdrawFunds')}
@@ -444,13 +444,13 @@ export default function CommissionsPage() {
         />
         <StatusCard
           label={t('affiliateCommissions.cards.pendingAmount')}
-          value="$250.00"
+          value="€250.00"
           icon={FiBarChart2}
           iconTone="brand"
         />
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value="$84250.00"
+          value="€84250.00"
           description={t('affiliateCommissions.cards.lifeTime')}
           icon={FiArrowDownLeft}
           iconTone="brand"

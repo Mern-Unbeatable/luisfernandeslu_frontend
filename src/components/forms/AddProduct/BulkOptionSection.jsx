@@ -43,7 +43,7 @@ export default function BulkOptionSection({
                   <TextInput
                     value={tier.price}
                     onChange={(value) => updateTier(tier.id, 'price', value)}
-                    placeholder="$40.00"
+                    placeholder="€40.00"
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>

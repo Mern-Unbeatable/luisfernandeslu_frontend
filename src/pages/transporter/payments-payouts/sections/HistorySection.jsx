@@ -10,7 +10,7 @@ export default function HistorySection() {
       type: 'Delivery',
       orderId: 'ORD-2847-015',
       status: 'completed',
-      amount: '+$8,500',
+      amount: '+€8,500',
       isIncome: true,
     },
     {
@@ -20,7 +20,7 @@ export default function HistorySection() {
       type: 'Delivery',
       orderId: 'ORD-2847-014',
       status: 'pending',
-      amount: '+$12,000',
+      amount: '+€12,000',
       isIncome: true,
     },
     {
@@ -30,7 +30,7 @@ export default function HistorySection() {
       type: 'Payout',
       orderId: 'PAYOUT-842',
       status: 'completed',
-      amount: '-$45,000',
+      amount: '-€45,000',
       isIncome: false,
     },
     {
@@ -40,7 +40,7 @@ export default function HistorySection() {
       type: 'Delivery',
       orderId: 'ORD-2847-013',
       status: 'completed',
-      amount: '+$6,200',
+      amount: '+€6,200',
       isIncome: true,
     },
     {
@@ -50,7 +50,7 @@ export default function HistorySection() {
       type: 'Delivery',
       orderId: 'ORD-2847-012',
       status: 'completed',
-      amount: '+$15,500',
+      amount: '+€15,500',
       isIncome: true,
     },
     {
@@ -60,7 +60,7 @@ export default function HistorySection() {
       type: 'Delivery',
       orderId: 'ORD-2847-011',
       status: 'pending',
-      amount: '+$7,800',
+      amount: '+€7,800',
       isIncome: true,
     },
   ]

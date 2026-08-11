@@ -124,7 +124,7 @@ export default function PaymentsFinancePage() {
       type: 'Withdrawal',
       accountType: 'Bank Transfer',
       accountNumber: form.accountNumber || '—',
-      amount: form.amount || '$0.00',
+      amount: form.amount || '€0.00',
       status: 'Pending',
     }
     setHistory((prev) => [next, ...prev])

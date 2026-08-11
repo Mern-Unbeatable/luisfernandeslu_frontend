@@ -199,7 +199,7 @@ export default function CreateOfferModal({ open, onClose, onSubmit }) {
                 label='Total Price'
                 icon={<FiDollarSign className='size-3.5' />}
                 value={form.totalPrice}
-                placeholder='$'
+                placeholder='€'
                 onChange={(value) => setField('totalPrice', value)}
               />
               <TextField

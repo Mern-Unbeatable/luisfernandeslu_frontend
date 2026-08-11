@@ -13,7 +13,7 @@ function formatMoney(amount, currency = 'USD') {
       maximumFractionDigits: 0,
     }).format(Number(amount))
   } catch {
-    return `$${amount}`
+    return `€${amount}`
   }
 }
 

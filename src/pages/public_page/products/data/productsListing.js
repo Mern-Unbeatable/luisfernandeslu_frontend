@@ -36,7 +36,7 @@ export const LISTING_TEMPLATES = [
     title: 'Portland Cement Quick Set',
     description:
       'Fast-setting cement for rapid construction work and tight project schedules.',
-    priceText: 'Price: $130 per bag (50 kg)',
+    priceText: 'Price: €130 per bag (50 kg)',
     priceValue: 130,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -49,7 +49,7 @@ export const LISTING_TEMPLATES = [
     title: 'Reinforcing Steel Bar (Rebar)',
     description:
       'High-strength steel bars for reinforced concrete structures and foundations.',
-    priceText: 'Price: $90 per ton',
+    priceText: 'Price: €90 per ton',
     priceValue: 90,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -62,7 +62,7 @@ export const LISTING_TEMPLATES = [
     title: 'Concrete Blocks',
     description:
       'Durable concrete blocks for walls and foundations on residential sites.',
-    priceText: 'Price: $2 per piece',
+    priceText: 'Price: €2 per piece',
     priceValue: 2,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -75,7 +75,7 @@ export const LISTING_TEMPLATES = [
     title: 'Fine Sand',
     description:
       'Clean fine sand for mortar, plaster and precision finishing work.',
-    priceText: 'Price: $45 per cubic meter',
+    priceText: 'Price: €45 per cubic meter',
     priceValue: 45,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -88,7 +88,7 @@ export const LISTING_TEMPLATES = [
     title: 'Gravel Aggregate',
     description:
       'Versatile gravel for concrete mixes, drainage and base layers.',
-    priceText: 'Price: $60 per cubic meter',
+    priceText: 'Price: €60 per cubic meter',
     priceValue: 60,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -101,7 +101,7 @@ export const LISTING_TEMPLATES = [
     title: 'Crushed Stone',
     description:
       'Crushed stone aggregate for roads, driveways and structural fill.',
-    priceText: 'Price: $75 per cubic meter',
+    priceText: 'Price: €75 per cubic meter',
     priceValue: 75,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -114,7 +114,7 @@ export const LISTING_TEMPLATES = [
     title: 'Timber Wood',
     description:
       'Quality timber for framing, formwork and general carpentry projects.',
-    priceText: 'Price: $500 per cubic meter',
+    priceText: 'Price: €500 per cubic meter',
     priceValue: 500,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -127,7 +127,7 @@ export const LISTING_TEMPLATES = [
     title: 'Gypsum Board',
     description:
       'Standard gypsum boards for interior partitions and ceiling systems.',
-    priceText: 'Price: $12 per sheet',
+    priceText: 'Price: €12 per sheet',
     priceValue: 12,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -140,7 +140,7 @@ export const LISTING_TEMPLATES = [
     title: 'Granite Stone',
     description:
       'Premium granite for flooring and countertops in modern interior spaces.',
-    priceText: 'Price: $80 per square meter',
+    priceText: 'Price: €80 per square meter',
     priceValue: 380,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -153,7 +153,7 @@ export const LISTING_TEMPLATES = [
     title: 'Glass Panels',
     description:
       'Tempered glass panels for facades, partitions and storefront glazing.',
-    priceText: 'Price: $120 per panel',
+    priceText: 'Price: €120 per panel',
     priceValue: 420,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -166,7 +166,7 @@ export const LISTING_TEMPLATES = [
     title: 'PVC Pipes',
     description:
       'Lightweight PVC pipes for plumbing in residential and commercial builds.',
-    priceText: 'Price: $15 per meter',
+    priceText: 'Price: €15 per meter',
     priceValue: 15,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -179,7 +179,7 @@ export const LISTING_TEMPLATES = [
     title: 'Electrical Wires',
     description:
       'Safe electrical wiring for homes, offices and industrial building projects.',
-    priceText: 'Price: $100 per roll',
+    priceText: 'Price: €100 per roll',
     priceValue: 100,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -192,7 +192,7 @@ export const LISTING_TEMPLATES = [
     title: 'Wall Paint',
     description:
       'Interior wall paint for homes, offices and retail spaces nationwide.',
-    priceText: 'Price: $35 per gallon',
+    priceText: 'Price: €35 per gallon',
     priceValue: 35,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -205,7 +205,7 @@ export const LISTING_TEMPLATES = [
     title: 'Roofing Sheets',
     description:
       'Corrugated sheets for durable roofs on barns and industrial buildings.',
-    priceText: 'Price: $18 per sheet',
+    priceText: 'Price: €18 per sheet',
     priceValue: 18,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -218,7 +218,7 @@ export const LISTING_TEMPLATES = [
     title: 'Waterproof Membrane',
     description:
       'Waterproof membrane for roofs, basements and foundation walls on sites.',
-    priceText: 'Price: $55 per roll',
+    priceText: 'Price: €55 per roll',
     priceValue: 320,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -231,7 +231,7 @@ export const LISTING_TEMPLATES = [
     title: 'Clay Bricks',
     description:
       'Traditional clay bricks for masonry on homes and commercial sites.',
-    priceText: 'Price: $0.50 per piece',
+    priceText: 'Price: €0.50 per piece',
     priceValue: 1,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -244,7 +244,7 @@ export const LISTING_TEMPLATES = [
     title: 'Insulation Material',
     description:
       'Thermal insulation for energy efficiency in walls, roofs and floors.',
-    priceText: 'Price: $40 per sheet',
+    priceText: 'Price: €40 per sheet',
     priceValue: 40,
     bulkOptionLabel: 'Bulk option Open',
   },
@@ -257,7 +257,7 @@ export const LISTING_TEMPLATES = [
     title: 'Wall Primer',
     description:
       'Primer for interior and exterior wall surfaces on construction projects.',
-    priceText: 'Price: $28 per gallon',
+    priceText: 'Price: €28 per gallon',
     priceValue: 28,
     bulkOptionLabel: 'Bulk option Open',
   },

@@ -16,14 +16,14 @@ function buildCard(index, price = 115) {
     image: CARD_IMG,
     title: TITLES[index % TITLES.length],
     description: CARD_DESCRIPTION,
-    price: `$${price}`,
-    priceText: `Price: $${price} per bag (50 kg)`,
+    price: `€${price}`,
+    priceText: `Price: €${price} per bag (50 kg)`,
     unit: 'bag (50 kg)',
   }
 }
 
 export const MARKETING_STATS = {
-  totalRevenue: '$2,840',
+  totalRevenue: '€2,840',
   pendingRequests: 7,
   activeBoosts: 12,
   totalFeatured: 29,
@@ -36,7 +36,7 @@ export const MARKETING_TABS = [
   { id: 'completed', labelKey: 'adminMarketingManagement.tabs.completed' },
 ]
 
-const BOOST_TIERS = ['$40', '$55', '$70', '$40']
+const BOOST_TIERS = ['€40', '€55', '€70', '€40']
 const DURATIONS = ['7 Days', '14 Days', '7 Days', '30 Days']
 
 function buildRequests(count, status) {

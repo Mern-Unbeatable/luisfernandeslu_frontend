@@ -142,7 +142,7 @@ export default function AddProduct({
                 <TextInput
                   value={form.basePrice}
                   onChange={setField('basePrice')}
-                  placeholder="$00.00"
+                  placeholder="€00.00"
                 />
               </Field>
               <Field label="SKU Number">
@@ -217,7 +217,7 @@ export default function AddProduct({
                 <TextInput
                   value={form.basePrice}
                   onChange={setField('basePrice')}
-                  placeholder="$120.00"
+                  placeholder="€120.00"
                 />
               </Field>
               <Field label="B2B Discount">

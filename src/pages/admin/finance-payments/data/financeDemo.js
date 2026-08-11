@@ -1,8 +1,8 @@
 export const FINANCE_STATS = {
-  totalRevenue: '$479,100',
-  commissionRevenue: '$38,328',
-  pendingPayouts: '$263,500',
-  marketingRevenue: '$323,500',
+  totalRevenue: '€479,100',
+  commissionRevenue: '€38,328',
+  pendingPayouts: '€263,500',
+  marketingRevenue: '€323,500',
 }
 
 export const FINANCE_CHART_LABELS = [
@@ -211,7 +211,7 @@ export const FINANCE_COMMISSION_INVOICES = [
 export function formatFinanceCurrency(value) {
   const n = Number(value)
   if (Number.isNaN(n)) return String(value)
-  return `$${n.toLocaleString('en-US', {
+  return `€${n.toLocaleString('en-US', {
     minimumFractionDigits: n % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

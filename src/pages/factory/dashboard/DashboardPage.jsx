@@ -84,7 +84,7 @@ export default function DashboardPage() {
         />
         <StatusCard
           label={t('factoryDashboard.cards.totalRevenue')}
-          value="$40,000,000"
+          value="€40,000,000"
         />
         <StatusCard
           label={t('factoryDashboard.cards.adminCommission')}

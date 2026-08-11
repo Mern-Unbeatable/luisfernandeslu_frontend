@@ -11,7 +11,7 @@ export default function OrderHistoryPage() {
       id: 'del-003',
       title: 'Red Bricks',
       orderLabel: 'Delivery ID: DL-003',
-      price: '$14,300',
+      price: '€14,300',
       distance: '21 km',
       status: 'delivered',
       pickup: {
@@ -27,7 +27,7 @@ export default function OrderHistoryPage() {
       id: 'del-004',
       title: 'Ready Mix Concrete',
       orderLabel: 'Delivery ID: DL-004',
-      price: '$6,200',
+      price: '€6,200',
       distance: '12 km',
       status: 'delivered',
       pickup: {
@@ -47,7 +47,7 @@ export default function OrderHistoryPage() {
       ...item,
       auctionId: item.orderLabel?.replace('Delivery ID: ', '') || 'DL-003',
       auctionDate: 'May 18, 2026',
-      deliveryCharge: item.price || '$2000.00',
+      deliveryCharge: item.price || '€2000.00',
       customer: {
         name: 'Sarah Johnson',
         phone: '+1 (555) 234-5678',

@@ -131,7 +131,7 @@ export default function useMessages({ variant = 'default' } = {}) {
         return [
           {
             label: `${ord} Installment`,
-            value: row.price ? `$${row.price}` : '—',
+            value: row.price ? `€${row.price}` : '—',
             icon: 'dollar',
           },
           {
@@ -143,7 +143,7 @@ export default function useMessages({ variant = 'default' } = {}) {
 
       if (form.totalPrice) {
         pricing.unshift(
-          { label: 'Total Price', value: `$${form.totalPrice}`, icon: 'dollar' },
+          { label: 'Total Price', value: `€${form.totalPrice}`, icon: 'dollar' },
           {
             label: 'Installment',
             value: form.installmentMonths
@@ -167,9 +167,9 @@ export default function useMessages({ variant = 'default' } = {}) {
         pricing,
         summary: firstPrice
           ? {
-              firstInstallment: `$${firstPrice}`,
+              firstInstallment: `€${firstPrice}`,
               remainingBalance: form.totalPrice
-                ? `$${Math.max(
+                ? `€${Math.max(
                     Number(form.totalPrice) - Number(firstPrice),
                     0,
                   )}`
