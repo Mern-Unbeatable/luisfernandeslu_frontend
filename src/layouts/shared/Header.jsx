@@ -112,8 +112,8 @@ export default function Header() {
   }
 
   return (
-    <header ref={headerRef} className="relative sticky top-0 z-50 w-full">
-      {/* Top promo bar — authenticated only */}
+    <>
+      {/* Top promo bar — NOT sticky, scrolls away */}
       {isAuthenticated ? (
         <div className="hidden w-full bg-zinc-950 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.16)] md:block">
           <div className="container mx-auto flex w-full items-center justify-between gap-4 px-6 py-3">
@@ -140,6 +140,8 @@ export default function Header() {
           </div>
         </div>
       ) : null}
+
+      <header ref={headerRef} className="sticky top-0 z-50 w-full">
 
       {/* Mobile header */}
       <div className="relative z-50 w-full overflow-visible border-b border-gray-100 bg-white md:hidden">
@@ -441,5 +443,6 @@ export default function Header() {
         </div>
       </div>
     </header>
+    </>
   )
 }

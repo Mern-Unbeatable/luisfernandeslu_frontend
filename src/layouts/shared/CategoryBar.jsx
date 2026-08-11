@@ -61,7 +61,7 @@ export default function CategoryBar() {
   }, [menuOpen])
 
   return (
-    <div className="relative z-40 w-full">
+    <div className="sticky top-0 z-40 w-full md:top-[68px]">
       <nav
         aria-label={t('categoryBar.navLabel')}
         className="relative z-20 w-full border-b border-[#f0e6d8] bg-[#FFF8EE]"
