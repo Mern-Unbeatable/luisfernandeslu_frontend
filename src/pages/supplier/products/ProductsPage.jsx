@@ -176,6 +176,9 @@ export default function ProductsPage() {
                   status={item.status}
                   badge={item.badge}
                   product={item.product}
+                  onCardClick={() =>
+                    navigate(`/supplier/products/${item.id}`)
+                  }
                   onAction={(actionId) => {
                     if (actionId === 'edit') {
                       navigate(`/supplier/products/${item.id}`);
