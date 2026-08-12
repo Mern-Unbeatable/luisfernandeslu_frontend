@@ -5,284 +5,41 @@ import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
+import { PRODUCT_CATEGORIES } from '@/data/productCategories'
 
 const PAGE_SIZE = 8
 
 const PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80'
 
-const DUMMY_PRODUCTS = [
-  {
-    id: 1,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 2,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 3,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 4,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 5,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 6,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 7,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 8,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 9,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 10,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 11,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 12,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 13,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 14,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 15,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 16,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 17,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 18,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 19,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 20,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 21,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 22,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 23,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 24,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 25,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 26,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 27,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-  {
-    id: 28,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'active',
-  },
-  {
-    id: 29,
-    title: 'Portland Cement Standard',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'pending',
-  },
-  {
-    id: 30,
-    title: 'Portland Cement',
-    description:
-      'High-strength building cement suitable for construction and masonry work.',
-    priceText: 'Price: $115 per bag (50 kg)',
-    image: PRODUCT_IMAGE,
-    status: 'rejected',
-  },
-]
+const STATUS_CYCLE = ['active', 'pending', 'rejected']
+const PRICE_CYCLE = [85, 115, 150, 220, 340, 480, 65, 190]
+
+let productSeq = 0
+
+const DUMMY_PRODUCTS = PRODUCT_CATEGORIES.flatMap((category) =>
+  (category.subcategories ?? []).flatMap((subCategory) =>
+    (subCategory.productTypes ?? []).map((type) => {
+      const index = productSeq
+      productSeq += 1
+
+      return {
+        id: index + 1,
+        title: type.name,
+        description: `${type.name} from ${category.name} › ${subCategory.name}.`,
+        priceText: `Price: $${PRICE_CYCLE[index % PRICE_CYCLE.length]} per unit`,
+        image: type.imageSrc || PRODUCT_IMAGE,
+        status: STATUS_CYCLE[index % STATUS_CYCLE.length],
+        categoryId: category.id,
+        categoryName: category.name,
+        subCategoryId: subCategory.id,
+        subCategoryName: subCategory.name,
+        productTypeId: type.id,
+        sku: `FAC-${String(index + 1).padStart(4, '0')}`,
+      }
+    }),
+  ),
+)
 
 const TAB_IDS = ['all', 'active', 'pending', 'rejected']
 
@@ -292,6 +49,7 @@ const CSV_HEADERS = [
   'description',
   'price',
   'status',
+  'categoryId',
   'sku',
   'warehouseLocation',
   'image',
@@ -312,6 +70,7 @@ function downloadProductsCsv(products) {
     product.description,
     extractPrice(product.priceText),
     product.status,
+    product.categoryId || '',
     product.sku || '',
     product.warehouseLocation || '',
     product.image || '',
@@ -335,6 +94,9 @@ function toFormValue(product) {
 
   return {
     ...DEMO_FACTORY_PRODUCT,
+    categoryId: product.categoryId || '',
+    subCategoryId: product.subCategoryId || '',
+    productTypeId: product.productTypeId || '',
     title: product.title || '',
     description: product.description || '',
     basePrice: extractPrice(product.priceText) || product.basePrice || '',
@@ -358,12 +120,22 @@ function toCardProduct(payload, previous = {}, t) {
       ? payload.bannerImage
       : previous.image || PRODUCT_IMAGE
 
+  const categoryId = payload.categoryId || previous.categoryId || ''
+  const categoryName =
+    PRODUCT_CATEGORIES.find((item) => item.id === categoryId)?.name ||
+    previous.categoryName ||
+    ''
+
   return {
     ...previous,
     title: payload.title || previous.title || t('factoryProducts.untitled'),
     description: payload.description || '',
     priceText: price,
     image,
+    categoryId,
+    categoryName,
+    subCategoryId: payload.subCategoryId || previous.subCategoryId || '',
+    productTypeId: payload.productTypeId || previous.productTypeId || '',
     sku: payload.sku || previous.sku || '',
     warehouseLocation:
       payload.warehouseLocation || previous.warehouseLocation || '',
@@ -376,22 +148,28 @@ function toCardProduct(payload, previous = {}, t) {
 export default function ProductsPage() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
+  const [category, setCategory] = useState('all')
   const [page, setPage] = useState(1)
   const [products, setProducts] = useState(DUMMY_PRODUCTS)
   const [formMode, setFormMode] = useState(null)
   const [editingProduct, setEditingProduct] = useState(null)
 
+  const categoryProducts =
+    category === 'all'
+      ? products
+      : products.filter((product) => product.categoryId === category)
+
   const counts = {
-    all: products.length,
-    active: products.filter((p) => p.status === 'active').length,
-    pending: products.filter((p) => p.status === 'pending').length,
-    rejected: products.filter((p) => p.status === 'rejected').length,
+    all: categoryProducts.length,
+    active: categoryProducts.filter((p) => p.status === 'active').length,
+    pending: categoryProducts.filter((p) => p.status === 'pending').length,
+    rejected: categoryProducts.filter((p) => p.status === 'rejected').length,
   }
 
   const filteredProducts =
     activeTab === 'all'
-      ? products
-      : products.filter((p) => p.status === activeTab)
+      ? categoryProducts
+      : categoryProducts.filter((p) => p.status === activeTab)
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
@@ -523,16 +301,31 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-[var(--secondary-text)]">
+        <div className="flex shrink-0 items-center gap-2 text-sm text-[var(--secondary-text)]">
           <FiFilter className="size-4 shrink-0" aria-hidden />
           <span className="font-medium">{t('factoryProducts.filters')}</span>
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-[var(--primary-text)]"
-          >
-            {t('factoryProducts.allCategories')}
-            <FiChevronDown className="size-4 text-gray-400" aria-hidden />
-          </button>
+          <label className="relative inline-flex min-w-0 max-w-full">
+            <select
+              value={category}
+              onChange={(event) => {
+                setCategory(event.target.value)
+                setPage(1)
+              }}
+              aria-label={t('factoryProducts.allCategories')}
+              className="h-10 max-w-[min(100%,16rem)] cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-2 pr-9 pl-3 text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+            >
+              <option value="all">{t('factoryProducts.allCategories')}</option>
+              {PRODUCT_CATEGORIES.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            <FiChevronDown
+              className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-gray-400"
+              aria-hidden
+            />
+          </label>
         </div>
       </div>
 
