@@ -6,7 +6,7 @@ import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 8
 
 const PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80'
@@ -498,27 +498,29 @@ export default function ProductsPage() {
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="inline-flex flex-wrap items-center gap-1 rounded-xl bg-white p-1 shadow-sm ring-1 ring-gray-100">
-          {TAB_IDS.map((tabId) => {
-            const isActive = activeTab === tabId
-            return (
-              <button
-                key={tabId}
-                type="button"
-                onClick={() => {
-                  setActiveTab(tabId)
-                  setPage(1)
-                }}
-                className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
-                  isActive
-                    ? 'bg-[var(--active)] text-white'
-                    : 'text-[var(--secondary-text)] hover:bg-gray-50'
-                }`}
-              >
-                {t(`factoryProducts.tabs.${tabId}`)} ({counts[tabId]})
-              </button>
-            )
-          })}
+        <div className="max-w-full min-w-0 overflow-x-auto">
+          <div className="inline-flex w-max max-w-none flex-nowrap items-center gap-1 rounded-xl bg-white p-1 shadow-sm ring-1 ring-gray-100">
+            {TAB_IDS.map((tabId) => {
+              const isActive = activeTab === tabId
+              return (
+                <button
+                  key={tabId}
+                  type="button"
+                  onClick={() => {
+                    setActiveTab(tabId)
+                    setPage(1)
+                  }}
+                  className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition ${
+                    isActive
+                      ? 'bg-[var(--active)] text-white'
+                      : 'text-[var(--secondary-text)] hover:bg-gray-50'
+                  }`}
+                >
+                  {t(`factoryProducts.tabs.${tabId}`)} ({counts[tabId]})
+                </button>
+              )
+            })}
+          </div>
         </div>
 
         <div className="flex items-center gap-2 text-sm text-[var(--secondary-text)]">
