@@ -1142,6 +1142,33 @@
         "breadcrumb": "Produto > Adicionar produto",
         "submit": "SUBMETER",
         "selectWarehouse": "Selecionar armazém"
+      },
+      "csv": {
+        "title": "Carregar ficheiro CSV",
+        "subtitle": "Importe vários produtos usando o formato de colunas obrigatório.",
+        "close": "Fechar",
+        "closeOverlay": "Fechar diálogo de carregamento",
+        "dropTitle": "Arraste e largue o CSV aqui",
+        "dropHint": "Ou clique para escolher. Apenas ficheiros CSV.",
+        "requiredTitle": "Colunas obrigatórias",
+        "requiredBody": "O ficheiro deve incluir estes cabeçalhos, iguais aos campos do formulário de produto:",
+        "exampleTitle": "Estrutura de exemplo do CSV",
+        "downloadDemo": "Descarregar CSV de demonstração",
+        "cancel": "Cancelar",
+        "submit": "Carregar CSV",
+        "uploading": "A carregar…",
+        "complete": "Concluído",
+        "fileRequired": "Escolha primeiro um ficheiro CSV.",
+        "invalidFormat": "O formato do ficheiro não é CSV. Carregue um ficheiro .csv.",
+        "emptyFile": "O ficheiro CSV está vazio.",
+        "noRows": "O CSV tem cabeçalhos, mas não tem linhas de produto.",
+        "missingColumns": "Faltam colunas obrigatórias: {{columns}}",
+        "rowMissingField": "Linha {{row}}: falta o valor obrigatório de {{column}}.",
+        "rowInvalidPrice": "Linha {{row}}: {{column}} deve ser um número válido.",
+        "rowInvalidTag": "Linha {{row}}: a etiqueta deve ser regular, bulk_order, featured ou pending.",
+        "uploadFailed": "Falha no carregamento. Verifique o ficheiro e tente novamente.",
+        "success": "{{count}} produto(s) importado(s) com sucesso.",
+        "moreErrors": "E mais {{count}} problema(s)."
       }
     },
     "supplierPromoCodes": {

@@ -5,11 +5,13 @@ import { useTranslation } from 'react-i18next';
 import Pagination from '@/components/common/Pagination/Pagination';
 import ProductCard from '@/components/data-display/ProductCard/ProductCard';
 import Seo from '@/components/common/Seo/Seo';
+import { useUploadProductsCsvMutation } from '@/features/products/productApi';
 import {
   DEMO_SUPPLIER_PRODUCTS,
   DEMO_SUPPLIER_PRODUCT_CATEGORIES,
   SUPPLIER_PRODUCTS_PAGE_SIZE,
 } from '@/data/demoData';
+import UploadCsvModal from './UploadCsvModal';
 
 const TAB_CONFIG = [
   { id: 'all', labelKey: 'panel.supplierProducts.tabAll' },
@@ -32,9 +34,11 @@ export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [category, setCategory] = useState('all');
   const [page, setPage] = useState(1);
+  const [csvOpen, setCsvOpen] = useState(false);
+  const [products, setProducts] = useState(DEMO_SUPPLIER_PRODUCTS);
+  const [uploadProductsCsv] = useUploadProductsCsvMutation();
 
   // TODO: replace DEMO_* with supplier products API fetch
-  const products = DEMO_SUPPLIER_PRODUCTS;
 
   const tabCounts = useMemo(() => {
     const counts = { all: products.length };
@@ -106,9 +110,7 @@ export default function ProductsPage() {
           </button>
           <button
             type='button'
-            onClick={() => {
-              // TODO: open CSV upload flow when available
-            }}
+            onClick={() => setCsvOpen(true)}
             className='inline-flex items-center justify-center rounded-md border border-[var(--active)] bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] sm:text-sm'
           >
             {t('panel.supplierProducts.uploadCsv')}
@@ -209,6 +211,17 @@ export default function ProductsPage() {
           </p>
         </div>
       )}
+
+      <UploadCsvModal
+        open={csvOpen}
+        onClose={() => setCsvOpen(false)}
+        uploadCsv={uploadProductsCsv}
+        onImported={(items) => {
+          setProducts((prev) => [...items, ...prev]);
+          setActiveTab('all');
+          setPage(1);
+        }}
+      />
     </>
   );
 }

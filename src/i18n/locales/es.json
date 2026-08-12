@@ -1142,6 +1142,33 @@
         "breadcrumb": "Producto > Añadir producto",
         "submit": "ENVIAR",
         "selectWarehouse": "Seleccionar almacén"
+      },
+      "csv": {
+        "title": "Subir archivo CSV",
+        "subtitle": "Importa varios productos usando el formato de columnas requerido.",
+        "close": "Cerrar",
+        "closeOverlay": "Cerrar diálogo de carga",
+        "dropTitle": "Arrastra y suelta tu CSV aquí",
+        "dropHint": "O haz clic para buscar. Solo archivos CSV.",
+        "requiredTitle": "Columnas obligatorias",
+        "requiredBody": "El archivo debe incluir estos encabezados, iguales a los campos del formulario de producto:",
+        "exampleTitle": "Estructura de ejemplo del CSV",
+        "downloadDemo": "Descargar CSV de demostración",
+        "cancel": "Cancelar",
+        "submit": "Subir CSV",
+        "uploading": "Subiendo…",
+        "complete": "Completado",
+        "fileRequired": "Elige primero un archivo CSV.",
+        "invalidFormat": "El formato del archivo no es CSV. Sube un archivo .csv.",
+        "emptyFile": "El archivo CSV está vacío.",
+        "noRows": "El CSV tiene encabezados, pero no tiene filas de producto.",
+        "missingColumns": "Faltan columnas obligatorias: {{columns}}",
+        "rowMissingField": "Fila {{row}}: falta el valor obligatorio de {{column}}.",
+        "rowInvalidPrice": "Fila {{row}}: {{column}} debe ser un número válido.",
+        "rowInvalidTag": "Fila {{row}}: la etiqueta debe ser regular, bulk_order, featured o pending.",
+        "uploadFailed": "Error al subir. Revisa el archivo e inténtalo de nuevo.",
+        "success": "{{count}} producto(s) importado(s) correctamente.",
+        "moreErrors": "Y {{count}} problema(s) más."
       }
     },
     "supplierPromoCodes": {

@@ -1144,6 +1144,33 @@
         "breadcrumb": "Product > Add Product",
         "submit": "SUBMIT",
         "selectWarehouse": "Select warehouse"
+      },
+      "csv": {
+        "title": "Upload CSV File",
+        "subtitle": "Import multiple products using the required column format.",
+        "close": "Close",
+        "closeOverlay": "Close upload dialog",
+        "dropTitle": "Drag and drop your CSV here",
+        "dropHint": "Or click to browse. CSV files only.",
+        "requiredTitle": "Required columns",
+        "requiredBody": "Your file must include these headers, matching the product form fields:",
+        "exampleTitle": "Example CSV structure",
+        "downloadDemo": "Download Demo CSV",
+        "cancel": "Cancel",
+        "submit": "Upload CSV",
+        "uploading": "Uploading…",
+        "complete": "Complete",
+        "fileRequired": "Please choose a CSV file first.",
+        "invalidFormat": "File format is not CSV. Please upload a .csv file.",
+        "emptyFile": "The CSV file is empty.",
+        "noRows": "The CSV has headers but no product rows.",
+        "missingColumns": "Required columns are missing: {{columns}}",
+        "rowMissingField": "Row {{row}}: missing required value for {{column}}.",
+        "rowInvalidPrice": "Row {{row}}: {{column}} must be a valid number.",
+        "rowInvalidTag": "Row {{row}}: tag must be regular, bulk_order, featured, or pending.",
+        "uploadFailed": "Upload failed. Please check the file and try again.",
+        "success": "{{count}} product(s) imported successfully.",
+        "moreErrors": "And {{count}} more issue(s)."
       }
     },
     "supplierPromoCodes": {
