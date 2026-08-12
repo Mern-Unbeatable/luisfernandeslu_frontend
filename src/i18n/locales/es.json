@@ -1409,6 +1409,7 @@
   },
   "factoryProducts": {
     "title": "Gestión de productos",
+    "backToProducts": "Volver a productos",
     "subtitle": "Administra tu catálogo de productos para vender a los clientes.",
     "addProduct": "Añadir producto",
     "uploadCsv": "Subir archivo CSV",

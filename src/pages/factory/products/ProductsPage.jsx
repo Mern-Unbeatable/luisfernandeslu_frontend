@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiChevronDown, FiFilter } from 'react-icons/fi'
+import { FiArrowLeft, FiChevronDown, FiFilter } from 'react-icons/fi'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
+import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
-import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
+import { DEMO_FACTORY_PRODUCT, DEMO_PRODUCT } from '@/data/demoData'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
 import UploadXlsxModal from './UploadXlsxModal'
 
@@ -154,6 +155,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState(DUMMY_PRODUCTS)
   const [formMode, setFormMode] = useState(null)
   const [editingProduct, setEditingProduct] = useState(null)
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const [uploadOpen, setUploadOpen] = useState(false)
 
   const categoryProducts =
@@ -211,6 +213,44 @@ export default function ProductsPage() {
     if (actionId !== 'edit') return
     setEditingProduct(product)
     setFormMode('edit')
+  }
+
+  if (selectedProduct) {
+    const detailProduct = {
+      ...DEMO_PRODUCT,
+      title: selectedProduct.title,
+      sku: selectedProduct.sku || DEMO_PRODUCT.sku,
+      category: selectedProduct.categoryName || DEMO_PRODUCT.category,
+      priceText: selectedProduct.priceText,
+      images: selectedProduct.image ? [selectedProduct.image] : DEMO_PRODUCT.images,
+      availability: selectedProduct.status === 'active' ? 'In Stock' : selectedProduct.status === 'pending' ? 'Pending Review' : 'Unavailable',
+      warehouse: selectedProduct.warehouseLocation || DEMO_PRODUCT.warehouse,
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setSelectedProduct(null)}
+            className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-[var(--primary-text)] transition hover:bg-gray-50"
+          >
+            <FiArrowLeft className="size-4" />
+            {t('factoryProducts.backToProducts')}
+          </button>
+          <div className="min-w-0">
+            <p className="truncate text-sm text-[var(--secondary-text)]">
+              {t('factoryProducts.title')} / {selectedProduct.title}
+            </p>
+          </div>
+        </div>
+
+        <ProductDetails
+          role="supplier"
+          product={detailProduct}
+        />
+      </div>
+    )
   }
 
   if (formMode) {
@@ -333,14 +373,27 @@ export default function ProductsPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {visibleProducts.map((product) => (
-          <ProductCard
+          <div
             key={product.id}
-            type="dashboard"
-            role="factory"
-            status={product.status}
-            product={product}
-            onAction={handleCardAction}
-          />
+            role="button"
+            tabIndex={0}
+            onClick={(e) => {
+              if (e.target.closest('button, a, [role="button"]') && e.target.closest('button, a, [role="button"]') !== e.currentTarget) return
+              setSelectedProduct(product)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(product)
+            }}
+            className="cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--active)]"
+          >
+            <ProductCard
+              type="dashboard"
+              role="factory"
+              status={product.status}
+              product={product}
+              onAction={handleCardAction}
+            />
+          </div>
         ))}
       </div>
 

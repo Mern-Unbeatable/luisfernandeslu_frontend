@@ -1478,6 +1478,7 @@
   },
   "factoryProducts": {
     "title": "Product Management",
+    "backToProducts": "Back to Products",
     "subtitle": "Manage your product catalog for selling to customers.",
     "addProduct": "Add Product",
     "uploadCsv": "Upload CSV File",
