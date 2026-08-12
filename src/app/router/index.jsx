@@ -605,56 +605,31 @@ export const router = createBrowserRouter([
             element: <PublicProducts />,
             handle: { seo: routeSeo.products },
           },
-          // {
-          //   path: "/cart",
-          //   element: <ComingSoon hideTitle />,
-          //   handle: { seo: routeSeo.cart },
-          // },
-          // {
-          //   path: '/cart',
-          //   element: <PublicCart />,
-          //   handle: { seo: routeSeo.cart },
-          // },
-          // {
-          //   path: "/messages",
-          //   element: <ComingSoon hideTitle />,
-          //   handle: { seo: routeSeo.messages },
-          // },
-          // {
-          //   path: '/messages',
-          //   element: <PublicMessages />,
-          //   handle: { seo: routeSeo.messages },
-          // },
-          // {
-          //   path: "/order/confirmation",
-          //   element: <ComingSoon hideTitle />,
-          //   handle: { seo: routeSeo.orderConfirmation },
-          // },
-          // {
-          //   path: '/order/confirmation',
-          //   element: <OrderConfirmation />,
-          //   handle: { seo: routeSeo.orderConfirmation },
-          // },
-          // {
-          //   path: "/checkout/company",
-          //   element: <ComingSoon hideTitle />,
-          //   handle: { seo: routeSeo.companyCheckout },
-          // },
-          // {
-          //   path: '/checkout/company',
-          //   element: <CompanyCheckout />,
-          //   handle: { seo: routeSeo.companyCheckout },
-          // },
-          // {
-          //   path: "/checkout",
-          //   element: <ComingSoon hideTitle />,
-          //   handle: { seo: routeSeo.userCheckout },
-          // },
-          // {
-          //   path: '/checkout',
-          //   element: <UserCheckout />,
-          //   handle: { seo: routeSeo.userCheckout },
-          // },
+          {
+            path: '/cart',
+            element: <PublicCart />,
+            handle: { seo: routeSeo.cart },
+          },
+          {
+            path: '/messages',
+            element: <PublicMessages />,
+            handle: { seo: routeSeo.messages },
+          },
+          {
+            path: '/order/confirmation',
+            element: <OrderConfirmation />,
+            handle: { seo: routeSeo.orderConfirmation },
+          },
+          {
+            path: '/checkout/company',
+            element: <CompanyCheckout />,
+            handle: { seo: routeSeo.companyCheckout },
+          },
+          {
+            path: '/checkout',
+            element: <UserCheckout />,
+            handle: { seo: routeSeo.userCheckout },
+          },
           {
             path: "/terms-and-conditions",
             element: <TermsAndConditions />,
