@@ -838,6 +838,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'assign',
       statusLabel: 'Assign',
+      detailId: 'co-001',
     },
     {
       id: 'ord-002',
@@ -848,6 +849,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'completed',
       statusLabel: 'Completed',
+      detailId: 'b2b-c06',
+      tab: 'chat',
     },
     {
       id: 'ord-003',
@@ -858,6 +861,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'pending',
       statusLabel: 'Pending',
+      detailId: 'co-003',
     },
     {
       id: 'ord-004',
@@ -868,6 +872,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'assign',
       statusLabel: 'Assign',
+      detailId: 'b2b-d04',
+      tab: 'direct',
     },
     {
       id: 'ord-005',
@@ -878,6 +884,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'cancel',
       statusLabel: 'Cancel',
+      detailId: 'b2b-c05',
+      tab: 'chat',
     },
     {
       id: 'ord-006',
@@ -888,6 +896,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'completed',
       statusLabel: 'Completed',
+      detailId: 'co-006',
     },
     {
       id: 'ord-007',
@@ -898,6 +907,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'pending',
       statusLabel: 'Pending',
+      detailId: 'co-007',
     },
   ],
 };
