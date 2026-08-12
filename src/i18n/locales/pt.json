@@ -1430,7 +1430,19 @@
     },
     "priceText": "Preço: {{price}} por saco (50 kg)",
     "priceFallback": "Preço: —",
-    "untitled": "Sem título"
+    "untitled": "Sem título",
+    "uploadModal": {
+      "title": "Carregue o seu ficheiro",
+      "hint": "Apenas XLSX · Máx. 10 MB · A primeira folha deve chamar-se \"Sheet1\"",
+      "dropTitle": "Largue o XLSX aqui, ou clique para procurar",
+      "dropNote": "Vamos colocar na fila assim que clicar em Queue Import.",
+      "selected": "Selecionado: {{name}}",
+      "downloadExample": "Descarregar exemplo",
+      "queueImport": "Queue Import",
+      "closeOverlay": "Fechar sobreposição",
+      "close": "Fechar",
+      "browseAria": "Procurar ficheiro XLSX"
+    }
   },
   "factoryOrders": {
     "title": "Encomendas de fornecedores",

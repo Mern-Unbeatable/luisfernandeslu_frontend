@@ -6,6 +6,7 @@ import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import UploadXlsxModal from './UploadXlsxModal'
 
 const PAGE_SIZE = 8
 
@@ -153,6 +154,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState(DUMMY_PRODUCTS)
   const [formMode, setFormMode] = useState(null)
   const [editingProduct, setEditingProduct] = useState(null)
+  const [uploadOpen, setUploadOpen] = useState(false)
 
   const categoryProducts =
     category === 'all'
@@ -267,7 +269,7 @@ export default function ProductsPage() {
           </button>
           <button
             type="button"
-            onClick={() => downloadProductsCsv(products)}
+            onClick={() => setUploadOpen(true)}
             className="rounded-full border border-[var(--active)] bg-white px-5 py-2.5 text-sm font-semibold text-[var(--active)] transition hover:bg-[#FFFBF5]"
           >
             {t('factoryProducts.uploadCsv')}
@@ -346,6 +348,13 @@ export default function ProductsPage() {
         page={safePage}
         totalPages={totalPages}
         onPageChange={setPage}
+      />
+
+      <UploadXlsxModal
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onDownloadExample={() => downloadProductsCsv(products.slice(0, 5))}
+        onQueueImport={() => setUploadOpen(false)}
       />
     </div>
   )

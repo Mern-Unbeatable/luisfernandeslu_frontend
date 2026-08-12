@@ -1499,7 +1499,19 @@
     },
     "priceText": "Price: {{price}} per bag (50 kg)",
     "priceFallback": "Price: —",
-    "untitled": "Untitled"
+    "untitled": "Untitled",
+    "uploadModal": {
+      "title": "Upload your file",
+      "hint": "XLSX only · Max 10 MB · First sheet must be named \"Sheet1\"",
+      "dropTitle": "Drop your XLSX here, or click to browse",
+      "dropNote": "We'll queue it as soon as you click Queue Import.",
+      "selected": "Selected: {{name}}",
+      "downloadExample": "Download example",
+      "queueImport": "Queue Import",
+      "closeOverlay": "Close overlay",
+      "close": "Close",
+      "browseAria": "Browse XLSX file"
+    }
   },
   "factoryOrders": {
     "title": "Suppliers order",
