@@ -675,11 +675,6 @@ export const router = createBrowserRouter([
             element: <ReturnOrderDetail />,
             handle: { seo: routeSeo.returnsCenter },
           },
-          {
-            path: "*",
-            element: <ComingSoon hideTitle />,
-            handle: { seo: routeSeo.notFound },
-          },
         ],
       },
 
@@ -730,12 +725,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /*
-      Remaining routes are intentionally commented out so only the requested public pages stay active.
-      Other paths will continue to fall back to the ComingSoon view.
-      // Developer docs
-      { path: "/developer", element: <Developer /> },
-      { path: "/developer/:componentId", element: <Developer /> },
+
 
       // Customer
       {
@@ -784,6 +774,14 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      
+
+            /*
+      Remaining routes are intentionally commented out so only the requested public pages stay active.
+      Other paths will continue to fall back to the ComingSoon view.
+      // Developer docs
+      { path: "/developer", element: <Developer /> },
+      { path: "/developer/:componentId", element: <Developer /> },
 
       // Company
       {
@@ -1276,6 +1274,17 @@ export const router = createBrowserRouter([
         ],
       },
       */
+
+      {
+        element: <PublicLayout />,
+        children: [
+          {
+            path: '*',
+            element: <NotFound />,
+            handle: { seo: routeSeo.notFound },
+          },
+        ],
+      },
     ],
   },
 ]);
