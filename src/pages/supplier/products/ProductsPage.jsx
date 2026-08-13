@@ -23,7 +23,8 @@ const TAB_CONFIG = [
 ];
 
 const CATEGORY_LABEL_KEYS = {
-  'cement-mortar-concrete': 'panel.supplierProducts.categories.cementMortarConcrete',
+  'cement-mortar-concrete':
+    'panel.supplierProducts.categories.cementMortarConcrete',
   aggregates: 'panel.supplierProducts.categories.aggregates',
   'steel-rebar': 'panel.supplierProducts.categories.steelRebar',
 };
@@ -119,7 +120,7 @@ export default function ProductsPage() {
       </div>
 
       <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-        <div className='inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1'>
+        <div className='inline-flex w-full max-w-full overflow-x-auto rounded-lg bg-white p-1 scrollbar-hide sm:w-fit'>
           {TAB_CONFIG.map((tab) => {
             const isActive = tab.id === activeTab;
             const count = tabCounts[tab.id] ?? 0;
@@ -129,7 +130,7 @@ export default function ProductsPage() {
                 key={tab.id}
                 type='button'
                 onClick={() => handleTabChange(tab.id)}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
+                className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
                   isActive
                     ? 'bg-[var(--active)] text-white shadow-sm'
                     : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
@@ -178,9 +179,7 @@ export default function ProductsPage() {
                   status={item.status}
                   badge={item.badge}
                   product={item.product}
-                  onCardClick={() =>
-                    navigate(`/supplier/products/${item.id}`)
-                  }
+                  onCardClick={() => navigate(`/supplier/products/${item.id}`)}
                   onAction={(actionId) => {
                     if (actionId === 'edit') {
                       navigate(`/supplier/products/${item.id}`);

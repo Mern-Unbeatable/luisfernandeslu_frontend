@@ -211,31 +211,32 @@ export default function OrdersCustomerPage() {
           </p>
         </header>
 
-        <label className='relative inline-flex min-w-[160px] shrink-0 items-center gap-2 self-start rounded-md border border-gray-200 bg-white px-3 pr-9'>
-          <FiFilter
-            className='size-4 shrink-0 text-[var(--secondary-text)]'
-            aria-hidden
-          />
-          <select
-            value={statusFilter}
-            onChange={(event) => {
-              setStatusFilter(event.target.value);
-              setPage(1);
-            }}
-            className='h-10 w-full min-w-0 cursor-pointer appearance-none bg-transparent py-2 text-sm text-[var(--primary-text)] outline-none'
-            aria-label={t('panel.supplierCustomerOrders.allStatus')}
-          >
-            {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <FiChevronDown
-            className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
-            aria-hidden
-          />
-        </label>
+        <div className='flex flex-wrap items-center gap-2 sm:gap-3 shrink-0'>
+          <span className='text-sm font-medium text-[var(--primary-text)]'>
+            {t('panel.supplierProducts.filters')}
+          </span>
+          <label className='relative inline-flex min-w-[160px] items-center justify-center gap-2 bg-white rounded-md border border-gray-200'>
+            <select
+              value={statusFilter}
+              onChange={(event) => {
+                setStatusFilter(event.target.value);
+                setPage(1);
+              }}
+              className='h-10 w-full cursor-pointer appearance-none rounded-md  bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
+              aria-label={t('panel.supplierCustomerOrders.allStatus')}
+            >
+              {statusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <FiChevronDown
+              className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
+              aria-hidden
+            />
+          </label>
+        </div>
       </div>
 
       <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
