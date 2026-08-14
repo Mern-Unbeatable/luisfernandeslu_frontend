@@ -16,12 +16,22 @@ const TAB_IDS = {
   transport: 'transport',
 };
 
+const STATUS_LABEL_KEYS = {
+  produced: 'panel.supplierFactoryOrders.statusProduced',
+  'in-production': 'panel.supplierFactoryOrders.statusInProduction',
+  ready: 'panel.supplierFactoryOrders.statusReady',
+  assigned: 'panel.supplierFactoryOrders.statusAssigned',
+  cancel: 'panel.supplierFactoryOrders.statusCancel',
+  completed: 'panel.supplierFactoryOrders.statusCompleted',
+};
+
 export default function FactoryOrdersPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TAB_IDS.orders);
   const [companyFilter, setCompanyFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState(DEMO_SUPPLIER_FACTORY_ORDERS.orders);
 
@@ -140,7 +150,20 @@ export default function FactoryOrdersPage() {
     [t, handleMarkPaid, handleDecline],
   );
 
+  const companyLabelById = useMemo(
+    () =>
+      Object.fromEntries(
+        DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES.map((company) => [
+          company.value,
+          company.label,
+        ]),
+      ),
+    [],
+  );
+
   const filteredOrders = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
     return orders.filter((row) => {
       if (row.tab !== activeTab) return false;
       if (
@@ -157,9 +180,48 @@ export default function FactoryOrdersPage() {
       ) {
         return false;
       }
-      return true;
+      if (!q) return true;
+
+      const statusLabel = (
+        row.statusLabel || t(STATUS_LABEL_KEYS[row.status] || '')
+      ).toLowerCase();
+      const companyLabel = (
+        companyLabelById[row.companyId] || row.factoryName || ''
+      ).toLowerCase();
+
+      if (activeTab === TAB_IDS.orders) {
+        return (
+          String(row.poNumber).toLowerCase().includes(q) ||
+          String(row.factoryName).toLowerCase().includes(q) ||
+          companyLabel.includes(q) ||
+          String(row.total).toLowerCase().includes(q) ||
+          String(row.installmentAmount).toLowerCase().includes(q) ||
+          String(row.installmentNumber).toLowerCase().includes(q) ||
+          String(row.status).toLowerCase().includes(q) ||
+          statusLabel.includes(q) ||
+          String(row.date).toLowerCase().includes(q)
+        );
+      }
+
+      return (
+        String(row.poNumber).toLowerCase().includes(q) ||
+        String(row.factoryName).toLowerCase().includes(q) ||
+        companyLabel.includes(q) ||
+        String(row.product).toLowerCase().includes(q) ||
+        String(row.qty).toLowerCase().includes(q) ||
+        String(row.weightSize).toLowerCase().includes(q) ||
+        String(row.shippingCharge).toLowerCase().includes(q)
+      );
     });
-  }, [orders, activeTab, companyFilter, statusFilter]);
+  }, [
+    orders,
+    activeTab,
+    companyFilter,
+    statusFilter,
+    search,
+    companyLabelById,
+    t,
+  ]);
 
   const total = filteredOrders.length;
   const pageCount = Math.max(
@@ -363,6 +425,13 @@ export default function FactoryOrdersPage() {
           actionHeader={t('panel.supplierFactoryOrders.colAction')}
           emptyMessage={emptyMessage}
           showPagination
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t('panel.supplierFactoryOrders.searchPlaceholder')}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,

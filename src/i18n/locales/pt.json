@@ -1406,6 +1406,7 @@
       "actionDecline": "Recusar",
       "emptyOrders": "Nenhum pedido encontrado.",
       "emptyTransport": "Nenhum pedido de transporte encontrado.",
+      "searchPlaceholder": "Pesquisar PO, fábrica, produto, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",

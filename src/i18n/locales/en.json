@@ -1408,6 +1408,7 @@
       "actionDecline": "Decline",
       "emptyOrders": "No orders found.",
       "emptyTransport": "No transport requests found.",
+      "searchPlaceholder": "Search PO number, factory, product, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
