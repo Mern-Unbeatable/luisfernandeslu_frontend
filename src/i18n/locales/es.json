@@ -2800,6 +2800,7 @@
     "filters": {
       "allStatus": "Todos los estados"
     },
+    "searchPlaceholder": "Buscar ID de devolución, pedido, cliente, producto, estado...",
     "columns": {
       "returnId": "ID DE DEVOLUCIÓN",
       "orderId": "ID DE PEDIDO",
@@ -2856,6 +2857,7 @@
     "filters": {
       "allStatus": "Todos los estados"
     },
+    "searchPlaceholder": "Buscar ID de disputa, pedido, cliente, proveedor, problema, estado...",
     "columns": {
       "disputeId": "ID DE DISPUTA",
       "orderId": "ID DE PEDIDO",
@@ -2889,6 +2891,7 @@
   "supplierInvoices": {
     "title": "Facturas de comisión",
     "subtitle": "Gestiona y rastrea todas las facturas de comisión generadas desde pedidos del marketplace.",
+    "searchPlaceholder": "Buscar ID de factura, ID de pedido, cliente...",
     "typeInvoice": "Factura",
     "viewAria": "Ver {{id}}",
     "downloadAria": "Descargar {{id}}",

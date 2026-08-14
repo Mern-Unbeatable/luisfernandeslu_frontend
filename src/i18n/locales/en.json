@@ -2871,6 +2871,7 @@
     "filters": {
       "allStatus": "All Status"
     },
+    "searchPlaceholder": "Search return ID, order, customer, product, status...",
     "columns": {
       "returnId": "RETURN ID",
       "orderId": "ORDER ID",
@@ -2927,6 +2928,7 @@
     "filters": {
       "allStatus": "All Status"
     },
+    "searchPlaceholder": "Search dispute ID, order, customer, supplier, issue, status...",
     "columns": {
       "disputeId": "DISPUTE ID",
       "orderId": "ORDER ID",
@@ -2960,6 +2962,7 @@
   "supplierInvoices": {
     "title": "Commission Invoices",
     "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "searchPlaceholder": "Search invoice ID, order ID, customer...",
     "typeInvoice": "Invoice",
     "viewAria": "View {{id}}",
     "downloadAria": "Download {{id}}",

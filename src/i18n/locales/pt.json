@@ -2800,6 +2800,7 @@
     "filters": {
       "allStatus": "Todos os estados"
     },
+    "searchPlaceholder": "Pesquisar ID de devolução, encomenda, cliente, produto, estado...",
     "columns": {
       "returnId": "ID DE DEVOLUÇÃO",
       "orderId": "ID DA ENCOMENDA",
@@ -2856,6 +2857,7 @@
     "filters": {
       "allStatus": "Todos os estados"
     },
+    "searchPlaceholder": "Pesquisar ID da disputa, encomenda, cliente, fornecedor, problema, estado...",
     "columns": {
       "disputeId": "ID DA DISPUTA",
       "orderId": "ID DA ENCOMENDA",
@@ -2889,6 +2891,7 @@
   "supplierInvoices": {
     "title": "Faturas de comissão",
     "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",
+    "searchPlaceholder": "Pesquisar ID da fatura, ID da encomenda, cliente...",
     "typeInvoice": "Fatura",
     "viewAria": "Ver {{id}}",
     "downloadAria": "Descarregar {{id}}",
