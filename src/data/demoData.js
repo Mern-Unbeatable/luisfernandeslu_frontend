@@ -3097,6 +3097,8 @@ export function getSupplierProductFormValue(productId) {
 }
 
 // ── Supplier promo codes ──────────────────────────────────────────
+export const SUPPLIER_PROMO_CODES_PAGE_SIZE = 7;
+
 export const DEMO_SUPPLIER_PROMO_CODES = [
   {
     id: 'promo-1',
@@ -3323,6 +3325,46 @@ export const DEMO_SUPPLIER_PROMO_PRODUCTS = Array.from(
       PROMO_PRODUCT_TEMPLATES[index % PROMO_PRODUCT_TEMPLATES.length],
     ),
 );
+
+/** Full PDP payload for promo product details. */
+export function getPromoProductDetail(productId) {
+  const catalogItem = DEMO_SUPPLIER_PROMO_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  const image = catalogItem.product.image || DEMO_PRODUCT.images[0]
+  const images = image
+    ? [image, ...DEMO_PRODUCT.images.filter((src) => src !== image).slice(0, 3)]
+    : DEMO_PRODUCT.images
+
+  return {
+    ...DEMO_PRODUCT,
+    title: catalogItem.product.title || DEMO_PRODUCT.title,
+    description:
+      catalogItem.product.description ||
+      DEMO_PRODUCT.descriptionParagraphs?.[0],
+    images,
+    image,
+    priceText: catalogItem.product.priceText || DEMO_PRODUCT.priceText,
+    bulkOptionLabel: catalogItem.product.bulkOptionLabel,
+  }
+}
+
+/** Map promo product → CreatePromoCode form defaultValue for edit mode. */
+export function getPromoCodeFormValueForProduct(productId) {
+  const catalogItem = DEMO_SUPPLIER_PROMO_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  return {
+    ...DEMO_CREATE_PROMO_CODE,
+    applicableProductIds: [productId],
+    discountType: 'percentage',
+    discountValue: '25 %',
+  }
+}
 
 export const DEMO_FACTORY_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,

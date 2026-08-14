@@ -1212,6 +1212,16 @@
       "actionSeeDetails": "See Details",
       "statusSection": "Status",
       "emptyPromoCodes": "No promo codes found.",
+      "searchPlaceholder": "Search promo code, discount, status, expiry...",
+      "previous": "Previous",
+      "next": "Next",
+      "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+      "backToPromoProducts": "Back to promo products",
+      "edit": {
+        "title": "Edit Promo Code",
+        "breadcrumb": "Promo Code > Edit Promo Code",
+        "submit": "UPDATE PROMO CODE"
+      },
       "emptyPromoProductsTitle": "No promo products yet",
       "emptyPromoProductsHint": "Promo products will appear here when assigned to a promotion.",
       "create": {
@@ -1272,6 +1282,7 @@
       "notFound": "Order not found.",
       "backToOrders": "Back to orders",
       "emptyOrders": "No orders found.",
+      "searchPlaceholder": "Search order ID, customer, email, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results"

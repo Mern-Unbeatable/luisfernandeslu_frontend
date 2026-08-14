@@ -33,6 +33,7 @@ export default function OrdersCustomerPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState('all');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState(DEMO_SUPPLIER_CUSTOMER_ORDERS.orders);
 
@@ -134,9 +135,28 @@ export default function OrdersCustomerPage() {
   );
 
   const filteredOrders = useMemo(() => {
-    if (statusFilter === 'all') return orders;
-    return orders.filter((row) => row.status === statusFilter);
-  }, [orders, statusFilter]);
+    const q = search.trim().toLowerCase();
+
+    return orders.filter((row) => {
+      if (statusFilter !== 'all' && row.status !== statusFilter) return false;
+      if (!q) return true;
+
+      const statusLabel = (
+        row.statusLabel || t(STATUS_LABEL_KEYS[row.status] || '')
+      ).toLowerCase();
+
+      return (
+        String(row.orderId).toLowerCase().includes(q) ||
+        String(row.customerName).toLowerCase().includes(q) ||
+        String(row.email).toLowerCase().includes(q) ||
+        String(row.items).toLowerCase().includes(q) ||
+        String(row.total).toLowerCase().includes(q) ||
+        String(row.status).toLowerCase().includes(q) ||
+        statusLabel.includes(q) ||
+        String(row.date).toLowerCase().includes(q)
+      );
+    });
+  }, [orders, statusFilter, search, t]);
 
   const total = filteredOrders.length;
   const pageCount = Math.max(
@@ -270,6 +290,13 @@ export default function OrdersCustomerPage() {
           actionHeader={t('panel.supplierCustomerOrders.colAction')}
           emptyMessage={t('panel.supplierCustomerOrders.emptyOrders')}
           showPagination
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t('panel.supplierCustomerOrders.searchPlaceholder')}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,

@@ -1210,6 +1210,16 @@
       "actionSeeDetails": "Ver detalhes",
       "statusSection": "Estado",
       "emptyPromoCodes": "Nenhum código promocional encontrado.",
+      "searchPlaceholder": "Pesquisar código, desconto, estado, validade...",
+      "previous": "Anterior",
+      "next": "Seguinte",
+      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "backToPromoProducts": "Voltar aos produtos promocionais",
+      "edit": {
+        "title": "Editar código promocional",
+        "breadcrumb": "Código promocional > Editar código promocional",
+        "submit": "ATUALIZAR CÓDIGO PROMOCIONAL"
+      },
       "emptyPromoProductsTitle": "Ainda sem produtos promocionais",
       "emptyPromoProductsHint": "Os produtos promocionais aparecerão aqui quando atribuídos a uma promoção.",
       "create": {
@@ -1270,6 +1280,7 @@
       "notFound": "Pedido não encontrado.",
       "backToOrders": "Voltar aos pedidos",
       "emptyOrders": "Nenhum pedido encontrado.",
+      "searchPlaceholder": "Pesquisar ID, cliente, email, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
