@@ -158,7 +158,7 @@ export default function DashboardPage() {
         <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
           {t('panel.supplierDashboard.title')}
         </h1>
-        <p className='mt-1 text-sm text-neutral-500'>
+        <p className='mt-1 text-sm md:text-base text-neutral-500'>
           {t('panel.supplierDashboard.subtitle')}
         </p>
       </header>
@@ -196,10 +196,13 @@ export default function DashboardPage() {
               value={period}
               onChange={(event) => setPeriod(event.target.value)}
               className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-              aria-label={t('panel.supplierDashboard.periodThisYear')}
+              aria-label={t('panel.supplierDashboard.periodFilter')}
             >
               <option value='thisYear'>
                 {t('panel.supplierDashboard.periodThisYear')}
+              </option>
+              <option value='lastYear'>
+                {t('panel.supplierDashboard.periodLastYear')}
               </option>
             </select>
             <FiChevronDown
@@ -209,7 +212,13 @@ export default function DashboardPage() {
           </label>
         </div>
 
-        <RevenueChart revenue={dashboard.revenue} />
+        <RevenueChart
+          revenue={{
+            maxValue: dashboard.revenue.maxValue,
+            yTicks: dashboard.revenue.yTicks,
+            series: dashboard.revenue.byPeriod[period] || [],
+          }}
+        />
       </section>
 
       <section className='mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>
