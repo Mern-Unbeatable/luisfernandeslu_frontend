@@ -1147,6 +1147,11 @@
         "submit": "SUBMIT",
         "selectWarehouse": "Select warehouse"
       },
+      "edit": {
+        "title": "Edit Product",
+        "breadcrumb": "Product > Edit Product",
+        "submit": "UPDATE"
+      },
       "csv": {
         "title": "Upload your file",
         "hint": "CSV only · Max 10 MB",

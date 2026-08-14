@@ -19,7 +19,8 @@ import {
   FiPackage,
   FiShoppingBag,
   FiUser,
-} from 'react-icons/fi';
+} from 'react-icons/fi'
+import { PRODUCT_CATEGORIES } from './productCategories';
 
 // ── Auth ──────────────────────────────────────────────────────────
 export const DEMO_PASSWORD = 'demo123';
@@ -2888,83 +2889,86 @@ export function getSupplierBuyFromFactoryDetail(productId) {
 
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';
-
-const SUPPLIER_PRODUCT_TITLES = [
-  'Portland Cement',
-  'Portland Cement Standard',
-  'Portland Cement Quick Set',
-];
-
-const SUPPLIER_PRODUCT_DESCRIPTION =
-  'High-strength building cement suitable for construction and masonry work.';
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
 
 const SUPPLIER_FEATURED_BADGE = {
   label: 'Featured',
   className: 'bg-sky-100 text-sky-700',
-};
-
-function buildSupplierCatalogProduct(id, config) {
-  const titleIndex =
-    Number(id.replace(/\D/g, '')) % SUPPLIER_PRODUCT_TITLES.length;
-
-  return {
-    id,
-    tab: config.tab,
-    categoryId: config.categoryId || 'cement-mortar-concrete',
-    cardType: config.cardType || 'dashboard',
-    tag: config.tag ?? null,
-    status: config.status ?? null,
-    badge: config.badge ?? null,
-    product: {
-      image: SUPPLIER_PRODUCT_IMAGE,
-      title: config.title || SUPPLIER_PRODUCT_TITLES[titleIndex],
-      description: config.description || SUPPLIER_PRODUCT_DESCRIPTION,
-      priceText: config.priceText || 'Price: €115 per bag (50 kg)',
-      expiryDate: config.expiryDate,
-    },
-  };
 }
 
-function buildSupplierCatalogBatch(tab, count, baseConfig = {}) {
-  return Array.from({ length: count }, (_, index) =>
-    buildSupplierCatalogProduct(`supplier-${tab}-${index + 1}`, {
-      ...baseConfig,
-      tab,
-    }),
-  );
-}
-
-export const DEMO_SUPPLIER_PRODUCTS = [
-  ...buildSupplierCatalogBatch('pending', 8, { status: 'pending' }),
-  ...buildSupplierCatalogBatch('rejected', 8, {
-    status: 'rejected',
-    title: 'Portland Cement Standard',
-    description: 'Reliable cement for all your everyday construction needs.',
-  }),
-  ...buildSupplierCatalogBatch('regular', 8, { tag: 'regular' }),
-  ...buildSupplierCatalogBatch('bulk_order', 8, {
+const SUPPLIER_PRICE_CYCLE = [85, 115, 130, 135, 150, 190, 220, 340]
+const SUPPLIER_TAB_CYCLE = [
+  { tab: 'pending', status: 'pending' },
+  { tab: 'rejected', status: 'rejected' },
+  { tab: 'regular', tag: 'regular' },
+  {
+    tab: 'bulk_order',
     tag: 'bulk_order',
-    priceText: 'Price: €135 per bag (50 kg)',
-  }),
-  ...buildSupplierCatalogBatch('featured', 8, {
+  },
+  {
+    tab: 'featured',
     cardType: 'featured',
     badge: SUPPLIER_FEATURED_BADGE,
-    title: 'Portland Cement Quick Set',
-    description: 'Fast-setting cement for rapid construction work.',
-    priceText: 'Price: €130 per bag (50 kg)',
     expiryDate: '5/4/2026',
-  }),
-];
+  },
+]
+
+let supplierProductSeq = 0
+
+function buildSupplierCatalogFromCategories() {
+  return PRODUCT_CATEGORIES.flatMap((category) =>
+    (category.subcategories ?? []).flatMap((subCategory) =>
+      (subCategory.productTypes ?? []).map((type) => {
+        const index = supplierProductSeq
+        supplierProductSeq += 1
+
+        const meta = SUPPLIER_TAB_CYCLE[index % SUPPLIER_TAB_CYCLE.length]
+        const price = SUPPLIER_PRICE_CYCLE[index % SUPPLIER_PRICE_CYCLE.length]
+        const priceText =
+          meta.tab === 'bulk_order'
+            ? `Price: €${price} per unit (bulk)`
+            : `Price: €${price} per unit`
+
+        return {
+          id: `supplier-${type.id}-${index + 1}`,
+          tab: meta.tab,
+          categoryId: category.id,
+          categoryName: category.name,
+          subCategoryId: subCategory.id,
+          subCategoryName: subCategory.name,
+          productTypeId: type.id,
+          sku: `SKU-${String(index + 1).padStart(4, '0')}`,
+          warehouseLocation: 'wh-santa-ana',
+          quantity: `${100 + (index % 9) * 50} Bags`,
+          weight: `${700 + (index % 5) * 50} kg`,
+          cardType: meta.cardType || 'dashboard',
+          tag: meta.tag ?? null,
+          status: meta.status ?? null,
+          badge: meta.badge ?? null,
+          product: {
+            image: type.imageSrc || SUPPLIER_PRODUCT_IMAGE,
+            title: type.name,
+            description: `${type.name} from ${category.name} › ${subCategory.name}.`,
+            priceText,
+            expiryDate: meta.expiryDate,
+          },
+        }
+      }),
+    ),
+  )
+}
+
+export const DEMO_SUPPLIER_PRODUCTS = buildSupplierCatalogFromCategories()
 
 export const DEMO_SUPPLIER_PRODUCT_CATEGORIES = [
   { value: 'all', labelKey: 'panel.supplierProducts.allCategories' },
-  { value: 'cement-mortar-concrete', label: 'Cement, Mortar & Concrete' },
-  { value: 'aggregates', label: 'Aggregates' },
-  { value: 'steel-rebar', label: 'Steel & Rebar' },
-];
+  ...PRODUCT_CATEGORIES.map((category) => ({
+    value: category.id,
+    label: category.name,
+  })),
+]
 
-export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8;
+export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8
 
 /** Full PDP payload for supplier product details (API-ready shape). */
 export function getSupplierProductDetail(productId) {
@@ -3045,6 +3049,52 @@ export const DEMO_ADD_PRODUCT = {
     { id: 'tier-2', quantity: '20-40', price: '€38.00' },
   ],
 };
+
+/** Map catalog row → AddProduct form defaultValue for edit mode. */
+export function getSupplierProductFormValue(productId) {
+  const catalogItem = DEMO_SUPPLIER_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  const priceMatch = String(catalogItem.product?.priceText || '').match(
+    /[€$]?\s*[\d]+(?:[.,]\d+)?/,
+  )
+  const basePrice = priceMatch
+    ? priceMatch[0].includes('€') || priceMatch[0].includes('$')
+      ? priceMatch[0].replace(/\s/g, '')
+      : `€${priceMatch[0]}`
+    : DEMO_ADD_PRODUCT.basePrice
+
+  return {
+    ...DEMO_ADD_PRODUCT,
+    categoryId: catalogItem.categoryId || DEMO_ADD_PRODUCT.categoryId,
+    subCategoryId: catalogItem.subCategoryId || DEMO_ADD_PRODUCT.subCategoryId,
+    productTypeId: catalogItem.productTypeId || DEMO_ADD_PRODUCT.productTypeId,
+    title: catalogItem.product?.title || DEMO_ADD_PRODUCT.title,
+    description:
+      catalogItem.product?.description || DEMO_ADD_PRODUCT.description,
+    basePrice,
+    sku: catalogItem.sku || `SKU-${String(catalogItem.id).toUpperCase()}`,
+    warehouseLocation:
+      catalogItem.warehouseLocation || DEMO_WAREHOUSE_OPTIONS[1]?.value || '',
+    bannerImage: catalogItem.product?.image || null,
+    quantity: catalogItem.quantity || DEMO_ADD_PRODUCT.quantity,
+    weight: catalogItem.weight || DEMO_ADD_PRODUCT.weight,
+    b2bDiscount: catalogItem.b2bDiscount || DEMO_ADD_PRODUCT.b2bDiscount,
+    minB2bQuantity:
+      catalogItem.minB2bQuantity || DEMO_ADD_PRODUCT.minB2bQuantity,
+    feature: catalogItem.feature || DEMO_ADD_PRODUCT.feature,
+    additionalInformation:
+      catalogItem.additionalInformation ||
+      DEMO_ADD_PRODUCT.additionalInformation,
+    specifications:
+      catalogItem.specifications || DEMO_ADD_PRODUCT.specifications,
+    bulkEnabled: catalogItem.bulkEnabled ?? DEMO_ADD_PRODUCT.bulkEnabled,
+    bulkTiers: catalogItem.bulkTiers || DEMO_ADD_PRODUCT.bulkTiers,
+    otherImages: catalogItem.otherImages || [],
+  }
+}
 
 // ── Supplier promo codes ──────────────────────────────────────────
 export const DEMO_SUPPLIER_PROMO_CODES = [
@@ -3158,9 +3208,16 @@ export const DEMO_SUPPLIER_PROMO_CODES = [
   },
 ];
 
-const DEMO_QUICK_SET_PRODUCT = DEMO_SUPPLIER_PRODUCTS.find(
-  (item) => item.product?.title === 'Portland Cement Quick Set',
-);
+const DEMO_QUICK_SET_PRODUCT =
+  DEMO_SUPPLIER_PRODUCTS.find(
+    (item) => item.productTypeId === 'rapid-setting-fast-drying-cement',
+  ) ||
+  DEMO_SUPPLIER_PRODUCTS.find((item) =>
+    String(item.product?.title || '')
+      .toLowerCase()
+      .includes('portland'),
+  ) ||
+  DEMO_SUPPLIER_PRODUCTS[0]
 
 export const DEMO_SUPPLIER_PROMO_PRODUCT_OPTIONS = Array.from(
   new Map(

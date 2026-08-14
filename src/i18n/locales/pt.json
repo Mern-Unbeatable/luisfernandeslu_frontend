@@ -1145,6 +1145,11 @@
         "submit": "SUBMETER",
         "selectWarehouse": "Selecionar armazém"
       },
+      "edit": {
+        "title": "Editar produto",
+        "breadcrumb": "Produto > Editar produto",
+        "submit": "ATUALIZAR"
+      },
       "csv": {
         "title": "Carregue o seu ficheiro",
         "hint": "Apenas CSV · Máx. 10 MB",

@@ -1145,6 +1145,11 @@
         "submit": "ENVIAR",
         "selectWarehouse": "Seleccionar almacén"
       },
+      "edit": {
+        "title": "Editar producto",
+        "breadcrumb": "Producto > Editar producto",
+        "submit": "ACTUALIZAR"
+      },
       "csv": {
         "title": "Sube tu archivo",
         "hint": "Solo CSV · Máx. 10 MB",

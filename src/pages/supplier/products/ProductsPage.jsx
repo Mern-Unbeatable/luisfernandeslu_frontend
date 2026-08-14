@@ -1,17 +1,17 @@
-import { useMemo, useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Pagination from '@/components/common/Pagination/Pagination';
-import ProductCard from '@/components/data-display/ProductCard/ProductCard';
-import Seo from '@/components/common/Seo/Seo';
-import { useUploadProductsCsvMutation } from '@/features/products/productApi';
+import { useMemo, useState } from 'react'
+import { FiChevronDown } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import Pagination from '@/components/common/Pagination/Pagination'
+import ProductCard from '@/components/data-display/ProductCard/ProductCard'
+import Seo from '@/components/common/Seo/Seo'
+import { useUploadProductsCsvMutation } from '@/features/products/productApi'
 import {
   DEMO_SUPPLIER_PRODUCTS,
-  DEMO_SUPPLIER_PRODUCT_CATEGORIES,
   SUPPLIER_PRODUCTS_PAGE_SIZE,
-} from '@/data/demoData';
-import UploadCsvModal from './UploadCsvModal';
+} from '@/data/demoData'
+import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import UploadCsvModal from './UploadCsvModal'
 
 const TAB_CONFIG = [
   { id: 'all', labelKey: 'panel.supplierProducts.tabAll' },
@@ -20,72 +20,76 @@ const TAB_CONFIG = [
   { id: 'regular', labelKey: 'panel.supplierProducts.tabRegular' },
   { id: 'bulk_order', labelKey: 'panel.supplierProducts.tabBulkOrder' },
   { id: 'featured', labelKey: 'panel.supplierProducts.tabFeatured' },
-];
-
-const CATEGORY_LABEL_KEYS = {
-  'cement-mortar-concrete':
-    'panel.supplierProducts.categories.cementMortarConcrete',
-  aggregates: 'panel.supplierProducts.categories.aggregates',
-  'steel-rebar': 'panel.supplierProducts.categories.steelRebar',
-};
+]
 
 export default function ProductsPage() {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('all');
-  const [category, setCategory] = useState('all');
-  const [page, setPage] = useState(1);
-  const [csvOpen, setCsvOpen] = useState(false);
-  const [products, setProducts] = useState(DEMO_SUPPLIER_PRODUCTS);
-  const [uploadProductsCsv] = useUploadProductsCsvMutation();
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('all')
+  const [category, setCategory] = useState('all')
+  const [page, setPage] = useState(1)
+  const [csvOpen, setCsvOpen] = useState(false)
+  const [products, setProducts] = useState(DEMO_SUPPLIER_PRODUCTS)
+  const [uploadProductsCsv] = useUploadProductsCsvMutation()
 
   // TODO: replace DEMO_* with supplier products API fetch
 
+  const categoryProducts = useMemo(() => {
+    if (category === 'all') return products
+    return products.filter((item) => item.categoryId === category)
+  }, [products, category])
+
   const tabCounts = useMemo(() => {
-    const counts = { all: products.length };
+    const counts = { all: categoryProducts.length }
 
     TAB_CONFIG.slice(1).forEach((tab) => {
-      counts[tab.id] = products.filter((item) => item.tab === tab.id).length;
-    });
+      counts[tab.id] = categoryProducts.filter(
+        (item) => item.tab === tab.id,
+      ).length
+    })
 
-    return counts;
-  }, [products]);
+    return counts
+  }, [categoryProducts])
 
   const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      if (activeTab !== 'all' && item.tab !== activeTab) return false;
-      if (category !== 'all' && item.categoryId !== category) return false;
-      return true;
-    });
-  }, [products, activeTab, category]);
+    if (activeTab === 'all') return categoryProducts
+    return categoryProducts.filter((item) => item.tab === activeTab)
+  }, [categoryProducts, activeTab])
 
   const totalPages = Math.max(
     1,
     Math.ceil(filteredProducts.length / SUPPLIER_PRODUCTS_PAGE_SIZE),
-  );
-  const safePage = Math.min(page, totalPages);
+  )
+  const safePage = Math.min(page, totalPages)
 
   const visibleProducts = useMemo(() => {
-    const start = (safePage - 1) * SUPPLIER_PRODUCTS_PAGE_SIZE;
-    return filteredProducts.slice(start, start + SUPPLIER_PRODUCTS_PAGE_SIZE);
-  }, [filteredProducts, safePage]);
+    const start = (safePage - 1) * SUPPLIER_PRODUCTS_PAGE_SIZE
+    return filteredProducts.slice(start, start + SUPPLIER_PRODUCTS_PAGE_SIZE)
+  }, [filteredProducts, safePage])
 
-  const categoryOptions = DEMO_SUPPLIER_PRODUCT_CATEGORIES.map((option) => ({
-    value: option.value,
-    label: option.labelKey
-      ? t(option.labelKey)
-      : t(CATEGORY_LABEL_KEYS[option.value], { defaultValue: option.label }),
-  }));
+  const categoryOptions = useMemo(
+    () => [
+      {
+        value: 'all',
+        label: t('panel.supplierProducts.allCategories'),
+      },
+      ...PRODUCT_CATEGORIES.map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    ],
+    [t],
+  )
 
   const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-    setPage(1);
-  };
+    setActiveTab(tabId)
+    setPage(1)
+  }
 
   const handleCategoryChange = (value) => {
-    setCategory(value);
-    setPage(1);
-  };
+    setCategory(value)
+    setPage(1)
+  }
 
   return (
     <>
@@ -122,8 +126,8 @@ export default function ProductsPage() {
       <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
         <div className='inline-flex w-full max-w-full overflow-x-auto rounded-lg bg-white p-1 scrollbar-hide sm:w-fit'>
           {TAB_CONFIG.map((tab) => {
-            const isActive = tab.id === activeTab;
-            const count = tabCounts[tab.id] ?? 0;
+            const isActive = tab.id === activeTab
+            const count = tabCounts[tab.id] ?? 0
 
             return (
               <button
@@ -138,7 +142,7 @@ export default function ProductsPage() {
               >
                 {t(tab.labelKey)} ({count})
               </button>
-            );
+            )
           })}
         </div>
 
@@ -146,11 +150,11 @@ export default function ProductsPage() {
           <span className='text-sm font-medium text-[var(--primary-text)]'>
             {t('panel.supplierProducts.filters')}
           </span>
-          <label className='relative inline-flex min-w-[160px] items-center'>
+          <label className='relative inline-flex min-w-0 max-w-full items-center sm:min-w-[160px]'>
             <select
               value={category}
               onChange={(event) => handleCategoryChange(event.target.value)}
-              className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
+              className='h-10 w-full max-w-[min(100%,18rem)] cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
               aria-label={t('panel.supplierProducts.allCategories')}
             >
               {categoryOptions.map((option) => (
@@ -160,7 +164,7 @@ export default function ProductsPage() {
               ))}
             </select>
             <FiChevronDown
-              className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
+              className='pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]'
               aria-hidden
             />
           </label>
@@ -182,8 +186,8 @@ export default function ProductsPage() {
                   onCardClick={() => navigate(`/supplier/products/${item.id}`)}
                   onAction={(actionId) => {
                     if (actionId === 'edit') {
-                      navigate(`/supplier/products/${item.id}`);
-                      return;
+                      navigate(`/supplier/products/${item.id}/edit`)
+                      return
                     }
                     // TODO: wire remaining product actions to API handlers
                   }}
@@ -216,11 +220,11 @@ export default function ProductsPage() {
         onClose={() => setCsvOpen(false)}
         uploadCsv={uploadProductsCsv}
         onImported={(items) => {
-          setProducts((prev) => [...items, ...prev]);
-          setActiveTab('all');
-          setPage(1);
+          setProducts((prev) => [...items, ...prev])
+          setActiveTab('all')
+          setPage(1)
         }}
       />
     </>
-  );
+  )
 }
