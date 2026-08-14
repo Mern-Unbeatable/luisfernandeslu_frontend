@@ -87,9 +87,9 @@ export default function AddInventoryProductModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl"
+        className="relative z-10 flex max-h-[min(85vh,560px)] w-full max-w-md flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
       >
-        <div className="flex items-start gap-3 border-b border-gray-200 px-5 py-4">
+        <div className="flex shrink-0 items-start gap-3 border-b border-gray-200 px-5 py-4">
           <span
             className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600"
             aria-hidden
@@ -121,8 +121,8 @@ export default function AddInventoryProductModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 px-5 py-5">
+        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+          <div className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
             <label className="block">
               <span className="mb-2 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
                 <FiBox className="size-3.5 shrink-0" aria-hidden />
@@ -251,7 +251,7 @@ export default function AddInventoryProductModal({
             </label>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 border-t border-gray-200 px-5 py-4">
+          <div className="grid shrink-0 grid-cols-2 gap-3 border-t border-gray-200 bg-white px-5 py-4">
             <button
               type="button"
               onClick={onClose}

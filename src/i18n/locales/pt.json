@@ -1453,6 +1453,7 @@
       "actionDelete": "Eliminar",
       "actionSeeDetails": "Ver detalhes",
       "emptyProducts": "Nenhum produto de inventário encontrado.",
+      "searchPlaceholder": "Pesquisar inventário, produto, SKU, fábrica, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",

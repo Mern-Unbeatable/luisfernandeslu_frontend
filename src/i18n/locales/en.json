@@ -1455,6 +1455,7 @@
       "actionDelete": "Delete",
       "actionSeeDetails": "See Details",
       "emptyProducts": "No inventory products found.",
+      "searchPlaceholder": "Search inventory, product, SKU, factory, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
