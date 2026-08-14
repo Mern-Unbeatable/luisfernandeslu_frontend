@@ -1325,6 +1325,7 @@
       "notFound": "Pedido no encontrado.",
       "backToOrders": "Volver a pedidos",
       "emptyOrders": "No se encontraron pedidos.",
+      "searchPlaceholder": "Buscar ID, empresa, cliente, email, estado...",
       "previous": "Anterior",
       "next": "Siguiente",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"

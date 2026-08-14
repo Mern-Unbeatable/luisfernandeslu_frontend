@@ -1327,6 +1327,7 @@
       "notFound": "Order not found.",
       "backToOrders": "Back to orders",
       "emptyOrders": "No orders found.",
+      "searchPlaceholder": "Search order ID, company, customer, email, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results"

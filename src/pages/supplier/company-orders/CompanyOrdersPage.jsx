@@ -42,6 +42,7 @@ export default function CompanyOrdersPage() {
   const [activeTab, setActiveTab] = useState(TAB_IDS.direct);
   const [companyFilter, setCompanyFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState(DEMO_SUPPLIER_COMPANY_ORDERS.orders);
 
@@ -169,14 +170,68 @@ export default function CompanyOrdersPage() {
     [t, handleAcceptOrder, handleStatusChange, navigate],
   );
 
+  const companyLabelById = useMemo(
+    () =>
+      Object.fromEntries(
+        DEMO_SUPPLIER_COMPANY_ORDER_COMPANIES.map((company) => [
+          company.value,
+          company.label,
+        ]),
+      ),
+    [],
+  );
+
   const filteredOrders = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
     return orders.filter((row) => {
       if (row.tab !== activeTab) return false;
       if (companyFilter !== 'all' && row.companyId !== companyFilter) return false;
       if (statusFilter !== 'all' && row.status !== statusFilter) return false;
-      return true;
+      if (!q) return true;
+
+      const statusLabel = (
+        row.statusLabel || t(STATUS_LABEL_KEYS[row.status] || '')
+      ).toLowerCase();
+      const companyLabel = (
+        companyLabelById[row.companyId] || row.companyName || row.customerName || ''
+      ).toLowerCase();
+
+      if (activeTab === TAB_IDS.direct) {
+        return (
+          String(row.orderId).toLowerCase().includes(q) ||
+          String(row.customerName).toLowerCase().includes(q) ||
+          companyLabel.includes(q) ||
+          String(row.email).toLowerCase().includes(q) ||
+          String(row.items).toLowerCase().includes(q) ||
+          String(row.total).toLowerCase().includes(q) ||
+          String(row.status).toLowerCase().includes(q) ||
+          statusLabel.includes(q) ||
+          String(row.date).toLowerCase().includes(q)
+        );
+      }
+
+      return (
+        String(row.orderId).toLowerCase().includes(q) ||
+        String(row.companyName).toLowerCase().includes(q) ||
+        companyLabel.includes(q) ||
+        String(row.total).toLowerCase().includes(q) ||
+        String(row.installmentAmount).toLowerCase().includes(q) ||
+        String(row.installmentNumber).toLowerCase().includes(q) ||
+        String(row.status).toLowerCase().includes(q) ||
+        statusLabel.includes(q) ||
+        String(row.date).toLowerCase().includes(q)
+      );
     });
-  }, [orders, activeTab, companyFilter, statusFilter]);
+  }, [
+    orders,
+    activeTab,
+    companyFilter,
+    statusFilter,
+    search,
+    companyLabelById,
+    t,
+  ]);
 
   const total = filteredOrders.length;
   const pageCount = Math.max(
@@ -405,6 +460,13 @@ export default function CompanyOrdersPage() {
           actionHeader={t('panel.supplierCompanyOrders.colAction')}
           emptyMessage={t('panel.supplierCompanyOrders.emptyOrders')}
           showPagination
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t('panel.supplierCompanyOrders.searchPlaceholder')}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_COMPANY_ORDERS_PAGE_SIZE,
