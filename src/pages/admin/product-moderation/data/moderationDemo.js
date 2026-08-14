@@ -44,8 +44,8 @@ function buildCardProduct(index) {
     image: CARD_IMG,
     title,
     description: CARD_DESCRIPTION,
-    price: `$${price}`,
-    priceText: `Price: $${price} per bag (50 kg)`,
+    price: `€${price}`,
+    priceText: `Price: €${price} per bag (50 kg)`,
     unit: 'bag (50 kg)',
   }
 }

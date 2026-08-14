@@ -131,7 +131,7 @@ export function RevenueExpensesProfitChart() {
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
           },
         },
       },
@@ -148,7 +148,7 @@ export function RevenueExpensesProfitChart() {
             stepSize: 5000,
             color: '#9ca3af',
             font: { size: 11 },
-            callback: (value) => `$${value / 1000}k`,
+            callback: (value) => `€${value / 1000}k`,
           },
           grid: { color: '#f3f4f6' },
           border: { display: false },
@@ -300,7 +300,7 @@ export function SalesByCustomerTypeChart() {
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
           },
         },
       },
@@ -317,7 +317,7 @@ export function SalesByCustomerTypeChart() {
             stepSize: 2500,
             color: '#9ca3af',
             font: { size: 11 },
-            callback: (value) => `$${value / 1000}k`,
+            callback: (value) => `€${value / 1000}k`,
           },
           grid: { color: '#f3f4f6' },
           border: { display: false },

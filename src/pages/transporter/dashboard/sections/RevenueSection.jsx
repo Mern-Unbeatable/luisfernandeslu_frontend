@@ -76,7 +76,7 @@ export default function RevenueSection() {
             return `${context[0].label}, 2026`
           },
           label: (context) => {
-            return `$${context.raw.toFixed(2)}`
+            return `€${context.raw.toFixed(2)}`
           },
         },
       },
@@ -105,7 +105,7 @@ export default function RevenueSection() {
           font: {
             size: 11,
           },
-          callback: (value) => `$${value}`,
+          callback: (value) => `€${value}`,
         },
         grid: {
           color: '#f3f4f6',

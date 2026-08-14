@@ -5,11 +5,11 @@ const CHART_HEIGHT = 280
 const PADDING = { top: 12, right: 16, bottom: 32, left: 52 }
 
 function formatCurrency(value) {
-  return `$${value.toFixed(2)}`
+  return `€${value.toFixed(2)}`
 }
 
 function formatAxisLabel(value) {
-  return `$${value}`
+  return `€${value}`
 }
 
 function buildSmoothPath(points) {

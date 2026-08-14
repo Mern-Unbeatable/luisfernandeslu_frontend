@@ -12,7 +12,7 @@ export default function StatsSection() {
         <StatusCard
           variant="filled"
           label="Total Earnings"
-          value="$580K"
+          value="€580K"
           description="All time"
           icon={FiDollarSign}
         />
@@ -25,7 +25,7 @@ export default function StatsSection() {
         <StatusCard
           variant="summary"
           label="Available Balance"
-          value="$36,800"
+          value="€36,800"
           description={
             <span
               onClick={() => setShowModal(true)}
@@ -38,9 +38,9 @@ export default function StatsSection() {
         <StatusCard
           variant="summary"
           label="Pending Earnings"
-          value="$26,500"
+          value="€26,500"
         />
-        <StatusCard variant="summary" label="Monthly Average" value="$97K" />
+        <StatusCard variant="summary" label="Monthly Average" value="€97K" />
       </div>
 
       {/* Withdraw Funds Modal */}

@@ -39,11 +39,11 @@ export default function BulkOptionSection({
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>
-                <Field label="Price ($)">
+                <Field label="Price (€)">
                   <TextInput
                     value={tier.price}
                     onChange={(value) => updateTier(tier.id, 'price', value)}
-                    placeholder="$40.00"
+                    placeholder="€40.00"
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>

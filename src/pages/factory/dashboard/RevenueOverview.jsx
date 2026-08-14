@@ -93,7 +93,7 @@ export default function RevenueOverview({
         padding: 10,
         displayColors: false,
         callbacks: {
-          label: (context) => `$${Number(context.raw).toLocaleString()}`,
+          label: (context) => `€${Number(context.raw).toLocaleString()}`,
         },
       },
     },
@@ -113,7 +113,7 @@ export default function RevenueOverview({
           stepSize: 2000,
           color: '#9ca3af',
           font: { size: 11 },
-          callback: (value) => `$${value}`,
+          callback: (value) => `€${value}`,
         },
         grid: {
           color: '#e5e7eb',

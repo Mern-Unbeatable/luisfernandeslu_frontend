@@ -114,7 +114,7 @@ export default function ChartsSection({ channel = 'all' }) {
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: $${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
           },
         },
       },

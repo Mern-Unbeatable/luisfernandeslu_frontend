@@ -9,21 +9,21 @@ export function normalizeProductSlug(param = '') {
 function formatDetailPrice(priceText, priceValue) {
   if (priceText) {
     const cleaned = priceText.replace(/^Price:\s*/i, '').trim()
-    const match = cleaned.match(/^\$?([\d.]+)\s*(?:per\s+(.+))?$/i)
+    const match = cleaned.match(/^[€$]?([\d.]+)\s*(?:per\s+(.+))?$/i)
     if (match) {
-      const amount = `$${match[1]}`
+      const amount = `€${match[1]}`
       const unit = match[2]
       return unit ? `${amount} Per ${unit}` : amount
     }
     return cleaned
   }
-  if (priceValue != null) return `$${priceValue}.00`
+  if (priceValue != null) return `€${priceValue}.00`
   return DEMO_PRODUCT.priceText
 }
 
 function templatePriceValue(template) {
   if (template.priceValue != null) return template.priceValue
-  const match = template.priceText?.match(/\$?([\d.]+)/)
+  const match = template.priceText?.match(/[€$]?([\d.]+)/)
   return match ? Number(match[1]) : 0
 }
 
@@ -64,7 +64,7 @@ export function getProductDetailBySlug(rawSlug) {
     sku: `A${String(priceValue).padStart(6, '0').slice(0, 6)}`,
     category: 'Building Materials',
     priceText,
-    price: `$${priceValue}.00`,
+    price: `€${priceValue}.00`,
     images: [template.image, template.image, template.image, template.image],
     descriptionParagraphs: [
       template.description,

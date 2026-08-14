@@ -9,7 +9,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-001',
     customer: 'Downtown Construction Co.',
-    amount: '$285.00',
+    amount: '€285.00',
     date: '2024-05-28',
   },
   {
@@ -17,7 +17,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-002',
     customer: 'West Side Building Project',
-    amount: '$180.00',
+    amount: '€180.00',
     date: '2024-05-27',
   },
   {
@@ -25,7 +25,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-003',
     customer: 'Suburban Housing Development',
-    amount: '$420.00',
+    amount: '€420.00',
     date: '2024-05-26',
   },
   {
@@ -33,7 +33,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-004',
     customer: 'Tax Authority',
-    amount: '$3,450.00',
+    amount: '€3,450.00',
     date: '2024-05-01',
   },
   {
@@ -41,7 +41,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-025',
     customer: 'Content Creation',
-    amount: '$4,250.00',
+    amount: '€4,250.00',
     date: '2024-05-22',
   },
   {
@@ -49,7 +49,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-026',
     customer: 'Harbor Bridge Works',
-    amount: '$960.00',
+    amount: '€960.00',
     date: '2024-05-20',
   },
   {
@@ -57,7 +57,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-027',
     customer: 'Metro Construction LLC',
-    amount: '$1,120.00',
+    amount: '€1,120.00',
     date: '2024-05-18',
   },
   {
@@ -65,7 +65,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-028',
     customer: 'Riverside Housing Co.',
-    amount: '$540.00',
+    amount: '€540.00',
     date: '2024-05-15',
   },
   {
@@ -73,7 +73,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-029',
     customer: 'Skyline Developers',
-    amount: '$2,780.00',
+    amount: '€2,780.00',
     date: '2024-05-12',
   },
   {
@@ -81,7 +81,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-030',
     customer: 'Greenfield Estates',
-    amount: '$675.00',
+    amount: '€675.00',
     date: '2024-05-10',
   },
   {
@@ -89,7 +89,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-031',
     customer: 'Central Plaza Project',
-    amount: '$1,890.00',
+    amount: '€1,890.00',
     date: '2024-05-08',
   },
   {
@@ -97,7 +97,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-032',
     customer: 'Oakwood Builders',
-    amount: '$310.00',
+    amount: '€310.00',
     date: '2024-05-05',
   },
   {
@@ -105,7 +105,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-033',
     customer: 'Summit Concrete Supply',
-    amount: '$2,150.00',
+    amount: '€2,150.00',
     date: '2024-05-03',
   },
   {
@@ -113,7 +113,7 @@ const DUMMY_INVOICES = [
     type: 'Invoice',
     orderId: 'ORD-034',
     customer: 'Lakeview Contractors',
-    amount: '$890.00',
+    amount: '€890.00',
     date: '2024-05-02',
   },
 ]

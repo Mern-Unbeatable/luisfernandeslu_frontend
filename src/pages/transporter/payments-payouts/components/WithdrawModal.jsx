@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { FiX } from 'react-icons/fi'
 
 export default function WithdrawModal({ isOpen, onClose, onSubmit }) {
-  const [amount, setAmount] = useState('$400.00')
+  const [amount, setAmount] = useState('€400.00')
   const [businessName, setBusinessName] = useState('Marlin Transport & Logistics')
   const [routingNumber, setRoutingNumber] = useState('021000021')
   const [accountNumber, setAccountNumber] = useState('458721369845')

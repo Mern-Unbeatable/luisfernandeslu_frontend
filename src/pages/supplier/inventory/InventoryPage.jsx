@@ -136,7 +136,7 @@ export default function InventoryPage() {
       productName: row.productName,
       sku: row.sku,
       totalQuantity: String(row.currentStock),
-      price: row.price.replace('$', ''),
+      price: row.price.replace('€', ''),
       factoryName: row.factoryName,
     });
     setAddModalOpen(true);
@@ -296,9 +296,9 @@ export default function InventoryPage() {
                   productName: payload.productName,
                   sku: payload.sku,
                   currentStock: stock,
-                  price: payload.price.startsWith('$')
+                  price: payload.price.startsWith('€')
                     ? payload.price
-                    : `$${payload.price}`,
+                    : `€${payload.price}`,
                   factoryName: payload.factoryName,
                   factoryId: factoryMatch?.value || item.factoryId,
                   warehouseLocation:
@@ -320,9 +320,9 @@ export default function InventoryPage() {
             productName: payload.productName,
             sku: payload.sku,
             currentStock: stock,
-            price: payload.price.startsWith('$')
+            price: payload.price.startsWith('€')
               ? payload.price
-              : `$${payload.price}`,
+              : `€${payload.price}`,
             factoryId: factoryMatch?.value || 'steelco-manufacturing',
             factoryName: payload.factoryName,
             warehouseLocation: warehouse?.label || '',

@@ -14,37 +14,37 @@ export const ADMIN_DASHBOARD_CHANNELS = ['all', 'b2b', 'b2c']
 export const ADMIN_DASHBOARD_METRICS = [
   {
     id: 'totalGmv',
-    value: '$45.2M',
+    value: '€45.2M',
     icon: FiDollarSign,
     iconTone: 'brand',
   },
   {
     id: 'b2bGmv',
-    value: '$32.8M',
+    value: '€32.8M',
     icon: FiBriefcase,
     iconTone: 'teal',
   },
   {
     id: 'b2cGmv',
-    value: '$12.4M',
+    value: '€12.4M',
     icon: FiShoppingCart,
     iconTone: 'warning',
   },
   {
     id: 'totalRevenue',
-    value: '$4.52M',
+    value: '€4.52M',
     icon: FiTrendingUp,
     iconTone: 'purple',
   },
   {
     id: 'commission',
-    value: '$562K',
+    value: '€562K',
     icon: FiDollarSign,
     iconTone: 'red',
   },
   {
     id: 'avgOrderValue',
-    value: '$3,240',
+    value: '€3,240',
     icon: FiShoppingCart,
     iconTone: 'brand',
   },
@@ -132,7 +132,7 @@ export const ADMIN_ORDER_B2C = [280, 260, 310, 290, 340, 370, 390, 360, 410, 380
 
 export const ADMIN_PERFORMANCE = {
   retention: { b2b: 78, b2c: 45 },
-  ltv: { b2b: '$12,450', b2c: '$890' },
+  ltv: { b2b: '€12,450', b2c: '€890' },
   repurchase: { b2b: 65, b2c: 32 },
 }
 

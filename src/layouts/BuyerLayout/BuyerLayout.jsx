@@ -126,7 +126,7 @@ export default function BuyerLayout({
   }, [menuOpen])
 
   return (
-    <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-white">
+    <div className="flex min-h-screen w-full flex-col bg-white">
       <Seo />
       <Header />
       <CategoryBar />
@@ -198,7 +198,7 @@ export default function BuyerLayout({
 
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-[5%]">
           {/* Desktop sidebar — % of row */}
-          <div className="hidden w-full shrink-0 lg:block lg:w-[22%]">
+          <div className="hidden w-full shrink-0 lg:block lg:w-[22%] lg:sticky lg:top-38 lg:self-start">
             <BuyerSidebar items={roleConfig.nav} onLogout={onLogout} />
           </div>
 

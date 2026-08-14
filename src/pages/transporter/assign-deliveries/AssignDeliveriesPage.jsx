@@ -14,7 +14,7 @@ export default function AssignDeliveriesPage() {
       id: 'del-001',
       title: 'Premium Portland Cement',
       orderLabel: 'Auction ID: AUC-001',
-      price: '$8,500',
+      price: '€8,500',
       distance: '32 km',
       status: 'assigned',
       pickup: {
@@ -30,7 +30,7 @@ export default function AssignDeliveriesPage() {
       id: 'del-002',
       title: 'TMT Steel Rods ( 12mm )',
       orderLabel: 'Auction ID: AUC-002',
-      price: '$8,500',
+      price: '€8,500',
       distance: '18 km',
       status: 'picked_up',
       pickup: {
@@ -46,7 +46,7 @@ export default function AssignDeliveriesPage() {
       id: 'del-003',
       title: 'Red Bricks',
       orderLabel: 'Auction ID: AUC-003',
-      price: '$8,500',
+      price: '€8,500',
       distance: '18 km',
       status: 'in_transit',
       pickup: {
@@ -103,7 +103,7 @@ export default function AssignDeliveriesPage() {
       ...item,
       auctionId: item.orderLabel?.replace('Auction ID: ', '') || 'AUC-001',
       auctionDate: 'May 18, 2026',
-      deliveryCharge: item.price || '$2000.00',
+      deliveryCharge: item.price || '€2000.00',
       customer: {
         name: 'Sarah Johnson',
         phone: '+1 (555) 234-5678',

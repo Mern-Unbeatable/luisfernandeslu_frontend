@@ -27,7 +27,7 @@ function toDetailStatus(status) {
 
 function formatStatValue(value, format) {
   if (format === 'currency') {
-    return `$${value.toLocaleString('en-US')}`;
+    return `€${value.toLocaleString('en-US')}`;
   }
   return String(value);
 }

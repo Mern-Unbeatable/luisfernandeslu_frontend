@@ -46,7 +46,7 @@ export function getAdminDeliveryDetail(id) {
     status: item.status,
     auctionId: referenceId,
     auctionDate: 'May 18, 2026',
-    deliveryCharge: '$2000.00',
+    deliveryCharge: '€2000.00',
     customer: {
       ...MOCK_CUSTOMER,
       deliveryAddress:
@@ -75,7 +75,7 @@ export function getAdminDeliveryDetail(id) {
             sku: 'EXC-HD-2024',
             quantity: '500 bags (50kg each)',
             weight: '25000 kg',
-            price: '$85,000',
+            price: '€85,000',
           }
         : {
             name: item.title,
@@ -84,7 +84,7 @@ export function getAdminDeliveryDetail(id) {
               ? '500 bags (50kg each)'
               : '1 unit',
             weight: '25000 kg',
-            price: item.price || '$85,000',
+            price: item.price || '€85,000',
           },
   }
 

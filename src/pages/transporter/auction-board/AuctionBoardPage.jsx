@@ -168,7 +168,7 @@ export default function AuctionBoardPage() {
       ...auction,
       auctionId: auction.auctionId || 'ORD-: AUC-001',
       auctionDate: auction.dateLabel || 'May 18, 2026',
-      deliveryCharge: auction.deliveryCharge || '$2000.00',
+      deliveryCharge: auction.deliveryCharge || '€2000.00',
       customer: {
         name: 'Sarah Johnson',
         phone: '+1 (555) 234-5678',
@@ -180,7 +180,7 @@ export default function AuctionBoardPage() {
         sku: 'EXC-HD-2024',
         quantity: auction.quantity || '500 bags (50kg each)',
         weight: '25000 kg',
-        price: '$85,000',
+        price: '€85,000',
       },
       shipping: {
         pickupLocation: auction.pickupLocation || 'Ambuja Cement Factory, Kalyan',

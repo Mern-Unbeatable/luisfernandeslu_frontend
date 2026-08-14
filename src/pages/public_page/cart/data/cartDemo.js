@@ -49,7 +49,7 @@ export const DEMO_CART_ITEMS = [
 export const CART_FEE_RATES = {
   shipping: 20,
   vat: 4,
-  currency: 'USD',
+  currency: 'EUR',
 }
 
 export function lineSubtotal(item) {

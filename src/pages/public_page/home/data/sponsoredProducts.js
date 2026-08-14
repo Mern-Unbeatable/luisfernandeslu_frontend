@@ -21,7 +21,7 @@ const CORE_SPONSORED = [
     title: 'Industrial Steel Beams',
     description:
       'High quality steel beams for all commercial construction projects today.',
-    price: '$150',
+    price: '€150',
     unit: 'units',
     minOrder: '10 units',
     company: 'SteelWorks Inc',
@@ -34,7 +34,7 @@ const CORE_SPONSORED = [
     title: 'Industrial LED Lighting System',
     description:
       'Energy efficient LED lighting for warehouses and factory floor areas.',
-    price: '$45',
+    price: '€45',
     unit: 'units',
     minOrder: '20 units',
     company: 'BrightTech Solutions',
@@ -47,7 +47,7 @@ const CORE_SPONSORED = [
     title: 'Hydraulic Forklift 3-Ton',
     description:
       'Heavy duty forklift built for industrial material handling work sites.',
-    price: '$12500',
+    price: '€12500',
     unit: 'units',
     minOrder: '1 units',
     company: 'HeavyLift Equipment',
@@ -60,7 +60,7 @@ const CORE_SPONSORED = [
     title: 'Portland Cement',
     description:
       'High strength cement suitable for construction and masonry projects today.',
-    price: '$115',
+    price: '€115',
     unit: 'bag (50 kg)',
     minOrder: '50 bags',
     company: 'BuildMart Supply',
@@ -73,7 +73,7 @@ const CORE_SPONSORED = [
     title: 'Safety Helmets Bulk Pack',
     description:
       'ANSI certified hard hats for site crews and contractor teams.',
-    price: '$28',
+    price: '€28',
     unit: 'units',
     minOrder: '25 units',
     company: 'SafeGuard Industrial',
@@ -86,7 +86,7 @@ const CORE_SPONSORED = [
     title: 'Heavy-Duty Warehouse Pallets',
     description:
       'Reinforced warehouse pallets for logistics and storage operations at scale.',
-    price: '$32',
+    price: '€32',
     unit: 'units',
     minOrder: '100 units',
     company: 'LogiPack Co',
