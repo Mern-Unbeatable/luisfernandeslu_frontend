@@ -1148,20 +1148,17 @@
         "selectWarehouse": "Select warehouse"
       },
       "csv": {
-        "title": "Upload CSV File",
-        "subtitle": "Import multiple products using the required column format.",
+        "title": "Upload your file",
+        "hint": "CSV only · Max 10 MB",
         "close": "Close",
-        "closeOverlay": "Close upload dialog",
-        "dropTitle": "Drag and drop your CSV here",
-        "dropHint": "Or click to browse. CSV files only.",
-        "requiredTitle": "Required columns",
-        "requiredBody": "Your file must include these headers, matching the product form fields:",
-        "exampleTitle": "Example CSV structure",
-        "downloadDemo": "Download Demo CSV",
-        "cancel": "Cancel",
-        "submit": "Upload CSV",
+        "closeOverlay": "Close overlay",
+        "dropTitle": "Drop your CSV here, or click to browse",
+        "dropNote": "We'll queue it as soon as you click Queue Import.",
+        "selected": "Selected: {{name}}",
+        "browseAria": "Browse CSV file",
+        "downloadExample": "Download example",
+        "queueImport": "Queue Import",
         "uploading": "Uploading…",
-        "complete": "Complete",
         "fileRequired": "Please choose a CSV file first.",
         "invalidFormat": "File format is not CSV. Please upload a .csv file.",
         "emptyFile": "The CSV file is empty.",
@@ -1170,9 +1167,7 @@
         "rowMissingField": "Row {{row}}: missing required value for {{column}}.",
         "rowInvalidPrice": "Row {{row}}: {{column}} must be a valid number.",
         "rowInvalidTag": "Row {{row}}: tag must be regular, bulk_order, featured, or pending.",
-        "uploadFailed": "Upload failed. Please check the file and try again.",
-        "success": "{{count}} product(s) imported successfully.",
-        "moreErrors": "And {{count}} more issue(s)."
+        "uploadFailed": "Upload failed. Please check the file and try again."
       }
     },
     "supplierPromoCodes": {
