@@ -1152,6 +1152,15 @@
         "breadcrumb": "Product > Edit Product",
         "submit": "UPDATE"
       },
+      "delete": {
+        "title": "Delete product",
+        "message": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "close": "Close",
+        "closeOverlay": "Close overlay"
+      },
       "csv": {
         "title": "Upload your file",
         "hint": "CSV only · Max 10 MB",

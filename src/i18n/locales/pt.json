@@ -1150,6 +1150,15 @@
         "breadcrumb": "Produto > Editar produto",
         "submit": "ATUALIZAR"
       },
+      "delete": {
+        "title": "Eliminar produto",
+        "message": "Tem a certeza de que deseja eliminar \"{{name}}\"? Esta ação não pode ser anulada.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar",
+        "deleting": "A eliminar…",
+        "close": "Fechar",
+        "closeOverlay": "Fechar sobreposição"
+      },
       "csv": {
         "title": "Carregue o seu ficheiro",
         "hint": "Apenas CSV · Máx. 10 MB",

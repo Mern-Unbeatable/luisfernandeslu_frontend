@@ -5,14 +5,17 @@ import { useTranslation } from 'react-i18next'
 import Pagination from '@/components/common/Pagination/Pagination'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import Seo from '@/components/common/Seo/Seo'
-import { useUploadProductsCsvMutation } from '@/features/products/productApi'
+import {
+  useDeleteProductMutation,
+  useUploadProductsCsvMutation,
+} from '@/features/products/productApi'
 import {
   DEMO_SUPPLIER_PRODUCTS,
   SUPPLIER_PRODUCTS_PAGE_SIZE,
 } from '@/data/demoData'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import DeleteProductModal from './DeleteProductModal'
 import UploadCsvModal from './UploadCsvModal'
-
 const TAB_CONFIG = [
   { id: 'all', labelKey: 'panel.supplierProducts.tabAll' },
   { id: 'pending', labelKey: 'panel.supplierProducts.tabPending' },
@@ -29,8 +32,11 @@ export default function ProductsPage() {
   const [category, setCategory] = useState('all')
   const [page, setPage] = useState(1)
   const [csvOpen, setCsvOpen] = useState(false)
+  const [productToDelete, setProductToDelete] = useState(null)
+  const [deleting, setDeleting] = useState(false)
   const [products, setProducts] = useState(DEMO_SUPPLIER_PRODUCTS)
   const [uploadProductsCsv] = useUploadProductsCsvMutation()
+  const [deleteProduct] = useDeleteProductMutation()
 
   // TODO: replace DEMO_* with supplier products API fetch
 
@@ -89,6 +95,53 @@ export default function ProductsPage() {
   const handleCategoryChange = (value) => {
     setCategory(value)
     setPage(1)
+  }
+
+  const handleCardAction = (actionId, item) => {
+    if (actionId === 'edit') {
+      navigate(`/supplier/products/${item.id}/edit`)
+      return
+    }
+    if (actionId === 'delete') {
+      setProductToDelete(item)
+    }
+  }
+
+  const handleConfirmDelete = async (item) => {
+    if (!item?.id || deleting) return
+
+    setDeleting(true)
+
+    try {
+      await Promise.race([
+        deleteProduct(item.id).unwrap(),
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('timeout')), 4000)
+        }),
+      ])
+    } catch {
+      // Keep local delete when the API is unavailable.
+    }
+
+    setProducts((prev) => {
+      const next = prev.filter((product) => product.id !== item.id)
+      const nextFiltered =
+        category === 'all'
+          ? next
+          : next.filter((product) => product.categoryId === category)
+      const nextTabFiltered =
+        activeTab === 'all'
+          ? nextFiltered
+          : nextFiltered.filter((product) => product.tab === activeTab)
+      const nextTotalPages = Math.max(
+        1,
+        Math.ceil(nextTabFiltered.length / SUPPLIER_PRODUCTS_PAGE_SIZE),
+      )
+      setPage((current) => Math.min(current, nextTotalPages))
+      return next
+    })
+    setProductToDelete(null)
+    setDeleting(false)
   }
 
   return (
@@ -184,13 +237,7 @@ export default function ProductsPage() {
                   badge={item.badge}
                   product={item.product}
                   onCardClick={() => navigate(`/supplier/products/${item.id}`)}
-                  onAction={(actionId) => {
-                    if (actionId === 'edit') {
-                      navigate(`/supplier/products/${item.id}/edit`)
-                      return
-                    }
-                    // TODO: wire remaining product actions to API handlers
-                  }}
+                  onAction={(actionId) => handleCardAction(actionId, item)}
                   className='h-full w-full shadow-sm'
                 />
               </li>
@@ -224,6 +271,16 @@ export default function ProductsPage() {
           setActiveTab('all')
           setPage(1)
         }}
+      />
+
+      <DeleteProductModal
+        open={Boolean(productToDelete)}
+        product={productToDelete}
+        deleting={deleting}
+        onClose={() => {
+          if (!deleting) setProductToDelete(null)
+        }}
+        onConfirm={handleConfirmDelete}
       />
     </>
   )

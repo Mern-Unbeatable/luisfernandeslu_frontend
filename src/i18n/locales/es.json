@@ -1150,6 +1150,15 @@
         "breadcrumb": "Producto > Editar producto",
         "submit": "ACTUALIZAR"
       },
+      "delete": {
+        "title": "Eliminar producto",
+        "message": "¿Seguro que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar",
+        "deleting": "Eliminando…",
+        "close": "Cerrar",
+        "closeOverlay": "Cerrar superposición"
+      },
       "csv": {
         "title": "Sube tu archivo",
         "hint": "Solo CSV · Máx. 10 MB",
