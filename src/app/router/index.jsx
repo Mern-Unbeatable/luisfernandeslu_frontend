@@ -21,11 +21,11 @@ import { logout } from "../../features/auth/authSlice";
 
 const Loadable =
   (Component, fallback = <PageSkeleton />) =>
-  (props) => (
-    <Suspense fallback={fallback}>
-      <Component {...props} />
-    </Suspense>
-  );
+    (props) => (
+      <Suspense fallback={fallback}>
+        <Component {...props} />
+      </Suspense>
+    );
 
 /* ─── Public / auth / shared ─────────────────────────────────────── */
 
@@ -774,14 +774,9 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      
 
-            /*
-      Remaining routes are intentionally commented out so only the requested public pages stay active.
-      Other paths will continue to fall back to the ComingSoon view.
-      // Developer docs
-      { path: "/developer", element: <Developer /> },
-      { path: "/developer/:componentId", element: <Developer /> },
+
+
 
       // Company
       {
@@ -836,444 +831,452 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // Supplier
-      {
-        path: '/supplier',
-        element: <ProtectedRoute allowedRoles={['supplier']} />,
-        children: [
-          {
-            element: <PanelShell />,
-            children: [
-              {
-                index: true,
-                element: <SupplierDashboard />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-              {
-                path: 'products',
-                element: <SupplierProducts />,
-                handle: panelSeo('panel.nav.products'),
-              },
-              {
-                path: 'products/add',
-                element: <SupplierAddProduct />,
-                handle: panelSeo('panel.nav.products'),
-              },
-              {
-                path: 'products/:productId',
-                element: <SupplierProductDetail />,
-                handle: panelSeo('panel.nav.products'),
-              },
-              {
-                path: 'promo-codes',
-                element: <SupplierPromoCodes />,
-                handle: panelSeo('panel.nav.promoCode'),
-              },
-              {
-                path: 'promo-codes/create',
-                element: <SupplierCreatePromoCode />,
-                handle: panelSeo('panel.nav.promoCode'),
-              },
-              {
-                path: 'orders-customer/:orderId',
-                element: <SupplierOrderCustomerDetail />,
-                handle: panelSeo(
-                  'panel.supplierCustomerOrders.orderDetailsTitle',
-                ),
-              },
-              {
-                path: 'orders-customer',
-                element: <SupplierOrdersCustomer />,
-                handle: panelSeo('panel.nav.ordersCustomer'),
-              },
-              {
-                path: 'company-orders/:orderId',
-                element: <SupplierOrderCompanyDetail />,
-                handle: panelSeo(
-                  'panel.supplierCompanyOrders.orderDetailsTitle',
-                ),
-              },
-              {
-                path: 'company-orders',
-                element: <SupplierCompanyOrders />,
-                handle: panelSeo('panel.nav.companyOrders'),
-              },
-              {
-                path: 'documents',
-                element: <SupplierDocuments />,
-                handle: panelSeo('panel.nav.document'),
-              },
-              {
-                path: 'chat',
-                element: <SupplierChat />,
-                handle: panelSeo('panel.nav.chat'),
-              },
-              {
-                path: 'buy-from-factory/:productId',
-                element: <SupplierBuyFromFactoryDetail />,
-                handle: panelSeo('panel.nav.buyFromFactory'),
-              },
-              {
-                path: 'buy-from-factory',
-                element: <SupplierBuyFromFactory />,
-                handle: panelSeo('panel.nav.buyFromFactory'),
-              },
-              {
-                path: 'factory-orders/:orderId',
-                element: <SupplierFactoryOrderDetail />,
-                handle: panelSeo('panel.nav.factoryOrder'),
-              },
-              {
-                path: 'factory-orders',
-                element: <SupplierFactoryOrders />,
-                handle: panelSeo('panel.nav.factoryOrder'),
-              },
-              {
-                path: 'inventory',
-                element: <SupplierInventory />,
-                handle: panelSeo('panel.nav.inventory'),
-              },
-              {
-                path: 'delivery-logistics',
-                element: <SupplierDeliveryLogistics />,
-                handle: panelSeo('panel.nav.deliveryLogistics'),
-              },
-              {
-                path: 'payments-finance',
-                element: <SupplierPaymentsFinance />,
-                handle: panelSeo('panel.nav.paymentsFinance'),
-              },
-              {
-                path: 'analytics',
-                element: <SupplierAnalytics />,
-                handle: panelSeo('panel.nav.analytics'),
-              },
-              {
-                path: 'reviews',
-                element: <SupplierReviews />,
-                handle: panelSeo('panel.nav.reviews'),
-              },
-              {
-                path: 'return-requests/:returnId',
-                element: <SupplierReturnRequestDetail />,
-                handle: panelSeo('panel.nav.returnRequests'),
-              },
-              {
-                path: 'return-requests',
-                element: <SupplierReturnRequests />,
-                handle: panelSeo('panel.nav.returnRequests'),
-              },
-              {
-                path: 'disputes/:disputeId',
-                element: <SupplierDisputeDetail />,
-                handle: panelSeo('panel.nav.disputesResolution'),
-              },
-              {
-                path: 'disputes',
-                element: <SupplierDisputes />,
-                handle: panelSeo('panel.nav.disputesResolution'),
-              },
-              {
-                path: 'invoices',
-                element: <SupplierInvoices />,
-                handle: panelSeo('panel.nav.invoices'),
-              },
-              {
-                path: 'profile',
-                element: <SupplierProfile />,
-                handle: panelSeo('panel.nav.profile'),
-              },
-              {
-                path: '*',
-                element: <ComingSoon />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-            ],
-          },
-        ],
-      },
 
-      // Factory
-      {
-        path: '/factory',
-        element: <ProtectedRoute allowedRoles={['factory']} />,
-        children: [
-          {
-            element: <PanelShell />,
-            children: [
-              {
-                index: true,
-                element: <FactoryDashboard />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-              {
-                path: 'products',
-                element: <FactoryProducts />,
-                handle: panelSeo('panel.nav.products'),
-              },
-              {
-                path: 'orders',
-                element: <FactoryOrders />,
-                handle: panelSeo('panel.nav.orders'),
-              },
-              {
-                path: 'chat',
-                element: <FactoryChat />,
-                handle: panelSeo('panel.nav.chat'),
-              },
-              {
-                path: 'delivery-logistics',
-                element: <FactoryDeliveryLogistics />,
-                handle: panelSeo('panel.nav.deliveryLogistics'),
-              },
-              {
-                path: 'invoices',
-                element: <FactoryInvoices />,
-                handle: panelSeo('panel.nav.invoices'),
-              },
-              {
-                path: 'profile',
-                element: <FactoryProfile />,
-                handle: panelSeo('panel.nav.profile'),
-              },
-              {
-                path: '*',
-                element: <ComingSoon />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-            ],
-          },
-        ],
-      },
+      /*
+Remaining routes are intentionally commented out so only the requested public pages stay active.
+Other paths will continue to fall back to the ComingSoon view.
+// Developer docs
+{ path: "/developer", element: <Developer /> },
+{ path: "/developer/:componentId", element: <Developer /> },
 
-      // Transporter
-      {
-        path: '/transporter',
-        element: <ProtectedRoute allowedRoles={['transporter']} />,
-        children: [
-          {
-            element: <PanelShell />,
-            children: [
-              {
-                index: true,
-                element: <TransporterDashboard />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-              {
-                path: 'auction-board',
-                element: <TransporterAuctionBoard />,
-                handle: panelSeo('panel.nav.auctionBoard'),
-              },
-              {
-                path: 'assign-deliveries',
-                element: <TransporterAssignDeliveries />,
-                handle: panelSeo('panel.nav.assignDeliveries'),
-              },
-              {
-                path: 'payments-payouts',
-                element: <TransporterPaymentsPayouts />,
-                handle: panelSeo('panel.nav.paymentsPayouts'),
-              },
-              {
-                path: 'order-history',
-                element: <TransporterOrderHistory />,
-                handle: panelSeo('panel.nav.orderHistory'),
-              },
-              {
-                path: 'insurance',
-                element: <TransporterInsurance />,
-                handle: panelSeo('panel.nav.insurance'),
-              },
-              {
-                path: 'map',
-                element: <TransporterMap />,
-                handle: panelSeo('panel.nav.map'),
-              },
-              {
-                path: 'invoices',
-                element: <TransporterInvoices />,
-                handle: panelSeo('panel.nav.invoices'),
-              },
-              {
-                path: 'profile',
-                element: <TransporterProfile />,
-                handle: panelSeo('panel.nav.profile'),
-              },
-              {
-                path: '*',
-                element: <ComingSoon />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-            ],
-          },
-        ],
-      },
+// Supplier
+{
+  path: '/supplier',
+  element: <ProtectedRoute allowedRoles={['supplier']} />,
+  children: [
+    {
+      element: <PanelShell />,
+      children: [
+        {
+          index: true,
+          element: <SupplierDashboard />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+        {
+          path: 'products',
+          element: <SupplierProducts />,
+          handle: panelSeo('panel.nav.products'),
+        },
+        {
+          path: 'products/add',
+          element: <SupplierAddProduct />,
+          handle: panelSeo('panel.nav.products'),
+        },
+        {
+          path: 'products/:productId',
+          element: <SupplierProductDetail />,
+          handle: panelSeo('panel.nav.products'),
+        },
+        {
+          path: 'promo-codes',
+          element: <SupplierPromoCodes />,
+          handle: panelSeo('panel.nav.promoCode'),
+        },
+        {
+          path: 'promo-codes/create',
+          element: <SupplierCreatePromoCode />,
+          handle: panelSeo('panel.nav.promoCode'),
+        },
+        {
+          path: 'orders-customer/:orderId',
+          element: <SupplierOrderCustomerDetail />,
+          handle: panelSeo(
+            'panel.supplierCustomerOrders.orderDetailsTitle',
+          ),
+        },
+        {
+          path: 'orders-customer',
+          element: <SupplierOrdersCustomer />,
+          handle: panelSeo('panel.nav.ordersCustomer'),
+        },
+        {
+          path: 'company-orders/:orderId',
+          element: <SupplierOrderCompanyDetail />,
+          handle: panelSeo(
+            'panel.supplierCompanyOrders.orderDetailsTitle',
+          ),
+        },
+        {
+          path: 'company-orders',
+          element: <SupplierCompanyOrders />,
+          handle: panelSeo('panel.nav.companyOrders'),
+        },
+        {
+          path: 'documents',
+          element: <SupplierDocuments />,
+          handle: panelSeo('panel.nav.document'),
+        },
+        {
+          path: 'chat',
+          element: <SupplierChat />,
+          handle: panelSeo('panel.nav.chat'),
+        },
+        {
+          path: 'buy-from-factory/:productId',
+          element: <SupplierBuyFromFactoryDetail />,
+          handle: panelSeo('panel.nav.buyFromFactory'),
+        },
+        {
+          path: 'buy-from-factory',
+          element: <SupplierBuyFromFactory />,
+          handle: panelSeo('panel.nav.buyFromFactory'),
+        },
+        {
+          path: 'factory-orders/:orderId',
+          element: <SupplierFactoryOrderDetail />,
+          handle: panelSeo('panel.nav.factoryOrder'),
+        },
+        {
+          path: 'factory-orders',
+          element: <SupplierFactoryOrders />,
+          handle: panelSeo('panel.nav.factoryOrder'),
+        },
+        {
+          path: 'inventory',
+          element: <SupplierInventory />,
+          handle: panelSeo('panel.nav.inventory'),
+        },
+        {
+          path: 'delivery-logistics',
+          element: <SupplierDeliveryLogistics />,
+          handle: panelSeo('panel.nav.deliveryLogistics'),
+        },
+        {
+          path: 'payments-finance',
+          element: <SupplierPaymentsFinance />,
+          handle: panelSeo('panel.nav.paymentsFinance'),
+        },
+        {
+          path: 'analytics',
+          element: <SupplierAnalytics />,
+          handle: panelSeo('panel.nav.analytics'),
+        },
+        {
+          path: 'reviews',
+          element: <SupplierReviews />,
+          handle: panelSeo('panel.nav.reviews'),
+        },
+        {
+          path: 'return-requests/:returnId',
+          element: <SupplierReturnRequestDetail />,
+          handle: panelSeo('panel.nav.returnRequests'),
+        },
+        {
+          path: 'return-requests',
+          element: <SupplierReturnRequests />,
+          handle: panelSeo('panel.nav.returnRequests'),
+        },
+        {
+          path: 'disputes/:disputeId',
+          element: <SupplierDisputeDetail />,
+          handle: panelSeo('panel.nav.disputesResolution'),
+        },
+        {
+          path: 'disputes',
+          element: <SupplierDisputes />,
+          handle: panelSeo('panel.nav.disputesResolution'),
+        },
+        {
+          path: 'invoices',
+          element: <SupplierInvoices />,
+          handle: panelSeo('panel.nav.invoices'),
+        },
+        {
+          path: 'profile',
+          element: <SupplierProfile />,
+          handle: panelSeo('panel.nav.profile'),
+        },
+        {
+          path: '*',
+          element: <ComingSoon />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+      ],
+    },
+  ],
+},
 
-      // Affiliate
-      {
-        path: '/affiliate',
-        element: <ProtectedRoute allowedRoles={['affiliate']} />,
-        children: [
-          {
-            element: <PanelShell />,
-            children: [
-              {
-                index: true,
-                element: <AffiliateOverview />,
-                handle: panelSeo('panel.nav.overviewDashboard'),
-              },
-              {
-                path: 'referral-channels',
-                element: <AffiliateReferralChannels />,
-                handle: panelSeo('panel.nav.referralChannels'),
-              },
-              {
-                path: 'referred-clients',
-                element: <AffiliateReferredClients />,
-                handle: panelSeo('panel.nav.referredClients'),
-              },
-              {
-                path: 'commissions',
-                element: <AffiliateCommissions />,
-                handle: panelSeo('panel.nav.commissions'),
-              },
-              {
-                path: 'affiliate-levels',
-                element: <AffiliateLevels />,
-                handle: panelSeo('panel.nav.affiliateLevels'),
-              },
-              {
-                path: 'settings',
-                element: <AffiliateSettings />,
-                handle: panelSeo('panel.nav.settings'),
-              },
-              {
-                path: '*',
-                element: <ComingSoon />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-            ],
-          },
-        ],
-      },
+// Factory
+{
+  path: '/factory',
+  element: <ProtectedRoute allowedRoles={['factory']} />,
+  children: [
+    {
+      element: <PanelShell />,
+      children: [
+        {
+          index: true,
+          element: <FactoryDashboard />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+        {
+          path: 'products',
+          element: <FactoryProducts />,
+          handle: panelSeo('panel.nav.products'),
+        },
+        {
+          path: 'orders',
+          element: <FactoryOrders />,
+          handle: panelSeo('panel.nav.orders'),
+        },
+        {
+          path: 'chat',
+          element: <FactoryChat />,
+          handle: panelSeo('panel.nav.chat'),
+        },
+        {
+          path: 'delivery-logistics',
+          element: <FactoryDeliveryLogistics />,
+          handle: panelSeo('panel.nav.deliveryLogistics'),
+        },
+        {
+          path: 'invoices',
+          element: <FactoryInvoices />,
+          handle: panelSeo('panel.nav.invoices'),
+        },
+        {
+          path: 'profile',
+          element: <FactoryProfile />,
+          handle: panelSeo('panel.nav.profile'),
+        },
+        {
+          path: '*',
+          element: <ComingSoon />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+      ],
+    },
+  ],
+},
 
-      // Admin
-      {
-        path: '/admin',
-        element: (
-          <ProtectedRoute allowedRoles={['admin']} redirectTo='/admin/login' />
-        ),
-        children: [
-          {
-            element: <PanelShell />,
-            children: [
-              {
-                index: true,
-                element: <AdminDashboard />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-              {
-                path: 'user-management',
-                element: <AdminUserManagement />,
-                handle: panelSeo('panel.nav.userManagement'),
-              },
-              {
-                path: 'supplier-management',
-                element: <AdminSupplierManagement />,
-                handle: panelSeo('panel.nav.supplierManagement'),
-              },
-              {
-                path: 'factory-management',
-                element: <AdminFactoryManagement />,
-                handle: panelSeo('panel.nav.factoryManagement'),
-              },
-              {
-                path: 'transporter-management',
-                element: <AdminTransporterManagement />,
-                handle: panelSeo('panel.nav.transporterManagement'),
-              },
-              {
-                path: 'product-moderation',
-                element: <AdminProductModeration />,
-                handle: panelSeo('panel.nav.productModeration'),
-              },
-              {
-                path: 'chat',
-                element: <AdminChat />,
-                handle: panelSeo('panel.nav.chat'),
-              },
-              {
-                path: 'marketing-management',
-                element: <AdminMarketingManagement />,
-                handle: panelSeo('panel.nav.marketingManagement'),
-              },
-              {
-                path: 'finance-payments',
-                element: <AdminFinancePayments />,
-                handle: panelSeo('panel.nav.financePayments'),
-              },
-              {
-                path: 'disputes',
-                element: <AdminDisputes />,
-                handle: panelSeo('panel.nav.disputesResolution'),
-              },
-              {
-                path: 'auction',
-                element: <AdminAuction />,
-                handle: panelSeo('panel.nav.auction'),
-              },
-              {
-                path: 'orders',
-                element: <AdminOrders />,
-                handle: panelSeo('panel.nav.orders'),
-              },
-              {
-                path: 'delivery-logistics',
-                element: <AdminDeliveryLogistics />,
-                handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
-              },
-              {
-                path: 'affiliate-directory',
-                element: <AdminAffiliateDirectory />,
-                handle: panelSeo('panel.nav.affiliateDirectory'),
-              },
-              {
-                path: 'roles-permissions',
-                element: <AdminRolesPermissions />,
-                handle: panelSeo('panel.nav.rolesPermissions'),
-              },
-              {
-                path: 'settings',
-                element: <AdminSettings />,
-                handle: panelSeo('panel.nav.settings'),
-              },
-              {
-                path: 'profile',
-                element: <AdminProfile />,
-                handle: panelSeo('panel.nav.profile'),
-              },
-              {
-                path: '*',
-                element: <ComingSoon />,
-                handle: panelSeo('panel.nav.dashboard'),
-              },
-            ],
-          },
-        ],
-      },
+// Transporter
+{
+  path: '/transporter',
+  element: <ProtectedRoute allowedRoles={['transporter']} />,
+  children: [
+    {
+      element: <PanelShell />,
+      children: [
+        {
+          index: true,
+          element: <TransporterDashboard />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+        {
+          path: 'auction-board',
+          element: <TransporterAuctionBoard />,
+          handle: panelSeo('panel.nav.auctionBoard'),
+        },
+        {
+          path: 'assign-deliveries',
+          element: <TransporterAssignDeliveries />,
+          handle: panelSeo('panel.nav.assignDeliveries'),
+        },
+        {
+          path: 'payments-payouts',
+          element: <TransporterPaymentsPayouts />,
+          handle: panelSeo('panel.nav.paymentsPayouts'),
+        },
+        {
+          path: 'order-history',
+          element: <TransporterOrderHistory />,
+          handle: panelSeo('panel.nav.orderHistory'),
+        },
+        {
+          path: 'insurance',
+          element: <TransporterInsurance />,
+          handle: panelSeo('panel.nav.insurance'),
+        },
+        {
+          path: 'map',
+          element: <TransporterMap />,
+          handle: panelSeo('panel.nav.map'),
+        },
+        {
+          path: 'invoices',
+          element: <TransporterInvoices />,
+          handle: panelSeo('panel.nav.invoices'),
+        },
+        {
+          path: 'profile',
+          element: <TransporterProfile />,
+          handle: panelSeo('panel.nav.profile'),
+        },
+        {
+          path: '*',
+          element: <ComingSoon />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+      ],
+    },
+  ],
+},
 
-      // 404
-      {
-        element: <PublicLayout />,
-        children: [
-          {
-            path: '*',
-            element: <NotFound />,
-            handle: { seo: routeSeo.notFound },
-          },
-        ],
-      },
-      */
+// Affiliate
+{
+  path: '/affiliate',
+  element: <ProtectedRoute allowedRoles={['affiliate']} />,
+  children: [
+    {
+      element: <PanelShell />,
+      children: [
+        {
+          index: true,
+          element: <AffiliateOverview />,
+          handle: panelSeo('panel.nav.overviewDashboard'),
+        },
+        {
+          path: 'referral-channels',
+          element: <AffiliateReferralChannels />,
+          handle: panelSeo('panel.nav.referralChannels'),
+        },
+        {
+          path: 'referred-clients',
+          element: <AffiliateReferredClients />,
+          handle: panelSeo('panel.nav.referredClients'),
+        },
+        {
+          path: 'commissions',
+          element: <AffiliateCommissions />,
+          handle: panelSeo('panel.nav.commissions'),
+        },
+        {
+          path: 'affiliate-levels',
+          element: <AffiliateLevels />,
+          handle: panelSeo('panel.nav.affiliateLevels'),
+        },
+        {
+          path: 'settings',
+          element: <AffiliateSettings />,
+          handle: panelSeo('panel.nav.settings'),
+        },
+        {
+          path: '*',
+          element: <ComingSoon />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+      ],
+    },
+  ],
+},
+
+// Admin
+{
+  path: '/admin',
+  element: (
+    <ProtectedRoute allowedRoles={['admin']} redirectTo='/admin/login' />
+  ),
+  children: [
+    {
+      element: <PanelShell />,
+      children: [
+        {
+          index: true,
+          element: <AdminDashboard />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+        {
+          path: 'user-management',
+          element: <AdminUserManagement />,
+          handle: panelSeo('panel.nav.userManagement'),
+        },
+        {
+          path: 'supplier-management',
+          element: <AdminSupplierManagement />,
+          handle: panelSeo('panel.nav.supplierManagement'),
+        },
+        {
+          path: 'factory-management',
+          element: <AdminFactoryManagement />,
+          handle: panelSeo('panel.nav.factoryManagement'),
+        },
+        {
+          path: 'transporter-management',
+          element: <AdminTransporterManagement />,
+          handle: panelSeo('panel.nav.transporterManagement'),
+        },
+        {
+          path: 'product-moderation',
+          element: <AdminProductModeration />,
+          handle: panelSeo('panel.nav.productModeration'),
+        },
+        {
+          path: 'chat',
+          element: <AdminChat />,
+          handle: panelSeo('panel.nav.chat'),
+        },
+        {
+          path: 'marketing-management',
+          element: <AdminMarketingManagement />,
+          handle: panelSeo('panel.nav.marketingManagement'),
+        },
+        {
+          path: 'finance-payments',
+          element: <AdminFinancePayments />,
+          handle: panelSeo('panel.nav.financePayments'),
+        },
+        {
+          path: 'disputes',
+          element: <AdminDisputes />,
+          handle: panelSeo('panel.nav.disputesResolution'),
+        },
+        {
+          path: 'auction',
+          element: <AdminAuction />,
+          handle: panelSeo('panel.nav.auction'),
+        },
+        {
+          path: 'orders',
+          element: <AdminOrders />,
+          handle: panelSeo('panel.nav.orders'),
+        },
+        {
+          path: 'delivery-logistics',
+          element: <AdminDeliveryLogistics />,
+          handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
+        },
+        {
+          path: 'affiliate-directory',
+          element: <AdminAffiliateDirectory />,
+          handle: panelSeo('panel.nav.affiliateDirectory'),
+        },
+        {
+          path: 'roles-permissions',
+          element: <AdminRolesPermissions />,
+          handle: panelSeo('panel.nav.rolesPermissions'),
+        },
+        {
+          path: 'settings',
+          element: <AdminSettings />,
+          handle: panelSeo('panel.nav.settings'),
+        },
+        {
+          path: 'profile',
+          element: <AdminProfile />,
+          handle: panelSeo('panel.nav.profile'),
+        },
+        {
+          path: '*',
+          element: <ComingSoon />,
+          handle: panelSeo('panel.nav.dashboard'),
+        },
+      ],
+    },
+  ],
+},
+
+// 404
+{
+  element: <PublicLayout />,
+  children: [
+    {
+      path: '*',
+      element: <NotFound />,
+      handle: { seo: routeSeo.notFound },
+    },
+  ],
+},
+*/
 
       {
         element: <PublicLayout />,
