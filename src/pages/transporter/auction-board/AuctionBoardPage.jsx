@@ -232,7 +232,7 @@ export default function AuctionBoardPage() {
       </div>
 
       {/* Grid of Auction Cards */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
         {filteredAuctions.map((auction) => (
           <div
             key={auction.id}
