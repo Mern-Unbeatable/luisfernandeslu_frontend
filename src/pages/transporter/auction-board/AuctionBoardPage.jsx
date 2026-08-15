@@ -216,7 +216,7 @@ export default function AuctionBoardPage() {
             {filteredAuctions.length} auctions matching your selection
           </p>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <span className="text-sm font-medium text-gray-500">Filter:</span>
           <select
             value={filter}

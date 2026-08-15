@@ -65,13 +65,21 @@ export default function AssignDeliveriesPage() {
   // Callbacks for dynamic status updates
   const handleStartTrip = (item) => {
     setDeliveries((prev) =>
-      prev.map((d) => (d.id === item.id ? { ...d, status: 'in_transit' } : d))
+      prev.map((d) =>
+        d.id === item.id ? { ...d, tripStarted: true } : d,
+      ),
     )
   }
 
   const handleMarkPickedUp = (item) => {
+    if (!item.tripStarted) return
+
     setDeliveries((prev) =>
-      prev.map((d) => (d.id === item.id ? { ...d, status: 'picked_up' } : d))
+      prev.map((d) =>
+        d.id === item.id
+          ? { ...d, status: 'picked_up', tripStarted: false }
+          : d,
+      ),
     )
   }
 
@@ -171,7 +179,7 @@ export default function AssignDeliveriesPage() {
             {filteredDeliveries.length} active deliveries
           </p>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
