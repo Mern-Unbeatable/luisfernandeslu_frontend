@@ -468,6 +468,13 @@ const AdminProductModeration = Loadable(
   ),
   <PanelSkeleton />,
 );
+const AdminProductModerationDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/admin/product-moderation/ProductModerationDetailPage'),
+  ),
+  <PanelSkeleton />,
+);
 const AdminChat = Loadable(
   lazy(() => import('../../pages/admin/chat/ChatPage')),
   <PanelSkeleton />,
@@ -487,6 +494,10 @@ const AdminDisputes = Loadable(
   lazy(() => import('../../pages/admin/disputes/DisputesPage')),
   <PanelSkeleton />,
 );
+const AdminDisputeDetail = Loadable(
+  lazy(() => import('../../pages/admin/disputes/AdminDisputeDetailPage')),
+  <PanelSkeleton />,
+);
 const AdminAuction = Loadable(
   lazy(() => import('../../pages/admin/auction/AuctionPage')),
   <PanelSkeleton />,
@@ -495,9 +506,20 @@ const AdminOrders = Loadable(
   lazy(() => import('../../pages/admin/orders/OrdersPage')),
   <PanelSkeleton />,
 );
+const AdminOrderDetail = Loadable(
+  lazy(() => import('../../pages/admin/orders/AdminOrderDetailPage')),
+  <PanelSkeleton />,
+);
 const AdminDeliveryLogistics = Loadable(
   lazy(
     () => import('../../pages/admin/delivery-logistics/DeliveryLogisticsPage'),
+  ),
+  <PanelSkeleton />,
+);
+const AdminDeliveryLogisticsDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/admin/delivery-logistics/DeliveryLogisticsDetailPage'),
   ),
   <PanelSkeleton />,
 );
@@ -505,6 +527,12 @@ const AdminAffiliateDirectory = Loadable(
   lazy(
     () =>
       import('../../pages/admin/affiliate-directory/AffiliateDirectoryPage'),
+  ),
+  <PanelSkeleton />,
+);
+const AdminAffiliateDetail = Loadable(
+  lazy(
+    () => import('../../pages/admin/affiliate-directory/AffiliateDetailPage'),
   ),
   <PanelSkeleton />,
 );
@@ -1318,6 +1346,11 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.productModeration'),
               },
               {
+                path: 'product-moderation/:productId',
+                element: <AdminProductModerationDetail />,
+                handle: panelSeo('panel.nav.productModeration'),
+              },
+              {
                 path: 'chat',
                 element: <AdminChat />,
                 handle: panelSeo('panel.nav.chat'),
@@ -1338,6 +1371,11 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.disputesResolution'),
               },
               {
+                path: 'disputes/:disputeId',
+                element: <AdminDisputeDetail />,
+                handle: panelSeo('panel.nav.disputesResolution'),
+              },
+              {
                 path: 'auction',
                 element: <AdminAuction />,
                 handle: panelSeo('panel.nav.auction'),
@@ -1348,13 +1386,28 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.orders'),
               },
               {
+                path: 'orders/:orderId',
+                element: <AdminOrderDetail />,
+                handle: panelSeo('panel.nav.orders'),
+              },
+              {
                 path: 'delivery-logistics',
                 element: <AdminDeliveryLogistics />,
                 handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
               },
               {
+                path: 'delivery-logistics/:deliveryId',
+                element: <AdminDeliveryLogisticsDetail />,
+                handle: panelSeo('panel.nav.deliveryLogisticsAdmin'),
+              },
+              {
                 path: 'affiliate-directory',
                 element: <AdminAffiliateDirectory />,
+                handle: panelSeo('panel.nav.affiliateDirectory'),
+              },
+              {
+                path: 'affiliate-directory/:affiliateId',
+                element: <AdminAffiliateDetail />,
                 handle: panelSeo('panel.nav.affiliateDirectory'),
               },
               {

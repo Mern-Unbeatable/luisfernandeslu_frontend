@@ -12,8 +12,10 @@ export default function ChatPage() {
   const state = useMessages()
 
   useEffect(() => {
-    state.selectChat(DEFAULT_CHAT_ID)
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- open default inbox thread once
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      state.selectChat(DEFAULT_CHAT_ID)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- open default inbox thread on desktop only
   }, [])
 
   return (
