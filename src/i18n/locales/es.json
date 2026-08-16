@@ -2589,6 +2589,7 @@
   },
   "factoryProducts": {
     "title": "Gestión de productos",
+    "backToProducts": "Volver a productos",
     "subtitle": "Administra tu catálogo de productos para vender a los clientes.",
     "addProduct": "Añadir producto",
     "uploadCsv": "Subir archivo CSV",
@@ -2610,7 +2611,19 @@
     },
     "priceText": "Precio: {{price}} por saco (50 kg)",
     "priceFallback": "Precio: —",
-    "untitled": "Sin título"
+    "untitled": "Sin título",
+    "uploadModal": {
+      "title": "Sube tu archivo",
+      "hint": "Solo XLSX · Máx. 10 MB · La primera hoja debe llamarse \"Sheet1\"",
+      "dropTitle": "Suelta tu XLSX aquí, o haz clic para buscar",
+      "dropNote": "Lo pondremos en cola en cuanto pulses Queue Import.",
+      "selected": "Seleccionado: {{name}}",
+      "downloadExample": "Descargar ejemplo",
+      "queueImport": "Queue Import",
+      "closeOverlay": "Cerrar superposición",
+      "close": "Cerrar",
+      "browseAria": "Buscar archivo XLSX"
+    }
   },
   "factoryOrders": {
     "title": "Pedidos de proveedores",
