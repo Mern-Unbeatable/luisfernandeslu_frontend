@@ -361,10 +361,24 @@ const TransporterAuctionBoard = Loadable(
   lazy(() => import("../../pages/transporter/auction-board/AuctionBoardPage")),
   <PanelSkeleton />,
 );
+const TransporterAssignDeliveriesLayout = Loadable(
+  lazy(
+    () =>
+      import('../../pages/transporter/assign-deliveries/AssignDeliveriesLayout'),
+  ),
+  <PanelSkeleton />,
+);
 const TransporterAssignDeliveries = Loadable(
   lazy(
     () =>
       import("../../pages/transporter/assign-deliveries/AssignDeliveriesPage"),
+  ),
+  <PanelSkeleton />,
+);
+const TransporterVerifyDelivery = Loadable(
+  lazy(
+    () =>
+      import('../../pages/transporter/assign-deliveries/VerifyDeliveryPage'),
   ),
   <PanelSkeleton />,
 );
@@ -469,6 +483,13 @@ const AdminProductModeration = Loadable(
   ),
   <PanelSkeleton />,
 );
+const AdminProductModerationDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/admin/product-moderation/ProductModerationDetailPage'),
+  ),
+  <PanelSkeleton />,
+);
 const AdminChat = Loadable(
   lazy(() => import("../../pages/admin/chat/ChatPage")),
   <PanelSkeleton />,
@@ -488,6 +509,10 @@ const AdminDisputes = Loadable(
   lazy(() => import("../../pages/admin/disputes/DisputesPage")),
   <PanelSkeleton />,
 );
+const AdminDisputeDetail = Loadable(
+  lazy(() => import('../../pages/admin/disputes/AdminDisputeDetailPage')),
+  <PanelSkeleton />,
+);
 const AdminAuction = Loadable(
   lazy(() => import("../../pages/admin/auction/AuctionPage")),
   <PanelSkeleton />,
@@ -496,9 +521,20 @@ const AdminOrders = Loadable(
   lazy(() => import("../../pages/admin/orders/OrdersPage")),
   <PanelSkeleton />,
 );
+const AdminOrderDetail = Loadable(
+  lazy(() => import('../../pages/admin/orders/AdminOrderDetailPage')),
+  <PanelSkeleton />,
+);
 const AdminDeliveryLogistics = Loadable(
   lazy(
     () => import("../../pages/admin/delivery-logistics/DeliveryLogisticsPage"),
+  ),
+  <PanelSkeleton />,
+);
+const AdminDeliveryLogisticsDetail = Loadable(
+  lazy(
+    () =>
+      import('../../pages/admin/delivery-logistics/DeliveryLogisticsDetailPage'),
   ),
   <PanelSkeleton />,
 );
@@ -506,6 +542,12 @@ const AdminAffiliateDirectory = Loadable(
   lazy(
     () =>
       import("../../pages/admin/affiliate-directory/AffiliateDirectoryPage"),
+  ),
+  <PanelSkeleton />,
+);
+const AdminAffiliateDetail = Loadable(
+  lazy(
+    () => import('../../pages/admin/affiliate-directory/AffiliateDetailPage'),
   ),
   <PanelSkeleton />,
 );
@@ -1067,12 +1109,23 @@ Other paths will continue to fall back to the ComingSoon view.
           path: 'auction-board',
           element: <TransporterAuctionBoard />,
           handle: panelSeo('panel.nav.auctionBoard'),
-        },
-        {
-          path: 'assign-deliveries',
-          element: <TransporterAssignDeliveries />,
-          handle: panelSeo('panel.nav.assignDeliveries'),
-        },
+        },  
+                      {
+                path: 'assign-deliveries',
+                element: <TransporterAssignDeliveriesLayout />,
+                handle: panelSeo('panel.nav.assignDeliveries'),
+                children: [
+                  {
+                    index: true,
+                    element: <TransporterAssignDeliveries />,
+                  },
+                  {
+                    path: ':deliveryId/verify',
+                    element: <TransporterVerifyDelivery />,
+                    handle: panelSeo('panel.nav.assignDeliveries'),
+                  },
+                ],
+              },
         {
           path: 'payments-payouts',
           element: <TransporterPaymentsPayouts />,

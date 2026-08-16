@@ -78,7 +78,7 @@ export default function AuctionPage() {
           {t(`${I18N_KEY}.empty`)}
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 xl:gap-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 lg:gap-4">
           {filteredAuctions.map((auction) => (
             <AuctionCard key={auction.id} role="admin" auction={auction} />
           ))}

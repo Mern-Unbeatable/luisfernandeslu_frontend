@@ -287,6 +287,27 @@ export function filterOrdersByStatus(rows, status) {
   )
 }
 
+export function filterOrdersBySearch(rows, query) {
+  const q = query.trim().toLowerCase()
+  if (!q) return rows
+  return rows.filter((row) => {
+    const haystack = [
+      row.orderId,
+      row.customerName,
+      row.customerType,
+      row.status,
+      row.date,
+      row.items,
+      row.total,
+      row.commission,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    return haystack.includes(q)
+  })
+}
+
 export function getAdminOrderRow(id) {
   return ADMIN_ORDERS.find((row) => row.id === id) ?? null
 }

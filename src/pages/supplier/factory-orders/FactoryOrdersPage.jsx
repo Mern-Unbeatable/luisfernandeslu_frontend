@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
@@ -16,12 +15,22 @@ const TAB_IDS = {
   transport: 'transport',
 };
 
+const STATUS_LABEL_KEYS = {
+  produced: 'panel.supplierFactoryOrders.statusProduced',
+  'in-production': 'panel.supplierFactoryOrders.statusInProduction',
+  ready: 'panel.supplierFactoryOrders.statusReady',
+  assigned: 'panel.supplierFactoryOrders.statusAssigned',
+  cancel: 'panel.supplierFactoryOrders.statusCancel',
+  completed: 'panel.supplierFactoryOrders.statusCompleted',
+};
+
 export default function FactoryOrdersPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TAB_IDS.orders);
   const [companyFilter, setCompanyFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState(DEMO_SUPPLIER_FACTORY_ORDERS.orders);
 
@@ -140,7 +149,20 @@ export default function FactoryOrdersPage() {
     [t, handleMarkPaid, handleDecline],
   );
 
+  const companyLabelById = useMemo(
+    () =>
+      Object.fromEntries(
+        DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES.map((company) => [
+          company.value,
+          company.label,
+        ]),
+      ),
+    [],
+  );
+
   const filteredOrders = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
     return orders.filter((row) => {
       if (row.tab !== activeTab) return false;
       if (
@@ -157,9 +179,48 @@ export default function FactoryOrdersPage() {
       ) {
         return false;
       }
-      return true;
+      if (!q) return true;
+
+      const statusLabel = (
+        row.statusLabel || t(STATUS_LABEL_KEYS[row.status] || '')
+      ).toLowerCase();
+      const companyLabel = (
+        companyLabelById[row.companyId] || row.factoryName || ''
+      ).toLowerCase();
+
+      if (activeTab === TAB_IDS.orders) {
+        return (
+          String(row.poNumber).toLowerCase().includes(q) ||
+          String(row.factoryName).toLowerCase().includes(q) ||
+          companyLabel.includes(q) ||
+          String(row.total).toLowerCase().includes(q) ||
+          String(row.installmentAmount).toLowerCase().includes(q) ||
+          String(row.installmentNumber).toLowerCase().includes(q) ||
+          String(row.status).toLowerCase().includes(q) ||
+          statusLabel.includes(q) ||
+          String(row.date).toLowerCase().includes(q)
+        );
+      }
+
+      return (
+        String(row.poNumber).toLowerCase().includes(q) ||
+        String(row.factoryName).toLowerCase().includes(q) ||
+        companyLabel.includes(q) ||
+        String(row.product).toLowerCase().includes(q) ||
+        String(row.qty).toLowerCase().includes(q) ||
+        String(row.weightSize).toLowerCase().includes(q) ||
+        String(row.shippingCharge).toLowerCase().includes(q)
+      );
     });
-  }, [orders, activeTab, companyFilter, statusFilter]);
+  }, [
+    orders,
+    activeTab,
+    companyFilter,
+    statusFilter,
+    search,
+    companyLabelById,
+    t,
+  ]);
 
   const total = filteredOrders.length;
   const pageCount = Math.max(
@@ -261,6 +322,38 @@ export default function FactoryOrdersPage() {
 
   const isOrdersTab = activeTab === TAB_IDS.orders;
 
+  const handleTabChange = useCallback((tabId) => {
+    setActiveTab(tabId);
+    setPage(1);
+    setSearch('');
+  }, []);
+
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'company',
+        value: companyFilter,
+        onChange: (value) => {
+          setCompanyFilter(value);
+          setPage(1);
+        },
+        options: companyOptions,
+        placeholder: t('panel.supplierFactoryOrders.allCompany'),
+      },
+      {
+        id: 'status',
+        value: statusFilter,
+        onChange: (value) => {
+          setStatusFilter(value);
+          setPage(1);
+        },
+        options: statusOptions,
+        placeholder: t('panel.supplierFactoryOrders.allStatus'),
+      },
+    ],
+    [companyFilter, statusFilter, companyOptions, statusOptions, t],
+  );
+
   return (
     <>
       <Seo title={t('panel.supplierFactoryOrders.title')} />
@@ -277,84 +370,12 @@ export default function FactoryOrdersPage() {
       </div>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1">
-            {tabs.map((tab) => {
-              const isActive = tab.id === activeTab;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    setPage(1);
-                  }}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
-                    isActive
-                      ? 'bg-[var(--active)] text-white shadow-sm'
-                      : 'bg-transparent text-[var(--primary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {isOrdersTab ? (
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
-              <span className="text-sm font-medium text-[var(--primary-text)]">
-                {t('panel.supplierFactoryOrders.sortBy')}
-              </span>
-              <label className="relative inline-flex min-w-[140px] items-center">
-                <select
-                  value={companyFilter}
-                  onChange={(event) => {
-                    setCompanyFilter(event.target.value);
-                    setPage(1);
-                  }}
-                  className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                  aria-label={t('panel.supplierFactoryOrders.allCompany')}
-                >
-                  {companyOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <FiChevronDown
-                  className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                  aria-hidden
-                />
-              </label>
-              <label className="relative inline-flex min-w-[140px] items-center">
-                <select
-                  value={statusFilter}
-                  onChange={(event) => {
-                    setStatusFilter(event.target.value);
-                    setPage(1);
-                  }}
-                  className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                  aria-label={t('panel.supplierFactoryOrders.allStatus')}
-                >
-                  {statusOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <FiChevronDown
-                  className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                  aria-hidden
-                />
-              </label>
-            </div>
-          ) : null}
-        </div>
-
         <DataTable
           showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
           columns={columns}
           data={pagedOrders}
           getRowKey={(row) => row.id}
@@ -363,6 +384,16 @@ export default function FactoryOrdersPage() {
           actionHeader={t('panel.supplierFactoryOrders.colAction')}
           emptyMessage={emptyMessage}
           showPagination
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t('panel.supplierFactoryOrders.searchPlaceholder')}
+          showFilters={isOrdersTab}
+          filterLabel={t('panel.supplierFactoryOrders.sortBy')}
+          filters={tableFilters}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,

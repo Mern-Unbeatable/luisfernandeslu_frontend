@@ -19,7 +19,8 @@ import {
   FiPackage,
   FiShoppingBag,
   FiUser,
-} from 'react-icons/fi';
+} from 'react-icons/fi'
+import { PRODUCT_CATEGORIES } from './productCategories';
 
 // ── Auth ──────────────────────────────────────────────────────────
 export const DEMO_PASSWORD = 'demo123';
@@ -789,44 +790,84 @@ export const DEMO_SUPPLIER_DASHBOARD = {
   revenue: {
     maxValue: 10000,
     yTicks: [0, 2500, 5000, 7500, 10000],
-    series: [
-      {
-        id: 'customer',
-        color: '#7C3AED',
-        points: [
-          { month: 'Jan', value: 3200 },
-          { month: 'Feb', value: 4100 },
-          { month: 'Mar', value: 3800 },
-          { month: 'Apr', value: 4500 },
-          { month: 'May', value: 5600 },
-          { month: 'Jun', value: 5200 },
-          { month: 'Jul', value: 4800 },
-          { month: 'Aug', value: 6100 },
-          { month: 'Sep', value: 5500 },
-          { month: 'Oct', value: 6800 },
-          { month: 'Nov', value: 7200 },
-          { month: 'Dec', value: 8000 },
-        ],
-      },
-      {
-        id: 'company',
-        color: '#10B981',
-        points: [
-          { month: 'Jan', value: 3500 },
-          { month: 'Feb', value: 4200 },
-          { month: 'Mar', value: 4000 },
-          { month: 'Apr', value: 4800 },
-          { month: 'May', value: 5900 },
-          { month: 'Jun', value: 5400 },
-          { month: 'Jul', value: 5000 },
-          { month: 'Aug', value: 6400 },
-          { month: 'Sep', value: 5800 },
-          { month: 'Oct', value: 7000 },
-          { month: 'Nov', value: 7500 },
-          { month: 'Dec', value: 8500 },
-        ],
-      },
-    ],
+    byPeriod: {
+      thisYear: [
+        {
+          id: 'customer',
+          color: '#7C3AED',
+          points: [
+            { month: 'Jan', value: 3200 },
+            { month: 'Feb', value: 4100 },
+            { month: 'Mar', value: 3800 },
+            { month: 'Apr', value: 4500 },
+            { month: 'May', value: 5600 },
+            { month: 'Jun', value: 5200 },
+            { month: 'Jul', value: 4800 },
+            { month: 'Aug', value: 6100 },
+            { month: 'Sep', value: 5500 },
+            { month: 'Oct', value: 6800 },
+            { month: 'Nov', value: 7200 },
+            { month: 'Dec', value: 8000 },
+          ],
+        },
+        {
+          id: 'company',
+          color: '#10B981',
+          points: [
+            { month: 'Jan', value: 3500 },
+            { month: 'Feb', value: 4200 },
+            { month: 'Mar', value: 4000 },
+            { month: 'Apr', value: 4800 },
+            { month: 'May', value: 5900 },
+            { month: 'Jun', value: 5400 },
+            { month: 'Jul', value: 5000 },
+            { month: 'Aug', value: 6400 },
+            { month: 'Sep', value: 5800 },
+            { month: 'Oct', value: 7000 },
+            { month: 'Nov', value: 7500 },
+            { month: 'Dec', value: 8500 },
+          ],
+        },
+      ],
+      lastYear: [
+        {
+          id: 'customer',
+          color: '#7C3AED',
+          points: [
+            { month: 'Jan', value: 2400 },
+            { month: 'Feb', value: 3100 },
+            { month: 'Mar', value: 2900 },
+            { month: 'Apr', value: 3600 },
+            { month: 'May', value: 4200 },
+            { month: 'Jun', value: 4000 },
+            { month: 'Jul', value: 3800 },
+            { month: 'Aug', value: 4700 },
+            { month: 'Sep', value: 4300 },
+            { month: 'Oct', value: 5100 },
+            { month: 'Nov', value: 5600 },
+            { month: 'Dec', value: 6200 },
+          ],
+        },
+        {
+          id: 'company',
+          color: '#10B981',
+          points: [
+            { month: 'Jan', value: 2800 },
+            { month: 'Feb', value: 3400 },
+            { month: 'Mar', value: 3200 },
+            { month: 'Apr', value: 3900 },
+            { month: 'May', value: 4600 },
+            { month: 'Jun', value: 4300 },
+            { month: 'Jul', value: 4100 },
+            { month: 'Aug', value: 5000 },
+            { month: 'Sep', value: 4700 },
+            { month: 'Oct', value: 5500 },
+            { month: 'Nov', value: 6000 },
+            { month: 'Dec', value: 6800 },
+          ],
+        },
+      ],
+    },
   },
   orders: [
     {
@@ -838,6 +879,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'assign',
       statusLabel: 'Assign',
+      detailId: 'co-001',
     },
     {
       id: 'ord-002',
@@ -848,6 +890,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'completed',
       statusLabel: 'Completed',
+      detailId: 'b2b-c06',
+      tab: 'chat',
     },
     {
       id: 'ord-003',
@@ -858,6 +902,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'pending',
       statusLabel: 'Pending',
+      detailId: 'co-003',
     },
     {
       id: 'ord-004',
@@ -868,6 +913,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'assign',
       statusLabel: 'Assign',
+      detailId: 'b2b-d04',
+      tab: 'direct',
     },
     {
       id: 'ord-005',
@@ -878,6 +925,8 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'cancel',
       statusLabel: 'Cancel',
+      detailId: 'b2b-c05',
+      tab: 'chat',
     },
     {
       id: 'ord-006',
@@ -888,6 +937,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Paid',
       status: 'completed',
       statusLabel: 'Completed',
+      detailId: 'co-006',
     },
     {
       id: 'ord-007',
@@ -898,6 +948,7 @@ export const DEMO_SUPPLIER_DASHBOARD = {
       payment: 'Installment Active',
       status: 'pending',
       statusLabel: 'Pending',
+      detailId: 'co-007',
     },
   ],
 };
@@ -2838,83 +2889,86 @@ export function getSupplierBuyFromFactoryDetail(productId) {
 
 // ── Supplier products catalog ─────────────────────────────────────
 const SUPPLIER_PRODUCT_IMAGE =
-  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';
-
-const SUPPLIER_PRODUCT_TITLES = [
-  'Portland Cement',
-  'Portland Cement Standard',
-  'Portland Cement Quick Set',
-];
-
-const SUPPLIER_PRODUCT_DESCRIPTION =
-  'High-strength building cement suitable for construction and masonry work.';
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
 
 const SUPPLIER_FEATURED_BADGE = {
   label: 'Featured',
   className: 'bg-sky-100 text-sky-700',
-};
-
-function buildSupplierCatalogProduct(id, config) {
-  const titleIndex =
-    Number(id.replace(/\D/g, '')) % SUPPLIER_PRODUCT_TITLES.length;
-
-  return {
-    id,
-    tab: config.tab,
-    categoryId: config.categoryId || 'cement-mortar-concrete',
-    cardType: config.cardType || 'dashboard',
-    tag: config.tag ?? null,
-    status: config.status ?? null,
-    badge: config.badge ?? null,
-    product: {
-      image: SUPPLIER_PRODUCT_IMAGE,
-      title: config.title || SUPPLIER_PRODUCT_TITLES[titleIndex],
-      description: config.description || SUPPLIER_PRODUCT_DESCRIPTION,
-      priceText: config.priceText || 'Price: €115 per bag (50 kg)',
-      expiryDate: config.expiryDate,
-    },
-  };
 }
 
-function buildSupplierCatalogBatch(tab, count, baseConfig = {}) {
-  return Array.from({ length: count }, (_, index) =>
-    buildSupplierCatalogProduct(`supplier-${tab}-${index + 1}`, {
-      ...baseConfig,
-      tab,
-    }),
-  );
-}
-
-export const DEMO_SUPPLIER_PRODUCTS = [
-  ...buildSupplierCatalogBatch('pending', 8, { status: 'pending' }),
-  ...buildSupplierCatalogBatch('rejected', 8, {
-    status: 'rejected',
-    title: 'Portland Cement Standard',
-    description: 'Reliable cement for all your everyday construction needs.',
-  }),
-  ...buildSupplierCatalogBatch('regular', 8, { tag: 'regular' }),
-  ...buildSupplierCatalogBatch('bulk_order', 8, {
+const SUPPLIER_PRICE_CYCLE = [85, 115, 130, 135, 150, 190, 220, 340]
+const SUPPLIER_TAB_CYCLE = [
+  { tab: 'pending', status: 'pending' },
+  { tab: 'rejected', status: 'rejected' },
+  { tab: 'regular', tag: 'regular' },
+  {
+    tab: 'bulk_order',
     tag: 'bulk_order',
-    priceText: 'Price: €135 per bag (50 kg)',
-  }),
-  ...buildSupplierCatalogBatch('featured', 8, {
+  },
+  {
+    tab: 'featured',
     cardType: 'featured',
     badge: SUPPLIER_FEATURED_BADGE,
-    title: 'Portland Cement Quick Set',
-    description: 'Fast-setting cement for rapid construction work.',
-    priceText: 'Price: €130 per bag (50 kg)',
     expiryDate: '5/4/2026',
-  }),
-];
+  },
+]
+
+let supplierProductSeq = 0
+
+function buildSupplierCatalogFromCategories() {
+  return PRODUCT_CATEGORIES.flatMap((category) =>
+    (category.subcategories ?? []).flatMap((subCategory) =>
+      (subCategory.productTypes ?? []).map((type) => {
+        const index = supplierProductSeq
+        supplierProductSeq += 1
+
+        const meta = SUPPLIER_TAB_CYCLE[index % SUPPLIER_TAB_CYCLE.length]
+        const price = SUPPLIER_PRICE_CYCLE[index % SUPPLIER_PRICE_CYCLE.length]
+        const priceText =
+          meta.tab === 'bulk_order'
+            ? `Price: €${price} per unit (bulk)`
+            : `Price: €${price} per unit`
+
+        return {
+          id: `supplier-${type.id}-${index + 1}`,
+          tab: meta.tab,
+          categoryId: category.id,
+          categoryName: category.name,
+          subCategoryId: subCategory.id,
+          subCategoryName: subCategory.name,
+          productTypeId: type.id,
+          sku: `SKU-${String(index + 1).padStart(4, '0')}`,
+          warehouseLocation: 'wh-santa-ana',
+          quantity: `${100 + (index % 9) * 50} Bags`,
+          weight: `${700 + (index % 5) * 50} kg`,
+          cardType: meta.cardType || 'dashboard',
+          tag: meta.tag ?? null,
+          status: meta.status ?? null,
+          badge: meta.badge ?? null,
+          product: {
+            image: type.imageSrc || SUPPLIER_PRODUCT_IMAGE,
+            title: type.name,
+            description: `${type.name} from ${category.name} › ${subCategory.name}.`,
+            priceText,
+            expiryDate: meta.expiryDate,
+          },
+        }
+      }),
+    ),
+  )
+}
+
+export const DEMO_SUPPLIER_PRODUCTS = buildSupplierCatalogFromCategories()
 
 export const DEMO_SUPPLIER_PRODUCT_CATEGORIES = [
   { value: 'all', labelKey: 'panel.supplierProducts.allCategories' },
-  { value: 'cement-mortar-concrete', label: 'Cement, Mortar & Concrete' },
-  { value: 'aggregates', label: 'Aggregates' },
-  { value: 'steel-rebar', label: 'Steel & Rebar' },
-];
+  ...PRODUCT_CATEGORIES.map((category) => ({
+    value: category.id,
+    label: category.name,
+  })),
+]
 
-export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8;
+export const SUPPLIER_PRODUCTS_PAGE_SIZE = 8
 
 /** Full PDP payload for supplier product details (API-ready shape). */
 export function getSupplierProductDetail(productId) {
@@ -2996,7 +3050,55 @@ export const DEMO_ADD_PRODUCT = {
   ],
 };
 
+/** Map catalog row → AddProduct form defaultValue for edit mode. */
+export function getSupplierProductFormValue(productId) {
+  const catalogItem = DEMO_SUPPLIER_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  const priceMatch = String(catalogItem.product?.priceText || '').match(
+    /[€$]?\s*[\d]+(?:[.,]\d+)?/,
+  )
+  const basePrice = priceMatch
+    ? priceMatch[0].includes('€') || priceMatch[0].includes('$')
+      ? priceMatch[0].replace(/\s/g, '')
+      : `€${priceMatch[0]}`
+    : DEMO_ADD_PRODUCT.basePrice
+
+  return {
+    ...DEMO_ADD_PRODUCT,
+    categoryId: catalogItem.categoryId || DEMO_ADD_PRODUCT.categoryId,
+    subCategoryId: catalogItem.subCategoryId || DEMO_ADD_PRODUCT.subCategoryId,
+    productTypeId: catalogItem.productTypeId || DEMO_ADD_PRODUCT.productTypeId,
+    title: catalogItem.product?.title || DEMO_ADD_PRODUCT.title,
+    description:
+      catalogItem.product?.description || DEMO_ADD_PRODUCT.description,
+    basePrice,
+    sku: catalogItem.sku || `SKU-${String(catalogItem.id).toUpperCase()}`,
+    warehouseLocation:
+      catalogItem.warehouseLocation || DEMO_WAREHOUSE_OPTIONS[1]?.value || '',
+    bannerImage: catalogItem.product?.image || null,
+    quantity: catalogItem.quantity || DEMO_ADD_PRODUCT.quantity,
+    weight: catalogItem.weight || DEMO_ADD_PRODUCT.weight,
+    b2bDiscount: catalogItem.b2bDiscount || DEMO_ADD_PRODUCT.b2bDiscount,
+    minB2bQuantity:
+      catalogItem.minB2bQuantity || DEMO_ADD_PRODUCT.minB2bQuantity,
+    feature: catalogItem.feature || DEMO_ADD_PRODUCT.feature,
+    additionalInformation:
+      catalogItem.additionalInformation ||
+      DEMO_ADD_PRODUCT.additionalInformation,
+    specifications:
+      catalogItem.specifications || DEMO_ADD_PRODUCT.specifications,
+    bulkEnabled: catalogItem.bulkEnabled ?? DEMO_ADD_PRODUCT.bulkEnabled,
+    bulkTiers: catalogItem.bulkTiers || DEMO_ADD_PRODUCT.bulkTiers,
+    otherImages: catalogItem.otherImages || [],
+  }
+}
+
 // ── Supplier promo codes ──────────────────────────────────────────
+export const SUPPLIER_PROMO_CODES_PAGE_SIZE = 7;
+
 export const DEMO_SUPPLIER_PROMO_CODES = [
   {
     id: 'promo-1',
@@ -3108,9 +3210,16 @@ export const DEMO_SUPPLIER_PROMO_CODES = [
   },
 ];
 
-const DEMO_QUICK_SET_PRODUCT = DEMO_SUPPLIER_PRODUCTS.find(
-  (item) => item.product?.title === 'Portland Cement Quick Set',
-);
+const DEMO_QUICK_SET_PRODUCT =
+  DEMO_SUPPLIER_PRODUCTS.find(
+    (item) => item.productTypeId === 'rapid-setting-fast-drying-cement',
+  ) ||
+  DEMO_SUPPLIER_PRODUCTS.find((item) =>
+    String(item.product?.title || '')
+      .toLowerCase()
+      .includes('portland'),
+  ) ||
+  DEMO_SUPPLIER_PRODUCTS[0]
 
 export const DEMO_SUPPLIER_PROMO_PRODUCT_OPTIONS = Array.from(
   new Map(
@@ -3216,6 +3325,46 @@ export const DEMO_SUPPLIER_PROMO_PRODUCTS = Array.from(
       PROMO_PRODUCT_TEMPLATES[index % PROMO_PRODUCT_TEMPLATES.length],
     ),
 );
+
+/** Full PDP payload for promo product details. */
+export function getPromoProductDetail(productId) {
+  const catalogItem = DEMO_SUPPLIER_PROMO_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  const image = catalogItem.product.image || DEMO_PRODUCT.images[0]
+  const images = image
+    ? [image, ...DEMO_PRODUCT.images.filter((src) => src !== image).slice(0, 3)]
+    : DEMO_PRODUCT.images
+
+  return {
+    ...DEMO_PRODUCT,
+    title: catalogItem.product.title || DEMO_PRODUCT.title,
+    description:
+      catalogItem.product.description ||
+      DEMO_PRODUCT.descriptionParagraphs?.[0],
+    images,
+    image,
+    priceText: catalogItem.product.priceText || DEMO_PRODUCT.priceText,
+    bulkOptionLabel: catalogItem.product.bulkOptionLabel,
+  }
+}
+
+/** Map promo product → CreatePromoCode form defaultValue for edit mode. */
+export function getPromoCodeFormValueForProduct(productId) {
+  const catalogItem = DEMO_SUPPLIER_PROMO_PRODUCTS.find(
+    (item) => item.id === productId,
+  )
+  if (!catalogItem) return null
+
+  return {
+    ...DEMO_CREATE_PROMO_CODE,
+    applicableProductIds: [productId],
+    discountType: 'percentage',
+    discountValue: '25 %',
+  }
+}
 
 export const DEMO_FACTORY_PRODUCT = {
   ...EMPTY_ADD_PRODUCT,

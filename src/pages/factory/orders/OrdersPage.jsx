@@ -35,9 +35,9 @@ const DUMMY_ORDERS = [
   {
     id: 1,
     orderId: 'SU-1001',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
+    supplierName: 'Nguyen Van A',
+    total: '$4,500,000',
+    installmentAmount: '$4,500',
     status: 'Produced',
     installmentNumber: 1,
     date: '2026-05-01',
@@ -45,9 +45,9 @@ const DUMMY_ORDERS = [
   {
     id: 2,
     orderId: 'SU-1002',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
+    supplierName: 'Nguyen Van B',
+    total: '$4,500,000',
+    installmentAmount: '$4,500',
     status: 'In Production',
     installmentNumber: 2,
     date: '2026-05-01',
@@ -578,32 +578,32 @@ export default function OrdersPage() {
         searchPlaceholder={t('factoryOrders.searchPlaceholder')}
         showFilters
         filterLabel={t('factoryOrders.sortBy')}
-        filters={[
-          {
-            id: 'supplier',
-            value: supplier,
-            onChange: (value) => {
-              setSupplier(value)
-              setPage(1)
-            },
-            options: supplierOptions,
-          },
-          {
-            id: 'status',
-            value: status,
-            onChange: (value) => {
-              setStatus(value)
-              setPage(1)
-            },
-            options: [
-              { value: 'all', label: t('factoryOrders.allStatus') },
-              ...STATUS_OPTIONS.map((option) => ({
-                value: option,
-                label: getStatusLabel(option, t),
-              })),
-            ],
-          },
-        ]}
+        // filters={[
+        //   {
+        //     id: 'supplier',
+        //     value: supplier,
+        //     onChange: (value) => {
+        //       setSupplier(value)
+        //       setPage(1)
+        //     },
+        //     options: supplierOptions,
+        //   },
+        //   {
+        //     id: 'status',
+        //     value: status,
+        //     onChange: (value) => {
+        //       setStatus(value)
+        //       setPage(1)
+        //     },
+        //     options: [
+        //       { value: 'all', label: t('factoryOrders.allStatus') },
+        //       ...STATUS_OPTIONS.map((option) => ({
+        //         value: option,
+        //         label: getStatusLabel(option, t),
+        //       })),
+        //     ],
+        //   },
+        // ]}
         showActions
         actionType="menu"
         actions={actions}

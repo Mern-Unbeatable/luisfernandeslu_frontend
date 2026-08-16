@@ -32,13 +32,37 @@ function downloadInvoice(row, t) {
 
 export default function InvoicesPage() {
   const { t } = useTranslation()
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
   const pageSize = SUPPLIER_INVOICES_PAGE_SIZE
-  const total = DEMO_SUPPLIER_INVOICES.length
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+
+    return DEMO_SUPPLIER_INVOICES.filter((row) => {
+      if (!q) return true
+
+      const typeLabel = (
+        row.type === 'Invoice' ? t('supplierInvoices.typeInvoice') : row.type
+      ).toLowerCase()
+
+      return (
+        String(row.id).toLowerCase().includes(q) ||
+        String(row.orderId).toLowerCase().includes(q) ||
+        String(row.customer).toLowerCase().includes(q) ||
+        String(row.amount).toLowerCase().includes(q) ||
+        String(row.date).toLowerCase().includes(q) ||
+        String(row.type).toLowerCase().includes(q) ||
+        typeLabel.includes(q)
+      )
+    })
+  }, [search, t])
+
+  const total = filtered.length
   const pageCount = Math.max(1, Math.ceil(total / pageSize))
   const safePage = Math.min(page, pageCount)
-  const paged = DEMO_SUPPLIER_INVOICES.slice(
+  const paged = filtered.slice(
     (safePage - 1) * pageSize,
     safePage * pageSize,
   )
@@ -148,6 +172,13 @@ export default function InvoicesPage() {
           columns={columns}
           data={paged}
           getRowKey={(row) => row.id}
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value)
+            setPage(1)
+          }}
+          searchPlaceholder={t('supplierInvoices.searchPlaceholder')}
           showPagination
           pagination={{
             page: safePage,

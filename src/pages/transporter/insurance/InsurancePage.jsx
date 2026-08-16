@@ -40,7 +40,7 @@ export default function InsurancePage() {
         <button
           type="button"
           onClick={() => setShowUploadModal(true)}
-          className="inline-flex items-center gap-2 self-start rounded-xl bg-[var(--active)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 sm:self-auto"
+          className="inline-flex items-center gap-2 self-end rounded-xl bg-[var(--active)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 sm:self-auto"
         >
           <FiUpload className="size-4" />
           Upload Insurance

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { FiMenu } from 'react-icons/fi'
@@ -27,8 +27,7 @@ export default function CategoryBar() {
   )
 
   const showAffiliate = !(isAuthenticated && role === 'affiliate')
-  const showBecomeSeller = !(isAuthenticated && role === 'supplier')
-  const showBecomeDeliverer = !(isAuthenticated && role === 'transporter')
+  const showCtaButtons = !isAuthenticated
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current) {
@@ -61,12 +60,12 @@ export default function CategoryBar() {
   }, [menuOpen])
 
   return (
-    <div className="top-0 z-40 w-full shrink-0 md:top-[68px]">
+    <div className="relative z-40 w-full shrink-0">
       <nav
         aria-label={t('categoryBar.navLabel')}
         className="relative z-20 w-full border-b border-[#f0e6d8] bg-[#FFF8EE]"
       >
-        <div className="container mx-auto flex w-full flex-row items-center justify-between gap-4 px-4 py-3 sm:px-6 md:gap-6">
+        <div className="container mx-auto flex min-h-[60px] w-full flex-row items-center justify-between gap-4 px-4 py-3 sm:px-6 md:gap-6">
           <button
             type="button"
             aria-expanded={menuOpen}
@@ -78,7 +77,7 @@ export default function CategoryBar() {
             onMouseLeave={() => {
               if (prefersHoverOpen()) scheduleCloseMenu()
             }}
-            className={`inline-flex min-h-11 shrink-0 touch-manipulation flex-row items-center gap-2 whitespace-nowrap px-1 text-sm font-medium leading-none transition-colors sm:min-h-0 sm:px-0 ${
+            className={`inline-flex min-h-11 shrink-0 touch-manipulation flex-row items-center gap-2 whitespace-nowrap px-1 text-sm font-medium leading-none transition-colors sm:min-h-9 sm:px-0 ${
               menuOpen
                 ? 'text-[var(--active)]'
                 : 'text-[var(--primary-text)] hover:text-[var(--active)]'
@@ -89,13 +88,19 @@ export default function CategoryBar() {
           </button>
 
           <div className="flex min-w-0 flex-row items-center gap-5 sm:gap-8 md:flex-1 md:justify-start md:gap-10 md:pl-8 lg:gap-12">
-            <Link
+            <NavLink
               to="/products"
               onClick={() => setMenuOpen(false)}
-              className="inline-flex shrink-0 flex-row items-center gap-2 whitespace-nowrap text-sm font-medium leading-none text-[var(--primary-text)] transition-colors hover:text-[var(--active)]"
+              className={({ isActive }) =>
+                `inline-flex shrink-0 flex-row items-center gap-2 whitespace-nowrap text-sm font-medium leading-none transition-colors ${
+                  isActive
+                    ? 'text-[var(--active)]'
+                    : 'text-[var(--primary-text)] hover:text-[var(--active)]'
+                }`
+              }
             >
               {t('categoryBar.products')}
-            </Link>
+            </NavLink>
 
             {showAffiliate ? (
               <Link
@@ -108,24 +113,20 @@ export default function CategoryBar() {
             ) : null}
           </div>
 
-          {(showBecomeSeller || showBecomeDeliverer) ? (
+          {showCtaButtons ? (
             <div className="hidden shrink-0 flex-row items-center gap-3 md:flex">
-              {showBecomeSeller ? (
-                <Link
-                  to="/signup/supplier"
-                  className="inline-flex h-9 items-center justify-center rounded-full bg-[var(--active)] px-4 text-xs font-bold tracking-wide whitespace-nowrap text-white uppercase transition-[filter] hover:brightness-95 lg:px-5 lg:text-[13px]"
-                >
-                  {t('categoryBar.becomeSeller')}
-                </Link>
-              ) : null}
-              {showBecomeDeliverer ? (
-                <Link
-                  to="/signup/transporter"
-                  className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--active)] bg-transparent px-4 text-xs font-bold tracking-wide whitespace-nowrap text-[var(--active)] uppercase transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,transparent)] lg:px-5 lg:text-[13px]"
-                >
-                  {t('categoryBar.beLiberator')}
-                </Link>
-              ) : null}
+              <Link
+                to="/signup/supplier"
+                className="inline-flex h-9 items-center justify-center rounded-full bg-[var(--active)] px-4 text-xs font-bold tracking-wide whitespace-nowrap text-white uppercase transition-[filter] hover:brightness-95 lg:px-5 lg:text-[13px]"
+              >
+                {t('categoryBar.becomeSeller')}
+              </Link>
+              <Link
+                to="/signup/transporter"
+                className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--active)] bg-transparent px-4 text-xs font-bold tracking-wide whitespace-nowrap text-[var(--active)] uppercase transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,transparent)] lg:px-5 lg:text-[13px]"
+              >
+                {t('categoryBar.beLiberator')}
+              </Link>
             </div>
           ) : null}
         </div>

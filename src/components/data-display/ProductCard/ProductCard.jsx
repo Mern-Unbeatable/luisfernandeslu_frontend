@@ -273,7 +273,10 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
     <div className="inline-flex overflow-hidden rounded-md border border-gray-200">
       <button
         type="button"
-        onClick={onIncrease}
+        onClick={(event) => {
+          event.stopPropagation()
+          onIncrease()
+        }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
         aria-label="Increase quantity"
       >
@@ -284,7 +287,10 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
       </span>
       <button
         type="button"
-        onClick={onDecrease}
+        onClick={(event) => {
+          event.stopPropagation()
+          onDecrease()
+        }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
         aria-label="Decrease quantity"
       >

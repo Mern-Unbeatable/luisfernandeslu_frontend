@@ -1,6 +1,14 @@
 import { useState } from 'react'
-import { FiAward, FiCheck, FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { FiAward, FiCheck, FiEdit2, FiMove, FiTrash2 } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+
+function reorderItems(items, fromIndex, toIndex) {
+  if (fromIndex === toIndex) return items
+  const next = [...items]
+  const [moved] = next.splice(fromIndex, 1)
+  next.splice(toIndex, 0, moved)
+  return next
+}
 
 function CommissionLevelCard({
   level,
@@ -12,13 +20,43 @@ function CommissionLevelCard({
   onDelete,
   editLabel,
   deleteLabel,
+  draggable = false,
+  isDragging = false,
+  isDropTarget = false,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
 }) {
   return (
-    <article className="flex min-w-[11rem] flex-1 flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+    <article
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
+      className={`flex min-w-[11rem] flex-1 flex-col rounded-xl border bg-white p-4 shadow-sm transition-[opacity,box-shadow,border-color] sm:p-5 ${
+        isDragging
+          ? 'cursor-grabbing border-[var(--active)] opacity-50'
+          : isDropTarget
+            ? 'border-[var(--active)] ring-2 ring-[var(--active)]/30'
+            : 'border-gray-200'
+      } ${draggable ? 'cursor-grab active:cursor-grabbing' : ''}`}
+    >
       <div className="flex items-start justify-between gap-2">
-        <span className="inline-flex size-9 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
-          <FiAward className="size-5" aria-hidden />
-        </span>
+        <div className="flex items-start gap-2">
+          {draggable ? (
+            <span
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-[var(--secondary-text)]"
+              aria-hidden
+            >
+              <FiMove className="size-4" />
+            </span>
+          ) : null}
+          <span className="inline-flex size-9 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+            <FiAward className="size-5" aria-hidden />
+          </span>
+        </div>
         {level.isActive ? (
           <span className="rounded-md bg-[color-mix(in_srgb,var(--active)_18%,white)] px-2 py-0.5 text-xs font-semibold text-[var(--active)]">
             {activeLabel}
@@ -41,6 +79,8 @@ function CommissionLevelCard({
       <div className="mt-auto flex gap-2 pt-5">
         <button
           type="button"
+          draggable={false}
+          onDragStart={(event) => event.preventDefault()}
           onClick={() => onEdit?.(level)}
           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[var(--active)] px-3 py-2 text-sm font-semibold text-white hover:brightness-95"
         >
@@ -49,6 +89,8 @@ function CommissionLevelCard({
         </button>
         <button
           type="button"
+          draggable={false}
+          onDragStart={(event) => event.preventDefault()}
           onClick={() => onDelete?.(level)}
           className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100"
           aria-label={deleteLabel}
@@ -71,6 +113,8 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
   const { t } = useTranslation()
   const I18N = 'adminAffiliateDirectory.levelControl'
   const [form, setForm] = useState({ ...EMPTY_FORM })
+  const [dragIndex, setDragIndex] = useState(null)
+  const [dropIndex, setDropIndex] = useState(null)
 
   const handleDelete = (level) => {
     onLevelsChange?.(levels.filter((item) => item.id !== level.id))
@@ -83,6 +127,37 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
       membersRequired: String(level.membersRequired),
       description: level.description,
     })
+  }
+
+  const handleDragStart = (index) => (event) => {
+    setDragIndex(index)
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', String(index))
+  }
+
+  const handleDragOver = (index) => (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+    if (dropIndex !== index) setDropIndex(index)
+  }
+
+  const handleDrop = (index) => (event) => {
+    event.preventDefault()
+    const fromIndex =
+      dragIndex ?? Number.parseInt(event.dataTransfer.getData('text/plain'), 10)
+    if (Number.isNaN(fromIndex) || fromIndex === index) {
+      setDragIndex(null)
+      setDropIndex(null)
+      return
+    }
+    onLevelsChange?.(reorderItems(levels, fromIndex, index))
+    setDragIndex(null)
+    setDropIndex(null)
+  }
+
+  const handleDragEnd = () => {
+    setDragIndex(null)
+    setDropIndex(null)
   }
 
   const handleCancel = () => setForm({ ...EMPTY_FORM })
@@ -106,7 +181,7 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-4 xl:flex-row xl:flex-wrap">
-        {levels.map((level) => (
+        {levels.map((level, index) => (
           <CommissionLevelCard
             key={level.id}
             level={level}
@@ -118,6 +193,13 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
             payoutNote={t(`${I18N}.payoutNote`)}
             editLabel={t(`${I18N}.edit`)}
             deleteLabel={t(`${I18N}.delete`)}
+            draggable
+            isDragging={dragIndex === index}
+            isDropTarget={dropIndex === index && dragIndex !== index}
+            onDragStart={handleDragStart(index)}
+            onDragOver={handleDragOver(index)}
+            onDrop={handleDrop(index)}
+            onDragEnd={handleDragEnd}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
