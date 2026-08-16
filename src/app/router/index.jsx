@@ -832,12 +832,7 @@ export const router = createBrowserRouter([
       },
 
 
-      /*
-Remaining routes are intentionally commented out so only the requested public pages stay active.
-Other paths will continue to fall back to the ComingSoon view.
-// Developer docs
-{ path: "/developer", element: <Developer /> },
-{ path: "/developer/:componentId", element: <Developer /> },
+
 
 // Supplier
 {
@@ -995,6 +990,12 @@ Other paths will continue to fall back to the ComingSoon view.
     },
   ],
 },
+      /*
+Remaining routes are intentionally commented out so only the requested public pages stay active.
+Other paths will continue to fall back to the ComingSoon view.
+// Developer docs
+{ path: "/developer", element: <Developer /> },
+{ path: "/developer/:componentId", element: <Developer /> },
 
 // Factory
 {
