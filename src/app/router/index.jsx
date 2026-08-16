@@ -360,10 +360,24 @@ const TransporterAuctionBoard = Loadable(
   lazy(() => import('../../pages/transporter/auction-board/AuctionBoardPage')),
   <PanelSkeleton />,
 );
+const TransporterAssignDeliveriesLayout = Loadable(
+  lazy(
+    () =>
+      import('../../pages/transporter/assign-deliveries/AssignDeliveriesLayout'),
+  ),
+  <PanelSkeleton />,
+);
 const TransporterAssignDeliveries = Loadable(
   lazy(
     () =>
       import('../../pages/transporter/assign-deliveries/AssignDeliveriesPage'),
+  ),
+  <PanelSkeleton />,
+);
+const TransporterVerifyDelivery = Loadable(
+  lazy(
+    () =>
+      import('../../pages/transporter/assign-deliveries/VerifyDeliveryPage'),
   ),
   <PanelSkeleton />,
 );
@@ -1214,8 +1228,19 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'assign-deliveries',
-                element: <TransporterAssignDeliveries />,
+                element: <TransporterAssignDeliveriesLayout />,
                 handle: panelSeo('panel.nav.assignDeliveries'),
+                children: [
+                  {
+                    index: true,
+                    element: <TransporterAssignDeliveries />,
+                  },
+                  {
+                    path: ':deliveryId/verify',
+                    element: <TransporterVerifyDelivery />,
+                    handle: panelSeo('panel.nav.assignDeliveries'),
+                  },
+                ],
               },
               {
                 path: 'payments-payouts',

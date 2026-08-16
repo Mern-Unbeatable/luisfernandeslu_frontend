@@ -95,7 +95,7 @@ export default function OrderHistoryPage() {
             {completedDeliveries.length} completed deliveries
           </p>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <select
             value="Delivered"
             disabled

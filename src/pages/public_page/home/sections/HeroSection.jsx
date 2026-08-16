@@ -60,7 +60,7 @@ function HeroSlidePanel({ slide, copy, isActive }) {
 
   return (
     <article
-      className="relative min-h-[22rem] shrink-0 grow-0 basis-full sm:min-h-0 sm:h-95 lg:h-120"
+      className="relative shrink-0 grow-0 basis-full pb-10 sm:min-h-0 sm:h-95 sm:pb-0 lg:h-120"
       aria-hidden={!isActive}
     >
       <div
@@ -72,7 +72,7 @@ function HeroSlidePanel({ slide, copy, isActive }) {
         className="pointer-events-none absolute inset-0 bg-linear-to-r from-black/80 via-black/70 to-black/40 sm:to-black/30"
         aria-hidden
       />
-      <div className="relative z-10 flex h-full flex-col px-6 pt-6 pb-14 sm:justify-center sm:px-12 sm:pb-16 sm:pt-8 lg:pl-20 lg:pr-24">
+      <div className="relative z-10 flex flex-col px-6 pt-6 sm:h-full sm:justify-center sm:px-12 sm:pb-16 sm:pt-8 lg:pl-20 lg:pr-24">
         <div className="flex flex-col sm:min-h-0 sm:flex-1 sm:justify-center">
           <span
             className="mb-2 inline-flex w-fit items-center rounded-full px-2.5 py-0.5 font-['Barlow',sans-serif] text-[11px] font-semibold leading-none text-white sm:mb-4 sm:px-4 sm:py-1.5 sm:text-sm sm:font-bold"
