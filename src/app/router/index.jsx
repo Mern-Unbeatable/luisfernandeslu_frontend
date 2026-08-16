@@ -970,6 +970,11 @@ export const router = createBrowserRouter([
                 handle: panelSeo('panel.nav.products'),
               },
               {
+                path: 'products/:productId/edit',
+                element: <SupplierAddProduct />,
+                handle: panelSeo('panel.nav.products'),
+              },
+              {
                 path: 'products/:productId',
                 element: <SupplierProductDetail />,
                 handle: panelSeo('panel.nav.products'),
@@ -981,6 +986,11 @@ export const router = createBrowserRouter([
               },
               {
                 path: 'promo-codes/create',
+                element: <SupplierCreatePromoCode />,
+                handle: panelSeo('panel.nav.promoCode'),
+              },
+              {
+                path: 'promo-codes/products/:productId/edit',
                 element: <SupplierCreatePromoCode />,
                 handle: panelSeo('panel.nav.promoCode'),
               },

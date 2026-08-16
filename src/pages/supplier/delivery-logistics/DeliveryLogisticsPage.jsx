@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
+import Pagination from '@/components/common/Pagination/Pagination'
 import AuctionCard from '@/components/data-display/AuctionCard'
 import AuctionDetails from '@/components/data-display/AuctionDetails'
 import CreateAuction from '@/components/forms/CreateAuction'
@@ -11,6 +12,8 @@ import {
   DEMO_AUCTION_DETAILS_ASSIGNED,
   DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
 } from '@/data/demoData'
+
+const PAGE_SIZE = 4
 
 const ACTIVE_AUCTIONS = [
   DEMO_AUCTION_CREATED,
@@ -39,6 +42,42 @@ const ACTIVE_AUCTIONS = [
     customerName: 'Daniel Wright',
     deliveryLocation: '15 Desert View Blvd, Tucson, AZ',
     productName: 'Crushed Stone Aggregate',
+    status: 'open',
+  },
+  {
+    id: 'auc-ord-008',
+    orderId: 'ORD-2026-008',
+    pickupLocation: '88 Mill Road, Portland, OR',
+    customerName: 'Olivia Chen',
+    deliveryLocation: '402 Bridge St, Seattle, WA',
+    productName: 'Timber Beams - Grade A',
+    status: 'open',
+  },
+  {
+    id: 'auc-ord-009',
+    orderId: 'ORD-2026-009',
+    pickupLocation: '600 Brick Yard, Atlanta, GA',
+    customerName: 'James Brown',
+    deliveryLocation: '91 Peachtree St, Atlanta, GA',
+    productName: 'Clay Bricks - 10,000 Units',
+    status: 'open',
+  },
+  {
+    id: 'auc-ord-010',
+    orderId: 'ORD-2026-010',
+    pickupLocation: '33 Sand Depot, Miami, FL',
+    customerName: 'Sofia Alvarez',
+    deliveryLocation: '120 Ocean Dr, Miami Beach, FL',
+    productName: 'Fine Sand Bulk Load',
+    status: 'open',
+  },
+  {
+    id: 'auc-ord-011',
+    orderId: 'ORD-2026-011',
+    pickupLocation: '1700 Steel Works, Chicago, IL',
+    customerName: 'Noah Patel',
+    deliveryLocation: '55 Lakeshore Dr, Chicago, IL',
+    productName: 'Structural Steel Plates',
     status: 'open',
   },
 ]
@@ -73,6 +112,46 @@ const ASSIGNED_DELIVERIES = [
     deliveryLocation: '800 Harbor Point, Boston, MA',
     assignedTransporter: 'FastShip Logistics',
     bidPrice: 5600,
+    status: 'assigned',
+  },
+  {
+    id: 'auc-ord-013',
+    orderId: 'ORD-2026-013',
+    productName: 'PVC Piping Bundles',
+    pickupLocation: '910 Pipe Depot, Columbus, OH',
+    deliveryLocation: '210 High St, Columbus, OH',
+    assignedTransporter: 'BulkFreight Co',
+    bidPrice: 2100,
+    status: 'assigned',
+  },
+  {
+    id: 'auc-ord-014',
+    orderId: 'ORD-2026-014',
+    productName: 'Roofing Sheets - Galvanized',
+    pickupLocation: '300 Metal Yard, Dallas, TX',
+    deliveryLocation: '66 Commerce Loop, Fort Worth, TX',
+    assignedTransporter: 'Swift Transport Co.',
+    bidPrice: 2750,
+    status: 'assigned',
+  },
+  {
+    id: 'auc-ord-015',
+    orderId: 'ORD-2026-015',
+    productName: 'Ceramic Floor Tiles',
+    pickupLocation: '18 Tile Factory, San Jose, CA',
+    deliveryLocation: '404 Market St, San Francisco, CA',
+    assignedTransporter: 'QuickDelivery Express',
+    bidPrice: 3400,
+    status: 'assigned',
+  },
+  {
+    id: 'auc-ord-016',
+    orderId: 'ORD-2026-016',
+    productName: 'Insulation Foam Boards',
+    pickupLocation: '72 Foam Plant, Minneapolis, MN',
+    deliveryLocation: '1500 Nicolet Mall, Minneapolis, MN',
+    assignedTransporter: 'HaulMaster Inc.',
+    bidPrice: 1950,
     status: 'assigned',
   },
 ]
@@ -134,8 +213,30 @@ export default function DeliveryLogisticsPage() {
   const { t } = useTranslation()
   const [activeAuctions, setActiveAuctions] = useState(ACTIVE_AUCTIONS)
   const [assignedDeliveries] = useState(ASSIGNED_DELIVERIES)
+  const [activePage, setActivePage] = useState(1)
+  const [assignedPage, setAssignedPage] = useState(1)
   const [view, setView] = useState('list')
   const [selectedAuction, setSelectedAuction] = useState(null)
+
+  const activeTotalPages = Math.max(
+    1,
+    Math.ceil(activeAuctions.length / PAGE_SIZE),
+  )
+  const assignedTotalPages = Math.max(
+    1,
+    Math.ceil(assignedDeliveries.length / PAGE_SIZE),
+  )
+  const safeActivePage = Math.min(activePage, activeTotalPages)
+  const safeAssignedPage = Math.min(assignedPage, assignedTotalPages)
+
+  const pagedActiveAuctions = activeAuctions.slice(
+    (safeActivePage - 1) * PAGE_SIZE,
+    safeActivePage * PAGE_SIZE,
+  )
+  const pagedAssignedDeliveries = assignedDeliveries.slice(
+    (safeAssignedPage - 1) * PAGE_SIZE,
+    safeAssignedPage * PAGE_SIZE,
+  )
 
   const openDetails = (auction) => {
     setSelectedAuction(auction)
@@ -160,6 +261,7 @@ export default function DeliveryLogisticsPage() {
       status: 'open',
     }
     setActiveAuctions((prev) => [next, ...prev])
+    setActivePage(1)
     setView('list')
   }
 
@@ -233,7 +335,7 @@ export default function DeliveryLogisticsPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {activeAuctions.map((auction) => (
+            {pagedActiveAuctions.map((auction) => (
               <AuctionCard
                 key={auction.id}
                 role="supplier"
@@ -243,6 +345,13 @@ export default function DeliveryLogisticsPage() {
               />
             ))}
           </div>
+
+          <Pagination
+            className="mt-2"
+            page={safeActivePage}
+            totalPages={activeTotalPages}
+            onPageChange={setActivePage}
+          />
         </section>
 
         <section className="space-y-4">
@@ -256,7 +365,7 @@ export default function DeliveryLogisticsPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {assignedDeliveries.map((auction) => (
+            {pagedAssignedDeliveries.map((auction) => (
               <AuctionCard
                 key={auction.id}
                 role="supplier"
@@ -266,6 +375,13 @@ export default function DeliveryLogisticsPage() {
               />
             ))}
           </div>
+
+          <Pagination
+            className="mt-2"
+            page={safeAssignedPage}
+            totalPages={assignedTotalPages}
+            onPageChange={setAssignedPage}
+          />
         </section>
       </div>
     </>

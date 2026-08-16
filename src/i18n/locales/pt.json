@@ -1095,7 +1095,9 @@
       "totalProducts": "Total de produtos",
       "revenueTitle": "Visão geral de receitas",
       "revenueSubtitle": "Análise de receitas e volume de pedidos para o ano atual",
+      "periodFilter": "Selecionar período",
       "periodThisYear": "Este ano",
+      "periodLastYear": "Ano passado",
       "customer": "Cliente",
       "company": "Empresa",
       "orderId": "ID do pedido",
@@ -1104,6 +1106,11 @@
       "price": "Preço",
       "payment": "Pagamento",
       "status": "Estado",
+      "statusAssign": "Atribuir",
+      "statusCompleted": "Concluído",
+      "statusPending": "Pendente",
+      "statusCancel": "Cancelar",
+      "changeStatus": "Alterar estado do pedido",
       "action": "Ação",
       "viewOrder": "Ver pedido",
       "previous": "Anterior",
@@ -1137,6 +1144,42 @@
         "breadcrumb": "Produto > Adicionar produto",
         "submit": "SUBMETER",
         "selectWarehouse": "Selecionar armazém"
+      },
+      "edit": {
+        "title": "Editar produto",
+        "breadcrumb": "Produto > Editar produto",
+        "submit": "ATUALIZAR"
+      },
+      "delete": {
+        "title": "Eliminar produto",
+        "message": "Tem a certeza de que deseja eliminar \"{{name}}\"? Esta ação não pode ser anulada.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar",
+        "deleting": "A eliminar…",
+        "close": "Fechar",
+        "closeOverlay": "Fechar sobreposição"
+      },
+      "csv": {
+        "title": "Carregue o seu ficheiro",
+        "hint": "Apenas CSV · Máx. 10 MB",
+        "close": "Fechar",
+        "closeOverlay": "Fechar sobreposição",
+        "dropTitle": "Largue o CSV aqui, ou clique para escolher",
+        "dropNote": "Vamos colocar na fila assim que clicar em Queue Import.",
+        "selected": "Selecionado: {{name}}",
+        "browseAria": "Escolher ficheiro CSV",
+        "downloadExample": "Descarregar exemplo",
+        "queueImport": "Queue Import",
+        "uploading": "A carregar…",
+        "fileRequired": "Escolha primeiro um ficheiro CSV.",
+        "invalidFormat": "O formato do ficheiro não é CSV. Carregue um ficheiro .csv.",
+        "emptyFile": "O ficheiro CSV está vazio.",
+        "noRows": "O CSV tem cabeçalhos, mas não tem linhas de produto.",
+        "missingColumns": "Faltam colunas obrigatórias: {{columns}}",
+        "rowMissingField": "Linha {{row}}: falta o valor obrigatório de {{column}}.",
+        "rowInvalidPrice": "Linha {{row}}: {{column}} deve ser um número válido.",
+        "rowInvalidTag": "Linha {{row}}: a etiqueta deve ser regular, bulk_order, featured ou pending.",
+        "uploadFailed": "Falha no carregamento. Verifique o ficheiro e tente novamente."
       }
     },
     "supplierPromoCodes": {
@@ -1167,6 +1210,16 @@
       "actionSeeDetails": "Ver detalhes",
       "statusSection": "Estado",
       "emptyPromoCodes": "Nenhum código promocional encontrado.",
+      "searchPlaceholder": "Pesquisar código, desconto, estado, validade...",
+      "previous": "Anterior",
+      "next": "Seguinte",
+      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "backToPromoProducts": "Voltar aos produtos promocionais",
+      "edit": {
+        "title": "Editar código promocional",
+        "breadcrumb": "Código promocional > Editar código promocional",
+        "submit": "ATUALIZAR CÓDIGO PROMOCIONAL"
+      },
       "emptyPromoProductsTitle": "Ainda sem produtos promocionais",
       "emptyPromoProductsHint": "Os produtos promocionais aparecerão aqui quando atribuídos a uma promoção.",
       "create": {
@@ -1227,6 +1280,7 @@
       "notFound": "Pedido não encontrado.",
       "backToOrders": "Voltar aos pedidos",
       "emptyOrders": "Nenhum pedido encontrado.",
+      "searchPlaceholder": "Pesquisar ID, cliente, email, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
@@ -1271,6 +1325,7 @@
       "notFound": "Pedido não encontrado.",
       "backToOrders": "Voltar aos pedidos",
       "emptyOrders": "Nenhum pedido encontrado.",
+      "searchPlaceholder": "Pesquisar ID, empresa, cliente, email, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
@@ -1351,6 +1406,7 @@
       "actionDecline": "Recusar",
       "emptyOrders": "Nenhum pedido encontrado.",
       "emptyTransport": "Nenhum pedido de transporte encontrado.",
+      "searchPlaceholder": "Pesquisar PO, fábrica, produto, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
@@ -1397,6 +1453,7 @@
       "actionDelete": "Eliminar",
       "actionSeeDetails": "Ver detalhes",
       "emptyProducts": "Nenhum produto de inventário encontrado.",
+      "searchPlaceholder": "Pesquisar inventário, produto, SKU, fábrica, estado...",
       "previous": "Anterior",
       "next": "Seguinte",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
@@ -2743,6 +2800,7 @@
     "filters": {
       "allStatus": "Todos os estados"
     },
+    "searchPlaceholder": "Pesquisar ID de devolução, encomenda, cliente, produto, estado...",
     "columns": {
       "returnId": "ID DE DEVOLUÇÃO",
       "orderId": "ID DA ENCOMENDA",
@@ -2799,6 +2857,7 @@
     "filters": {
       "allStatus": "Todos os estados"
     },
+    "searchPlaceholder": "Pesquisar ID da disputa, encomenda, cliente, fornecedor, problema, estado...",
     "columns": {
       "disputeId": "ID DA DISPUTA",
       "orderId": "ID DA ENCOMENDA",
@@ -2832,6 +2891,7 @@
   "supplierInvoices": {
     "title": "Faturas de comissão",
     "subtitle": "Faça a gestão e acompanhe todas as faturas de comissão geradas a partir de encomendas do marketplace.",
+    "searchPlaceholder": "Pesquisar ID da fatura, ID da encomenda, cliente...",
     "typeInvoice": "Fatura",
     "viewAria": "Ver {{id}}",
     "downloadAria": "Descarregar {{id}}",

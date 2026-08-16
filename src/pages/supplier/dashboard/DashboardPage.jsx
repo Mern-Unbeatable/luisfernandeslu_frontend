@@ -1,15 +1,29 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FiChevronDown, FiEye } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import DataTable from '@/components/data-display/DataTable/DataTable';
-import StatusBadge from '@/components/data-display/DataTable/StatusBadge';
 import StatusCard from '@/components/data-display/StatusCard';
 import {
   DEMO_SUPPLIER_DASHBOARD,
   DEMO_SUPPLIER_DASHBOARD_STAT_CARDS,
 } from '@/data/demoData';
+import OrderStatusSelect from './OrderStatusSelect';
 import RevenueChart from './RevenueChart';
+
+const STATUS_LABEL_KEYS = {
+  assign: 'panel.supplierDashboard.statusAssign',
+  completed: 'panel.supplierDashboard.statusCompleted',
+  pending: 'panel.supplierDashboard.statusPending',
+  cancel: 'panel.supplierDashboard.statusCancel',
+};
+
+const STATUS_OPTIONS = ['assign', 'completed', 'pending', 'cancel'];
+
+function toDetailStatus(status) {
+  return status === 'assign' ? 'assigned' : status;
+}
 
 function formatStatValue(value, format) {
   if (format === 'currency') {
@@ -20,12 +34,13 @@ function formatStatValue(value, format) {
 
 export default function DashboardPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [period, setPeriod] = useState('thisYear');
   const [page, setPage] = useState(1);
+  const [orders, setOrders] = useState(DEMO_SUPPLIER_DASHBOARD.orders || []);
 
   // TODO: replace DEMO_* with supplier dashboard API fetch
   const dashboard = DEMO_SUPPLIER_DASHBOARD;
-  const orders = dashboard.orders || [];
   const pageSize = 7;
   const total = orders.length;
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
@@ -34,6 +49,48 @@ export default function DashboardPage() {
     (safePage - 1) * pageSize,
     safePage * pageSize,
   );
+
+  const statusOptions = useMemo(
+    () =>
+      STATUS_OPTIONS.map((value) => ({
+        value,
+        label: t(STATUS_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
+  const handleStatusChange = useCallback(
+    (row, status) => {
+      setOrders((prev) =>
+        prev.map((item) =>
+          item.id === row.id
+            ? {
+                ...item,
+                status,
+                statusLabel: t(STATUS_LABEL_KEYS[status]),
+              }
+            : item,
+        ),
+      );
+      // TODO: wire supplier dashboard order status API
+    },
+    [t],
+  );
+
+  const handleViewOrder = useCallback((row) => {
+    const isCompany = String(row.type).toLowerCase() === 'company';
+    const detailId = row.detailId || row.id;
+    const path = isCompany
+      ? `/supplier/company-orders/${detailId}`
+      : `/supplier/orders-customer/${detailId}`;
+
+    navigate(path, {
+      state: {
+        status: toDetailStatus(row.status),
+        tab: row.tab,
+      },
+    });
+  }, [navigate]);
 
   const columns = useMemo(
     () => [
@@ -61,11 +118,12 @@ export default function DashboardPage() {
         key: 'status',
         header: t('panel.supplierDashboard.status'),
         render: (value, row) => (
-          <StatusBadge
+          <OrderStatusSelect
             status={value}
             label={row.statusLabel}
-            showChevron
-            className='rounded-full'
+            options={statusOptions}
+            onChange={(status) => handleStatusChange(row, status)}
+            ariaLabel={t('panel.supplierDashboard.changeStatus')}
           />
         ),
       },
@@ -77,10 +135,7 @@ export default function DashboardPage() {
         render: (_, row) => (
           <button
             type='button'
-            onClick={() => {
-              // TODO: navigate to order details when route exists
-              void row;
-            }}
+            onClick={() => handleViewOrder(row)}
             className='inline-flex rounded-md p-1.5 text-[var(--primary-text)] transition-colors hover:bg-gray-100'
             aria-label={t('panel.supplierDashboard.viewOrder')}
           >
@@ -89,7 +144,7 @@ export default function DashboardPage() {
         ),
       },
     ],
-    [t],
+    [t, statusOptions, handleStatusChange, handleViewOrder],
   );
 
   const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1;
@@ -103,7 +158,7 @@ export default function DashboardPage() {
         <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
           {t('panel.supplierDashboard.title')}
         </h1>
-        <p className='mt-1 text-sm text-neutral-500'>
+        <p className='mt-1 text-sm md:text-base text-neutral-500'>
           {t('panel.supplierDashboard.subtitle')}
         </p>
       </header>
@@ -141,10 +196,13 @@ export default function DashboardPage() {
               value={period}
               onChange={(event) => setPeriod(event.target.value)}
               className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-              aria-label={t('panel.supplierDashboard.periodThisYear')}
+              aria-label={t('panel.supplierDashboard.periodFilter')}
             >
               <option value='thisYear'>
                 {t('panel.supplierDashboard.periodThisYear')}
+              </option>
+              <option value='lastYear'>
+                {t('panel.supplierDashboard.periodLastYear')}
               </option>
             </select>
             <FiChevronDown
@@ -154,7 +212,13 @@ export default function DashboardPage() {
           </label>
         </div>
 
-        <RevenueChart revenue={dashboard.revenue} />
+        <RevenueChart
+          revenue={{
+            maxValue: dashboard.revenue.maxValue,
+            yTicks: dashboard.revenue.yTicks,
+            series: dashboard.revenue.byPeriod[period] || [],
+          }}
+        />
       </section>
 
       <section className='mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>

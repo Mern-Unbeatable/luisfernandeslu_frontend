@@ -5,12 +5,16 @@ const axiosBaseQuery =
   ({ baseUrl } = { baseUrl: '' }) =>
   async ({ url, method = 'GET', data, params, headers }) => {
     try {
+      const isFormData =
+        typeof FormData !== 'undefined' && data instanceof FormData
       const result = await axiosInstance({
         url: baseUrl + url,
         method,
         data,
         params,
-        headers,
+        headers: isFormData
+          ? { ...headers, 'Content-Type': undefined }
+          : headers,
       })
 
       return { data: result.data }

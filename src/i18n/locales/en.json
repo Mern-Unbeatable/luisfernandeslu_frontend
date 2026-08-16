@@ -1097,7 +1097,9 @@
       "totalProducts": "Total Products",
       "revenueTitle": "Revenue Overview",
       "revenueSubtitle": "Revenue and order volume analysis for the current year",
+      "periodFilter": "Select period",
       "periodThisYear": "This year",
+      "periodLastYear": "Last year",
       "customer": "Customer",
       "company": "Company",
       "orderId": "Order ID",
@@ -1106,6 +1108,11 @@
       "price": "Price",
       "payment": "Payment",
       "status": "Status",
+      "statusAssign": "Assign",
+      "statusCompleted": "Completed",
+      "statusPending": "Pending",
+      "statusCancel": "Cancel",
+      "changeStatus": "Change order status",
       "action": "Action",
       "viewOrder": "View order",
       "previous": "Previous",
@@ -1139,6 +1146,42 @@
         "breadcrumb": "Product > Add Product",
         "submit": "SUBMIT",
         "selectWarehouse": "Select warehouse"
+      },
+      "edit": {
+        "title": "Edit Product",
+        "breadcrumb": "Product > Edit Product",
+        "submit": "UPDATE"
+      },
+      "delete": {
+        "title": "Delete product",
+        "message": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "deleting": "Deleting…",
+        "close": "Close",
+        "closeOverlay": "Close overlay"
+      },
+      "csv": {
+        "title": "Upload your file",
+        "hint": "CSV only · Max 10 MB",
+        "close": "Close",
+        "closeOverlay": "Close overlay",
+        "dropTitle": "Drop your CSV here, or click to browse",
+        "dropNote": "We'll queue it as soon as you click Queue Import.",
+        "selected": "Selected: {{name}}",
+        "browseAria": "Browse CSV file",
+        "downloadExample": "Download example",
+        "queueImport": "Queue Import",
+        "uploading": "Uploading…",
+        "fileRequired": "Please choose a CSV file first.",
+        "invalidFormat": "File format is not CSV. Please upload a .csv file.",
+        "emptyFile": "The CSV file is empty.",
+        "noRows": "The CSV has headers but no product rows.",
+        "missingColumns": "Required columns are missing: {{columns}}",
+        "rowMissingField": "Row {{row}}: missing required value for {{column}}.",
+        "rowInvalidPrice": "Row {{row}}: {{column}} must be a valid number.",
+        "rowInvalidTag": "Row {{row}}: tag must be regular, bulk_order, featured, or pending.",
+        "uploadFailed": "Upload failed. Please check the file and try again."
       }
     },
     "supplierPromoCodes": {
@@ -1169,6 +1212,16 @@
       "actionSeeDetails": "See Details",
       "statusSection": "Status",
       "emptyPromoCodes": "No promo codes found.",
+      "searchPlaceholder": "Search promo code, discount, status, expiry...",
+      "previous": "Previous",
+      "next": "Next",
+      "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+      "backToPromoProducts": "Back to promo products",
+      "edit": {
+        "title": "Edit Promo Code",
+        "breadcrumb": "Promo Code > Edit Promo Code",
+        "submit": "UPDATE PROMO CODE"
+      },
       "emptyPromoProductsTitle": "No promo products yet",
       "emptyPromoProductsHint": "Promo products will appear here when assigned to a promotion.",
       "create": {
@@ -1229,6 +1282,7 @@
       "notFound": "Order not found.",
       "backToOrders": "Back to orders",
       "emptyOrders": "No orders found.",
+      "searchPlaceholder": "Search order ID, customer, email, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
@@ -1273,6 +1327,7 @@
       "notFound": "Order not found.",
       "backToOrders": "Back to orders",
       "emptyOrders": "No orders found.",
+      "searchPlaceholder": "Search order ID, company, customer, email, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
@@ -1353,6 +1408,7 @@
       "actionDecline": "Decline",
       "emptyOrders": "No orders found.",
       "emptyTransport": "No transport requests found.",
+      "searchPlaceholder": "Search PO number, factory, product, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
@@ -1399,6 +1455,7 @@
       "actionDelete": "Delete",
       "actionSeeDetails": "See Details",
       "emptyProducts": "No inventory products found.",
+      "searchPlaceholder": "Search inventory, product, SKU, factory, status...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
@@ -2814,6 +2871,7 @@
     "filters": {
       "allStatus": "All Status"
     },
+    "searchPlaceholder": "Search return ID, order, customer, product, status...",
     "columns": {
       "returnId": "RETURN ID",
       "orderId": "ORDER ID",
@@ -2870,6 +2928,7 @@
     "filters": {
       "allStatus": "All Status"
     },
+    "searchPlaceholder": "Search dispute ID, order, customer, supplier, issue, status...",
     "columns": {
       "disputeId": "DISPUTE ID",
       "orderId": "ORDER ID",
@@ -2903,6 +2962,7 @@
   "supplierInvoices": {
     "title": "Commission Invoices",
     "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "searchPlaceholder": "Search invoice ID, order ID, customer...",
     "typeInvoice": "Invoice",
     "viewAria": "View {{id}}",
     "downloadAria": "Download {{id}}",

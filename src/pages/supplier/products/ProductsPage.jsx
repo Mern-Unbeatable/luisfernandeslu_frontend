@@ -1,16 +1,21 @@
-import { useMemo, useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Pagination from '@/components/common/Pagination/Pagination';
-import ProductCard from '@/components/data-display/ProductCard/ProductCard';
-import Seo from '@/components/common/Seo/Seo';
+import { useMemo, useState } from 'react'
+import { FiChevronDown } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import Pagination from '@/components/common/Pagination/Pagination'
+import ProductCard from '@/components/data-display/ProductCard/ProductCard'
+import Seo from '@/components/common/Seo/Seo'
+import {
+  useDeleteProductMutation,
+  useUploadProductsCsvMutation,
+} from '@/features/products/productApi'
 import {
   DEMO_SUPPLIER_PRODUCTS,
-  DEMO_SUPPLIER_PRODUCT_CATEGORIES,
   SUPPLIER_PRODUCTS_PAGE_SIZE,
-} from '@/data/demoData';
-
+} from '@/data/demoData'
+import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import DeleteProductModal from './DeleteProductModal'
+import UploadCsvModal from './UploadCsvModal'
 const TAB_CONFIG = [
   { id: 'all', labelKey: 'panel.supplierProducts.tabAll' },
   { id: 'pending', labelKey: 'panel.supplierProducts.tabPending' },
@@ -18,69 +23,126 @@ const TAB_CONFIG = [
   { id: 'regular', labelKey: 'panel.supplierProducts.tabRegular' },
   { id: 'bulk_order', labelKey: 'panel.supplierProducts.tabBulkOrder' },
   { id: 'featured', labelKey: 'panel.supplierProducts.tabFeatured' },
-];
-
-const CATEGORY_LABEL_KEYS = {
-  'cement-mortar-concrete': 'panel.supplierProducts.categories.cementMortarConcrete',
-  aggregates: 'panel.supplierProducts.categories.aggregates',
-  'steel-rebar': 'panel.supplierProducts.categories.steelRebar',
-};
+]
 
 export default function ProductsPage() {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('all');
-  const [category, setCategory] = useState('all');
-  const [page, setPage] = useState(1);
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('all')
+  const [category, setCategory] = useState('all')
+  const [page, setPage] = useState(1)
+  const [csvOpen, setCsvOpen] = useState(false)
+  const [productToDelete, setProductToDelete] = useState(null)
+  const [deleting, setDeleting] = useState(false)
+  const [products, setProducts] = useState(DEMO_SUPPLIER_PRODUCTS)
+  const [uploadProductsCsv] = useUploadProductsCsvMutation()
+  const [deleteProduct] = useDeleteProductMutation()
 
   // TODO: replace DEMO_* with supplier products API fetch
-  const products = DEMO_SUPPLIER_PRODUCTS;
+
+  const categoryProducts = useMemo(() => {
+    if (category === 'all') return products
+    return products.filter((item) => item.categoryId === category)
+  }, [products, category])
 
   const tabCounts = useMemo(() => {
-    const counts = { all: products.length };
+    const counts = { all: categoryProducts.length }
 
     TAB_CONFIG.slice(1).forEach((tab) => {
-      counts[tab.id] = products.filter((item) => item.tab === tab.id).length;
-    });
+      counts[tab.id] = categoryProducts.filter(
+        (item) => item.tab === tab.id,
+      ).length
+    })
 
-    return counts;
-  }, [products]);
+    return counts
+  }, [categoryProducts])
 
   const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      if (activeTab !== 'all' && item.tab !== activeTab) return false;
-      if (category !== 'all' && item.categoryId !== category) return false;
-      return true;
-    });
-  }, [products, activeTab, category]);
+    if (activeTab === 'all') return categoryProducts
+    return categoryProducts.filter((item) => item.tab === activeTab)
+  }, [categoryProducts, activeTab])
 
   const totalPages = Math.max(
     1,
     Math.ceil(filteredProducts.length / SUPPLIER_PRODUCTS_PAGE_SIZE),
-  );
-  const safePage = Math.min(page, totalPages);
+  )
+  const safePage = Math.min(page, totalPages)
 
   const visibleProducts = useMemo(() => {
-    const start = (safePage - 1) * SUPPLIER_PRODUCTS_PAGE_SIZE;
-    return filteredProducts.slice(start, start + SUPPLIER_PRODUCTS_PAGE_SIZE);
-  }, [filteredProducts, safePage]);
+    const start = (safePage - 1) * SUPPLIER_PRODUCTS_PAGE_SIZE
+    return filteredProducts.slice(start, start + SUPPLIER_PRODUCTS_PAGE_SIZE)
+  }, [filteredProducts, safePage])
 
-  const categoryOptions = DEMO_SUPPLIER_PRODUCT_CATEGORIES.map((option) => ({
-    value: option.value,
-    label: option.labelKey
-      ? t(option.labelKey)
-      : t(CATEGORY_LABEL_KEYS[option.value], { defaultValue: option.label }),
-  }));
+  const categoryOptions = useMemo(
+    () => [
+      {
+        value: 'all',
+        label: t('panel.supplierProducts.allCategories'),
+      },
+      ...PRODUCT_CATEGORIES.map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    ],
+    [t],
+  )
 
   const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-    setPage(1);
-  };
+    setActiveTab(tabId)
+    setPage(1)
+  }
 
   const handleCategoryChange = (value) => {
-    setCategory(value);
-    setPage(1);
-  };
+    setCategory(value)
+    setPage(1)
+  }
+
+  const handleCardAction = (actionId, item) => {
+    if (actionId === 'edit') {
+      navigate(`/supplier/products/${item.id}/edit`)
+      return
+    }
+    if (actionId === 'delete') {
+      setProductToDelete(item)
+    }
+  }
+
+  const handleConfirmDelete = async (item) => {
+    if (!item?.id || deleting) return
+
+    setDeleting(true)
+
+    try {
+      await Promise.race([
+        deleteProduct(item.id).unwrap(),
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('timeout')), 4000)
+        }),
+      ])
+    } catch {
+      // Keep local delete when the API is unavailable.
+    }
+
+    setProducts((prev) => {
+      const next = prev.filter((product) => product.id !== item.id)
+      const nextFiltered =
+        category === 'all'
+          ? next
+          : next.filter((product) => product.categoryId === category)
+      const nextTabFiltered =
+        activeTab === 'all'
+          ? nextFiltered
+          : nextFiltered.filter((product) => product.tab === activeTab)
+      const nextTotalPages = Math.max(
+        1,
+        Math.ceil(nextTabFiltered.length / SUPPLIER_PRODUCTS_PAGE_SIZE),
+      )
+      setPage((current) => Math.min(current, nextTotalPages))
+      return next
+    })
+    setProductToDelete(null)
+    setDeleting(false)
+  }
 
   return (
     <>
@@ -106,9 +168,7 @@ export default function ProductsPage() {
           </button>
           <button
             type='button'
-            onClick={() => {
-              // TODO: open CSV upload flow when available
-            }}
+            onClick={() => setCsvOpen(true)}
             className='inline-flex items-center justify-center rounded-md border border-[var(--active)] bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] sm:text-sm'
           >
             {t('panel.supplierProducts.uploadCsv')}
@@ -117,17 +177,17 @@ export default function ProductsPage() {
       </div>
 
       <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-        <div className='inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1'>
+        <div className='inline-flex w-full max-w-full overflow-x-auto rounded-lg bg-white p-1 scrollbar-hide sm:w-fit'>
           {TAB_CONFIG.map((tab) => {
-            const isActive = tab.id === activeTab;
-            const count = tabCounts[tab.id] ?? 0;
+            const isActive = tab.id === activeTab
+            const count = tabCounts[tab.id] ?? 0
 
             return (
               <button
                 key={tab.id}
                 type='button'
                 onClick={() => handleTabChange(tab.id)}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
+                className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
                   isActive
                     ? 'bg-[var(--active)] text-white shadow-sm'
                     : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
@@ -135,7 +195,7 @@ export default function ProductsPage() {
               >
                 {t(tab.labelKey)} ({count})
               </button>
-            );
+            )
           })}
         </div>
 
@@ -143,11 +203,11 @@ export default function ProductsPage() {
           <span className='text-sm font-medium text-[var(--primary-text)]'>
             {t('panel.supplierProducts.filters')}
           </span>
-          <label className='relative inline-flex min-w-[160px] items-center'>
+          <label className='relative inline-flex min-w-0 max-w-full items-center sm:min-w-[160px]'>
             <select
               value={category}
               onChange={(event) => handleCategoryChange(event.target.value)}
-              className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
+              className='h-10 w-full max-w-[min(100%,18rem)] cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
               aria-label={t('panel.supplierProducts.allCategories')}
             >
               {categoryOptions.map((option) => (
@@ -157,7 +217,7 @@ export default function ProductsPage() {
               ))}
             </select>
             <FiChevronDown
-              className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
+              className='pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]'
               aria-hidden
             />
           </label>
@@ -176,13 +236,8 @@ export default function ProductsPage() {
                   status={item.status}
                   badge={item.badge}
                   product={item.product}
-                  onAction={(actionId) => {
-                    if (actionId === 'edit') {
-                      navigate(`/supplier/products/${item.id}`);
-                      return;
-                    }
-                    // TODO: wire remaining product actions to API handlers
-                  }}
+                  onCardClick={() => navigate(`/supplier/products/${item.id}`)}
+                  onAction={(actionId) => handleCardAction(actionId, item)}
                   className='h-full w-full shadow-sm'
                 />
               </li>
@@ -206,6 +261,27 @@ export default function ProductsPage() {
           </p>
         </div>
       )}
+
+      <UploadCsvModal
+        open={csvOpen}
+        onClose={() => setCsvOpen(false)}
+        uploadCsv={uploadProductsCsv}
+        onImported={(items) => {
+          setProducts((prev) => [...items, ...prev])
+          setActiveTab('all')
+          setPage(1)
+        }}
+      />
+
+      <DeleteProductModal
+        open={Boolean(productToDelete)}
+        product={productToDelete}
+        deleting={deleting}
+        onClose={() => {
+          if (!deleting) setProductToDelete(null)
+        }}
+        onConfirm={handleConfirmDelete}
+      />
     </>
-  );
+  )
 }
