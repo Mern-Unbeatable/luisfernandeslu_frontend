@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
-import { FiChevronDown } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Pagination from '@/components/common/Pagination/Pagination'
+import DataTable from '@/components/data-display/DataTable/DataTable'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import Seo from '@/components/common/Seo/Seo'
 import {
@@ -87,6 +87,15 @@ export default function ProductsPage() {
     [t],
   )
 
+  const tabs = useMemo(
+    () =>
+      TAB_CONFIG.map((tab) => ({
+        id: tab.id,
+        label: `${t(tab.labelKey)} (${tabCounts[tab.id] ?? 0})`,
+      })),
+    [t, tabCounts],
+  )
+
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
     setPage(1)
@@ -96,6 +105,19 @@ export default function ProductsPage() {
     setCategory(value)
     setPage(1)
   }
+
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'category',
+        value: category,
+        onChange: handleCategoryChange,
+        options: categoryOptions,
+        placeholder: t('panel.supplierProducts.allCategories'),
+      },
+    ],
+    [category, categoryOptions, t],
+  )
 
   const handleCardAction = (actionId, item) => {
     if (actionId === 'edit') {
@@ -176,91 +198,57 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-        <div className='inline-flex w-full max-w-full overflow-x-auto rounded-lg bg-white p-1 scrollbar-hide sm:w-fit'>
-          {TAB_CONFIG.map((tab) => {
-            const isActive = tab.id === activeTab
-            const count = tabCounts[tab.id] ?? 0
+      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+        <DataTable
+          showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          showFilters
+          filterLabel={t('panel.supplierProducts.filters')}
+          filters={tableFilters}
+          showTable={false}
+        />
 
-            return (
-              <button
-                key={tab.id}
-                type='button'
-                onClick={() => handleTabChange(tab.id)}
-                className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
-                  isActive
-                    ? 'bg-[var(--active)] text-white shadow-sm'
-                    : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
-                }`}
-              >
-                {t(tab.labelKey)} ({count})
-              </button>
-            )
-          })}
-        </div>
-
-        <div className='flex flex-wrap items-center gap-2 sm:gap-3 shrink-0'>
-          <span className='text-sm font-medium text-[var(--primary-text)]'>
-            {t('panel.supplierProducts.filters')}
-          </span>
-          <label className='relative inline-flex min-w-0 max-w-full items-center sm:min-w-[160px]'>
-            <select
-              value={category}
-              onChange={(event) => handleCategoryChange(event.target.value)}
-              className='h-10 w-full max-w-[min(100%,18rem)] cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-              aria-label={t('panel.supplierProducts.allCategories')}
-            >
-              {categoryOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
+        {visibleProducts.length > 0 ? (
+          <>
+            <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+              {visibleProducts.map((item) => (
+                <li key={item.id} className="flex min-w-0">
+                  <ProductCard
+                    type={item.cardType === 'featured' ? 'featured' : 'dashboard'}
+                    role="supplier"
+                    tag={item.tag}
+                    status={item.status}
+                    badge={item.badge}
+                    product={item.product}
+                    onCardClick={() => navigate(`/supplier/products/${item.id}`)}
+                    onAction={(actionId) => handleCardAction(actionId, item)}
+                    className="h-full w-full shadow-sm"
+                  />
+                </li>
               ))}
-            </select>
-            <FiChevronDown
-              className='pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]'
-              aria-hidden
+            </ul>
+
+            <Pagination
+              className="mt-8 sm:mt-10"
+              page={safePage}
+              totalPages={totalPages}
+              onPageChange={setPage}
             />
-          </label>
-        </div>
-      </div>
-
-      {visibleProducts.length > 0 ? (
-        <>
-          <ul className='grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5'>
-            {visibleProducts.map((item) => (
-              <li key={item.id} className='flex min-w-0'>
-                <ProductCard
-                  type={item.cardType === 'featured' ? 'featured' : 'dashboard'}
-                  role='supplier'
-                  tag={item.tag}
-                  status={item.status}
-                  badge={item.badge}
-                  product={item.product}
-                  onCardClick={() => navigate(`/supplier/products/${item.id}`)}
-                  onAction={(actionId) => handleCardAction(actionId, item)}
-                  className='h-full w-full shadow-sm'
-                />
-              </li>
-            ))}
-          </ul>
-
-          <Pagination
-            className='mt-8 sm:mt-10'
-            page={safePage}
-            totalPages={totalPages}
-            onPageChange={setPage}
-          />
-        </>
-      ) : (
-        <div className='rounded-xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm'>
-          <p className='text-base font-semibold text-[var(--primary-text)]'>
-            {t('panel.supplierProducts.emptyTitle')}
-          </p>
-          <p className='mt-2 text-sm text-[var(--secondary-text)]'>
-            {t('panel.supplierProducts.emptyHint')}
-          </p>
-        </div>
-      )}
+          </>
+        ) : (
+          <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
+            <p className="text-base font-semibold text-[var(--primary-text)]">
+              {t('panel.supplierProducts.emptyTitle')}
+            </p>
+            <p className="mt-2 text-sm text-[var(--secondary-text)]">
+              {t('panel.supplierProducts.emptyHint')}
+            </p>
+          </div>
+        )}
+      </section>
 
       <UploadCsvModal
         open={csvOpen}
