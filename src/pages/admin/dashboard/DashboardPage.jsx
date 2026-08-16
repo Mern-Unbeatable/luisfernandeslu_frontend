@@ -27,7 +27,7 @@ export default function DashboardPage() {
         </p>
 
         <div
-          className="flex flex-wrap gap-2.5 pt-1"
+          className="inline-flex w-fit max-w-full shrink-0 flex-wrap items-center rounded-lg bg-gray-100 p-1"
           role="group"
           aria-label={t('adminDashboard.channels.label')}
         >
@@ -38,10 +38,10 @@ export default function DashboardPage() {
                 key={id}
                 type="button"
                 onClick={() => setChannel(id)}
-                className={`rounded-md px-5 py-2 text-sm font-semibold transition-colors ${
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
                   active
-                    ? 'bg-[#F59E0B] text-white shadow-sm'
-                    : 'bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]'
+                    ? 'bg-[var(--active)] text-white shadow-sm'
+                    : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
                 }`}
               >
                 {t(`adminDashboard.channels.${id}`)}

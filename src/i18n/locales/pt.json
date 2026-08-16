@@ -687,6 +687,7 @@
     "title": "Encomendas",
     "subtitle": "Todas as encomendas",
     "filterLabel": "Filtro:",
+    "searchPlaceholder": "Pesquisar ID da encomenda, cliente, estado...",
     "empty": "Nenhuma encomenda corresponde aos filtros.",
     "tabs": {
       "supplier": "Encomenda de fornecedor",
@@ -833,6 +834,7 @@
       "pageTitle": "Centro de controlo de pagamentos",
       "pageSubtitle": "Audite saldos pendentes, autorize transferências e reveja históricos de conformidade.",
       "requestsTitle": "Pedidos de pagamento",
+      "searchPlaceholder": "Pesquisar afiliado, conta, estado...",
       "filters": { "allRequests": "Todos os pedidos" },
       "actions": {
         "paid": "Pago",

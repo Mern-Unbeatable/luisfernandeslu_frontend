@@ -137,7 +137,7 @@ export default function ProductModerationPage() {
           }}
         />
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 self-end lg:self-auto">
           <span className="text-sm font-medium text-[var(--primary-text)]">
             {t('adminProductModeration.filters.label')}
           </span>

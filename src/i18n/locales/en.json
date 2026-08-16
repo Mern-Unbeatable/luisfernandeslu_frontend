@@ -687,6 +687,7 @@
     "title": "Orders",
     "subtitle": "All orders",
     "filterLabel": "Filter:",
+    "searchPlaceholder": "Search order ID, customer, status...",
     "empty": "No orders match your filters.",
     "tabs": {
       "supplier": "Supplier Order",
@@ -833,6 +834,7 @@
       "pageTitle": "Financial Payout Control Center",
       "pageSubtitle": "Audit pending partner balances, authorize bank releases, and review compliance histories.",
       "requestsTitle": "Payout Requests",
+      "searchPlaceholder": "Search affiliate, account, status...",
       "filters": {
         "allRequests": "All Requests"
       },

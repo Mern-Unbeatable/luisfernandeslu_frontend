@@ -687,6 +687,7 @@
     "title": "Pedidos",
     "subtitle": "Todos los pedidos",
     "filterLabel": "Filtro:",
+    "searchPlaceholder": "Buscar ID de pedido, cliente, estado...",
     "empty": "Ningún pedido coincide con los filtros.",
     "tabs": {
       "supplier": "Pedido de proveedor",
@@ -833,6 +834,7 @@
       "pageTitle": "Centro de control de pagos",
       "pageSubtitle": "Audite saldos pendientes, autorice pagos bancarios y revise historiales de cumplimiento.",
       "requestsTitle": "Solicitudes de pago",
+      "searchPlaceholder": "Buscar afiliado, cuenta, estado...",
       "filters": { "allRequests": "Todas las solicitudes" },
       "actions": {
         "paid": "Pagado",
