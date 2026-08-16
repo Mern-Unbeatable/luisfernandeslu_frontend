@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiArrowLeft, FiChevronDown, FiFilter } from 'react-icons/fi'
+import { FiArrowLeft } from 'react-icons/fi'
+import DataTable from '@/components/data-display/DataTable/DataTable'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
@@ -182,6 +183,30 @@ export default function ProductsPage() {
     safePage * PAGE_SIZE,
   )
 
+  const tabs = TAB_IDS.map((tabId) => ({
+    id: tabId,
+    label: `${t(`factoryProducts.tabs.${tabId}`)} (${counts[tabId]})`,
+  }))
+
+  const tableFilters = [
+    {
+      id: 'category',
+      value: category,
+      onChange: (value) => {
+        setCategory(value)
+        setPage(1)
+      },
+      options: [
+        { value: 'all', label: t('factoryProducts.allCategories') },
+        ...PRODUCT_CATEGORIES.map((item) => ({
+          value: item.id,
+          label: item.name,
+        })),
+      ],
+      placeholder: t('factoryProducts.allCategories'),
+    },
+  ]
+
   const closeForm = () => {
     setFormMode(null)
     setEditingProduct(null)
@@ -317,91 +342,55 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="max-w-full min-w-0 overflow-x-auto">
-          <div className="inline-flex w-max max-w-none flex-nowrap items-center gap-1 rounded-xl bg-white p-1 shadow-sm ring-1 ring-gray-100">
-            {TAB_IDS.map((tabId) => {
-              const isActive = activeTab === tabId
-              return (
-                <button
-                  key={tabId}
-                  type="button"
-                  onClick={() => {
-                    setActiveTab(tabId)
-                    setPage(1)
-                  }}
-                  className={`shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-[var(--active)] text-white'
-                      : 'text-[var(--secondary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {t(`factoryProducts.tabs.${tabId}`)} ({counts[tabId]})
-                </button>
-              )
-            })}
-          </div>
-        </div>
+      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+        <DataTable
+          showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={(tabId) => {
+            setActiveTab(tabId)
+            setPage(1)
+          }}
+          showFilters
+          filterLabel={t('factoryProducts.filters')}
+          filters={tableFilters}
+          showTable={false}
+        />
 
-        <div className="flex shrink-0 items-center gap-2 text-sm text-[var(--secondary-text)]">
-          <FiFilter className="size-4 shrink-0" aria-hidden />
-          <span className="font-medium">{t('factoryProducts.filters')}</span>
-          <label className="relative inline-flex min-w-0 max-w-full">
-            <select
-              value={category}
-              onChange={(event) => {
-                setCategory(event.target.value)
-                setPage(1)
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {visibleProducts.map((product) => (
+            <div
+              key={product.id}
+              role="button"
+              tabIndex={0}
+              onClick={(e) => {
+                if (e.target.closest('button, a, [role="button"]') && e.target.closest('button, a, [role="button"]') !== e.currentTarget) return
+                setSelectedProduct(product)
               }}
-              aria-label={t('factoryProducts.allCategories')}
-              className="h-10 max-w-[min(100%,16rem)] cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-2 pr-9 pl-3 text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(product)
+              }}
+              className="cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--active)]"
             >
-              <option value="all">{t('factoryProducts.allCategories')}</option>
-              {PRODUCT_CATEGORIES.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-            <FiChevronDown
-              className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-gray-400"
-              aria-hidden
-            />
-          </label>
+              <ProductCard
+                type="dashboard"
+                role="factory"
+                status={product.status}
+                product={product}
+                onAction={handleCardAction}
+              />
+            </div>
+          ))}
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {visibleProducts.map((product) => (
-          <div
-            key={product.id}
-            role="button"
-            tabIndex={0}
-            onClick={(e) => {
-              if (e.target.closest('button, a, [role="button"]') && e.target.closest('button, a, [role="button"]') !== e.currentTarget) return
-              setSelectedProduct(product)
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(product)
-            }}
-            className="cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--active)]"
-          >
-            <ProductCard
-              type="dashboard"
-              role="factory"
-              status={product.status}
-              product={product}
-              onAction={handleCardAction}
-            />
-          </div>
-        ))}
-      </div>
-
-      <Pagination
-        page={safePage}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+        <Pagination
+          className="mt-8 sm:mt-10"
+          page={safePage}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      </section>
 
       <UploadXlsxModal
         open={uploadOpen}
