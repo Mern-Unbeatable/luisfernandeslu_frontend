@@ -510,6 +510,29 @@ export function filterPayoutRequestsByStatus(rows, status) {
   )
 }
 
+export function filterPayoutRequestsBySearch(rows, query) {
+  const q = String(query || '')
+    .trim()
+    .toLowerCase()
+  if (!q) return rows
+  return rows.filter((row) => {
+    const haystack = [
+      row.name,
+      row.email,
+      row.totalEarnings,
+      row.requested,
+      row.pending,
+      row.accountNumber,
+      row.requestDate,
+      row.status,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    return haystack.includes(q)
+  })
+}
+
 /** @deprecated use ADMIN_PAYOUT_REQUESTS */
 export const ADMIN_PAYOUT_CONTROL_ROWS = ADMIN_PAYOUT_REQUESTS
 

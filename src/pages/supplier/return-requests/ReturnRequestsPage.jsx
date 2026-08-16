@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react'
-import { FiChevronDown } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
@@ -53,6 +52,7 @@ export default function ReturnRequestsPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState('all')
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [returns, setReturns] = useState(
     DEMO_SUPPLIER_RETURN_REQUESTS.returns,
@@ -74,9 +74,43 @@ export default function ReturnRequestsPage() {
   )
 
   const filtered = useMemo(() => {
-    if (statusFilter === 'all') return returns
-    return returns.filter((row) => row.status === statusFilter)
-  }, [returns, statusFilter])
+    const q = search.trim().toLowerCase()
+
+    return returns.filter((row) => {
+      if (statusFilter !== 'all' && row.status !== statusFilter) return false;
+      if (!q) return true;
+
+      const statusLabel = t(`supplierReturnRequests.status.${row.status}`).toLowerCase();
+
+      return (
+        String(row.returnId).toLowerCase().includes(q) ||
+        String(row.orderId).toLowerCase().includes(q) ||
+        String(row.customerName).toLowerCase().includes(q) ||
+        String(row.customerEmail).toLowerCase().includes(q) ||
+        String(row.productName).toLowerCase().includes(q) ||
+        String(row.reason).toLowerCase().includes(q) ||
+        String(row.requestDate).toLowerCase().includes(q) ||
+        String(row.status).toLowerCase().includes(q) ||
+        statusLabel.includes(q)
+      );
+    });
+  }, [returns, statusFilter, search, t]);
+
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'status',
+        value: statusFilter,
+        onChange: (value) => {
+          setStatusFilter(value);
+          setPage(1);
+        },
+        options: statusOptions,
+        placeholder: t('supplierReturnRequests.filters.allStatus'),
+      },
+    ],
+    [statusFilter, statusOptions, t],
+  );
 
   const total = filtered.length
   const pageCount = Math.max(1, Math.ceil(total / pageSize))
@@ -199,61 +233,43 @@ export default function ReturnRequestsPage() {
           />
         </div>
 
-        <div className="flex flex-col gap-4">
-          <label className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="font-medium text-[var(--secondary-text)] uppercase tracking-wide">
-              {t('supplierReturnRequests.sortBy')}
-            </span>
-            <span className="relative inline-flex min-w-[160px] items-center">
-              <select
-                value={statusFilter}
-                onChange={(event) => {
-                  setStatusFilter(event.target.value)
-                  setPage(1)
-                }}
-                className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
-                aria-label={t('supplierReturnRequests.filters.allStatus')}
-              >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                aria-hidden
-              />
-            </span>
-          </label>
-
-          <DataTable
-            columns={columns}
-            data={paged}
-            getRowKey={(row) => row.id}
-            showActions
-            getActions={getRowActions}
-            actionHeader={t('supplierReturnRequests.columns.action')}
-            showPagination
-            pagination={{
-              page: safePage,
-              pageSize,
-              total,
+        <DataTable
+          columns={columns}
+          data={paged}
+          getRowKey={(row) => row.id}
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t('supplierReturnRequests.searchPlaceholder')}
+          showFilters
+          filterLabel={t('supplierReturnRequests.sortBy')}
+          filters={tableFilters}
+          showActions
+          actionType="menu"
+          getActions={getRowActions}
+          actionHeader={t('supplierReturnRequests.columns.action')}
+          showPagination
+          pagination={{
+            page: safePage,
+            pageSize,
+            total,
+            from,
+            to,
+            hasPrevious: safePage > 1,
+            hasNext: safePage < pageCount,
+            onPageChange: setPage,
+            summaryLabel: t('supplierReturnRequests.showingResults', {
               from,
               to,
-              hasPrevious: safePage > 1,
-              hasNext: safePage < pageCount,
-              onPageChange: setPage,
-              summaryLabel: t('supplierReturnRequests.showingResults', {
-                from,
-                to,
-                total,
-              }),
-              previousLabel: t('supplierReturnRequests.previous'),
-              nextLabel: t('supplierReturnRequests.next'),
-            }}
-          />
-        </div>
+              total,
+            }),
+            previousLabel: t('supplierReturnRequests.previous'),
+            nextLabel: t('supplierReturnRequests.next'),
+          }}
+        />
       </div>
     </>
   )

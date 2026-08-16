@@ -49,6 +49,18 @@ export const productApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
+    uploadProductsCsv: builder.mutation({
+      query: (file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        return {
+          url: '/products/csv',
+          method: 'POST',
+          data: formData,
+        }
+      },
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
+    }),
   }),
 })
 
@@ -58,4 +70,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useUploadProductsCsvMutation,
 } = productApi

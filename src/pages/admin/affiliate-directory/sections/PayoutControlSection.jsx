@@ -5,6 +5,7 @@ import SupplierRowActionMenu from '../../supplier-management/components/Supplier
 import PayoutStatusBadge from '../../finance-payments/components/PayoutStatusBadge'
 import {
   ADMIN_PAYOUT_REQUESTS,
+  filterPayoutRequestsBySearch,
   filterPayoutRequestsByStatus,
 } from '../data/affiliatesAdminDemo'
 
@@ -15,12 +16,13 @@ export default function PayoutControlSection() {
   const { t } = useTranslation()
   const [rows, setRows] = useState(ADMIN_PAYOUT_REQUESTS)
   const [statusFilter, setStatusFilter] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
 
-  const filteredRows = useMemo(
-    () => filterPayoutRequestsByStatus(rows, statusFilter),
-    [rows, statusFilter],
-  )
+  const filteredRows = useMemo(() => {
+    const byStatus = filterPayoutRequestsByStatus(rows, statusFilter)
+    return filterPayoutRequestsBySearch(byStatus, searchQuery)
+  }, [rows, statusFilter, searchQuery])
 
   const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
@@ -140,6 +142,13 @@ export default function PayoutControlSection() {
         {t(`${I18N_KEY}.payoutControl.requestsTitle`)}
       </h2>
       <DataTable
+        showSearch
+        searchValue={searchQuery}
+        onSearchChange={(value) => {
+          setSearchQuery(value)
+          setPage(1)
+        }}
+        searchPlaceholder={t(`${I18N_KEY}.payoutControl.searchPlaceholder`)}
         showFilters
         filterLabel={t(`${I18N_KEY}.sortLabel`)}
         filters={[
