@@ -145,7 +145,7 @@ export default function PaymentsFinancePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <StatusCard
             label={t('supplierPaymentsFinance.cards.totalEarnings')}
             value={DEMO_SUPPLIER_PAYMENTS_STATS.totalEarnings}
@@ -160,7 +160,7 @@ export default function PaymentsFinancePage() {
             icon={FiArrowDownLeft}
             iconTone="brand"
           />
-          <StatusCard
+          {/* <StatusCard
             variant="action"
             label={t('supplierPaymentsFinance.cards.availableBalance')}
             value={DEMO_SUPPLIER_PAYMENTS_STATS.availableBalance}
@@ -168,7 +168,7 @@ export default function PaymentsFinancePage() {
             iconTone="brand"
             actionLabel={t('supplierPaymentsFinance.cards.withdrawFunds')}
             onAction={openWithdraw}
-          />
+          /> */}
           <StatusCard
             label={t('supplierPaymentsFinance.cards.pendingAmount')}
             value={DEMO_SUPPLIER_PAYMENTS_STATS.pendingAmount}
