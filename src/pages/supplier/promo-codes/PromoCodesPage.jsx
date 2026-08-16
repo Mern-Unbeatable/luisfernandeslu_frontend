@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FiArrowLeft, FiChevronDown, FiFilter } from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
@@ -337,6 +337,34 @@ export default function PromoCodesPage() {
     );
   }, [deleting]);
 
+  const isPromoCodeTab = activeTab === TAB_IDS.promoCode;
+
+  const handleTabChange = useCallback((tabId) => {
+    setActiveTab(tabId);
+    setSearch('');
+    if (tabId === TAB_IDS.promoCode) {
+      setPromoCodePage(1);
+      return;
+    }
+    setPromoProductPage(1);
+  }, []);
+
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'status',
+        value: statusFilter,
+        onChange: (value) => {
+          setStatusFilter(value);
+          setPromoCodePage(1);
+        },
+        options: statusOptions,
+        placeholder: t('panel.supplierPromoCodes.allStatus'),
+      },
+    ],
+    [statusFilter, statusOptions, t],
+  );
+
   return (
     <>
       <Seo title={t('panel.supplierPromoCodes.title')} />
@@ -379,144 +407,91 @@ export default function PromoCodesPage() {
         </button>
       </div>
 
-      <section className=''>
-        <div className='mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between'>
-          <div className='inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1'>
-            {tabs.map((tab) => {
-              const isActive = tab.id === activeTab;
-              return (
-                <button
-                  key={tab.id}
-                  type='button'
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    if (tab.id === TAB_IDS.promoCode) {
-                      setPromoCodePage(1);
-                    }
-                    if (tab.id === TAB_IDS.promoProduct) {
-                      setPromoProductPage(1);
-                    }
-                  }}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
-                    isActive
-                      ? 'bg-[var(--active)] text-white shadow-sm'
-                      : 'bg-transparent text-[var(--primary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
+      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+        <DataTable
+          showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          showSearch={isPromoCodeTab}
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPromoCodePage(1);
+          }}
+          searchPlaceholder={t('panel.supplierPromoCodes.searchPlaceholder')}
+          showFilters={isPromoCodeTab}
+          filterLabel={t('panel.supplierProducts.filters')}
+          filters={tableFilters}
+          showTable={isPromoCodeTab}
+          columns={columns}
+          data={pagedPromoCodes}
+          getRowKey={(row) => row.id}
+          showActions={isPromoCodeTab}
+          actions={rowActions}
+          actionHeader={t('panel.supplierPromoCodes.colAction')}
+          emptyMessage={t('panel.supplierPromoCodes.emptyPromoCodes')}
+          showPagination={isPromoCodeTab}
+          pagination={{
+            page: safePromoCodePage,
+            pageSize: SUPPLIER_PROMO_CODES_PAGE_SIZE,
+            total: promoCodeTotal,
+            from: promoCodeFrom,
+            to: promoCodeTo,
+            hasPrevious: safePromoCodePage > 1,
+            hasNext: safePromoCodePage < promoCodePageCount,
+            onPageChange: setPromoCodePage,
+            summaryLabel: t('panel.supplierPromoCodes.showingResults', {
+              from: promoCodeFrom,
+              to: promoCodeTo,
+              total: promoCodeTotal,
+            }),
+            previousLabel: t('panel.supplierPromoCodes.previous'),
+            nextLabel: t('panel.supplierPromoCodes.next'),
+          }}
+        />
 
-          {activeTab === TAB_IDS.promoCode ? (
-            <div className='flex flex-wrap items-center gap-2 sm:gap-3 shrink-0'>
-              <span className='text-sm font-medium text-[var(--primary-text)]'>
-                {t('panel.supplierProducts.filters')}
-              </span>
-              <label className='relative inline-flex min-w-[160px] items-center'>
-                <select
-                  value={statusFilter}
-                  onChange={(event) => {
-                    setStatusFilter(event.target.value);
-                    setPromoCodePage(1);
-                  }}
-                  className='h-10 w-full cursor-pointer appearance-none rounded-md  bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-                  aria-label={t('panel.supplierPromoCodes.allStatus')}
-                >
-                  {statusOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <FiChevronDown
-                  className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
-                  aria-hidden
-                />
-              </label>
-            </div>
-          ) : null}
-        </div>
-
-        {activeTab === TAB_IDS.promoCode ? (
-          <section className='rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>
-            <DataTable
-              showCard={false}
-              columns={columns}
-              data={pagedPromoCodes}
-              getRowKey={(row) => row.id}
-              showActions
-              actions={rowActions}
-              actionHeader={t('panel.supplierPromoCodes.colAction')}
-              emptyMessage={t('panel.supplierPromoCodes.emptyPromoCodes')}
-              showSearch
-              searchValue={search}
-              onSearchChange={(value) => {
-                setSearch(value);
-                setPromoCodePage(1);
-              }}
-              searchPlaceholder={t(
-                'panel.supplierPromoCodes.searchPlaceholder',
-              )}
-              showPagination
-              pagination={{
-                page: safePromoCodePage,
-                pageSize: SUPPLIER_PROMO_CODES_PAGE_SIZE,
-                total: promoCodeTotal,
-                from: promoCodeFrom,
-                to: promoCodeTo,
-                hasPrevious: safePromoCodePage > 1,
-                hasNext: safePromoCodePage < promoCodePageCount,
-                onPageChange: setPromoCodePage,
-                summaryLabel: t('panel.supplierPromoCodes.showingResults', {
-                  from: promoCodeFrom,
-                  to: promoCodeTo,
-                  total: promoCodeTotal,
-                }),
-                previousLabel: t('panel.supplierPromoCodes.previous'),
-                nextLabel: t('panel.supplierPromoCodes.next'),
-              }}
-            />
-          </section>
-        ) : promoProducts.length > 0 ? (
+        {!isPromoCodeTab && promoProducts.length > 0 ? (
           <>
-            <ul className='grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5'>
+            <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
               {visiblePromoProducts.map((item) => (
-                <li key={item.id} className='flex min-w-0'>
+                <li key={item.id} className="flex min-w-0">
                   <ProductCard
-                    type='dashboard'
-                    context='promo_code'
-                    role='supplier'
+                    type="dashboard"
+                    context="promo_code"
+                    role="supplier"
                     product={item.product}
                     actions={promoProductActions}
                     onCardClick={() => setSelectedPromoProduct(item)}
                     onAction={(actionId) =>
                       handlePromoProductAction(actionId, item)
                     }
-                    className='h-full w-full shadow-sm'
+                    className="h-full w-full shadow-sm"
                   />
                 </li>
               ))}
             </ul>
 
             <Pagination
-              className='mt-8 sm:mt-10'
+              className="mt-8 sm:mt-10"
               page={safePromoProductPage}
               totalPages={promoProductTotalPages}
               onPageChange={setPromoProductPage}
             />
           </>
-        ) : (
-          <div className='rounded-xl border border-gray-100 bg-white px-6 py-16 text-center'>
-            <p className='text-base font-semibold text-[var(--primary-text)]'>
+        ) : null}
+
+        {!isPromoCodeTab && promoProducts.length === 0 ? (
+          <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
+            <p className="text-base font-semibold text-[var(--primary-text)]">
               {t('panel.supplierPromoCodes.emptyPromoProductsTitle')}
             </p>
-            <p className='mt-2 text-sm text-[var(--secondary-text)]'>
+            <p className="mt-2 text-sm text-[var(--secondary-text)]">
               {t('panel.supplierPromoCodes.emptyPromoProductsHint')}
             </p>
           </div>
-        )}
+        ) : null}
       </section>
 
       <DeleteProductModal

@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
@@ -31,8 +30,6 @@ const STATUS_LABEL_KEYS = {
 const APPROVED_STATUS_OPTIONS = [
   'pending',
   'processing',
-  'assigned',
-  'completed',
   'cancel',
 ];
 
@@ -336,6 +333,38 @@ export default function CompanyOrdersPage() {
       ? 0
       : Math.min(safePage * SUPPLIER_COMPANY_ORDERS_PAGE_SIZE, total);
 
+  const handleTabChange = useCallback((tabId) => {
+    setActiveTab(tabId);
+    setPage(1);
+    setSearch('');
+  }, []);
+
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'company',
+        value: companyFilter,
+        onChange: (value) => {
+          setCompanyFilter(value);
+          setPage(1);
+        },
+        options: companyOptions,
+        placeholder: t('panel.supplierCompanyOrders.allCompany'),
+      },
+      {
+        id: 'status',
+        value: statusFilter,
+        onChange: (value) => {
+          setStatusFilter(value);
+          setPage(1);
+        },
+        options: statusOptions,
+        placeholder: t('panel.supplierCompanyOrders.allStatus'),
+      },
+    ],
+    [companyFilter, statusFilter, companyOptions, statusOptions, t],
+  );
+
   return (
     <>
       <Seo title={t('panel.supplierCompanyOrders.title')} />
@@ -376,82 +405,12 @@ export default function CompanyOrdersPage() {
       </div>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-white p-1">
-            {tabs.map((tab) => {
-              const isActive = tab.id === activeTab;
-
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    setPage(1);
-                  }}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
-                    isActive
-                      ? 'bg-[var(--active)] text-white shadow-sm'
-                      : 'bg-transparent text-[var(--primary-text)] hover:bg-gray-50'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
-            <span className="text-sm font-medium text-[var(--primary-text)]">
-              {t('panel.supplierCompanyOrders.sortBy')}
-            </span>
-            <label className="relative inline-flex min-w-[140px] items-center">
-              <select
-                value={companyFilter}
-                onChange={(event) => {
-                  setCompanyFilter(event.target.value);
-                  setPage(1);
-                }}
-                className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                aria-label={t('panel.supplierCompanyOrders.allCompany')}
-              >
-                {companyOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                aria-hidden
-              />
-            </label>
-            <label className="relative inline-flex min-w-[140px] items-center">
-              <select
-                value={statusFilter}
-                onChange={(event) => {
-                  setStatusFilter(event.target.value);
-                  setPage(1);
-                }}
-                className="h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]"
-                aria-label={t('panel.supplierCompanyOrders.allStatus')}
-              >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <FiChevronDown
-                className="pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]"
-                aria-hidden
-              />
-            </label>
-          </div>
-        </div>
-
         <DataTable
           showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
           columns={columns}
           data={pagedOrders}
           getRowKey={(row) => row.id}
@@ -467,6 +426,9 @@ export default function CompanyOrdersPage() {
             setPage(1);
           }}
           searchPlaceholder={t('panel.supplierCompanyOrders.searchPlaceholder')}
+          showFilters
+          filterLabel={t('panel.supplierCompanyOrders.sortBy')}
+          filters={tableFilters}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_COMPANY_ORDERS_PAGE_SIZE,
