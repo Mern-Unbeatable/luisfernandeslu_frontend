@@ -78,7 +78,7 @@ export default function AssignDeliveriesPage() {
         status={selectedDelivery.status}
         auction={selectedDelivery}
         onBack={() => setSelectedDelivery(null)}
-        onMessage={() => navigate('/messages')}
+        onMessage={() => navigate('/transporter/chat')}
       />
     )
   }
