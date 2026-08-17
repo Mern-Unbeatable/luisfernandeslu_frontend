@@ -1,29 +1,31 @@
 import { useState } from 'react'
-import { FiCheckCircle, FiShield, FiUpload } from "react-icons/fi";
-import PolicyListSection from "./sections/PolicyListSection";
+import { useTranslation } from 'react-i18next'
+import { FiCheckCircle, FiShield, FiUpload } from 'react-icons/fi'
+import PolicyListSection from './sections/PolicyListSection'
 import UploadInsuranceModal from './sections/UploadInsuranceModal'
 
 export default function InsurancePage() {
+  const { t } = useTranslation()
   const [showUploadModal, setShowUploadModal] = useState(false)
 
   const policies = [
     {
-      id: "pol-001",
-      title: "Civil Liability Insurance",
-      provider: "SafeGuard Insurance Co.",
-      policyNumber: "POL-CL-849372",
-      coverageAmount: "€1,000,000",
-      expiryDate: "2026-01-15",
+      id: 'pol-001',
+      title: 'Civil Liability Insurance',
+      provider: 'SafeGuard Insurance Co.',
+      policyNumber: 'POL-CL-849372',
+      coverageAmount: '€1,000,000',
+      expiryDate: '2026-01-15',
     },
     {
-      id: "pol-002",
-      title: "Cargo Liability Insurance",
-      provider: "FreightSecure Insurance",
-      policyNumber: "POL-CG-394821",
-      coverageAmount: "€500,000",
-      expiryDate: "2026-01-15",
+      id: 'pol-002',
+      title: 'Cargo Liability Insurance',
+      provider: 'FreightSecure Insurance',
+      policyNumber: 'POL-CG-394821',
+      coverageAmount: '€500,000',
+      expiryDate: '2026-01-15',
     },
-  ];
+  ]
 
   return (
     <div className="space-y-6">
@@ -31,10 +33,10 @@ export default function InsurancePage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Insurance Management
+            {t('transporterInsurance.title')}
           </h1>
           <p className="mt-1 text-base text-gray-500">
-            Manage your insurance policies and documents
+            {t('transporterInsurance.subtitle')}
           </p>
         </div>
         <button
@@ -43,7 +45,7 @@ export default function InsurancePage() {
           className="inline-flex items-center gap-2 self-end rounded-xl bg-[var(--active)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:brightness-95 sm:self-auto"
         >
           <FiUpload className="size-4" />
-          Upload Insurance
+          {t('transporterInsurance.uploadInsurance')}
         </button>
       </div>
 
@@ -52,11 +54,10 @@ export default function InsurancePage() {
         <FiCheckCircle className="mt-0.5 size-5 shrink-0 text-[#10B981]" />
         <div>
           <p className="font-medium text-base">
-            All Insurance Requirements Met
+            {t('transporterInsurance.alertTitle')}
           </p>
           <p className="mt-0.5 text-sm text-[#10B981CC]">
-            You have all required insurance policies verified and active. You
-            can participate in auctions and accept delivery jobs.
+            {t('transporterInsurance.alertBody')}
           </p>
         </div>
       </div>
@@ -65,10 +66,10 @@ export default function InsurancePage() {
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
         <div>
           <h2 className="text-lg font-medium text-gray-800">
-            Required Insurance Types
+            {t('transporterInsurance.requiredTitle')}
           </h2>
           <p className="text-base text-gray-400 mt-0.5">
-            Both insurance types are mandatory before accepting delivery jobs
+            {t('transporterInsurance.requiredSubtitle')}
           </p>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -77,10 +78,10 @@ export default function InsurancePage() {
             <FiShield className="size-5 text-blue-500 shrink-0 mt-0.5" />
             <div>
               <h3 className="text-base font-bold text-gray-800">
-                Civil Liability Insurance
+                {t('transporterInsurance.types.civil.title')}
               </h3>
               <p className="text-sm text-gray-400 mt-1">
-                Covers damages to third parties during transportation operations
+                {t('transporterInsurance.types.civil.description')}
               </p>
             </div>
           </div>
@@ -89,10 +90,10 @@ export default function InsurancePage() {
             <FiShield className="size-5 text-blue-500 shrink-0 mt-0.5" />
             <div>
               <h3 className="text-base font-bold text-gray-800">
-                Transporter Civil Liability Insurance
+                {t('transporterInsurance.types.cargo.title')}
               </h3>
               <p className="text-sm text-gray-400 mt-1">
-                Covers damage or loss of cargo during transport
+                {t('transporterInsurance.types.cargo.description')}
               </p>
             </div>
           </div>
@@ -109,5 +110,5 @@ export default function InsurancePage() {
         onSubmit={() => setShowUploadModal(false)}
       />
     </div>
-  );
+  )
 }

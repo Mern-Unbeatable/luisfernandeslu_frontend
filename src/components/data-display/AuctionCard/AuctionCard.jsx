@@ -21,7 +21,7 @@ function CardShell({ children, accent = false, className = '' }) {
   return (
     <article
       className={[
-        'flex w-full flex-col rounded-2xl bg-white p-5 shadow-sm sm:p-6',
+        'flex h-full w-full flex-col rounded-2xl bg-white p-5 shadow-sm sm:p-6',
         accent
           ? 'border border-[var(--active)]'
           : 'border border-gray-200',
@@ -35,13 +35,15 @@ function CardShell({ children, accent = false, className = '' }) {
 
 function ViewDetailsButton({ onClick, label }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-semibold text-white transition-opacity hover:opacity-90"
-    >
-      {label}
-    </button>
+    <div className="mt-auto pt-6">
+      <button
+        type="button"
+        onClick={onClick}
+        className="inline-flex h-11 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-semibold text-white transition-opacity hover:opacity-90"
+      >
+        {label}
+      </button>
+    </div>
   )
 }
 
@@ -152,6 +154,8 @@ function TransporterAuctionCard({
   const value = bidValue !== undefined ? bidValue : localBid
   const setValue = onBidChange || setLocalBid
 
+  const bids = (auction.bids || []).slice(0, 4)
+
   return (
     <CardShell accent>
       <div className="flex items-start justify-between gap-3">
@@ -169,7 +173,7 @@ function TransporterAuctionCard({
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5 sm:grid-cols-2">
+      <div className="mt-5 grid min-h-0 flex-1 gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-3.5">
           <AuctionDetailRow
             icon={AuctionIcons.Package}
@@ -191,30 +195,35 @@ function TransporterAuctionCard({
           />
         </div>
 
-        <div className="rounded-xl bg-gray-50 p-4">
+        <div className="flex h-full min-h-[9.5rem] flex-col rounded-xl bg-gray-50 p-4">
           <p className="mb-3 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
             <FiDollarSign className="size-4 text-[var(--active)]" aria-hidden />
             {t('auction.bidHistory')}
           </p>
-          <ul className="flex flex-col gap-2.5">
-            {(auction.bids || []).slice(0, 4).map((bid) => (
-              <li
-                key={bid.id}
-                className="flex items-center justify-between gap-2 text-sm"
-              >
-                <span className="font-bold text-[var(--primary-text)]">
-                  {formatMoney(bid.amount)}
-                </span>
-                <span className="text-xs text-[var(--secondary-text)]">
-                  {bid.label}
-                </span>
-              </li>
-            ))}
+          <ul className="flex flex-1 flex-col gap-2.5">
+            {Array.from({ length: 4 }, (_, index) => {
+              const bid = bids[index]
+              return (
+                <li
+                  key={bid?.id ?? `bid-slot-${index}`}
+                  className={`flex min-h-5 items-center justify-between gap-2 text-sm ${
+                    bid ? '' : 'invisible'
+                  }`}
+                >
+                  <span className="font-bold text-[var(--primary-text)]">
+                    {bid ? formatMoney(bid.amount) : '—'}
+                  </span>
+                  <span className="text-xs text-[var(--secondary-text)]">
+                    {bid?.label || '—'}
+                  </span>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+      <div className="mt-auto flex flex-col gap-2 pt-5 sm:flex-row sm:items-center">
         <input
           type="number"
           min="0"

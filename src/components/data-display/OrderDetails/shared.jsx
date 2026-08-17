@@ -292,26 +292,58 @@ export function InstallmentBreakdownTable({ rows = [], variant = 'default' }) {
   )
 }
 
-export function PriceSummary({ totals = {} }) {
+function formatMoney(value) {
+  if (value == null || value === '') return '—'
+  if (typeof value === 'string') return value
+  const amount = Number(value)
+  if (Number.isNaN(amount)) return String(value)
+  return `€${amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`
+}
+
+export function PriceSummary({ totals = {}, variant = 'full' }) {
+  const isSupplier = variant === 'supplier'
+
   return (
     <div className="ml-auto flex w-full max-w-xs flex-col gap-2 text-sm">
-      <div className="flex items-center justify-between gap-4">
-        <span className="text-[var(--secondary-text)]">Grand total</span>
-        <span className="font-semibold text-[var(--active)]">
-          {totals.grandTotal}
-        </span>
-      </div>
-      <div className="flex items-center justify-between gap-4">
-        <span className="text-[var(--secondary-text)]">Shipping</span>
-        <span className="font-semibold text-[var(--active)]">
-          {totals.shipping}
-        </span>
-      </div>
+      {isSupplier ? (
+        <>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-[var(--secondary-text)]">Subtotal</span>
+            <span className="font-semibold text-[var(--active)]">
+              {formatMoney(totals.subtotal)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-[var(--secondary-text)]">Discount</span>
+            <span className="font-semibold text-[var(--active)]">
+              {formatMoney(totals.discount ?? 0)}
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-[var(--secondary-text)]">Grand total</span>
+            <span className="font-semibold text-[var(--active)]">
+              {formatMoney(totals.grandTotal)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-[var(--secondary-text)]">Shipping</span>
+            <span className="font-semibold text-[var(--active)]">
+              {formatMoney(totals.shipping)}
+            </span>
+          </div>
+        </>
+      )}
       <div className="mt-1 border-t border-gray-200 pt-2">
         <div className="flex items-center justify-between gap-4">
           <span className="font-medium text-[var(--secondary-text)]">Total</span>
           <span className="text-lg font-bold text-[var(--active)]">
-            {totals.total}
+            {formatMoney(totals.total)}
           </span>
         </div>
       </div>

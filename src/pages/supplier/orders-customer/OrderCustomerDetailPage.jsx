@@ -51,6 +51,10 @@ export default function OrderCustomerDetailPage() {
     // TODO: wire download invoice API
   };
 
+  const handleChat = () => {
+    navigate('/supplier/chat');
+  };
+
   return (
     <>
       <Seo title={t('panel.supplierCustomerOrders.orderDetailsTitle')} />
@@ -60,6 +64,7 @@ export default function OrderCustomerDetailPage() {
         onBack={() => navigate('/supplier/orders-customer')}
         onAccept={handleAccept}
         onDownloadInvoice={handleDownloadInvoice}
+        onChat={handleChat}
       />
     </>
   );

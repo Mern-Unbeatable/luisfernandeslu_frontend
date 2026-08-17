@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
 export default function AssignDeliveriesPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { deliveries, updateDelivery } = useAssignDeliveries()
-  const [filter, setFilter] = useState('All Deliveries')
+  const [filter, setFilter] = useState('all')
   const [selectedDelivery, setSelectedDelivery] = useState(null)
 
   const handleStartTrip = (item) => {
@@ -62,10 +64,10 @@ export default function AssignDeliveriesPage() {
   }
 
   const filteredDeliveries = deliveries.filter((d) => {
-    if (filter === 'Assigned') return d.status === 'assigned'
-    if (filter === 'Picked Up') return d.status === 'picked_up'
-    if (filter === 'In Transit') return d.status === 'in_transit'
-    if (filter === 'Delivered') return d.status === 'delivered'
+    if (filter === 'assigned') return d.status === 'assigned'
+    if (filter === 'pickedUp') return d.status === 'picked_up'
+    if (filter === 'inTransit') return d.status === 'in_transit'
+    if (filter === 'delivered') return d.status === 'delivered'
     return true
   })
 
@@ -76,6 +78,7 @@ export default function AssignDeliveriesPage() {
         status={selectedDelivery.status}
         auction={selectedDelivery}
         onBack={() => setSelectedDelivery(null)}
+        onMessage={() => navigate('/transporter/chat')}
       />
     )
   }
@@ -85,10 +88,12 @@ export default function AssignDeliveriesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Assigned Deliveries
+            {t('transporterAssignDeliveries.title')}
           </h1>
           <p className="mt-1 text-base text-gray-500">
-            {filteredDeliveries.length} active deliveries
+            {t('transporterAssignDeliveries.activeCount', {
+              count: filteredDeliveries.length,
+            })}
           </p>
         </div>
         <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -96,12 +101,23 @@ export default function AssignDeliveriesPage() {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:border-amber-500"
+            aria-label={t('transporterAssignDeliveries.filterAria')}
           >
-            <option>All Deliveries</option>
-            <option>Assigned</option>
-            <option>Picked Up</option>
-            <option>In Transit</option>
-            <option>Delivered</option>
+            <option value="all">
+              {t('transporterAssignDeliveries.filters.all')}
+            </option>
+            <option value="assigned">
+              {t('transporterAssignDeliveries.filters.assigned')}
+            </option>
+            <option value="pickedUp">
+              {t('transporterAssignDeliveries.filters.pickedUp')}
+            </option>
+            <option value="inTransit">
+              {t('transporterAssignDeliveries.filters.inTransit')}
+            </option>
+            <option value="delivered">
+              {t('transporterAssignDeliveries.filters.delivered')}
+            </option>
           </select>
         </div>
       </div>

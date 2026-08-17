@@ -3,6 +3,7 @@ import {
   FiTruck,
   FiDollarSign,
   FiRotateCcw,
+  FiMessageSquare,
   FiShield,
   FiMapPin,
   FiFile,
@@ -41,6 +42,11 @@ const transporterRole = {
       to: '/transporter/order-history',
       labelKey: 'panel.nav.orderHistory',
       Icon: FiRotateCcw,
+    },
+    {
+      to: '/transporter/chat',
+      labelKey: 'panel.nav.chat',
+      Icon: FiMessageSquare,
     },
     {
       to: '/transporter/insurance',
