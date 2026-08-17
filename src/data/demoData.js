@@ -2858,6 +2858,8 @@ export function getSupplierBuyFromFactoryDetail(productId) {
 
   return {
     ...DEMO_PRODUCT,
+    id: listItem.id,
+    factoryId: listItem.factoryId,
     title: listItem.product.title || DEMO_PRODUCT.title,
     sku: DEMO_PRODUCT.sku,
     category: 'Building Materials',
