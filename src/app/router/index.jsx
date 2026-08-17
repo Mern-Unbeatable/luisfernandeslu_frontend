@@ -413,161 +413,161 @@ const TransporterProfile = Loadable(
   <PanelSkeleton />,
 );
 
-/* ─── Affiliate ──────────────────────────────────────────────────── */
+/* ─── Affiliate (hidden — visiting /affiliate/* shows 404) ───────── */
 
-const AffiliateOverview = Loadable(
-  lazy(
-    () =>
-      import('../../pages/affiliate/overview-dashboard/OverviewDashboardPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AffiliateReferralChannels = Loadable(
-  lazy(
-    () =>
-      import('../../pages/affiliate/referral-channels/ReferralChannelsPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AffiliateReferredClients = Loadable(
-  lazy(
-    () => import('../../pages/affiliate/referred-clients/ReferredClientsPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AffiliateCommissions = Loadable(
-  lazy(() => import('../../pages/affiliate/commissions/CommissionsPage')),
-  <PanelSkeleton />,
-);
-const AffiliateLevels = Loadable(
-  lazy(
-    () => import('../../pages/affiliate/affiliate-levels/AffiliateLevelsPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AffiliateSettings = Loadable(
-  lazy(() => import('../../pages/affiliate/settings/SettingsPage')),
-  <PanelSkeleton />,
-);
+// const AffiliateOverview = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/affiliate/overview-dashboard/OverviewDashboardPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AffiliateReferralChannels = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/affiliate/referral-channels/ReferralChannelsPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AffiliateReferredClients = Loadable(
+//   lazy(
+//     () => import('../../pages/affiliate/referred-clients/ReferredClientsPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AffiliateCommissions = Loadable(
+//   lazy(() => import('../../pages/affiliate/commissions/CommissionsPage')),
+//   <PanelSkeleton />,
+// );
+// const AffiliateLevels = Loadable(
+//   lazy(
+//     () => import('../../pages/affiliate/affiliate-levels/AffiliateLevelsPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AffiliateSettings = Loadable(
+//   lazy(() => import('../../pages/affiliate/settings/SettingsPage')),
+//   <PanelSkeleton />,
+// );
 
-/* ─── Admin ──────────────────────────────────────────────────────── */
+/* ─── Admin (hidden — visiting /admin/* shows 404) ───────────────── */
 
-const AdminDashboard = Loadable(
-  lazy(() => import('../../pages/admin/dashboard/DashboardPage')),
-  <PanelSkeleton />,
-);
-const AdminUserManagement = Loadable(
-  lazy(() => import('../../pages/admin/user-management/UserManagementPage')),
-  <PanelSkeleton />,
-);
-const AdminSupplierManagement = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/supplier-management/SupplierManagementPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminFactoryManagement = Loadable(
-  lazy(
-    () => import('../../pages/admin/factory-management/FactoryManagementPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminTransporterManagement = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/transporter-management/TransporterManagementPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminProductModeration = Loadable(
-  lazy(
-    () => import('../../pages/admin/product-moderation/ProductModerationPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminProductModerationDetail = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/product-moderation/ProductModerationDetailPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminChat = Loadable(
-  lazy(() => import('../../pages/admin/chat/ChatPage')),
-  <PanelSkeleton />,
-);
-const AdminMarketingManagement = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/marketing-management/MarketingManagementPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminFinancePayments = Loadable(
-  lazy(() => import('../../pages/admin/finance-payments/FinancePaymentsPage')),
-  <PanelSkeleton />,
-);
-const AdminDisputes = Loadable(
-  lazy(() => import('../../pages/admin/disputes/DisputesPage')),
-  <PanelSkeleton />,
-);
-const AdminDisputeDetail = Loadable(
-  lazy(() => import('../../pages/admin/disputes/AdminDisputeDetailPage')),
-  <PanelSkeleton />,
-);
-const AdminAuction = Loadable(
-  lazy(() => import('../../pages/admin/auction/AuctionPage')),
-  <PanelSkeleton />,
-);
-const AdminOrders = Loadable(
-  lazy(() => import('../../pages/admin/orders/OrdersPage')),
-  <PanelSkeleton />,
-);
-const AdminOrderDetail = Loadable(
-  lazy(() => import('../../pages/admin/orders/AdminOrderDetailPage')),
-  <PanelSkeleton />,
-);
-const AdminDeliveryLogistics = Loadable(
-  lazy(
-    () => import('../../pages/admin/delivery-logistics/DeliveryLogisticsPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminDeliveryLogisticsDetail = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/delivery-logistics/DeliveryLogisticsDetailPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminAffiliateDirectory = Loadable(
-  lazy(
-    () =>
-      import('../../pages/admin/affiliate-directory/AffiliateDirectoryPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminAffiliateDetail = Loadable(
-  lazy(
-    () => import('../../pages/admin/affiliate-directory/AffiliateDetailPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminRolesPermissions = Loadable(
-  lazy(
-    () => import('../../pages/admin/roles-permissions/RolesPermissionsPage'),
-  ),
-  <PanelSkeleton />,
-);
-const AdminSettings = Loadable(
-  lazy(() => import('../../pages/admin/settings/SettingsPage')),
-  <PanelSkeleton />,
-);
-const AdminProfile = Loadable(
-  lazy(() => import('../../pages/admin/profile/ProfilePage')),
-  <PanelSkeleton />,
-);
+// const AdminDashboard = Loadable(
+//   lazy(() => import('../../pages/admin/dashboard/DashboardPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminUserManagement = Loadable(
+//   lazy(() => import('../../pages/admin/user-management/UserManagementPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminSupplierManagement = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/supplier-management/SupplierManagementPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminFactoryManagement = Loadable(
+//   lazy(
+//     () => import('../../pages/admin/factory-management/FactoryManagementPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminTransporterManagement = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/transporter-management/TransporterManagementPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminProductModeration = Loadable(
+//   lazy(
+//     () => import('../../pages/admin/product-moderation/ProductModerationPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminProductModerationDetail = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/product-moderation/ProductModerationDetailPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminChat = Loadable(
+//   lazy(() => import('../../pages/admin/chat/ChatPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminMarketingManagement = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/marketing-management/MarketingManagementPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminFinancePayments = Loadable(
+//   lazy(() => import('../../pages/admin/finance-payments/FinancePaymentsPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminDisputes = Loadable(
+//   lazy(() => import('../../pages/admin/disputes/DisputesPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminDisputeDetail = Loadable(
+//   lazy(() => import('../../pages/admin/disputes/AdminDisputeDetailPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminAuction = Loadable(
+//   lazy(() => import('../../pages/admin/auction/AuctionPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminOrders = Loadable(
+//   lazy(() => import('../../pages/admin/orders/OrdersPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminOrderDetail = Loadable(
+//   lazy(() => import('../../pages/admin/orders/AdminOrderDetailPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminDeliveryLogistics = Loadable(
+//   lazy(
+//     () => import('../../pages/admin/delivery-logistics/DeliveryLogisticsPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminDeliveryLogisticsDetail = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/delivery-logistics/DeliveryLogisticsDetailPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminAffiliateDirectory = Loadable(
+//   lazy(
+//     () =>
+//       import('../../pages/admin/affiliate-directory/AffiliateDirectoryPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminAffiliateDetail = Loadable(
+//   lazy(
+//     () => import('../../pages/admin/affiliate-directory/AffiliateDetailPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminRolesPermissions = Loadable(
+//   lazy(
+//     () => import('../../pages/admin/roles-permissions/RolesPermissionsPage'),
+//   ),
+//   <PanelSkeleton />,
+// );
+// const AdminSettings = Loadable(
+//   lazy(() => import('../../pages/admin/settings/SettingsPage')),
+//   <PanelSkeleton />,
+// );
+// const AdminProfile = Loadable(
+//   lazy(() => import('../../pages/admin/profile/ProfilePage')),
+//   <PanelSkeleton />,
+// );
 
 /* ─── Shells ─────────────────────────────────────────────────────── */
 
@@ -852,11 +852,11 @@ export const router = createBrowserRouter([
                 element: <Register />,
                 handle: { seo: routeSeo.signup },
               },
-              {
-                path: '/admin/login',
-                element: <Login />,
-                handle: { seo: routeSeo.login },
-              },
+              // {
+              //   path: '/admin/login',
+              //   element: <Login />,
+              //   handle: { seo: routeSeo.login },
+              // },
               {
                 path: '/login',
                 element: <RoleSelect />,
@@ -1291,7 +1291,7 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Affiliate */
+      /* Affiliate (hidden — visiting /affiliate/* shows 404)
       {
         path: '/affiliate',
         element: <ProtectedRoute allowedRoles={['affiliate']} />,
@@ -1338,8 +1338,9 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      */
 
-      /* Admin */
+      /* Admin (hidden — visiting /admin/* shows 404)
       {
         path: '/admin',
         element: (
@@ -1468,6 +1469,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      */
 
       /* 404 */
       {
