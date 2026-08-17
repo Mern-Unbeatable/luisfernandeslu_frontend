@@ -1353,6 +1353,7 @@
       "viewDocument": "View document",
       "downloadDocument": "Download document",
       "emptyDocuments": "No documents found.",
+      "searchPlaceholder": "Search document ID, order ID, customer...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
@@ -1360,6 +1361,7 @@
       "modalSubtitle": "Create official business documents",
       "modalOrderIdLabel": "Order ID",
       "modalOrderIdPlaceholder": "Select order",
+      "modalOrderIdEmpty": "No matching orders",
       "modalOrderIdHint": "Only completed deliveries are available for document generation",
       "modalCancel": "Cancel",
       "modalSubmit": "Generate Document",
@@ -2547,6 +2549,7 @@
       "inTransit": "in-transit",
       "complete": "complete",
       "customerInfo": "Customer Information",
+      "message": "Message",
       "name": "Name",
       "phone": "Phone",
       "email": "Email",
@@ -2613,8 +2616,228 @@
   },
   "order": {
     "details": {
-      "back": "Back"
+      "back": "Back",
+      "message": "Message"
     }
+  },
+  "transporterDashboard": {
+    "title": "Dashboard Overview",
+    "welcome": "Welcome back, {{name}}",
+    "cards": {
+      "activeAuctions": "Active Auctions",
+      "wonDeliveries": "Won Deliveries",
+      "inTransit": "In Transit",
+      "completedToday": "Completed Today",
+      "todaysEarnings": "Today's Earnings",
+      "pendingEarnings": "Pending Earnings"
+    },
+    "actions": {
+      "viewAuctions": "View Auctions",
+      "auctionsNearYou": "{{count}} active auctions near you",
+      "myDeliveries": "My Deliveries",
+      "activeDeliveries": "{{count}} active deliveries",
+      "requestPayout": "Request Payout",
+      "availableAmount": "{{amount}} available"
+    },
+    "revenueOverview": {
+      "title": "Revenue Overview",
+      "subtitle": "Revenue and order volume analysis for the current year",
+      "filterAria": "Revenue period filter"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
+  "transporterAuctionBoard": {
+    "title": "Auction Board",
+    "matchingCount": "{{count}} auctions matching your selection",
+    "filter": "Filter:",
+    "filterAria": "Filter auctions",
+    "justNow": "Just now",
+    "youTransporter": "You (Transporter)",
+    "filters": {
+      "all": "All",
+      "endingSoon": "Ending Soon",
+      "nearestFirst": "Nearest First",
+      "ended": "Ended"
+    }
+  },
+  "transporterAssignDeliveries": {
+    "title": "Assigned Deliveries",
+    "activeCount": "{{count}} active deliveries",
+    "filterAria": "Filter deliveries",
+    "filters": {
+      "all": "All Deliveries",
+      "assigned": "Assigned",
+      "pickedUp": "Picked Up",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
+    }
+  },
+  "transporterPaymentsPayouts": {
+    "title": "Earnings & Wallet",
+    "subtitle": "Track your income and manage payouts",
+    "cards": {
+      "totalEarnings": "Total Earnings",
+      "allTime": "All time",
+      "adminCommission": "Admin Commission",
+      "adminCommissionDesc": "20% per order",
+      "availableBalance": "Available Balance",
+      "requestPayout": "Request payout",
+      "pendingEarnings": "Pending Earnings",
+      "monthlyAverage": "Monthly Average"
+    },
+    "revenueOverview": {
+      "title": "Revenue Overview",
+      "subtitle": "Revenue and order volume analysis for the current year",
+      "filterAria": "Revenue period filter"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "historyTitle": "Transaction History",
+    "columns": {
+      "date": "Date",
+      "transaction": "Transaction",
+      "orderId": "Order ID",
+      "status": "Status",
+      "amount": "Amount"
+    },
+    "types": {
+      "delivery": "Delivery",
+      "payout": "Payout"
+    },
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending"
+    },
+    "withdraw": {
+      "title": "Withdraw Funds",
+      "amount": "Amount",
+      "businessName": "Name of the business/organisation",
+      "routingNumber": "Routing Number",
+      "accountNumber": "Account Number",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "close": "Close"
+    }
+  },
+  "transporterOrderHistory": {
+    "title": "Delivery History",
+    "completedCount": "{{count}} completed deliveries",
+    "filterAria": "Filter deliveries",
+    "filters": {
+      "delivered": "Delivered"
+    }
+  },
+  "transporterInsurance": {
+    "title": "Insurance Management",
+    "subtitle": "Manage your insurance policies and documents",
+    "uploadInsurance": "Upload Insurance",
+    "alertTitle": "All Insurance Requirements Met",
+    "alertBody": "You have all required insurance policies verified and active. You can participate in auctions and accept delivery jobs.",
+    "requiredTitle": "Required Insurance Types",
+    "requiredSubtitle": "Both insurance types are mandatory before accepting delivery jobs",
+    "types": {
+      "civil": {
+        "title": "Civil Liability Insurance",
+        "description": "Covers damages to third parties during transportation operations"
+      },
+      "cargo": {
+        "title": "Transporter Civil Liability Insurance",
+        "description": "Covers damage or loss of cargo during transport"
+      }
+    },
+    "verified": "Verified",
+    "provider": "Provider",
+    "viewDocument": "View Document",
+    "downloadPdf": "Download PDF",
+    "renewPolicy": "Renew Policy",
+    "policyNumber": "Policy Number",
+    "coverageAmount": "Coverage Amount",
+    "expiryDate": "Expiry Date",
+    "upload": {
+      "title": "Upload Insurance Document",
+      "subtitle": "Add new insurance policy",
+      "close": "Close",
+      "insuranceType": "Insurance Type",
+      "selectType": "Select Insurance type",
+      "civil": "Civil Liability Insurance",
+      "cargo": "Cargo Liability Insurance",
+      "provider": "Insurance Provider",
+      "providerPlaceholder": "Enter insurance company name",
+      "policyNumber": "Policy Number",
+      "policyNumberPlaceholder": "Enter policy number",
+      "coverageAmount": "Coverage Amount",
+      "coveragePlaceholder": "Enter coverage amount",
+      "startDate": "Start Date",
+      "expiryDate": "Expiry Date",
+      "datePlaceholder": "MM/DD/YY",
+      "document": "Upload Insurance Document",
+      "dropTitle": "Click to upload or drag and drop",
+      "dropHint": "PDF, JPG, PNG (Max 10MB)",
+      "noteLabel": "Note:",
+      "noteBody": "Your document will be reviewed by our team within 24-48 hours. You'll be notified once verification is complete.",
+      "cancel": "Cancel",
+      "submit": "Submit for Verification"
+    }
+  },
+  "transporterInvoices": {
+    "title": "Commission Invoices",
+    "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "columns": {
+      "invoiceId": "INVOICES ID",
+      "type": "TYPE",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "amount": "AMOUNT",
+      "date": "DATE",
+      "actions": "ACTIONS"
+    },
+    "types": {
+      "invoice": "Invoice"
+    },
+    "viewInvoice": "View invoice",
+    "downloadInvoice": "Download invoice",
+    "previous": "Previous",
+    "next": "Next",
+    "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
+  },
+  "transporterMap": {
+    "mapTitle": "Google Map",
+    "startingPointPlaceholder": "Choose Starting Point",
+    "destinationPlaceholder": "Choose Destination",
+    "addDestination": "Add destination"
   },
   "factoryDashboard": {
     "title": "Dashboard Overview",

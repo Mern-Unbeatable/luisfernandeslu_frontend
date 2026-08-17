@@ -1,4 +1,5 @@
-import { FiMapPin } from 'react-icons/fi'
+import { FiMapPin, FiMessageSquare } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import {
   AcceptButton,
   ContactLine,
@@ -17,17 +18,21 @@ import {
  * Order details when hasInstallment=false
  * status: new | pending | assigned | cancel
  * new → Accept button (instead of Download Invoice)
+ * assigned → message transporter
  */
 export default function StandardOrderDetails({
   order = {},
   onDownloadInvoice,
   onAccept,
+  onChat,
 }) {
+  const { t } = useTranslation()
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
   const isCancel = status === 'cancel'
   const showTransporter =
     status === 'assigned' || (isCancel && order.transporter)
+  const showTransporterMessage = showTransporter && status === 'assigned'
   const recipient = order.customer || order.company || {}
   const isCustomerRecipient =
     order.recipientType === 'customer' ||
@@ -113,9 +118,21 @@ export default function StandardOrderDetails({
         {showTransporter ? (
           <div>
             <SectionEyebrow>Transporter</SectionEyebrow>
-            <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-              Transporter Information
-            </h2>
+            <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-[var(--primary-text)]">
+                Transporter Information
+              </h2>
+              {showTransporterMessage ? (
+                <button
+                  type="button"
+                  onClick={() => onChat?.(transporter)}
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
+                >
+                  <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
+                  {t('order.details.message')}
+                </button>
+              ) : null}
+            </div>
             <p className="text-base font-bold text-[var(--primary-text)]">
               {transporter.name}
             </p>
@@ -161,7 +178,7 @@ export default function StandardOrderDetails({
         </h2>
         <ProductsTable products={order.products} />
         <div className="mt-6">
-          <PriceSummary totals={order.totals} />
+          <PriceSummary totals={order.totals} variant="supplier" />
         </div>
       </div>
     </div>

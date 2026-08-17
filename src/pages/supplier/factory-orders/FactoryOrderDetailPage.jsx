@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import OrderDetails from '@/components/data-display/OrderDetails';
@@ -8,6 +8,7 @@ import { getSupplierFactoryOrderDetail } from '@/data/demoData';
 export default function FactoryOrderDetailPage() {
   const { orderId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [statusOverride, setStatusOverride] = useState(
     location.state?.status ?? null,
@@ -66,7 +67,7 @@ export default function FactoryOrderDetailPage() {
   };
 
   const handleChat = () => {
-    // TODO: open chat with transporter when route is available
+    navigate('/supplier/chat');
   };
 
   return (

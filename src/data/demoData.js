@@ -325,7 +325,9 @@ const baseLogistics = {
 const baseTotals = {
   grandTotal: '€5,873.00',
   shipping: '€1,200.00',
-  total: '€7,073.00',
+  subtotal: 2530,
+  discount: 0,
+  total: 2554,
 };
 
 /** hasInstallment=false · Pending */
@@ -2856,6 +2858,8 @@ export function getSupplierBuyFromFactoryDetail(productId) {
 
   return {
     ...DEMO_PRODUCT,
+    id: listItem.id,
+    factoryId: listItem.factoryId,
     title: listItem.product.title || DEMO_PRODUCT.title,
     sku: DEMO_PRODUCT.sku,
     category: 'Building Materials',

@@ -77,7 +77,7 @@ export const COMPONENT_DOCS = [
         name: 'onChat',
         type: '(transporter) => void',
         required: false,
-        description: 'Installment + assigned transporter Chat button.',
+        description: 'Assigned transporter Chat / Message button (standard + installment).',
       },
       {
         name: 'showPay',
@@ -156,6 +156,7 @@ export const COMPONENT_DOCS = [
   hasInstallment={false}
   status="assigned"
   onBack={() => navigate(-1)}
+  onChat={(t) => openChat(t)}
   onDownloadInvoice={(order) => download(order.id)}
 />`,
       },
@@ -460,6 +461,13 @@ export const COMPONENT_DOCS = [
         required: false,
         description:
           'Runs when user clicks ← Back / Back to Dashboard. Pass parent handler e.g. () => navigate(-1) or () => navigate(\'/supplier/auction\'). Omit to hide — no built-in navigation.',
+      },
+      {
+        name: 'onMessage',
+        type: '(customer) => void',
+        required: false,
+        description:
+          'Transporter assigned/complete: message icon on Customer Information. Parent should open chat, e.g. () => navigate(\'/messages\').',
       },
       {
         name: 'className',

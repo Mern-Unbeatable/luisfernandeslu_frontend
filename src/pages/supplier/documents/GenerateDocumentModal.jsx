@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiFileText, FiX } from 'react-icons/fi';
@@ -11,12 +11,31 @@ export default function GenerateDocumentModal({
 }) {
   const { t } = useTranslation();
   const titleId = useId();
+  const listId = useId();
+  const inputRef = useRef(null);
+  const comboRef = useRef(null);
+  const [query, setQuery] = useState('');
   const [orderId, setOrderId] = useState('');
+  const [listOpen, setListOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const suggestions = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return orderOptions;
+    return orderOptions.filter(
+      (option) =>
+        String(option.label).toLowerCase().includes(q) ||
+        String(option.value).toLowerCase().includes(q),
+    );
+  }, [orderOptions, query]);
 
   useEffect(() => {
     if (!open) return undefined;
 
+    setQuery('');
     setOrderId('');
+    setListOpen(false);
+    setActiveIndex(0);
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose?.();
@@ -31,7 +50,84 @@ export default function GenerateDocumentModal({
     };
   }, [open, onClose]);
 
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onPointerDown = (event) => {
+      if (!comboRef.current?.contains(event.target)) setListOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [open]);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [query]);
+
   if (!open) return null;
+
+  const selectOption = (option) => {
+    setOrderId(option.value);
+    setQuery(option.label);
+    setListOpen(false);
+    inputRef.current?.focus();
+  };
+
+  const syncExactMatch = (value) => {
+    const q = value.trim().toLowerCase();
+    const match = orderOptions.find(
+      (option) =>
+        String(option.value).toLowerCase() === q ||
+        String(option.label).toLowerCase() === q,
+    );
+    setOrderId(match?.value || '');
+  };
+
+  const handleQueryChange = (value) => {
+    setQuery(value);
+    syncExactMatch(value);
+    setListOpen(true);
+  };
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      event.stopPropagation();
+      if (listOpen) {
+        setListOpen(false);
+        return;
+      }
+      onClose?.();
+      return;
+    }
+
+    if (!listOpen && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+      setListOpen(true);
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((index) =>
+        suggestions.length === 0 ? 0 : (index + 1) % suggestions.length,
+      );
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex((index) =>
+        suggestions.length === 0
+          ? 0
+          : (index - 1 + suggestions.length) % suggestions.length,
+      );
+      return;
+    }
+
+    if (event.key === 'Enter' && listOpen && suggestions[activeIndex]) {
+      event.preventDefault();
+      selectOption(suggestions[activeIndex]);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -53,7 +149,7 @@ export default function GenerateDocumentModal({
         role='dialog'
         aria-modal='true'
         aria-labelledby={titleId}
-        className='relative z-10 w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl'
+        className='relative z-10 w-full max-w-md overflow-visible rounded-xl bg-white shadow-2xl'
       >
         <div className='flex items-start gap-3 border-b border-gray-200 px-5 py-4'>
           <span
@@ -89,28 +185,78 @@ export default function GenerateDocumentModal({
               <span className='mb-2 block text-sm font-bold text-[var(--primary-text)]'>
                 {t('panel.supplierFiscalDocuments.modalOrderIdLabel')}
               </span>
-              <div className='relative'>
-                <select
-                  value={orderId}
-                  onChange={(event) => setOrderId(event.target.value)}
-                  className='h-12 w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-2 pl-3 pr-10 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-                  aria-label={t(
-                    'panel.supplierFiscalDocuments.modalOrderIdLabel',
+              <div ref={comboRef} className='relative'>
+                <input
+                  ref={inputRef}
+                  type='text'
+                  role='combobox'
+                  aria-expanded={listOpen}
+                  aria-controls={listId}
+                  aria-autocomplete='list'
+                  aria-activedescendant={
+                    listOpen && suggestions[activeIndex]
+                      ? `${listId}-option-${activeIndex}`
+                      : undefined
+                  }
+                  value={query}
+                  onChange={(event) => handleQueryChange(event.target.value)}
+                  onFocus={() => setListOpen(true)}
+                  onKeyDown={handleInputKeyDown}
+                  placeholder={t(
+                    'panel.supplierFiscalDocuments.modalOrderIdPlaceholder',
                   )}
-                >
-                  <option value='' disabled>
-                    {t('panel.supplierFiscalDocuments.modalOrderIdPlaceholder')}
-                  </option>
-                  {orderOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  autoComplete='off'
+                  className={`h-12 w-full bg-white py-2 pl-3 pr-10 text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-[var(--secondary-text)] ${
+                    listOpen
+                      ? 'rounded-t-lg rounded-b-none border border-[var(--active)]'
+                      : 'rounded-lg border border-gray-200 hover:border-gray-300 focus:border-[var(--active)]'
+                  }`}
+                />
                 <FiChevronDown
-                  className='pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)]'
+                  className={`pointer-events-none absolute top-6 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)] transition-transform ${
+                    listOpen ? 'rotate-180' : ''
+                  }`}
                   aria-hidden
                 />
+
+                {listOpen ? (
+                  <ul
+                    id={listId}
+                    role='listbox'
+                    className='absolute top-full right-0 left-0 z-20 max-h-52 overflow-y-auto rounded-b-lg border border-t-0 border-[var(--active)] bg-white py-1 shadow-md'
+                  >
+                    {suggestions.length === 0 ? (
+                      <li className='px-3 py-2.5 text-sm text-[var(--secondary-text)]'>
+                        {t('panel.supplierFiscalDocuments.modalOrderIdEmpty')}
+                      </li>
+                    ) : (
+                      suggestions.map((option, index) => {
+                        const isActive = index === activeIndex;
+                        const isSelected = option.value === orderId;
+                        return (
+                          <li
+                            key={option.value}
+                            id={`${listId}-option-${index}`}
+                            role='option'
+                            aria-selected={isSelected}
+                            onMouseEnter={() => setActiveIndex(index)}
+                            onMouseDown={(event) => {
+                              event.preventDefault();
+                              selectOption(option);
+                            }}
+                            className={`cursor-pointer px-3 py-2.5 text-sm ${
+                              isActive
+                                ? 'bg-[color-mix(in_srgb,var(--active)_12%,white)] text-[var(--active)]'
+                                : 'text-[var(--primary-text)]'
+                            }`}
+                          >
+                            {option.label}
+                          </li>
+                        );
+                      })
+                    )}
+                  </ul>
+                ) : null}
               </div>
               <p className='mt-2 text-xs text-[var(--secondary-text)]'>
                 {t('panel.supplierFiscalDocuments.modalOrderIdHint')}

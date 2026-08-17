@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { FiChevronDown, FiFilter } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
@@ -158,6 +157,22 @@ export default function OrdersCustomerPage() {
     });
   }, [orders, statusFilter, search, t]);
 
+  const tableFilters = useMemo(
+    () => [
+      {
+        id: 'status',
+        value: statusFilter,
+        onChange: (value) => {
+          setStatusFilter(value);
+          setPage(1);
+        },
+        options: statusOptions,
+        placeholder: t('panel.supplierCustomerOrders.allStatus'),
+      },
+    ],
+    [statusFilter, statusOptions, t],
+  );
+
   const total = filteredOrders.length;
   const pageCount = Math.max(
     1,
@@ -221,7 +236,7 @@ export default function OrdersCustomerPage() {
     <>
       <Seo title={t('panel.supplierCustomerOrders.title')} />
 
-      <div className='mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between'>
+      <div className='mb-6'>
         <header>
           <h1 className='text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl'>
             {t('panel.supplierCustomerOrders.title')}
@@ -230,33 +245,6 @@ export default function OrdersCustomerPage() {
             {t('panel.supplierCustomerOrders.subtitle')}
           </p>
         </header>
-
-        <div className='flex flex-wrap items-center gap-2 sm:gap-3 shrink-0'>
-          <span className='text-sm font-medium text-[var(--primary-text)]'>
-            {t('panel.supplierProducts.filters')}
-          </span>
-          <label className='relative inline-flex min-w-[160px] items-center justify-center gap-2 bg-white rounded-md border border-gray-200'>
-            <select
-              value={statusFilter}
-              onChange={(event) => {
-                setStatusFilter(event.target.value);
-                setPage(1);
-              }}
-              className='h-10 w-full cursor-pointer appearance-none rounded-md  bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
-              aria-label={t('panel.supplierCustomerOrders.allStatus')}
-            >
-              {statusOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <FiChevronDown
-              className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
-              aria-hidden
-            />
-          </label>
-        </div>
       </div>
 
       <div className='mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -297,6 +285,9 @@ export default function OrdersCustomerPage() {
             setPage(1);
           }}
           searchPlaceholder={t('panel.supplierCustomerOrders.searchPlaceholder')}
+          showFilters
+          filterLabel={t('panel.supplierProducts.filters')}
+          filters={tableFilters}
           pagination={{
             page: safePage,
             pageSize: SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,
