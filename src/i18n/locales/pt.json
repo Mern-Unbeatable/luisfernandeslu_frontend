@@ -2476,6 +2476,7 @@
       "inTransit": "em trânsito",
       "complete": "concluído",
       "customerInfo": "Informação do cliente",
+      "message": "Mensagem",
       "name": "Nome",
       "phone": "Telefone",
       "email": "Email",

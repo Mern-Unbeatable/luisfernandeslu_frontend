@@ -197,7 +197,7 @@ export default function AuctionBoardPage() {
     return (
       <AuctionDetails
         role="transporter"
-        status="assigned"
+        status="active"
         auction={selectedAuction}
         onBack={() => setSelectedAuction(null)}
       />
@@ -237,7 +237,7 @@ export default function AuctionBoardPage() {
           <div
             key={auction.id}
             onClick={(e) => handleCardClick(e, auction)}
-            className="cursor-pointer transition-transform hover:scale-[1.005]"
+            className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
           >
             <AuctionCard
               role="transporter"

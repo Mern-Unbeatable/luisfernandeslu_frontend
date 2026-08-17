@@ -2547,6 +2547,7 @@
       "inTransit": "in-transit",
       "complete": "complete",
       "customerInfo": "Customer Information",
+      "message": "Message",
       "name": "Name",
       "phone": "Phone",
       "email": "Email",

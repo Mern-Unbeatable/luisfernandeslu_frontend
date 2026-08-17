@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 
 export default function OrderHistoryPage() {
+  const navigate = useNavigate()
   const [selectedDelivery, setSelectedDelivery] = useState(null)
 
   // Initialize mock deliveries representing completed/delivered items
@@ -79,6 +81,7 @@ export default function OrderHistoryPage() {
         status="complete"
         auction={selectedDelivery}
         onBack={() => setSelectedDelivery(null)}
+        onMessage={() => navigate('/messages')}
       />
     )
   }

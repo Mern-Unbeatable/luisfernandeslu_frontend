@@ -462,6 +462,13 @@ export const COMPONENT_DOCS = [
           'Runs when user clicks ← Back / Back to Dashboard. Pass parent handler e.g. () => navigate(-1) or () => navigate(\'/supplier/auction\'). Omit to hide — no built-in navigation.',
       },
       {
+        name: 'onMessage',
+        type: '(customer) => void',
+        required: false,
+        description:
+          'Transporter assigned/complete: message icon on Customer Information. Parent should open chat, e.g. () => navigate(\'/messages\').',
+      },
+      {
         name: 'className',
         type: 'string',
         required: false,
