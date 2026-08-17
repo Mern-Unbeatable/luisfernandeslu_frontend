@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import StatsSection from './sections/StatsSection'
 import ActionsSection from './sections/ActionsSection'
 import RevenueSection from './sections/RevenueSection'
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const { user } = useSelector((state) => state.auth)
   const userName = user?.name || 'Atik Adnan'
 
@@ -12,10 +14,10 @@ export default function DashboardPage() {
       {/* Welcome Banner */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Dashboard Overview
+          {t('transporterDashboard.title')}
         </h1>
         <p className="mt-1 text-base text-gray-500">
-          Welcome back, {userName}
+          {t('transporterDashboard.welcome', { name: userName })}
         </p>
       </div>
 

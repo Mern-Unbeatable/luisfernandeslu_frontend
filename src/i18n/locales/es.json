@@ -2547,6 +2547,49 @@
       "message": "Mensaje"
     }
   },
+  "transporterDashboard": {
+    "title": "Resumen del panel",
+    "welcome": "Bienvenido de nuevo, {{name}}",
+    "cards": {
+      "activeAuctions": "Subastas activas",
+      "wonDeliveries": "Entregas ganadas",
+      "inTransit": "En tránsito",
+      "completedToday": "Completadas hoy",
+      "todaysEarnings": "Ganancias de hoy",
+      "pendingEarnings": "Ganancias pendientes"
+    },
+    "actions": {
+      "viewAuctions": "Ver subastas",
+      "auctionsNearYou": "{{count}} subastas activas cerca de ti",
+      "myDeliveries": "Mis entregas",
+      "activeDeliveries": "{{count}} entregas activas",
+      "requestPayout": "Solicitar pago",
+      "availableAmount": "{{amount}} disponible"
+    },
+    "revenueOverview": {
+      "title": "Resumen de ingresos",
+      "subtitle": "Análisis de ingresos y volumen de pedidos para el año actual",
+      "filterAria": "Filtro del período de ingresos"
+    },
+    "filters": {
+      "thisYear": "Este año",
+      "lastYear": "El año pasado"
+    },
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    }
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",

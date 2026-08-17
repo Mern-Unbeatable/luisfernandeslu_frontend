@@ -2618,6 +2618,49 @@
       "message": "Message"
     }
   },
+  "transporterDashboard": {
+    "title": "Dashboard Overview",
+    "welcome": "Welcome back, {{name}}",
+    "cards": {
+      "activeAuctions": "Active Auctions",
+      "wonDeliveries": "Won Deliveries",
+      "inTransit": "In Transit",
+      "completedToday": "Completed Today",
+      "todaysEarnings": "Today's Earnings",
+      "pendingEarnings": "Pending Earnings"
+    },
+    "actions": {
+      "viewAuctions": "View Auctions",
+      "auctionsNearYou": "{{count}} active auctions near you",
+      "myDeliveries": "My Deliveries",
+      "activeDeliveries": "{{count}} active deliveries",
+      "requestPayout": "Request Payout",
+      "availableAmount": "{{amount}} available"
+    },
+    "revenueOverview": {
+      "title": "Revenue Overview",
+      "subtitle": "Revenue and order volume analysis for the current year",
+      "filterAria": "Revenue period filter"
+    },
+    "filters": {
+      "thisYear": "This year",
+      "lastYear": "Last year"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
   "factoryDashboard": {
     "title": "Dashboard Overview",
     "subtitle": "Welcome back! Here's what's happening with your factory today.",

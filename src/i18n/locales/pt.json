@@ -2547,6 +2547,49 @@
       "message": "Mensagem"
     }
   },
+  "transporterDashboard": {
+    "title": "Visão geral do painel",
+    "welcome": "Bem-vindo de volta, {{name}}",
+    "cards": {
+      "activeAuctions": "Leilões ativos",
+      "wonDeliveries": "Entregas ganhas",
+      "inTransit": "Em trânsito",
+      "completedToday": "Concluídas hoje",
+      "todaysEarnings": "Ganhos de hoje",
+      "pendingEarnings": "Ganhos pendentes"
+    },
+    "actions": {
+      "viewAuctions": "Ver leilões",
+      "auctionsNearYou": "{{count}} leilões ativos perto de si",
+      "myDeliveries": "As minhas entregas",
+      "activeDeliveries": "{{count}} entregas ativas",
+      "requestPayout": "Pedir pagamento",
+      "availableAmount": "{{amount}} disponível"
+    },
+    "revenueOverview": {
+      "title": "Visão geral da receita",
+      "subtitle": "Análise de receitas e volume de encomendas para o ano atual",
+      "filterAria": "Filtro do período da receita"
+    },
+    "filters": {
+      "thisYear": "Este ano",
+      "lastYear": "Ano passado"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "Mai",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Set",
+      "oct": "Out",
+      "nov": "Nov",
+      "dec": "Dez"
+    }
+  },
   "factoryDashboard": {
     "title": "Visão geral do painel",
     "subtitle": "Bem-vindo de volta! Veja o que está a acontecer na sua fábrica hoje.",
