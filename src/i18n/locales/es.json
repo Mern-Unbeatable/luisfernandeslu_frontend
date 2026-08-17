@@ -2687,6 +2687,58 @@
       "delivered": "Entregadas"
     }
   },
+  "transporterInsurance": {
+    "title": "Gestión de seguros",
+    "subtitle": "Gestiona tus pólizas y documentos de seguro",
+    "uploadInsurance": "Subir seguro",
+    "alertTitle": "Todos los requisitos de seguro cumplidos",
+    "alertBody": "Tienes todas las pólizas obligatorias verificadas y activas. Puedes participar en subastas y aceptar trabajos de entrega.",
+    "requiredTitle": "Tipos de seguro obligatorios",
+    "requiredSubtitle": "Ambos tipos de seguro son obligatorios antes de aceptar trabajos de entrega",
+    "types": {
+      "civil": {
+        "title": "Seguro de responsabilidad civil",
+        "description": "Cubre daños a terceros durante operaciones de transporte"
+      },
+      "cargo": {
+        "title": "Seguro de responsabilidad civil del transportista",
+        "description": "Cubre daños o pérdida de carga durante el transporte"
+      }
+    },
+    "verified": "Verificado",
+    "provider": "Aseguradora",
+    "viewDocument": "Ver documento",
+    "downloadPdf": "Descargar PDF",
+    "renewPolicy": "Renovar póliza",
+    "policyNumber": "Número de póliza",
+    "coverageAmount": "Importe de cobertura",
+    "expiryDate": "Fecha de vencimiento",
+    "upload": {
+      "title": "Subir documento de seguro",
+      "subtitle": "Añadir nueva póliza de seguro",
+      "close": "Cerrar",
+      "insuranceType": "Tipo de seguro",
+      "selectType": "Seleccionar tipo de seguro",
+      "civil": "Seguro de responsabilidad civil",
+      "cargo": "Seguro de responsabilidad de carga",
+      "provider": "Aseguradora",
+      "providerPlaceholder": "Introduce el nombre de la compañía de seguros",
+      "policyNumber": "Número de póliza",
+      "policyNumberPlaceholder": "Introduce el número de póliza",
+      "coverageAmount": "Importe de cobertura",
+      "coveragePlaceholder": "Introduce el importe de cobertura",
+      "startDate": "Fecha de inicio",
+      "expiryDate": "Fecha de vencimiento",
+      "datePlaceholder": "MM/DD/AA",
+      "document": "Subir documento de seguro",
+      "dropTitle": "Haz clic para subir o arrastra y suelta",
+      "dropHint": "PDF, JPG, PNG (Máx. 10 MB)",
+      "noteLabel": "Nota:",
+      "noteBody": "Nuestro equipo revisará tu documento en 24-48 horas. Te avisaremos cuando la verificación esté completa.",
+      "cancel": "Cancelar",
+      "submit": "Enviar para verificación"
+    }
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",

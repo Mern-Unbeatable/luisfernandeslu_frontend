@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { FiShield, FiCalendar, FiCheckCircle } from 'react-icons/fi'
 
 export default function PolicyListSection({ policies }) {
+  const { t } = useTranslation()
+
   return (
     <div className="space-y-4">
       {policies.map((policy) => (
@@ -18,7 +21,7 @@ export default function PolicyListSection({ policies }) {
             </div>
             <span className="inline-flex items-center gap-1 rounded-full bg-[#10B9811A] border border-[#10B98133] px-2.5 py-0.5 text-sm  text-[#10B981]">
               <FiCheckCircle className="size-3.5" />
-              Verified
+              {t('transporterInsurance.verified')}
             </span>
           </div>
 
@@ -28,7 +31,9 @@ export default function PolicyListSection({ policies }) {
               {/* Column 1: Provider and Actions (spans 2 columns / 40% width) */}
               <div className="space-y-4 sm:col-span-2">
                 <div>
-                  <p className="text-sm text-gray-400">Provider</p>
+                  <p className="text-sm text-gray-400">
+                    {t('transporterInsurance.provider')}
+                  </p>
                   <p className="mt-1 text-base font-semibold text-gray-700">
                     {policy.provider}
                   </p>
@@ -38,26 +43,28 @@ export default function PolicyListSection({ policies }) {
                     type="button"
                     className="inline-flex h-9 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-xs font-semibold text-white shadow-sm hover:brightness-95 whitespace-nowrap"
                   >
-                    View Document
+                    {t('transporterInsurance.viewDocument')}
                   </button>
                   <button
                     type="button"
                     className="inline-flex h-9 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
                   >
-                    Download PDF
+                    {t('transporterInsurance.downloadPdf')}
                   </button>
                   <button
                     type="button"
                     className="inline-flex h-9 items-center justify-center rounded-lg border border-gray-200 bg-white px-4 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors whitespace-nowrap"
                   >
-                    Renew Policy
+                    {t('transporterInsurance.renewPolicy')}
                   </button>
                 </div>
               </div>
 
               {/* Column 2: Policy Number (spans 1 column / 20% width) */}
               <div className="sm:col-span-1">
-                <p className="text-sm text-gray-400">Policy Number</p>
+                <p className="text-sm text-gray-400">
+                  {t('transporterInsurance.policyNumber')}
+                </p>
                 <p className="mt-1 text-base font-semibold text-gray-700">
                   {policy.policyNumber}
                 </p>
@@ -65,7 +72,9 @@ export default function PolicyListSection({ policies }) {
 
               {/* Column 3: Coverage Amount (spans 1 column / 20% width) */}
               <div className="sm:col-span-1">
-                <p className="text-sm text-gray-400">Coverage Amount</p>
+                <p className="text-sm text-gray-400">
+                  {t('transporterInsurance.coverageAmount')}
+                </p>
                 <p className="mt-1 text-base font-bold text-[var(--active)]">
                   {policy.coverageAmount}
                 </p>
@@ -73,7 +82,9 @@ export default function PolicyListSection({ policies }) {
 
               {/* Column 4: Expiry Date (spans 1 column / 20% width - right aligned to stack under Verified badge) */}
               <div className="sm:col-span-1 sm:text-right flex flex-col sm:items-end">
-                <p className="text-sm text-gray-400">Expiry Date</p>
+                <p className="text-sm text-gray-400">
+                  {t('transporterInsurance.expiryDate')}
+                </p>
                 <div className="mt-1 flex items-center gap-1.5 text-base font-semibold text-gray-700">
                   <FiCalendar className="size-4 text-gray-400" />
                   <span>{policy.expiryDate}</span>

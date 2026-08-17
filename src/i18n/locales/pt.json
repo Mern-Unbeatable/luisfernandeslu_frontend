@@ -2687,6 +2687,58 @@
       "delivered": "Entregues"
     }
   },
+  "transporterInsurance": {
+    "title": "Gestão de seguros",
+    "subtitle": "Faça a gestão das suas apólices e documentos de seguro",
+    "uploadInsurance": "Carregar seguro",
+    "alertTitle": "Todos os requisitos de seguro cumpridos",
+    "alertBody": "Tem todas as apólices obrigatórias verificadas e ativas. Pode participar em leilões e aceitar trabalhos de entrega.",
+    "requiredTitle": "Tipos de seguro obrigatórios",
+    "requiredSubtitle": "Ambos os tipos de seguro são obrigatórios antes de aceitar trabalhos de entrega",
+    "types": {
+      "civil": {
+        "title": "Seguro de responsabilidade civil",
+        "description": "Cobre danos a terceiros durante operações de transporte"
+      },
+      "cargo": {
+        "title": "Seguro de responsabilidade civil do transportador",
+        "description": "Cobre danos ou perda de carga durante o transporte"
+      }
+    },
+    "verified": "Verificado",
+    "provider": "Seguradora",
+    "viewDocument": "Ver documento",
+    "downloadPdf": "Transferir PDF",
+    "renewPolicy": "Renovar apólice",
+    "policyNumber": "Número da apólice",
+    "coverageAmount": "Montante de cobertura",
+    "expiryDate": "Data de validade",
+    "upload": {
+      "title": "Carregar documento de seguro",
+      "subtitle": "Adicionar nova apólice de seguro",
+      "close": "Fechar",
+      "insuranceType": "Tipo de seguro",
+      "selectType": "Selecionar tipo de seguro",
+      "civil": "Seguro de responsabilidade civil",
+      "cargo": "Seguro de responsabilidade de carga",
+      "provider": "Seguradora",
+      "providerPlaceholder": "Introduza o nome da companhia de seguros",
+      "policyNumber": "Número da apólice",
+      "policyNumberPlaceholder": "Introduza o número da apólice",
+      "coverageAmount": "Montante de cobertura",
+      "coveragePlaceholder": "Introduza o montante de cobertura",
+      "startDate": "Data de início",
+      "expiryDate": "Data de validade",
+      "datePlaceholder": "MM/DD/AA",
+      "document": "Carregar documento de seguro",
+      "dropTitle": "Clique para carregar ou arraste e largue",
+      "dropHint": "PDF, JPG, PNG (Máx. 10 MB)",
+      "noteLabel": "Nota:",
+      "noteBody": "O seu documento será analisado pela nossa equipa em 24-48 horas. Será notificado quando a verificação estiver concluída.",
+      "cancel": "Cancelar",
+      "submit": "Enviar para verificação"
+    }
+  },
   "factoryDashboard": {
     "title": "Visão geral do painel",
     "subtitle": "Bem-vindo de volta! Veja o que está a acontecer na sua fábrica hoje.",

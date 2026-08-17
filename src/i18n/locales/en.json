@@ -2758,6 +2758,58 @@
       "delivered": "Delivered"
     }
   },
+  "transporterInsurance": {
+    "title": "Insurance Management",
+    "subtitle": "Manage your insurance policies and documents",
+    "uploadInsurance": "Upload Insurance",
+    "alertTitle": "All Insurance Requirements Met",
+    "alertBody": "You have all required insurance policies verified and active. You can participate in auctions and accept delivery jobs.",
+    "requiredTitle": "Required Insurance Types",
+    "requiredSubtitle": "Both insurance types are mandatory before accepting delivery jobs",
+    "types": {
+      "civil": {
+        "title": "Civil Liability Insurance",
+        "description": "Covers damages to third parties during transportation operations"
+      },
+      "cargo": {
+        "title": "Transporter Civil Liability Insurance",
+        "description": "Covers damage or loss of cargo during transport"
+      }
+    },
+    "verified": "Verified",
+    "provider": "Provider",
+    "viewDocument": "View Document",
+    "downloadPdf": "Download PDF",
+    "renewPolicy": "Renew Policy",
+    "policyNumber": "Policy Number",
+    "coverageAmount": "Coverage Amount",
+    "expiryDate": "Expiry Date",
+    "upload": {
+      "title": "Upload Insurance Document",
+      "subtitle": "Add new insurance policy",
+      "close": "Close",
+      "insuranceType": "Insurance Type",
+      "selectType": "Select Insurance type",
+      "civil": "Civil Liability Insurance",
+      "cargo": "Cargo Liability Insurance",
+      "provider": "Insurance Provider",
+      "providerPlaceholder": "Enter insurance company name",
+      "policyNumber": "Policy Number",
+      "policyNumberPlaceholder": "Enter policy number",
+      "coverageAmount": "Coverage Amount",
+      "coveragePlaceholder": "Enter coverage amount",
+      "startDate": "Start Date",
+      "expiryDate": "Expiry Date",
+      "datePlaceholder": "MM/DD/YY",
+      "document": "Upload Insurance Document",
+      "dropTitle": "Click to upload or drag and drop",
+      "dropHint": "PDF, JPG, PNG (Max 10MB)",
+      "noteLabel": "Note:",
+      "noteBody": "Your document will be reviewed by our team within 24-48 hours. You'll be notified once verification is complete.",
+      "cancel": "Cancel",
+      "submit": "Submit for Verification"
+    }
+  },
   "factoryDashboard": {
     "title": "Dashboard Overview",
     "subtitle": "Welcome back! Here's what's happening with your factory today.",
