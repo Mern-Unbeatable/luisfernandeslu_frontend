@@ -11,7 +11,7 @@ export default function ChatPage() {
     <>
       <Seo title={t('panel.nav.chat')} />
 
-      <div className="h-[min(720px,calc(100dvh-10rem))] min-h-[520px] w-full">
+      <div className="h-[calc(100vh-7rem)] min-h-[520px]">
         <Messenger
           className="h-full shadow-sm"
           chats={state.chats}
