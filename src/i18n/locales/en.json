@@ -1360,6 +1360,7 @@
       "modalSubtitle": "Create official business documents",
       "modalOrderIdLabel": "Order ID",
       "modalOrderIdPlaceholder": "Select order",
+      "modalOrderIdEmpty": "No matching orders",
       "modalOrderIdHint": "Only completed deliveries are available for document generation",
       "modalCancel": "Cancel",
       "modalSubmit": "Generate Document",

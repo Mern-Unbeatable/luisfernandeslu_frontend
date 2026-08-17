@@ -1358,6 +1358,7 @@
       "modalSubtitle": "Crea documentos oficiales de negocio",
       "modalOrderIdLabel": "ID del pedido",
       "modalOrderIdPlaceholder": "Seleccionar pedido",
+      "modalOrderIdEmpty": "No hay pedidos coincidentes",
       "modalOrderIdHint": "Solo las entregas completadas están disponibles para la generación de documentos",
       "modalCancel": "Cancelar",
       "modalSubmit": "Generar documento",
