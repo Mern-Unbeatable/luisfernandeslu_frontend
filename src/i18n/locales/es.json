@@ -2590,6 +2590,20 @@
       "dec": "Dic"
     }
   },
+  "transporterAuctionBoard": {
+    "title": "Tablero de subastas",
+    "matchingCount": "{{count}} subastas coinciden con tu selección",
+    "filter": "Filtro:",
+    "filterAria": "Filtrar subastas",
+    "justNow": "Ahora mismo",
+    "youTransporter": "Tú (Transportista)",
+    "filters": {
+      "all": "Todas",
+      "endingSoon": "Terminan pronto",
+      "nearestFirst": "Más cercanas primero",
+      "ended": "Finalizadas"
+    }
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",

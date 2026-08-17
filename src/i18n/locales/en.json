@@ -2661,6 +2661,20 @@
       "dec": "Dec"
     }
   },
+  "transporterAuctionBoard": {
+    "title": "Auction Board",
+    "matchingCount": "{{count}} auctions matching your selection",
+    "filter": "Filter:",
+    "filterAria": "Filter auctions",
+    "justNow": "Just now",
+    "youTransporter": "You (Transporter)",
+    "filters": {
+      "all": "All",
+      "endingSoon": "Ending Soon",
+      "nearestFirst": "Nearest First",
+      "ended": "Ended"
+    }
+  },
   "factoryDashboard": {
     "title": "Dashboard Overview",
     "subtitle": "Welcome back! Here's what's happening with your factory today.",

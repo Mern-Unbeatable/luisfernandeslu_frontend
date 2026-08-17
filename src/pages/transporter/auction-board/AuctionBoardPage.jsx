@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DEMO_AUCTION_LIVE } from '../../../data/demoData'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 
 export default function AuctionBoardPage() {
-  const [filter, setFilter] = useState('All')
+  const { t } = useTranslation()
+  const [filter, setFilter] = useState('all')
   const [selectedAuction, setSelectedAuction] = useState(null)
 
   // Generate mock active and ended auctions based on the design images
@@ -115,8 +117,8 @@ export default function AuctionBoardPage() {
           const newBid = {
             id: `b-${Date.now()}`,
             amount: Number(bidAmount),
-            label: 'Just now',
-            transporterName: 'You (Transporter)',
+            label: t('transporterAuctionBoard.justNow'),
+            transporterName: t('transporterAuctionBoard.youTransporter'),
           }
           return {
             ...auc,
@@ -131,23 +133,21 @@ export default function AuctionBoardPage() {
   // Filter and sort auctions
   const filteredAuctions = auctions
     .filter((auc) => {
-      const selectedFilter = filter.toLowerCase().trim()
       const aucStatus = (auc.status || '').toLowerCase().trim()
 
-      if (selectedFilter === 'ended') {
+      if (filter === 'ended') {
         return aucStatus === 'ended'
       }
-      if (selectedFilter === 'ending soon' || selectedFilter === 'nearest first') {
+      if (filter === 'endingSoon' || filter === 'nearestFirst') {
         return aucStatus === 'bidding'
       }
-      return true // 'all'
+      return true
     })
     .sort((a, b) => {
-      const selectedFilter = filter.toLowerCase().trim()
-      if (selectedFilter === 'ending soon') {
+      if (filter === 'endingSoon') {
         return a.remainingSeconds - b.remainingSeconds
       }
-      if (selectedFilter === 'nearest first') {
+      if (filter === 'nearestFirst') {
         return a.distanceKm - b.distanceKm
       }
       return 0
@@ -210,23 +210,26 @@ export default function AuctionBoardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Auction Board
+            {t('transporterAuctionBoard.title')}
           </h1>
           <p className="mt-1 text-base text-gray-500">
-            {filteredAuctions.length} auctions matching your selection
+            {t('transporterAuctionBoard.matchingCount', { count: filteredAuctions.length })}
           </p>
         </div>
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          <span className="text-sm font-medium text-gray-500">Filter:</span>
+          <span className="text-sm font-medium text-gray-500">
+            {t('transporterAuctionBoard.filter')}
+          </span>
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:border-amber-500"
+            aria-label={t('transporterAuctionBoard.filterAria')}
           >
-            <option>All</option>
-            <option>Ending Soon</option>
-            <option>Nearest First</option>
-            <option>Ended</option>
+            <option value="all">{t('transporterAuctionBoard.filters.all')}</option>
+            <option value="endingSoon">{t('transporterAuctionBoard.filters.endingSoon')}</option>
+            <option value="nearestFirst">{t('transporterAuctionBoard.filters.nearestFirst')}</option>
+            <option value="ended">{t('transporterAuctionBoard.filters.ended')}</option>
           </select>
         </div>
       </div>
