@@ -234,17 +234,17 @@ export default function AuctionBoardPage() {
       {/* Grid of Auction Cards */}
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
         {filteredAuctions.map((auction) => (
-          <div
-            key={auction.id}
-            onClick={(e) => handleCardClick(e, auction)}
-            className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
-          >
+          // <div
+          //   key={auction.id}
+          //   onClick={(e) => handleCardClick(e, auction)}
+          //   className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
+          // >
             <AuctionCard
               role="transporter"
               auction={auction}
               onPlaceBid={handlePlaceBid}
             />
-          </div>
+          // </div>
         ))}
       </div>
     </div>
