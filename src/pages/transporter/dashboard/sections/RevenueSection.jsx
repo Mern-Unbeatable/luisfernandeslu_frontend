@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -22,17 +23,36 @@ ChartJS.register(
   Filler
 )
 
-export default function RevenueSection() {
-  const [timeframe, setTimeframe] = useState('This year')
+const MONTH_KEYS = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
+]
 
-  const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  const revenues = [2300, 3500, 3800, 3000, 4500, 6800, 6700, 5900, 7700, 5900, 4100, 4600]
+const REVENUES = [
+  2300, 3500, 3800, 3000, 4500, 6800, 6700, 5900, 7700, 5900, 4100, 4600,
+]
+
+export default function RevenueSection() {
+  const { t } = useTranslation()
+  const [timeframe, setTimeframe] = useState('thisYear')
+
+  const labels = MONTH_KEYS.map((key) => t(`transporterDashboard.months.${key}`))
 
   const chartData = {
     labels,
     datasets: [
       {
-        data: revenues,
+        data: REVENUES,
         borderColor: '#6366f1',
         borderWidth: 3,
         tension: 0.4, // smooth curve
@@ -124,9 +144,11 @@ export default function RevenueSection() {
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Revenue Overview</h2>
+          <h2 className="text-lg font-bold text-gray-900">
+            {t('transporterDashboard.revenueOverview.title')}
+          </h2>
           <p className="text-sm text-gray-500">
-            Revenue and order volume analysis for the current year
+            {t('transporterDashboard.revenueOverview.subtitle')}
           </p>
         </div>
         <div>
@@ -134,9 +156,14 @@ export default function RevenueSection() {
             value={timeframe}
             onChange={(e) => setTimeframe(e.target.value)}
             className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:border-amber-500"
+            aria-label={t('transporterDashboard.revenueOverview.filterAria')}
           >
-            <option>This year</option>
-            <option>Last year</option>
+            <option value="thisYear">
+              {t('transporterDashboard.filters.thisYear')}
+            </option>
+            <option value="lastYear">
+              {t('transporterDashboard.filters.lastYear')}
+            </option>
           </select>
         </div>
       </div>
