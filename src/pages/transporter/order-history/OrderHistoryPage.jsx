@@ -83,7 +83,7 @@ export default function OrderHistoryPage() {
         status="complete"
         auction={selectedDelivery}
         onBack={() => setSelectedDelivery(null)}
-        onMessage={() => navigate('/messages')}
+        onMessage={() => navigate('/transporter/chat')}
       />
     )
   }

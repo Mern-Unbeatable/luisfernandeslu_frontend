@@ -392,6 +392,10 @@ const TransporterOrderHistory = Loadable(
   lazy(() => import('../../pages/transporter/order-history/OrderHistoryPage')),
   <PanelSkeleton />,
 );
+const TransporterChat = Loadable(
+  lazy(() => import('../../pages/transporter/chat/ChatPage')),
+  <PanelSkeleton />,
+);
 const TransporterInsurance = Loadable(
   lazy(() => import('../../pages/transporter/insurance/InsurancePage')),
   <PanelSkeleton />,
@@ -1251,6 +1255,11 @@ export const router = createBrowserRouter([
                 path: 'order-history',
                 element: <TransporterOrderHistory />,
                 handle: panelSeo('panel.nav.orderHistory'),
+              },
+              {
+                path: 'chat',
+                element: <TransporterChat />,
+                handle: panelSeo('panel.nav.chat'),
               },
               {
                 path: 'insurance',
