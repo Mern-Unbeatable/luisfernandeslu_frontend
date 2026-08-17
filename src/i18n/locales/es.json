@@ -1351,6 +1351,7 @@
       "viewDocument": "Ver documento",
       "downloadDocument": "Descargar documento",
       "emptyDocuments": "No se encontraron documentos.",
+      "searchPlaceholder": "Buscar ID de documento, pedido, cliente...",
       "previous": "Anterior",
       "next": "Siguiente",
       "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",

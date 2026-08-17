@@ -1353,6 +1353,7 @@
       "viewDocument": "View document",
       "downloadDocument": "Download document",
       "emptyDocuments": "No documents found.",
+      "searchPlaceholder": "Search document ID, order ID, customer...",
       "previous": "Previous",
       "next": "Next",
       "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
