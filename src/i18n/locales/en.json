@@ -2675,6 +2675,18 @@
       "ended": "Ended"
     }
   },
+  "transporterAssignDeliveries": {
+    "title": "Assigned Deliveries",
+    "activeCount": "{{count}} active deliveries",
+    "filterAria": "Filter deliveries",
+    "filters": {
+      "all": "All Deliveries",
+      "assigned": "Assigned",
+      "pickedUp": "Picked Up",
+      "inTransit": "In Transit",
+      "delivered": "Delivered"
+    }
+  },
   "factoryDashboard": {
     "title": "Dashboard Overview",
     "subtitle": "Welcome back! Here's what's happening with your factory today.",

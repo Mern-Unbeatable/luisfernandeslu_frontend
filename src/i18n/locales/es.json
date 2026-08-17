@@ -2604,6 +2604,18 @@
       "ended": "Finalizadas"
     }
   },
+  "transporterAssignDeliveries": {
+    "title": "Entregas asignadas",
+    "activeCount": "{{count}} entregas activas",
+    "filterAria": "Filtrar entregas",
+    "filters": {
+      "all": "Todas las entregas",
+      "assigned": "Asignadas",
+      "pickedUp": "Recogidas",
+      "inTransit": "En tránsito",
+      "delivered": "Entregadas"
+    }
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",
