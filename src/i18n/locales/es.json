@@ -2616,6 +2616,77 @@
       "delivered": "Entregadas"
     }
   },
+  "transporterPaymentsPayouts": {
+    "title": "Ganancias y billetera",
+    "subtitle": "Controla tus ingresos y gestiona los pagos",
+    "cards": {
+      "totalEarnings": "Ganancias totales",
+      "allTime": "Todo el tiempo",
+      "adminCommission": "Comisión admin",
+      "adminCommissionDesc": "20% por pedido",
+      "availableBalance": "Saldo disponible",
+      "requestPayout": "Solicitar pago",
+      "pendingEarnings": "Ganancias pendientes",
+      "monthlyAverage": "Promedio mensual"
+    },
+    "revenueOverview": {
+      "title": "Resumen de ingresos",
+      "subtitle": "Análisis de ingresos y volumen de pedidos para el año actual",
+      "filterAria": "Filtro del período de ingresos"
+    },
+    "filters": {
+      "thisYear": "Este año",
+      "lastYear": "El año pasado"
+    },
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    },
+    "historyTitle": "Historial de transacciones",
+    "columns": {
+      "date": "Fecha",
+      "transaction": "Transacción",
+      "orderId": "ID del pedido",
+      "status": "Estado",
+      "amount": "Importe"
+    },
+    "types": {
+      "delivery": "Entrega",
+      "payout": "Pago"
+    },
+    "status": {
+      "completed": "Completado",
+      "pending": "Pendiente"
+    },
+    "withdraw": {
+      "title": "Retirar fondos",
+      "amount": "Importe",
+      "businessName": "Nombre de la empresa/organización",
+      "routingNumber": "Número de routing",
+      "accountNumber": "Número de cuenta",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "close": "Cerrar"
+    }
+  },
+  "transporterOrderHistory": {
+    "title": "Historial de entregas",
+    "completedCount": "{{count}} entregas completadas",
+    "filterAria": "Filtrar entregas",
+    "filters": {
+      "delivered": "Entregadas"
+    }
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",
