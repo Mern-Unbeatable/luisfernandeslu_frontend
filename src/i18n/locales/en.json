@@ -2810,6 +2810,33 @@
       "submit": "Submit for Verification"
     }
   },
+  "transporterInvoices": {
+    "title": "Commission Invoices",
+    "subtitle": "Manage and track all commission invoices generated from marketplace orders.",
+    "columns": {
+      "invoiceId": "INVOICES ID",
+      "type": "TYPE",
+      "orderId": "ORDER ID",
+      "customer": "CUSTOMER",
+      "amount": "AMOUNT",
+      "date": "DATE",
+      "actions": "ACTIONS"
+    },
+    "types": {
+      "invoice": "Invoice"
+    },
+    "viewInvoice": "View invoice",
+    "downloadInvoice": "Download invoice",
+    "previous": "Previous",
+    "next": "Next",
+    "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
+  },
+  "transporterMap": {
+    "mapTitle": "Google Map",
+    "startingPointPlaceholder": "Choose Starting Point",
+    "destinationPlaceholder": "Choose Destination",
+    "addDestination": "Add destination"
+  },
   "factoryDashboard": {
     "title": "Dashboard Overview",
     "subtitle": "Welcome back! Here's what's happening with your factory today.",

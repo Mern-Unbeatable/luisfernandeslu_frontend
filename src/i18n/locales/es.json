@@ -2739,6 +2739,33 @@
       "submit": "Enviar para verificación"
     }
   },
+  "transporterInvoices": {
+    "title": "Facturas de comisión",
+    "subtitle": "Gestiona y rastrea todas las facturas de comisión generadas a partir de los pedidos del marketplace.",
+    "columns": {
+      "invoiceId": "ID DE FACTURA",
+      "type": "TIPO",
+      "orderId": "ID DEL PEDIDO",
+      "customer": "CLIENTE",
+      "amount": "IMPORTE",
+      "date": "FECHA",
+      "actions": "ACCIONES"
+    },
+    "types": {
+      "invoice": "Factura"
+    },
+    "viewInvoice": "Ver factura",
+    "downloadInvoice": "Descargar factura",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+  },
+  "transporterMap": {
+    "mapTitle": "Mapa de Google",
+    "startingPointPlaceholder": "Elegir punto de partida",
+    "destinationPlaceholder": "Elegir destino",
+    "addDestination": "Añadir destino"
+  },
   "factoryDashboard": {
     "title": "Resumen del panel",
     "subtitle": "¡Bienvenido de nuevo! Esto es lo que está pasando en tu fábrica hoy.",
