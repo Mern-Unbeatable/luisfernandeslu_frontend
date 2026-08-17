@@ -2543,7 +2543,8 @@
   },
   "order": {
     "details": {
-      "back": "Volver"
+      "back": "Volver",
+      "message": "Mensaje"
     }
   },
   "factoryDashboard": {

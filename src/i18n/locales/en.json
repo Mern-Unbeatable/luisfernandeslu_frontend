@@ -2614,7 +2614,8 @@
   },
   "order": {
     "details": {
-      "back": "Back"
+      "back": "Back",
+      "message": "Message"
     }
   },
   "factoryDashboard": {

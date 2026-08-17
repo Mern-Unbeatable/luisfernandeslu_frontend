@@ -2543,7 +2543,8 @@
   },
   "order": {
     "details": {
-      "back": "Voltar"
+      "back": "Voltar",
+      "message": "Mensagem"
     }
   },
   "factoryDashboard": {

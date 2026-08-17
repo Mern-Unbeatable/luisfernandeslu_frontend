@@ -69,6 +69,7 @@ export default function OrderDetails({
           order={merged}
           onAccept={onAccept}
           onDownloadInvoice={onDownloadInvoice}
+          onChat={onChat}
         />
       )}
     </div>
