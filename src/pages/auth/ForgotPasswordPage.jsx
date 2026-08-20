@@ -3,6 +3,11 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import { useTranslation } from 'react-i18next'
 import { FiArrowRight } from 'react-icons/fi'
 import { AuthSubmitButton } from '../../components/auth/AuthField'
+import { useForgotPasswordMutation } from '../../features/auth/authApi'
+import {
+  getAuthErrorMessage,
+  writeForgotPasswordSession,
+} from '../../features/auth/authUtils'
 
 const inputClass =
   'mt-2 w-full rounded-lg border-0 bg-[#FFF4E5] px-4 py-3.5 text-sm text-[var(--primary-text)] outline-none ring-1 ring-transparent transition placeholder:text-gray-400 focus:ring-[var(--active)]'
@@ -16,6 +21,7 @@ export default function ForgotPasswordPage() {
   const role = params.get('role') || ''
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const [forgotPassword, { isLoading }] = useForgotPasswordMutation()
   const authNavState = location.state?.fromAuthHub
     ? { fromAuthHub: true }
     : undefined
@@ -24,23 +30,35 @@ export default function ForgotPasswordPage() {
     role === 'admin' ? '/admin/login' : role ? `/login/${role}` : '/login'
   const signupPath = role && role !== 'admin' ? `/signup/${role}` : '/signup'
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault()
     const trimmed = email.trim()
     if (!trimmed) {
       setError(t('auth.forgot.emailRequired'))
       return
     }
+
     setError('')
-    sessionStorage.setItem(
-      'forgotPassword',
-      JSON.stringify({
+
+    try {
+      const data = await forgotPassword({ email: trimmed }).unwrap()
+
+      if (data?.success === false) {
+        setError(getAuthErrorMessage(data, t('auth.forgot.requestFailed')))
+        return
+      }
+
+      writeForgotPasswordSession({
         email: trimmed,
         role,
+        message: data.message,
+        otpExpiresAt: data.otpExpiresAt,
         fromAuthHub: Boolean(location.state?.fromAuthHub),
-      }),
-    )
-    navigate('/forgot-password/otp')
+      })
+      navigate('/forgot-password/otp')
+    } catch (err) {
+      setError(getAuthErrorMessage(err, t('auth.forgot.requestFailed')))
+    }
   }
 
   return (
@@ -76,7 +94,7 @@ export default function ForgotPasswordPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton>
+        <AuthSubmitButton disabled={isLoading}>
           {t('auth.forgot.sendCode')}
           <FiArrowRight className="size-5" strokeWidth={2.25} aria-hidden />
         </AuthSubmitButton>

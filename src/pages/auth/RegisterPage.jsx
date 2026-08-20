@@ -8,8 +8,16 @@ import {
 } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiMail } from 'react-icons/fi'
 import { setCredentials } from '../../features/auth/authSlice'
+import { useRegisterMutation } from '../../features/auth/authApi'
+import {
+  API_REGISTER_ROLES,
+  buildRegisterPayload,
+  getAuthErrorMessage,
+  writeEmailVerificationSession,
+} from '../../features/auth/authUtils'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
 import {
   getRoleAuthConfig,
@@ -62,6 +70,7 @@ export default function RegisterPage() {
   const fields = config?.register?.fields || []
   const [values, setValues] = useState(() => emptyValues(fields))
   const [error, setError] = useState('')
+  const [register, { isLoading }] = useRegisterMutation()
 
   useEffect(() => {
     setValues(emptyValues(fields))
@@ -82,12 +91,51 @@ export default function RegisterPage() {
     setValues((prev) => ({ ...prev, [name]: value }))
   }
 
-  const onSubmit = (event) => {
+  const usesApiRegister = API_REGISTER_ROLES.has(role)
+
+  const onSubmit = async (event) => {
     event.preventDefault()
     setError('')
 
     if (values.confirmPassword && values.password !== values.confirmPassword) {
       setError(t('auth.register.passwordMismatch'))
+      return
+    }
+
+    if (usesApiRegister) {
+      try {
+        const data = await register({
+          role,
+          payload: buildRegisterPayload(role, values),
+        }).unwrap()
+
+        if (data?.success === false) {
+          setError(getAuthErrorMessage(data, t('auth.register.failed')))
+          return
+        }
+
+        if (data?.requiresEmailVerification) {
+          writeEmailVerificationSession({
+            email: values.email.trim(),
+            role,
+            message: data.message,
+            otpExpiresAt: data.otpExpiresAt,
+            fromAuthHub: Boolean(location.state?.fromAuthHub),
+          })
+          navigate(`/signup/${role}/verify`, { state: location.state })
+          return
+        }
+
+        if (data?.accessToken && data?.user) {
+          toast.success(data.message || t('auth.register.success'))
+          navigate(getHomePathForRole(data.user.role || role), { replace: true })
+          return
+        }
+
+        setError(t('auth.register.failed'))
+      } catch (err) {
+        setError(getAuthErrorMessage(err, t('auth.register.failed')))
+      }
       return
     }
 
@@ -194,7 +242,7 @@ export default function RegisterPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton>
+        <AuthSubmitButton disabled={isLoading}>
           {registerCfg.submitKey
             ? t(registerCfg.submitKey)
             : t('auth.register.submit')}
