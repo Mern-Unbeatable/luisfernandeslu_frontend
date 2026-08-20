@@ -7,6 +7,7 @@ import {
   FiTrendingUp,
 } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import SegmentedTabs from '@/components/common/SegmentedTabs/SegmentedTabs'
 import Pagination from '@/components/common/Pagination/Pagination'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import StatusCard from '@/components/data-display/StatusCard'
@@ -22,35 +23,6 @@ import {
 } from './data/marketingDemo'
 
 const PAGE_SIZE = 8
-
-function MarketingTabsBar({ tabs, activeTab, onTabChange }) {
-  return (
-    <div
-      className="flex flex-wrap gap-6 border-b border-gray-200"
-      role="tablist"
-    >
-      {tabs.map((tab) => {
-        const isActive = tab.id === activeTab
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => onTabChange?.(tab.id)}
-            className={`-mb-px border-b-2 pb-3 text-sm font-semibold transition-colors ${
-              isActive
-                ? 'border-[var(--active)] text-[var(--active)]'
-                : 'border-transparent text-[var(--secondary-text)] hover:text-[var(--primary-text)]'
-            }`}
-          >
-            {tab.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
 
 function productCardStatus(rowStatus) {
   if (rowStatus === 'pending') return 'pending'
@@ -198,7 +170,8 @@ export default function MarketingManagementPage() {
         ))}
       </div>
 
-      <MarketingTabsBar
+      <SegmentedTabs
+        standalone
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={(id) => {

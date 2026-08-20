@@ -9,11 +9,11 @@ import {
   FiUsers,
 } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import SegmentedTabs from '@/components/common/SegmentedTabs/SegmentedTabs'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
 import SupplierRowActionMenu from '../supplier-management/components/SupplierRowActionMenu'
 import AffiliateStatusBadge from './components/AffiliateStatusBadge'
-import AffiliateDirectoryTabsBar from './components/AffiliateDirectoryTabsBar'
 import LevelControlSection from './sections/LevelControlSection'
 import PayoutControlSection from './sections/PayoutControlSection'
 import {
@@ -299,7 +299,8 @@ export default function AffiliateDirectoryPage() {
         </p>
       </header>
 
-      <AffiliateDirectoryTabsBar
+      <SegmentedTabs
+        standalone
         tabs={mainTabs}
         activeTab={activeTab}
         onTabChange={(id) => {
