@@ -2820,6 +2820,7 @@
     "uploadCsv": "Carregar ficheiro CSV",
     "filters": "Filtros:",
     "allCategories": "Todas as categorias",
+    "searchPlaceholder": "Pesquisar SKU, título, estado...",
     "tabs": {
       "all": "Todos",
       "active": "Ativos",

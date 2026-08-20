@@ -2,6 +2,13 @@ import { baseApi } from '../../services/api/baseApi'
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getCategories: builder.query({
+      query: () => ({
+        url: '/api/categories',
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'Product', id: 'CATEGORIES' }],
+    }),
     getProducts: builder.query({
       query: (params) => ({
         url: '/products',
@@ -65,6 +72,7 @@ export const productApi = baseApi.injectEndpoints({
 })
 
 export const {
+  useGetCategoriesQuery,
   useGetProductsQuery,
   useGetProductByIdQuery,
   useCreateProductMutation,

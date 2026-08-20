@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiArrowLeft } from 'react-icons/fi'
 import DataTable from '@/components/data-display/DataTable/DataTable'
@@ -6,43 +6,18 @@ import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
-import { DEMO_FACTORY_PRODUCT, DEMO_PRODUCT } from '@/data/demoData'
+import {
+  useGetFactoryProductByIdQuery,
+  useGetFactoryProductsQuery,
+} from '@/features/factory-products/factoryProductApi'
+import { useGetCategoriesQuery } from '@/features/products/productApi'
+import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import dummyProductImage from '@/assets/images/dummy-post-square.png'
 import UploadXlsxModal from './UploadXlsxModal'
 
-const PAGE_SIZE = 8
-
-const PRODUCT_IMAGE =
-  'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80'
-
-const STATUS_CYCLE = ['active', 'pending', 'rejected']
-const PRICE_CYCLE = [85, 115, 150, 220, 340, 480, 65, 190]
-
-let productSeq = 0
-
-const DUMMY_PRODUCTS = PRODUCT_CATEGORIES.flatMap((category) =>
-  (category.subcategories ?? []).flatMap((subCategory) =>
-    (subCategory.productTypes ?? []).map((type) => {
-      const index = productSeq
-      productSeq += 1
-
-      return {
-        id: index + 1,
-        title: type.name,
-        description: `${type.name} from ${category.name} › ${subCategory.name}.`,
-        priceText: `Price: $${PRICE_CYCLE[index % PRICE_CYCLE.length]} per unit`,
-        image: type.imageSrc || PRODUCT_IMAGE,
-        status: STATUS_CYCLE[index % STATUS_CYCLE.length],
-        categoryId: category.id,
-        categoryName: category.name,
-        subCategoryId: subCategory.id,
-        subCategoryName: subCategory.name,
-        productTypeId: type.id,
-        sku: `FAC-${String(index + 1).padStart(4, '0')}`,
-      }
-    }),
-  ),
-)
+const PAGE_SIZE = 12
+const DUMMY_PRODUCT_IMAGE = dummyProductImage
 
 const TAB_IDS = ['all', 'active', 'pending', 'rejected']
 
@@ -97,19 +72,51 @@ function toFormValue(product) {
 
   return {
     ...DEMO_FACTORY_PRODUCT,
-    categoryId: product.categoryId || '',
-    subCategoryId: product.subCategoryId || '',
-    productTypeId: product.productTypeId || '',
+    categoryId: product.category?.id || product.categoryId || '',
+    subCategoryId: product.subCategory?.id || product.subCategoryId || '',
+    productTypeId: product.productType?.id || product.productTypeId || '',
     title: product.title || '',
     description: product.description || '',
-    basePrice: extractPrice(product.priceText) || product.basePrice || '',
+    basePrice: product.basePrice ?? extractPrice(product.priceText) ?? '',
     sku: product.sku || '',
     warehouseLocation: product.warehouseLocation || '',
     feature: product.feature || '',
-    additionalInformation: product.additionalInformation || '',
+    additionalInformation:
+      product.additionalInfo || product.additionalInformation || '',
     specifications: product.specifications || '',
-    bannerImage: product.image || null,
-    otherImages: product.otherImages || [],
+    bannerImage: product.bannerImage?.url || product.image || null,
+    otherImages: product.gallery || product.otherImages || [],
+  }
+}
+
+/** ProductCard expects `image` and `priceText`; pass API values as-is. */
+function toProductCardItem(product) {
+  return {
+    ...product,
+    image: product.bannerImage?.url || DUMMY_PRODUCT_IMAGE,
+    priceText: product.priceLabel,
+    status: product.cardStatus || product.status,
+  }
+}
+
+/** ProductDetails prop names only — no content changes. */
+function toProductDetailItem(product) {
+  const images = [
+    product.bannerImage?.url,
+    ...(product.gallery?.map((item) => item.url) || []),
+  ].filter(Boolean)
+
+  return {
+    ...product,
+    category: product.category?.name,
+    priceText: product.priceLabel,
+    warehouse: product.warehouseLocation,
+    images: images.length ? images : [DUMMY_PRODUCT_IMAGE],
+    image: product.bannerImage?.url || DUMMY_PRODUCT_IMAGE,
+    additionalText: product.additionalInfo,
+    specificationText: product.specifications,
+    rating: product.averageRating,
+    feedbackCount: product.reviewCount,
   }
 }
 
@@ -121,7 +128,7 @@ function toCardProduct(payload, previous = {}, t) {
   const image =
     typeof payload.bannerImage === 'string'
       ? payload.bannerImage
-      : previous.image || PRODUCT_IMAGE
+      : previous.image || DUMMY_PRODUCT_IMAGE
 
   const categoryId = payload.categoryId || previous.categoryId || ''
   const categoryName =
@@ -152,40 +159,72 @@ export default function ProductsPage() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
   const [category, setCategory] = useState('all')
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [products, setProducts] = useState(DUMMY_PRODUCTS)
+  const [localProducts, setLocalProducts] = useState(null)
   const [formMode, setFormMode] = useState(null)
   const [editingProduct, setEditingProduct] = useState(null)
-  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [selectedProductId, setSelectedProductId] = useState(null)
   const [uploadOpen, setUploadOpen] = useState(false)
 
-  const categoryProducts =
-    category === 'all'
-      ? products
-      : products.filter((product) => product.categoryId === category)
+  const queryParams = useMemo(
+    () => ({
+      tab: activeTab,
+      page,
+      limit: PAGE_SIZE,
+      ...(category !== 'all' ? { categoryId: category } : {}),
+      ...(search.trim() ? { search: search.trim() } : {}),
+    }),
+    [activeTab, page, category, search],
+  )
 
-  const counts = {
-    all: categoryProducts.length,
-    active: categoryProducts.filter((p) => p.status === 'active').length,
-    pending: categoryProducts.filter((p) => p.status === 'pending').length,
-    rejected: categoryProducts.filter((p) => p.status === 'rejected').length,
+  const { data: factoryProductsResponse } = useGetFactoryProductsQuery(queryParams)
+  const { data: categoriesResponse } = useGetCategoriesQuery()
+
+  const categoryOptions = useMemo(
+    () => [
+      { value: 'all', label: t('factoryProducts.allCategories') },
+      ...(categoriesResponse?.categories ?? []).map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    ],
+    [categoriesResponse, t],
+  )
+
+  const apiProducts = useMemo(
+    () => factoryProductsResponse?.products?.map(toProductCardItem) ?? [],
+    [factoryProductsResponse],
+  )
+
+  const products = localProducts ?? apiProducts
+
+  useEffect(() => {
+    setLocalProducts(null)
+  }, [factoryProductsResponse])
+
+  const {
+    data: factoryProductDetailResponse,
+    isLoading: isDetailLoading,
+    isError: isDetailError,
+  } = useGetFactoryProductByIdQuery(selectedProductId, {
+    skip: !selectedProductId,
+  })
+
+  const counts = factoryProductsResponse?.counts || {
+    all: 0,
+    active: 0,
+    pending: 0,
+    rejected: 0,
   }
 
-  const filteredProducts =
-    activeTab === 'all'
-      ? categoryProducts
-      : categoryProducts.filter((p) => p.status === activeTab)
-
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
+  const totalPages = Math.max(1, factoryProductsResponse?.pagination?.totalPages || 1)
   const safePage = Math.min(page, totalPages)
-  const visibleProducts = filteredProducts.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
-  )
+  const visibleProducts = products
 
   const tabs = TAB_IDS.map((tabId) => ({
     id: tabId,
-    label: `${t(`factoryProducts.tabs.${tabId}`)} (${counts[tabId]})`,
+    label: `${t(`factoryProducts.tabs.${tabId}`)} (${counts[tabId] ?? 0})`,
   }))
 
   const tableFilters = [
@@ -196,13 +235,7 @@ export default function ProductsPage() {
         setCategory(value)
         setPage(1)
       },
-      options: [
-        { value: 'all', label: t('factoryProducts.allCategories') },
-        ...PRODUCT_CATEGORIES.map((item) => ({
-          value: item.id,
-          label: item.name,
-        })),
-      ],
+      options: categoryOptions,
       placeholder: t('factoryProducts.allCategories'),
     },
   ]
@@ -213,17 +246,19 @@ export default function ProductsPage() {
   }
 
   const handleSubmit = (payload) => {
+    const baseProducts = localProducts ?? apiProducts
+
     if (formMode === 'edit' && editingProduct) {
-      setProducts((prev) =>
-        prev.map((item) =>
+      setLocalProducts(
+        baseProducts.map((item) =>
           item.id === editingProduct.id
             ? toCardProduct(payload, item, t)
             : item,
         ),
       )
     } else {
-      setProducts((prev) => [
-        ...prev,
+      setLocalProducts([
+        ...baseProducts,
         {
           id: Date.now(),
           status: 'pending',
@@ -240,24 +275,17 @@ export default function ProductsPage() {
     setFormMode('edit')
   }
 
-  if (selectedProduct) {
-    const detailProduct = {
-      ...DEMO_PRODUCT,
-      title: selectedProduct.title,
-      sku: selectedProduct.sku || DEMO_PRODUCT.sku,
-      category: selectedProduct.categoryName || DEMO_PRODUCT.category,
-      priceText: selectedProduct.priceText,
-      images: selectedProduct.image ? [selectedProduct.image] : DEMO_PRODUCT.images,
-      availability: selectedProduct.status === 'active' ? 'In Stock' : selectedProduct.status === 'pending' ? 'Pending Review' : 'Unavailable',
-      warehouse: selectedProduct.warehouseLocation || DEMO_PRODUCT.warehouse,
-    }
+  if (selectedProductId) {
+    const detailProduct = factoryProductDetailResponse?.product
+      ? toProductDetailItem(factoryProductDetailResponse.product)
+      : null
 
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => setSelectedProduct(null)}
+            onClick={() => setSelectedProductId(null)}
             className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-[var(--primary-text)] transition hover:bg-gray-50"
           >
             <FiArrowLeft className="size-4" />
@@ -265,15 +293,22 @@ export default function ProductsPage() {
           </button>
           <div className="min-w-0">
             <p className="truncate text-sm text-[var(--secondary-text)]">
-              {t('factoryProducts.title')} / {selectedProduct.title}
+              {t('factoryProducts.title')} / {detailProduct?.title || '…'}
             </p>
           </div>
         </div>
 
-        <ProductDetails
-          role="supplier"
-          product={detailProduct}
-        />
+        {isDetailLoading ? (
+          <p className="text-sm text-[var(--secondary-text)]">
+            {t('common.loading', { defaultValue: 'Loading…' })}
+          </p>
+        ) : isDetailError || !detailProduct ? (
+          <p className="text-sm text-red-600">
+            {t('common.error', { defaultValue: 'Failed to load product details.' })}
+          </p>
+        ) : (
+          <ProductDetails role="supplier" product={detailProduct} />
+        )}
       </div>
     )
   }
@@ -352,6 +387,13 @@ export default function ProductsPage() {
             setActiveTab(tabId)
             setPage(1)
           }}
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value)
+            setPage(1)
+          }}
+          searchPlaceholder={t('factoryProducts.searchPlaceholder')}
           showFilters
           filterLabel={t('factoryProducts.filters')}
           filters={tableFilters}
@@ -366,10 +408,10 @@ export default function ProductsPage() {
               tabIndex={0}
               onClick={(e) => {
                 if (e.target.closest('button, a, [role="button"]') && e.target.closest('button, a, [role="button"]') !== e.currentTarget) return
-                setSelectedProduct(product)
+                setSelectedProductId(product.id)
               }}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(product)
+                if (e.key === 'Enter' || e.key === ' ') setSelectedProductId(product.id)
               }}
               className="cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--active)]"
             >

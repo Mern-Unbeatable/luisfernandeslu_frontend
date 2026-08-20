@@ -2891,6 +2891,7 @@
     "uploadCsv": "Upload CSV File",
     "filters": "Filters:",
     "allCategories": "All Categories",
+    "searchPlaceholder": "Search SKU, title, status...",
     "tabs": {
       "all": "All",
       "active": "Active",
