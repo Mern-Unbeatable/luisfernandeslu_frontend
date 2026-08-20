@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { FiCheck, FiUpload } from 'react-icons/fi'
 
-export default function VerifyDeliverySection({ delivery, onCancel, onComplete }) {
+export default function VerifyDeliverySection({
+  delivery,
+  onCancel,
+  onComplete,
+  isSubmitting = false,
+}) {
   const [pin, setPin] = useState(['', '', '', ''])
 
   const handlePinChange = (value, idx) => {
@@ -18,6 +23,7 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
   }
 
   const handleVerifyComplete = () => {
+    if (isSubmitting) return
     onComplete?.(delivery)
   }
 
@@ -103,17 +109,19 @@ export default function VerifyDeliverySection({ delivery, onCancel, onComplete }
         <button
           type="button"
           onClick={onCancel}
-          className="flex h-12 items-center justify-center rounded-xl bg-amber-50 text-sm font-bold text-amber-600 border border-amber-100 hover:brightness-95"
+          disabled={isSubmitting}
+          className="flex h-12 items-center justify-center rounded-xl bg-amber-50 text-sm font-bold text-amber-600 border border-amber-100 hover:brightness-95 disabled:opacity-60"
         >
           Cancel
         </button>
         <button
           type="button"
           onClick={handleVerifyComplete}
-          className="flex h-12 items-center justify-center gap-1.5 rounded-xl bg-[color-mix(in_srgb,var(--active)_85%,black)] text-sm font-bold text-white shadow-sm hover:brightness-95"
+          disabled={isSubmitting}
+          className="flex h-12 items-center justify-center gap-1.5 rounded-xl bg-[color-mix(in_srgb,var(--active)_85%,black)] text-sm font-bold text-white shadow-sm hover:brightness-95 disabled:opacity-60"
         >
           <FiCheck className="size-4" strokeWidth={3} />
-          Verify & Complete
+          {isSubmitting ? 'Verifying…' : 'Verify & Complete'}
         </button>
       </div>
     </div>

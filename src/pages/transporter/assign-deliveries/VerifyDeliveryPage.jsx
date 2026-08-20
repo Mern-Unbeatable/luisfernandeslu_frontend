@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiArrowLeft } from 'react-icons/fi'
+import Toast from '../../../components/common/Toast'
+import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import { useUpdateTransporterDeliveryStatusMutation } from '../../../features/transporter/transporterApi'
 import VerifyDeliverySection from './sections/VerifyDeliverySection'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
@@ -9,6 +13,13 @@ export default function VerifyDeliveryPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { deliveries, updateDelivery } = useAssignDeliveries()
+  const [updateDeliveryStatus, { isLoading: isVerifying }] =
+    useUpdateTransporterDeliveryStatusMutation()
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    variant: 'error',
+  })
   const delivery = deliveries.find((item) => item.id === deliveryId)
 
   if (!delivery || delivery.status !== 'in_transit') {
@@ -19,8 +30,35 @@ export default function VerifyDeliveryPage() {
     navigate('/transporter/assign-deliveries')
   }
 
+  const handleComplete = async () => {
+    const auctionId = delivery.auctionId || delivery.id || deliveryId
+    if (!auctionId || isVerifying) return
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'VERIFY_DELIVERY',
+      }).unwrap()
+      updateDelivery(auctionId, { status: 'delivered' })
+      navigate('/transporter/assign-deliveries')
+    } catch (err) {
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to verify delivery'),
+        variant: 'error',
+      })
+    }
+  }
+
   return (
     <div>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
+      />
+
       <button
         type="button"
         onClick={goBack}
@@ -33,10 +71,8 @@ export default function VerifyDeliveryPage() {
       <VerifyDeliverySection
         delivery={delivery}
         onCancel={goBack}
-        onComplete={() => {
-          updateDelivery(deliveryId, { status: 'delivered' })
-          navigate('/transporter/assign-deliveries')
-        }}
+        onComplete={handleComplete}
+        isSubmitting={isVerifying}
       />
     </div>
   )

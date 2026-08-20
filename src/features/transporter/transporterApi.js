@@ -56,6 +56,17 @@ export const transporterApi = baseApi.injectEndpoints({
         { type: 'Delivery', id: auctionId },
       ],
     }),
+    updateTransporterDeliveryStatus: builder.mutation({
+      query: ({ auctionId, action }) => ({
+        url: `/api/transporter/deliveries/${encodeURIComponent(auctionId)}/status`,
+        method: 'PATCH',
+        data: { action },
+      }),
+      invalidatesTags: (_result, _error, { auctionId }) => [
+        { type: 'Delivery', id: auctionId },
+        { type: 'Delivery', id: 'LIST' },
+      ],
+    }),
   }),
 })
 
@@ -64,4 +75,5 @@ export const {
   usePlaceTransporterBidMutation,
   useGetTransporterDeliveriesQuery,
   useGetTransporterDeliveryQuery,
+  useUpdateTransporterDeliveryStatusMutation,
 } = transporterApi

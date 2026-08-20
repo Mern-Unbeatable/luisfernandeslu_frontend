@@ -1,10 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import Toast from '../../../components/common/Toast'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
-import { useGetTransporterDeliveryQuery } from '../../../features/transporter/transporterApi'
+import {
+  useGetTransporterDeliveryQuery,
+  useUpdateTransporterDeliveryStatusMutation,
+} from '../../../features/transporter/transporterApi'
 import { mapTransporterDeliveryDetails } from '../../../features/transporter/deliveryMappers'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
@@ -22,6 +26,17 @@ export default function AssignDeliveriesPage() {
   } = useAssignDeliveries()
   const [filter, setFilter] = useState('all')
   const [selectedAuctionId, setSelectedAuctionId] = useState(null)
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    variant: 'success',
+  })
+  const [updateDeliveryStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateTransporterDeliveryStatusMutation()
+
+  const closeToast = useCallback(() => {
+    setToast((prev) => ({ ...prev, open: false }))
+  }, [])
 
   const {
     data: detailData,
@@ -38,17 +53,93 @@ export default function AssignDeliveriesPage() {
     return mapTransporterDeliveryDetails(detailData.delivery)
   }, [detailData?.delivery])
 
-  const handleStartTrip = (item) => {
-    updateDelivery(item.id, { tripStarted: true })
+  const handleStartTrip = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || isUpdatingStatus) return
+
+    updateDelivery(auctionId, { tripStarted: true })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'START_TRIP',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.tripStarted', {
+          defaultValue: 'Trip started',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, { tripStarted: false })
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to start trip'),
+        variant: 'error',
+      })
+    }
   }
 
-  const handleMarkPickedUp = (item) => {
-    if (!item.tripStarted) return
-    updateDelivery(item.id, { status: 'picked_up', tripStarted: false })
+  const handleMarkPickedUp = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || !item.tripStarted || isUpdatingStatus) return
+
+    const previous = {
+      status: item.status,
+      tripStarted: item.tripStarted,
+    }
+    updateDelivery(auctionId, { status: 'picked_up', tripStarted: false })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'MARK_PICKED_UP',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.markedPickedUp', {
+          defaultValue: 'Marked picked up',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, previous)
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to mark picked up'),
+        variant: 'error',
+      })
+    }
   }
 
-  const handleNavigateToDelivery = (item) => {
-    updateDelivery(item.id, { status: 'in_transit' })
+  const handleNavigateToDelivery = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || isUpdatingStatus) return
+
+    const previous = { status: item.status }
+    updateDelivery(auctionId, { status: 'in_transit' })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'NAVIGATE_TO_DELIVERY',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.navigatingToDelivery', {
+          defaultValue: 'Navigating to delivery',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, previous)
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to navigate to delivery'),
+        variant: 'error',
+      })
+    }
   }
 
   const handleVerifyDeliveryClick = (item) => {
@@ -119,6 +210,13 @@ export default function AssignDeliveriesPage() {
 
   return (
     <div className="space-y-6">
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={closeToast}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
