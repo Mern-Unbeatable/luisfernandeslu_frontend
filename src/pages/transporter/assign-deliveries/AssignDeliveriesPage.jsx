@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import { useGetTransporterDeliveryQuery } from '../../../features/transporter/transporterApi'
+import { mapTransporterDeliveryDetails } from '../../../features/transporter/deliveryMappers'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
 export default function AssignDeliveriesPage() {
@@ -19,7 +21,22 @@ export default function AssignDeliveriesPage() {
     total,
   } = useAssignDeliveries()
   const [filter, setFilter] = useState('all')
-  const [selectedDelivery, setSelectedDelivery] = useState(null)
+  const [selectedAuctionId, setSelectedAuctionId] = useState(null)
+
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    isError: isDetailError,
+    error: detailError,
+    refetch: refetchDetail,
+  } = useGetTransporterDeliveryQuery(selectedAuctionId, {
+    skip: !selectedAuctionId,
+  })
+
+  const selectedDelivery = useMemo(() => {
+    if (!detailData?.delivery) return null
+    return mapTransporterDeliveryDetails(detailData.delivery)
+  }, [detailData?.delivery])
 
   const handleStartTrip = (item) => {
     updateDelivery(item.id, { tripStarted: true })
@@ -39,45 +56,11 @@ export default function AssignDeliveriesPage() {
   }
 
   const handleSeeDetails = (item) => {
-    const detailedDelivery = {
-      ...item,
-      auctionId: item.auctionId || item.id,
-      auctionDate: item.pickedAt
-        ? new Date(item.pickedAt).toLocaleDateString()
-        : '—',
-      deliveryCharge: item.price || '—',
-      customer: {
-        name: '—',
-        phone: '—',
-        email: '—',
-        deliveryAddress: item.deliveryLocation || [
-          item.delivery?.title,
-          item.delivery?.subtitle,
-        ]
-          .filter(Boolean)
-          .join(', '),
-      },
-      product: {
-        name: item.title,
-        sku: '—',
-        quantity: '—',
-        weight: '—',
-        price: item.price,
-      },
-      shipping: {
-        pickupLocation:
-          item.pickupLocation ||
-          [item.pickup?.title, item.pickup?.subtitle].filter(Boolean).join(', '),
-        unloadingInstructions:
-          item.deliveryLocation ||
-          [item.delivery?.title, item.delivery?.subtitle]
-            .filter(Boolean)
-            .join(', '),
-        accessCondition: '—',
-        additionalNotes: '—',
-      },
-    }
-    setSelectedDelivery(detailedDelivery)
+    setSelectedAuctionId(item.auctionId || item.id)
+  }
+
+  const handleBackFromDetails = () => {
+    setSelectedAuctionId(null)
   }
 
   const filteredDeliveries = useMemo(() => {
@@ -90,16 +73,48 @@ export default function AssignDeliveriesPage() {
     })
   }, [deliveries, filter])
 
-  if (selectedDelivery) {
-    return (
-      <AuctionDetails
-        role="transporter"
-        status={selectedDelivery.status}
-        auction={selectedDelivery}
-        onBack={() => setSelectedDelivery(null)}
-        onMessage={() => navigate('/transporter/chat')}
-      />
-    )
+  if (selectedAuctionId) {
+    if (isDetailLoading) {
+      return <p className="text-sm text-gray-500">Loading delivery details…</p>
+    }
+
+    if (isDetailError) {
+      return (
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={handleBackFromDetails}
+            className="text-sm font-semibold text-[var(--active)] underline"
+          >
+            Back
+          </button>
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <p>
+              {getAuthErrorMessage(detailError, 'Failed to load delivery details')}
+            </p>
+            <button
+              type="button"
+              onClick={() => refetchDetail()}
+              className="mt-2 font-semibold underline"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    if (selectedDelivery) {
+      return (
+        <AuctionDetails
+          role="transporter"
+          status={selectedDelivery.status}
+          auction={selectedDelivery}
+          onBack={handleBackFromDetails}
+          onMessage={() => navigate('/transporter/chat')}
+        />
+      )
+    }
   }
 
   return (

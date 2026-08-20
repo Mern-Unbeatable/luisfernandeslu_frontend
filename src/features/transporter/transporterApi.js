@@ -47,6 +47,15 @@ export const transporterApi = baseApi.injectEndpoints({
             ]
           : [{ type: 'Delivery', id: 'LIST' }],
     }),
+    getTransporterDelivery: builder.query({
+      query: (auctionId) => ({
+        url: `/api/transporter/deliveries/${encodeURIComponent(auctionId)}`,
+        method: 'GET',
+      }),
+      providesTags: (_result, _error, auctionId) => [
+        { type: 'Delivery', id: auctionId },
+      ],
+    }),
   }),
 })
 
@@ -54,4 +63,5 @@ export const {
   useGetTransporterAuctionsQuery,
   usePlaceTransporterBidMutation,
   useGetTransporterDeliveriesQuery,
+  useGetTransporterDeliveryQuery,
 } = transporterApi

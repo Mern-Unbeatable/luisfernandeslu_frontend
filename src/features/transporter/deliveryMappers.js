@@ -76,3 +76,73 @@ export function mapTransporterDelivery(delivery) {
     bidAmount: delivery.bidAmount,
   }
 }
+
+function formatAuctionDate(value) {
+  if (!value) return '—'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return String(value)
+  return date.toLocaleDateString()
+}
+
+function formatMoney(amount) {
+  if (amount == null || amount === '') return '—'
+  const value = Number(amount)
+  if (!Number.isFinite(value)) return String(amount)
+  return `€${value}`
+}
+
+function formatWeight(weightKg) {
+  if (weightKg == null || weightKg === '') return '—'
+  return `${weightKg} kg`
+}
+
+/** Map backend delivery detail → AuctionDetails shape */
+export function mapTransporterDeliveryDetails(delivery) {
+  const status = normalizeDeliveryStatus(delivery.status, delivery.orderStatus)
+  const customer = delivery.customer || {}
+  const shipping = delivery.shipping || {}
+  const product = delivery.product || {}
+  const transporter = delivery.assignedTransporter || {}
+  const bidLabel = formatMoney(delivery.bidAmount ?? transporter.bidAmount)
+
+  return {
+    id: delivery.auctionId,
+    auctionId: delivery.auctionId,
+    orderId: delivery.orderId,
+    status,
+    orderStatus: delivery.orderStatus,
+    auctionDate: formatAuctionDate(delivery.auctionDate),
+    deliveryCharge: bidLabel,
+    distanceKm: delivery.distanceKm,
+    quantity: delivery.quantity,
+    steps: delivery.steps || [],
+    actions: delivery.actions || {},
+    customer: {
+      name: customer.name || '—',
+      phone: customer.phone || '—',
+      email: customer.email || '—',
+      deliveryAddress: customer.deliveryAddress || '—',
+    },
+    shipping: {
+      pickupLocation: shipping.pickupLocation || '—',
+      deliveryLocation: shipping.deliveryLocation || '—',
+      unloadingInstructions: shipping.unloadingInstructions || '—',
+      accessCondition: shipping.accessCondition || '—',
+      additionalNotes: shipping.additionalNotes || '—',
+    },
+    product: {
+      name: product.name || '—',
+      sku: product.sku || '—',
+      quantity: delivery.quantity || '—',
+      weight: formatWeight(product.weightKg ?? product.weight),
+      price: bidLabel,
+    },
+    transporter: {
+      id: transporter.id,
+      name: transporter.name || '—',
+      bidAmount: formatMoney(transporter.bidAmount ?? delivery.bidAmount),
+    },
+    pickupLocation: shipping.pickupLocation,
+    deliveryLocation: shipping.deliveryLocation,
+  }
+}
