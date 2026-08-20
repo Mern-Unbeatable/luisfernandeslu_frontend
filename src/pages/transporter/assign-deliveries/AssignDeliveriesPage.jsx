@@ -1,14 +1,23 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
 export default function AssignDeliveriesPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { deliveries, updateDelivery } = useAssignDeliveries()
+  const {
+    deliveries,
+    updateDelivery,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    total,
+  } = useAssignDeliveries()
   const [filter, setFilter] = useState('all')
   const [selectedDelivery, setSelectedDelivery] = useState(null)
 
@@ -32,44 +41,54 @@ export default function AssignDeliveriesPage() {
   const handleSeeDetails = (item) => {
     const detailedDelivery = {
       ...item,
-      auctionId: item.orderLabel?.replace('Auction ID: ', '') || 'AUC-001',
-      auctionDate: 'May 18, 2026',
-      deliveryCharge: item.price || '€2000.00',
+      auctionId: item.auctionId || item.id,
+      auctionDate: item.pickedAt
+        ? new Date(item.pickedAt).toLocaleDateString()
+        : '—',
+      deliveryCharge: item.price || '—',
       customer: {
-        name: 'Sarah Johnson',
-        phone: '+1 (555) 234-5678',
-        email: 'sarah.johnson@email.com',
-        deliveryAddress: item.delivery.title + ', ' + item.delivery.subtitle,
+        name: '—',
+        phone: '—',
+        email: '—',
+        deliveryAddress: item.deliveryLocation || [
+          item.delivery?.title,
+          item.delivery?.subtitle,
+        ]
+          .filter(Boolean)
+          .join(', '),
       },
       product: {
         name: item.title,
-        sku: 'EXC-HD-2024',
-        quantity: item.title.includes('Cement')
-          ? '500 bags (50kg each)'
-          : item.title.includes('Steel')
-            ? '200 rods (12m each)'
-            : '10,000 pieces',
-        weight: '25000 kg',
+        sku: '—',
+        quantity: '—',
+        weight: '—',
         price: item.price,
       },
       shipping: {
-        pickupLocation: item.pickup.title + ', ' + item.pickup.subtitle,
-        unloadingInstructions: item.delivery.title + ', ' + item.delivery.subtitle,
-        accessCondition: 'Loading dock with ramp',
-        additionalNotes:
-          'Delivery must be coordinated with site manager. Contact 24 hours before arrival.',
+        pickupLocation:
+          item.pickupLocation ||
+          [item.pickup?.title, item.pickup?.subtitle].filter(Boolean).join(', '),
+        unloadingInstructions:
+          item.deliveryLocation ||
+          [item.delivery?.title, item.delivery?.subtitle]
+            .filter(Boolean)
+            .join(', '),
+        accessCondition: '—',
+        additionalNotes: '—',
       },
     }
     setSelectedDelivery(detailedDelivery)
   }
 
-  const filteredDeliveries = deliveries.filter((d) => {
-    if (filter === 'assigned') return d.status === 'assigned'
-    if (filter === 'pickedUp') return d.status === 'picked_up'
-    if (filter === 'inTransit') return d.status === 'in_transit'
-    if (filter === 'delivered') return d.status === 'delivered'
-    return true
-  })
+  const filteredDeliveries = useMemo(() => {
+    return deliveries.filter((d) => {
+      if (filter === 'assigned') return d.status === 'assigned'
+      if (filter === 'pickedUp') return d.status === 'picked_up'
+      if (filter === 'inTransit') return d.status === 'in_transit'
+      if (filter === 'delivered') return d.status === 'delivered'
+      return true
+    })
+  }, [deliveries, filter])
 
   if (selectedDelivery) {
     return (
@@ -92,7 +111,7 @@ export default function AssignDeliveriesPage() {
           </h1>
           <p className="mt-1 text-base text-gray-500">
             {t('transporterAssignDeliveries.activeCount', {
-              count: filteredDeliveries.length,
+              count: filter === 'all' ? total : filteredDeliveries.length,
             })}
           </p>
         </div>
@@ -121,6 +140,27 @@ export default function AssignDeliveriesPage() {
           </select>
         </div>
       </div>
+
+      {isLoading ? (
+        <p className="text-sm text-gray-500">Loading deliveries…</p>
+      ) : null}
+
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, 'Failed to load deliveries')}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
+
+      {!isLoading && !isError && filteredDeliveries.length === 0 ? (
+        <p className="text-sm text-gray-500">No deliveries found.</p>
+      ) : null}
 
       <DeliveryTimeline
         items={filteredDeliveries}

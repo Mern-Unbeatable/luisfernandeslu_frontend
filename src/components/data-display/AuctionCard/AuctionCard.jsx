@@ -163,9 +163,11 @@ function TransporterAuctionCard({
           <h3 className="text-lg font-bold text-[var(--primary-text)]">
             {auction.title}
           </h3>
-          <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-            {auction.auctionId}
-          </p>
+          {auction.auctionCode ? (
+            <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+              {auction.auctionCode}
+            </p>
+          ) : null}
         </div>
         <div className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-red-500">
           <FiClock className="size-4" strokeWidth={2} aria-hidden />

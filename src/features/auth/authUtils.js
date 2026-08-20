@@ -31,9 +31,20 @@ export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
 
   if (typeof payload === 'string') return payload
 
+  if (Array.isArray(payload.message)) {
+    return payload.message.filter(Boolean).join(', ') || fallback
+  }
+
   if (payload.message) return payload.message
 
   if (typeof payload.error === 'string') return payload.error
+
+  if (Array.isArray(payload.errors)) {
+    return payload.errors
+      .map((item) => (typeof item === 'string' ? item : item?.message))
+      .filter(Boolean)
+      .join(', ') || fallback
+  }
 
   return fallback
 }

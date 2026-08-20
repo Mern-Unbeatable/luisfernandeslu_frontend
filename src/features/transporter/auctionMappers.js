@@ -1,3 +1,40 @@
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+
+export function isUuid(value) {
+  return UUID_RE.test(String(value || '').trim())
+}
+
+/** Prefer real UUID for bid/API paths; fall back to auctionId/code. */
+export function resolveAuctionApiId(auction) {
+  if (!auction || typeof auction !== 'object') return null
+
+  const candidates = [
+    auction.id,
+    auction.auctionUuid,
+    auction.uuid,
+    auction._id,
+    auction.auctionID,
+    auction.auctionId,
+  ]
+
+  const uuid = candidates.find(isUuid)
+  if (uuid) return String(uuid).trim()
+
+  const fallback = auction.auctionId || auction.id
+  return fallback ? String(fallback).trim() : null
+}
+
+function resolveAuctionCode(auction, apiId) {
+  if (auction.auctionCode) return String(auction.auctionCode)
+  if (auction.code) return String(auction.code)
+  if (auction.auctionId && !isUuid(auction.auctionId)) {
+    return String(auction.auctionId)
+  }
+  if (apiId && !isUuid(apiId)) return String(apiId)
+  return null
+}
+
 function getRemainingSeconds(expiresAt) {
   if (!expiresAt) return 0
   return Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000))
@@ -38,10 +75,13 @@ function mapBid(bid) {
 export function mapTransporterAuction(auction) {
   const remainingSeconds = getRemainingSeconds(auction.expiresAt)
   const isEnded = Boolean(auction.isEnded) || remainingSeconds <= 0
+  const apiId = resolveAuctionApiId(auction)
+  const auctionCode = resolveAuctionCode(auction, apiId)
 
   return {
-    id: auction.auctionId,
-    auctionId: auction.auctionId,
+    id: apiId,
+    auctionId: apiId,
+    auctionCode,
     title: auction.productName,
     quantity: auction.quantity,
     pickupLocation: auction.pickupLocation,

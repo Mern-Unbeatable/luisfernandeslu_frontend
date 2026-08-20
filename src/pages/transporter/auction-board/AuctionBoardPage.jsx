@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import Pagination from '../../../components/common/Pagination/Pagination'
 import Toast from '../../../components/common/Toast'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import {
@@ -12,11 +13,15 @@ import {
   applyClientAuctionFilter,
   getApiFilterParam,
   mapTransporterAuction,
+  resolveAuctionApiId,
 } from '../../../features/transporter/auctionMappers'
+
+const PAGE_SIZE = 9
 
 export default function AuctionBoardPage() {
   const { t } = useTranslation()
   const [filter, setFilter] = useState('all')
+  const [page, setPage] = useState(1)
   const [selectedAuction, setSelectedAuction] = useState(null)
   const [now, setNow] = useState(() => Date.now())
   const [bidError, setBidError] = useState('')
@@ -30,8 +35,8 @@ export default function AuctionBoardPage() {
     error,
     refetch,
   } = useGetTransporterAuctionsQuery({
-    page: 1,
-    limit: 20,
+    page,
+    limit: PAGE_SIZE,
     filter: apiFilter,
   })
   const [placeBid, { isLoading: isBidding }] = usePlaceTransporterBidMutation()
@@ -40,6 +45,10 @@ export default function AuctionBoardPage() {
     const timer = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(timer)
   }, [])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filter])
 
   const closeToast = useCallback(() => {
     setToast((prev) => ({ ...prev, open: false }))
@@ -55,8 +64,16 @@ export default function AuctionBoardPage() {
     [auctions, filter],
   )
 
+  const totalPages = Math.max(1, Number(data?.pagination?.totalPages) || 1)
+  const totalCount = Number(data?.pagination?.total) || filteredAuctions.length
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages)
+  }, [page, totalPages])
+
   const handlePlaceBid = async (bidAmount, auction) => {
-    if (!auction?.canBid || !auction?.auctionId || isBidding) return false
+    const auctionId = resolveAuctionApiId(auction)
+    if (!auction?.canBid || !auctionId || isBidding) return false
 
     const amount = Number(bidAmount)
     if (!Number.isFinite(amount) || amount <= 0) {
@@ -64,11 +81,19 @@ export default function AuctionBoardPage() {
       return false
     }
 
+    const startFrom = Number(auction.bidStartFrom)
+    if (Number.isFinite(startFrom) && amount > startFrom) {
+      const message = `Bid must be at most €${startFrom}`
+      setBidError(message)
+      setToast({ open: true, message, variant: 'error' })
+      return false
+    }
+
     setBidError('')
 
     try {
       await placeBid({
-        auctionId: auction.auctionId,
+        auctionId,
         bidAmount: amount,
       }).unwrap()
       setToast({
@@ -89,47 +114,6 @@ export default function AuctionBoardPage() {
       })
       return false
     }
-  }
-
-  const handleCardClick = (e, auction) => {
-    if (
-      e.target.tagName === 'INPUT' ||
-      e.target.tagName === 'BUTTON' ||
-      e.target.closest('button') ||
-      e.target.closest('input')
-    ) {
-      return
-    }
-
-    const detailedAuction = {
-      ...auction,
-      auctionId: auction.auctionId,
-      auctionDate: auction.expiresAt
-        ? new Date(auction.expiresAt).toLocaleDateString()
-        : '—',
-      deliveryCharge:
-        auction.bidStartFrom != null ? `€${auction.bidStartFrom}` : '—',
-      customer: {
-        name: '—',
-        phone: '—',
-        email: '—',
-        deliveryAddress: auction.deliveryLocation || '—',
-      },
-      product: {
-        name: auction.title || '—',
-        sku: '—',
-        quantity: auction.quantity || '—',
-        weight: '—',
-        price: '—',
-      },
-      shipping: {
-        pickupLocation: auction.pickupLocation || '—',
-        unloadingInstructions: auction.deliveryLocation || '—',
-        accessCondition: '—',
-        additionalNotes: '—',
-      },
-    }
-    setSelectedAuction(detailedAuction)
   }
 
   if (selectedAuction) {
@@ -159,7 +143,7 @@ export default function AuctionBoardPage() {
           </h1>
           <p className="mt-1 text-base text-gray-500">
             {t('transporterAuctionBoard.matchingCount', {
-              count: filteredAuctions.length,
+              count: totalCount,
             })}
           </p>
         </div>
@@ -226,6 +210,12 @@ export default function AuctionBoardPage() {
           />
         ))}
       </div>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </div>
   )
 }

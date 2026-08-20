@@ -21,14 +21,31 @@ export const transporterApi = baseApi.injectEndpoints({
     }),
     placeTransporterBid: builder.mutation({
       query: ({ auctionId, bidAmount }) => ({
-        url: `/api/transporter/auctions/${auctionId}/bids`,
+        url: `/api/transporter/auctions/${encodeURIComponent(auctionId)}/bids`,
         method: 'POST',
-        data: { bidAmount },
+        data: { bidAmount: Number(bidAmount) },
       }),
       invalidatesTags: (_result, _error, { auctionId }) => [
         { type: 'Auction', id: auctionId },
         { type: 'Auction', id: 'LIST' },
       ],
+    }),
+    getTransporterDeliveries: builder.query({
+      query: ({ page = 1, limit = 20, status = 'all' } = {}) => ({
+        url: '/api/transporter/deliveries',
+        method: 'GET',
+        params: { page, limit, status },
+      }),
+      providesTags: (result) =>
+        result?.deliveries?.length
+          ? [
+              ...result.deliveries.map((delivery) => ({
+                type: 'Delivery',
+                id: delivery.auctionId,
+              })),
+              { type: 'Delivery', id: 'LIST' },
+            ]
+          : [{ type: 'Delivery', id: 'LIST' }],
     }),
   }),
 })
@@ -36,4 +53,5 @@ export const transporterApi = baseApi.injectEndpoints({
 export const {
   useGetTransporterAuctionsQuery,
   usePlaceTransporterBidMutation,
+  useGetTransporterDeliveriesQuery,
 } = transporterApi
