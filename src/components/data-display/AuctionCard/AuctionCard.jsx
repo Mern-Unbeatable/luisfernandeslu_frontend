@@ -257,7 +257,10 @@ function TransporterAuctionCard({
         />
         <button
           type="button"
-          onClick={() => onPlaceBid?.(value, auction)}
+          onClick={async () => {
+            const result = await onPlaceBid?.(value, auction)
+            if (result) setValue('')
+          }}
           className="inline-flex h-11 shrink-0 items-center justify-center rounded-xl bg-[var(--active)] px-6 text-sm font-semibold text-white transition-opacity hover:opacity-90 sm:min-w-[120px]"
         >
           {t('auction.placeBid')}

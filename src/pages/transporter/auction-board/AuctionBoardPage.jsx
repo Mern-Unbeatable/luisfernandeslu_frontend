@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import Toast from '../../../components/common/Toast'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import {
   useGetTransporterAuctionsQuery,
@@ -19,6 +20,7 @@ export default function AuctionBoardPage() {
   const [selectedAuction, setSelectedAuction] = useState(null)
   const [now, setNow] = useState(() => Date.now())
   const [bidError, setBidError] = useState('')
+  const [toast, setToast] = useState({ open: false, message: '', variant: 'success' })
 
   const apiFilter = getApiFilterParam(filter)
   const {
@@ -39,6 +41,10 @@ export default function AuctionBoardPage() {
     return () => window.clearInterval(timer)
   }, [])
 
+  const closeToast = useCallback(() => {
+    setToast((prev) => ({ ...prev, open: false }))
+  }, [])
+
   const auctions = useMemo(() => {
     void now
     return (data?.auctions || []).map(mapTransporterAuction)
@@ -50,12 +56,12 @@ export default function AuctionBoardPage() {
   )
 
   const handlePlaceBid = async (bidAmount, auction) => {
-    if (!auction?.canBid || !auction?.auctionId || isBidding) return
+    if (!auction?.canBid || !auction?.auctionId || isBidding) return false
 
     const amount = Number(bidAmount)
     if (!Number.isFinite(amount) || amount <= 0) {
       setBidError('Enter a valid bid amount')
-      return
+      return false
     }
 
     setBidError('')
@@ -65,8 +71,23 @@ export default function AuctionBoardPage() {
         auctionId: auction.auctionId,
         bidAmount: amount,
       }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAuctionBoard.bidSuccess', {
+          defaultValue: 'Bid placed successfully',
+        }),
+        variant: 'success',
+      })
+      return true
     } catch (err) {
-      setBidError(getAuthErrorMessage(err, 'Failed to place bid'))
+      const message = getAuthErrorMessage(err, 'Failed to place bid')
+      setBidError(message)
+      setToast({
+        open: true,
+        message,
+        variant: 'error',
+      })
+      return false
     }
   }
 
@@ -124,6 +145,13 @@ export default function AuctionBoardPage() {
 
   return (
     <div className="space-y-6">
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={closeToast}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -190,13 +218,12 @@ export default function AuctionBoardPage() {
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
         {filteredAuctions.map((auction) => (
-     
-            <AuctionCard
-              role="transporter"
-              auction={auction}
-              onPlaceBid={handlePlaceBid}
-            />
-
+          <AuctionCard
+            key={auction.id}
+            role="transporter"
+            auction={auction}
+            onPlaceBid={handlePlaceBid}
+          />
         ))}
       </div>
     </div>

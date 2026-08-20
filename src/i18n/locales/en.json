@@ -2670,6 +2670,7 @@
     "filterAria": "Filter auctions",
     "justNow": "Just now",
     "youTransporter": "You (Transporter)",
+    "bidSuccess": "Bid placed successfully",
     "filters": {
       "all": "All",
       "endingSoon": "Ending Soon",
