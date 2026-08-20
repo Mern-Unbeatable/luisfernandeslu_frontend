@@ -156,6 +156,14 @@ export default function AddProduct({
           </>
         ) : (
           <>
+            <Field label="SKU">
+              <TextInput
+                value={form.sku}
+                onChange={setField('sku')}
+                placeholder="SKU number"
+              />
+            </Field>
+
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <Field label="Warehouse Location">
                 {warehouseOptions ? (
@@ -205,7 +213,7 @@ export default function AddProduct({
               />
             </Field>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               <Field label="Quantity">
                 <TextInput
                   value={form.quantity}
@@ -232,13 +240,6 @@ export default function AddProduct({
                   value={form.minB2bQuantity}
                   onChange={setField('minB2bQuantity')}
                   placeholder="10 pcs"
-                />
-              </Field>
-              <Field label="SKU">
-                <TextInput
-                  value={form.sku}
-                  onChange={setField('sku')}
-                  placeholder="SKU number"
                 />
               </Field>
               <Field label="Weight">
