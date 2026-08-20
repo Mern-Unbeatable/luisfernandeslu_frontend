@@ -1,37 +1,47 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { AuthSubmitButton } from '../../components/auth/AuthField'
 import {
-  useForgotPasswordMutation,
-  useVerifyResetOtpMutation,
+  useResendOtpMutation,
+  useVerifyOtpMutation,
 } from '../../features/auth/authApi'
 import {
+  clearEmailVerificationSession,
   getAuthErrorMessage,
-  readForgotPasswordSession,
-  writeForgotPasswordSession,
+  readEmailVerificationSession,
+  writeEmailVerificationSession,
 } from '../../features/auth/authUtils'
+import { AUTH_ROLE_IDS } from '../../features/auth/roleAuthConfig'
 
 const OTP_LENGTH = 5
 
-/** Step 2 — enter email OTP */
-export default function OtpVerificationPage() {
+/** Step 2 — verify email OTP after registration */
+export default function RegisterOtpVerificationPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const session = readForgotPasswordSession()
+  const location = useLocation()
+  const { role: roleParam } = useParams()
+  const session = readEmailVerificationSession()
+  const role = session?.role || roleParam
   const [digits, setDigits] = useState(() => Array(OTP_LENGTH).fill(''))
   const [error, setError] = useState('')
   const [resendHint, setResendHint] = useState('')
   const inputsRef = useRef([])
-  const [verifyResetOtp, { isLoading: isVerifying }] = useVerifyResetOtpMutation()
-  const [forgotPassword, { isLoading: isResending }] = useForgotPasswordMutation()
+  const [verifyOtp, { isLoading: isVerifying }] = useVerifyOtpMutation()
+  const [resendOtp, { isLoading: isResending }] = useResendOtpMutation()
 
   useEffect(() => {
     inputsRef.current[0]?.focus()
   }, [])
 
+  if (!role || !AUTH_ROLE_IDS.includes(role)) {
+    return <Navigate to="/signup" replace />
+  }
+
   if (!session?.email) {
-    return <Navigate to="/forgot-password" replace />
+    return <Navigate to={`/signup/${role}`} replace state={location.state} />
   }
 
   const setDigitAt = (index, value) => {
@@ -77,26 +87,26 @@ export default function OtpVerificationPage() {
     setResendHint('')
 
     try {
-      const data = await verifyResetOtp({
+      const data = await verifyOtp({
         email: session.email,
         otp: code,
+        role,
       }).unwrap()
 
       if (data?.success === false) {
-        setError(getAuthErrorMessage(data, t('auth.forgot.verifyFailed')))
+        setError(getAuthErrorMessage(data, t('auth.register.verificationFailed')))
         return
       }
 
-      writeForgotPasswordSession({
-        ...session,
-        email: data.email || session.email,
-        resetToken: data.resetToken,
-        otpVerified: true,
-        resetMessage: data.message,
-      })
-      navigate('/forgot-password/reset')
+      clearEmailVerificationSession()
+
+      const message =
+        data?.message || t('auth.register.verificationSuccess')
+
+      toast.success(message)
+      navigate(`/login/${role}`, { replace: true, state: location.state })
     } catch (err) {
-      setError(getAuthErrorMessage(err, t('auth.forgot.verifyFailed')))
+      setError(getAuthErrorMessage(err, t('auth.register.verificationFailed')))
     }
   }
 
@@ -105,23 +115,25 @@ export default function OtpVerificationPage() {
     setResendHint('')
 
     try {
-      const data = await forgotPassword({ email: session.email }).unwrap()
+      const data = await resendOtp({
+        email: session.email,
+        role,
+      }).unwrap()
 
       if (data?.success === false) {
-        setError(getAuthErrorMessage(data, t('auth.forgot.requestFailed')))
+        setError(getAuthErrorMessage(data, t('auth.register.resendFailed')))
         return
       }
 
-      writeForgotPasswordSession({
+      writeEmailVerificationSession({
         ...session,
-        message: data.message,
-        otpExpiresAt: data.otpExpiresAt,
+        otpExpiresAt: data?.otpExpiresAt ?? session.otpExpiresAt,
       })
       setDigits(Array(OTP_LENGTH).fill(''))
-      setResendHint(data.message || t('auth.forgot.otpResent'))
+      setResendHint(data?.message || t('auth.forgot.otpResent'))
       inputsRef.current[0]?.focus()
     } catch (err) {
-      setError(getAuthErrorMessage(err, t('auth.forgot.requestFailed')))
+      setError(getAuthErrorMessage(err, t('auth.register.resendFailed')))
     }
   }
 
@@ -129,10 +141,10 @@ export default function OtpVerificationPage() {
     <div className="mx-auto w-full max-w-md">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
-          {t('auth.forgot.otpTitle')}
+          {t('auth.register.otpTitle')}
         </h1>
         <p className="mt-2 text-sm text-[var(--secondary-text)] sm:text-base">
-          {session.message || t('auth.forgot.otpSubtitle')}
+          {session.message || t('auth.register.otpSubtitle')}
         </p>
         <p className="mt-1 text-sm font-medium text-[var(--primary-text)]">
           {session.email}
@@ -194,10 +206,11 @@ export default function OtpVerificationPage() {
 
       <p className="mt-4 text-center text-sm">
         <Link
-          to="/forgot-password"
+          to={`/signup/${role}`}
+          state={location.state}
           className="font-medium text-[var(--secondary-text)] hover:text-[var(--active)] hover:underline"
         >
-          {t('auth.forgot.changeEmail')}
+          {t('auth.register.changeDetails')}
         </Link>
       </p>
     </div>

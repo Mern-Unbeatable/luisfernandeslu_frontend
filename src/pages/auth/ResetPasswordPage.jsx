@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiArrowRight, FiEye, FiEyeOff } from 'react-icons/fi'
 import { AuthSubmitButton } from '../../components/auth/AuthField'
+import { useResetPasswordMutation } from '../../features/auth/authApi'
+import {
+  clearForgotPasswordSession,
+  getAuthErrorMessage,
+  readForgotPasswordSession,
+} from '../../features/auth/authUtils'
 
 const inputClass =
   'w-full rounded-lg border-0 bg-[#FFF4E5] py-3.5 pr-11 pl-4 text-sm text-[var(--primary-text)] outline-none ring-1 ring-transparent transition placeholder:text-gray-400 focus:ring-[var(--active)]'
-
-function readForgotSession() {
-  try {
-    return JSON.parse(sessionStorage.getItem('forgotPassword') || 'null')
-  } catch {
-    return null
-  }
-}
 
 function PasswordField({
   label,
@@ -61,14 +60,15 @@ function PasswordField({
 export default function ResetPasswordPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const session = readForgotSession()
+  const session = readForgotPasswordSession()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [error, setError] = useState('')
+  const [resetPassword, { isLoading }] = useResetPasswordMutation()
 
-  if (!session?.email || !session?.otpVerified) {
+  if (!session?.email || !session?.resetToken) {
     return <Navigate to="/forgot-password" replace />
   }
 
@@ -79,7 +79,7 @@ export default function ResetPasswordPage() {
         ? `/login/${session.role}`
         : '/login'
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault()
     if (password.length < 8) {
       setError(t('auth.forgot.passwordTooShort'))
@@ -89,9 +89,27 @@ export default function ResetPasswordPage() {
       setError(t('auth.register.passwordMismatch'))
       return
     }
+
     setError('')
-    sessionStorage.removeItem('forgotPassword')
-    navigate(loginPath, { replace: true })
+
+    try {
+      const data = await resetPassword({
+        resetToken: session.resetToken,
+        password,
+        confirmPassword: confirm,
+      }).unwrap()
+
+      if (data?.success === false) {
+        setError(getAuthErrorMessage(data, t('auth.forgot.resetFailed')))
+        return
+      }
+
+      clearForgotPasswordSession()
+      toast.success(data.message || t('auth.forgot.resetSuccess'))
+      navigate(loginPath, { replace: true })
+    } catch (err) {
+      setError(getAuthErrorMessage(err, t('auth.forgot.resetFailed')))
+    }
   }
 
   return (
@@ -101,7 +119,7 @@ export default function ResetPasswordPage() {
           {t('auth.forgot.resetTitle')}
         </h1>
         <p className="mt-2 text-sm text-[var(--secondary-text)] sm:text-base">
-          {t('auth.forgot.resetSubtitle')}
+          {session.resetMessage || t('auth.forgot.resetSubtitle')}
         </p>
       </div>
 
@@ -131,7 +149,7 @@ export default function ResetPasswordPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton>
+        <AuthSubmitButton disabled={isLoading}>
           {t('auth.forgot.resetSubmit')}
           <FiArrowRight className="size-5" strokeWidth={2.25} aria-hidden />
         </AuthSubmitButton>

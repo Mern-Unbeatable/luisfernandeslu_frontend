@@ -112,6 +112,10 @@ const ForgotPassword = Loadable(
 const OtpVerification = Loadable(
   lazy(() => import('../../pages/auth/OtpVerificationPage')),
   <AuthSkeleton />,
+)
+const RegisterOtpVerification = Loadable(
+  lazy(() => import('../../pages/auth/RegisterOtpVerificationPage')),
+  <AuthSkeleton />,
 );
 const ResetPassword = Loadable(
   lazy(() => import('../../pages/auth/ResetPasswordPage')),
@@ -737,6 +741,11 @@ export const router = createBrowserRouter([
                 handle: { seo: routeSeo.signup },
               },
               {
+                path: '/signup/:role/verify',
+                element: <RegisterOtpVerification />,
+                handle: { seo: routeSeo.signup },
+              },
+              {
                 path: '/signup/:role',
                 element: <Register />,
                 handle: { seo: routeSeo.signup },
@@ -845,6 +854,11 @@ export const router = createBrowserRouter([
               {
                 path: '/signup',
                 element: <RoleSelect />,
+                handle: { seo: routeSeo.signup },
+              },
+              {
+                path: '/signup/:role/verify',
+                element: <RegisterOtpVerification />,
                 handle: { seo: routeSeo.signup },
               },
               {
