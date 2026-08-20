@@ -1,27 +1,32 @@
 import { useTranslation } from 'react-i18next'
 import { FiFileText, FiMapPin, FiX } from 'react-icons/fi'
+import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useGetAdminUserByIdQuery } from '@/features/admin/adminUserApi'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import TypeBadge from './TypeBadge'
 import AccountStatusBadge from './AccountStatusBadge'
 
 function DetailField({ label, value, className = '' }) {
   return (
-    <div
-      className={`rounded-lg bg-[#FAF7F2] px-4 py-3 ${className}`}
-    >
+    <div className={`rounded-lg bg-[#FAF7F2] px-4 py-3 ${className}`}>
       <p className="text-xs font-medium text-[var(--secondary-text)]">{label}</p>
       <p className="mt-1 text-sm font-semibold text-[var(--primary-text)]">{value}</p>
     </div>
   )
 }
 
-export default function UserDetailsModal({ open, user, onClose }) {
+export default function UserDetailsModal({ open, userId, onClose }) {
   const { t } = useTranslation()
-
-  if (!open || !user) return null
-
-  const registeredLabel = t('adminUserManagement.modal.registeredOn', {
-    date: user.registered,
+  const { data, isLoading, isError, error } = useGetAdminUserByIdQuery(userId, {
+    skip: !open || !userId,
   })
+
+  if (!open || !userId) return null
+
+  const user = data?.user
+  const registeredLabel = user?.registered
+    ? t('adminUserManagement.modal.registeredOn', { date: user.registered })
+    : null
 
   return (
     <div
@@ -60,44 +65,67 @@ export default function UserDetailsModal({ open, user, onClose }) {
               </h2>
             </div>
           </div>
-          <p className="text-xs text-[var(--secondary-text)]">{registeredLabel}</p>
+          {registeredLabel ? (
+            <p className="text-xs text-[var(--secondary-text)]">{registeredLabel}</p>
+          ) : null}
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <DetailField
-            label={t('adminUserManagement.columns.name')}
-            value={user.name}
-            className="sm:col-span-2"
-          />
-          <DetailField label={t('adminUserManagement.columns.email')} value={user.email} />
-          <DetailField label={t('adminUserManagement.columns.phone')} value={user.phone} />
-          <div className="rounded-lg bg-[#FAF7F2] px-4 py-3">
-            <p className="text-xs font-medium text-[var(--secondary-text)]">
-              {t('adminUserManagement.columns.type')}
-            </p>
-            <div className="mt-2">
-              <TypeBadge label={user.type} />
+        {isLoading ? (
+          <div className="mt-6 space-y-3">
+            <Skeleton className="h-16 w-full rounded-lg" />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Skeleton className="h-16 rounded-lg" />
+              <Skeleton className="h-16 rounded-lg" />
+              <Skeleton className="h-16 rounded-lg" />
+              <Skeleton className="h-16 rounded-lg" />
             </div>
           </div>
-          <div className="rounded-lg bg-[#FAF7F2] px-4 py-3">
-            <p className="text-xs font-medium text-[var(--secondary-text)]">
-              {t('adminUserManagement.columns.status')}
-            </p>
-            <div className="mt-2">
-              <AccountStatusBadge status={user.status} />
+        ) : isError || !user ? (
+          <p className="mt-6 text-sm text-red-500" role="alert">
+            {getAuthErrorMessage(error, t('adminUserManagement.detailsFailed'))}
+          </p>
+        ) : (
+          <>
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <DetailField
+                label={t('adminUserManagement.columns.name')}
+                value={user.name}
+                className="sm:col-span-2"
+              />
+              <DetailField label={t('adminUserManagement.columns.email')} value={user.email} />
+              <DetailField
+                label={t('adminUserManagement.columns.phone')}
+                value={user.phone || '—'}
+              />
+              <div className="rounded-lg bg-[#FAF7F2] px-4 py-3">
+                <p className="text-xs font-medium text-[var(--secondary-text)]">
+                  {t('adminUserManagement.columns.type')}
+                </p>
+                <div className="mt-2">
+                  <TypeBadge label={user.type} />
+                </div>
+              </div>
+              <div className="rounded-lg bg-[#FAF7F2] px-4 py-3">
+                <p className="text-xs font-medium text-[var(--secondary-text)]">
+                  {t('adminUserManagement.columns.status')}
+                </p>
+                <div className="mt-2">
+                  <AccountStatusBadge status={user.status} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        {user.address ? (
-          <div className="mt-4 rounded-lg bg-[#FAF7F2] px-4 py-3">
-            <p className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[var(--active)] uppercase">
-              <FiMapPin className="size-3.5" aria-hidden />
-              {t('adminUserManagement.modal.address')}
-            </p>
-            <p className="mt-2 text-sm text-[var(--primary-text)]">{user.address}</p>
-          </div>
-        ) : null}
+            {user.address ? (
+              <div className="mt-4 rounded-lg bg-[#FAF7F2] px-4 py-3">
+                <p className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[var(--active)] uppercase">
+                  <FiMapPin className="size-3.5" aria-hidden />
+                  {t('adminUserManagement.modal.address')}
+                </p>
+                <p className="mt-2 text-sm text-[var(--primary-text)]">{user.address}</p>
+              </div>
+            ) : null}
+          </>
+        )}
       </div>
     </div>
   )

@@ -328,6 +328,13 @@
       "suspended": "Suspended"
     },
     "searchPlaceholder": "Search name, email, phone...",
+    "empty": "No users found",
+    "detailsFailed": "Could not load user details.",
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next"
+    },
     "columns": {
       "name": "NAME",
       "phone": "PHONE",
@@ -340,9 +347,14 @@
     "actions": {
       "seeDetails": "See details",
       "suspend": "Suspend",
+      "activate": "Activate",
       "delete": "Delete",
       "message": "Message"
     },
+    "deleteConfirm": "Delete {{name}}? This action cannot be undone.",
+    "deleteSuccess": "User deleted successfully.",
+    "statusUpdated": "User status updated.",
+    "actionFailed": "Action failed. Please try again.",
     "modal": {
       "title": "User Details",
       "close": "Close",
@@ -390,16 +402,28 @@
       "delete": "Delete",
       "message": "Message"
     },
+    "rejectConfirm": "Reject {{name}}? This supplier will not be approved.",
+    "deleteConfirm": "Delete {{name}}? This action cannot be undone.",
+    "approveSuccess": "Supplier approved successfully.",
+    "rejectSuccess": "Supplier rejected successfully.",
+    "deleteSuccess": "Supplier deleted successfully.",
+    "statusUpdated": "Supplier status updated.",
+    "commissionUpdated": "Commission updated successfully.",
+    "actionFailed": "Action failed. Please try again.",
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
       "next": "Next"
     },
+    "detailsFailed": "Could not load supplier details.",
     "modal": {
       "title": "Supplier Details",
       "close": "Close",
       "registeredOn": "Registered on {{date}}",
-      "documentsTitle": "Certificate & ID Proof"
+      "documentsTitle": "Certificate & ID Proof",
+      "address": "Address",
+      "rejectionReason": "Rejection reason",
+      "noDocuments": "No documents uploaded"
     }
   },
   "adminFactoryManagement": {
@@ -442,6 +466,15 @@
       "delete": "Delete",
       "message": "Message"
     },
+    "approveSuccess": "Factory approved successfully.",
+    "rejectSuccess": "Factory rejected successfully.",
+    "renewSuccess": "Factory renewed successfully.",
+    "statusUpdated": "Factory status updated.",
+    "commissionUpdated": "Commission updated successfully.",
+    "deleteConfirm": "Delete {{name}}? This action cannot be undone.",
+    "deleteSuccess": "Factory deleted successfully.",
+    "actionFailed": "Action failed. Please try again.",
+    "detailsFailed": "Could not load factory details.",
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
@@ -451,7 +484,21 @@
       "title": "Factory Details",
       "close": "Close",
       "registeredOn": "Registered on {{date}}",
-      "documentsTitle": "Certificate & ID Proof"
+      "documentsTitle": "Certificate & ID Proof",
+      "address": "Address",
+      "rejectionReason": "Rejection reason",
+      "noDocuments": "No documents uploaded"
+    },
+    "rejectModal": {
+      "title": "Reject {{name}}",
+      "subtitle": "Provide a reason and select the documents that need correction.",
+      "reasonLabel": "Rejection reason",
+      "reasonPlaceholder": "Explain why this factory is being rejected...",
+      "reasonRequired": "Please enter a rejection reason.",
+      "documentsLabel": "Invalid documents",
+      "documentsRequired": "Select at least one invalid document.",
+      "cancel": "Cancel",
+      "submit": "Reject factory"
     }
   },
   "adminTransporterManagement": {
@@ -475,8 +522,15 @@
       "email": "Email",
       "phone": "Phone",
       "registered": "Registered Date",
+      "commission": "Commission",
       "status": "Status",
       "action": "Action"
+    },
+    "commission": {
+      "title": "Add Commission",
+      "custom": "Custom",
+      "placeholder": "Percentage %",
+      "set": "Set"
     },
     "actions": {
       "seeDetails": "See Details",
@@ -487,16 +541,39 @@
       "delete": "Delete",
       "message": "Message"
     },
+    "approveSuccess": "Transporter approved successfully.",
+    "rejectSuccess": "Transporter rejected successfully.",
+    "renewSuccess": "Transporter renewed successfully.",
+    "statusUpdated": "Transporter status updated.",
+    "commissionUpdated": "Commission updated successfully.",
+    "deleteConfirm": "Delete {{name}}? This action cannot be undone.",
+    "deleteSuccess": "Transporter deleted successfully.",
+    "actionFailed": "Action failed. Please try again.",
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
       "next": "Next"
     },
+    "detailsFailed": "Could not load transporter details.",
     "modal": {
       "title": "Transporter Details",
       "close": "Close",
       "registeredOn": "Registered on {{date}}",
-      "documentsTitle": "Certificate & ID Proof"
+      "documentsTitle": "Certificate & ID Proof",
+      "address": "Address",
+      "rejectionReason": "Rejection reason",
+      "noDocuments": "No documents uploaded"
+    },
+    "rejectModal": {
+      "title": "Reject {{name}}",
+      "subtitle": "Provide a reason and select the documents that need correction.",
+      "reasonLabel": "Rejection reason",
+      "reasonPlaceholder": "Explain why this transporter is being rejected...",
+      "reasonRequired": "Please enter a rejection reason.",
+      "documentsLabel": "Invalid documents",
+      "documentsRequired": "Select at least one invalid document.",
+      "cancel": "Cancel",
+      "submit": "Reject transporter"
     }
   },
   "adminProductModeration": {

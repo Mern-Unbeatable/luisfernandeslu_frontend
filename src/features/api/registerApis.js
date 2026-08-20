@@ -1,4 +1,8 @@
 import '../auth/authApi'
 import '../users/userApi'
+import '../admin/adminUserApi'
+import '../admin/adminSupplierApi'
+import '../admin/adminFactoryApi'
+import '../admin/adminTransporterApi'
 import '../products/productApi'
 import '../orders/orderApi'
