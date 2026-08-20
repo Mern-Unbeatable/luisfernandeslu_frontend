@@ -107,6 +107,7 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: '/api/auth/logout',
         method: 'POST',
+        skipAuthRefresh: true,
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {

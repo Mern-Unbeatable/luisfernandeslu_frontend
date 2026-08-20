@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
-import { createBrowserRouter, Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PublicLayout from '../../layouts/PublicLayout/PublicLayout';
 import BuyerLayout from '../../layouts/BuyerLayout/BuyerLayout';
 import PanelLayout from '../../layouts/PanelLayout/PanelLayout';
@@ -15,7 +15,7 @@ import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 import { routeSeo } from '../../config/seo';
 import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from '../../roles';
-import { logout } from '../../features/auth/authSlice';
+import { useAuthLogout } from '../../features/auth/useAuthLogout';
 
 /* ─── Loadable (lazy + Suspense) ─────────────────────────────────── */
 
@@ -584,21 +584,9 @@ function RootLayout() {
   );
 }
 
-function useAuthLogout() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
-  return () => {
-    dispatch(logout());
-    navigate(user?.role === 'admin' ? '/admin/login' : '/login', {
-      replace: true,
-    });
-  };
-}
-
 function BuyerShell() {
   const user = useSelector((state) => state.auth.user);
-  const onLogout = useAuthLogout();
+  const { logout: onLogout } = useAuthLogout();
   const role = BUYER_ROLE_IDS.includes(user?.role) ? user.role : 'company';
 
   return (
@@ -612,7 +600,7 @@ function BuyerShell() {
 
 function PanelShell() {
   const user = useSelector((state) => state.auth.user);
-  const onLogout = useAuthLogout();
+  const { logout: onLogout } = useAuthLogout();
   const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : 'supplier';
 
   return (
