@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   FiAlertCircle,
@@ -11,346 +11,146 @@ import DataTable, {
   StatusBadge,
 } from '@/components/data-display/DataTable/DataTable'
 import OrderDetails from '@/components/data-display/OrderDetails'
-import { DEMO_ORDER_INSTALLMENTS } from '@/data/demoData'
+import {
+  useGetFactoryOrderByIdQuery,
+  useGetFactoryOrderCompaniesQuery,
+  useGetFactoryOrdersQuery,
+  useUpdateFactoryOrderStatusMutation,
+} from '@/features/factory-orders/factoryOrderApi'
 
-const STATUS_OPTIONS = [
-  'Produced',
-  'In Production',
-  'Ready',
-  'Assigned',
-  'Cancel',
-  'Completed',
+const PAGE_SIZE = 10
+
+const STATUS_FILTER_OPTIONS = [
+  { value: 'all', labelKey: 'allStatus' },
+  { value: 'new', apiLabel: 'New', i18nKey: 'new' },
+  { value: 'in_production', apiLabel: 'In Production', i18nKey: 'inProduction' },
+  { value: 'produced', apiLabel: 'Produced', i18nKey: 'produced' },
+  { value: 'ready', apiLabel: 'Ready', i18nKey: 'ready' },
+  { value: 'assigned', apiLabel: 'Assigned', i18nKey: 'assigned' },
+  { value: 'cancel', apiLabel: 'Cancel', i18nKey: 'cancel' },
 ]
 
-const STATUS_I18N_KEYS = {
-  Produced: 'produced',
-  'In Production': 'inProduction',
-  Ready: 'ready',
-  Assigned: 'assigned',
-  Cancel: 'cancel',
-  Completed: 'completed',
+const STATUS_PATCH = {
+  in_production: 'IN_PRODUCTION',
+  produced: 'PRODUCED',
+  ready: 'READY',
+}
+function formatMoney(value, currency = 'EUR') {
+  if (value == null || value === '') return '—'
+  const amount = Number(value)
+  if (Number.isNaN(amount)) return String(value)
+  const symbol = currency === 'EUR' ? '€' : currency === 'USD' ? '$' : `${currency} `
+  return `${symbol}${amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`
 }
 
-const DUMMY_ORDERS = [
-  {
-    id: 1,
-    orderId: 'SU-1001',
-    supplierName: 'Nguyen Van A',
-    total: '$4,500,000',
-    installmentAmount: '$4,500',
-    status: 'Produced',
-    installmentNumber: 1,
-    date: '2026-05-01',
-  },
-  {
-    id: 2,
-    orderId: 'SU-1002',
-    supplierName: 'Nguyen Van B',
-    total: '$4,500,000',
-    installmentAmount: '$4,500',
-    status: 'In Production',
-    installmentNumber: 2,
-    date: '2026-05-01',
-  },
-  {
-    id: 3,
-    orderId: 'SU-1003',
-    supplierName: 'Annette Black',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Ready',
-    installmentNumber: 3,
-    date: '2026-05-01',
-  },
-  {
-    id: 4,
-    orderId: 'SU-1004',
-    supplierName: 'Cody Fisher',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Assigned',
-    installmentNumber: 4,
-    date: '2026-05-01',
-  },
-  {
-    id: 5,
-    orderId: 'SU-1005',
-    supplierName: 'Jenny Wilson',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Cancel',
-    installmentNumber: 5,
-    date: '2026-05-01',
-  },
-  {
-    id: 6,
-    orderId: 'SU-1006',
-    supplierName: 'Ralph Edwards',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Completed',
-    installmentNumber: 6,
-    date: '2026-05-01',
-  },
-  {
-    id: 7,
-    orderId: 'SU-1007',
-    supplierName: 'Robert Fox',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'In Production',
-    installmentNumber: 7,
-    date: '2026-05-01',
-  },
-  {
-    id: 8,
-    orderId: 'SU-1008',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Produced',
-    installmentNumber: 8,
-    date: '2026-05-02',
-  },
-  {
-    id: 9,
-    orderId: 'SU-1009',
-    supplierName: 'Annette Black',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Ready',
-    installmentNumber: 9,
-    date: '2026-05-02',
-  },
-  {
-    id: 10,
-    orderId: 'SU-1010',
-    supplierName: 'Cody Fisher',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Assigned',
-    installmentNumber: 10,
-    date: '2026-05-02',
-  },
-  {
-    id: 11,
-    orderId: 'SU-1011',
-    supplierName: 'Jenny Wilson',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Cancel',
-    installmentNumber: 11,
-    date: '2026-05-02',
-  },
-  {
-    id: 12,
-    orderId: 'SU-1012',
-    supplierName: 'Ralph Edwards',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Completed',
-    installmentNumber: 12,
-    date: '2026-05-02',
-  },
-  {
-    id: 13,
-    orderId: 'SU-1013',
-    supplierName: 'Robert Fox',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'In Production',
-    installmentNumber: 13,
-    date: '2026-05-03',
-  },
-  {
-    id: 14,
-    orderId: 'SU-1014',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Produced',
-    installmentNumber: 14,
-    date: '2026-05-03',
-  },
-  {
-    id: 15,
-    orderId: 'SU-1015',
-    supplierName: 'Annette Black',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Ready',
-    installmentNumber: 15,
-    date: '2026-05-03',
-  },
-  {
-    id: 16,
-    orderId: 'SU-1016',
-    supplierName: 'Cody Fisher',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Assigned',
-    installmentNumber: 16,
-    date: '2026-05-03',
-  },
-  {
-    id: 17,
-    orderId: 'SU-1017',
-    supplierName: 'Jenny Wilson',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Cancel',
-    installmentNumber: 17,
-    date: '2026-05-04',
-  },
-  {
-    id: 18,
-    orderId: 'SU-1018',
-    supplierName: 'Ralph Edwards',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Completed',
-    installmentNumber: 18,
-    date: '2026-05-04',
-  },
-  {
-    id: 19,
-    orderId: 'SU-1019',
-    supplierName: 'Robert Fox',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'In Production',
-    installmentNumber: 19,
-    date: '2026-05-04',
-  },
-  {
-    id: 20,
-    orderId: 'SU-1020',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Produced',
-    installmentNumber: 20,
-    date: '2026-05-04',
-  },
-  {
-    id: 21,
-    orderId: 'SU-1021',
-    supplierName: 'Annette Black',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Ready',
-    installmentNumber: 21,
-    date: '2026-05-05',
-  },
-  {
-    id: 22,
-    orderId: 'SU-1022',
-    supplierName: 'Cody Fisher',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Assigned',
-    installmentNumber: 22,
-    date: '2026-05-05',
-  },
-  {
-    id: 23,
-    orderId: 'SU-1023',
-    supplierName: 'Jenny Wilson',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Cancel',
-    installmentNumber: 23,
-    date: '2026-05-05',
-  },
-  {
-    id: 24,
-    orderId: 'SU-1024',
-    supplierName: 'Ralph Edwards',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Completed',
-    installmentNumber: 24,
-    date: '2026-05-05',
-  },
-  {
-    id: 25,
-    orderId: 'SU-1025',
-    supplierName: 'Robert Fox',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'In Production',
-    installmentNumber: 25,
-    date: '2026-05-06',
-  },
-  {
-    id: 26,
-    orderId: 'SU-1026',
-    supplierName: 'Savannah Nguyen',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Produced',
-    installmentNumber: 26,
-    date: '2026-05-06',
-  },
-  {
-    id: 27,
-    orderId: 'SU-1027',
-    supplierName: 'Annette Black',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Ready',
-    installmentNumber: 27,
-    date: '2026-05-06',
-  },
-  {
-    id: 28,
-    orderId: 'SU-1028',
-    supplierName: 'Cody Fisher',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Assigned',
-    installmentNumber: 28,
-    date: '2026-05-06',
-  },
-  {
-    id: 29,
-    orderId: 'SU-1029',
-    supplierName: 'Jenny Wilson',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Cancel',
-    installmentNumber: 29,
-    date: '2026-05-07',
-  },
-  {
-    id: 30,
-    orderId: 'SU-1030',
-    supplierName: 'Ralph Edwards',
-    total: '€4,500,000',
-    installmentAmount: '€4,500',
-    status: 'Completed',
-    installmentNumber: 30,
-    date: '2026-05-07',
-  },
-];
-
-const PAGE_SIZE = 7
-
-const FACTORY_PRODUCT = {
-  id: 'fp1',
-  product: 'UltraSet Portland Cement',
-  category: 'Binding Materials',
-  material: 'Cement',
-  weightSize: '50 kg bag, OPC 53 grade',
-  qty: '180 bags',
-  unit: '€50.75',
-  warehouse: '',
-  total: '€9,113.00',
+function formatDate(value) {
+  if (!value) return '—'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return String(value)
+  return date.toLocaleDateString('en-CA')
 }
 
-function getStatusLabel(status, t) {
-  const key = STATUS_I18N_KEYS[status]
-  return key ? t(`factoryOrders.status.${key}`) : status
+function toBadgeStatus(status, orderStatus) {
+  const raw = String(status || orderStatus || '')
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, ' ')
+  return raw
+}
+
+function getStatusLabel(statusValue, t) {
+  const option = STATUS_FILTER_OPTIONS.find(
+    (item) =>
+      item.value === statusValue
+      || item.apiLabel?.toLowerCase() === String(statusValue || '').toLowerCase(),
+  )
+  if (option?.i18nKey) return t(`factoryOrders.status.${option.i18nKey}`)
+  if (option?.labelKey) return t(`factoryOrders.${option.labelKey}`)
+  return statusValue || '—'
+}
+
+function mapOrderRow(order) {
+  const currency = order.currency || 'EUR'
+  return {
+    id: order.id,
+    orderId: order.orderNumber,
+    supplierName: order.companyName || order.supplier?.name || '—',
+    companyId: order.companyId,
+    total: formatMoney(order.total, currency),
+    totalRaw: Number(order.total) || 0,
+    installmentAmount:
+      order.installmentAmount == null
+        ? '—'
+        : formatMoney(order.installmentAmount, currency),
+    status: order.status,
+    orderStatus: order.orderStatus,
+    badgeStatus: toBadgeStatus(order.status, order.orderStatus),
+    installmentNumber: order.installmentNumber ?? '—',
+    date: formatDate(order.date),
+    actions: order.actions || {},
+  }
+}
+
+function mapDetailOrder(apiOrder) {
+  if (!apiOrder) return null
+
+  const currency = apiOrder.payment?.currency || 'EUR'
+  const hasInstallment =
+    (apiOrder.installments?.length || 0) > 0
+    || (apiOrder.installmentBreakdown?.length || 0) > 0
+
+  const paidAmount =
+    Number(apiOrder.payment?.totalOrderAmount || 0)
+    - Number(apiOrder.payment?.remainingAmount || 0)
+
+  return {
+    id: apiOrder.id,
+    orderId: apiOrder.orderNumber,
+    orderDate: formatDate(apiOrder.orderDate),
+    status: toBadgeStatus(apiOrder.status, apiOrder.orderStatus),
+    statusLabel: apiOrder.status,
+    hasInstallment,
+    context: 'factory',
+    supplier: {
+      name: apiOrder.supplier?.name || '—',
+      email: apiOrder.supplier?.email || '',
+      phone: apiOrder.supplier?.phone || '',
+      address: apiOrder.supplier?.address || '',
+      region: apiOrder.supplier?.region || '',
+      zipCode: apiOrder.supplier?.zipCode || '',
+      country: apiOrder.supplier?.country || '',
+      project: [
+        apiOrder.supplier?.address,
+        apiOrder.supplier?.region,
+        apiOrder.supplier?.zipCode,
+        apiOrder.supplier?.country,
+      ]
+        .filter(Boolean)
+        .join(', '),
+    },
+    payment: {
+      totalPrice: formatMoney(apiOrder.payment?.totalOrderAmount, currency),
+      paidAmount: formatMoney(paidAmount, currency),
+      remainingBalance: formatMoney(apiOrder.payment?.remainingAmount, currency),
+      paidNote: apiOrder.payment?.paymentStatus || '',
+      duration: '—',
+    },
+    products: (apiOrder.products || []).map((item, index) => ({
+      id: `${apiOrder.id}-product-${index}`,
+      product: item.product || '—',
+      category: item.category || '—',
+      material: item.material || '—',
+      weightSize: item.uom || item.weightSize || '—',
+      qty: item.quantity == null ? '—' : String(item.quantity),
+      unit: formatMoney(item.unitPrice, currency),
+      total: formatMoney(item.total, currency),
+    })),
+    installmentBreakdown: apiOrder.installmentBreakdown || [],
+    installments: apiOrder.installments || [],
+  }
 }
 
 function getColumns(t) {
@@ -365,8 +165,11 @@ function getColumns(t) {
     {
       key: 'status',
       header: t('factoryOrders.columns.status'),
-      render: (value) => (
-        <StatusBadge status={value} label={getStatusLabel(value, t)} />
+      render: (value, row) => (
+        <StatusBadge
+          status={row.badgeStatus || value}
+          label={getStatusLabel(value, t)}
+        />
       ),
     },
     {
@@ -377,147 +180,172 @@ function getColumns(t) {
   ]
 }
 
-function toDetailsStatus(tableStatus) {
-  const key = String(tableStatus || '').toLowerCase()
-  if (key === 'assigned') return 'assigned'
-  if (key === 'cancel') return 'cancel'
-  return tableStatus
-}
+function OrderDetailsView({ orderId, onBack }) {
+  const { data, isLoading, isError } = useGetFactoryOrderByIdQuery(orderId, {
+    skip: !orderId,
+  })
 
-function buildOrderDetails(row, t) {
-  const isAssigned = row.status === 'Assigned'
-  const email = `${row.supplierName.toLowerCase().replace(/\s+/g, '.')}@gmail.com`
+  const detail = mapDetailOrder(data?.order)
 
-  const installmentBreakdown = [1, 2, 3, 4, 5, 6].map((n) => ({
-    id: `ib-${n}`,
-    product: FACTORY_PRODUCT.product,
-    category: FACTORY_PRODUCT.category,
-    material: FACTORY_PRODUCT.material,
-    weightSize: FACTORY_PRODUCT.weightSize,
-    qty: '30 bags',
-    warehouse: '',
-    installmentNumber: t(`factoryOrders.installments.${n}`),
-    amount: '€9,113.00',
-  }))
-
-  return {
-    id: row.orderId,
-    orderId: row.orderId,
-    orderDate: row.date,
-    status: toDetailsStatus(row.status),
-    hasInstallment: true,
-    company: {
-      name: row.supplierName,
-      email,
-      phone: '+123 765 3490',
-      project: '123 Main St, Downtown',
-    },
-    logistics: {
-      deliveryLocation: '123 Main St, Downtown',
-      pickupLocation: '123 Main St, Downtown',
-      unloadingType: t('factoryOrders.details.unloadingType'),
-      accessCondition: t('factoryOrders.details.accessCondition'),
-    },
-    payment: {
-      totalPrice: '€125,500',
-      paidAmount: '€25,100',
-      remainingBalance: '€100,400',
-      paidNote: t('factoryOrders.details.paidNote'),
-      duration: t('factoryOrders.details.duration'),
-    },
-    products: [FACTORY_PRODUCT],
-    installmentBreakdown,
-    installments: DEMO_ORDER_INSTALLMENTS,
-    transporter: isAssigned
-      ? {
-          name: 'John Smith',
-          phone: '+1 23 456 7890',
-          vehicle: 'Truck #TR-2034',
-          initials: 'JS',
-        }
-      : null,
+  if (isLoading) {
+    return (
+      <p className="text-sm text-[var(--secondary-text)]">Loading…</p>
+    )
   }
+
+  if (isError || !detail) {
+    return (
+      <div className="space-y-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-sm font-medium text-[var(--active)]"
+        >
+          Back
+        </button>
+        <p className="text-sm text-red-600">Failed to load order details.</p>
+      </div>
+    )
+  }
+
+  return (
+    <OrderDetails
+      order={detail}
+      hasInstallment={detail.hasInstallment}
+      status={detail.status}
+      context="factory"
+      onBack={onBack}
+    />
+  )
 }
 
 export default function OrdersPage() {
   const { t } = useTranslation()
-  const [orders, setOrders] = useState(DUMMY_ORDERS)
   const [search, setSearch] = useState('')
-  const [supplier, setSupplier] = useState('all')
+  const [companyId, setCompanyId] = useState('all')
   const [status, setStatus] = useState('all')
   const [page, setPage] = useState(1)
-  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [selectedOrderId, setSelectedOrderId] = useState(null)
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit: PAGE_SIZE,
+      status,
+      ...(search.trim() ? { search: search.trim() } : {}),
+      ...(companyId !== 'all' ? { companyId } : {}),
+    }),
+    [page, status, search, companyId],
+  )
+
+  const { data: ordersResponse, isLoading } = useGetFactoryOrdersQuery(queryParams)
+  const { data: companiesResponse } = useGetFactoryOrderCompaniesQuery()
+  const [updateFactoryOrderStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateFactoryOrderStatusMutation()
 
   const columns = getColumns(t)
 
-  const supplierOptions = [
-    { value: 'all', label: t('factoryOrders.allSupplier') },
-    ...[...new Set(orders.map((row) => row.supplierName))].map((name) => ({
-      value: name,
-      label: name,
-    })),
-  ]
-
-  const filtered = orders.filter((row) => {
-    if (supplier !== 'all' && row.supplierName !== supplier) return false
-    if (status !== 'all' && row.status !== status) return false
-
-    const q = search.trim().toLowerCase()
-    if (!q) return true
-
-    const statusLabel = getStatusLabel(row.status, t).toLowerCase()
-
-    return (
-      String(row.orderId).toLowerCase().includes(q) ||
-      String(row.supplierName).toLowerCase().includes(q) ||
-      String(row.status).toLowerCase().includes(q) ||
-      statusLabel.includes(q) ||
-      String(row.total).toLowerCase().includes(q) ||
-      String(row.installmentAmount).toLowerCase().includes(q) ||
-      String(row.installmentNumber).toLowerCase().includes(q) ||
-      String(row.date).toLowerCase().includes(q)
-    )
-  })
-
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const paged = filtered.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
+  const rows = useMemo(
+    () => (ordersResponse?.orders || []).map(mapOrderRow),
+    [ordersResponse],
   )
 
-  const updateStatus = (row, nextStatus) => {
-    setOrders((prev) =>
-      prev.map((item) =>
-        item.id === row.id ? { ...item, status: nextStatus } : item,
-      ),
-    )
+  const pagination = ordersResponse?.pagination || {
+    page: 1,
+    limit: PAGE_SIZE,
+    total: 0,
+    totalPages: 1,
   }
 
-  const actions = [
-    {
-      id: 'see-details',
-      label: t('factoryOrders.seeDetails'),
-      onClick: (row) => setSelectedOrder(row),
-    },
-    ...STATUS_OPTIONS.map((option) => ({
-      id: `status-${option.toLowerCase().replace(/\s+/g, '-')}`,
-      label: getStatusLabel(option, t),
-      onClick: (row) => updateStatus(row, option),
-    })),
-  ]
+  const totalPages = Math.max(1, pagination.totalPages || 1)
+  const safePage = Math.min(page, totalPages)
 
-  if (selectedOrder) {
-    const order = buildOrderDetails(selectedOrder, t)
-    const isAssigned = selectedOrder.status === 'Assigned'
+  const companyOptions = useMemo(
+    () => [
+      { value: 'all', label: t('factoryOrders.allSupplier') },
+      ...(companiesResponse?.companies || []).map((company) => ({
+        value: company.id,
+        label: company.name,
+      })),
+    ],
+    [companiesResponse, t],
+  )
 
+  const statusOptions = useMemo(
+    () =>
+      STATUS_FILTER_OPTIONS.map((option) => ({
+        value: option.value,
+        label:
+          option.value === 'all'
+            ? t('factoryOrders.allStatus')
+            : t(`factoryOrders.status.${option.i18nKey}`, {
+                defaultValue: option.apiLabel,
+              }),
+      })),
+    [t],
+  )
+
+  const activeOrdersCount = pagination.total || 0
+  const pageRevenue = rows.reduce((sum, row) => sum + (row.totalRaw || 0), 0)
+  const installmentActiveCount = rows.filter(
+    (row) => row.installmentAmount !== '—',
+  ).length
+
+  const handleStatusUpdate = async (row, patchStatus) => {
+    if (!row?.id || isUpdatingStatus) return
+    try {
+      await updateFactoryOrderStatus({
+        id: row.id,
+        status: patchStatus,
+      }).unwrap()
+    } catch {
+    }
+  }
+
+  const getRowActions = (row) => {
+    const rowActions = [
+      {
+        id: 'see-details',
+        label: t('factoryOrders.seeDetails'),
+        onClick: (item) => {
+          if (item?.actions?.canViewDetails === false) return
+          setSelectedOrderId(item.id)
+        },
+      },
+    ]
+
+    if (row?.actions?.canMarkInProduction) {
+      rowActions.push({
+        id: 'status-in-production',
+        label: t('factoryOrders.status.inProduction'),
+        onClick: (item) => handleStatusUpdate(item, STATUS_PATCH.in_production),
+      })
+    }
+
+    if (row?.actions?.canMarkProduced) {
+      rowActions.push({
+        id: 'status-produced',
+        label: t('factoryOrders.status.produced'),
+        onClick: (item) => handleStatusUpdate(item, STATUS_PATCH.produced),
+      })
+    }
+
+    if (row?.actions?.canMarkReady) {
+      rowActions.push({
+        id: 'status-ready',
+        label: t('factoryOrders.status.ready'),
+        onClick: (item) => handleStatusUpdate(item, STATUS_PATCH.ready),
+      })
+    }
+
+    return rowActions
+  }
+
+  if (selectedOrderId) {
     return (
-      <OrderDetails
-        order={order}
-        hasInstallment
-        status={order.status}
-        onBack={() => setSelectedOrder(null)}
-        onChat={isAssigned ? () => {} : undefined}
+      <OrderDetailsView
+        orderId={selectedOrderId}
+        onBack={() => setSelectedOrderId(null)}
       />
     )
   }
@@ -537,21 +365,21 @@ export default function OrdersPage() {
         <StatusCard
           variant="inline"
           label={t('factoryOrders.cards.activeSupplierOrders')}
-          value="42"
+          value={String(activeOrdersCount)}
           icon={FiHome}
           iconTone="teal"
         />
         <StatusCard
           variant="inline"
           label={t('factoryOrders.cards.totalB2bRevenue')}
-          value="€128,940"
+          value={formatMoney(pageRevenue)}
           icon={FiDollarSign}
           iconTone="teal"
         />
         <StatusCard
           variant="summary"
           label={t('factoryOrders.cards.installmentActive')}
-          value="18"
+          value={String(installmentActiveCount)}
           description={t('factoryOrders.cards.installmentActiveDesc')}
           icon={FiInfo}
           iconTone="purple"
@@ -559,7 +387,7 @@ export default function OrdersPage() {
         <StatusCard
           variant="status"
           label={t('factoryOrders.cards.paymentOverdue')}
-          value="€12,400"
+          value="—"
           description={t('factoryOrders.cards.paymentOverdueDesc')}
           tone="danger"
           icon={FiAlertCircle}
@@ -568,7 +396,12 @@ export default function OrdersPage() {
 
       <DataTable
         columns={columns}
-        data={paged}
+        data={rows}
+        emptyMessage={
+          isLoading
+            ? t('common.loading', { defaultValue: 'Loading…' })
+            : t('common.noData', { defaultValue: 'No orders found.' })
+        }
         showSearch
         searchValue={search}
         onSearchChange={(value) => {
@@ -578,40 +411,34 @@ export default function OrdersPage() {
         searchPlaceholder={t('factoryOrders.searchPlaceholder')}
         showFilters
         filterLabel={t('factoryOrders.sortBy')}
-        // filters={[
-        //   {
-        //     id: 'supplier',
-        //     value: supplier,
-        //     onChange: (value) => {
-        //       setSupplier(value)
-        //       setPage(1)
-        //     },
-        //     options: supplierOptions,
-        //   },
-        //   {
-        //     id: 'status',
-        //     value: status,
-        //     onChange: (value) => {
-        //       setStatus(value)
-        //       setPage(1)
-        //     },
-        //     options: [
-        //       { value: 'all', label: t('factoryOrders.allStatus') },
-        //       ...STATUS_OPTIONS.map((option) => ({
-        //         value: option,
-        //         label: getStatusLabel(option, t),
-        //       })),
-        //     ],
-        //   },
-        // ]}
+        filters={[
+          {
+            id: 'supplier',
+            value: companyId,
+            onChange: (value) => {
+              setCompanyId(value)
+              setPage(1)
+            },
+            options: companyOptions,
+          },
+          {
+            id: 'status',
+            value: status,
+            onChange: (value) => {
+              setStatus(value)
+              setPage(1)
+            },
+            options: statusOptions,
+          },
+        ]}
         showActions
         actionType="menu"
-        actions={actions}
+        getActions={getRowActions}
         showPagination
         pagination={{
           page: safePage,
           pageSize: PAGE_SIZE,
-          total: filtered.length,
+          total: pagination.total || 0,
           onPageChange: setPage,
         }}
       />
