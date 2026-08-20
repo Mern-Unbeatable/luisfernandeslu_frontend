@@ -22,57 +22,57 @@ import {
 } from 'react-icons/fi'
 import { PRODUCT_CATEGORIES } from './productCategories';
 
-// ── Auth ──────────────────────────────────────────────────────────
-export const DEMO_PASSWORD = 'demo123';
+// ── Auth (must match backend seed: `pnpm seed:demo`) ─────────────
+export const DEMO_PASSWORD = 'Password123!';
 
 export const DEMO_USERS = [
   {
     role: 'customer',
-    email: 'customer@demo.com',
+    email: 'customer@test.local',
     password: DEMO_PASSWORD,
-    name: 'Customer Demo',
+    name: 'Ana Costa',
     labelKey: 'auth.demo.customer',
   },
   {
     role: 'company',
-    email: 'company@demo.com',
+    email: 'company@test.local',
     password: DEMO_PASSWORD,
-    name: 'Company Demo',
+    name: 'Acme Construction Lda',
     labelKey: 'auth.demo.company',
   },
   {
     role: 'supplier',
-    email: 'supplier@demo.com',
+    email: 'supplier@test.local',
     password: DEMO_PASSWORD,
-    name: 'Supplier Demo',
+    name: 'Lisboa Materials',
     labelKey: 'auth.demo.supplier',
   },
   {
     role: 'factory',
-    email: 'factory@demo.com',
+    email: 'factory@test.local',
     password: DEMO_PASSWORD,
-    name: 'Factory Demo',
+    name: 'Cimento do Tejo',
     labelKey: 'auth.demo.factory',
   },
   {
     role: 'transporter',
-    email: 'transporter@demo.com',
+    email: 'transporter@test.local',
     password: DEMO_PASSWORD,
-    name: 'Transporter Demo',
+    name: 'Swift Transport Co',
     labelKey: 'auth.demo.transporter',
   },
   {
     role: 'affiliate',
-    email: 'affiliate@demo.com',
+    email: 'affiliate@test.local',
     password: DEMO_PASSWORD,
-    name: 'Affiliate Demo',
+    name: 'Pedro Affiliates',
     labelKey: 'auth.demo.affiliate',
   },
   {
     role: 'admin',
-    email: 'admin@demo.com',
-    password: DEMO_PASSWORD,
-    name: 'Admin Demo',
+    email: 'admin@construpreco.local',
+    password: 'AdminDemo123!',
+    name: 'Platform Admin',
     labelKey: 'auth.demo.admin',
   },
 ];

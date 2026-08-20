@@ -90,6 +90,16 @@ export default function LoginPage() {
 
       navigate(getHomePathForRole(data?.user?.role || role), { replace: true })
     } catch (err) {
+      const status = err?.status
+      if (status === 'FETCH_ERROR' || !status) {
+        setError(
+          t('auth.networkError', {
+            defaultValue:
+              'Cannot reach the server. Check your connection or API URL.',
+          }),
+        )
+        return
+      }
       setError(getAuthErrorMessage(err, t('auth.invalidCredentials')))
     }
   }
