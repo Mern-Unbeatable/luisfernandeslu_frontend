@@ -1,159 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { DEMO_AUCTION_LIVE } from '../../../data/demoData'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import { useGetTransporterAuctionsQuery } from '../../../features/transporter/transporterApi'
+import {
+  applyClientAuctionFilter,
+  getApiFilterParam,
+  mapTransporterAuction,
+} from '../../../features/transporter/auctionMappers'
 
 export default function AuctionBoardPage() {
   const { t } = useTranslation()
   const [filter, setFilter] = useState('all')
   const [selectedAuction, setSelectedAuction] = useState(null)
+  const [now, setNow] = useState(() => Date.now())
 
-  // Generate mock active and ended auctions based on the design images
-  const initialAuctions = [
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-001',
-      auctionId: 'AUC-001',
-      title: 'Premium Portland Cement',
-      quantity: '500 bags (50kg each)',
-      pickupLocation: 'Ambuja Cement Factory, Kalyan',
-      deliveryLocation: 'Metro Construction Site, Andheri West',
-      distance: '32 km',
-      distanceKm: 32,
-      remainingLabel: '4m 11s',
-      remainingSeconds: 251,
-      status: 'bidding',
-    },
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-002',
-      auctionId: 'AUC-002',
-      title: 'TMT Steel Rods (12mm)',
-      quantity: '200 rods (12m each)',
-      pickupLocation: 'Tata Steel Depot, Turbhe',
-      deliveryLocation: 'Residential Project, Kharghar',
-      distance: '32 km',
-      distanceKm: 32,
-      remainingLabel: 'ENDED',
-      remainingSeconds: 0,
-      status: 'ended',
-      bids: [
-        { id: 'b2-1', amount: 285, label: 'Just now', transporterName: 'FastShip Logistics' },
-        { id: 'b2-2', amount: 290, label: '1 min ago', transporterName: 'Swift Transport Co.' },
-        { id: 'b2-3', amount: 310, label: '3 min ago', transporterName: 'RoadRunner Freight' },
-        { id: 'b2-4', amount: 295, label: '2 min ago', isUserBid: true },
-      ],
-    },
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-003',
-      auctionId: 'AUC-003',
-      title: 'Premium Portland Cement (Batch B)',
-      quantity: '500 bags (50kg each)',
-      pickupLocation: 'Ambuja Cement Factory, Kalyan',
-      deliveryLocation: 'Metro Construction Site, Andheri West',
-      distance: '32 km',
-      distanceKm: 32,
-      remainingLabel: '3m 11s',
-      remainingSeconds: 191,
-      status: 'bidding',
-    },
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-004',
-      auctionId: 'AUC-004',
-      title: 'Premium Portland Cement (Batch C)',
-      quantity: '500 bags (50kg each)',
-      pickupLocation: 'Ambuja Cement Factory, Kalyan',
-      deliveryLocation: 'Metro Construction Site, Andheri West',
-      distance: '32 km',
-      distanceKm: 32,
-      remainingLabel: '3m 0s',
-      remainingSeconds: 180,
-      status: 'bidding',
-    },
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-005',
-      auctionId: 'AUC-005',
-      title: 'TMT Steel Rods (16mm)',
-      quantity: '150 rods (12m each)',
-      pickupLocation: 'Tata Steel Depot, Turbhe',
-      deliveryLocation: 'Residential Project, Kharghar',
-      distance: '15 km',
-      distanceKm: 15,
-      remainingLabel: 'ENDED',
-      remainingSeconds: 0,
-      status: 'ended',
-      bids: [
-        { id: 'b5-1', amount: 305, label: '5 min ago', transporterName: 'FastShip Logistics' },
-        { id: 'b5-2', amount: 315, label: '8 min ago', isUserBid: true },
-      ],
-    },
-    {
-      ...DEMO_AUCTION_LIVE,
-      id: 'auc-006',
-      auctionId: 'AUC-006',
-      title: 'Premium Portland Cement (Batch D)',
-      quantity: '500 bags (50kg each)',
-      pickupLocation: 'Ambuja Cement Factory, Kalyan',
-      deliveryLocation: 'Metro Construction Site, Andheri West',
-      distance: '10 km',
-      distanceKm: 10,
-      remainingLabel: '1m 45s',
-      remainingSeconds: 105,
-      status: 'bidding',
-    },
-  ]
+  const apiFilter = getApiFilterParam(filter)
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetTransporterAuctionsQuery({
+    page: 1,
+    limit: 20,
+    filter: apiFilter,
+  })
 
-  const [auctions, setAuctions] = useState(initialAuctions)
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  const auctions = useMemo(() => {
+    void now
+    return (data?.auctions || []).map(mapTransporterAuction)
+  }, [data?.auctions, now])
+
+  const filteredAuctions = useMemo(
+    () => applyClientAuctionFilter(auctions, filter),
+    [auctions, filter],
+  )
 
   const handlePlaceBid = (bidAmount, auction) => {
-    if (!bidAmount) return
-    setAuctions((prev) =>
-      prev.map((auc) => {
-        if (auc.id === auction.id) {
-          const newBid = {
-            id: `b-${Date.now()}`,
-            amount: Number(bidAmount),
-            label: t('transporterAuctionBoard.justNow'),
-            transporterName: t('transporterAuctionBoard.youTransporter'),
-          }
-          return {
-            ...auc,
-            bids: [newBid, ...auc.bids],
-          }
-        }
-        return auc
-      })
-    )
+    if (!bidAmount || !auction?.canBid) return
+    // TODO: wire place-bid API when backend endpoint is ready
   }
 
-  // Filter and sort auctions
-  const filteredAuctions = auctions
-    .filter((auc) => {
-      const aucStatus = (auc.status || '').toLowerCase().trim()
-
-      if (filter === 'ended') {
-        return aucStatus === 'ended'
-      }
-      if (filter === 'endingSoon' || filter === 'nearestFirst') {
-        return aucStatus === 'bidding'
-      }
-      return true
-    })
-    .sort((a, b) => {
-      if (filter === 'endingSoon') {
-        return a.remainingSeconds - b.remainingSeconds
-      }
-      if (filter === 'nearestFirst') {
-        return a.distanceKm - b.distanceKm
-      }
-      return 0
-    })
-
-  // Format clicked card data to load details properly
   const handleCardClick = (e, auction) => {
     if (
       e.target.tagName === 'INPUT' ||
@@ -166,38 +61,40 @@ export default function AuctionBoardPage() {
 
     const detailedAuction = {
       ...auction,
-      auctionId: auction.auctionId || 'ORD-: AUC-001',
-      auctionDate: auction.dateLabel || 'May 18, 2026',
-      deliveryCharge: auction.deliveryCharge || '€2000.00',
+      auctionId: auction.auctionId,
+      auctionDate: auction.expiresAt
+        ? new Date(auction.expiresAt).toLocaleDateString()
+        : '—',
+      deliveryCharge:
+        auction.bidStartFrom != null ? `€${auction.bidStartFrom}` : '—',
       customer: {
-        name: 'Sarah Johnson',
-        phone: '+1 (555) 234-5678',
-        email: 'sarah.johnson@email.com',
-        deliveryAddress: auction.deliveryLocation || 'Metro Construction Site, Andheri West',
+        name: '—',
+        phone: '—',
+        email: '—',
+        deliveryAddress: auction.deliveryLocation || '—',
       },
       product: {
-        name: auction.title || 'Premium Portland Cement',
-        sku: 'EXC-HD-2024',
-        quantity: auction.quantity || '500 bags (50kg each)',
-        weight: '25000 kg',
-        price: '€85,000',
+        name: auction.title || '—',
+        sku: '—',
+        quantity: auction.quantity || '—',
+        weight: '—',
+        price: '—',
       },
       shipping: {
-        pickupLocation: auction.pickupLocation || 'Ambuja Cement Factory, Kalyan',
-        unloadingInstructions: auction.deliveryLocation || 'Metro Construction Site, Andheri West',
-        accessCondition: 'Loading dock with ramp',
-        additionalNotes: 'Delivery must be coordinated with site manager. Contact 24 hours before arrival.',
-      }
+        pickupLocation: auction.pickupLocation || '—',
+        unloadingInstructions: auction.deliveryLocation || '—',
+        accessCondition: '—',
+        additionalNotes: '—',
+      },
     }
     setSelectedAuction(detailedAuction)
   }
 
-  // Render detail view if card is clicked
   if (selectedAuction) {
     return (
       <AuctionDetails
         role="transporter"
-        status="active"
+        status={selectedAuction.status === 'ended' ? 'complete' : 'active'}
         auction={selectedAuction}
         onBack={() => setSelectedAuction(null)}
       />
@@ -206,14 +103,15 @@ export default function AuctionBoardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header and Filter */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             {t('transporterAuctionBoard.title')}
           </h1>
           <p className="mt-1 text-base text-gray-500">
-            {t('transporterAuctionBoard.matchingCount', { count: filteredAuctions.length })}
+            {t('transporterAuctionBoard.matchingCount', {
+              count: filteredAuctions.length,
+            })}
           </p>
         </div>
         <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -226,28 +124,56 @@ export default function AuctionBoardPage() {
             className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:border-amber-500"
             aria-label={t('transporterAuctionBoard.filterAria')}
           >
-            <option value="all">{t('transporterAuctionBoard.filters.all')}</option>
-            <option value="endingSoon">{t('transporterAuctionBoard.filters.endingSoon')}</option>
-            <option value="nearestFirst">{t('transporterAuctionBoard.filters.nearestFirst')}</option>
-            <option value="ended">{t('transporterAuctionBoard.filters.ended')}</option>
+            <option value="all">
+              {t('transporterAuctionBoard.filters.all')}
+            </option>
+            <option value="endingSoon">
+              {t('transporterAuctionBoard.filters.endingSoon')}
+            </option>
+            <option value="nearestFirst">
+              {t('transporterAuctionBoard.filters.nearestFirst')}
+            </option>
+            <option value="ended">
+              {t('transporterAuctionBoard.filters.ended')}
+            </option>
           </select>
         </div>
       </div>
 
-      {/* Grid of Auction Cards */}
+      {isLoading ? (
+        <p className="text-sm text-gray-500">Loading auctions…</p>
+      ) : null}
+
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, 'Failed to load auctions')}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
+
+      {!isLoading && !isError && filteredAuctions.length === 0 ? (
+        <p className="text-sm text-gray-500">No auctions found.</p>
+      ) : null}
+
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
         {filteredAuctions.map((auction) => (
-          // <div
-          //   key={auction.id}
-          //   onClick={(e) => handleCardClick(e, auction)}
-          //   className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
-          // >
+          <div
+            key={auction.id}
+            onClick={(e) => handleCardClick(e, auction)}
+            className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
+          >
             <AuctionCard
               role="transporter"
               auction={auction}
               onPlaceBid={handlePlaceBid}
             />
-          // </div>
+          </div>
         ))}
       </div>
     </div>
