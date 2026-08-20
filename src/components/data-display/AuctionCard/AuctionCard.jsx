@@ -200,22 +200,44 @@ function TransporterAuctionCard({
             <FiDollarSign className="size-4 text-[var(--active)]" aria-hidden />
             {t('auction.bidHistory')}
           </p>
-          <ul className="flex flex-1 flex-col gap-2.5">
+          <ul className="flex flex-1 flex-col gap-2">
             {Array.from({ length: 4 }, (_, index) => {
               const bid = bids[index]
+              const isMine = Boolean(bid?.isUserBid || bid?.isMine)
+
               return (
                 <li
                   key={bid?.id ?? `bid-slot-${index}`}
-                  className={`flex min-h-5 items-center justify-between gap-2 text-sm ${
-                    bid ? '' : 'invisible'
-                  }`}
+                  className={[
+                    'flex min-h-5 items-center justify-between gap-2 text-sm',
+                    bid ? '' : 'invisible',
+                    isMine ? 'rounded-lg bg-[#EAF2FF] px-2.5 py-1.5' : '',
+                  ].join(' ')}
                 >
-                  <span className="font-bold text-[var(--primary-text)]">
-                    {bid ? formatMoney(bid.amount) : '—'}
-                  </span>
-                  <span className="text-xs text-[var(--secondary-text)]">
-                    {bid?.label || '—'}
-                  </span>
+                  {isMine ? (
+                    <>
+                      <span className="min-w-0">
+                        <span className="block font-bold text-[var(--primary-text)]">
+                          {formatMoney(bid.amount)}
+                        </span>
+                        <span className="mt-0.5 block text-xs text-[var(--secondary-text)]">
+                          {bid.label || '—'}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-[#3B82F6]">
+                        YOU
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-bold text-[var(--primary-text)]">
+                        {bid ? formatMoney(bid.amount) : '—'}
+                      </span>
+                      <span className="text-xs text-[var(--secondary-text)]">
+                        {bid?.label || '—'}
+                      </span>
+                    </>
+                  )}
                 </li>
               )
             })}

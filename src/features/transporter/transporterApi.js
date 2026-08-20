@@ -19,7 +19,21 @@ export const transporterApi = baseApi.injectEndpoints({
             ]
           : [{ type: 'Auction', id: 'LIST' }],
     }),
+    placeTransporterBid: builder.mutation({
+      query: ({ auctionId, bidAmount }) => ({
+        url: `/api/transporter/auctions/${auctionId}/bids`,
+        method: 'POST',
+        data: { bidAmount },
+      }),
+      invalidatesTags: (_result, _error, { auctionId }) => [
+        { type: 'Auction', id: auctionId },
+        { type: 'Auction', id: 'LIST' },
+      ],
+    }),
   }),
 })
 
-export const { useGetTransporterAuctionsQuery } = transporterApi
+export const {
+  useGetTransporterAuctionsQuery,
+  usePlaceTransporterBidMutation,
+} = transporterApi

@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
-import { useGetTransporterAuctionsQuery } from '../../../features/transporter/transporterApi'
+import {
+  useGetTransporterAuctionsQuery,
+  usePlaceTransporterBidMutation,
+} from '../../../features/transporter/transporterApi'
 import {
   applyClientAuctionFilter,
   getApiFilterParam,
@@ -15,6 +18,7 @@ export default function AuctionBoardPage() {
   const [filter, setFilter] = useState('all')
   const [selectedAuction, setSelectedAuction] = useState(null)
   const [now, setNow] = useState(() => Date.now())
+  const [bidError, setBidError] = useState('')
 
   const apiFilter = getApiFilterParam(filter)
   const {
@@ -28,6 +32,7 @@ export default function AuctionBoardPage() {
     limit: 20,
     filter: apiFilter,
   })
+  const [placeBid, { isLoading: isBidding }] = usePlaceTransporterBidMutation()
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 1000)
@@ -44,9 +49,25 @@ export default function AuctionBoardPage() {
     [auctions, filter],
   )
 
-  const handlePlaceBid = (bidAmount, auction) => {
-    if (!bidAmount || !auction?.canBid) return
-    // TODO: wire place-bid API when backend endpoint is ready
+  const handlePlaceBid = async (bidAmount, auction) => {
+    if (!auction?.canBid || !auction?.auctionId || isBidding) return
+
+    const amount = Number(bidAmount)
+    if (!Number.isFinite(amount) || amount <= 0) {
+      setBidError('Enter a valid bid amount')
+      return
+    }
+
+    setBidError('')
+
+    try {
+      await placeBid({
+        auctionId: auction.auctionId,
+        bidAmount: amount,
+      }).unwrap()
+    } catch (err) {
+      setBidError(getAuthErrorMessage(err, 'Failed to place bid'))
+    }
   }
 
   const handleCardClick = (e, auction) => {
@@ -157,23 +178,25 @@ export default function AuctionBoardPage() {
         </div>
       ) : null}
 
+      {bidError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {bidError}
+        </div>
+      ) : null}
+
       {!isLoading && !isError && filteredAuctions.length === 0 ? (
         <p className="text-sm text-gray-500">No auctions found.</p>
       ) : null}
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
         {filteredAuctions.map((auction) => (
-          <div
-            key={auction.id}
-            onClick={(e) => handleCardClick(e, auction)}
-            className="h-full cursor-pointer transition-transform hover:scale-[1.005]"
-          >
+     
             <AuctionCard
               role="transporter"
               auction={auction}
               onPlaceBid={handlePlaceBid}
             />
-          </div>
+
         ))}
       </div>
     </div>
