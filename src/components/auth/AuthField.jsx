@@ -50,11 +50,14 @@ export default function AuthField({
   )
 }
 
-export function AuthSubmitButton({ children }) {
+export function AuthSubmitButton({ children, disabled = false }) {
   return (
     <button
       type="submit"
-      className="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--active)] text-base font-semibold text-white transition-opacity hover:opacity-90"
+      disabled={disabled}
+      className={`mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--active)] text-base font-semibold text-white transition-opacity ${
+        disabled ? 'cursor-not-allowed opacity-60' : 'hover:opacity-90'
+      }`}
     >
       {children}
     </button>
