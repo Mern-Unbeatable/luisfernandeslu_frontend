@@ -28,6 +28,7 @@ export default function AddProduct({
   breadcrumb = 'Product > Add Product',
   title = 'Add Product',
   submitLabel = 'Submit',
+  submitting = false,
   categoryOptions,
   subCategoryOptions,
   productTypeOptions,
@@ -93,6 +94,8 @@ export default function AddProduct({
       if (typeof generated === 'string' && generated.trim()) {
         patch({ [section]: generated })
       }
+    } catch (error) {
+      console.error(error)
     } finally {
       setAiLoading(null)
     }
@@ -131,6 +134,31 @@ export default function AddProduct({
               />
             </Field>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              <Field label="Category">
+                <SelectInput
+                  value={form.categoryId}
+                  onChange={handleCategoryChange}
+                  options={resolvedCategoryOptions}
+                />
+              </Field>
+              <Field label="Sub Category">
+                <SelectInput
+                  value={form.subCategoryId}
+                  onChange={handleSubCategoryChange}
+                  options={resolvedSubCategoryOptions}
+                  disabled={!form.categoryId && !subCategoryOptions}
+                />
+              </Field>
+              <Field label="Product Type">
+                <SelectInput
+                  value={form.productTypeId}
+                  onChange={setField('productTypeId')}
+                  options={resolvedProductTypeOptions}
+                  disabled={!form.subCategoryId && !productTypeOptions}
+                />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <Field label="Title">
                 <TextInput
                   value={form.title}
@@ -150,6 +178,13 @@ export default function AddProduct({
                   value={form.sku}
                   onChange={setField('sku')}
                   placeholder="write product sku number"
+                />
+              </Field>
+              <Field label="Weight (kg)">
+                <TextInput
+                  value={form.weight}
+                  onChange={setField('weight')}
+                  placeholder="50"
                 />
               </Field>
             </div>
@@ -331,9 +366,10 @@ export default function AddProduct({
         <div>
           <button
             type="submit"
-            className="inline-flex h-14 items-center justify-center rounded-full bg-[var(--active)] px-8 text-base font-bold tracking-tight text-white uppercase hover:brightness-95"
+            disabled={submitting}
+            className="inline-flex h-14 items-center justify-center rounded-full bg-[var(--active)] px-8 text-base font-bold tracking-tight text-white uppercase hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitLabel}
+            {submitting ? 'Saving…' : submitLabel}
           </button>
         </div>
       </form>

@@ -9,6 +9,18 @@ export const productApi = baseApi.injectEndpoints({
       }),
       providesTags: [{ type: 'Product', id: 'CATEGORIES' }],
     }),
+    getSubCategories: builder.query({
+      query: (categoryId) => ({
+        url: `/api/categories/${categoryId}/subcategories`,
+        method: 'GET',
+      }),
+    }),
+    getProductTypes: builder.query({
+      query: (subCategoryId) => ({
+        url: `/api/subcategories/${subCategoryId}/product-types`,
+        method: 'GET',
+      }),
+    }),
     getProducts: builder.query({
       query: (params) => ({
         url: '/products',
@@ -73,6 +85,8 @@ export const productApi = baseApi.injectEndpoints({
 
 export const {
   useGetCategoriesQuery,
+  useGetSubCategoriesQuery,
+  useGetProductTypesQuery,
   useGetProductsQuery,
   useGetProductByIdQuery,
   useCreateProductMutation,
