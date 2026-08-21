@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   FiCreditCard,
@@ -7,39 +8,25 @@ import {
   FiUserPlus,
 } from 'react-icons/fi'
 import StatusCard from '@/components/data-display/StatusCard'
+import { useGetAffiliateOverviewQuery } from '@/features/affiliate/affiliateOverviewApi'
 import ActiveTierStatus from './ActiveTierStatus'
 import EarningAnalytics from './EarningAnalytics'
 
-const EARNING_SERIES = {
-  thisYear: [0, 250, 600, 900, 1500, 1700, 1600, 1000, 500, 400, 1400, 1500],
-  lastYear: [120, 300, 480, 720, 980, 1250, 1180, 900, 650, 780, 1100, 1320],
-}
-
-const MONTH_KEYS = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'oct',
-  'nov',
-  'dec',
-]
-
-const CURRENT_CLIENTS = 12
-const TARGET_CLIENTS = 100
+const CURRENT_YEAR = new Date().getFullYear()
 
 export default function OverviewDashboardPage() {
   const { t } = useTranslation()
+  const [year, setYear] = useState(CURRENT_YEAR)
 
-  const clientsNeeded = Math.max(TARGET_CLIENTS - CURRENT_CLIENTS, 0)
-  const earningLabels = MONTH_KEYS.map((key) =>
-    t(`affiliateOverview.months.${key}`),
-  )
+  const { data, isLoading } = useGetAffiliateOverviewQuery({ year })
+  const overview = data?.overview
+  const stats = overview?.stats
+  const tier = overview?.tier
+  const earningAnalytics = overview?.earningAnalytics
+  const points = earningAnalytics?.points || []
+
+  const currentTier = tier?.currentTier
+  const nextTier = tier?.nextTier
 
   return (
     <div className="space-y-6">
@@ -56,35 +43,35 @@ export default function OverviewDashboardPage() {
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.totalReferredClient')}
-          value="13"
+          value={isLoading ? '—' : (stats?.totalReferredClients ?? '—')}
           icon={FiUser}
           iconTone="purple"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.activeClient')}
-          value="12"
+          value={isLoading ? '—' : (stats?.activeClients ?? '—')}
           icon={FiUserPlus}
           iconTone="teal"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.pendingCommissions')}
-          value="€1010.00"
+          value={isLoading ? '—' : (stats?.pendingCommissionsLabel ?? '—')}
           icon={FiDollarSign}
           iconTone="brand"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.paidCommission')}
-          value="€355.00"
+          value={isLoading ? '—' : (stats?.paidCommissionLabel ?? '—')}
           icon={FiCreditCard}
           iconTone="gray"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.totalEarnings')}
-          value="€1365.00"
+          value={isLoading ? '—' : (stats?.totalEarningsLabel ?? '—')}
           icon={FiTrendingUp}
           iconTone="purple"
         />
@@ -92,38 +79,48 @@ export default function OverviewDashboardPage() {
 
       <ActiveTierStatus
         label={t('affiliateOverview.tier.label')}
-        tierName={t('affiliateOverview.tier.tierName')}
-        headline={t('affiliateOverview.tier.headline')}
+        tierName={currentTier?.name || '—'}
+        headline={
+          currentTier?.commissionPercent != null
+            ? `You receive a ${currentTier.commissionPercent}% commission rate!`
+            : '—'
+        }
         description={t('affiliateOverview.tier.description')}
-        progressLabel={t('affiliateOverview.tier.progressLabel')}
-        clientsLabel={t('affiliateOverview.tier.clients', {
-          current: CURRENT_CLIENTS,
-          target: TARGET_CLIENTS,
-        })}
-        currentClients={CURRENT_CLIENTS}
-        targetClients={TARGET_CLIENTS}
-        helpText={t('affiliateOverview.tier.helpText', {
-          count: clientsNeeded,
-        })}
+        progressLabel={
+          nextTier
+            ? `Progress to ${nextTier.name} (${nextTier.commissionPercent}%)`
+            : t('affiliateOverview.tier.progressLabel')
+        }
+        clientsLabel={
+          tier
+            ? `${tier.progressCurrent}/${tier.progressTarget} Clients`
+            : undefined
+        }
+        currentClients={tier?.progressCurrent ?? 0}
+        targetClients={tier?.progressTarget ?? 0}
+        progressPercent={tier?.progressPercent}
+        helpText={tier?.helperText}
       />
 
       <EarningAnalytics
         title={t('affiliateOverview.earningAnalytics.title')}
         subtitle={t('affiliateOverview.earningAnalytics.subtitle')}
         filterAriaLabel={t('affiliateOverview.earningAnalytics.filterAria')}
-        labels={earningLabels}
-        series={EARNING_SERIES}
+        labels={points.map((point) => point.month)}
+        values={points.map((point) => point.amount)}
+        amountLabels={points.map((point) => point.amountLabel)}
         filterOptions={[
           {
-            value: 'thisYear',
+            value: String(CURRENT_YEAR),
             label: t('affiliateOverview.filters.thisYear'),
           },
           {
-            value: 'lastYear',
+            value: String(CURRENT_YEAR - 1),
             label: t('affiliateOverview.filters.lastYear'),
           },
         ]}
-        defaultFilter="thisYear"
+        filter={String(year)}
+        onFilterChange={(nextYear) => setYear(Number(nextYear))}
       />
     </div>
   )
