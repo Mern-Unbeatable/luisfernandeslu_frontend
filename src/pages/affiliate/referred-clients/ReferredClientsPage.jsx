@@ -1,146 +1,16 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DataTable from '@/components/data-display/DataTable/DataTable'
+import { useGetAffiliateClientsQuery } from '@/features/affiliate/affiliateClientsApi'
 
-const DUMMY_CLIENTS = [
-  {
-    id: 1,
-    name: 'Ralph Edwards',
-    registeredDate: '2026-06-11',
-    revenueGenerated: '€5000.00',
-    commissionEarned: '€500',
-    commissionExpiry: '2026-06-11',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    name: 'Brooklyn Simmons',
-    registeredDate: '2026-04-12',
-    revenueGenerated: '€7000.00',
-    commissionEarned: '€700',
-    commissionExpiry: '2026-06-11',
-    status: 'Expired',
-  },
-  {
-    id: 3,
-    name: 'Darrell Steward',
-    registeredDate: '2026-03-17',
-    revenueGenerated: '€8000.00',
-    commissionEarned: '€800',
-    commissionExpiry: '2026-06-11',
-    status: 'Active',
-  },
-  {
-    id: 4,
-    name: 'Bessie Cooper',
-    registeredDate: '2026-02-25',
-    revenueGenerated: '€800.00',
-    commissionEarned: '€100',
-    commissionExpiry: '2026-06-11',
-    status: 'Active',
-  },
-  {
-    id: 5,
-    name: 'Cody Fisher',
-    registeredDate: '2026-01-19',
-    revenueGenerated: '€9000.00',
-    commissionEarned: '€600',
-    commissionExpiry: '2026-06-11',
-    status: 'Active',
-  },
-  {
-    id: 6,
-    name: 'Floyd Miles',
-    registeredDate: '2026-04-25',
-    revenueGenerated: '€1000.00',
-    commissionEarned: '€500',
-    commissionExpiry: '2026-06-11',
-    status: 'Active',
-  },
-  {
-    id: 7,
-    name: 'Annette Black',
-    registeredDate: '2026-05-08',
-    revenueGenerated: '€3200.00',
-    commissionEarned: '€320',
-    commissionExpiry: '2026-07-08',
-    status: 'Active',
-  },
-  {
-    id: 8,
-    name: 'Jenny Wilson',
-    registeredDate: '2026-03-02',
-    revenueGenerated: '€4500.00',
-    commissionEarned: '€450',
-    commissionExpiry: '2026-05-02',
-    status: 'Expired',
-  },
-  {
-    id: 9,
-    name: 'Robert Fox',
-    registeredDate: '2026-02-14',
-    revenueGenerated: '€6100.00',
-    commissionEarned: '€610',
-    commissionExpiry: '2026-08-14',
-    status: 'Active',
-  },
-  {
-    id: 10,
-    name: 'Savannah Nguyen',
-    registeredDate: '2026-01-30',
-    revenueGenerated: '€2800.00',
-    commissionEarned: '€280',
-    commissionExpiry: '2026-04-30',
-    status: 'Expired',
-  },
-  {
-    id: 11,
-    name: 'Guy Hawkins',
-    registeredDate: '2026-05-21',
-    revenueGenerated: '€1500.00',
-    commissionEarned: '€150',
-    commissionExpiry: '2026-08-21',
-    status: 'Active',
-  },
-  {
-    id: 12,
-    name: 'Esther Howard',
-    registeredDate: '2026-04-03',
-    revenueGenerated: '€7300.00',
-    commissionEarned: '€730',
-    commissionExpiry: '2026-07-03',
-    status: 'Active',
-  },
-  {
-    id: 13,
-    name: 'Cameron Williamson',
-    registeredDate: '2026-03-28',
-    revenueGenerated: '€2100.00',
-    commissionEarned: '€210',
-    commissionExpiry: '2026-06-28',
-    status: 'Active',
-  },
-  {
-    id: 14,
-    name: 'Leslie Alexander',
-    registeredDate: '2026-02-09',
-    revenueGenerated: '€5400.00',
-    commissionEarned: '€540',
-    commissionExpiry: '2026-05-09',
-    status: 'Expired',
-  },
-]
-
-const PAGE_SIZE = 7
-
-const STATUS_I18N_KEYS = {
-  Active: 'active',
-  Expired: 'expired',
-}
+const PAGE_SIZE = 20
 
 function getStatusLabel(status, t) {
-  const key = STATUS_I18N_KEYS[status]
-  return key ? t(`affiliateReferredClients.status.${key}`) : status
+  const key = String(status || '').toLowerCase()
+  if (key === 'active' || key === 'expired') {
+    return t(`affiliateReferredClients.status.${key}`)
+  }
+  return status
 }
 
 function StatusPill({ status, label }) {
@@ -187,36 +57,59 @@ function getColumns(t) {
   ]
 }
 
+function mapClientRow(client) {
+  return {
+    id: client.id,
+    name: client.name,
+    registeredDate: client.registeredDate,
+    revenueGenerated: client.revenueGeneratedLabel,
+    commissionEarned: client.commissionEarnedLabel,
+    commissionExpiry: client.commissionExpiry,
+    status: client.status,
+  }
+}
+
 export default function ReferredClientsPage() {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
 
-  const columns = getColumns(t)
-
-  const filtered = DUMMY_CLIENTS.filter((row) => {
-    const q = search.trim().toLowerCase()
-    if (!q) return true
-
-    const statusLabel = getStatusLabel(row.status, t).toLowerCase()
-
-    return (
-      String(row.name).toLowerCase().includes(q) ||
-      String(row.registeredDate).toLowerCase().includes(q) ||
-      String(row.revenueGenerated).toLowerCase().includes(q) ||
-      String(row.commissionEarned).toLowerCase().includes(q) ||
-      String(row.commissionExpiry).toLowerCase().includes(q) ||
-      String(row.status).toLowerCase().includes(q) ||
-      statusLabel.includes(q)
-    )
+  const { data, isLoading } = useGetAffiliateClientsQuery({
+    page,
+    limit: PAGE_SIZE,
   })
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const paged = filtered.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
-  )
+  const columns = getColumns(t)
+  const clients = data?.clients || []
+  const pagination = data?.pagination || {
+    page: 1,
+    limit: PAGE_SIZE,
+    total: 0,
+    totalPages: 1,
+  }
+
+  const rows = useMemo(() => clients.map(mapClientRow), [clients])
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return rows
+
+    return rows.filter((row) => {
+      const statusLabel = getStatusLabel(row.status, t).toLowerCase()
+      return (
+        String(row.name).toLowerCase().includes(q) ||
+        String(row.registeredDate).toLowerCase().includes(q) ||
+        String(row.revenueGenerated).toLowerCase().includes(q) ||
+        String(row.commissionEarned).toLowerCase().includes(q) ||
+        String(row.commissionExpiry).toLowerCase().includes(q) ||
+        String(row.status).toLowerCase().includes(q) ||
+        statusLabel.includes(q)
+      )
+    })
+  }, [rows, search, t])
+
+  const totalPages = Math.max(1, pagination.totalPages || 1)
+  const safePage = Math.min(page, totalPages)
 
   return (
     <div className="space-y-6">
@@ -231,19 +124,18 @@ export default function ReferredClientsPage() {
 
       <DataTable
         columns={columns}
-        data={paged}
+        data={isLoading ? [] : filtered}
         showSearch
         searchValue={search}
         onSearchChange={(value) => {
           setSearch(value)
-          setPage(1)
         }}
         searchPlaceholder={t('affiliateReferredClients.searchPlaceholder')}
         showPagination
         pagination={{
           page: safePage,
           pageSize: PAGE_SIZE,
-          total: filtered.length,
+          total: pagination.total || 0,
           onPageChange: setPage,
         }}
       />
