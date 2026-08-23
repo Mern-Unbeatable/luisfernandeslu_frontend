@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiMapPin, FiPlus } from 'react-icons/fi'
 
 export default function MapPage() {
+  const { t } = useTranslation()
   const [startingPoint, setStartingPoint] = useState('')
   const [destination, setDestination] = useState('')
 
@@ -9,7 +11,7 @@ export default function MapPage() {
     <div className="relative w-full h-[calc(100vh-140px)] rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
       {/* Interactive Google Map Embed */}
       <iframe
-        title="Google Map"
+        title={t('transporterMap.mapTitle')}
         src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5115989.155702283!2d20.064971846467364!3d51.9189073100344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2spl!4v1700000000000!5m2!1sen!2spl"
         className="w-full h-full border-0 outline-none"
         allowFullScreen=""
@@ -31,7 +33,7 @@ export default function MapPage() {
             </div>
             <input
               type="text"
-              placeholder="Choose Starting Point"
+              placeholder={t('transporterMap.startingPointPlaceholder')}
               value={startingPoint}
               onChange={(e) => setStartingPoint(e.target.value)}
               className="w-full rounded-xl bg-gray-50 border border-transparent px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none focus:bg-white focus:border-amber-500 transition-all"
@@ -46,7 +48,7 @@ export default function MapPage() {
             </div>
             <input
               type="text"
-              placeholder="Choose Destination"
+              placeholder={t('transporterMap.destinationPlaceholder')}
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className="w-full rounded-xl bg-gray-50 border border-transparent px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none focus:bg-white focus:border-amber-500 transition-all"
@@ -61,7 +63,7 @@ export default function MapPage() {
             className="flex items-center gap-1.5 text-sm font-semibold text-[var(--active)] hover:underline ml-6"
           >
             <FiPlus className="size-4" />
-            Add destination
+            {t('transporterMap.addDestination')}
           </button>
         </div>
       </div>

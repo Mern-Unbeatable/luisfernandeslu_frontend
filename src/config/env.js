@@ -1,11 +1,14 @@
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
-const siteUrl = (
+function normalizeUrl(value) {
+  return String(value ?? '').trim().replace(/\/$/, '')
+}
+
+const siteUrl = normalizeUrl(
   import.meta.env.VITE_SITE_URL ||
-  (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173')
-).replace(/\/$/, '')
+    (typeof window !== 'undefined' ? window.location.origin : ''),
+)
 
 export const env = {
-  apiUrl: apiUrl.replace(/\/$/, ''),
+  apiUrl: normalizeUrl(import.meta.env.VITE_BACKEND_URL),
   siteUrl,
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,

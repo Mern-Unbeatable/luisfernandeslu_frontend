@@ -1,8 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 
 export default function OrderHistoryPage() {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
   const [selectedDelivery, setSelectedDelivery] = useState(null)
 
   // Initialize mock deliveries representing completed/delivered items
@@ -79,6 +83,7 @@ export default function OrderHistoryPage() {
         status="complete"
         auction={selectedDelivery}
         onBack={() => setSelectedDelivery(null)}
+        onMessage={() => navigate('/transporter/chat')}
       />
     )
   }
@@ -89,19 +94,24 @@ export default function OrderHistoryPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Delivery History
+            {t('transporterOrderHistory.title')}
           </h1>
           <p className="mt-1 text-base text-gray-500">
-            {completedDeliveries.length} completed deliveries
+            {t('transporterOrderHistory.completedCount', {
+              count: completedDeliveries.length,
+            })}
           </p>
         </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           <select
-            value="Delivered"
+            value="delivered"
             disabled
             className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-400 outline-none cursor-not-allowed"
+            aria-label={t('transporterOrderHistory.filterAria')}
           >
-            <option>Delivered</option>
+            <option value="delivered">
+              {t('transporterOrderHistory.filters.delivered')}
+            </option>
           </select>
         </div>
       </div>

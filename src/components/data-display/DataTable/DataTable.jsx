@@ -1,6 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { FiChevronDown, FiMoreVertical } from 'react-icons/fi'
+import SegmentedTabs from '../../common/SegmentedTabs/SegmentedTabs'
 import Skeleton from '../../common/Skeleton/Skeleton'
 import StatusBadge from './StatusBadge'
 
@@ -77,7 +78,13 @@ export default function DataTable({
         <div className="mb-5 flex flex-col gap-3">
           {showSearch ? (
             <>
-              {showTabs && tabs.length > 0 ? <TabsBar tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} /> : null}
+              {showTabs && tabs.length > 0 ? (
+                <SegmentedTabs
+                  tabs={tabs}
+                  activeTab={activeTab}
+                  onTabChange={onTabChange}
+                />
+              ) : null}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <label className="flex w-full min-w-0 max-w-md items-center rounded-md border border-gray-200 bg-white px-3 py-2 focus-within:border-[var(--active)]">
                   <input
@@ -98,7 +105,11 @@ export default function DataTable({
           ) : (
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               {showTabs && tabs.length > 0 ? (
-                <TabsBar tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
+                <SegmentedTabs
+                  tabs={tabs}
+                  activeTab={activeTab}
+                  onTabChange={onTabChange}
+                />
               ) : (
                 <div />
               )}
@@ -219,30 +230,6 @@ export default function DataTable({
           </div>
         </div>
       ) : null}
-    </div>
-  )
-}
-
-function TabsBar({ tabs, activeTab, onTabChange }) {
-  return (
-    <div className="inline-flex w-fit max-w-full shrink-0 items-center rounded-lg bg-gray-100 p-1">
-      {tabs.map((tab) => {
-        const isActive = tab.id === activeTab
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => onTabChange?.(tab.id)}
-            className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
-              isActive
-                ? 'bg-[var(--active)] text-white shadow-sm'
-                : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
-            }`}
-          >
-            {tab.label}
-          </button>
-        )
-      })}
     </div>
   )
 }

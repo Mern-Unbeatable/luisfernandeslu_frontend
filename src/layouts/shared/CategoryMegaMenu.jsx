@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PRODUCT_CATEGORIES } from "../../data/productCategories";
@@ -50,9 +51,14 @@ export default function CategoryMegaMenu({
   onNavigate,
 }) {
   const { t } = useTranslation();
+  const contentRef = useRef(null);
   const activeCategory =
     PRODUCT_CATEGORIES.find((item) => item.id === activeCategoryId) ||
     PRODUCT_CATEGORIES[0];
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [activeCategory.id]);
 
   const categoryLabel = (category) =>
     t(`catalog.categories.${category.id}`, { defaultValue: category.name });
@@ -67,7 +73,7 @@ export default function CategoryMegaMenu({
 
   return (
     <div className="w-full border-b border-gray-200 bg-white shadow-lg">
-      <div className="container mx-auto flex h-[min(70vh,640px)] w-full flex-col overflow-hidden lg:flex-row">
+      <div className="container mx-auto flex h-[min(calc(100vh-14rem),540px)] w-full flex-col overflow-hidden lg:flex-row">
         <aside
           className={`min-h-0 shrink-0 overflow-x-auto overflow-y-auto border-b border-gray-100 bg-[#FFFFFF] px-3 py-3 lg:w-[280px] lg:border-r lg:border-b-0 lg:px-0 lg:py-4 ${lightScroll}`}
         >
@@ -94,6 +100,7 @@ export default function CategoryMegaMenu({
         </aside>
 
         <div
+          ref={contentRef}
           className={`min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-8 sm:py-6 lg:px-10 ${lightScroll}`}
         >
           <div className="space-y-8 pb-4">

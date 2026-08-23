@@ -20,11 +20,33 @@ import GenerateDocumentModal from './GenerateDocumentModal';
 export default function DocumentsPage() {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
 
   // TODO: replace DEMO_* with supplier fiscal documents API fetch
   const { stats, documents } = DEMO_SUPPLIER_FISCAL_DOCUMENTS;
-  const total = documents.length;
+
+  const invoiceLabel = t('panel.supplierFiscalDocuments.typeInvoice');
+
+  const filteredDocuments = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return documents;
+
+    return documents.filter((row) => {
+      const typeLabel =
+        row.type === 'invoice' ? invoiceLabel : String(row.type || '');
+      return (
+        String(row.documentId).toLowerCase().includes(q) ||
+        String(row.orderId).toLowerCase().includes(q) ||
+        String(row.customer).toLowerCase().includes(q) ||
+        String(row.amount).toLowerCase().includes(q) ||
+        String(row.date).toLowerCase().includes(q) ||
+        typeLabel.toLowerCase().includes(q)
+      );
+    });
+  }, [documents, search, invoiceLabel]);
+
+  const total = filteredDocuments.length;
   const pageCount = Math.max(
     1,
     Math.ceil(total / SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE),
@@ -33,11 +55,11 @@ export default function DocumentsPage() {
 
   const pagedDocuments = useMemo(() => {
     const start = (safePage - 1) * SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE;
-    return documents.slice(
+    return filteredDocuments.slice(
       start,
       start + SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE,
     );
-  }, [documents, safePage]);
+  }, [filteredDocuments, safePage]);
 
   const from =
     total === 0 ? 0 : (safePage - 1) * SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE + 1;
@@ -191,7 +213,15 @@ export default function DocumentsPage() {
           data={pagedDocuments}
           getRowKey={(row) => row.id}
           showTabs={false}
-          showSearch={false}
+          showSearch
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t(
+            'panel.supplierFiscalDocuments.searchPlaceholder',
+          )}
           showFilters={false}
           showActions={false}
           emptyMessage={t('panel.supplierFiscalDocuments.emptyDocuments')}

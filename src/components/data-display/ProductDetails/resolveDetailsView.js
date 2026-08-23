@@ -22,7 +22,7 @@ export function resolveDetailsView(role = 'customer', context = 'default') {
       showSeller: true,
       sellerVariant: 'store',
       actions: [
-        { id: 'send_quote', label: 'SEND QUOTE', variant: 'primary' },
+        { id: 'send_message', label: 'SEND MESSAGE', variant: 'primary' },
       ],
       tabs: [
         { id: 'additional', label: 'ADDITIONAL INFORMATION' },

@@ -1,10 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
 import UserDetailsModal from './components/UserDetailsModal'
-import UserVatRateCell from './components/UserVatRateCell'
 import TypeBadge from './components/TypeBadge'
 import AccountStatusBadge from './components/AccountStatusBadge'
 import {
@@ -22,7 +21,6 @@ export default function UserManagementPage() {
   const [statusFilter, setStatusFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [detailUser, setDetailUser] = useState(null)
-  const [companyRows, setCompanyRows] = useState(ADMIN_COMPANY_USERS)
 
   const tabs = useMemo(
     () =>
@@ -34,21 +32,15 @@ export default function UserManagementPage() {
   )
 
   const sourceRows =
-    activeTab === 'customer' ? ADMIN_CUSTOMER_USERS : companyRows
+    activeTab === 'customer' ? ADMIN_CUSTOMER_USERS : ADMIN_COMPANY_USERS
 
   const filteredRows = useMemo(() => {
     const byStatus = filterUsersByStatus(sourceRows, statusFilter)
     return filterUsersBySearch(byStatus, searchQuery)
   }, [sourceRows, statusFilter, searchQuery])
 
-  const handleVatChange = useCallback((rowId, vatRate) => {
-    setCompanyRows((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, vatRate } : row)),
-    )
-  }, [])
-
-  const columns = useMemo(() => {
-    const base = [
+  const columns = useMemo(
+    () => [
       { key: 'name', header: t('adminUserManagement.columns.name') },
       { key: 'phone', header: t('adminUserManagement.columns.phone') },
       { key: 'email', header: t('adminUserManagement.columns.email') },
@@ -62,28 +54,13 @@ export default function UserManagementPage() {
         header: t('adminUserManagement.columns.status'),
         render: (value) => <AccountStatusBadge status={value} />,
       },
-    ]
-
-    if (activeTab === 'company') {
-      base.push({
-        key: 'vatRate',
-        header: t('adminUserManagement.columns.vatRate'),
-        render: (value, row) => (
-          <UserVatRateCell
-            value={value}
-            onChange={(next) => handleVatChange(row.id, next)}
-          />
-        ),
-      })
-    }
-
-    base.push({
-      key: 'registered',
-      header: t('adminUserManagement.columns.registered'),
-    })
-
-    return base
-  }, [activeTab, t, handleVatChange])
+      {
+        key: 'registered',
+        header: t('adminUserManagement.columns.registered'),
+      },
+    ],
+    [t],
+  )
 
   const rowActions = useMemo(
     () => [

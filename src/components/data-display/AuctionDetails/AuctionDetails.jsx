@@ -1,7 +1,16 @@
-import { FiArrowLeft, FiTruck } from 'react-icons/fi'
+import { FiArrowLeft, FiMessageSquare, FiTruck } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 
-function Card({ title, children, className = '' }) {
+const POST_ASSIGN_STATUSES = new Set([
+  'assigned',
+  'picked_up',
+  'in_transit',
+  'delivered',
+  'complete',
+  'completed',
+])
+
+function Card({ title, headerAction, children, className = '' }) {
   return (
     <section
       className={[
@@ -9,10 +18,15 @@ function Card({ title, children, className = '' }) {
         className,
       ].join(' ')}
     >
-      {title ? (
-        <h2 className="mb-4 text-base font-bold text-[var(--primary-text)] sm:text-lg">
-          {title}
-        </h2>
+      {title || headerAction ? (
+        <div className="mb-4 flex items-center justify-between gap-3">
+          {title ? (
+            <h2 className="text-base font-bold text-[var(--primary-text)] sm:text-lg">
+              {title}
+            </h2>
+          ) : null}
+          {headerAction}
+        </div>
       ) : null}
       {children}
     </section>
@@ -141,9 +155,23 @@ function ShippingCard({ auction, shipping, t }) {
   )
 }
 
-function CustomerCard({ customer, t }) {
+function CustomerCard({ customer, t, showMessage, onMessage }) {
   return (
-    <Card title={t('auction.details.customerInfo')}>
+    <Card
+      title={t('auction.details.customerInfo')}
+      headerAction={
+        showMessage ? (
+          <button
+            type="button"
+            onClick={() => onMessage?.(customer)}
+            className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
+          >
+            <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
+            {t('auction.details.message')}
+          </button>
+        ) : null
+      }
+    >
       <div className="flex flex-col gap-4">
         <StackField label={t('auction.details.name')} value={customer.name} />
         <StackField label={t('auction.details.phone')} value={customer.phone} />
@@ -198,6 +226,7 @@ function ProductCard({ product, showQuantity, t }) {
  * role: 'supplier'     → Shipping Details; active → bids; assigned → transporter info
  * role: 'factory'      → no Shipping card; pickup in summary; same status split
  * role: 'transporter'  → assigned/complete job view: Shipping + Delivery Charge; no bids/transporter card
+ *                       assigned+ → message icon on Customer Information
  *
  * status: 'active' | 'assigned' | 'complete'
  */
@@ -206,6 +235,7 @@ export default function AuctionDetails({
   status,
   auction = {},
   onBack,
+  onMessage,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -218,6 +248,8 @@ export default function AuctionDetails({
   const showTransporterPanel = (isSupplier || isFactory) && (isAssigned || isComplete)
   const showBids = (isSupplier || isFactory) && !showTransporterPanel
   const showShipping = isSupplier || isTransporter
+  const showCustomerMessage =
+    isTransporter && POST_ASSIGN_STATUSES.has(resolvedStatus)
   const customer = auction.customer || {}
   const product = auction.product || {}
   const shipping = auction.shipping || {}
@@ -280,7 +312,12 @@ export default function AuctionDetails({
         {isTransporter ? (
           <>
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-              <CustomerCard customer={customer} t={t} />
+              <CustomerCard
+                customer={customer}
+                t={t}
+                showMessage={showCustomerMessage}
+                onMessage={onMessage}
+              />
               <ShippingCard auction={auction} shipping={shipping} t={t} />
             </div>
             <ProductCard product={product} showQuantity t={t} />
@@ -288,7 +325,12 @@ export default function AuctionDetails({
         ) : (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <div className="flex flex-col gap-5">
-              <CustomerCard customer={customer} t={t} />
+              <CustomerCard
+                customer={customer}
+                t={t}
+                showMessage={showCustomerMessage}
+                onMessage={onMessage}
+              />
               <ProductCard product={product} showQuantity={false} t={t} />
             </div>
 

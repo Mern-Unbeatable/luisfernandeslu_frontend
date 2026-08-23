@@ -56,7 +56,7 @@ export default function OrderCompanyDetailPage() {
   };
 
   const handleChat = () => {
-    // TODO: open chat with transporter when route is available
+    navigate('/supplier/chat');
   };
 
   return (

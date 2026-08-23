@@ -10,6 +10,7 @@ import {
   ADMIN_ORDERS,
   ADMIN_ORDER_TABS,
   filterOrdersByCustomerType,
+  filterOrdersBySearch,
   filterOrdersByStatus,
   filterOrdersByTab,
   formatOrderMoney,
@@ -22,6 +23,7 @@ export default function OrdersPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('supplier')
+  const [searchQuery, setSearchQuery] = useState('')
   const [customerTypeFilter, setCustomerTypeFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
   const [page, setPage] = useState(1)
@@ -39,8 +41,9 @@ export default function OrdersPage() {
   const filteredRows = useMemo(() => {
     const byTab = filterOrdersByTab(rows, activeTab)
     const byCustomer = filterOrdersByCustomerType(byTab, customerTypeFilter)
-    return filterOrdersByStatus(byCustomer, statusFilter)
-  }, [rows, activeTab, customerTypeFilter, statusFilter])
+    const byStatus = filterOrdersByStatus(byCustomer, statusFilter)
+    return filterOrdersBySearch(byStatus, searchQuery)
+  }, [rows, activeTab, customerTypeFilter, statusFilter, searchQuery])
 
   const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
@@ -146,10 +149,18 @@ export default function OrdersPage() {
         activeTab={activeTab}
         onTabChange={(id) => {
           setActiveTab(id)
+          setSearchQuery('')
           setCustomerTypeFilter('all')
           setStatusFilter('all')
           setPage(1)
         }}
+        showSearch
+        searchValue={searchQuery}
+        onSearchChange={(value) => {
+          setSearchQuery(value)
+          setPage(1)
+        }}
+        searchPlaceholder={t(`${I18N_KEY}.searchPlaceholder`)}
         showFilters
         filterLabel={t(`${I18N_KEY}.filterLabel`)}
         filters={[

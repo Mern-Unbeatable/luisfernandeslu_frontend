@@ -12,7 +12,7 @@ import {
   DEMO_CREATE_AUCTION_FACTORY_PLACEHOLDERS,
 } from '@/data/demoData'
 
-const PAGE_SIZE = 6
+const PAGE_SIZE = 4
 
 const ACTIVE_AUCTIONS = [
   DEMO_AUCTION_CREATED,
@@ -309,7 +309,7 @@ export default function DeliveryLogisticsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {pagedActiveAuctions.map((auction) => (
             <AuctionCard
               key={auction.id}
@@ -338,7 +338,7 @@ export default function DeliveryLogisticsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {pagedAssignedDeliveries.map((auction) => (
             <AuctionCard
               key={auction.id}

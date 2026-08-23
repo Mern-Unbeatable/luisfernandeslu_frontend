@@ -4,6 +4,11 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { FiMail, FiLock } from 'react-icons/fi'
 import { setCredentials } from '../../features/auth/authSlice'
+import { useLoginMutation } from '../../features/auth/authApi'
+import {
+  API_LOGIN_ROLES,
+  getAuthErrorMessage,
+} from '../../features/auth/authUtils'
 import {
   findDemoUser,
   getHomePathForRole,
@@ -18,7 +23,6 @@ import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
 import AuthDemoAccounts from '../../components/auth/AuthDemoAccounts'
 import AuthLegalNote from '../../components/auth/AuthLegalNote'
 
-/** Single login form — photo / marketing / admin (/admin/login) */
 export default function LoginPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -41,6 +45,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [error, setError] = useState('')
+  const [login, { isLoading }] = useLoginMutation()
 
   if (roleParam === 'admin') {
     return <Navigate to="/admin/login" replace />
@@ -49,6 +54,8 @@ export default function LoginPage() {
   if (!roleValid) {
     return <Navigate to="/login" replace />
   }
+
+  const usesApiLogin = Boolean(role && API_LOGIN_ROLES.has(role))
 
   const completeLogin = (demoUser) => {
     dispatch(
@@ -66,8 +73,45 @@ export default function LoginPage() {
     navigate(getHomePathForRole(demoUser.role), { replace: true })
   }
 
-  const onSubmit = (event) => {
+  const loginWithApi = async (credentials) => {
+    setError('')
+
+    try {
+      const data = await login({
+        role,
+        email: credentials.email.trim(),
+        password: credentials.password,
+      }).unwrap()
+
+      if (data?.success === false) {
+        setError(getAuthErrorMessage(data, t('auth.invalidCredentials')))
+        return
+      }
+
+      navigate(getHomePathForRole(data?.user?.role || role), { replace: true })
+    } catch (err) {
+      const status = err?.status
+      if (status === 'FETCH_ERROR' || !status) {
+        setError(
+          t('auth.networkError', {
+            defaultValue:
+              'Cannot reach the server. Check your connection or API URL.',
+          }),
+        )
+        return
+      }
+      setError(getAuthErrorMessage(err, t('auth.invalidCredentials')))
+    }
+  }
+
+  const onSubmit = async (event) => {
     event.preventDefault()
+
+    if (usesApiLogin) {
+      await loginWithApi({ email, password })
+      return
+    }
+
     const demoUser = findDemoUser(email, password)
     if (!demoUser) {
       setError(t('auth.invalidCredentials'))
@@ -199,7 +243,7 @@ export default function LoginPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton>
+        <AuthSubmitButton disabled={isLoading}>
           {loginCfg.submitKey
             ? t(loginCfg.submitKey)
             : isMarketing
@@ -231,17 +275,21 @@ export default function LoginPage() {
         />
       ) : null}
 
-      {role ? (
+      {/* {role ? (
         <AuthDemoAccounts
           role={role}
           onUse={(user) => {
             setEmail(user.email)
             setPassword(user.password)
+            if (usesApiLogin) {
+              void loginWithApi(user)
+              return
+            }
             setError('')
             completeLogin(user)
           }}
         />
-      ) : null}
+      ) : null} */}
     </div>
   )
 }

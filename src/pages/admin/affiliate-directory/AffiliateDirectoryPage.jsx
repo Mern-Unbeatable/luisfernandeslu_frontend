@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   FiClock,
   FiDollarSign,
@@ -9,11 +9,11 @@ import {
   FiUsers,
 } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import SegmentedTabs from '@/components/common/SegmentedTabs/SegmentedTabs'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
 import SupplierRowActionMenu from '../supplier-management/components/SupplierRowActionMenu'
 import AffiliateStatusBadge from './components/AffiliateStatusBadge'
-import AffiliateDirectoryTabsBar from './components/AffiliateDirectoryTabsBar'
 import LevelControlSection from './sections/LevelControlSection'
 import PayoutControlSection from './sections/PayoutControlSection'
 import {
@@ -27,6 +27,11 @@ import {
 
 const I18N_KEY = 'adminAffiliateDirectory'
 const PAGE_SIZE = 7
+const VALID_MAIN_TABS = new Set(['members', 'payout', 'level'])
+
+function resolveMainTab(tabParam) {
+  return VALID_MAIN_TABS.has(tabParam) ? tabParam : 'members'
+}
 
 function ActiveClientsCell({ active, cap }) {
   return (
@@ -53,7 +58,8 @@ function CommissionEarnedCell({ earned, pending, pendingLabel }) {
 export default function AffiliateDirectoryPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('members')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const activeTab = resolveMainTab(searchParams.get('tab'))
   const [statusFilter, setStatusFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
@@ -293,6 +299,21 @@ export default function AffiliateDirectoryPage() {
         </p>
       </header>
 
+      <SegmentedTabs
+        standalone
+        tabs={mainTabs}
+        activeTab={activeTab}
+        onTabChange={(id) => {
+          setPage(1)
+          setSearchQuery('')
+          if (id === 'members') {
+            setSearchParams({}, { replace: true })
+          } else {
+            setSearchParams({ tab: id }, { replace: true })
+          }
+        }}
+      />
+
       {activeTab === 'members' ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
           {statCards.map((card) => (
@@ -308,15 +329,6 @@ export default function AffiliateDirectoryPage() {
           ))}
         </div>
       ) : null}
-
-      <AffiliateDirectoryTabsBar
-        tabs={mainTabs}
-        activeTab={activeTab}
-        onTabChange={(id) => {
-          setActiveTab(id)
-          setPage(1)
-        }}
-      />
 
       {activeTab === 'members' ? (
         <DataTable

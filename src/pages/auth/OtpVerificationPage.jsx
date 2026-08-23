@@ -2,26 +2,29 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AuthSubmitButton } from '../../components/auth/AuthField'
+import {
+  useForgotPasswordMutation,
+  useVerifyResetOtpMutation,
+} from '../../features/auth/authApi'
+import {
+  getAuthErrorMessage,
+  readForgotPasswordSession,
+  writeForgotPasswordSession,
+} from '../../features/auth/authUtils'
 
 const OTP_LENGTH = 5
-
-function readForgotSession() {
-  try {
-    return JSON.parse(sessionStorage.getItem('forgotPassword') || 'null')
-  } catch {
-    return null
-  }
-}
 
 /** Step 2 — enter email OTP */
 export default function OtpVerificationPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const session = readForgotSession()
+  const session = readForgotPasswordSession()
   const [digits, setDigits] = useState(() => Array(OTP_LENGTH).fill(''))
   const [error, setError] = useState('')
   const [resendHint, setResendHint] = useState('')
   const inputsRef = useRef([])
+  const [verifyResetOtp, { isLoading: isVerifying }] = useVerifyResetOtpMutation()
+  const [forgotPassword, { isLoading: isResending }] = useForgotPasswordMutation()
 
   useEffect(() => {
     inputsRef.current[0]?.focus()
@@ -62,26 +65,64 @@ export default function OtpVerificationPage() {
     inputsRef.current[Math.min(pasted.length, OTP_LENGTH - 1)]?.focus()
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault()
     const code = digits.join('')
     if (code.length !== OTP_LENGTH) {
       setError(t('auth.forgot.otpIncomplete'))
       return
     }
+
     setError('')
-    sessionStorage.setItem(
-      'forgotPassword',
-      JSON.stringify({ ...session, otpVerified: true }),
-    )
-    navigate('/forgot-password/reset')
+    setResendHint('')
+
+    try {
+      const data = await verifyResetOtp({
+        email: session.email,
+        otp: code,
+      }).unwrap()
+
+      if (data?.success === false) {
+        setError(getAuthErrorMessage(data, t('auth.forgot.verifyFailed')))
+        return
+      }
+
+      writeForgotPasswordSession({
+        ...session,
+        email: data.email || session.email,
+        resetToken: data.resetToken,
+        otpVerified: true,
+        resetMessage: data.message,
+      })
+      navigate('/forgot-password/reset')
+    } catch (err) {
+      setError(getAuthErrorMessage(err, t('auth.forgot.verifyFailed')))
+    }
   }
 
-  const onResend = () => {
-    setDigits(Array(OTP_LENGTH).fill(''))
+  const onResend = async () => {
     setError('')
-    setResendHint(t('auth.forgot.otpResent'))
-    inputsRef.current[0]?.focus()
+    setResendHint('')
+
+    try {
+      const data = await forgotPassword({ email: session.email }).unwrap()
+
+      if (data?.success === false) {
+        setError(getAuthErrorMessage(data, t('auth.forgot.requestFailed')))
+        return
+      }
+
+      writeForgotPasswordSession({
+        ...session,
+        message: data.message,
+        otpExpiresAt: data.otpExpiresAt,
+      })
+      setDigits(Array(OTP_LENGTH).fill(''))
+      setResendHint(data.message || t('auth.forgot.otpResent'))
+      inputsRef.current[0]?.focus()
+    } catch (err) {
+      setError(getAuthErrorMessage(err, t('auth.forgot.requestFailed')))
+    }
   }
 
   return (
@@ -91,7 +132,7 @@ export default function OtpVerificationPage() {
           {t('auth.forgot.otpTitle')}
         </h1>
         <p className="mt-2 text-sm text-[var(--secondary-text)] sm:text-base">
-          {t('auth.forgot.otpSubtitle')}
+          {session.message || t('auth.forgot.otpSubtitle')}
         </p>
         <p className="mt-1 text-sm font-medium text-[var(--primary-text)]">
           {session.email}
@@ -134,7 +175,9 @@ export default function OtpVerificationPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton>{t('auth.forgot.verify')}</AuthSubmitButton>
+        <AuthSubmitButton disabled={isVerifying}>
+          {t('auth.forgot.verify')}
+        </AuthSubmitButton>
       </form>
 
       <p className="mt-6 text-center text-sm text-[var(--secondary-text)]">
@@ -142,7 +185,8 @@ export default function OtpVerificationPage() {
         <button
           type="button"
           onClick={onResend}
-          className="font-semibold text-[var(--active)] hover:underline"
+          disabled={isResending}
+          className="font-semibold text-[var(--active)] hover:underline disabled:cursor-not-allowed disabled:opacity-60"
         >
           {t('auth.forgot.resend')}
         </button>
