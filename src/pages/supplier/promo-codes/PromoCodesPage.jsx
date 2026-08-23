@@ -9,12 +9,16 @@ import ProductDetails from '@/components/data-display/ProductDetails/ProductDeta
 import DataTable from '@/components/data-display/DataTable/DataTable';
 import StatusBadge from '@/components/data-display/DataTable/StatusBadge';
 import {
-  DEMO_SUPPLIER_PROMO_CODES,
   DEMO_SUPPLIER_PROMO_PRODUCTS,
   SUPPLIER_PROMO_CODES_PAGE_SIZE,
   SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE,
   getPromoProductDetail,
 } from '@/data/demoData';
+import {
+  useDeletePromoCodeMutation,
+  useGetPromoCodesQuery,
+  useUpdatePromoCodeStatusMutation,
+} from '@/features/supplier/promo-codes/promoCodesApi';
 import DeleteProductModal from '@/pages/supplier/products/DeleteProductModal';
 
 const TAB_IDS = {
@@ -40,28 +44,54 @@ export default function PromoCodesPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [promoCodePage, setPromoCodePage] = useState(1);
-  const [promoCodes, setPromoCodes] = useState(DEMO_SUPPLIER_PROMO_CODES);
   const [promoProducts, setPromoProducts] = useState(
     DEMO_SUPPLIER_PROMO_PRODUCTS,
   );
+  const { data: promoCodeResponse, isLoading, isFetching } = useGetPromoCodesQuery({
+    status: statusFilter,
+    page: promoCodePage,
+    limit: SUPPLIER_PROMO_CODES_PAGE_SIZE,
+  });
+  const [updatePromoCodeStatus] = useUpdatePromoCodeStatusMutation();
+  const [deletePromoCode] = useDeletePromoCodeMutation();
   const [promoProductPage, setPromoProductPage] = useState(1);
   const [selectedPromoProduct, setSelectedPromoProduct] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
-
-  // TODO: replace DEMO_* with supplier promo codes API fetch
 
   useEffect(() => {
     if (location.state?.tab === TAB_IDS.promoProduct) {
       setActiveTab(TAB_IDS.promoProduct);
     }
   }, [location.state]);
-  const handleStatusChange = useCallback((row, status) => {
-    setPromoCodes((prev) =>
-      prev.map((item) => (item.id === row.id ? { ...item, status } : item)),
-    );
-    // TODO: wire promo code status API
-  }, []);
+
+  const promoCodes = useMemo(
+    () => promoCodeResponse?.promoCodes ?? [],
+    [promoCodeResponse],
+  );
+
+  const promoCodeTotal = promoCodeResponse?.total ?? promoCodes.length;
+  const promoCodePageCount = Math.max(
+    1,
+    Math.ceil(promoCodeTotal / SUPPLIER_PROMO_CODES_PAGE_SIZE),
+  );
+  const safePromoCodePage = Math.min(promoCodePage, promoCodePageCount);
+
+  useEffect(() => {
+    if (promoCodePage > promoCodePageCount) {
+      setPromoCodePage(promoCodePageCount);
+    }
+  }, [promoCodePage, promoCodePageCount]);
+
+  const handleStatusChange = useCallback(
+    (row, status) => {
+      updatePromoCodeStatus({
+        id: row.id,
+        isActive: status === 'active',
+      });
+    },
+    [updatePromoCodeStatus],
+  );
 
   const tabs = useMemo(
     () => [
@@ -126,26 +156,21 @@ export default function PromoCodesPage() {
     });
   }, [promoCodes, statusFilter, search, t]);
 
-  const promoCodeTotal = filteredPromoCodes.length;
-  const promoCodePageCount = Math.max(
-    1,
-    Math.ceil(promoCodeTotal / SUPPLIER_PROMO_CODES_PAGE_SIZE),
-  );
-  const safePromoCodePage = Math.min(promoCodePage, promoCodePageCount);
+  const renderedPromoCodeTotal = filteredPromoCodes.length;
   const pagedPromoCodes = filteredPromoCodes.slice(
     (safePromoCodePage - 1) * SUPPLIER_PROMO_CODES_PAGE_SIZE,
     safePromoCodePage * SUPPLIER_PROMO_CODES_PAGE_SIZE,
   );
   const promoCodeFrom =
-    promoCodeTotal === 0
+    renderedPromoCodeTotal === 0
       ? 0
       : (safePromoCodePage - 1) * SUPPLIER_PROMO_CODES_PAGE_SIZE + 1;
   const promoCodeTo =
-    promoCodeTotal === 0
+    renderedPromoCodeTotal === 0
       ? 0
       : Math.min(
           safePromoCodePage * SUPPLIER_PROMO_CODES_PAGE_SIZE,
-          promoCodeTotal,
+          renderedPromoCodeTotal,
         );
 
   const promoProductTotalPages = Math.max(
@@ -247,8 +272,8 @@ export default function PromoCodesPage() {
       {
         id: 'delete',
         label: t('panel.supplierPromoCodes.actionDelete'),
-        onClick: () => {
-          // TODO: wire delete promo code API
+        onClick: (row) => {
+          deletePromoCode(row.id);
         },
       },
       {
@@ -272,7 +297,7 @@ export default function PromoCodesPage() {
         onClick: (row) => handleStatusChange(row, 'expired'),
       },
     ],
-    [t, handleStatusChange],
+    [t, handleStatusChange, deletePromoCode],
   );
 
   const promoProductActions = useMemo(
@@ -436,7 +461,7 @@ export default function PromoCodesPage() {
           pagination={{
             page: safePromoCodePage,
             pageSize: SUPPLIER_PROMO_CODES_PAGE_SIZE,
-            total: promoCodeTotal,
+            total: renderedPromoCodeTotal,
             from: promoCodeFrom,
             to: promoCodeTo,
             hasPrevious: safePromoCodePage > 1,
@@ -445,7 +470,7 @@ export default function PromoCodesPage() {
             summaryLabel: t('panel.supplierPromoCodes.showingResults', {
               from: promoCodeFrom,
               to: promoCodeTo,
-              total: promoCodeTotal,
+              total: renderedPromoCodeTotal,
             }),
             previousLabel: t('panel.supplierPromoCodes.previous'),
             nextLabel: t('panel.supplierPromoCodes.next'),
