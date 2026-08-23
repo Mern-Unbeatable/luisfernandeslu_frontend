@@ -1,11 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { axiosInstance } from './axiosInstance'
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { axiosInstance } from "./axiosInstance";
 
 const axiosBaseQuery =
-  ({ baseUrl } = { baseUrl: '' }) =>
+  ({ baseUrl } = { baseUrl: "" }) =>
   async ({
     url,
-    method = 'GET',
+    method = "GET",
     data,
     params,
     headers,
@@ -14,7 +14,7 @@ const axiosBaseQuery =
   }) => {
     try {
       const isFormData =
-        typeof FormData !== 'undefined' && data instanceof FormData
+        typeof FormData !== "undefined" && data instanceof FormData;
       const result = await axiosInstance({
         url: baseUrl + url,
         method,
@@ -23,33 +23,33 @@ const axiosBaseQuery =
         responseType,
         skipAuthRefresh,
         headers: isFormData
-          ? { ...headers, 'Content-Type': undefined }
+          ? { ...headers, "Content-Type": undefined }
           : headers,
-      })
+      });
 
-      return { data: result.data }
+      return { data: result.data };
     } catch (axiosError) {
       return {
         error: {
           status: axiosError.response?.status,
           data: axiosError.response?.data || axiosError.message,
         },
-      }
+      };
     }
-  }
+  };
 
 export const baseApi = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: axiosBaseQuery(),
   tagTypes: [
-    'Auth',
-    'User',
-    'Product',
-    'Order',
-    'Inventory',
-    'Category',
-    'Promotion',
-    'PromoCode',
+    "Auth",
+    "User",
+    "Product",
+    "Order",
+    "Inventory",
+    "Category",
+    "Promotion",
+    "PromoCode",
   ],
   endpoints: () => ({}),
-})
+});
