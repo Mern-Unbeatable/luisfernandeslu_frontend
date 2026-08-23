@@ -2828,6 +2828,7 @@
     "uploadCsv": "Subir archivo CSV",
     "filters": "Filtros:",
     "allCategories": "Todas las categorías",
+    "searchPlaceholder": "Buscar SKU, título, estado...",
     "tabs": {
       "all": "Todos",
       "active": "Activos",
@@ -2847,15 +2848,21 @@
     "untitled": "Sin título",
     "uploadModal": {
       "title": "Sube tu archivo",
-      "hint": "Solo XLSX · Máx. 10 MB · La primera hoja debe llamarse \"Sheet1\"",
-      "dropTitle": "Suelta tu XLSX aquí, o haz clic para buscar",
-      "dropNote": "Lo pondremos en cola en cuanto pulses Queue Import.",
+      "hint": "Solo CSV · Máx. 10 MB · Máx. 100 filas",
+      "dropTitle": "Suelta tu CSV aquí, o haz clic para buscar",
+      "dropNote": "Lo subiremos en cuanto pulses Queue Import.",
       "selected": "Seleccionado: {{name}}",
-      "downloadExample": "Descargar ejemplo",
+      "downloadExample": "Descargar plantilla",
+      "downloadCategoryGuide": "Guía de categorías",
       "queueImport": "Queue Import",
+      "uploading": "Subiendo…",
+      "downloading": "Descargando…",
+      "uploadFailed": "Error al subir. Inténtalo de nuevo.",
+      "downloadFailed": "No se pudo descargar la plantilla CSV.",
+      "downloadGuideFailed": "No se pudo descargar la guía de categorías.",
       "closeOverlay": "Cerrar superposición",
       "close": "Cerrar",
-      "browseAria": "Buscar archivo XLSX"
+      "browseAria": "Buscar archivo CSV"
     }
   },
   "factoryOrders": {

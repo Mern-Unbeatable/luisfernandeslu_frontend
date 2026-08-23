@@ -5,27 +5,29 @@ import { FiDownload, FiUploadCloud, FiX } from 'react-icons/fi'
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
-function isXlsxFile(file) {
+function isCsvFile(file) {
   if (!file) return false
   const name = String(file.name || '').toLowerCase()
-  return (
-    name.endsWith('.xlsx') ||
-    file.type ===
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  )
+  return name.endsWith('.csv') || file.type === 'text/csv' || file.type === 'application/vnd.ms-excel'
 }
 
 export default function UploadXlsxModal({
   open,
   onClose,
   onDownloadExample,
+  onDownloadCategoryGuide,
   onQueueImport,
+  uploading = false,
+  downloadingTemplate = false,
+  downloadingGuide = false,
 }) {
   const { t } = useTranslation()
   const inputRef = useRef(null)
   const [file, setFile] = useState(null)
   const [error, setError] = useState('')
   const [dragging, setDragging] = useState(false)
+
+  const busy = uploading || downloadingTemplate || downloadingGuide
 
   useEffect(() => {
     if (!open) return undefined
@@ -34,7 +36,7 @@ export default function UploadXlsxModal({
     setDragging(false)
 
     const onKey = (event) => {
-      if (event.key === 'Escape') onClose?.()
+      if (event.key === 'Escape' && !busy) onClose?.()
     }
     document.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
@@ -43,13 +45,13 @@ export default function UploadXlsxModal({
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prev
     }
-  }, [open, onClose])
+  }, [open, onClose, busy])
 
   if (!open) return null
 
   const acceptFile = (nextFile) => {
     if (!nextFile) return
-    if (!isXlsxFile(nextFile)) {
+    if (!isCsvFile(nextFile)) {
       setError(t('factoryProducts.uploadModal.hint'))
       setFile(null)
       return
@@ -63,25 +65,43 @@ export default function UploadXlsxModal({
     setFile(nextFile)
   }
 
+  const handleQueueImport = async () => {
+    if (!file || busy) return
+    setError('')
+    try {
+      await onQueueImport?.(file)
+    } catch (err) {
+      setError(
+        err?.data?.message
+        || err?.message
+        || t('factoryProducts.uploadModal.uploadFailed', {
+          defaultValue: 'Upload failed. Please try again.',
+        }),
+      )
+    }
+  }
+
   return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={t('factoryProducts.uploadModal.closeOverlay')}
         className="absolute inset-0 bg-black/45"
-        onClick={onClose}
+        onClick={() => {
+          if (!busy) onClose?.()
+        }}
       />
 
       <div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="upload-xlsx-title"
+        aria-labelledby="upload-csv-title"
         className="relative z-10 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl sm:p-6"
       >
         <div className="mb-5 flex items-start justify-between gap-3">
           <div>
             <h2
-              id="upload-xlsx-title"
+              id="upload-csv-title"
               className="text-lg font-bold text-[var(--primary-text)]"
             >
               {t('factoryProducts.uploadModal.title')}
@@ -94,7 +114,8 @@ export default function UploadXlsxModal({
             type="button"
             aria-label={t('factoryProducts.uploadModal.close')}
             onClick={onClose}
-            className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-[var(--secondary-text)] hover:bg-gray-200"
+            disabled={busy}
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-[var(--secondary-text)] hover:bg-gray-200 disabled:opacity-50"
           >
             <FiX className="size-4" />
           </button>
@@ -103,7 +124,7 @@ export default function UploadXlsxModal({
         <input
           ref={inputRef}
           type="file"
-          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          accept=".csv,text/csv"
           className="sr-only"
           aria-label={t('factoryProducts.uploadModal.browseAria')}
           onChange={(event) => {
@@ -115,6 +136,7 @@ export default function UploadXlsxModal({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
+          disabled={busy}
           onDragEnter={(event) => {
             event.preventDefault()
             setDragging(true)
@@ -132,7 +154,7 @@ export default function UploadXlsxModal({
             setDragging(false)
             acceptFile(event.dataTransfer.files?.[0] || null)
           }}
-          className={`flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-10 text-center transition ${
+          className={`flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-10 text-center transition disabled:cursor-not-allowed disabled:opacity-60 ${
             dragging
               ? 'border-[var(--active)] bg-[#FFF8F0]'
               : 'border-gray-200 bg-[#F8FAFC] hover:border-[var(--active)] hover:bg-[#FFFBF5]'
@@ -157,22 +179,49 @@ export default function UploadXlsxModal({
           ) : null}
         </button>
 
-        <div className="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 flex flex-col gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <button
+              type="button"
+              onClick={onDownloadExample}
+              disabled={busy}
+              className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50 disabled:opacity-50"
+            >
+              <FiDownload className="size-4" aria-hidden />
+              {downloadingTemplate
+                ? t('factoryProducts.uploadModal.downloading', {
+                    defaultValue: 'Downloading…',
+                  })
+                : t('factoryProducts.uploadModal.downloadExample')}
+            </button>
+            <button
+              type="button"
+              onClick={onDownloadCategoryGuide}
+              disabled={busy}
+              className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50 disabled:opacity-50"
+            >
+              <FiDownload className="size-4" aria-hidden />
+              {downloadingGuide
+                ? t('factoryProducts.uploadModal.downloading', {
+                    defaultValue: 'Downloading…',
+                  })
+                : t('factoryProducts.uploadModal.downloadCategoryGuide', {
+                    defaultValue: 'Category guide',
+                  })}
+            </button>
+          </div>
+
           <button
             type="button"
-            onClick={onDownloadExample}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50"
+            onClick={handleQueueImport}
+            disabled={!file || busy}
+            className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-[var(--active)] px-5 text-sm font-semibold text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <FiDownload className="size-4" aria-hidden />
-            {t('factoryProducts.uploadModal.downloadExample')}
-          </button>
-          <button
-            type="button"
-            onClick={() => onQueueImport?.(file)}
-            disabled={!file}
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--active)] px-5 text-sm font-semibold text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {t('factoryProducts.uploadModal.queueImport')}
+            {uploading
+              ? t('factoryProducts.uploadModal.uploading', {
+                  defaultValue: 'Uploading…',
+                })
+              : t('factoryProducts.uploadModal.queueImport')}
           </button>
         </div>
       </div>

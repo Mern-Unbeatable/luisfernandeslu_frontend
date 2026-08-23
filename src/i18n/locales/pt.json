@@ -2828,6 +2828,7 @@
     "uploadCsv": "Carregar ficheiro CSV",
     "filters": "Filtros:",
     "allCategories": "Todas as categorias",
+    "searchPlaceholder": "Pesquisar SKU, título, estado...",
     "tabs": {
       "all": "Todos",
       "active": "Ativos",
@@ -2847,15 +2848,21 @@
     "untitled": "Sem título",
     "uploadModal": {
       "title": "Carregue o seu ficheiro",
-      "hint": "Apenas XLSX · Máx. 10 MB · A primeira folha deve chamar-se \"Sheet1\"",
-      "dropTitle": "Largue o XLSX aqui, ou clique para procurar",
-      "dropNote": "Vamos colocar na fila assim que clicar em Queue Import.",
+      "hint": "Apenas CSV · Máx. 10 MB · Máx. 100 linhas",
+      "dropTitle": "Largue o CSV aqui, ou clique para procurar",
+      "dropNote": "Vamos carregar assim que clicar em Queue Import.",
       "selected": "Selecionado: {{name}}",
-      "downloadExample": "Descarregar exemplo",
+      "downloadExample": "Descarregar modelo",
+      "downloadCategoryGuide": "Guia de categorias",
       "queueImport": "Queue Import",
+      "uploading": "A carregar…",
+      "downloading": "A descarregar…",
+      "uploadFailed": "Falha no carregamento. Tente novamente.",
+      "downloadFailed": "Falha ao descarregar o modelo CSV.",
+      "downloadGuideFailed": "Falha ao descarregar o guia de categorias.",
       "closeOverlay": "Fechar sobreposição",
       "close": "Fechar",
-      "browseAria": "Procurar ficheiro XLSX"
+      "browseAria": "Procurar ficheiro CSV"
     }
   },
   "factoryOrders": {

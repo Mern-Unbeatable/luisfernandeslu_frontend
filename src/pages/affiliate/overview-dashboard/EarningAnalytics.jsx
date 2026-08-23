@@ -30,26 +30,44 @@ function getFilterLabel(option) {
   return typeof option === 'string' ? option : option.label
 }
 
+function buildYTicks(maxValue) {
+  const safeMax = Math.max(Number(maxValue) || 0, 1)
+  const step = safeMax / 4
+  return [0, step, step * 2, step * 3, safeMax]
+}
+
 export default function EarningAnalytics({
   title = 'Earning Analytics',
   subtitle = 'Track earning',
   filterAriaLabel = 'Earning analytics period filter',
   labels = [],
+  values = [],
+  amountLabels = [],
   series = {},
   filterOptions = ['This year', 'Last year'],
   defaultFilter,
+  filter: controlledFilter,
+  onFilterChange,
 }) {
-  const [filter, setFilter] = useState(
+  const [internalFilter, setInternalFilter] = useState(
     defaultFilter || getFilterValue(filterOptions[0]) || 'This year',
   )
+  const filter =
+    controlledFilter != null ? controlledFilter : internalFilter
 
-  const values = series[filter] || Object.values(series)[0] || []
+  const chartValues =
+    values.length > 0
+      ? values
+      : series[filter] || Object.values(series)[0] || []
+
+  const maxAmount = Math.max(0, ...chartValues.map((value) => Number(value) || 0))
+  const yTicks = buildYTicks(maxAmount)
 
   const chartData = {
     labels,
     datasets: [
       {
-        data: values,
+        data: chartValues,
         borderColor: BRAND,
         borderWidth: 3.5,
         tension: 0.4,
@@ -92,7 +110,11 @@ export default function EarningAnalytics({
         padding: 10,
         displayColors: false,
         callbacks: {
-          label: (context) => `€${Number(context.raw).toLocaleString()}`,
+          label: (context) => {
+            const labelFromApi = amountLabels[context.dataIndex]
+            if (labelFromApi != null && labelFromApi !== '') return labelFromApi
+            return String(context.raw ?? '')
+          },
         },
       },
     },
@@ -107,16 +129,19 @@ export default function EarningAnalytics({
       },
       y: {
         min: 0,
-        max: 1978,
+        max: yTicks[yTicks.length - 1],
         afterBuildTicks: (axis) => {
-          axis.ticks = [0, 494, 989, 1483, 1978].map((value) => ({ value }))
+          axis.ticks = yTicks.map((value) => ({ value }))
         },
         ticks: {
           color: '#9ca3af',
           font: { size: 11 },
           callback: (value) => {
-            const rounded = Math.round(value)
-            return rounded === 0 ? '€0' : `€${rounded.toLocaleString()}`
+            const rounded = Number(value)
+            if (rounded === 0) return '0'
+            return Number.isInteger(rounded)
+              ? String(rounded)
+              : rounded.toFixed(2)
           },
         },
         grid: {
@@ -146,7 +171,11 @@ export default function EarningAnalytics({
         <label className="relative inline-flex w-full max-w-full shrink-0 overflow-hidden self-start sm:w-auto">
           <select
             value={filter}
-            onChange={(event) => setFilter(event.target.value)}
+            onChange={(event) => {
+              const next = event.target.value
+              if (controlledFilter == null) setInternalFilter(next)
+              onFilterChange?.(next)
+            }}
             className="h-9 w-full max-w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:w-auto"
             aria-label={filterAriaLabel}
           >

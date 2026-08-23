@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import {
   FiArrowDownLeft,
   FiBarChart2,
@@ -9,172 +10,44 @@ import {
 } from 'react-icons/fi'
 import StatusCard from '@/components/data-display/StatusCard'
 import DataTable from '@/components/data-display/DataTable/DataTable'
+import {
+  useCreateAffiliateWithdrawalMutation,
+  useGetAffiliateEarningsQuery,
+} from '@/features/affiliate/affiliateEarningsApi'
 
-const INITIAL_HISTORY = [
-  {
-    id: 1,
-    date: 'Jul 5, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0122',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 2,
-    date: 'Jul 6, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0120',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 3,
-    date: 'Jul 7, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0100',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 4,
-    date: 'Jul 8, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0118',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 5,
-    date: 'Jul 9, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0144',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 6,
-    date: 'Jul 10, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0166',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 7,
-    date: 'Jul 11, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0188',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 8,
-    date: 'Jul 12, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0199',
-    amount: '€980.00',
-    status: 'Approved',
-  },
-  {
-    id: 9,
-    date: 'Jul 13, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0133',
-    amount: '€2,100.00',
-    status: 'Pending',
-  },
-  {
-    id: 10,
-    date: 'Jul 14, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0155',
-    amount: '€750.00',
-    status: 'Approved',
-  },
-  {
-    id: 11,
-    date: 'Jul 15, 2025',
-    type: 'Withdrawal',
-    accountType: 'Bank Transfer',
-    accountNumber: '458721369845',
-    amount: '€400.00',
-    status: 'Approved',
-  },
-  {
-    id: 12,
-    date: 'Jul 16, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0177',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-  {
-    id: 13,
-    date: 'Jul 17, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0201',
-    amount: '€1,500.00',
-    status: 'Pending',
-  },
-  {
-    id: 14,
-    date: 'Jul 18, 2025',
-    type: 'Withdrawal',
-    accountType: 'Stripe',
-    accountNumber: '(702) 555-0212',
-    amount: '€1,250.00',
-    status: 'Approved',
-  },
-]
-
-const PAGE_SIZE = 7
+const PAGE_SIZE = 20
 
 const EMPTY_WITHDRAW = {
-  amount: '€ 400.00',
-  businessName: 'Marlin Transport & Logistics',
-  routingNumber: '021000021',
-  accountNumber: '458721369845',
-}
-
-const TYPE_I18N_KEYS = {
-  Withdrawal: 'withdrawal',
-}
-
-const ACCOUNT_TYPE_I18N_KEYS = {
-  Stripe: 'stripe',
-  'Bank Transfer': 'bankTransfer',
-}
-
-const STATUS_I18N_KEYS = {
-  Approved: 'approved',
-  Pending: 'pending',
+  amount: '',
+  businessName: '',
+  accountNumber: '',
 }
 
 function getTypeLabel(type, t) {
-  const key = TYPE_I18N_KEYS[type]
-  return key ? t(`affiliateCommissions.type.${key}`) : type
+  const key = String(type || '').toLowerCase()
+  if (key === 'withdrawal') {
+    return t('affiliateCommissions.type.withdrawal')
+  }
+  return type
 }
 
 function getAccountTypeLabel(accountType, t) {
-  const key = ACCOUNT_TYPE_I18N_KEYS[accountType]
-  return key ? t(`affiliateCommissions.accountType.${key}`) : accountType
+  const key = String(accountType || '')
+    .toLowerCase()
+    .replace(/\s+/g, '')
+  if (key === 'stripe') return t('affiliateCommissions.accountType.stripe')
+  if (key === 'banktransfer') {
+    return t('affiliateCommissions.accountType.bankTransfer')
+  }
+  return accountType
 }
 
 function getStatusLabel(status, t) {
-  const key = STATUS_I18N_KEYS[status]
-  return key ? t(`affiliateCommissions.status.${key}`) : status
+  const key = String(status || '').toLowerCase()
+  if (key === 'approved' || key === 'pending') {
+    return t(`affiliateCommissions.status.${key}`)
+  }
+  return status
 }
 
 function StatusPill({ status, label }) {
@@ -223,7 +96,34 @@ function getColumns(t) {
   ]
 }
 
-function WithdrawModal({ open, form, onChange, onClose, onSubmit }) {
+function mapPaymentRow(item) {
+  return {
+    id: item.id,
+    date: item.date ?? item.createdAt ?? item.paymentDate ?? '',
+    type: item.type ?? '',
+    accountType: item.accountType ?? '',
+    accountNumber: item.accountNumber ?? item.ibanNumber ?? '',
+    amount:
+      item.amountLabel != null && item.amountLabel !== ''
+        ? item.amountLabel
+        : item.amount,
+    status: item.status ?? '',
+  }
+}
+
+function parseAmount(value) {
+  const amount = Number(String(value).replace(/[^0-9.-]/g, ''))
+  return Number.isFinite(amount) ? amount : NaN
+}
+
+function WithdrawModal({
+  open,
+  form,
+  onChange,
+  onClose,
+  onSubmit,
+  isSubmitting,
+}) {
   const { t } = useTranslation()
 
   useEffect(() => {
@@ -287,10 +187,13 @@ function WithdrawModal({ open, form, onChange, onClose, onSubmit }) {
         >
           <Field label={t('affiliateCommissions.withdraw.amount')}>
             <input
-              type="text"
+              type="number"
+              min="0"
+              step="0.01"
               value={form.amount}
               onChange={setField('amount')}
               className={inputClass}
+              required
             />
           </Field>
           <Field label={t('affiliateCommissions.withdraw.businessName')}>
@@ -299,14 +202,7 @@ function WithdrawModal({ open, form, onChange, onClose, onSubmit }) {
               value={form.businessName}
               onChange={setField('businessName')}
               className={inputClass}
-            />
-          </Field>
-          <Field label={t('affiliateCommissions.withdraw.routingNumber')}>
-            <input
-              type="text"
-              value={form.routingNumber}
-              onChange={setField('routingNumber')}
-              className={inputClass}
+              required
             />
           </Field>
           <Field label={t('affiliateCommissions.withdraw.accountNumber')}>
@@ -315,6 +211,7 @@ function WithdrawModal({ open, form, onChange, onClose, onSubmit }) {
               value={form.accountNumber}
               onChange={setField('accountNumber')}
               className={inputClass}
+              required
             />
           </Field>
 
@@ -322,13 +219,15 @@ function WithdrawModal({ open, form, onChange, onClose, onSubmit }) {
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-[var(--active)] bg-white text-sm font-semibold text-[var(--active)] transition hover:bg-[#FFFBF5]"
+              disabled={isSubmitting}
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-[var(--active)] bg-white text-sm font-semibold text-[var(--active)] transition hover:bg-[#FFFBF5] disabled:opacity-60"
             >
               {t('affiliateCommissions.withdraw.cancel')}
             </button>
             <button
               type="submit"
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-[var(--active)] text-sm font-semibold text-white transition hover:brightness-95"
+              disabled={isSubmitting}
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-[var(--active)] text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
             >
               {t('affiliateCommissions.withdraw.submit')}
             </button>
@@ -355,63 +254,96 @@ const inputClass =
   'h-11 w-full rounded-xl border border-gray-200 bg-white px-3.5 text-sm text-[var(--primary-text)] outline-none transition focus:border-[var(--active)] focus:ring-1 focus:ring-[var(--active)]'
 
 export default function CommissionsPage() {
-  const { t, i18n } = useTranslation()
-  const [history, setHistory] = useState(INITIAL_HISTORY)
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
   const [withdrawForm, setWithdrawForm] = useState(EMPTY_WITHDRAW)
 
+  const { data, isLoading } = useGetAffiliateEarningsQuery({
+    page,
+    limit: PAGE_SIZE,
+  })
+  const [createWithdrawal, { isLoading: isWithdrawing }] =
+    useCreateAffiliateWithdrawalMutation()
+
+  const summary = data?.summary
+  const paymentHistory = data?.paymentHistory || []
+  const pagination = data?.pagination || {
+    page: 1,
+    limit: PAGE_SIZE,
+    total: 0,
+    totalPages: 1,
+  }
+
   const columns = getColumns(t)
 
-  const filtered = history.filter((row) => {
-    const q = search.trim().toLowerCase()
-    if (!q) return true
-
-    return (
-      String(row.date).toLowerCase().includes(q) ||
-      String(row.type).toLowerCase().includes(q) ||
-      getTypeLabel(row.type, t).toLowerCase().includes(q) ||
-      String(row.accountType).toLowerCase().includes(q) ||
-      getAccountTypeLabel(row.accountType, t).toLowerCase().includes(q) ||
-      String(row.accountNumber).toLowerCase().includes(q) ||
-      String(row.amount).toLowerCase().includes(q) ||
-      String(row.status).toLowerCase().includes(q) ||
-      getStatusLabel(row.status, t).toLowerCase().includes(q)
-    )
-  })
-
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const paged = filtered.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
+  const rows = useMemo(
+    () => paymentHistory.map(mapPaymentRow),
+    [paymentHistory],
   )
 
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    if (!q) return rows
+
+    return rows.filter((row) => {
+      return (
+        String(row.date).toLowerCase().includes(q) ||
+        String(row.type).toLowerCase().includes(q) ||
+        getTypeLabel(row.type, t).toLowerCase().includes(q) ||
+        String(row.accountType).toLowerCase().includes(q) ||
+        getAccountTypeLabel(row.accountType, t).toLowerCase().includes(q) ||
+        String(row.accountNumber).toLowerCase().includes(q) ||
+        String(row.amount).toLowerCase().includes(q) ||
+        String(row.status).toLowerCase().includes(q) ||
+        getStatusLabel(row.status, t).toLowerCase().includes(q)
+      )
+    })
+  }, [rows, search, t])
+
+  const totalPages = Math.max(1, pagination.totalPages || 1)
+  const safePage = Math.min(page, totalPages)
+
   const openWithdraw = () => {
-    setWithdrawForm(EMPTY_WITHDRAW)
+    setWithdrawForm({
+      amount: '',
+      businessName: summary?.businessName ?? '',
+      accountNumber: summary?.ibanNumber ?? '',
+    })
     setWithdrawOpen(true)
   }
 
   const closeWithdraw = () => setWithdrawOpen(false)
 
-  const submitWithdraw = (form) => {
-    const next = {
-      id: Date.now(),
-      date: new Date().toLocaleDateString(i18n.language || 'en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      }),
-      type: 'Withdrawal',
-      accountType: 'Bank Transfer',
-      accountNumber: form.accountNumber || '—',
-      amount: form.amount || '€0.00',
-      status: 'Pending',
+  const submitWithdraw = async (form) => {
+    const amount = parseAmount(form.amount)
+    if (!Number.isFinite(amount) || amount <= 0) {
+      toast.error('Enter a valid amount')
+      return
     }
-    setHistory((prev) => [next, ...prev])
-    setPage(1)
-    setWithdrawOpen(false)
+
+    const businessName = String(form.businessName || '').trim()
+    const accountNumber = String(form.accountNumber || '').trim()
+    if (!businessName || !accountNumber) {
+      toast.error('Business name and account number are required')
+      return
+    }
+
+    try {
+      const result = await createWithdrawal({
+        amount,
+        businessName,
+        accountNumber,
+      }).unwrap()
+      toast.success(result?.message || 'Withdrawal submitted')
+      setPage(1)
+      setWithdrawOpen(false)
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.error || 'Withdrawal failed',
+      )
+    }
   }
 
   return (
@@ -428,7 +360,11 @@ export default function CommissionsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value="€84250.00"
+          value={
+            isLoading
+              ? '—'
+              : (summary?.totalEarningsThisMonthLabel ?? '—')
+          }
           description={t('affiliateCommissions.cards.thisMonth')}
           icon={FiArrowDownLeft}
           iconTone="brand"
@@ -436,7 +372,9 @@ export default function CommissionsPage() {
         <StatusCard
           variant="action"
           label={t('affiliateCommissions.cards.availableBalance')}
-          value="€67,400.00"
+          value={
+            isLoading ? '—' : (summary?.availableBalanceLabel ?? '—')
+          }
           icon={FiDollarSign}
           iconTone="brand"
           actionLabel={t('affiliateCommissions.cards.withdrawFunds')}
@@ -444,13 +382,19 @@ export default function CommissionsPage() {
         />
         <StatusCard
           label={t('affiliateCommissions.cards.pendingAmount')}
-          value="€250.00"
+          value={
+            isLoading ? '—' : (summary?.pendingAmountLabel ?? '—')
+          }
           icon={FiBarChart2}
           iconTone="brand"
         />
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value="€84250.00"
+          value={
+            isLoading
+              ? '—'
+              : (summary?.totalEarningsLifetimeLabel ?? '—')
+          }
           description={t('affiliateCommissions.cards.lifeTime')}
           icon={FiArrowDownLeft}
           iconTone="brand"
@@ -464,19 +408,18 @@ export default function CommissionsPage() {
 
         <DataTable
           columns={columns}
-          data={paged}
+          data={isLoading ? [] : filtered}
           showSearch
           searchValue={search}
           onSearchChange={(value) => {
             setSearch(value)
-            setPage(1)
           }}
           searchPlaceholder={t('affiliateCommissions.searchPlaceholder')}
           showPagination
           pagination={{
             page: safePage,
             pageSize: PAGE_SIZE,
-            total: filtered.length,
+            total: pagination.total || 0,
             onPageChange: setPage,
           }}
         />
@@ -488,6 +431,7 @@ export default function CommissionsPage() {
         onChange={setWithdrawForm}
         onClose={closeWithdraw}
         onSubmit={submitWithdraw}
+        isSubmitting={isWithdrawing}
       />
     </div>
   )

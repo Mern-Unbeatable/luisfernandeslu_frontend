@@ -2903,6 +2903,7 @@
     "uploadCsv": "Upload CSV File",
     "filters": "Filters:",
     "allCategories": "All Categories",
+    "searchPlaceholder": "Search SKU, title, status...",
     "tabs": {
       "all": "All",
       "active": "Active",
@@ -2922,15 +2923,21 @@
     "untitled": "Untitled",
     "uploadModal": {
       "title": "Upload your file",
-      "hint": "XLSX only · Max 10 MB · First sheet must be named \"Sheet1\"",
-      "dropTitle": "Drop your XLSX here, or click to browse",
-      "dropNote": "We'll queue it as soon as you click Queue Import.",
+      "hint": "CSV only · Max 10 MB · Max 100 rows",
+      "dropTitle": "Drop your CSV here, or click to browse",
+      "dropNote": "We'll upload it as soon as you click Queue Import.",
       "selected": "Selected: {{name}}",
-      "downloadExample": "Download example",
+      "downloadExample": "Download template",
+      "downloadCategoryGuide": "Category guide",
       "queueImport": "Queue Import",
+      "uploading": "Uploading…",
+      "downloading": "Downloading…",
+      "uploadFailed": "Upload failed. Please try again.",
+      "downloadFailed": "Failed to download CSV template.",
+      "downloadGuideFailed": "Failed to download category guide.",
       "closeOverlay": "Close overlay",
       "close": "Close",
-      "browseAria": "Browse XLSX file"
+      "browseAria": "Browse CSV file"
     }
   },
   "factoryOrders": {

@@ -8,9 +8,7 @@ import {
   FiX,
 } from 'react-icons/fi'
 import { MdQrCode2 } from 'react-icons/md'
-
-const PROMO_CODE = 'ALEX50'
-const SHARE_LINK = `https://marketplace.platform.com/ref?code=${PROMO_CODE}`
+import { useGetAffiliateReferralQuery } from '@/features/affiliate/affiliateReferralApi'
 
 function QrIcon({ className = 'size-5' }) {
   return <MdQrCode2 className={className} aria-hidden />
@@ -18,6 +16,14 @@ function QrIcon({ className = 'size-5' }) {
 
 export default function ReferralChannelsPage() {
   const { t } = useTranslation()
+  const { data, isLoading } = useGetAffiliateReferralQuery()
+  const channel = data?.channel
+
+  const referralCode = channel?.referralCode ?? ''
+  const shareLink = channel?.shareLink ?? ''
+  const status = channel?.status ?? ''
+  const isPrimary = Boolean(channel?.isPrimary)
+
   const [copied, setCopied] = useState(false)
   const [qrOpen, setQrOpen] = useState(false)
   const [shareHint, setShareHint] = useState('')
@@ -49,8 +55,9 @@ export default function ReferralChannelsPage() {
   }, [qrOpen])
 
   const copyCode = async () => {
+    if (!referralCode) return
     try {
-      await navigator.clipboard.writeText(PROMO_CODE)
+      await navigator.clipboard.writeText(referralCode)
       setCopied(true)
     } catch {
       setCopied(false)
@@ -58,10 +65,12 @@ export default function ReferralChannelsPage() {
   }
 
   const shareProposal = async () => {
+    if (!shareLink && !referralCode) return
+
     const payload = {
       title: t('affiliateReferralChannels.shareTitle'),
-      text: t('affiliateReferralChannels.shareText', { code: PROMO_CODE }),
-      url: SHARE_LINK,
+      text: t('affiliateReferralChannels.shareText', { code: referralCode }),
+      url: shareLink,
     }
 
     try {
@@ -69,14 +78,18 @@ export default function ReferralChannelsPage() {
         await navigator.share(payload)
         return
       }
-      await navigator.clipboard.writeText(`${payload.text}\n${SHARE_LINK}`)
+      await navigator.clipboard.writeText(
+        shareLink ? `${payload.text}\n${shareLink}` : payload.text,
+      )
       setShareHint(t('affiliateReferralChannels.proposalLinkCopied'))
     } catch {
       // user cancelled share — ignore
     }
   }
 
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(SHARE_LINK)}`
+  const qrSrc = shareLink
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareLink)}`
+    : ''
 
   return (
     <div className="space-y-6">
@@ -91,12 +104,21 @@ export default function ReferralChannelsPage() {
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold tracking-wide text-[var(--active)] uppercase">
-            {t('affiliateReferralChannels.primaryChannel')}
-          </span>
-          <span className="inline-flex rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-            {t('affiliateReferralChannels.active')}
-          </span>
+          {isPrimary ? (
+            <span className="text-xs font-semibold tracking-wide text-[var(--active)] uppercase">
+              {t('affiliateReferralChannels.primaryChannel')}
+            </span>
+          ) : null}
+          {channel?.label ? (
+            <span className="text-xs font-semibold tracking-wide text-[var(--primary-text)]">
+              {channel.label}
+            </span>
+          ) : null}
+          {status ? (
+            <span className="inline-flex rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 uppercase">
+              {status}
+            </span>
+          ) : null}
         </div>
 
         <div className="mt-4">
@@ -114,14 +136,15 @@ export default function ReferralChannelsPage() {
               {t('affiliateReferralChannels.promotionalCode')}
             </p>
             <p className="mt-1 text-3xl font-bold tracking-wide text-[var(--primary-text)]">
-              {PROMO_CODE}
+              {isLoading ? '—' : referralCode || '—'}
             </p>
           </div>
 
           <button
             type="button"
             onClick={copyCode}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#2F3437] px-4 text-sm font-semibold text-white transition hover:brightness-110"
+            disabled={!referralCode}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#2F3437] px-4 text-sm font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {copied ? (
               <FiCheck className="size-4" aria-hidden />
@@ -145,7 +168,7 @@ export default function ReferralChannelsPage() {
             id="direct-share-link"
             type="text"
             readOnly
-            value={SHARE_LINK}
+            value={isLoading ? '' : shareLink}
             onFocus={(event) => event.target.select()}
             className="mt-2 h-11 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
           />
@@ -156,7 +179,8 @@ export default function ReferralChannelsPage() {
         <button
           type="button"
           onClick={shareProposal}
-          className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50"
+          disabled={!shareLink && !referralCode}
+          className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <FiShare2 className="size-4" aria-hidden />
           {t('affiliateReferralChannels.shareProposal')}
@@ -165,8 +189,9 @@ export default function ReferralChannelsPage() {
         <button
           type="button"
           onClick={() => setQrOpen(true)}
+          disabled={!shareLink}
           aria-label={t('affiliateReferralChannels.showQrAria')}
-          className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-[var(--primary-text)] transition hover:bg-gray-50"
+          className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-[var(--primary-text)] transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <QrIcon className="size-6" />
         </button>
@@ -176,7 +201,7 @@ export default function ReferralChannelsPage() {
         <p className="text-sm font-medium text-[var(--active)]">{shareHint}</p>
       ) : null}
 
-      {qrOpen
+      {qrOpen && shareLink
         ? createPortal(
             <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
               <button
@@ -217,12 +242,12 @@ export default function ReferralChannelsPage() {
                   <img
                     src={qrSrc}
                     alt={t('affiliateReferralChannels.qr.alt', {
-                      link: SHARE_LINK,
+                      link: shareLink,
                     })}
                     className="size-[220px] rounded-lg bg-white p-2"
                   />
                   <p className="break-all text-center text-xs text-[var(--secondary-text)]">
-                    {SHARE_LINK}
+                    {shareLink}
                   </p>
                 </div>
 
