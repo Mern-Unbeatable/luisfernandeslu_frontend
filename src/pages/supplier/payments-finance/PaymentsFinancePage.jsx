@@ -169,12 +169,12 @@ export default function PaymentsFinancePage() {
             actionLabel={t('supplierPaymentsFinance.cards.withdrawFunds')}
             onAction={openWithdraw}
           /> */}
-          <StatusCard
+          {/*<StatusCard
             label={t('supplierPaymentsFinance.cards.pendingAmount')}
             value={DEMO_SUPPLIER_PAYMENTS_STATS.pendingAmount}
             icon={FiBarChart2}
             iconTone="brand"
-          />
+          />*/}
         </div>
 
         <section className="space-y-4">

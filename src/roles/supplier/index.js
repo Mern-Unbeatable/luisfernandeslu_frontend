@@ -81,11 +81,11 @@ const supplierRole = {
       labelKey: 'panel.nav.deliveryLogistics',
       Icon: FiMap,
     },
-    {
-      to: '/supplier/payments-finance',
-      labelKey: 'panel.nav.paymentsFinance',
-      Icon: FiCreditCard,
-    },
+    // {
+    //   to: '/supplier/payments-finance',
+    //   labelKey: 'panel.nav.paymentsFinance',
+    //   Icon: FiCreditCard,
+    // },
     {
       to: '/supplier/analytics',
       labelKey: 'panel.nav.analytics',

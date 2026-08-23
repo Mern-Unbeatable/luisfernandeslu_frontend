@@ -1118,11 +1118,11 @@ export const router = createBrowserRouter([
                 element: <SupplierDeliveryLogistics />,
                 handle: panelSeo('panel.nav.deliveryLogistics'),
               },
-              {
-                path: 'payments-finance',
-                element: <SupplierPaymentsFinance />,
-                handle: panelSeo('panel.nav.paymentsFinance'),
-              },
+              // {
+              //   path: 'payments-finance',
+              //   element: <SupplierPaymentsFinance />,
+              //   handle: panelSeo('panel.nav.paymentsFinance'),
+              // },
               {
                 path: 'analytics',
                 element: <SupplierAnalytics />,
