@@ -57,13 +57,20 @@ function getColumns(t) {
   ]
 }
 
+function formatEuro(value) {
+  if (value == null || value === '') return '—'
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) return String(value)
+  return `€${amount.toFixed(2)}`
+}
+
 function mapClientRow(client) {
   return {
     id: client.id,
     name: client.name,
     registeredDate: client.registeredDate,
-    revenueGenerated: client.revenueGeneratedLabel,
-    commissionEarned: client.commissionEarnedLabel,
+    revenueGenerated: formatEuro(client.revenueGenerated),
+    commissionEarned: formatEuro(client.commissionEarned),
     commissionExpiry: client.commissionExpiry,
     status: client.status,
   }
@@ -77,6 +84,7 @@ export default function ReferredClientsPage() {
   const { data, isLoading } = useGetAffiliateClientsQuery({
     page,
     limit: PAGE_SIZE,
+    search,
   })
 
   const columns = getColumns(t)
@@ -89,24 +97,6 @@ export default function ReferredClientsPage() {
   }
 
   const rows = useMemo(() => clients.map(mapClientRow), [clients])
-
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return rows
-
-    return rows.filter((row) => {
-      const statusLabel = getStatusLabel(row.status, t).toLowerCase()
-      return (
-        String(row.name).toLowerCase().includes(q) ||
-        String(row.registeredDate).toLowerCase().includes(q) ||
-        String(row.revenueGenerated).toLowerCase().includes(q) ||
-        String(row.commissionEarned).toLowerCase().includes(q) ||
-        String(row.commissionExpiry).toLowerCase().includes(q) ||
-        String(row.status).toLowerCase().includes(q) ||
-        statusLabel.includes(q)
-      )
-    })
-  }, [rows, search, t])
 
   const totalPages = Math.max(1, pagination.totalPages || 1)
   const safePage = Math.min(page, totalPages)
@@ -124,11 +114,12 @@ export default function ReferredClientsPage() {
 
       <DataTable
         columns={columns}
-        data={isLoading ? [] : filtered}
+        data={isLoading ? [] : rows}
         showSearch
         searchValue={search}
         onSearchChange={(value) => {
           setSearch(value)
+          setPage(1)
         }}
         searchPlaceholder={t('affiliateReferredClients.searchPlaceholder')}
         showPagination

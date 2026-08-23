@@ -14,6 +14,13 @@ import EarningAnalytics from './EarningAnalytics'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
+function formatEuro(value) {
+  if (value == null || value === '') return '—'
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) return '—'
+  return `€${amount.toFixed(2)}`
+}
+
 export default function OverviewDashboardPage() {
   const { t } = useTranslation()
   const [year, setYear] = useState(CURRENT_YEAR)
@@ -57,21 +64,21 @@ export default function OverviewDashboardPage() {
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.pendingCommissions')}
-          value={isLoading ? '—' : (stats?.pendingCommissionsLabel ?? '—')}
+          value={isLoading ? '—' : formatEuro(stats?.pendingCommissions)}
           icon={FiDollarSign}
           iconTone="brand"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.paidCommission')}
-          value={isLoading ? '—' : (stats?.paidCommissionLabel ?? '—')}
+          value={isLoading ? '—' : formatEuro(stats?.paidCommission)}
           icon={FiCreditCard}
           iconTone="gray"
         />
         <StatusCard
           variant="inline"
           label={t('affiliateOverview.cards.totalEarnings')}
-          value={isLoading ? '—' : (stats?.totalEarningsLabel ?? '—')}
+          value={isLoading ? '—' : formatEuro(stats?.totalEarnings)}
           icon={FiTrendingUp}
           iconTone="purple"
         />
@@ -108,7 +115,6 @@ export default function OverviewDashboardPage() {
         filterAriaLabel={t('affiliateOverview.earningAnalytics.filterAria')}
         labels={points.map((point) => point.month)}
         values={points.map((point) => point.amount)}
-        amountLabels={points.map((point) => point.amountLabel)}
         filterOptions={[
           {
             value: String(CURRENT_YEAR),

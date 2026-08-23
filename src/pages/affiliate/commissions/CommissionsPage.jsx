@@ -5,9 +5,9 @@ import toast from 'react-hot-toast'
 import {
   FiArrowDownLeft,
   FiBarChart2,
-  FiDollarSign,
   FiX,
 } from 'react-icons/fi'
+import { FaEuroSign } from 'react-icons/fa'
 import StatusCard from '@/components/data-display/StatusCard'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import {
@@ -96,6 +96,13 @@ function getColumns(t) {
   ]
 }
 
+function formatEuro(value) {
+  if (value == null || value === '') return '—'
+  const amount = Number(value)
+  if (!Number.isFinite(amount)) return String(value)
+  return `€${amount.toFixed(2)}`
+}
+
 function mapPaymentRow(item) {
   return {
     id: item.id,
@@ -103,10 +110,7 @@ function mapPaymentRow(item) {
     type: item.type ?? '',
     accountType: item.accountType ?? '',
     accountNumber: item.accountNumber ?? item.ibanNumber ?? '',
-    amount:
-      item.amountLabel != null && item.amountLabel !== ''
-        ? item.amountLabel
-        : item.amount,
+    amount: formatEuro(item.amount),
     status: item.status ?? '',
   }
 }
@@ -360,11 +364,7 @@ export default function CommissionsPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value={
-            isLoading
-              ? '—'
-              : (summary?.totalEarningsThisMonthLabel ?? '—')
-          }
+          value={isLoading ? '—' : formatEuro(summary?.totalEarningsThisMonth)}
           description={t('affiliateCommissions.cards.thisMonth')}
           icon={FiArrowDownLeft}
           iconTone="brand"
@@ -372,29 +372,21 @@ export default function CommissionsPage() {
         <StatusCard
           variant="action"
           label={t('affiliateCommissions.cards.availableBalance')}
-          value={
-            isLoading ? '—' : (summary?.availableBalanceLabel ?? '—')
-          }
-          icon={FiDollarSign}
+          value={isLoading ? '—' : formatEuro(summary?.availableBalance)}
+          icon={FaEuroSign}
           iconTone="brand"
           actionLabel={t('affiliateCommissions.cards.withdrawFunds')}
           onAction={openWithdraw}
         />
         <StatusCard
           label={t('affiliateCommissions.cards.pendingAmount')}
-          value={
-            isLoading ? '—' : (summary?.pendingAmountLabel ?? '—')
-          }
+          value={isLoading ? '—' : formatEuro(summary?.pendingAmount)}
           icon={FiBarChart2}
           iconTone="brand"
         />
         <StatusCard
           label={t('affiliateCommissions.cards.totalEarnings')}
-          value={
-            isLoading
-              ? '—'
-              : (summary?.totalEarningsLifetimeLabel ?? '—')
-          }
+          value={isLoading ? '—' : formatEuro(summary?.totalEarningsLifetime)}
           description={t('affiliateCommissions.cards.lifeTime')}
           icon={FiArrowDownLeft}
           iconTone="brand"

@@ -42,7 +42,6 @@ export default function EarningAnalytics({
   filterAriaLabel = 'Earning analytics period filter',
   labels = [],
   values = [],
-  amountLabels = [],
   series = {},
   filterOptions = ['This year', 'Last year'],
   defaultFilter,
@@ -72,7 +71,8 @@ export default function EarningAnalytics({
         borderWidth: 3.5,
         tension: 0.4,
         pointRadius: 0,
-        pointHoverRadius: 5,
+        pointHoverRadius: 6,
+        pointHitRadius: 16,
         pointHoverBackgroundColor: BRAND,
         pointHoverBorderColor: '#ffffff',
         pointHoverBorderWidth: 2,
@@ -98,10 +98,16 @@ export default function EarningAnalytics({
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     plugins: {
       legend: { display: false },
       tooltip: {
         enabled: true,
+        mode: 'index',
+        intersect: false,
         backgroundColor: '#ffffff',
         titleColor: '#4a5565',
         bodyColor: BRAND,
@@ -111,9 +117,8 @@ export default function EarningAnalytics({
         displayColors: false,
         callbacks: {
           label: (context) => {
-            const labelFromApi = amountLabels[context.dataIndex]
-            if (labelFromApi != null && labelFromApi !== '') return labelFromApi
-            return String(context.raw ?? '')
+            const amount = Number(context.raw ?? 0)
+            return `€${amount.toFixed(2)}`
           },
         },
       },
