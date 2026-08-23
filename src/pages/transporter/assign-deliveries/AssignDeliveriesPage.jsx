@@ -1,28 +1,145 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import Toast from '../../../components/common/Toast'
+import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import {
+  useGetTransporterDeliveryQuery,
+  useUpdateTransporterDeliveryStatusMutation,
+} from '../../../features/transporter/transporterApi'
+import { mapTransporterDeliveryDetails } from '../../../features/transporter/deliveryMappers'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
 
 export default function AssignDeliveriesPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { deliveries, updateDelivery } = useAssignDeliveries()
+  const {
+    deliveries,
+    updateDelivery,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    total,
+  } = useAssignDeliveries()
   const [filter, setFilter] = useState('all')
-  const [selectedDelivery, setSelectedDelivery] = useState(null)
+  const [selectedAuctionId, setSelectedAuctionId] = useState(null)
+  const [toast, setToast] = useState({
+    open: false,
+    message: '',
+    variant: 'success',
+  })
+  const [updateDeliveryStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateTransporterDeliveryStatusMutation()
 
-  const handleStartTrip = (item) => {
-    updateDelivery(item.id, { tripStarted: true })
+  const closeToast = useCallback(() => {
+    setToast((prev) => ({ ...prev, open: false }))
+  }, [])
+
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    isError: isDetailError,
+    error: detailError,
+    refetch: refetchDetail,
+  } = useGetTransporterDeliveryQuery(selectedAuctionId, {
+    skip: !selectedAuctionId,
+  })
+
+  const selectedDelivery = useMemo(() => {
+    if (!detailData?.delivery) return null
+    return mapTransporterDeliveryDetails(detailData.delivery)
+  }, [detailData?.delivery])
+
+  const handleStartTrip = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || isUpdatingStatus) return
+
+    updateDelivery(auctionId, { tripStarted: true })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'START_TRIP',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.tripStarted', {
+          defaultValue: 'Trip started',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, { tripStarted: false })
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to start trip'),
+        variant: 'error',
+      })
+    }
   }
 
-  const handleMarkPickedUp = (item) => {
-    if (!item.tripStarted) return
-    updateDelivery(item.id, { status: 'picked_up', tripStarted: false })
+  const handleMarkPickedUp = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || !item.tripStarted || isUpdatingStatus) return
+
+    const previous = {
+      status: item.status,
+      tripStarted: item.tripStarted,
+    }
+    updateDelivery(auctionId, { status: 'picked_up', tripStarted: false })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'MARK_PICKED_UP',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.markedPickedUp', {
+          defaultValue: 'Marked picked up',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, previous)
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to mark picked up'),
+        variant: 'error',
+      })
+    }
   }
 
-  const handleNavigateToDelivery = (item) => {
-    updateDelivery(item.id, { status: 'in_transit' })
+  const handleNavigateToDelivery = async (item) => {
+    const auctionId = item.auctionId || item.id
+    if (!auctionId || isUpdatingStatus) return
+
+    const previous = { status: item.status }
+    updateDelivery(auctionId, { status: 'in_transit' })
+
+    try {
+      await updateDeliveryStatus({
+        auctionId,
+        action: 'NAVIGATE_TO_DELIVERY',
+      }).unwrap()
+      setToast({
+        open: true,
+        message: t('transporterAssignDeliveries.navigatingToDelivery', {
+          defaultValue: 'Navigating to delivery',
+        }),
+        variant: 'success',
+      })
+    } catch (err) {
+      updateDelivery(auctionId, previous)
+      setToast({
+        open: true,
+        message: getAuthErrorMessage(err, 'Failed to navigate to delivery'),
+        variant: 'error',
+      })
+    }
   }
 
   const handleVerifyDeliveryClick = (item) => {
@@ -30,61 +147,76 @@ export default function AssignDeliveriesPage() {
   }
 
   const handleSeeDetails = (item) => {
-    const detailedDelivery = {
-      ...item,
-      auctionId: item.orderLabel?.replace('Auction ID: ', '') || 'AUC-001',
-      auctionDate: 'May 18, 2026',
-      deliveryCharge: item.price || '€2000.00',
-      customer: {
-        name: 'Sarah Johnson',
-        phone: '+1 (555) 234-5678',
-        email: 'sarah.johnson@email.com',
-        deliveryAddress: item.delivery.title + ', ' + item.delivery.subtitle,
-      },
-      product: {
-        name: item.title,
-        sku: 'EXC-HD-2024',
-        quantity: item.title.includes('Cement')
-          ? '500 bags (50kg each)'
-          : item.title.includes('Steel')
-            ? '200 rods (12m each)'
-            : '10,000 pieces',
-        weight: '25000 kg',
-        price: item.price,
-      },
-      shipping: {
-        pickupLocation: item.pickup.title + ', ' + item.pickup.subtitle,
-        unloadingInstructions: item.delivery.title + ', ' + item.delivery.subtitle,
-        accessCondition: 'Loading dock with ramp',
-        additionalNotes:
-          'Delivery must be coordinated with site manager. Contact 24 hours before arrival.',
-      },
-    }
-    setSelectedDelivery(detailedDelivery)
+    setSelectedAuctionId(item.auctionId || item.id)
   }
 
-  const filteredDeliveries = deliveries.filter((d) => {
-    if (filter === 'assigned') return d.status === 'assigned'
-    if (filter === 'pickedUp') return d.status === 'picked_up'
-    if (filter === 'inTransit') return d.status === 'in_transit'
-    if (filter === 'delivered') return d.status === 'delivered'
-    return true
-  })
+  const handleBackFromDetails = () => {
+    setSelectedAuctionId(null)
+  }
 
-  if (selectedDelivery) {
-    return (
-      <AuctionDetails
-        role="transporter"
-        status={selectedDelivery.status}
-        auction={selectedDelivery}
-        onBack={() => setSelectedDelivery(null)}
-        onMessage={() => navigate('/transporter/chat')}
-      />
-    )
+  const filteredDeliveries = useMemo(() => {
+    return deliveries.filter((d) => {
+      if (filter === 'assigned') return d.status === 'assigned'
+      if (filter === 'pickedUp') return d.status === 'picked_up'
+      if (filter === 'inTransit') return d.status === 'in_transit'
+      if (filter === 'delivered') return d.status === 'delivered'
+      return true
+    })
+  }, [deliveries, filter])
+
+  if (selectedAuctionId) {
+    if (isDetailLoading) {
+      return <p className="text-sm text-gray-500">Loading delivery details…</p>
+    }
+
+    if (isDetailError) {
+      return (
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={handleBackFromDetails}
+            className="text-sm font-semibold text-[var(--active)] underline"
+          >
+            Back
+          </button>
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <p>
+              {getAuthErrorMessage(detailError, 'Failed to load delivery details')}
+            </p>
+            <button
+              type="button"
+              onClick={() => refetchDetail()}
+              className="mt-2 font-semibold underline"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    if (selectedDelivery) {
+      return (
+        <AuctionDetails
+          role="transporter"
+          status={selectedDelivery.status}
+          auction={selectedDelivery}
+          onBack={handleBackFromDetails}
+          onMessage={() => navigate('/transporter/chat')}
+        />
+      )
+    }
   }
 
   return (
     <div className="space-y-6">
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={closeToast}
+      />
+
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -92,7 +224,7 @@ export default function AssignDeliveriesPage() {
           </h1>
           <p className="mt-1 text-base text-gray-500">
             {t('transporterAssignDeliveries.activeCount', {
-              count: filteredDeliveries.length,
+              count: filter === 'all' ? total : filteredDeliveries.length,
             })}
           </p>
         </div>
@@ -121,6 +253,27 @@ export default function AssignDeliveriesPage() {
           </select>
         </div>
       </div>
+
+      {isLoading ? (
+        <p className="text-sm text-gray-500">Loading deliveries…</p>
+      ) : null}
+
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, 'Failed to load deliveries')}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
+
+      {!isLoading && !isError && filteredDeliveries.length === 0 ? (
+        <p className="text-sm text-gray-500">No deliveries found.</p>
+      ) : null}
 
       <DeliveryTimeline
         items={filteredDeliveries}

@@ -163,9 +163,11 @@ function TransporterAuctionCard({
           <h3 className="text-lg font-bold text-[var(--primary-text)]">
             {auction.title}
           </h3>
-          <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-            {auction.auctionId}
-          </p>
+          {auction.auctionCode ? (
+            <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+              {auction.auctionCode}
+            </p>
+          ) : null}
         </div>
         <div className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-red-500">
           <FiClock className="size-4" strokeWidth={2} aria-hidden />
@@ -200,22 +202,44 @@ function TransporterAuctionCard({
             <FiDollarSign className="size-4 text-[var(--active)]" aria-hidden />
             {t('auction.bidHistory')}
           </p>
-          <ul className="flex flex-1 flex-col gap-2.5">
+          <ul className="flex flex-1 flex-col gap-2">
             {Array.from({ length: 4 }, (_, index) => {
               const bid = bids[index]
+              const isMine = Boolean(bid?.isUserBid || bid?.isMine)
+
               return (
                 <li
                   key={bid?.id ?? `bid-slot-${index}`}
-                  className={`flex min-h-5 items-center justify-between gap-2 text-sm ${
-                    bid ? '' : 'invisible'
-                  }`}
+                  className={[
+                    'flex min-h-5 items-center justify-between gap-2 text-sm',
+                    bid ? '' : 'invisible',
+                    isMine ? 'rounded-lg bg-[#EAF2FF] px-2.5 py-1.5' : '',
+                  ].join(' ')}
                 >
-                  <span className="font-bold text-[var(--primary-text)]">
-                    {bid ? formatMoney(bid.amount) : '—'}
-                  </span>
-                  <span className="text-xs text-[var(--secondary-text)]">
-                    {bid?.label || '—'}
-                  </span>
+                  {isMine ? (
+                    <>
+                      <span className="min-w-0">
+                        <span className="block font-bold text-[var(--primary-text)]">
+                          {formatMoney(bid.amount)}
+                        </span>
+                        <span className="mt-0.5 block text-xs text-[var(--secondary-text)]">
+                          {bid.label || '—'}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-[#3B82F6]">
+                        YOU
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-bold text-[var(--primary-text)]">
+                        {bid ? formatMoney(bid.amount) : '—'}
+                      </span>
+                      <span className="text-xs text-[var(--secondary-text)]">
+                        {bid?.label || '—'}
+                      </span>
+                    </>
+                  )}
                 </li>
               )
             })}
@@ -235,7 +259,10 @@ function TransporterAuctionCard({
         />
         <button
           type="button"
-          onClick={() => onPlaceBid?.(value, auction)}
+          onClick={async () => {
+            const result = await onPlaceBid?.(value, auction)
+            if (result) setValue('')
+          }}
           className="inline-flex h-11 shrink-0 items-center justify-center rounded-xl bg-[var(--active)] px-6 text-sm font-semibold text-white transition-opacity hover:opacity-90 sm:min-w-[120px]"
         >
           {t('auction.placeBid')}
