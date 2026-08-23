@@ -1,7 +1,15 @@
 import { axiosInstance } from './axiosInstance'
 
 export function axiosBaseQuery() {
-  return async ({ url, method = 'GET', data, params, headers, skipAuthRefresh }) => {
+  return async ({
+    url,
+    method = 'GET',
+    data,
+    params,
+    headers,
+    responseType,
+    skipAuthRefresh,
+  }) => {
     try {
       const isFormData =
         typeof FormData !== 'undefined' && data instanceof FormData
@@ -11,6 +19,7 @@ export function axiosBaseQuery() {
         method,
         data,
         params,
+        responseType,
         skipAuthRefresh,
         headers: isFormData
           ? { ...headers, 'Content-Type': undefined }

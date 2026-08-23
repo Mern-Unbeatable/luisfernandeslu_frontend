@@ -1,1 +1,9 @@
-export const API_TAG_TYPES = ['Auth', 'User', 'Product', 'Order']
+export const API_TAG_TYPES = [
+  'Auth',
+  'User',
+  'Product',
+  'Order',
+  'Inventory',
+  'Category',
+  'Promotion',
+]
