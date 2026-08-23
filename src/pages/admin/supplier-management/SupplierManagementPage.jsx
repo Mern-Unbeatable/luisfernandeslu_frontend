@@ -1,30 +1,204 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
+import {
+  useApproveAdminSupplierMutation,
+  useGetAdminSupplierStatsQuery,
+  useGetAdminSuppliersQuery,
+  useRejectAdminSupplierMutation,
+  useUpdateAdminSupplierCommissionMutation,
+  useUpdateAdminSupplierStatusMutation,
+  useDeleteAdminSupplierMutation,
+} from '@/features/admin/adminSupplierApi'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import SupplierCommissionCell from './components/SupplierCommissionCell'
 import SupplierDetailsModal from './components/SupplierDetailsModal'
 import SupplierRowActionMenu from './components/SupplierRowActionMenu'
 import SupplierStatusBadge from './components/SupplierStatusBadge'
 import {
-  ADMIN_SUPPLIER_STATS,
   ADMIN_SUPPLIER_TABS,
-  ADMIN_SUPPLIERS,
-  filterSuppliersBySearch,
-  filterSuppliersByTab,
   formatSupplierRegisteredDate,
 } from './data/suppliersDemo'
 
-const PAGE_SIZE = 7
+const PAGE_SIZE = 20
+
+function formatStatValue(value) {
+  if (value == null || value === '') return '—'
+  return typeof value === 'number' ? value.toLocaleString() : value
+}
+
+function formatCommissionPercent(value) {
+  const num = Number(value)
+  if (Number.isNaN(num)) return '0%'
+  return `${num}%`
+}
+
+function parseCommissionPercent(value) {
+  const num = Number.parseInt(String(value).replace('%', '').trim(), 10)
+  return Number.isNaN(num) ? null : num
+}
+
+function getSupplierStatusCode(row) {
+  return String(row?.statusCode || row?.status || '').toUpperCase()
+}
+
+function isSupplierActive(row) {
+  return getSupplierStatusCode(row) === 'ACTIVE'
+}
+
+function isSupplierPending(row) {
+  const code = getSupplierStatusCode(row)
+  const verification = String(row?.verificationStatus || '').toUpperCase()
+  return (
+    code === 'PENDING' ||
+    code === 'UNDER_REVIEW' ||
+    verification === 'PENDING_REVIEW' ||
+    verification === 'UNDER_REVIEW'
+  )
+}
+
+function isSupplierSuspended(row) {
+  return getSupplierStatusCode(row) === 'SUSPENDED'
+}
+
+function mapSupplierRow(supplier) {
+  return {
+    ...supplier,
+    registered: supplier.registeredDate ?? supplier.registered,
+    commission: formatCommissionPercent(supplier.commissionPercent),
+  }
+}
+
+function tabToApiStatus(tabId) {
+  if (tabId === 'pending') return 'pending'
+  if (tabId === 'suspended') return 'suspended'
+  return 'all'
+}
 
 export default function SupplierManagementPage() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [detailSupplier, setDetailSupplier] = useState(null)
-  const [rows, setRows] = useState(ADMIN_SUPPLIERS)
+  const [detailSupplierId, setDetailSupplierId] = useState(null)
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim())
+    }, 300)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [searchQuery])
+
+  const { data: statsResponse, isLoading: statsLoading } =
+    useGetAdminSupplierStatsQuery()
+
+  const { data: suppliersResponse, isLoading: suppliersLoading } =
+    useGetAdminSuppliersQuery({
+      status: tabToApiStatus(activeTab),
+      search: debouncedSearch,
+      page,
+      limit: PAGE_SIZE,
+    })
+
+  const [approveSupplier] = useApproveAdminSupplierMutation()
+  const [rejectSupplier] = useRejectAdminSupplierMutation()
+  const [updateSupplierStatus] = useUpdateAdminSupplierStatusMutation()
+  const [updateSupplierCommission] = useUpdateAdminSupplierCommissionMutation()
+  const [deleteSupplier] = useDeleteAdminSupplierMutation()
+
+  const runAction = useCallback(
+    async (promise, fallbackSuccessKey) => {
+      try {
+        const data = await promise
+        if (data?.success === false) {
+          toast.error(getAuthErrorMessage(data, t('adminSupplierManagement.actionFailed')))
+          return
+        }
+        toast.success(data?.message || t(fallbackSuccessKey))
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, t('adminSupplierManagement.actionFailed')))
+      }
+    },
+    [t],
+  )
+
+  const handleApprove = useCallback(
+    (row) =>
+      runAction(
+        approveSupplier(row.id).unwrap(),
+        'adminSupplierManagement.approveSuccess',
+      ),
+    [approveSupplier, runAction],
+  )
+
+  const handleReject = useCallback(
+    async (row) => {
+      const confirmed = window.confirm(
+        t('adminSupplierManagement.rejectConfirm', { name: row.name }),
+      )
+      if (!confirmed) return
+
+      await runAction(
+        rejectSupplier(row.id).unwrap(),
+        'adminSupplierManagement.rejectSuccess',
+      )
+    },
+    [rejectSupplier, runAction, t],
+  )
+
+  const handleStatusChange = useCallback(
+    (row, status) =>
+      runAction(
+        updateSupplierStatus({ supplierId: row.id, status }).unwrap(),
+        'adminSupplierManagement.statusUpdated',
+      ),
+    [runAction, updateSupplierStatus],
+  )
+
+  const handleCommissionChange = useCallback(
+    async (row, nextValue) => {
+      const commissionPercent = parseCommissionPercent(nextValue)
+      if (commissionPercent == null) {
+        toast.error(t('adminSupplierManagement.actionFailed'))
+        return
+      }
+
+      await runAction(
+        updateSupplierCommission({ supplierId: row.id, commissionPercent }).unwrap(),
+        'adminSupplierManagement.commissionUpdated',
+      )
+    },
+    [runAction, t, updateSupplierCommission],
+  )
+
+  const handleDeleteSupplier = useCallback(
+    async (row) => {
+      const confirmed = window.confirm(
+        t('adminSupplierManagement.deleteConfirm', { name: row.name }),
+      )
+      if (!confirmed) return
+
+      try {
+        const data = await deleteSupplier(row.id).unwrap()
+        if (data?.success === false) {
+          toast.error(getAuthErrorMessage(data, t('adminSupplierManagement.actionFailed')))
+          return
+        }
+        if (detailSupplierId === row.id) {
+          setDetailSupplierId(null)
+        }
+        toast.success(data?.message || t('adminSupplierManagement.deleteSuccess'))
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, t('adminSupplierManagement.actionFailed')))
+      }
+    },
+    [deleteSupplier, detailSupplierId, t],
+  )
 
   const tabs = useMemo(
     () =>
@@ -35,27 +209,26 @@ export default function SupplierManagementPage() {
     [t],
   )
 
-  const filteredRows = useMemo(() => {
-    const byTab = filterSuppliersByTab(rows, activeTab)
-    return filterSuppliersBySearch(byTab, searchQuery)
-  }, [rows, activeTab, searchQuery])
-
-  const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const pagedRows = useMemo(
-    () =>
-      filteredRows.slice(
-        (safePage - 1) * PAGE_SIZE,
-        safePage * PAGE_SIZE,
-      ),
-    [filteredRows, safePage],
+  const tableRows = useMemo(
+    () => (suppliersResponse?.suppliers ?? []).map(mapSupplierRow),
+    [suppliersResponse],
   )
 
-  const handleCommissionChange = useCallback((rowId, commission) => {
-    setRows((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, commission } : row)),
-    )
-  }, [])
+  const paginationMeta = suppliersResponse?.pagination
+  const total = paginationMeta?.total ?? 0
+  const totalPages = Math.max(1, paginationMeta?.totalPages ?? 1)
+  const paginationFrom = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1
+  const paginationTo = total === 0 ? 0 : Math.min(page * PAGE_SIZE, total)
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages)
+    }
+  }, [page, totalPages])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearch, activeTab])
 
   const menuActions = useMemo(
     () => [
@@ -63,38 +236,38 @@ export default function SupplierManagementPage() {
         id: 'details',
         label: t('adminSupplierManagement.actions.seeDetails'),
         variant: 'primary',
-        onClick: (row) => setDetailSupplier(row),
+        onClick: (row) => setDetailSupplierId(row.id),
       },
       {
         id: 'suspend',
         label: t('adminSupplierManagement.actions.suspend'),
-        visible: (row) => row.status.toLowerCase() === 'active',
-        onClick: () => {},
+        visible: (row) => isSupplierActive(row) && !isSupplierPending(row),
+        onClick: (row) => handleStatusChange(row, 'suspended'),
       },
       {
         id: 'approved',
         label: t('adminSupplierManagement.actions.approved'),
-        visible: (row) => row.status.toLowerCase() === 'pending',
-        onClick: () => {},
+        visible: (row) => isSupplierPending(row),
+        onClick: handleApprove,
       },
       {
         id: 'reject',
         label: t('adminSupplierManagement.actions.reject'),
-        visible: (row) => row.status.toLowerCase() === 'pending',
-        onClick: () => {},
+        visible: (row) => isSupplierPending(row),
+        onClick: handleReject,
       },
       {
         id: 'renew',
         label: t('adminSupplierManagement.actions.renew'),
-        visible: (row) => row.status.toLowerCase() === 'suspended',
-        onClick: () => {},
+        visible: (row) => isSupplierSuspended(row),
+        onClick: (row) => handleStatusChange(row, 'active'),
       },
       {
         id: 'delete',
         label: t('adminSupplierManagement.actions.delete'),
         variant: 'danger',
-        visible: (row) => row.status.toLowerCase() !== 'pending',
-        onClick: () => {},
+        visible: (row) => !isSupplierPending(row),
+        onClick: handleDeleteSupplier,
       },
       {
         id: 'message',
@@ -102,7 +275,7 @@ export default function SupplierManagementPage() {
         onClick: () => {},
       },
     ],
-    [t],
+    [handleApprove, handleDeleteSupplier, handleReject, handleStatusChange, t],
   )
 
   const columns = useMemo(
@@ -121,7 +294,7 @@ export default function SupplierManagementPage() {
         render: (value, row) => (
           <SupplierCommissionCell
             value={value}
-            onChange={(next) => handleCommissionChange(row.id, next)}
+            onChange={(next) => handleCommissionChange(row, next)}
           />
         ),
       },
@@ -138,31 +311,29 @@ export default function SupplierManagementPage() {
         ),
       },
     ],
-    [t, handleCommissionChange, menuActions],
+    [handleCommissionChange, menuActions, t],
   )
+
+  const stats = statsResponse?.stats
 
   const statCards = [
     {
       label: t('adminSupplierManagement.stats.totalSuppliers'),
-      value: ADMIN_SUPPLIER_STATS.totalSuppliers,
+      value: statsLoading ? '…' : formatStatValue(stats?.totalSuppliers),
     },
     {
       label: t('adminSupplierManagement.stats.active'),
-      value: ADMIN_SUPPLIER_STATS.active,
+      value: statsLoading ? '…' : formatStatValue(stats?.active),
     },
     {
       label: t('adminSupplierManagement.stats.underReview'),
-      value: ADMIN_SUPPLIER_STATS.underReview,
+      value: statsLoading ? '…' : formatStatValue(stats?.underReview),
     },
     {
       label: t('adminSupplierManagement.stats.suspended'),
-      value: ADMIN_SUPPLIER_STATS.suspended,
+      value: statsLoading ? '…' : formatStatValue(stats?.suspended),
     },
   ]
-
-  const paginationFrom =
-    filteredRows.length === 0 ? 0 : (safePage - 1) * PAGE_SIZE + 1
-  const paginationTo = Math.min(safePage * PAGE_SIZE, filteredRows.length)
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -198,6 +369,7 @@ export default function SupplierManagementPage() {
         onTabChange={(id) => {
           setActiveTab(id)
           setSearchQuery('')
+          setDebouncedSearch('')
           setPage(1)
         }}
         showSearch
@@ -208,22 +380,23 @@ export default function SupplierManagementPage() {
         }}
         searchPlaceholder={t('adminSupplierManagement.searchPlaceholder')}
         columns={columns}
-        data={pagedRows}
+        data={tableRows}
         emptyMessage={t('adminSupplierManagement.empty')}
+        loading={suppliersLoading && !suppliersResponse}
         showPagination
         pagination={{
-          page: safePage,
+          page,
           pageSize: PAGE_SIZE,
-          total: filteredRows.length,
+          total,
           from: paginationFrom,
           to: paginationTo,
-          hasPrevious: safePage > 1,
-          hasNext: safePage < pageCount,
+          hasPrevious: page > 1,
+          hasNext: page < totalPages,
           onPageChange: setPage,
           summaryLabel: t('adminSupplierManagement.pagination.summary', {
             from: paginationFrom,
             to: paginationTo,
-            total: filteredRows.length,
+            total,
           }),
           previousLabel: t('adminSupplierManagement.pagination.previous'),
           nextLabel: t('adminSupplierManagement.pagination.next'),
@@ -232,9 +405,9 @@ export default function SupplierManagementPage() {
 
       <SupplierDetailsModal
         formatRegisteredDate={formatSupplierRegisteredDate}
-        open={Boolean(detailSupplier)}
-        supplier={detailSupplier}
-        onClose={() => setDetailSupplier(null)}
+        open={Boolean(detailSupplierId)}
+        supplierId={detailSupplierId}
+        onClose={() => setDetailSupplierId(null)}
       />
     </div>
   )

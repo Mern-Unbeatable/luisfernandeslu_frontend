@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Logo from '../../components/common/Logo/Logo'
 import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
 import CategoryBar from './CategoryBar'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
-import { logout } from '../../features/auth/authSlice'
+import { useAuthLogout } from '../../features/auth/useAuthLogout'
 import {
   FiSearch,
   FiMessageSquare,
@@ -43,8 +43,7 @@ const socialLinks = [
  */
 export default function Header() {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { logout: handleLogout, isLoggingOut } = useAuthLogout()
   const { pathname } = useLocation()
   const isMessagesRoute =
     pathname === '/messages' || pathname.startsWith('/messages/')
@@ -57,10 +56,9 @@ export default function Header() {
   const headerRef = useRef(null)
   const searchInputRef = useRef(null)
 
-  const handleLogout = () => {
+  const onLogout = () => {
     setMenuOpen(false)
-    dispatch(logout())
-    navigate('/login', { replace: true })
+    handleLogout()
   }
 
   useEffect(() => {
@@ -322,7 +320,8 @@ export default function Header() {
                     <button
                       type="button"
                       role="menuitem"
-                      onClick={handleLogout}
+                      onClick={onLogout}
+                      disabled={isLoggingOut}
                       className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-red-500 transition-colors hover:bg-red-50"
                     >
                       <FiLogOut className="size-4 shrink-0" strokeWidth={1.75} />
@@ -416,8 +415,9 @@ export default function Header() {
                 </Link>
                 <button
                   type="button"
-                  onClick={handleLogout}
-                  className="flex items-center gap-3 px-4 py-3 text-left text-red-500 transition-colors hover:bg-red-50"
+                  onClick={onLogout}
+                  disabled={isLoggingOut}
+                  className="flex items-center gap-3 px-4 py-3 text-left text-red-500 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <FiLogOut className="size-5 shrink-0" strokeWidth={1.75} />
                   <span className="text-sm font-medium">{t('header.logOut')}</span>
