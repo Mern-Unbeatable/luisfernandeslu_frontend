@@ -328,14 +328,11 @@ export default function OrdersCustomerPage() {
           columns={columns}
           data={pagedOrders}
           getRowKey={(row) => row.id}
+          loading={isLoading || isFetching}
           showActions
           getActions={getRowActions}
           actionHeader={t("panel.supplierCustomerOrders.colAction")}
-          emptyMessage={
-            isLoading || isFetching
-              ? t("panel.supplierCustomerOrders.loadingOrders")
-              : t("panel.supplierCustomerOrders.emptyOrders")
-          }
+          emptyMessage={t("panel.supplierCustomerOrders.emptyOrders")}
           showPagination
           showSearch
           searchValue={search}
