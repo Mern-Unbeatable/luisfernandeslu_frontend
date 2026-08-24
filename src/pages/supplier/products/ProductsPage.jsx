@@ -21,9 +21,9 @@ import {
   useUploadSupplierProductsCsvMutation,
 } from "@/features/supplier/products/productApi";
 import { SUPPLIER_PRODUCTS_PAGE_SIZE } from "@/data/demoData";
-import DeleteProductModal from "./DeleteProductModal";
-import PromoteProductModal from "./PromoteProductModal";
-import UploadCsvModal from "./UploadCsvModal";
+import DeleteProductModal from "./components/DeleteProductModal";
+import PromoteProductModal from "./components/PromoteProductModal";
+import UploadCsvModal from "./components/UploadCsvModal";
 
 const TAB_CONFIG = [
   { id: "all", labelKey: "panel.supplierProducts.tabAll" },
