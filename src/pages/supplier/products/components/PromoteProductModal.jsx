@@ -1,7 +1,8 @@
-import { useEffect, useId, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { useTranslation } from 'react-i18next'
-import { FiStar, FiX } from 'react-icons/fi'
+import { useEffect, useId, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
+import { FiStar, FiX } from "react-icons/fi";
+import Loading from "@/components/common/Loader/Loading";
 
 export default function PromoteProductModal({
   open,
@@ -9,47 +10,49 @@ export default function PromoteProductModal({
   plans = [],
   loading = false,
   submitting = false,
-  error = '',
+  error = "",
   onClose,
   onConfirm,
 }) {
-  const { t } = useTranslation()
-  const titleId = useId()
-  const [planId, setPlanId] = useState('')
+  const { t } = useTranslation();
+  const titleId = useId();
+  const [planId, setPlanId] = useState("");
+  const selectedPlanId = useMemo(
+    () => planId || plans[0]?.id || "",
+    [planId, plans],
+  );
 
   useEffect(() => {
-    if (!open) return undefined
+    if (!open) return undefined;
 
-    setPlanId(plans[0]?.id || '')
-
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     const onKey = (event) => {
-      if (event.key === 'Escape' && !submitting) onClose?.()
-    }
-    document.addEventListener('keydown', onKey)
+      if (event.key === "Escape" && !submitting) onClose?.();
+    };
+    document.addEventListener("keydown", onKey);
 
     return () => {
-      document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open, onClose, plans, submitting])
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose, plans, submitting]);
 
-  if (!open || !product) return null
+  if (!open || !product) return null;
 
-  const productTitle = product?.product?.title || product?.title || ''
+  const productTitle = product?.product?.title || product?.title || "";
 
   return createPortal(
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-10000 flex items-center justify-center p-4">
       <button
         type="button"
-        aria-label={t('panel.supplierProducts.promote.closeOverlay', {
-          defaultValue: 'Close overlay',
+        aria-label={t("panel.supplierProducts.promote.closeOverlay", {
+          defaultValue: "Close overlay",
         })}
         className="absolute inset-0 bg-black/45"
         onClick={() => {
-          if (!submitting) onClose?.()
+          if (!submitting) onClose?.();
         }}
       />
 
@@ -67,14 +70,14 @@ export default function PromoteProductModal({
             <div>
               <h2
                 id={titleId}
-                className="text-lg font-bold text-[var(--primary-text)]"
+                className="text-lg font-bold text-(--primary-text)"
               >
-                {t('panel.supplierProducts.promote.title', {
-                  defaultValue: 'Promote product',
+                {t("panel.supplierProducts.promote.title", {
+                  defaultValue: "Promote product",
                 })}
               </h2>
-              <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                {t('panel.supplierProducts.promote.message', {
+              <p className="mt-1 text-sm text-(--secondary-text)">
+                {t("panel.supplierProducts.promote.message", {
                   defaultValue: 'Choose a plan for "{{name}}".',
                   name: productTitle,
                 })}
@@ -83,32 +86,33 @@ export default function PromoteProductModal({
           </div>
           <button
             type="button"
-            aria-label={t('panel.supplierProducts.promote.close', {
-              defaultValue: 'Close',
+            aria-label={t("panel.supplierProducts.promote.close", {
+              defaultValue: "Close",
             })}
             onClick={onClose}
             disabled={submitting}
-            className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-[var(--secondary-text)] hover:bg-gray-200 disabled:opacity-50"
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-(--secondary-text) hover:bg-gray-200 disabled:opacity-50"
           >
             <FiX className="size-4" />
           </button>
         </div>
 
         {loading ? (
-          <p className="text-sm text-[var(--secondary-text)]">
-            {t('panel.supplierProducts.promote.loading', {
-              defaultValue: 'Loading plans…',
+          <Loading
+            text={t("panel.supplierProducts.promote.loading", {
+              defaultValue: "Loading plans…",
             })}
-          </p>
+            className="py-1"
+          />
         ) : plans.length ? (
           <div className="space-y-2">
             {plans.map((plan) => (
               <label
                 key={plan.id}
                 className={`flex cursor-pointer items-center justify-between rounded-xl border px-4 py-3 ${
-                  planId === plan.id
-                    ? 'border-[var(--active)] bg-[#FFF8F0]'
-                    : 'border-gray-200 bg-white'
+                  selectedPlanId === plan.id
+                    ? "border-(--active) bg-[#FFF8F0]"
+                    : "border-gray-200 bg-white"
                 }`}
               >
                 <span className="flex items-center gap-3">
@@ -116,24 +120,24 @@ export default function PromoteProductModal({
                     type="radio"
                     name="promotion-plan"
                     value={plan.id}
-                    checked={planId === plan.id}
+                    checked={selectedPlanId === plan.id}
                     onChange={() => setPlanId(plan.id)}
                     disabled={submitting}
                   />
-                  <span className="text-sm font-semibold text-[var(--primary-text)]">
+                  <span className="text-sm font-semibold text-(--primary-text)">
                     {plan.name}
                   </span>
                 </span>
-                <span className="text-sm font-bold text-[var(--active)]">
+                <span className="text-sm font-bold text-(--active)">
                   {plan.price}
                 </span>
               </label>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-[var(--secondary-text)]">
-            {t('panel.supplierProducts.promote.empty', {
-              defaultValue: 'No promotion plans available.',
+          <p className="text-sm text-(--secondary-text)">
+            {t("panel.supplierProducts.promote.empty", {
+              defaultValue: "No promotion plans available.",
             })}
           </p>
         )}
@@ -147,27 +151,27 @@ export default function PromoteProductModal({
             type="button"
             onClick={onClose}
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-[var(--primary-text)] transition hover:bg-gray-50 disabled:opacity-50"
+            className="inline-flex h-11 items-center justify-center rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-(--primary-text) transition hover:bg-gray-50 disabled:opacity-50"
           >
-            {t('panel.supplierProducts.delete.cancel')}
+            {t("panel.supplierProducts.delete.cancel")}
           </button>
           <button
             type="button"
-            onClick={() => onConfirm?.(planId)}
-            disabled={!planId || submitting || loading}
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--active)] px-5 text-sm font-semibold text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() => onConfirm?.(selectedPlanId)}
+            disabled={!selectedPlanId || submitting || loading}
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-(--active) px-5 text-sm font-semibold text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {submitting
-              ? t('panel.supplierProducts.promote.paying', {
-                  defaultValue: 'Processing…',
+              ? t("panel.supplierProducts.promote.paying", {
+                  defaultValue: "Processing…",
                 })
-              : t('panel.supplierProducts.promote.confirm', {
-                  defaultValue: 'Promote',
+              : t("panel.supplierProducts.promote.confirm", {
+                  defaultValue: "Promote",
                 })}
           </button>
         </div>
       </div>
     </div>,
     document.body,
-  )
+  );
 }
