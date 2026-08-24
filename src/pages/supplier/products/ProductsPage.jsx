@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Pagination from "@/components/common/Pagination/Pagination";
 import DataTable from "@/components/data-display/DataTable/DataTable";
 import ProductCard from "@/components/data-display/ProductCard/ProductCard";
+import ProductCardSkeleton from "@/components/data-display/ProductCard/ProductCardSkeleton";
 import Seo from "@/components/common/Seo/Seo";
 import {
   getApiErrorMessage,
@@ -73,21 +74,24 @@ export default function ProductsPage() {
       skip: !productToPromote,
     });
 
-  const shouldHideStaleResults = isFetching && Boolean(catalog);
-  const products = shouldHideStaleResults
-    ? []
-    : (currentData?.products ?? catalog?.products ?? []);
-  const total = shouldHideStaleResults
-    ? 0
-    : (currentData?.total ?? catalog?.total ?? 0);
+  const products = currentData?.products ?? catalog?.products ?? [];
+  const total = currentData?.total ?? catalog?.total ?? 0;
   const totalPages = Math.max(
     1,
     Math.ceil(total / SUPPLIER_PRODUCTS_PAGE_SIZE),
   );
   const safePage = Math.min(page, totalPages);
-  const tabCounts = shouldHideStaleResults
-    ? {}
-    : (currentData?.tabCounts ?? catalog?.tabCounts ?? {});
+  const tabCounts = useMemo(
+    () => currentData?.tabCounts ?? catalog?.tabCounts ?? {},
+    [currentData, catalog],
+  );
+  const showProductSkeletons = isLoading || isFetching;
+  const errorMessage = getApiErrorMessage(
+    error,
+    t("panel.supplierProducts.loadFailed", {
+      defaultValue: "Could not load products.",
+    }),
+  );
 
   const categoryOptions = useMemo(
     () => [
@@ -228,14 +232,7 @@ export default function ProductsPage() {
     }
   };
 
-  const emptyMessage = isError
-    ? getApiErrorMessage(
-        error,
-        t("panel.supplierProducts.loadFailed", {
-          defaultValue: "Could not load products.",
-        }),
-      )
-    : t("panel.supplierProducts.emptyHint");
+  const emptyMessage = t("panel.supplierProducts.emptyHint");
 
   return (
     <>
@@ -255,14 +252,14 @@ export default function ProductsPage() {
           <button
             type="button"
             onClick={() => navigate("/supplier/products/add")}
-            className="inline-flex items-center justify-center rounded-md bg-[var(--active)] px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:brightness-95 sm:text-sm"
+            className="inline-flex items-center justify-center rounded-md bg-(--active) px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:brightness-95 sm:text-sm"
           >
             {t("panel.supplierProducts.addProduct")}
           </button>
           <button
             type="button"
             onClick={() => setCsvOpen(true)}
-            className="inline-flex items-center justify-center rounded-md border border-[var(--active)] bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] sm:text-sm"
+            className="inline-flex items-center justify-center rounded-md border border-(--active) bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-(--active) transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] sm:text-sm"
           >
             {t("panel.supplierProducts.uploadCsv")}
           </button>
@@ -282,12 +279,23 @@ export default function ProductsPage() {
           showTable={false}
         />
 
-        {isLoading ? (
+        {showProductSkeletons ? (
+          <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <li key={`product-skeleton-${index}`} className="flex min-w-0">
+                <ProductCardSkeleton className="h-full w-full shadow-sm" />
+              </li>
+            ))}
+          </ul>
+        ) : isError ? (
           <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
-            <p className="text-sm text-[var(--secondary-text)]">
-              {t("panel.supplierProducts.loading", {
-                defaultValue: "Loading products…",
+            <p className="text-base font-semibold text-(--primary-text)">
+              {t("panel.supplierProducts.loadFailed", {
+                defaultValue: "Could not load products.",
               })}
+            </p>
+            <p className="mt-2 text-sm text-(--secondary-text)">
+              {errorMessage}
             </p>
           </div>
         ) : products.length > 0 ? (
@@ -314,19 +322,21 @@ export default function ProductsPage() {
               ))}
             </ul>
 
-            <Pagination
-              className="mt-8 sm:mt-10"
-              page={safePage}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
+            {totalPages > 1 ? (
+              <Pagination
+                className="mt-8 sm:mt-10"
+                page={safePage}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            ) : null}
           </>
         ) : (
           <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
-            <p className="text-base font-semibold text-[var(--primary-text)]">
+            <p className="text-base font-semibold text-(--primary-text)">
               {t("panel.supplierProducts.emptyTitle")}
             </p>
-            <p className="mt-2 text-sm text-[var(--secondary-text)]">
+            <p className="mt-2 text-sm text-(--secondary-text)">
               {emptyMessage}
             </p>
           </div>

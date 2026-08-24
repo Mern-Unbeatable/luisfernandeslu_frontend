@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -19,7 +19,7 @@ import {
   useGetPromoCodesQuery,
   useUpdatePromoCodeStatusMutation,
 } from "@/features/supplier/promo-codes/promoCodesApi";
-import DeleteProductModal from "@/pages/supplier/products/DeleteProductModal";
+import DeleteProductModal from "@/pages/supplier/products/components/DeleteProductModal";
 
 const TAB_IDS = {
   promoCode: "promo_code",
@@ -47,11 +47,7 @@ export default function PromoCodesPage() {
   const [promoProducts, setPromoProducts] = useState(
     DEMO_SUPPLIER_PROMO_PRODUCTS,
   );
-  const {
-    data: promoCodeResponse,
-    isLoading,
-    isFetching,
-  } = useGetPromoCodesQuery({
+  const { data: promoCodeResponse } = useGetPromoCodesQuery({
     status: statusFilter,
     page: promoCodePage,
     limit: SUPPLIER_PROMO_CODES_PAGE_SIZE,
@@ -62,12 +58,6 @@ export default function PromoCodesPage() {
   const [selectedPromoProduct, setSelectedPromoProduct] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    if (location.state?.tab === TAB_IDS.promoProduct) {
-      setActiveTab(TAB_IDS.promoProduct);
-    }
-  }, [location.state]);
 
   const promoCodes = useMemo(
     () => promoCodeResponse?.promoCodes ?? [],
@@ -80,12 +70,6 @@ export default function PromoCodesPage() {
     Math.ceil(promoCodeTotal / SUPPLIER_PROMO_CODES_PAGE_SIZE),
   );
   const safePromoCodePage = Math.min(promoCodePage, promoCodePageCount);
-
-  useEffect(() => {
-    if (promoCodePage > promoCodePageCount) {
-      setPromoCodePage(promoCodePageCount);
-    }
-  }, [promoCodePage, promoCodePageCount]);
 
   const handleStatusChange = useCallback(
     (row, status) => {
@@ -409,7 +393,7 @@ export default function PromoCodesPage() {
           <button
             type="button"
             onClick={() => setSelectedPromoProduct(null)}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-[var(--primary-text)] transition hover:bg-gray-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-(--primary-text) transition hover:bg-gray-50"
           >
             <FiArrowLeft className="size-4" />
             {t("panel.supplierPromoCodes.backToPromoProducts")}
@@ -436,7 +420,7 @@ export default function PromoCodesPage() {
             <button
               type="button"
               onClick={() => navigate("/supplier/promo-codes/create")}
-              className="inline-flex shrink-0 items-center justify-center self-start rounded-md bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
+              className="inline-flex shrink-0 items-center justify-center self-start rounded-md bg-(--active) px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
             >
               {t("panel.supplierPromoCodes.createPromoCode")}
             </button>
@@ -521,10 +505,10 @@ export default function PromoCodesPage() {
 
             {!isPromoCodeTab && promoProducts.length === 0 ? (
               <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
-                <p className="text-base font-semibold text-[var(--primary-text)]">
+                <p className="text-base font-semibold text-(--primary-text)">
                   {t("panel.supplierPromoCodes.emptyPromoProductsTitle")}
                 </p>
-                <p className="mt-2 text-sm text-[var(--secondary-text)]">
+                <p className="mt-2 text-sm text-(--secondary-text)">
                   {t("panel.supplierPromoCodes.emptyPromoProductsHint")}
                 </p>
               </div>
