@@ -753,12 +753,20 @@
     "filterLabel": "Filter:",
     "dateLabel": "Board date",
     "empty": "No auctions match this filter.",
+    "loading": "Loading auctions…",
+    "loadFailed": "Could not load auctions.",
+    "retry": "Retry",
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results"
+    },
     "filters": {
       "all": "All",
       "endingSoon": "Ending Soon",
       "nearestFirst": "Nearest First",
       "ended": "Ended"
     }
+    ,
+    "noCompetingBids": "No competing transporter bids"
   },
   "adminOrders": {
     "title": "Orders",
@@ -2624,6 +2632,8 @@
     "distance": "Distance",
     "bidHistory": "Bid History",
     "competingBids": "Competing Transporter Bids",
+    "noCompetingBids": "No competing transporter bids",
+    "scrollForMoreBids": "Scroll to see more bids",
     "enterBid": "Enter your bid",
     "placeBid": "Place Bid",
     "details": {
