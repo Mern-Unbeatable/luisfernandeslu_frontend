@@ -47,7 +47,11 @@ export default function PromoCodesPage() {
   const [promoProducts, setPromoProducts] = useState(
     DEMO_SUPPLIER_PROMO_PRODUCTS,
   );
-  const { data: promoCodeResponse } = useGetPromoCodesQuery({
+  const {
+    data: promoCodeResponse,
+    isLoading,
+    isFetching,
+  } = useGetPromoCodesQuery({
     status: statusFilter,
     page: promoCodePage,
     limit: SUPPLIER_PROMO_CODES_PAGE_SIZE,
@@ -449,6 +453,7 @@ export default function PromoCodesPage() {
               columns={columns}
               data={pagedPromoCodes}
               getRowKey={(row) => row.id}
+              loading={isPromoCodeTab && (isLoading || isFetching)}
               showActions={isPromoCodeTab}
               actions={rowActions}
               actionHeader={t("panel.supplierPromoCodes.colAction")}
