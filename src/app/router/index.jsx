@@ -205,7 +205,7 @@ const SupplierProductDetail = Loadable(
   <PanelSkeleton />,
 );
 const SupplierAddProduct = Loadable(
-  lazy(() => import("../../pages/supplier/products/components/AddProductPage")),
+  lazy(() => import("../../pages/supplier/products/AddProductPage")),
   <PanelSkeleton />,
 );
 const SupplierPromoCodes = Loadable(
