@@ -2,6 +2,7 @@ import "../auth/authApi";
 import "../users/userApi";
 import "../products/productApi";
 import "../orders/orderApi";
+import "../supplier/company-orders/companyOrdersApi";
 import "../supplier/inventory/inventoryApi";
 import "../supplier/products/productApi";
 import "../supplier/promo-codes/promoCodesApi";
