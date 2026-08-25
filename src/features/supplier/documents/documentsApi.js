@@ -1,10 +1,5 @@
 import { baseApi } from "../../../services/api/baseApi";
-import {
-  formatEuro,
-  pickList,
-  pickPage,
-  pickTotal,
-} from "../apiError";
+import { formatEuro, pickList, pickPage, pickTotal } from "../apiError";
 
 function formatDateValue(value) {
   if (!value) return "";
@@ -41,7 +36,13 @@ function resolveDocumentListItem(item) {
     resolveDocumentId(item);
 
   const order = item.order ?? {};
-  const customer = item.customer ?? item.company ?? item.buyer ?? order.customer ?? order.company ?? {};
+  const customer =
+    item.customer ??
+    item.company ??
+    item.buyer ??
+    order.customer ??
+    order.company ??
+    {};
   const amountValue =
     item.amount ??
     item.total ??
@@ -74,7 +75,9 @@ function resolveDocumentListItem(item) {
         "",
     ),
     amount: formatEuro(amountValue),
-    date: formatDateValue(item.date ?? item.createdAt ?? item.generatedAt ?? item.invoiceDate),
+    date: formatDateValue(
+      item.date ?? item.createdAt ?? item.generatedAt ?? item.invoiceDate,
+    ),
     raw: item,
   };
 }
@@ -96,7 +99,11 @@ function resolveEligibleOrderItem(item) {
     item.orderNumber ?? item.orderId ?? item.reference ?? value,
   );
   const customerLabel =
-    customer.name ?? customer.businessName ?? item.customerName ?? item.companyName ?? "";
+    customer.name ??
+    customer.businessName ??
+    item.customerName ??
+    item.companyName ??
+    "";
 
   return {
     value: String(value),
@@ -110,7 +117,13 @@ function resolveDocumentDetail(payload) {
   if (!document || typeof document !== "object") return null;
 
   const order = document.order ?? {};
-  const customer = document.customer ?? document.company ?? document.buyer ?? order.customer ?? order.company ?? {};
+  const customer =
+    document.customer ??
+    document.company ??
+    document.buyer ??
+    order.customer ??
+    order.company ??
+    {};
   const amountValue =
     document.amount ??
     document.total ??
@@ -146,8 +159,15 @@ function resolveDocumentDetail(payload) {
         "",
     ),
     amount: formatEuro(amountValue),
-    date: formatDateValue(document.date ?? document.createdAt ?? document.generatedAt ?? document.invoiceDate),
-    type: String(document.type ?? document.documentType ?? "invoice").toLowerCase(),
+    date: formatDateValue(
+      document.date ??
+        document.createdAt ??
+        document.generatedAt ??
+        document.invoiceDate,
+    ),
+    type: String(
+      document.type ?? document.documentType ?? "invoice",
+    ).toLowerCase(),
     totals: document.totals ?? null,
     order,
     raw: document,
@@ -178,7 +198,11 @@ export const supplierDocumentsApi = baseApi.injectEndpoints({
         const total = pickTotal(response, documents.length);
         const page = pickPage(response, arg?.page ?? 1);
         const limitValue =
-          response?.limit ?? response?.pagination?.limit ?? response?.meta?.limit ?? arg?.limit ?? 7;
+          response?.limit ??
+          response?.pagination?.limit ??
+          response?.meta?.limit ??
+          arg?.limit ??
+          7;
         const limit = Number(limitValue || 7) || 7;
 
         return {
@@ -186,7 +210,10 @@ export const supplierDocumentsApi = baseApi.injectEndpoints({
           total,
           page,
           limit,
-          totalPages: Math.max(1, Math.ceil((total || documents.length) / limit)),
+          totalPages: Math.max(
+            1,
+            Math.ceil((total || documents.length) / limit),
+          ),
         };
       },
       providesTags: (result) => [

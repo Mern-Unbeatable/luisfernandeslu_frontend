@@ -1,10 +1,13 @@
-import { useCallback, useMemo, useState } from 'react';
-import { FiCalendar, FiDownload, FiEye, FiFileText, FiX } from 'react-icons/fi';
-import { useTranslation } from 'react-i18next';
-import Seo from '@/components/common/Seo/Seo';
-import DataTable from '@/components/data-display/DataTable/DataTable';
-import StatusCard from '@/components/data-display/StatusCard';
-import { getApiErrorMessage, triggerBlobDownload } from '@/features/supplier/apiError';
+import { useCallback, useMemo, useState } from "react";
+import { FiCalendar, FiDownload, FiEye, FiFileText, FiX } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
+import Seo from "@/components/common/Seo/Seo";
+import DataTable from "@/components/data-display/DataTable/DataTable";
+import StatusCard from "@/components/data-display/StatusCard";
+import {
+  getApiErrorMessage,
+  triggerBlobDownload,
+} from "@/features/supplier/apiError";
 import {
   useGenerateSupplierDocumentMutation,
   useGetSupplierDocumentByIdQuery,
@@ -12,44 +15,44 @@ import {
   useGetSupplierDocumentStatsQuery,
   useGetSupplierDocumentsQuery,
   useLazyGetSupplierDocumentPdfQuery,
-} from '@/features/supplier/documents/documentsApi';
-import GenerateDocumentModal from './GenerateDocumentModal';
+} from "@/features/supplier/documents/documentsApi";
+import GenerateDocumentModal from "./GenerateDocumentModal";
 
 const SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE = 7;
 
 const STAT_CARD_CONFIG = [
   {
-    id: 'totalDocuments',
-    labelKey: 'panel.supplierFiscalDocuments.totalDocuments',
-    valueKey: 'totalDocuments',
-    variant: 'filled',
-    tone: 'brand',
+    id: "totalDocuments",
+    labelKey: "panel.supplierFiscalDocuments.totalDocuments",
+    valueKey: "totalDocuments",
+    variant: "filled",
+    tone: "brand",
   },
   {
-    id: 'thisMonth',
-    labelKey: 'panel.supplierFiscalDocuments.thisMonth',
-    valueKey: 'thisMonth',
-    variant: 'badge',
+    id: "thisMonth",
+    labelKey: "panel.supplierFiscalDocuments.thisMonth",
+    valueKey: "thisMonth",
+    variant: "badge",
   },
   {
-    id: 'invoices',
-    labelKey: 'panel.supplierFiscalDocuments.invoices',
-    valueKey: 'invoices',
-    variant: 'badge',
+    id: "invoices",
+    labelKey: "panel.supplierFiscalDocuments.invoices",
+    valueKey: "invoices",
+    variant: "badge",
   },
   {
-    id: 'totalValue',
-    labelKey: 'panel.supplierFiscalDocuments.totalValue',
-    valueKey: 'totalValue',
-    variant: 'badge',
+    id: "totalValue",
+    labelKey: "panel.supplierFiscalDocuments.totalValue",
+    valueKey: "totalValue",
+    variant: "badge",
   },
 ];
 
 function normalizeCurrencyValue(value) {
-  if (value == null || value === '') return '€0';
-  if (typeof value === 'string') return value;
-  if (typeof value === 'number' && Number.isFinite(value)) {
-    return `€${value.toLocaleString('en-US', {
+  if (value == null || value === "") return "€0";
+  if (typeof value === "string") return value;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return `€${value.toLocaleString("en-US", {
       minimumFractionDigits: value % 1 === 0 ? 0 : 2,
       maximumFractionDigits: 2,
     })}`;
@@ -57,7 +60,7 @@ function normalizeCurrencyValue(value) {
   return String(value);
 }
 
-function formatDocumentPreviewValue(document, fallback = '—') {
+function formatDocumentPreviewValue(document, fallback = "—") {
   if (!document) return fallback;
   return (
     document.documentId ||
@@ -72,10 +75,10 @@ function formatDocumentPreviewValue(document, fallback = '—') {
 export default function DocumentsPage() {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
   const [previewDocumentId, setPreviewDocumentId] = useState(null);
-  const [pageError, setPageError] = useState('');
+  const [pageError, setPageError] = useState("");
 
   const {
     data: stats = {},
@@ -113,21 +116,24 @@ export default function DocumentsPage() {
   const pageCount = Math.max(
     1,
     documentsResponse?.totalPages ??
-      Math.ceil((total || documents.length || 1) / SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE),
+      Math.ceil(
+        (total || documents.length || 1) / SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE,
+      ),
   );
   const safePage = Math.min(page, pageCount);
-  const from = total === 0 ? 0 : (safePage - 1) * SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE + 1;
+  const from =
+    total === 0 ? 0 : (safePage - 1) * SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE + 1;
   const to =
     total === 0
       ? 0
       : Math.min(safePage * SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE, total);
 
-  const invoiceLabel = t('panel.supplierFiscalDocuments.typeInvoice');
+  const invoiceLabel = t("panel.supplierFiscalDocuments.typeInvoice");
 
   const apiError =
-    (documentsError ? getApiErrorMessage(documentsError, '') : '') ||
-    (statsError ? getApiErrorMessage(statsError, '') : '') ||
-    (eligibleOrdersError ? getApiErrorMessage(eligibleOrdersError, '') : '') ||
+    (documentsError ? getApiErrorMessage(documentsError, "") : "") ||
+    (statsError ? getApiErrorMessage(statsError, "") : "") ||
+    (eligibleOrdersError ? getApiErrorMessage(eligibleOrdersError, "") : "") ||
     pageError;
 
   const statValues = useMemo(
@@ -135,7 +141,9 @@ export default function DocumentsPage() {
       totalDocuments: stats.totalDocuments ?? stats.total ?? 0,
       thisMonth: stats.thisMonth ?? stats.month ?? 0,
       invoices: stats.invoices ?? stats.invoiceCount ?? 0,
-      totalValue: normalizeCurrencyValue(stats.totalValue ?? stats.totalAmount ?? stats.value ?? 0),
+      totalValue: normalizeCurrencyValue(
+        stats.totalValue ?? stats.totalAmount ?? stats.value ?? 0,
+      ),
     }),
     [stats],
   );
@@ -145,54 +153,67 @@ export default function DocumentsPage() {
       documents.map((document) => ({
         ...document,
         typeLabel:
-          document.type === 'invoice'
+          document.type === "invoice"
             ? invoiceLabel
-            : String(document.type || ''),
+            : String(document.type || ""),
       })),
     [documents, invoiceLabel],
   );
 
   const handleGenerateInvoice = useCallback(() => {
-    setPageError('');
+    setPageError("");
     setGenerateModalOpen(true);
   }, []);
 
-  const handleGenerateSubmit = useCallback(async ({ orderId }) => {
-    setPageError('');
-    try {
-      await generateSupplierDocument({ orderId }).unwrap();
-      setGenerateModalOpen(false);
-      setPage(1);
-    } catch (error) {
-      setPageError(getApiErrorMessage(error, t('panel.supplierFiscalDocuments.modalSubmit')));
-      throw error;
-    }
-  }, [generateSupplierDocument, t]);
+  const handleGenerateSubmit = useCallback(
+    async ({ orderId }) => {
+      setPageError("");
+      try {
+        await generateSupplierDocument({ orderId }).unwrap();
+        setGenerateModalOpen(false);
+        setPage(1);
+      } catch (error) {
+        setPageError(
+          getApiErrorMessage(
+            error,
+            t("panel.supplierFiscalDocuments.modalSubmit"),
+          ),
+        );
+        throw error;
+      }
+    },
+    [generateSupplierDocument, t],
+  );
 
   const handleViewDocument = useCallback((row) => {
-    setPageError('');
+    setPageError("");
     if (!row?.id) return;
     setPreviewDocumentId(row.id);
   }, []);
 
   const handleDownloadDocument = useCallback(
-    async (row, audience = 'SUPPLIER') => {
-      setPageError('');
+    async (row, audience = "SUPPLIER") => {
+      setPageError("");
       if (!row?.id) return;
 
       try {
         const blob = await downloadDocumentPdf({
           documentId: row.id,
-          audience: audience === 'CUSTOMER' ? 'CUSTOMER' : undefined,
+          audience: audience === "CUSTOMER" ? "CUSTOMER" : undefined,
         }).unwrap();
         triggerBlobDownload(
           blob,
-          audience === 'CUSTOMER'
+          audience === "CUSTOMER"
             ? `document-${row.documentId || row.id}-customer.pdf`
             : `document-${row.documentId || row.id}.pdf`,
         );
       } catch (error) {
-        setPageError(getApiErrorMessage(error, t('panel.supplierFiscalDocuments.downloadDocument')));
+        setPageError(
+          getApiErrorMessage(
+            error,
+            t("panel.supplierFiscalDocuments.downloadDocument"),
+          ),
+        );
       }
     },
     [downloadDocumentPdf, t],
@@ -201,8 +222,8 @@ export default function DocumentsPage() {
   const columns = useMemo(
     () => [
       {
-        key: 'documentId',
-        header: t('panel.supplierFiscalDocuments.colDocumentId'),
+        key: "documentId",
+        header: t("panel.supplierFiscalDocuments.colDocumentId"),
         render: (value) => (
           <span className="inline-flex items-center gap-2 font-medium text-[var(--primary-text)]">
             <FiFileText
@@ -215,34 +236,34 @@ export default function DocumentsPage() {
         ),
       },
       {
-        key: 'type',
-        header: t('panel.supplierFiscalDocuments.colType'),
+        key: "type",
+        header: t("panel.supplierFiscalDocuments.colType"),
         render: (_, row) => (
-          <span
-            className="inline-flex rounded-full border border-[var(--active)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-3 py-1 text-xs font-medium text-[var(--active)]"
-          >
-            {row.typeLabel || t('panel.supplierFiscalDocuments.typeInvoice')}
+          <span className="inline-flex rounded-full border border-[var(--active)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-3 py-1 text-xs font-medium text-[var(--active)]">
+            {row.typeLabel || t("panel.supplierFiscalDocuments.typeInvoice")}
           </span>
         ),
       },
       {
-        key: 'orderId',
-        header: t('panel.supplierFiscalDocuments.colOrderId'),
+        key: "orderId",
+        header: t("panel.supplierFiscalDocuments.colOrderId"),
       },
       {
-        key: 'customer',
-        header: t('panel.supplierFiscalDocuments.colCustomer'),
+        key: "customer",
+        header: t("panel.supplierFiscalDocuments.colCustomer"),
       },
       {
-        key: 'amount',
-        header: t('panel.supplierFiscalDocuments.colAmount'),
+        key: "amount",
+        header: t("panel.supplierFiscalDocuments.colAmount"),
         render: (value) => (
-          <span className="font-semibold text-[var(--primary-text)]">{value}</span>
+          <span className="font-semibold text-[var(--primary-text)]">
+            {value}
+          </span>
         ),
       },
       {
-        key: 'date',
-        header: t('panel.supplierFiscalDocuments.colDate'),
+        key: "date",
+        header: t("panel.supplierFiscalDocuments.colDate"),
         render: (value) => (
           <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
             <FiCalendar
@@ -255,15 +276,15 @@ export default function DocumentsPage() {
         ),
       },
       {
-        key: 'actions',
-        header: t('panel.supplierFiscalDocuments.colActions'),
+        key: "actions",
+        header: t("panel.supplierFiscalDocuments.colActions"),
         render: (_, row) => (
           <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={() => handleViewDocument(row)}
               className="inline-flex rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-              aria-label={t('panel.supplierFiscalDocuments.viewDocument')}
+              aria-label={t("panel.supplierFiscalDocuments.viewDocument")}
             >
               <FiEye className="size-5" strokeWidth={1.75} aria-hidden />
             </button>
@@ -271,7 +292,7 @@ export default function DocumentsPage() {
               type="button"
               onClick={() => handleDownloadDocument(row)}
               className="inline-flex rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-              aria-label={t('panel.supplierFiscalDocuments.downloadDocument')}
+              aria-label={t("panel.supplierFiscalDocuments.downloadDocument")}
             >
               <FiDownload className="size-5" strokeWidth={1.75} aria-hidden />
             </button>
@@ -284,15 +305,15 @@ export default function DocumentsPage() {
 
   return (
     <>
-      <Seo title={t('panel.supplierFiscalDocuments.title')} />
+      <Seo title={t("panel.supplierFiscalDocuments.title")} />
 
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <header>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
-            {t('panel.supplierFiscalDocuments.title')}
+            {t("panel.supplierFiscalDocuments.title")}
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            {t('panel.supplierFiscalDocuments.subtitle')}
+            {t("panel.supplierFiscalDocuments.subtitle")}
           </p>
         </header>
 
@@ -302,7 +323,7 @@ export default function DocumentsPage() {
           disabled={isGeneratingDocument}
           className="inline-flex shrink-0 items-center justify-center self-start rounded-md bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
         >
-          {t('panel.supplierFiscalDocuments.generateInvoice')}
+          {t("panel.supplierFiscalDocuments.generateInvoice")}
         </button>
       </div>
 
@@ -318,7 +339,7 @@ export default function DocumentsPage() {
             key={card.id}
             variant={card.variant}
             label={t(card.labelKey)}
-            value={isStatsLoading ? '—' : statValues[card.valueKey]}
+            value={isStatsLoading ? "—" : statValues[card.valueKey]}
             tone={card.tone}
             className="shadow-sm"
           />
@@ -339,11 +360,11 @@ export default function DocumentsPage() {
             setPage(1);
           }}
           searchPlaceholder={t(
-            'panel.supplierFiscalDocuments.searchPlaceholder',
+            "panel.supplierFiscalDocuments.searchPlaceholder",
           )}
           showFilters={false}
           showActions={false}
-          emptyMessage={t('panel.supplierFiscalDocuments.emptyDocuments')}
+          emptyMessage={t("panel.supplierFiscalDocuments.emptyDocuments")}
           loading={isDocumentsLoading || isDocumentsFetching}
           showPagination
           pagination={{
@@ -355,19 +376,23 @@ export default function DocumentsPage() {
             hasPrevious: safePage > 1,
             hasNext: safePage < pageCount,
             onPageChange: setPage,
-            summaryLabel: t('panel.supplierFiscalDocuments.showingResults', {
+            summaryLabel: t("panel.supplierFiscalDocuments.showingResults", {
               from,
               to,
               total,
             }),
-            previousLabel: t('panel.supplierFiscalDocuments.previous'),
-            nextLabel: t('panel.supplierFiscalDocuments.next'),
+            previousLabel: t("panel.supplierFiscalDocuments.previous"),
+            nextLabel: t("panel.supplierFiscalDocuments.next"),
           }}
         />
       </section>
 
       <GenerateDocumentModal
-        key={generateModalOpen ? 'generate-document-open' : 'generate-document-closed'}
+        key={
+          generateModalOpen
+            ? "generate-document-open"
+            : "generate-document-closed"
+        }
         open={generateModalOpen}
         onClose={() => setGenerateModalOpen(false)}
         orderOptions={eligibleOrders}
@@ -381,14 +406,22 @@ export default function DocumentsPage() {
           loading={isPreviewLoading}
           onClose={() => setPreviewDocumentId(null)}
           onDownloadSupplier={() => handleDownloadDocument(previewDocument)}
-          onDownloadCustomer={() => handleDownloadDocument(previewDocument, 'CUSTOMER')}
+          onDownloadCustomer={() =>
+            handleDownloadDocument(previewDocument, "CUSTOMER")
+          }
         />
       ) : null}
     </>
   );
 }
 
-function DocumentPreviewModal({ document, loading, onClose, onDownloadSupplier, onDownloadCustomer }) {
+function DocumentPreviewModal({
+  document,
+  loading,
+  onClose,
+  onDownloadSupplier,
+  onDownloadCustomer,
+}) {
   if (!document && !loading) return null;
 
   return (
@@ -402,13 +435,20 @@ function DocumentPreviewModal({ document, loading, onClose, onDownloadSupplier, 
 
       <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-2xl">
         <div className="flex items-start gap-3 border-b border-gray-200 px-5 py-4">
-          <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-[color-mix(in_srgb,var(--active)_16%,white)] text-[var(--active)]" aria-hidden>
+          <span
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-[color-mix(in_srgb,var(--active)_16%,white)] text-[var(--active)]"
+            aria-hidden
+          >
             <FiFileText className="size-5" strokeWidth={1.75} />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="text-base font-bold text-[var(--primary-text)]">Document Preview</h2>
+            <h2 className="text-base font-bold text-[var(--primary-text)]">
+              Document Preview
+            </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              {loading ? 'Loading document details...' : formatDocumentPreviewValue(document)}
+              {loading
+                ? "Loading document details..."
+                : formatDocumentPreviewValue(document)}
             </p>
           </div>
           <button
@@ -448,16 +488,18 @@ function DocumentPreviewModal({ document, loading, onClose, onDownloadSupplier, 
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function PreviewField({ label, value }) {
   return (
     <div className="rounded-lg bg-[#FAF7F2] px-4 py-3">
-      <p className="text-xs font-medium text-[var(--secondary-text)]">{label}</p>
+      <p className="text-xs font-medium text-[var(--secondary-text)]">
+        {label}
+      </p>
       <p className="mt-1 text-sm font-semibold text-[var(--primary-text)]">
-        {value || '—'}
+        {value || "—"}
       </p>
     </div>
-  )
+  );
 }
