@@ -7,6 +7,10 @@ import {
   useGetSupplierCustomerOrderByIdQuery,
   useUpdateSupplierCustomerOrderStatusMutation,
 } from "@/features/orders/orderApi";
+import {
+  CUSTOMER_ORDER_STATUSES,
+  normalizeCustomerOrderStatus,
+} from "@/features/orders/customerOrderStatus";
 import { axiosInstance } from "@/services/api/axiosInstance";
 
 export default function OrderCustomerDetailPage() {
@@ -15,7 +19,9 @@ export default function OrderCustomerDetailPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [statusOverride, setStatusOverride] = useState(
-    location.state?.status ?? null,
+    location.state?.status
+      ? normalizeCustomerOrderStatus(location.state.status)
+      : null,
   );
 
   const {
@@ -34,8 +40,11 @@ export default function OrderCustomerDetailPage() {
   }, [order, statusOverride]);
 
   const handleAccept = useCallback(() => {
-    updateSupplierCustomerOrderStatus({ id: orderId, status: "pending" });
-    setStatusOverride("pending");
+    updateSupplierCustomerOrderStatus({
+      id: orderId,
+      status: CUSTOMER_ORDER_STATUSES.PENDING,
+    });
+    setStatusOverride(CUSTOMER_ORDER_STATUSES.PENDING);
   }, [orderId, updateSupplierCustomerOrderStatus]);
 
   const handleDownloadInvoice = useCallback(async () => {

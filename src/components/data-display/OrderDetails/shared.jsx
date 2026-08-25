@@ -4,6 +4,7 @@ import DataTable from '../DataTable/DataTable'
 export function normalizeStatus(status = '') {
   const s = String(status).toLowerCase().trim()
   if (s === 'cancelled' || s === 'canceled' || s === 'cancel') return 'cancel'
+  if (s === 'in_transit' || s === 'in transit') return 'assigned'
   if (s === 'assigned') return 'assigned'
   if (s === 'pending') return 'pending'
   if (s === 'new') return 'new'

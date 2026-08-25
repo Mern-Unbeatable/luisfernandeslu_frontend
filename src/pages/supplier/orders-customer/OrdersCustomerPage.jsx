@@ -10,6 +10,14 @@ import {
   useGetSupplierCustomerOrdersQuery,
   useUpdateSupplierCustomerOrderStatusMutation,
 } from "@/features/orders/orderApi";
+import {
+  CUSTOMER_ORDER_FILTER_STATUSES,
+  CUSTOMER_ORDER_STATUS_ALL,
+  CUSTOMER_ORDER_STATUS_CONFIG,
+  CUSTOMER_ORDER_STATUSES,
+  CUSTOMER_ORDER_STATUS_LABEL_KEYS,
+  normalizeCustomerOrderStatus,
+} from "@/features/orders/customerOrderStatus";
 import { SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE } from "@/data/demoData";
 
 const CUSTOMER_ORDER_STAT_CARDS = [
@@ -33,6 +41,12 @@ const CUSTOMER_ORDER_STAT_CARDS = [
     variant: "summary",
   },
   {
+    id: "assigned",
+    labelKey: "panel.supplierCustomerOrders.statusAssigned",
+    valueKey: "assigned",
+    variant: "summary",
+  },
+  {
     id: "completed",
     labelKey: "panel.supplierCustomerOrders.completed",
     valueKey: "completed",
@@ -41,29 +55,81 @@ const CUSTOMER_ORDER_STAT_CARDS = [
   },
 ];
 
-const STATUS_LABEL_KEYS = {
-  new: "panel.supplierCustomerOrders.statusNew",
-  pending: "panel.supplierCustomerOrders.statusPending",
-  processing: "panel.supplierCustomerOrders.statusProcessing",
-  assigned: "panel.supplierCustomerOrders.statusAssigned",
-  completed: "panel.supplierCustomerOrders.statusCompleted",
-  cancel: "panel.supplierCustomerOrders.statusCancel",
+const FALLBACK_STATUS_TRANSITIONS = {
+  [CUSTOMER_ORDER_STATUSES.PENDING]: [
+    CUSTOMER_ORDER_STATUSES.PROCESSING,
+    CUSTOMER_ORDER_STATUSES.CANCELLED,
+  ],
+  [CUSTOMER_ORDER_STATUSES.PROCESSING]: [
+    CUSTOMER_ORDER_STATUSES.IN_TRANSIT,
+    CUSTOMER_ORDER_STATUSES.CANCELLED,
+  ],
+  [CUSTOMER_ORDER_STATUSES.IN_TRANSIT]: [
+    CUSTOMER_ORDER_STATUSES.COMPLETED,
+    CUSTOMER_ORDER_STATUSES.CANCELLED,
+  ],
 };
 
-const APPROVED_STATUS_OPTIONS = [
-  "pending",
-  "processing",
-  "assigned",
-  "completed",
-  "cancel",
-];
+function titleCaseStatus(status) {
+  return String(status ?? "")
+    .toLowerCase()
+    .split("_")
+    .filter(Boolean)
+    .map((chunk) => chunk.charAt(0).toUpperCase() + chunk.slice(1))
+    .join(" ");
+}
+
+function normalizeSearchStatusTerm(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
 
 export default function OrdersCustomerPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState(CUSTOMER_ORDER_STATUS_ALL);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const searchStatusAliases = useMemo(() => {
+    const list = [
+      {
+        term: t("panel.supplierCustomerOrders.statusNew"),
+        status: CUSTOMER_ORDER_STATUSES.NEW,
+      },
+      {
+        term: t("panel.supplierCustomerOrders.statusPending"),
+        status: CUSTOMER_ORDER_STATUSES.PENDING,
+      },
+      {
+        term: t("panel.supplierCustomerOrders.statusProcessing"),
+        status: CUSTOMER_ORDER_STATUSES.PROCESSING,
+      },
+      {
+        term: t("panel.supplierCustomerOrders.statusAssigned"),
+        status: CUSTOMER_ORDER_STATUSES.IN_TRANSIT,
+      },
+      {
+        term: t("panel.supplierCustomerOrders.statusCancel"),
+        status: CUSTOMER_ORDER_STATUSES.CANCELLED,
+      },
+      {
+        term: t("panel.supplierCustomerOrders.statusCompleted"),
+        status: CUSTOMER_ORDER_STATUSES.COMPLETED,
+      },
+    ];
+
+    return Object.fromEntries(
+      list.map((item) => [normalizeSearchStatusTerm(item.term), item.status]),
+    );
+  }, [t]);
+
+  const apiSearch = useMemo(() => {
+    const normalized = normalizeSearchStatusTerm(search);
+    return searchStatusAliases[normalized] ?? search;
+  }, [search, searchStatusAliases]);
 
   const {
     data: ordersResponse,
@@ -73,57 +139,84 @@ export default function OrdersCustomerPage() {
     page,
     limit: SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,
     status: statusFilter,
-    search,
+    search: apiSearch,
   });
   const { data: statsResponse } = useGetSupplierCustomerOrderStatsQuery();
   const [updateSupplierCustomerOrderStatus] =
     useUpdateSupplierCustomerOrderStatusMutation();
 
   const orders = useMemo(() => ordersResponse?.orders ?? [], [ordersResponse]);
-  const normalizedOrders = useMemo(
+
+  const stats = useMemo(() => {
+    const byStatus =
+      statsResponse?.statusCounts ??
+      statsResponse?.byStatus ??
+      statsResponse?.statuses ??
+      {};
+    const countByStatus = (status, alternateKeys = []) => {
+      const key = String(status ?? "");
+      const lowerKey = key.toLowerCase();
+      const values = [
+        statsResponse?.[key],
+        statsResponse?.[lowerKey],
+        byStatus?.[key],
+        byStatus?.[lowerKey],
+        ...alternateKeys.map((item) => statsResponse?.[item]),
+        ...alternateKeys.map((item) => byStatus?.[item]),
+      ];
+      const resolved = values.find((item) => Number.isFinite(Number(item)));
+      return Number(resolved ?? 0);
+    };
+
+    return {
+      totalOrders:
+        Number(
+          statsResponse?.totalOrders ??
+            statsResponse?.total ??
+            statsResponse?.count,
+        ) || 0,
+      pending: countByStatus(CUSTOMER_ORDER_STATUSES.PENDING),
+      processing: countByStatus(CUSTOMER_ORDER_STATUSES.PROCESSING),
+        assigned: countByStatus(CUSTOMER_ORDER_STATUSES.IN_TRANSIT, [
+        "inTransit",
+        "in_transit",
+      ]),
+        cancel: countByStatus(CUSTOMER_ORDER_STATUSES.CANCELLED, [
+          "cancelled",
+          "canceled",
+          "cancel",
+        ]),
+      completed: countByStatus(CUSTOMER_ORDER_STATUSES.COMPLETED),
+    };
+  }, [statsResponse]);
+
+  const rows = useMemo(
     () =>
-      orders.map((order) => ({
-        ...order,
-        status: String(order.status ?? "")
-          .trim()
-          .toLowerCase(),
-      })),
-    [orders],
-  );
-  const stats = useMemo(
-    () => ({
-      totalOrders: statsResponse?.totalOrders ?? 0,
-      pending: statsResponse?.pending ?? 0,
-      processing: statsResponse?.processing ?? 0,
-      completed: statsResponse?.completed ?? 0,
-    }),
-    [statsResponse],
+      orders.map((order) => {
+        const status = normalizeCustomerOrderStatus(
+          order.orderStatus ?? order.status,
+        );
+        const statusLabelKey = CUSTOMER_ORDER_STATUS_CONFIG[status]?.labelKey;
+
+        return {
+          ...order,
+          status,
+          statusLabel: statusLabelKey ? t(statusLabelKey) : titleCaseStatus(status),
+        };
+      }),
+    [orders, t],
   );
 
   const statusOptions = useMemo(
     () => [
-      { value: "all", label: t("panel.supplierCustomerOrders.allStatus") },
-      { value: "new", label: t("panel.supplierCustomerOrders.statusNew") },
       {
-        value: "pending",
-        label: t("panel.supplierCustomerOrders.statusPending"),
+        value: CUSTOMER_ORDER_STATUS_ALL,
+        label: t("panel.supplierCustomerOrders.allStatus"),
       },
-      {
-        value: "processing",
-        label: t("panel.supplierCustomerOrders.statusProcessing"),
-      },
-      {
-        value: "assigned",
-        label: t("panel.supplierCustomerOrders.statusAssigned"),
-      },
-      {
-        value: "cancel",
-        label: t("panel.supplierCustomerOrders.statusCancel"),
-      },
-      {
-        value: "completed",
-        label: t("panel.supplierCustomerOrders.statusCompleted"),
-      },
+      ...CUSTOMER_ORDER_FILTER_STATUSES.map((value) => ({
+        value,
+        label: t(CUSTOMER_ORDER_STATUS_LABEL_KEYS[value]),
+      })),
     ],
     [t],
   );
@@ -137,10 +230,33 @@ export default function OrdersCustomerPage() {
 
   const handleAcceptOrder = useCallback(
     (row) => {
-      handleStatusChange(row, "pending");
+      handleStatusChange(row, CUSTOMER_ORDER_STATUSES.PENDING);
     },
     [handleStatusChange],
   );
+
+  const buildStatusActions = useCallback((row) => {
+    const transitions = [];
+
+    if (row.canMarkProcessing) {
+      transitions.push(CUSTOMER_ORDER_STATUSES.PROCESSING);
+    }
+    if (row.canMarkInTransit) {
+      transitions.push(CUSTOMER_ORDER_STATUSES.IN_TRANSIT);
+    }
+    if (row.canComplete) {
+      transitions.push(CUSTOMER_ORDER_STATUSES.COMPLETED);
+    }
+    if (row.canCancel) {
+      transitions.push(CUSTOMER_ORDER_STATUSES.CANCELLED);
+    }
+
+    if (transitions.length === 0) {
+      transitions.push(...(FALLBACK_STATUS_TRANSITIONS[row.status] ?? []));
+    }
+
+    return [...new Set(transitions)].filter((status) => status !== row.status);
+  }, []);
 
   const getRowActions = useCallback(
     (row) => {
@@ -155,62 +271,40 @@ export default function OrdersCustomerPage() {
         },
       };
 
-      if (row.status === "new") {
-        return [
-          seeDetails,
-          {
-            id: "accept",
-            label: t("panel.supplierCustomerOrders.actionAccept"),
-            onClick: handleAcceptOrder,
-          },
-        ];
+      const transitions = buildStatusActions(row);
+      const canAccept =
+        row.canAccept === true ||
+        normalizeCustomerOrderStatus(row.status) === "NEW";
+      const actions = [seeDetails];
+
+      if (canAccept) {
+        actions.push({
+          id: "accept",
+          label: t("panel.supplierCustomerOrders.actionAccept"),
+          onClick: handleAcceptOrder,
+        });
       }
 
-      return [
-        seeDetails,
-        {
+      if (transitions.length > 0) {
+        actions.push({
           id: "status-section",
           label: t("panel.supplierCustomerOrders.statusSection"),
           variant: "section",
-        },
-        ...APPROVED_STATUS_OPTIONS.map((status) => ({
-          id: `set-${status}`,
-          label: t(STATUS_LABEL_KEYS[status]),
-          onClick: (order) => handleStatusChange(order, status),
-        })),
-      ];
+        });
+
+        actions.push(
+          ...transitions.map((status) => ({
+            id: `set-${status}`,
+            label: t(CUSTOMER_ORDER_STATUS_CONFIG[status]?.labelKey),
+            onClick: (order) => handleStatusChange(order, status),
+          })),
+        );
+      }
+
+      return actions;
     },
-    [t, handleAcceptOrder, handleStatusChange, navigate],
+    [t, handleAcceptOrder, handleStatusChange, navigate, buildStatusActions],
   );
-
-  const filteredOrders = useMemo(() => {
-    const query = search.trim().toLowerCase();
-
-    return normalizedOrders.filter((row) => {
-      if (statusFilter !== "all" && row.status !== statusFilter) {
-        return false;
-      }
-
-      if (!query) {
-        return true;
-      }
-
-      const haystack = [
-        row.orderId,
-        row.customerName,
-        row.email,
-        row.items,
-        row.total,
-        row.status,
-        row.statusLabel,
-        row.date,
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(query);
-    });
-  }, [normalizedOrders, search, statusFilter]);
 
   const tableFilters = useMemo(
     () => [
@@ -228,16 +322,14 @@ export default function OrdersCustomerPage() {
     [statusFilter, statusOptions, t],
   );
 
-  const total =
-    statusFilter !== "all" || search.trim()
-      ? filteredOrders.length
-      : (ordersResponse?.total ?? filteredOrders.length);
+  const total = ordersResponse?.total ?? rows.length;
   const pageCount = Math.max(
     1,
-    Math.ceil(total / SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE),
+    Number(ordersResponse?.totalPages) ||
+      Math.ceil(total / SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE),
   );
   const safePage = Math.min(page, pageCount);
-  const pagedOrders = filteredOrders;
+  const pagedOrders = rows;
 
   const columns = useMemo(
     () => [
@@ -281,11 +373,13 @@ export default function OrdersCustomerPage() {
   );
 
   const from =
-    total === 0 ? 0 : (safePage - 1) * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE + 1;
+    Number(ordersResponse?.from) ||
+    (total === 0 ? 0 : (safePage - 1) * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE + 1);
   const to =
-    total === 0
+    Number(ordersResponse?.to) ||
+    (total === 0
       ? 0
-      : Math.min(safePage * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE, total);
+      : Math.min(safePage * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE, total));
 
   return (
     <>
@@ -302,7 +396,7 @@ export default function OrdersCustomerPage() {
         </header>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {CUSTOMER_ORDER_STAT_CARDS.map((card) => {
           const value = stats[card.valueKey] ?? 0;
 
@@ -348,12 +442,20 @@ export default function OrdersCustomerPage() {
           filters={tableFilters}
           pagination={{
             page: safePage,
-            pageSize: SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,
+            pageSize:
+              Number(ordersResponse?.limit) ||
+              SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE,
             total,
             from,
             to,
-            hasPrevious: safePage > 1,
-            hasNext: safePage < pageCount,
+            hasPrevious:
+              ordersResponse?.hasPrevious != null
+                ? ordersResponse.hasPrevious
+                : safePage > 1,
+            hasNext:
+              ordersResponse?.hasNext != null
+                ? ordersResponse.hasNext
+                : safePage < pageCount,
             onPageChange: setPage,
             summaryLabel: t("panel.supplierCustomerOrders.showingResults", {
               from,

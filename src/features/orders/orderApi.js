@@ -1,37 +1,12 @@
 import { baseApi } from "../../services/api/baseApi";
 import { pickList } from "../supplier/apiError";
-
-function normalizeCustomerOrderStatus(status) {
-  const value = String(status ?? "")
-    .trim()
-    .toLowerCase();
-
-  if (value === "cancelled" || value === "canceled" || value === "cancel") {
-    return "cancel";
-  }
-  if (value === "in_transit" || value === "in transit") return "processing";
-  if (value === "pending") return "pending";
-  if (value === "processing") return "processing";
-  if (value === "assigned") return "assigned";
-  if (value === "completed" || value === "complete") return "completed";
-  if (value === "new") return "new";
-
-  return value || "new";
-}
+import {
+  CUSTOMER_ORDER_STATUS_ALL,
+  normalizeCustomerOrderStatus,
+} from "./customerOrderStatus";
 
 function toApiCustomerOrderStatus(status) {
-  const value = String(status ?? "")
-    .trim()
-    .toLowerCase();
-
-  if (value === "cancel") return "CANCELLED";
-  if (value === "completed") return "COMPLETED";
-  if (value === "assigned") return "ASSIGNED";
-  if (value === "processing") return "PROCESSING";
-  if (value === "pending") return "PENDING";
-  if (value === "new") return "NEW";
-
-  return value ? value.toUpperCase() : "NEW";
+  return normalizeCustomerOrderStatus(status);
 }
 
 function formatCurrencyValue(value) {
@@ -104,8 +79,14 @@ function mapSupplierCustomerOrderRow(order) {
     items: String(itemCount),
     total: formatCurrencyValue(totalValue),
     status,
-    statusLabel: order.statusLabel ?? status,
+    statusLabel:
+      order.statusLabel ?? order.orderStatus ?? order.status ?? status,
     date: formatDateValue(order.createdAt ?? order.date ?? order.orderDate),
+    canAccept: Boolean(order.canAccept),
+    canMarkProcessing: Boolean(order.canMarkProcessing),
+    canMarkInTransit: Boolean(order.canMarkInTransit),
+    canComplete: Boolean(order.canComplete),
+    canCancel: Boolean(order.canCancel),
     raw: order,
   };
 }
@@ -123,17 +104,55 @@ function mapSupplierCustomerOrderList(payload, fallbackPage = 1) {
       payload?.count ??
       orders.length,
   );
+  const page =
+    Number(
+      payload?.pagination?.page ??
+        payload?.meta?.page ??
+        payload?.page ??
+        fallbackPage,
+    ) || fallbackPage;
+  const limit = Number(
+    payload?.pagination?.limit ??
+      payload?.meta?.limit ??
+      payload?.limit ??
+      payload?.perPage ??
+      payload?.pageSize,
+  );
+  const safeLimit =
+    Number.isFinite(limit) && limit > 0 ? limit : orders.length || 1;
+  const totalPages = Number(
+    payload?.pagination?.totalPages ??
+      payload?.meta?.totalPages ??
+      payload?.totalPages ??
+      Math.ceil((Number.isFinite(total) ? total : orders.length) / safeLimit),
+  );
+  const from = Number(
+    payload?.pagination?.from ??
+      payload?.meta?.from ??
+      (total > 0 ? (page - 1) * safeLimit + 1 : 0),
+  );
+  const to = Number(
+    payload?.pagination?.to ??
+      payload?.meta?.to ??
+      (total > 0 ? Math.min(page * safeLimit, total) : 0),
+  );
+  const hasPrevious =
+    payload?.pagination?.hasPrevious ?? payload?.meta?.hasPrevious ?? page > 1;
+  const hasNext =
+    payload?.pagination?.hasNext ??
+    payload?.meta?.hasNext ??
+    page < (Number.isFinite(totalPages) && totalPages > 0 ? totalPages : 1);
 
   return {
     orders,
     total: Number.isFinite(total) ? total : orders.length,
-    page:
-      Number(
-        payload?.pagination?.page ??
-          payload?.meta?.page ??
-          payload?.page ??
-          fallbackPage,
-      ) || fallbackPage,
+    page,
+    limit: safeLimit,
+    totalPages: Number.isFinite(totalPages) && totalPages > 0 ? totalPages : 1,
+    from: Number.isFinite(from) ? from : 0,
+    to: Number.isFinite(to) ? to : 0,
+    hasPrevious: Boolean(hasPrevious),
+    hasNext: Boolean(hasNext),
   };
 }
 
@@ -231,13 +250,20 @@ export const orderApi = baseApi.injectEndpoints({
       providesTags: [{ type: "Order", id: "STATS" }],
     }),
     getSupplierCustomerOrders: builder.query({
-      query: ({ page = 1, limit = 10, status = "all", search = "" } = {}) => ({
+      query: ({
+        page = 1,
+        limit = 10,
+        status = CUSTOMER_ORDER_STATUS_ALL,
+        search = "",
+      } = {}) => ({
         url: "/api/supplier/customer-orders",
         method: "GET",
         params: {
           page,
           limit,
-          ...(status && status !== "all" ? { status } : { status: "all" }),
+          ...(status && status !== CUSTOMER_ORDER_STATUS_ALL
+            ? { status: toApiCustomerOrderStatus(status) }
+            : { status: CUSTOMER_ORDER_STATUS_ALL }),
           ...(search ? { search } : {}),
         },
       }),

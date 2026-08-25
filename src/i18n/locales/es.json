@@ -197,28 +197,19 @@
       "slides": {
         "hero-1": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Ahorre más en",
-            "pedidos al por mayor"
-          ],
+          "titleLines": ["Ahorre más en", "pedidos al por mayor"],
           "description": "Precios especiales para grandes cantidades. Perfecto para contratistas y constructores.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         },
         "hero-2": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Materiales de calidad para",
-            "cada proyecto"
-          ],
+          "titleLines": ["Materiales de calidad para", "cada proyecto"],
           "description": "Cemento, acero y herramientas de proveedores verificados en la región.",
           "ctaLabel": "Comprar ahora"
         },
         "hero-3": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Hecho para contratistas",
-            "y constructores"
-          ],
+          "titleLines": ["Hecho para contratistas", "y constructores"],
           "description": "Pedidos simplificados, precios al por mayor y entrega fiable en la obra.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         }
