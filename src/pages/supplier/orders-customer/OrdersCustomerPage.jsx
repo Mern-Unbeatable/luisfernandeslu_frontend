@@ -177,15 +177,15 @@ export default function OrdersCustomerPage() {
         ) || 0,
       pending: countByStatus(CUSTOMER_ORDER_STATUSES.PENDING),
       processing: countByStatus(CUSTOMER_ORDER_STATUSES.PROCESSING),
-        assigned: countByStatus(CUSTOMER_ORDER_STATUSES.IN_TRANSIT, [
+      assigned: countByStatus(CUSTOMER_ORDER_STATUSES.IN_TRANSIT, [
         "inTransit",
         "in_transit",
       ]),
-        cancel: countByStatus(CUSTOMER_ORDER_STATUSES.CANCELLED, [
-          "cancelled",
-          "canceled",
-          "cancel",
-        ]),
+      cancel: countByStatus(CUSTOMER_ORDER_STATUSES.CANCELLED, [
+        "cancelled",
+        "canceled",
+        "cancel",
+      ]),
       completed: countByStatus(CUSTOMER_ORDER_STATUSES.COMPLETED),
     };
   }, [statsResponse]);
@@ -201,7 +201,9 @@ export default function OrdersCustomerPage() {
         return {
           ...order,
           status,
-          statusLabel: statusLabelKey ? t(statusLabelKey) : titleCaseStatus(status),
+          statusLabel: statusLabelKey
+            ? t(statusLabelKey)
+            : titleCaseStatus(status),
         };
       }),
     [orders, t],
