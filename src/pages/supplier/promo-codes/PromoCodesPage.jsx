@@ -7,30 +7,16 @@ import Pagination from "@/components/common/Pagination/Pagination";
 import ProductCard from "@/components/data-display/ProductCard/ProductCard";
 import ProductDetails from "@/components/data-display/ProductDetails/ProductDetails";
 import DataTable from "@/components/data-display/DataTable/DataTable";
-import StatusBadge from "@/components/data-display/DataTable/StatusBadge";
 import {
   DEMO_SUPPLIER_PROMO_PRODUCTS,
-  SUPPLIER_PROMO_CODES_PAGE_SIZE,
   SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE,
   getPromoProductDetail,
 } from "@/data/demoData";
-import {
-  useDeletePromoCodeMutation,
-  useGetPromoCodesQuery,
-  useUpdatePromoCodeStatusMutation,
-} from "@/features/supplier/promo-codes/promoCodesApi";
 import DeleteProductModal from "@/pages/supplier/products/components/DeleteProductModal";
-
-const TAB_IDS = {
-  promoCode: "promo_code",
-  promoProduct: "promo_product",
-};
-
-const STATUS_LABEL_KEYS = {
-  active: "panel.supplierPromoCodes.statusActive",
-  disabled: "panel.supplierPromoCodes.statusDisabled",
-  expired: "panel.supplierPromoCodes.statusExpired",
-};
+import PromoCodeDetailsModal from "./components/PromoCodeDetailsModal.jsx";
+import PromoCodeDeleteModal from "./components/PromoCodeDeleteModal.jsx";
+import { TAB_IDS } from "./utils/promoCode.constants.js";
+import { usePromoCodeTableController } from "./hooks/usePromoCodeTableController.jsx";
 
 export default function PromoCodesPage() {
   const { t } = useTranslation();
@@ -41,49 +27,34 @@ export default function PromoCodesPage() {
       ? TAB_IDS.promoProduct
       : TAB_IDS.promoCode,
   );
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [search, setSearch] = useState("");
-  const [promoCodePage, setPromoCodePage] = useState(1);
   const [promoProducts, setPromoProducts] = useState(
     DEMO_SUPPLIER_PROMO_PRODUCTS,
   );
-  const {
-    data: promoCodeResponse,
-    isLoading,
-    isFetching,
-  } = useGetPromoCodesQuery({
-    status: statusFilter,
-    page: promoCodePage,
-    limit: SUPPLIER_PROMO_CODES_PAGE_SIZE,
-  });
-  const [updatePromoCodeStatus] = useUpdatePromoCodeStatusMutation();
-  const [deletePromoCode] = useDeletePromoCodeMutation();
   const [promoProductPage, setPromoProductPage] = useState(1);
   const [selectedPromoProduct, setSelectedPromoProduct] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
-  const promoCodes = useMemo(
-    () => promoCodeResponse?.promoCodes ?? [],
-    [promoCodeResponse],
-  );
-
-  const promoCodeTotal = promoCodeResponse?.total ?? promoCodes.length;
-  const promoCodePageCount = Math.max(
-    1,
-    Math.ceil(promoCodeTotal / SUPPLIER_PROMO_CODES_PAGE_SIZE),
-  );
-  const safePromoCodePage = Math.min(promoCodePage, promoCodePageCount);
-
-  const handleStatusChange = useCallback(
-    (row, status) => {
-      updatePromoCodeStatus({
-        id: row.id,
-        isActive: status === "active",
-      });
-    },
-    [updatePromoCodeStatus],
-  );
+  const {
+    search,
+    setSearch,
+    setPromoCodePage,
+    columns,
+    rowActions,
+    tableFilters,
+    pagedPromoCodes,
+    isLoading,
+    pagination,
+    selectedPromoCodeId,
+    selectedPromoCode: selectedPromoCodeData,
+    isPromoCodeDetailLoading,
+    isPromoCodeDetailError,
+    closePromoCodeDetails,
+    promoCodeToDelete,
+    deletingPromoCode,
+    confirmDeletePromoCode,
+    closeDeletePromoCode,
+  } = usePromoCodeTableController({ t, navigate });
 
   const tabs = useMemo(
     () => [
@@ -98,72 +69,6 @@ export default function PromoCodesPage() {
     ],
     [t],
   );
-
-  const statusOptions = useMemo(
-    () => [
-      { value: "all", label: t("panel.supplierPromoCodes.allStatus") },
-      { value: "active", label: t("panel.supplierPromoCodes.statusActive") },
-      {
-        value: "disabled",
-        label: t("panel.supplierPromoCodes.statusDisabled"),
-      },
-      { value: "expired", label: t("panel.supplierPromoCodes.statusExpired") },
-    ],
-    [t],
-  );
-
-  const filteredPromoCodes = useMemo(() => {
-    const q = search.trim().toLowerCase();
-
-    return promoCodes.filter((row) => {
-      if (statusFilter !== "all" && row.status !== statusFilter) return false;
-      if (!q) return true;
-
-      const statusLabel = t(STATUS_LABEL_KEYS[row.status] || "").toLowerCase();
-      const discountTypeLabel =
-        row.discountType === "fixed"
-          ? t("panel.supplierPromoCodes.discountTypeFixed").toLowerCase()
-          : t("panel.supplierPromoCodes.discountTypePercentage").toLowerCase();
-      const usageLimitLabel = row.usageLimitUnlimited
-        ? t("panel.supplierPromoCodes.unlimited").toLowerCase()
-        : String(row.usageLimit ?? "").toLowerCase();
-      const usedCountLabel = `${row.usedCount}/${
-        row.usageLimitUnlimited
-          ? t("panel.supplierPromoCodes.unlimitedLower")
-          : row.usageLimit
-      }`.toLowerCase();
-
-      return (
-        String(row.code).toLowerCase().includes(q) ||
-        String(row.discountType).toLowerCase().includes(q) ||
-        discountTypeLabel.includes(q) ||
-        String(row.discountValue).toLowerCase().includes(q) ||
-        String(row.minOrder).toLowerCase().includes(q) ||
-        usageLimitLabel.includes(q) ||
-        usedCountLabel.includes(q) ||
-        String(row.status).toLowerCase().includes(q) ||
-        statusLabel.includes(q) ||
-        String(row.expiryDate).toLowerCase().includes(q)
-      );
-    });
-  }, [promoCodes, statusFilter, search, t]);
-
-  const renderedPromoCodeTotal = filteredPromoCodes.length;
-  const pagedPromoCodes = filteredPromoCodes.slice(
-    (safePromoCodePage - 1) * SUPPLIER_PROMO_CODES_PAGE_SIZE,
-    safePromoCodePage * SUPPLIER_PROMO_CODES_PAGE_SIZE,
-  );
-  const promoCodeFrom =
-    renderedPromoCodeTotal === 0
-      ? 0
-      : (safePromoCodePage - 1) * SUPPLIER_PROMO_CODES_PAGE_SIZE + 1;
-  const promoCodeTo =
-    renderedPromoCodeTotal === 0
-      ? 0
-      : Math.min(
-          safePromoCodePage * SUPPLIER_PROMO_CODES_PAGE_SIZE,
-          renderedPromoCodeTotal,
-        );
 
   const promoProductTotalPages = Math.max(
     1,
@@ -183,114 +88,6 @@ export default function PromoCodesPage() {
       start + SUPPLIER_PROMO_PRODUCTS_PAGE_SIZE,
     );
   }, [promoProducts, safePromoProductPage]);
-
-  const columns = useMemo(
-    () => [
-      {
-        key: "code",
-        header: t("panel.supplierPromoCodes.colPromoCode"),
-      },
-      {
-        key: "discountType",
-        header: t("panel.supplierPromoCodes.colDiscountType"),
-        render: (value) =>
-          value === "fixed"
-            ? t("panel.supplierPromoCodes.discountTypeFixed")
-            : t("panel.supplierPromoCodes.discountTypePercentage"),
-      },
-      {
-        key: "discountValue",
-        header: t("panel.supplierPromoCodes.colDiscountValue"),
-      },
-      {
-        key: "minOrder",
-        header: t("panel.supplierPromoCodes.colMinOrder"),
-      },
-      {
-        key: "usageLimit",
-        header: t("panel.supplierPromoCodes.colUsageLimit"),
-        render: (value, row) =>
-          row.usageLimitUnlimited
-            ? t("panel.supplierPromoCodes.unlimited")
-            : value,
-      },
-      {
-        key: "usedCount",
-        header: t("panel.supplierPromoCodes.colUsedCount"),
-        render: (_, row) => {
-          const limitLabel = row.usageLimitUnlimited
-            ? t("panel.supplierPromoCodes.unlimitedLower")
-            : row.usageLimit;
-          return `${row.usedCount}/${limitLabel}`;
-        },
-      },
-      {
-        key: "status",
-        header: t("panel.supplierPromoCodes.colStatus"),
-        render: (value) => (
-          <StatusBadge
-            status={value}
-            label={t(STATUS_LABEL_KEYS[value])}
-            className="rounded-full"
-          />
-        ),
-      },
-      {
-        key: "expiryDate",
-        header: t("panel.supplierPromoCodes.colExpiryDate"),
-      },
-    ],
-    [t],
-  );
-
-  const rowActions = useMemo(
-    () => [
-      {
-        id: "see-details",
-        label: t("panel.supplierPromoCodes.actionSeeDetails"),
-        variant: "header",
-        onClick: (row) => {
-          // TODO: open promo code details when route/modal is available
-          void row;
-        },
-      },
-      {
-        id: "edit",
-        label: t("panel.supplierPromoCodes.actionEdit"),
-        onClick: () => {
-          // TODO: open edit promo code flow when available
-        },
-      },
-      {
-        id: "delete",
-        label: t("panel.supplierPromoCodes.actionDelete"),
-        onClick: (row) => {
-          deletePromoCode(row.id);
-        },
-      },
-      {
-        id: "status-section",
-        label: t("panel.supplierPromoCodes.statusSection"),
-        variant: "section",
-      },
-      {
-        id: "set-active",
-        label: t("panel.supplierPromoCodes.statusActive"),
-        onClick: (row) => handleStatusChange(row, "active"),
-      },
-      {
-        id: "set-disabled",
-        label: t("panel.supplierPromoCodes.statusDisabled"),
-        onClick: (row) => handleStatusChange(row, "disabled"),
-      },
-      {
-        id: "set-expired",
-        label: t("panel.supplierPromoCodes.statusExpired"),
-        onClick: (row) => handleStatusChange(row, "expired"),
-      },
-    ],
-    [t, handleStatusChange, deletePromoCode],
-  );
 
   const promoProductActions = useMemo(
     () => [
@@ -362,30 +159,17 @@ export default function PromoCodesPage() {
 
   const isPromoCodeTab = activeTab === TAB_IDS.promoCode;
 
-  const handleTabChange = useCallback((tabId) => {
-    setActiveTab(tabId);
-    setSearch("");
-    if (tabId === TAB_IDS.promoCode) {
-      setPromoCodePage(1);
-      return;
-    }
-    setPromoProductPage(1);
-  }, []);
-
-  const tableFilters = useMemo(
-    () => [
-      {
-        id: "status",
-        value: statusFilter,
-        onChange: (value) => {
-          setStatusFilter(value);
-          setPromoCodePage(1);
-        },
-        options: statusOptions,
-        placeholder: t("panel.supplierPromoCodes.allStatus"),
-      },
-    ],
-    [statusFilter, statusOptions, t],
+  const handleTabChange = useCallback(
+    (tabId) => {
+      setActiveTab(tabId);
+      setSearch("");
+      if (tabId === TAB_IDS.promoCode) {
+        setPromoCodePage(1);
+        return;
+      }
+      setPromoProductPage(1);
+    },
+    [setPromoCodePage, setSearch],
   );
 
   return (
@@ -453,25 +237,25 @@ export default function PromoCodesPage() {
               columns={columns}
               data={pagedPromoCodes}
               getRowKey={(row) => row.id}
-              loading={isPromoCodeTab && (isLoading || isFetching)}
+              loading={isPromoCodeTab && isLoading}
               showActions={isPromoCodeTab}
               actions={rowActions}
               actionHeader={t("panel.supplierPromoCodes.colAction")}
               emptyMessage={t("panel.supplierPromoCodes.emptyPromoCodes")}
               showPagination={isPromoCodeTab}
               pagination={{
-                page: safePromoCodePage,
-                pageSize: SUPPLIER_PROMO_CODES_PAGE_SIZE,
-                total: renderedPromoCodeTotal,
-                from: promoCodeFrom,
-                to: promoCodeTo,
-                hasPrevious: safePromoCodePage > 1,
-                hasNext: safePromoCodePage < promoCodePageCount,
+                page: pagination.page,
+                pageSize: pagination.pageSize,
+                total: pagination.total,
+                from: pagination.from,
+                to: pagination.to,
+                hasPrevious: pagination.hasPrevious,
+                hasNext: pagination.hasNext,
                 onPageChange: setPromoCodePage,
                 summaryLabel: t("panel.supplierPromoCodes.showingResults", {
-                  from: promoCodeFrom,
-                  to: promoCodeTo,
-                  total: renderedPromoCodeTotal,
+                  from: pagination.from,
+                  to: pagination.to,
+                  total: pagination.total,
                 }),
                 previousLabel: t("panel.supplierPromoCodes.previous"),
                 nextLabel: t("panel.supplierPromoCodes.next"),
@@ -528,6 +312,22 @@ export default function PromoCodesPage() {
               if (!deleting) setProductToDelete(null);
             }}
             onConfirm={handleConfirmDeletePromoProduct}
+          />
+
+          <PromoCodeDetailsModal
+            promoCodeId={selectedPromoCodeId}
+            promoCode={selectedPromoCodeData}
+            isLoading={isPromoCodeDetailLoading}
+            isError={isPromoCodeDetailError}
+            onClose={closePromoCodeDetails}
+          />
+
+          <PromoCodeDeleteModal
+            open={Boolean(promoCodeToDelete)}
+            promoCode={promoCodeToDelete}
+            deleting={deletingPromoCode}
+            onClose={closeDeletePromoCode}
+            onConfirm={confirmDeletePromoCode}
           />
         </>
       )}
