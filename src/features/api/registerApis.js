@@ -6,6 +6,7 @@ import "../supplier/company-orders/companyOrdersApi";
 import "../supplier/factory-orders/factoryOrdersApi";
 import "../supplier/factory-products/factoryProductsApi";
 import "../supplier/inventory/inventoryApi";
+import "../supplier/documents/documentsApi";
 import "../supplier/quotes/quotesApi";
 import "../supplier/products/productApi";
 import "../supplier/promo-codes/promoCodesApi";

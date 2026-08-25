@@ -47,6 +47,7 @@ export const baseApi = createApi({
     "Product",
     "Order",
     "Quote",
+    "Document",
     "Inventory",
     "Category",
     "Promotion",

@@ -8,6 +8,7 @@ export default function GenerateDocumentModal({
   onClose,
   orderOptions = [],
   onSubmit,
+  submitting = false,
 }) {
   const { t } = useTranslation();
   const titleId = useId();
@@ -32,11 +33,6 @@ export default function GenerateDocumentModal({
   useEffect(() => {
     if (!open) return undefined;
 
-    setQuery('');
-    setOrderId('');
-    setListOpen(false);
-    setActiveIndex(0);
-
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose?.();
     };
@@ -59,10 +55,6 @@ export default function GenerateDocumentModal({
     document.addEventListener('pointerdown', onPointerDown);
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open]);
-
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [query]);
 
   if (!open) return null;
 
@@ -87,6 +79,7 @@ export default function GenerateDocumentModal({
     setQuery(value);
     syncExactMatch(value);
     setListOpen(true);
+    setActiveIndex(0);
   };
 
   const handleInputKeyDown = (event) => {
@@ -132,8 +125,11 @@ export default function GenerateDocumentModal({
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!orderId) return;
-    onSubmit?.({ orderId });
-    onClose?.();
+    Promise.resolve(onSubmit?.({ orderId }))
+      .then(() => {
+        onClose?.();
+      })
+      .catch(() => {});
   };
 
   return createPortal(
@@ -274,10 +270,12 @@ export default function GenerateDocumentModal({
             </button>
             <button
               type='submit'
-              disabled={!orderId}
+              disabled={!orderId || submitting}
               className='inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50'
             >
-              {t('panel.supplierFiscalDocuments.modalSubmit')}
+              {submitting
+                ? 'Generating...'
+                : t('panel.supplierFiscalDocuments.modalSubmit')}
             </button>
           </div>
         </form>
