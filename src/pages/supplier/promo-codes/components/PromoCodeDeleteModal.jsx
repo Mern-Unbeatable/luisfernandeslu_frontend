@@ -63,7 +63,10 @@ export default function PromoCodeDeleteModal({
               <FiAlertTriangle className="size-5" aria-hidden />
             </span>
             <div>
-              <h2 id={titleId} className="text-lg font-bold text-(--primary-text)">
+              <h2
+                id={titleId}
+                className="text-lg font-bold text-(--primary-text)"
+              >
                 {t("panel.supplierPromoCodes.delete.title", {
                   defaultValue: "Delete Promo Code",
                 })}
