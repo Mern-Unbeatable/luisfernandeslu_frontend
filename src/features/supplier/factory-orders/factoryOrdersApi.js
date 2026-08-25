@@ -108,7 +108,9 @@ function resolveFactoryOrderListItem(item) {
     statusLabel:
       item.statusLabel ??
       item.statusText ??
-      String(status).replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase()),
+      String(status)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
     installmentNumber: String(
       item.installmentNumber ??
         item.currentInstallment ??
@@ -128,10 +130,7 @@ export function mapSupplierFactoryOrderList(payload, fallbackPage = 1) {
   const total = pickTotal(payload, orders.length);
   const page = pickPage(payload, fallbackPage);
   const limitValue =
-    payload?.limit ??
-    payload?.pagination?.limit ??
-    payload?.meta?.limit ??
-    10;
+    payload?.limit ?? payload?.pagination?.limit ?? payload?.meta?.limit ?? 10;
   const limit = Number(limitValue || 10) || 10;
 
   return {
@@ -144,10 +143,16 @@ export function mapSupplierFactoryOrderList(payload, fallbackPage = 1) {
 }
 
 export function mapSupplierFactoryOrderFactories(payload) {
-  return pickList(payload, ["factories", "items", "data"]).map((factory) => ({
-    value: String(factory.id ?? factory.value ?? factory.factoryId ?? ""),
-    label: factory.name ?? factory.label ?? factory.factoryName ?? "Unnamed factory",
-  })).filter((item) => item.value);
+  return pickList(payload, ["factories", "items", "data"])
+    .map((factory) => ({
+      value: String(factory.id ?? factory.value ?? factory.factoryId ?? ""),
+      label:
+        factory.name ??
+        factory.label ??
+        factory.factoryName ??
+        "Unnamed factory",
+    }))
+    .filter((item) => item.value);
 }
 
 function mapFactoryOrderDetail(payload) {
@@ -174,13 +179,11 @@ function mapFactoryOrderDetail(payload) {
     totalPrice: formatCurrencyValue(
       order.total ?? order.totalPrice ?? order.amount ?? 0,
     ),
-    paidAmount: formatCurrencyValue(
-      order.paidAmount ?? order.amountPaid ?? 0,
-    ),
+    paidAmount: formatCurrencyValue(order.paidAmount ?? order.amountPaid ?? 0),
     remainingBalance: formatCurrencyValue(
       order.remainingBalance ??
-        (parseNumberValue(order.total ?? order.totalPrice ?? order.amount ?? 0) -
-          parseNumberValue(order.paidAmount ?? order.amountPaid ?? 0)),
+        parseNumberValue(order.total ?? order.totalPrice ?? order.amount ?? 0) -
+          parseNumberValue(order.paidAmount ?? order.amountPaid ?? 0),
     ),
     paidNote: order.paidNote ?? "",
     duration: order.duration ?? `${installmentCount} months`,
@@ -197,13 +200,18 @@ function mapFactoryOrderDetail(payload) {
 
   return {
     id: String(order.id ?? order._id ?? ""),
-    orderId: order.orderId ?? order.orderNumber ?? order.poNumber ?? order.id ?? "",
-    orderDate: formatDateValue(order.orderDate ?? order.createdAt ?? order.date),
+    orderId:
+      order.orderId ?? order.orderNumber ?? order.poNumber ?? order.id ?? "",
+    orderDate: formatDateValue(
+      order.orderDate ?? order.createdAt ?? order.date,
+    ),
     status,
     statusLabel:
       order.statusLabel ??
       order.statusText ??
-      String(status).replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase()),
+      String(status)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
     hasInstallment: Boolean(order.hasInstallment || installmentCount > 0),
     context: "factory",
     recipientType: order.recipientType ?? "supplier",
@@ -213,16 +221,15 @@ function mapFactoryOrderDetail(payload) {
       phone: company.phone ?? factory.phone ?? "",
     },
     logistics: {
-      deliveryLocation: order.logistics?.deliveryLocation ?? order.deliveryLocation ?? "",
+      deliveryLocation:
+        order.logistics?.deliveryLocation ?? order.deliveryLocation ?? "",
     },
     payment,
     products,
     installmentBreakdown: Array.isArray(order.installmentBreakdown)
       ? order.installmentBreakdown
       : [],
-    installments: Array.isArray(order.installments)
-      ? order.installments
-      : [],
+    installments: Array.isArray(order.installments) ? order.installments : [],
     transporter,
     cancelReason: order.cancelReason ?? null,
     raw: order,
@@ -236,7 +243,8 @@ export const supplierFactoryOrdersApi = baseApi.injectEndpoints({
         url: "/api/supplier/factory-orders/factories",
         method: "GET",
       }),
-      transformResponse: (response) => mapSupplierFactoryOrderFactories(response),
+      transformResponse: (response) =>
+        mapSupplierFactoryOrderFactories(response),
       providesTags: [{ type: "FactoryOrder", id: "FACTORIES" }],
     }),
     getSupplierFactoryOrders: builder.query({
