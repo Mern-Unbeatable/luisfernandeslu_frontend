@@ -3,30 +3,42 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import OrderDetails from '@/components/data-display/OrderDetails';
-import { getSupplierFactoryOrderDetail } from '@/data/demoData';
+import { useGetSupplierFactoryOrderByIdQuery } from '@/features/supplier/factory-orders/factoryOrdersApi';
 
 export default function FactoryOrderDetailPage() {
   const { orderId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [statusOverride, setStatusOverride] = useState(
-    location.state?.status ?? null,
-  );
+  const statusOverride = location.state?.status ?? null;
   const [installments, setInstallments] = useState(null);
 
-  // TODO: replace getSupplierFactoryOrderDetail with supplier factory order API fetch
+  const { data: orderData, isLoading, isError } = useGetSupplierFactoryOrderByIdQuery(orderId, {
+    skip: !orderId,
+  });
+
   const order = useMemo(() => {
-    const detail = getSupplierFactoryOrderDetail(orderId, statusOverride);
-    if (!detail) return null;
+    if (!orderData) return null;
 
     return {
-      ...detail,
-      installments: installments ?? detail.installments,
+      ...orderData,
+      ...(statusOverride ? { status: statusOverride } : {}),
+      installments: installments ?? orderData.installments,
     };
-  }, [orderId, statusOverride, installments]);
+  }, [orderData, statusOverride, installments]);
 
-  if (!order) {
+  if (isLoading) {
+    return (
+      <>
+        <Seo title={t('panel.supplierFactoryOrders.title')} />
+        <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+          <p className="text-sm text-[var(--secondary-text)]">Loading factory order…</p>
+        </div>
+      </>
+    );
+  }
+
+  if (isError || !order) {
     return (
       <>
         <Seo title={t('panel.supplierFactoryOrders.notFound')} />

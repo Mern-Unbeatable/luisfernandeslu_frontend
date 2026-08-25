@@ -3,6 +3,8 @@ import "../users/userApi";
 import "../products/productApi";
 import "../orders/orderApi";
 import "../supplier/company-orders/companyOrdersApi";
+import "../supplier/factory-orders/factoryOrdersApi";
+import "../supplier/factory-products/factoryProductsApi";
 import "../supplier/inventory/inventoryApi";
 import "../supplier/products/productApi";
 import "../supplier/promo-codes/promoCodesApi";

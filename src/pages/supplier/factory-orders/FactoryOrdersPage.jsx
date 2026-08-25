@@ -5,10 +5,12 @@ import Seo from '@/components/common/Seo/Seo';
 import DataTable from '@/components/data-display/DataTable/DataTable';
 import StatusBadge from '@/components/data-display/DataTable/StatusBadge';
 import {
-  DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES,
-  DEMO_SUPPLIER_FACTORY_ORDERS,
-  SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
-} from '@/data/demoData';
+  useDeleteSupplierFactoryOrderMutation,
+  useGetSupplierFactoryOrderFactoriesQuery,
+  useGetSupplierFactoryOrdersQuery,
+} from '@/features/supplier/factory-orders/factoryOrdersApi';
+
+const SUPPLIER_FACTORY_ORDERS_PAGE_SIZE = 7;
 
 const TAB_IDS = {
   orders: 'orders',
@@ -32,9 +34,17 @@ export default function FactoryOrdersPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [orders, setOrders] = useState(DEMO_SUPPLIER_FACTORY_ORDERS.orders);
 
-  // TODO: replace DEMO_* with supplier factory orders API fetch
+  const { data: factoriesData = [] } = useGetSupplierFactoryOrderFactoriesQuery();
+  const { data: ordersData, isLoading, isFetching } = useGetSupplierFactoryOrdersQuery({
+    page,
+    status: statusFilter,
+    search,
+    companyId: companyFilter,
+  });
+  const [deleteSupplierFactoryOrder, { isLoading: isDeleting }] = useDeleteSupplierFactoryOrderMutation();
+
+  const orders = useMemo(() => ordersData?.orders ?? [], [ordersData]);
 
   const tabs = useMemo(
     () => [
@@ -53,12 +63,12 @@ export default function FactoryOrdersPage() {
   const companyOptions = useMemo(
     () => [
       { value: 'all', label: t('panel.supplierFactoryOrders.allCompany') },
-      ...DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES.map((company) => ({
+      ...factoriesData.map((company) => ({
         value: company.value,
         label: company.label,
       })),
     ],
-    [t],
+    [t, factoriesData],
   );
 
   const statusOptions = useMemo(
@@ -92,23 +102,17 @@ export default function FactoryOrdersPage() {
     [t],
   );
 
-  const handleDelete = useCallback((row) => {
-    setOrders((prev) => prev.filter((item) => item.id !== row.id));
-    // TODO: wire factory order delete API
+  const handleDelete = useCallback(async (row) => {
+    if (!row?.id) return;
+    await deleteSupplierFactoryOrder(row.id);
+  }, [deleteSupplierFactoryOrder]);
+
+  const handleMarkPaid = useCallback(() => {
+    // Transport request pay flow is not available in the current Postman contract.
   }, []);
 
-  const handleMarkPaid = useCallback((row) => {
-    setOrders((prev) =>
-      prev.map((item) =>
-        item.id === row.id ? { ...item, transportStatus: 'paid' } : item,
-      ),
-    );
-    // TODO: wire transport request paid API
-  }, []);
-
-  const handleDecline = useCallback((row) => {
-    setOrders((prev) => prev.filter((item) => item.id !== row.id));
-    // TODO: wire transport request decline API
+  const handleDecline = useCallback(() => {
+    // Transport request decline flow is not available in the current Postman contract.
   }, []);
 
   const getOrderRowActions = useCallback(
@@ -152,12 +156,9 @@ export default function FactoryOrdersPage() {
   const companyLabelById = useMemo(
     () =>
       Object.fromEntries(
-        DEMO_SUPPLIER_FACTORY_ORDER_COMPANIES.map((company) => [
-          company.value,
-          company.label,
-        ]),
+        factoriesData.map((company) => [company.value, company.label]),
       ),
-    [],
+    [factoriesData],
   );
 
   const filteredOrders = useMemo(() => {
@@ -222,7 +223,7 @@ export default function FactoryOrdersPage() {
     t,
   ]);
 
-  const total = filteredOrders.length;
+  const total = ordersData?.total ?? filteredOrders.length;
   const pageCount = Math.max(
     1,
     Math.ceil(total / SUPPLIER_FACTORY_ORDERS_PAGE_SIZE),
@@ -370,48 +371,54 @@ export default function FactoryOrdersPage() {
       </div>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <DataTable
-          showCard={false}
-          showTabs
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          columns={columns}
-          data={pagedOrders}
-          getRowKey={(row) => row.id}
-          showActions
-          getActions={getRowActions}
-          actionHeader={t('panel.supplierFactoryOrders.colAction')}
-          emptyMessage={emptyMessage}
-          showPagination
-          showSearch
-          searchValue={search}
-          onSearchChange={(value) => {
-            setSearch(value);
-            setPage(1);
-          }}
-          searchPlaceholder={t('panel.supplierFactoryOrders.searchPlaceholder')}
-          showFilters={isOrdersTab}
-          filterLabel={t('panel.supplierFactoryOrders.sortBy')}
-          filters={tableFilters}
-          pagination={{
-            page: safePage,
-            pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
-            total,
-            from,
-            to,
-            hasPrevious: safePage > 1,
-            hasNext: safePage < pageCount,
-            onPageChange: setPage,
-            summaryLabel: t('panel.supplierFactoryOrders.showingResults', {
+        {isLoading || isFetching || isDeleting ? (
+          <div className="py-10 text-center text-sm text-[var(--secondary-text)]">
+            Loading factory orders…
+          </div>
+        ) : (
+          <DataTable
+            showCard={false}
+            showTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            columns={columns}
+            data={pagedOrders}
+            getRowKey={(row) => row.id}
+            showActions
+            getActions={getRowActions}
+            actionHeader={t('panel.supplierFactoryOrders.colAction')}
+            emptyMessage={emptyMessage}
+            showPagination
+            showSearch
+            searchValue={search}
+            onSearchChange={(value) => {
+              setSearch(value);
+              setPage(1);
+            }}
+            searchPlaceholder={t('panel.supplierFactoryOrders.searchPlaceholder')}
+            showFilters={isOrdersTab}
+            filterLabel={t('panel.supplierFactoryOrders.sortBy')}
+            filters={tableFilters}
+            pagination={{
+              page: safePage,
+              pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
+              total,
               from,
               to,
-              total,
-            }),
-            previousLabel: t('panel.supplierFactoryOrders.previous'),
-            nextLabel: t('panel.supplierFactoryOrders.next'),
-          }}
-        />
+              hasPrevious: safePage > 1,
+              hasNext: safePage < pageCount,
+              onPageChange: setPage,
+              summaryLabel: t('panel.supplierFactoryOrders.showingResults', {
+                from,
+                to,
+                total,
+              }),
+              previousLabel: t('panel.supplierFactoryOrders.previous'),
+              nextLabel: t('panel.supplierFactoryOrders.next'),
+            }}
+          />
+        )}
       </section>
     </>
   );
