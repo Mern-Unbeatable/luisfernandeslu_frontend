@@ -1108,7 +1108,9 @@
       "viewOrder": "Ver pedido",
       "previous": "Anterior",
       "next": "Siguiente",
-      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "emptyOrders": "No se encontraron pedidos para este período.",
+      "requestFailed": "No se pudo cargar la vista general del proveedor ahora mismo."
     },
     "supplierProducts": {
       "title": "Gestión de productos",

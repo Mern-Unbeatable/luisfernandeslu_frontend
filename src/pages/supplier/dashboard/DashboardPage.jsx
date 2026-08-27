@@ -1,14 +1,18 @@
-import { useCallback, useMemo, useState } from 'react';
-import { FiChevronDown, FiEye } from 'react-icons/fi';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  FiChevronDown,
+  FiDollarSign,
+  FiEye,
+  FiPackage,
+  FiShoppingBag,
+} from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Seo from '@/components/common/Seo/Seo';
 import DataTable from '@/components/data-display/DataTable/DataTable';
 import StatusCard from '@/components/data-display/StatusCard';
-import {
-  DEMO_SUPPLIER_DASHBOARD,
-  DEMO_SUPPLIER_DASHBOARD_STAT_CARDS,
-} from '@/data/demoData';
+import { getApiErrorMessage } from '@/features/supplier/apiError';
+import { useGetSupplierOverviewQuery } from '@/features/supplier/overview/overviewApi';
 import OrderStatusSelect from './OrderStatusSelect';
 import RevenueChart from './RevenueChart';
 
@@ -21,29 +25,119 @@ const STATUS_LABEL_KEYS = {
 
 const STATUS_OPTIONS = ['assign', 'completed', 'pending', 'cancel'];
 
+const STAT_CARD_CONFIG = [
+  {
+    id: 'totalSalesRegular',
+    labelKey: 'panel.supplierDashboard.totalSalesRegular',
+    valueKey: 'totalSalesRegular',
+    format: 'currency',
+    icon: FiDollarSign,
+    iconTone: 'success',
+  },
+  {
+    id: 'totalSalesCompany',
+    labelKey: 'panel.supplierDashboard.totalSalesCompany',
+    valueKey: 'totalSalesCompany',
+    format: 'currency',
+    icon: FiDollarSign,
+    iconTone: 'success',
+  },
+  {
+    id: 'activeOrders',
+    labelKey: 'panel.supplierDashboard.activeOrders',
+    valueKey: 'activeOrders',
+    format: 'number',
+    icon: FiShoppingBag,
+    iconTone: 'brand',
+  },
+  {
+    id: 'cancelOrders',
+    labelKey: 'panel.supplierDashboard.cancelOrders',
+    valueKey: 'cancelOrders',
+    format: 'number',
+    icon: FiShoppingBag,
+    iconTone: 'red',
+  },
+  {
+    id: 'totalProducts',
+    labelKey: 'panel.supplierDashboard.totalProducts',
+    valueKey: 'totalProducts',
+    format: 'number',
+    icon: FiPackage,
+    iconTone: 'blue',
+  },
+];
+
 function toDetailStatus(status) {
   return status === 'assign' ? 'assigned' : status;
 }
 
 function formatStatValue(value, format) {
+  const numericValue = Number(value ?? 0);
+
   if (format === 'currency') {
-    return `€${value.toLocaleString('en-US')}`;
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(numericValue);
   }
-  return String(value);
+
+  return Number.isFinite(numericValue) ? String(numericValue) : '0';
 }
 
 export default function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [period, setPeriod] = useState('thisYear');
+  const currentYear = new Date().getFullYear();
+  const [period, setPeriod] = useState(String(currentYear));
   const [page, setPage] = useState(1);
-  const [orders, setOrders] = useState(DEMO_SUPPLIER_DASHBOARD.orders || []);
 
-  // TODO: replace DEMO_* with supplier dashboard API fetch
-  const dashboard = DEMO_SUPPLIER_DASHBOARD;
   const pageSize = 7;
-  const total = orders.length;
-  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const { data, isLoading, isFetching, error } = useGetSupplierOverviewQuery({
+    period: Number(period),
+    page,
+    limit: pageSize,
+  });
+
+  const [orders, setOrders] = useState([]);
+
+  const dashboard = useMemo(
+    () =>
+      data ?? {
+        stats: {
+          totalSalesRegular: 0,
+          totalSalesCompany: 0,
+          activeOrders: 0,
+          cancelOrders: 0,
+          totalProducts: 0,
+        },
+        revenue: {
+          maxValue: 0,
+          yTicks: [0, 5000, 10000, 15000, 20000],
+          series: [],
+        },
+        orders: [],
+        pagination: { page: 1, limit: pageSize, total: 0, totalPages: 1 },
+      },
+    [data],
+  );
+
+  const periodOptions = useMemo(
+    () =>
+      [currentYear, currentYear - 1, currentYear - 2]
+        .filter((year, index, array) => array.indexOf(year) === index)
+        .sort((a, b) => b - a),
+    [currentYear],
+  );
+
+  useEffect(() => {
+    setOrders(dashboard.orders || []);
+  }, [dashboard.orders]);
+
+  const total = dashboard.pagination?.total ?? orders.length;
+  const pageCount = Math.max(1, dashboard.pagination?.totalPages ?? Math.ceil(total / pageSize));
   const safePage = Math.min(page, pageCount);
   const pagedOrders = orders.slice(
     (safePage - 1) * pageSize,
@@ -149,6 +243,7 @@ export default function DashboardPage() {
 
   const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1;
   const to = total === 0 ? 0 : Math.min(safePage * pageSize, total);
+  const apiError = error ? getApiErrorMessage(error, t('panel.supplierDashboard.requestFailed')) : '';
 
   return (
     <>
@@ -164,7 +259,7 @@ export default function DashboardPage() {
       </header>
 
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5'>
-        {DEMO_SUPPLIER_DASHBOARD_STAT_CARDS.map((card) => (
+        {STAT_CARD_CONFIG.map((card) => (
           <StatusCard
             key={card.id}
             variant='default'
@@ -194,16 +289,22 @@ export default function DashboardPage() {
           <label className='relative inline-flex min-w-[140px] shrink-0 items-center self-start'>
             <select
               value={period}
-              onChange={(event) => setPeriod(event.target.value)}
+              onChange={(event) => {
+                setPeriod(event.target.value);
+                setPage(1);
+              }}
               className='h-10 w-full cursor-pointer appearance-none rounded-md border border-gray-200 bg-white py-2 pl-3 pr-9 text-sm text-[var(--primary-text)] outline-none transition-colors hover:border-gray-300 focus:border-[var(--active)]'
               aria-label={t('panel.supplierDashboard.periodFilter')}
             >
-              <option value='thisYear'>
-                {t('panel.supplierDashboard.periodThisYear')}
-              </option>
-              <option value='lastYear'>
-                {t('panel.supplierDashboard.periodLastYear')}
-              </option>
+              {periodOptions.map((year) => (
+                <option key={year} value={String(year)}>
+                  {year === currentYear
+                    ? t('panel.supplierDashboard.periodThisYear')
+                    : year === currentYear - 1
+                      ? t('panel.supplierDashboard.periodLastYear')
+                      : String(year)}
+                </option>
+              ))}
             </select>
             <FiChevronDown
               className='pointer-events-none absolute right-2.5 size-4 text-[var(--secondary-text)]'
@@ -212,13 +313,19 @@ export default function DashboardPage() {
           </label>
         </div>
 
-        <RevenueChart
-          revenue={{
-            maxValue: dashboard.revenue.maxValue,
-            yTicks: dashboard.revenue.yTicks,
-            series: dashboard.revenue.byPeriod[period] || [],
-          }}
-        />
+        {apiError ? (
+          <div className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'>
+            {apiError}
+          </div>
+        ) : (
+          <RevenueChart
+            revenue={{
+              maxValue: dashboard.revenue.maxValue,
+              yTicks: dashboard.revenue.yTicks,
+              series: dashboard.revenue.series || [],
+            }}
+          />
+        )}
       </section>
 
       <section className='mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6'>
@@ -228,7 +335,9 @@ export default function DashboardPage() {
             columns={columns}
             data={pagedOrders}
             getRowKey={(row) => row.id}
-            showPagination
+            loading={isLoading || isFetching}
+            emptyMessage={t('panel.supplierDashboard.emptyOrders')}
+            showPagination={total > 0}
             pagination={{
               page: safePage,
               pageSize,

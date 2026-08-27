@@ -1110,7 +1110,9 @@
       "viewOrder": "View order",
       "previous": "Previous",
       "next": "Next",
-      "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
+      "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+      "emptyOrders": "No orders found for this period.",
+      "requestFailed": "Unable to load the supplier overview right now."
     },
     "supplierProducts": {
       "title": "Product Management",
