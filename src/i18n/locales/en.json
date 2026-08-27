@@ -3008,6 +3008,9 @@
     "title": "Earnings & Payment",
     "subtitle": "Manage your earnings and payment information",
     "paymentHistory": "Payment History",
+    "commissionInvoices": "Commission Invoices",
+    "invoiceSearchPlaceholder": "Search invoice ID, order ID, or participant...",
+    "invoiceEmpty": "No commission invoices found",
     "cards": {
       "totalEarnings": "Total Earnings",
       "thisMonth": "This Month",
@@ -3015,26 +3018,19 @@
       "adminCommissionDesc": "20% per order",
       "availableBalance": "Available Balance",
       "withdrawFunds": "Withdraw Funds",
+      "withdrawNote": "Withdrawals are not available in the current supplier API",
       "pendingAmount": "Pending Amount"
     },
-    "columns": {
+    "invoiceColumns": {
       "date": "Date",
-      "type": "Type",
-      "accountType": "Account Type",
-      "accountNumber": "Account Number",
+      "invoiceId": "Invoice ID",
+      "orderId": "Order ID",
+      "participant": "Participant",
       "amount": "Amount",
-      "status": "Status"
+      "actions": "Actions"
     },
-    "type": {
-      "withdrawal": "Withdrawal"
-    },
-    "accountType": {
-      "stripe": "Stripe",
-      "bankTransfer": "Bank Transfer"
-    },
-    "status": {
-      "approved": "Approved",
-      "pending": "Pending"
+    "invoiceActions": {
+      "download": "Download PDF"
     },
     "withdraw": {
       "title": "Withdraw Funds",

@@ -2932,6 +2932,9 @@
     "title": "Ganhos e pagamentos",
     "subtitle": "Faça a gestão dos seus ganhos e informações de pagamento",
     "paymentHistory": "Histórico de pagamentos",
+    "commissionInvoices": "Faturas de comissão",
+    "invoiceSearchPlaceholder": "Pesquisar ID da fatura, encomenda ou participante...",
+    "invoiceEmpty": "Nenhuma fatura de comissão encontrada",
     "cards": {
       "totalEarnings": "Ganhos totais",
       "thisMonth": "Este mês",
@@ -2939,37 +2942,19 @@
       "adminCommissionDesc": "20% por encomenda",
       "availableBalance": "Saldo disponível",
       "withdrawFunds": "Levantar fundos",
+      "withdrawNote": "Os levantamentos não estão disponíveis na API atual do fornecedor",
       "pendingAmount": "Montante pendente"
     },
-    "columns": {
+    "invoiceColumns": {
       "date": "Data",
-      "type": "Tipo",
-      "accountType": "Tipo de conta",
-      "accountNumber": "Número de conta",
+      "invoiceId": "ID da fatura",
+      "orderId": "ID da encomenda",
+      "participant": "Participante",
       "amount": "Montante",
-      "status": "Estado"
+      "actions": "Ações"
     },
-    "type": {
-      "withdrawal": "Levantamento"
-    },
-    "accountType": {
-      "stripe": "Stripe",
-      "bankTransfer": "Transferência bancária"
-    },
-    "status": {
-      "approved": "Aprovado",
-      "pending": "Pendente"
-    },
-    "withdraw": {
-      "title": "Levantar fundos",
-      "amount": "Montante",
-      "businessName": "Nome da empresa/organização",
-      "routingNumber": "Número de routing",
-      "accountNumber": "Número de conta",
-      "cancel": "Cancelar",
-      "submit": "Enviar",
-      "closeOverlay": "Fechar overlay",
-      "close": "Fechar"
+    "invoiceActions": {
+      "download": "Descarregar PDF"
     }
   },
   "supplierAnalytics": {
