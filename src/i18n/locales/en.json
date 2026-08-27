@@ -2994,6 +2994,7 @@
     "startAuctionTitle": "Start Auction",
     "activeDetailTitle": "Active Auctions",
     "assignedDetailTitle": "Assigned Delivers Details",
+    "auctionCreated": "Auction created successfully",
     "activeAuctions": {
       "title": "Active Auctions",
       "subtitle": "Pending bids and auction items"

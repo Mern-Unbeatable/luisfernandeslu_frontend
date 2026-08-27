@@ -11,3 +11,4 @@ import "../supplier/quotes/quotesApi";
 import "../supplier/products/productApi";
 import "../supplier/overview/overviewApi";
 import "../supplier/promo-codes/promoCodesApi";
+import "../supplier/auctions/auctionsApi";
