@@ -1,96 +1,114 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
+import Pagination from '../../../components/common/Pagination/Pagination'
+import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import {
+  useGetTransporterCompletedDeliveriesQuery,
+  useGetTransporterDeliveryQuery,
+} from '../../../features/transporter/transporterApi'
+import {
+  mapTransporterDelivery,
+  mapTransporterDeliveryDetails,
+} from '../../../features/transporter/deliveryMappers'
+
+const PAGE_SIZE = 20
 
 export default function OrderHistoryPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [selectedDelivery, setSelectedDelivery] = useState(null)
+  const [page, setPage] = useState(1)
+  const [selectedAuctionId, setSelectedAuctionId] = useState(null)
 
-  // Initialize mock deliveries representing completed/delivered items
-  const completedDeliveries = [
-    {
-      id: 'del-003',
-      title: 'Red Bricks',
-      orderLabel: 'Delivery ID: DL-003',
-      price: '€14,300',
-      distance: '21 km',
-      status: 'delivered',
-      pickup: {
-        title: 'Brick Kiln Industries',
-        subtitle: 'Vasai East, Palghar 401208',
-      },
-      delivery: {
-        title: 'Villa Paradise Construction',
-        subtitle: 'Mira Road, Thane 401107',
-      },
-    },
-    {
-      id: 'del-004',
-      title: 'Ready Mix Concrete',
-      orderLabel: 'Delivery ID: DL-004',
-      price: '€6,200',
-      distance: '12 km',
-      status: 'delivered',
-      pickup: {
-        title: 'UltraMix Concrete Plant',
-        subtitle: 'Ghodbunder Road, Thane 400607',
-      },
-      delivery: {
-        title: 'Sunrise Tower Project',
-        subtitle: 'Pokhran Road, Thane 400606',
-      },
-    },
-  ]
+  const { data, isLoading, isError, error, refetch } =
+    useGetTransporterCompletedDeliveriesQuery({
+      page,
+      limit: PAGE_SIZE,
+    })
+
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    isError: isDetailError,
+    error: detailError,
+    refetch: refetchDetail,
+  } = useGetTransporterDeliveryQuery(selectedAuctionId, {
+    skip: !selectedAuctionId,
+  })
+
+  const completedDeliveries = useMemo(
+    () => (data?.deliveries || []).map(mapTransporterDelivery),
+    [data?.deliveries],
+  )
+
+  const selectedDelivery = useMemo(() => {
+    if (!detailData?.delivery) return null
+    return mapTransporterDeliveryDetails(detailData.delivery)
+  }, [detailData?.delivery])
+
+  const totalPages = Math.max(1, Number(data?.pagination?.totalPages) || 1)
+  const totalCount = Number(data?.pagination?.total) || completedDeliveries.length
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages)
+  }, [page, totalPages])
 
   const handleSeeDetails = (item) => {
-    // Format delivery details matching AuctionDetails expectations
-    const detailedDelivery = {
-      ...item,
-      auctionId: item.orderLabel?.replace('Delivery ID: ', '') || 'DL-003',
-      auctionDate: 'May 18, 2026',
-      deliveryCharge: item.price || '€2000.00',
-      customer: {
-        name: 'Sarah Johnson',
-        phone: '+1 (555) 234-5678',
-        email: 'sarah.johnson@email.com',
-        deliveryAddress: item.delivery.title + ', ' + item.delivery.subtitle,
-      },
-      product: {
-        name: item.title,
-        sku: 'EXC-HD-2024',
-        quantity: item.title.includes('Concrete') ? '6m³' : '10,000 pieces',
-        weight: '15000 kg',
-        price: item.price,
-      },
-      shipping: {
-        pickupLocation: item.pickup.title + ', ' + item.pickup.subtitle,
-        unloadingInstructions: item.delivery.title + ', ' + item.delivery.subtitle,
-        accessCondition: 'Loading dock with ramp',
-        additionalNotes: 'Delivery was successfully completed. Sign-off sheet archived.',
-      }
-    }
-    setSelectedDelivery(detailedDelivery)
+    setSelectedAuctionId(item.auctionId || item.id)
   }
 
-  // Render detail view if clicked
-  if (selectedDelivery) {
-    return (
-      <AuctionDetails
-        role="transporter"
-        status="complete"
-        auction={selectedDelivery}
-        onBack={() => setSelectedDelivery(null)}
-        onMessage={() => navigate('/transporter/chat')}
-      />
-    )
+  const handleBackFromDetails = () => {
+    setSelectedAuctionId(null)
+  }
+
+  if (selectedAuctionId) {
+    if (isDetailLoading) {
+      return <p className="text-sm text-gray-500">Loading delivery details…</p>
+    }
+
+    if (isDetailError) {
+      return (
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={handleBackFromDetails}
+            className="text-sm font-semibold text-[var(--active)] underline"
+          >
+            Back
+          </button>
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <p>
+              {getAuthErrorMessage(detailError, 'Failed to load delivery details')}
+            </p>
+            <button
+              type="button"
+              onClick={() => refetchDetail()}
+              className="mt-2 font-semibold underline"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    if (selectedDelivery) {
+      return (
+        <AuctionDetails
+          role="transporter"
+          status="complete"
+          auction={selectedDelivery}
+          onBack={handleBackFromDetails}
+          onMessage={() => navigate('/transporter/chat')}
+        />
+      )
+    }
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -98,7 +116,7 @@ export default function OrderHistoryPage() {
           </h1>
           <p className="mt-1 text-base text-gray-500">
             {t('transporterOrderHistory.completedCount', {
-              count: completedDeliveries.length,
+              count: totalCount,
             })}
           </p>
         </div>
@@ -106,7 +124,7 @@ export default function OrderHistoryPage() {
           <select
             value="delivered"
             disabled
-            className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-400 outline-none cursor-not-allowed"
+            className="cursor-not-allowed rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm font-medium text-gray-400 outline-none"
             aria-label={t('transporterOrderHistory.filterAria')}
           >
             <option value="delivered">
@@ -116,11 +134,35 @@ export default function OrderHistoryPage() {
         </div>
       </div>
 
-      {/* Timeline List */}
+      {isLoading ? (
+        <p className="text-sm text-gray-500">Loading completed deliveries…</p>
+      ) : null}
+
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, 'Failed to load delivery history')}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
+
+      {!isLoading && !isError && completedDeliveries.length === 0 ? (
+        <p className="text-sm text-gray-500">No completed deliveries found.</p>
+      ) : null}
+
       <DeliveryTimeline
         items={completedDeliveries}
         onSeeDetails={handleSeeDetails}
       />
+
+      {totalPages > 1 ? (
+        <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+      ) : null}
     </div>
   )
 }

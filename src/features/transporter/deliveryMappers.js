@@ -13,6 +13,23 @@ function splitLocation(location) {
   }
 }
 
+function mapLocationBlock(location, fallbackLocation) {
+  if (location && typeof location === 'object') {
+    return {
+      title: location.name || '—',
+      subtitle: location.address || '',
+    }
+  }
+  return splitLocation(fallbackLocation)
+}
+
+function formatLocationString(location, fallbackLocation) {
+  if (location && typeof location === 'object') {
+    return [location.name, location.address].filter(Boolean).join(', ')
+  }
+  return fallbackLocation || ''
+}
+
 export function normalizeDeliveryStatus(status, orderStatus) {
   const raw = String(orderStatus || status || '')
     .trim()
@@ -41,8 +58,8 @@ export function getApiDeliveryStatusParam(uiFilter) {
 export function mapTransporterDelivery(delivery) {
   const actions = delivery.actions || {}
   const status = normalizeDeliveryStatus(delivery.status, delivery.orderStatus)
-  const pickup = splitLocation(delivery.pickupLocation)
-  const dropoff = splitLocation(delivery.deliveryLocation)
+  const pickup = mapLocationBlock(delivery.pickup, delivery.pickupLocation)
+  const dropoff = mapLocationBlock(delivery.delivery, delivery.deliveryLocation)
 
   return {
     id: delivery.auctionId,
@@ -61,8 +78,11 @@ export function mapTransporterDelivery(delivery) {
     orderStatus: delivery.orderStatus,
     pickup,
     delivery: dropoff,
-    pickupLocation: delivery.pickupLocation,
-    deliveryLocation: delivery.deliveryLocation,
+    pickupLocation: formatLocationString(delivery.pickup, delivery.pickupLocation),
+    deliveryLocation: formatLocationString(
+      delivery.delivery,
+      delivery.deliveryLocation,
+    ),
     pickedAt: delivery.pickedAt,
     tripStarted: Boolean(actions.canMarkPickedUp),
     actions: {

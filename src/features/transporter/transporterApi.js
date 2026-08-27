@@ -47,6 +47,23 @@ export const transporterApi = baseApi.injectEndpoints({
             ]
           : [{ type: 'Delivery', id: 'LIST' }],
     }),
+    getTransporterCompletedDeliveries: builder.query({
+      query: ({ page = 1, limit = 20 } = {}) => ({
+        url: '/api/transporter/deliveries/completed',
+        method: 'GET',
+        params: { page, limit },
+      }),
+      providesTags: (result) =>
+        result?.deliveries?.length
+          ? [
+              ...result.deliveries.map((delivery) => ({
+                type: 'Delivery',
+                id: delivery.auctionId,
+              })),
+              { type: 'Delivery', id: 'COMPLETED' },
+            ]
+          : [{ type: 'Delivery', id: 'COMPLETED' }],
+    }),
     getTransporterDelivery: builder.query({
       query: (auctionId) => ({
         url: `/api/transporter/deliveries/${encodeURIComponent(auctionId)}`,
@@ -65,6 +82,7 @@ export const transporterApi = baseApi.injectEndpoints({
       invalidatesTags: (_result, _error, { auctionId }) => [
         { type: 'Delivery', id: auctionId },
         { type: 'Delivery', id: 'LIST' },
+        { type: 'Delivery', id: 'COMPLETED' },
       ],
     }),
     getTransporterPaymentsPayouts: builder.query({
@@ -95,6 +113,7 @@ export const {
   useGetTransporterAuctionsQuery,
   usePlaceTransporterBidMutation,
   useGetTransporterDeliveriesQuery,
+  useGetTransporterCompletedDeliveriesQuery,
   useGetTransporterDeliveryQuery,
   useUpdateTransporterDeliveryStatusMutation,
   useGetTransporterPaymentsPayoutsQuery,
