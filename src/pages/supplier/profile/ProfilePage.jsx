@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import {
@@ -103,16 +104,16 @@ export default function ProfilePage() {
         type: "success",
         message: "Account information updated successfully.",
       });
+      toast.success("Account information updated successfully.");
       setEditingAccount(false);
     } catch (error) {
       console.error("Supplier profile update failed:", error);
-      setStatus({
-        type: "error",
-        message:
-          error?.data?.message ||
-          error?.message ||
-          "Unable to update account information.",
-      });
+      const message =
+        error?.data?.message ||
+        error?.message ||
+        "Unable to update account information.";
+      setStatus({ type: "error", message });
+      toast.error(message);
     }
   };
 
@@ -141,16 +142,16 @@ export default function ProfilePage() {
         type: "success",
         message: "Warehouse locations updated successfully.",
       });
+      toast.success("Warehouse locations updated successfully.");
       setEditingWarehouses(false);
     } catch (error) {
       console.error("Supplier warehouses update failed:", error);
-      setStatus({
-        type: "error",
-        message:
-          error?.data?.message ||
-          error?.message ||
-          "Unable to update warehouse locations.",
-      });
+      const message =
+        error?.data?.message ||
+        error?.message ||
+        "Unable to update warehouse locations.";
+      setStatus({ type: "error", message });
+      toast.error(message);
     }
   };
 
@@ -159,23 +160,33 @@ export default function ProfilePage() {
     setWarehouseDraft(profile?.warehouses ?? []);
   };
 
+  const addWarehouse = () => {
+    setEditingWarehouses(true);
+    setWarehouseDraft((current) => [
+      ...current,
+      {
+        id: `temp-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        label: `Warehouse ${current.length + 1}`,
+        address: "",
+      },
+    ]);
+  };
+
   const handlePasswordUpdate = async () => {
     setStatus({ type: "loading", message: "Changing password..." });
 
     try {
       await changePassword(passwordDraft).unwrap();
       setStatus({ type: "success", message: "Password changed successfully." });
+      toast.success("Password changed successfully.");
       setEditingPassword(false);
       setPasswordDraft(EMPTY_PASSWORD);
     } catch (error) {
       console.error("Supplier password change failed:", error);
-      setStatus({
-        type: "error",
-        message:
-          error?.data?.message ||
-          error?.message ||
-          "Unable to change password.",
-      });
+      const message =
+        error?.data?.message || error?.message || "Unable to change password.";
+      setStatus({ type: "error", message });
+      toast.error(message);
     }
   };
 
@@ -195,14 +206,14 @@ export default function ProfilePage() {
     try {
       await saveIban(payload).unwrap();
       setStatus({ type: "success", message: "IBAN updated successfully." });
+      toast.success("IBAN updated successfully.");
       setEditingIban(false);
     } catch (error) {
       console.error("Supplier IBAN update failed:", error);
-      setStatus({
-        type: "error",
-        message:
-          error?.data?.message || error?.message || "Unable to update IBAN.",
-      });
+      const message =
+        error?.data?.message || error?.message || "Unable to update IBAN.";
+      setStatus({ type: "error", message });
+      toast.error(message);
     }
   };
 
@@ -234,6 +245,7 @@ export default function ProfilePage() {
 
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <Seo title={t("panel.profile.title")} />
 
       <div className="space-y-6">
@@ -369,6 +381,16 @@ export default function ProfilePage() {
                     />
                   </Field>
                 ))}
+
+                {editingWarehouses ? (
+                  <button
+                    type="button"
+                    onClick={addWarehouse}
+                    className="text-sm font-medium text-[var(--active)] hover:underline"
+                  >
+                    {t("panel.profile.addWarehouse")}
+                  </button>
+                ) : null}
 
                 {editingWarehouses &&
                 (!warehouseDraft || warehouseDraft.length === 0) ? (
