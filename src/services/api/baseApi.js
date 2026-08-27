@@ -53,6 +53,7 @@ export const baseApi = createApi({
     "Promotion",
     "PromoCode",
     "ReturnRequest",
+    "Dispute",
   ],
   endpoints: () => ({}),
 });

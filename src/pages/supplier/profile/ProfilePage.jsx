@@ -1,33 +1,74 @@
-import { useTranslation } from 'react-i18next'
-import Seo from '@/components/common/Seo/Seo'
-import PanelProfile from '@/components/forms/PanelProfile'
-import { DEMO_PANEL_PROFILE_SUPPLIER } from '@/data/demoData'
+import { useTranslation } from "react-i18next";
+import Seo from "@/components/common/Seo/Seo";
+import PanelProfile from "@/components/forms/PanelProfile";
+import {
+  useChangeSupplierPasswordMutation,
+  useGetSupplierProfileQuery,
+  useSaveSupplierIbanMutation,
+  useSaveSupplierWarehousesMutation,
+  useUpdateSupplierProfileMutation,
+} from "@/features/supplier/profile/profileApi";
 
 export default function ProfilePage() {
-  const { t } = useTranslation()
-
-  // TODO: replace DEMO_* with supplier profile API fetch
-  const profile = DEMO_PANEL_PROFILE_SUPPLIER
+  const { t } = useTranslation();
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    error,
+  } = useGetSupplierProfileQuery();
+  const [updateProfile] = useUpdateSupplierProfileMutation();
+  const [saveWarehouses] = useSaveSupplierWarehousesMutation();
+  const [changePassword] = useChangeSupplierPasswordMutation();
+  const [saveIban] = useSaveSupplierIbanMutation();
 
   return (
     <>
-      <Seo title={t('panel.profile.title')} />
+      <Seo title={t("panel.profile.title")} />
       <PanelProfile
         role="supplier"
-        defaultValue={profile}
-        onUpdateProfile={() => {
-          // TODO: wire supplier profile update API
+        value={profile || undefined}
+        onUpdateProfile={async (payload) => {
+          try {
+            await updateProfile(payload).unwrap();
+          } catch (updateError) {
+            console.error("Supplier profile update failed:", updateError);
+          }
         }}
-        onSaveWarehouses={() => {
-          // TODO: wire supplier warehouse API
+        onSaveWarehouses={async (warehouses) => {
+          try {
+            await saveWarehouses(warehouses).unwrap();
+          } catch (warehouseError) {
+            console.error("Supplier warehouses update failed:", warehouseError);
+          }
         }}
-        onChangePassword={() => {
-          // TODO: wire supplier password change API
+        onChangePassword={async (payload) => {
+          try {
+            await changePassword(payload).unwrap();
+          } catch (passwordError) {
+            console.error("Supplier password change failed:", passwordError);
+          }
         }}
-        onSaveIban={() => {
-          // TODO: wire supplier IBAN API
+        onSaveIban={async (payload) => {
+          try {
+            await saveIban(payload).unwrap();
+          } catch (ibanError) {
+            console.error("Supplier IBAN update failed:", ibanError);
+          }
         }}
       />
+      {isLoading ? (
+        <div className="mt-4 text-sm text-[var(--secondary-text)]">
+          {t("common.loading")}
+        </div>
+      ) : null}
+      {isError ? (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error?.data?.message ||
+            error?.message ||
+            "Unable to load supplier profile."}
+        </div>
+      ) : null}
     </>
-  )
+  );
 }

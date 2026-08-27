@@ -16,3 +16,5 @@ import "../supplier/commission-invoices/commissionInvoicesApi";
 import "../supplier/analytics/analyticsApi";
 import "../supplier/reviews/reviewsApi";
 import "../supplier/return-requests/returnRequestsApi";
+import "../supplier/disputes/disputesApi";
+import "../supplier/profile/profileApi";
