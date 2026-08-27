@@ -85,6 +85,30 @@ export const transporterApi = baseApi.injectEndpoints({
         { type: 'Delivery', id: 'COMPLETED' },
       ],
     }),
+    verifyTransporterDeliveryOtp: builder.mutation({
+      query: ({ auctionId, otp, proofFiles }) => {
+        const formData = new FormData()
+        formData.append('otp', String(otp))
+        const files = Array.isArray(proofFiles)
+          ? proofFiles.filter(Boolean)
+          : proofFiles
+            ? [proofFiles]
+            : []
+        files.forEach((file) => {
+          formData.append('proof', file)
+        })
+        return {
+          url: `/api/transporter/deliveries/${encodeURIComponent(auctionId)}/verify-otp`,
+          method: 'POST',
+          data: formData,
+        }
+      },
+      invalidatesTags: (_result, _error, { auctionId }) => [
+        { type: 'Delivery', id: auctionId },
+        { type: 'Delivery', id: 'LIST' },
+        { type: 'Delivery', id: 'COMPLETED' },
+      ],
+    }),
     getTransporterPaymentsPayouts: builder.query({
       query: ({ period = 'thisYear', page = 1, limit = 7 } = {}) => ({
         url: '/api/transporter/payments-payouts',
@@ -175,6 +199,7 @@ export const {
   useGetTransporterCompletedDeliveriesQuery,
   useGetTransporterDeliveryQuery,
   useUpdateTransporterDeliveryStatusMutation,
+  useVerifyTransporterDeliveryOtpMutation,
   useGetTransporterPaymentsPayoutsQuery,
   useRequestTransporterWithdrawalMutation,
   useGetTransporterInsuranceQuery,
