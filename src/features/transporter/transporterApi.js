@@ -106,6 +106,65 @@ export const transporterApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Payment', id: 'LIST' }],
     }),
+    getTransporterInsurance: builder.query({
+      query: () => ({
+        url: '/api/transporter/insurance',
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'Insurance', id: 'LIST' }],
+    }),
+    uploadTransporterInsurance: builder.mutation({
+      query: (formData) => ({
+        url: '/api/transporter/insurance',
+        method: 'POST',
+        data: formData,
+      }),
+      invalidatesTags: [{ type: 'Insurance', id: 'LIST' }],
+    }),
+    downloadTransporterInsurancePdf: builder.mutation({
+      query: (kind) => ({
+        url: `/api/transporter/insurance/${encodeURIComponent(kind)}/pdf`,
+        method: 'GET',
+        responseType: 'blob',
+      }),
+    }),
+    getTransporterCommissionInvoices: builder.query({
+      query: ({ search = '', page = 1, limit = 7 } = {}) => ({
+        url: '/api/transporter/commission-invoices',
+        method: 'GET',
+        params: {
+          page,
+          limit,
+          ...(search ? { search } : {}),
+        },
+      }),
+      providesTags: (result) =>
+        result?.invoices?.length
+          ? [
+              ...result.invoices.map((invoice) => ({
+                type: 'Invoice',
+                id: invoice.id,
+              })),
+              { type: 'Invoice', id: 'LIST' },
+            ]
+          : [{ type: 'Invoice', id: 'LIST' }],
+    }),
+    getTransporterCommissionInvoice: builder.query({
+      query: (invoiceId) => ({
+        url: `/api/transporter/commission-invoices/${encodeURIComponent(invoiceId)}`,
+        method: 'GET',
+      }),
+      providesTags: (_result, _error, invoiceId) => [
+        { type: 'Invoice', id: invoiceId },
+      ],
+    }),
+    downloadTransporterCommissionInvoicePdf: builder.mutation({
+      query: (invoiceId) => ({
+        url: `/api/transporter/commission-invoices/${encodeURIComponent(invoiceId)}/pdf`,
+        method: 'GET',
+        responseType: 'blob',
+      }),
+    }),
   }),
 })
 
@@ -118,4 +177,10 @@ export const {
   useUpdateTransporterDeliveryStatusMutation,
   useGetTransporterPaymentsPayoutsQuery,
   useRequestTransporterWithdrawalMutation,
+  useGetTransporterInsuranceQuery,
+  useUploadTransporterInsuranceMutation,
+  useDownloadTransporterInsurancePdfMutation,
+  useGetTransporterCommissionInvoicesQuery,
+  useGetTransporterCommissionInvoiceQuery,
+  useDownloadTransporterCommissionInvoicePdfMutation,
 } = transporterApi

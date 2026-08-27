@@ -2879,6 +2879,10 @@
       }
     },
     "verified": "Verified",
+    "expired": "Expired",
+    "documentUnavailable": "Document not available",
+    "alertPendingTitle": "Insurance requirements not met",
+    "alertPendingBody": "Upload and verify both civil and cargo insurance policies to participate in auctions and accept deliveries.",
     "provider": "Provider",
     "viewDocument": "View Document",
     "downloadPdf": "Download PDF",
@@ -2909,7 +2913,10 @@
       "noteLabel": "Note:",
       "noteBody": "Your document will be reviewed by our team within 24-48 hours. You'll be notified once verification is complete.",
       "cancel": "Cancel",
-      "submit": "Submit for Verification"
+      "submit": "Submit for Verification",
+      "submitting": "Submitting…",
+      "success": "Insurance uploaded successfully",
+      "renewTitle": "Renew Insurance Policy"
     }
   },
   "transporterInvoices": {
@@ -2931,7 +2938,14 @@
     "downloadInvoice": "Download invoice",
     "previous": "Previous",
     "next": "Next",
-    "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
+    "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+    "searchPlaceholder": "Search invoices…",
+    "empty": "No invoices found.",
+    "detailTitle": "Invoice Details",
+    "close": "Close",
+    "orderTotal": "Order Total",
+    "commissionPercent": "Commission",
+    "partyPayout": "Party Payout"
   },
   "transporterMap": {
     "mapTitle": "Google Map",

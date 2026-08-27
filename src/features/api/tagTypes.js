@@ -9,4 +9,6 @@ export const API_TAG_TYPES = [
   'Auction',
   'Delivery',
   'Payment',
+  'Insurance',
+  'Invoice',
 ]
