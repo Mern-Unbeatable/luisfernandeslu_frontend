@@ -54,14 +54,34 @@ function mapCommissionInvoice(item) {
     item.value ??
     0;
 
+  const invoiceType = String(
+    item.type ??
+      item.invoiceType ??
+      item.documentType ??
+      item.userType ??
+      "Invoice",
+  );
+  const customerName = String(
+    item.customer ??
+      item.customerName ??
+      item.companyName ??
+      item.userName ??
+      item.name ??
+      item.participant ??
+      item.supplierName ??
+      "",
+  );
+
   return {
     id: String(item.id ?? item.invoiceId ?? item._id ?? ""),
     invoiceId: String(item.invoiceId ?? item.number ?? item.id ?? ""),
-    userType: String(item.userType ?? item.type ?? "supplier"),
+    type: invoiceType,
+    userType: String(item.userType ?? invoiceType ?? "supplier"),
     orderId: String(
       item.orderId ?? item.orderNumber ?? item.order?.orderId ?? "",
     ),
-    participant: String(resolveInvoiceParticipant(item)),
+    customer: customerName,
+    participant: customerName,
     amount: formatCurrencyValue(amountValue),
     date: formatDateValue(item.date ?? item.createdAt ?? item.invoiceDate),
     status: String(item.status ?? item.paymentStatus ?? item.state ?? ""),
