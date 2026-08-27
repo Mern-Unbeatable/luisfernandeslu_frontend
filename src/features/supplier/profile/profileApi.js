@@ -31,6 +31,7 @@ export const supplierProfileApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: normalizeSupplierProfile,
+      providesTags: [{ type: "Profile", id: "supplier" }],
     }),
     updateSupplierProfile: builder.mutation({
       query: ({ name, email, phone }) => ({
@@ -42,19 +43,19 @@ export const supplierProfileApi = baseApi.injectEndpoints({
           phone,
         },
       }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
     saveSupplierWarehouses: builder.mutation({
       query: (warehouses = []) => ({
         url: "/api/supplier/profile/warehouses",
         method: "PUT",
         data: {
-          warehouses: warehouses.map((warehouse) => ({
-            id: warehouse?.id,
-            label: warehouse?.label ?? warehouse?.name,
-            address: warehouse?.address,
-          })),
+          warehouses: warehouses
+            .map((warehouse) => ({ address: warehouse?.address ?? "" }))
+            .filter((warehouse) => warehouse.address),
         },
       }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
     changeSupplierPassword: builder.mutation({
       query: ({ currentPassword, newPassword, confirmPassword }) => ({
@@ -66,6 +67,7 @@ export const supplierProfileApi = baseApi.injectEndpoints({
           confirmPassword,
         },
       }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
     saveSupplierIban: builder.mutation({
       query: ({ iban, ibanPhone }) => ({
@@ -76,6 +78,7 @@ export const supplierProfileApi = baseApi.injectEndpoints({
           ibanPhone,
         },
       }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
   }),
 });

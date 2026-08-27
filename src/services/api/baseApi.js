@@ -52,6 +52,7 @@ export const baseApi = createApi({
     "Category",
     "Promotion",
     "PromoCode",
+    "Profile",
     "ReturnRequest",
     "Dispute",
   ],
