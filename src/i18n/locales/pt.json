@@ -2673,11 +2673,14 @@
     },
     "types": {
       "delivery": "Entrega",
-      "payout": "Pagamento"
+      "payout": "Pagamento",
+      "withdrawal": "Levantamento"
     },
     "status": {
       "completed": "Concluído",
-      "pending": "Pendente"
+      "pending": "Pendente",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado"
     },
     "withdraw": {
       "title": "Levantar fundos",
@@ -2687,7 +2690,14 @@
       "accountNumber": "Número de conta",
       "cancel": "Cancelar",
       "submit": "Enviar",
-      "close": "Fechar"
+      "submitting": "A enviar…",
+      "close": "Fechar",
+      "success": "Pedido de levantamento enviado",
+      "invalidAmount": "Introduza um montante válido maior que 0",
+      "invalidBusinessName": "O nome da empresa deve ter pelo menos 2 caracteres",
+      "invalidRouting": "O número de routing deve ter pelo menos 3 caracteres",
+      "invalidAccount": "O número de conta deve ter pelo menos 5 caracteres",
+      "insufficientBalance": "O montante excede o saldo disponível"
     }
   },
   "transporterOrderHistory": {

@@ -2825,11 +2825,14 @@
     },
     "types": {
       "delivery": "Delivery",
-      "payout": "Payout"
+      "payout": "Payout",
+      "withdrawal": "Withdrawal"
     },
     "status": {
       "completed": "Completed",
-      "pending": "Pending"
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
     },
     "withdraw": {
       "title": "Withdraw Funds",
@@ -2839,7 +2842,14 @@
       "accountNumber": "Account Number",
       "cancel": "Cancel",
       "submit": "Submit",
-      "close": "Close"
+      "submitting": "Submitting…",
+      "close": "Close",
+      "success": "Withdrawal request submitted",
+      "invalidAmount": "Enter a valid amount greater than 0",
+      "invalidBusinessName": "Business name must be at least 2 characters",
+      "invalidRouting": "Routing number must be at least 3 characters",
+      "invalidAccount": "Account number must be at least 5 characters",
+      "insufficientBalance": "Amount exceeds available balance"
     }
   },
   "transporterOrderHistory": {

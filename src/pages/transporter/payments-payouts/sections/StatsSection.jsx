@@ -4,9 +4,22 @@ import { FiDollarSign } from 'react-icons/fi'
 import StatusCard from '../../../../components/data-display/StatusCard'
 import WithdrawModal from '../components/WithdrawModal'
 
-export default function StatsSection() {
+export default function StatsSection({
+  stats,
+  onWithdraw,
+  isWithdrawing = false,
+}) {
   const { t } = useTranslation()
   const [showModal, setShowModal] = useState(false)
+
+  const commissionPercent = stats?.adminCommissionPercent
+  const commissionDesc =
+    Number.isFinite(commissionPercent) && commissionPercent > 0
+      ? t('transporterPaymentsPayouts.cards.adminCommissionDescDynamic', {
+          percent: commissionPercent,
+          defaultValue: `${commissionPercent}% per order`,
+        })
+      : t('transporterPaymentsPayouts.cards.adminCommissionDesc')
 
   return (
     <>
@@ -14,24 +27,24 @@ export default function StatsSection() {
         <StatusCard
           variant="filled"
           label={t('transporterPaymentsPayouts.cards.totalEarnings')}
-          value="€580K"
+          value={stats?.totalEarnings || '—'}
           description={t('transporterPaymentsPayouts.cards.allTime')}
           icon={FiDollarSign}
         />
         <StatusCard
           variant="summary"
           label={t('transporterPaymentsPayouts.cards.adminCommission')}
-          value="20%"
-          description={t('transporterPaymentsPayouts.cards.adminCommissionDesc')}
+          value={stats?.adminCommission || '—'}
+          description={commissionDesc}
         />
         <StatusCard
           variant="summary"
           label={t('transporterPaymentsPayouts.cards.availableBalance')}
-          value="€36,800"
+          value={stats?.availableBalance || '—'}
           description={
             <span
               onClick={() => setShowModal(true)}
-              className="text-[var(--active)] font-semibold cursor-pointer hover:underline"
+              className="cursor-pointer font-semibold text-[var(--active)] hover:underline"
             >
               {t('transporterPaymentsPayouts.cards.requestPayout')} &rarr;
             </span>
@@ -40,20 +53,24 @@ export default function StatsSection() {
         <StatusCard
           variant="summary"
           label={t('transporterPaymentsPayouts.cards.pendingEarnings')}
-          value="€26,500"
+          value={stats?.pendingEarnings || '—'}
         />
         <StatusCard
           variant="summary"
           label={t('transporterPaymentsPayouts.cards.monthlyAverage')}
-          value="€97K"
+          value={stats?.monthlyAverage || '—'}
         />
       </div>
 
-      {/* Withdraw Funds Modal */}
       <WithdrawModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onSubmit={() => setShowModal(false)}
+        isSubmitting={isWithdrawing}
+        availableBalance={stats?.availableBalanceRaw}
+        onSubmit={async (payload) => {
+          const ok = await onWithdraw?.(payload)
+          if (ok) setShowModal(false)
+        }}
       />
     </>
   )

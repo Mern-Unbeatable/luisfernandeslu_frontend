@@ -67,6 +67,27 @@ export const transporterApi = baseApi.injectEndpoints({
         { type: 'Delivery', id: 'LIST' },
       ],
     }),
+    getTransporterPaymentsPayouts: builder.query({
+      query: ({ period = 'thisYear', page = 1, limit = 7 } = {}) => ({
+        url: '/api/transporter/payments-payouts',
+        method: 'GET',
+        params: { period, page, limit },
+      }),
+      providesTags: [{ type: 'Payment', id: 'LIST' }],
+    }),
+    requestTransporterWithdrawal: builder.mutation({
+      query: ({ amount, businessName, routingNumber, accountNumber }) => ({
+        url: '/api/transporter/payments-payouts/withdrawals',
+        method: 'POST',
+        data: {
+          amount: Number(amount),
+          businessName,
+          routingNumber,
+          accountNumber,
+        },
+      }),
+      invalidatesTags: [{ type: 'Payment', id: 'LIST' }],
+    }),
   }),
 })
 
@@ -76,4 +97,6 @@ export const {
   useGetTransporterDeliveriesQuery,
   useGetTransporterDeliveryQuery,
   useUpdateTransporterDeliveryStatusMutation,
+  useGetTransporterPaymentsPayoutsQuery,
+  useRequestTransporterWithdrawalMutation,
 } = transporterApi
