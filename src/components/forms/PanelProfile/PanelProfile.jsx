@@ -129,9 +129,14 @@ function AccountFields({
           <TextInput
             type="email"
             value={form.email}
-            readOnly
-            aria-readonly="true"
-            className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
+            onChange={cfg.emailEditable ? setField('email') : undefined}
+            readOnly={!cfg.emailEditable}
+            aria-readonly={cfg.emailEditable ? undefined : 'true'}
+            className={
+              cfg.emailEditable
+                ? undefined
+                : 'cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200'
+            }
           />
         </Field>
         {cfg.showAccountPhone ? (

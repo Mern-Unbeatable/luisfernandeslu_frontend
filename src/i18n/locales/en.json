@@ -624,9 +624,51 @@
     "boostTier": "Boost Tier",
     "duration": "Duration",
     "emptyRequests": "No boost requests match this filter.",
+    "emptyFeatured": "No featured products right now.",
+    "loading": "Loading promotions…",
+    "loadFailed": "Could not load promotions.",
     "actions": {
       "accept": "Accept",
       "reject": "Reject"
+    },
+    "approveSuccess": "Promotion approved.",
+    "rejectSuccess": "Promotion rejected.",
+    "actionFailed": "Could not update promotion.",
+    "rejectModal": {
+      "title": "Reject {{name}}",
+      "subtitle": "Provide a reason for rejecting this boost request.",
+      "reasonLabel": "Rejection reason",
+      "reasonPlaceholder": "Explain why this promotion is being rejected...",
+      "reasonRequired": "Please enter a rejection reason.",
+      "cancel": "Cancel",
+      "submit": "Reject promotion"
+    },
+    "retry": "Try again",
+    "promotionPlans": {
+      "sectionTitle": "Promotion Plans",
+      "sectionSubtitle": "Configure featured visibility packages suppliers can purchase.",
+      "loading": "Loading promotion plans…",
+      "loadFailed": "Could not load promotion plans.",
+      "empty": "No promotion plans yet.",
+      "activeBadge": "Active",
+      "durationDays": "Duration (days)",
+      "edit": "Edit",
+      "createTitle": "Create Promotion Plan",
+      "editTitle": "Edit Promotion Plan",
+      "createSuccess": "Promotion plan created.",
+      "updateSuccess": "Promotion plan updated.",
+      "saveFailed": "Could not save promotion plan.",
+      "form": {
+        "label": "Plan label",
+        "labelPlaceholder": "7 days featured",
+        "durationDays": "Duration (days)",
+        "price": "Price",
+        "currency": "Currency",
+        "sortOrder": "Sort order",
+        "isActive": "Active plan",
+        "cancel": "Cancel",
+        "save": "Save plan"
+      }
     }
   },
   "adminFinancePayments": {
@@ -712,6 +754,11 @@
   "adminDisputesResolution": {
     "title": "Disputes Resolution",
     "subtitle": "Manage customer disputes, returns, and resolution cases",
+    "loading": "Loading disputes…",
+    "loadFailed": "Could not load disputes.",
+    "retry": "Try again",
+    "statusUpdated": "Dispute status updated.",
+    "statusUpdateFailed": "Could not update dispute status.",
     "searchPlaceholder": "Search dispute ID, order, customer, supplier...",
     "empty": "No disputes match your filters.",
     "filters": {
@@ -744,7 +791,8 @@
     "detail": {
       "back": "Back to Disputes Resolution",
       "title": "{{id}} · Dispute",
-      "notFound": "Dispute not found."
+      "notFound": "Dispute not found.",
+      "loading": "Loading dispute details…"
     }
   },
   "adminAuction": {
@@ -934,7 +982,8 @@
       "suspended": "Suspended"
     },
     "commissionStatus": {
-      "approved": "Approved"
+      "approved": "Approved",
+      "pending": "Pending"
     },
     "payoutStatus": {
       "pending": "Pending",
@@ -949,8 +998,19 @@
     "actions": {
       "seeDetails": "See details",
       "suspend": "Suspend",
+      "activate": "Activate",
       "delete": "Delete"
     },
+    "loading": "Loading affiliates…",
+    "loadFailed": "Could not load affiliates.",
+    "retry": "Try again",
+    "statusUpdated": "Affiliate status updated.",
+    "actionFailed": "Could not update affiliate status.",
+    "deleteConfirmTitle": "Delete affiliate?",
+    "deleteConfirm": "{{name}} will be permanently removed. This cannot be undone.",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "deleteSuccess": "Affiliate deleted.",
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
@@ -977,11 +1037,27 @@
         "accountNumber": "Account Number",
         "requestDate": "Request Date",
         "status": "STATUS"
-      }
+      },
+      "loadFailed": "Could not load payout requests.",
+      "statusUpdated": "Payout status updated.",
+      "actionFailed": "Could not update payout status."
     },
     "levelControl": {
       "pageTitle": "Commission Level Milestone System",
       "pageSubtitle": "Define milestone tiers, required referral targets, and corresponding payout rate commissions.",
+      "loading": "Loading commission levels…",
+      "loadFailed": "Could not load commission levels.",
+      "saveFailed": "Could not save commission level.",
+      "createSuccess": "Commission level created.",
+      "updateSuccess": "Commission level updated.",
+      "editTitle": "Edit Commission Level",
+      "deleteConfirmTitle": "Delete commission level?",
+      "deleteConfirm": "{{name}} will be permanently removed. This cannot be undone.",
+      "deleteConfirmButton": "Delete",
+      "deleteSuccess": "Commission level deleted.",
+      "deleteFailed": "Could not delete commission level.",
+      "reorderSuccess": "Commission levels reordered.",
+      "reorderFailed": "Could not reorder commission levels.",
       "activeBadge": "Active",
       "commissionSplit": "Commission Split",
       "payoutNote": "Recurring Lifetime payout spilt",
@@ -1002,6 +1078,7 @@
         "commission": "Commission %",
         "membersRequired": "Member Required",
         "description": "Description",
+        "isActive": "Active tier",
         "cancel": "Cancel",
         "save": "Save Level"
       }
@@ -1010,6 +1087,9 @@
       "back": "Back",
       "title": "{{name}} · Affiliate",
       "notFound": "Affiliate not found.",
+      "loading": "Loading affiliate details…",
+      "loadFailed": "Could not load affiliate details.",
+      "delete": "Delete affiliate",
       "joined": "Joined",
       "code": "Code",
       "tier": "Tier",
@@ -1026,6 +1106,7 @@
       },
       "clients": {
         "sectionTitle": "Referred Clients",
+        "loadFailed": "Could not load referred clients.",
         "columns": {
           "clientInfo": "Client Info",
           "phone": "Phone Number",
@@ -1040,6 +1121,7 @@
       },
       "commissions": {
         "sectionTitle": "Commission Log Ledger",
+        "loadFailed": "Could not load commission history.",
         "columns": {
           "transactionId": "Transaction ID",
           "date": "Date",
@@ -1052,6 +1134,7 @@
       },
       "payouts": {
         "sectionTitle": "Commission Log Ledger",
+        "loadFailed": "Could not load payout history.",
         "columns": {
           "referenceId": "Refernce ID",
           "requestedDate": "Requested Date",
@@ -1068,13 +1151,22 @@
         "timeframe": "Time range",
         "thisYear": "This year",
         "marketplaceRev": "Marketplace Rev",
-        "affiliateCommission": "Affiliate Commission"
+        "affiliateCommission": "Affiliate Commission",
+        "loading": "Loading analytics…",
+        "loadFailed": "Could not load revenue analytics."
       }
     }
   },
   "adminRolesPermissions": {
     "title": "Role & Permission Strategy",
     "subtitle": "Documentation of the access control layers implemented in Construpreco. This ensures data security and a focused user experience for each staff role.",
+    "loading": "Loading permissions…",
+    "loadFailed": "Could not load role permissions.",
+    "retry": "Try again",
+    "permissionsUpdated": "Permissions updated.",
+    "permissionsUpdateFailed": "Could not update permissions.",
+    "inviteSuccess": "Invite sent.",
+    "inviteFailed": "Could not send invite.",
     "roles": {
       "moderator": "Moderator",
       "admin": "Admin",
@@ -1123,14 +1215,22 @@
   "adminSettings": {
     "title": "Settings",
     "subtitle": "Configure platform shipping, tax, and auction defaults.",
+    "loading": "Loading settings…",
+    "loadFailed": "Could not load settings.",
+    "retry": "Try again",
+    "saveSuccess": "Settings saved.",
+    "saveFailed": "Could not save settings.",
+    "resetSuccess": "Settings reset.",
+    "resetFailed": "Could not reset settings.",
     "unsaved": "Unsaved",
     "saveChange": "Save Change",
     "reset": "Reset",
     "calculate": "Calculate",
     "shipping": {
       "title": "Shipping Charge Management",
-      "description": "Set base per-kilometer rates and preview shipping costs.",
-      "baseRateTitle": "Base Shipping Rate",
+      "description": "Set per-kilometer rates by vehicle type and preview shipping costs.",
+      "vehicleRatesTitle": "Vehicle Rates",
+      "vehicleLabel": "Vehicle rate",
       "perKmLabel": "Per Kilometer Charge",
       "calculatorTitle": "Shipping Cost Calculator",
       "distanceLabel": "Distance",
@@ -1674,7 +1774,16 @@
       "billingAddress": "Billing Address",
       "shippingAddress": "Shipping Address",
       "companyOptional": "Company Name (Optional)",
-      "changePasswordUpper": "CHANGE PASSWORD"
+      "changePasswordUpper": "CHANGE PASSWORD",
+      "loading": "Loading profile…",
+      "loadFailed": "Could not load profile.",
+      "retry": "Try again",
+      "updateSuccess": "Profile updated.",
+      "updateFailed": "Could not update profile.",
+      "passwordUpdateSuccess": "Password updated.",
+      "passwordUpdateFailed": "Could not update password.",
+      "ibanUpdateSuccess": "IBAN updated.",
+      "ibanUpdateFailed": "Could not update IBAN."
     }
   },
   "auth": {

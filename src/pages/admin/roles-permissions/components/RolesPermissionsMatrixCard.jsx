@@ -6,6 +6,7 @@ export default function RolesPermissionsMatrixCard({
   columns,
   data,
   emptyMessage,
+  loading = false,
   showActions = false,
   actions = [],
   actionHeader = 'Action',
@@ -24,6 +25,7 @@ export default function RolesPermissionsMatrixCard({
         showCard={false}
         columns={columns}
         data={data}
+        loading={loading}
         emptyMessage={emptyMessage}
         showActions={showActions}
         actions={actions}
