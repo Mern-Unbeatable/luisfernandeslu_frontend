@@ -801,13 +801,37 @@
       "new": "New",
       "pending": "Pending",
       "processing": "Processing",
+      "in_production": "In Production",
+      "produced": "Produced",
+      "ready": "Ready",
       "assigned": "Assigned",
       "completed": "Completed",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "cancelByAdmin": "Cancel by Admin"
     },
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
+    "statusUpdated": "Order status updated.",
+    "actionFailed": "Could not update order status.",
+    "deleteConfirm": "Order {{id}} will be permanently deleted. This cannot be undone.",
+    "deleteConfirmTitle": "Delete order?",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "deleteSuccess": "Order deleted.",
     "actions": {
       "seeDetails": "See Details",
+      "accept": "Accept",
+      "statusSection": "Change status",
       "delete": "Delete"
+    },
+    "cancelModal": {
+      "title": "Cancel order {{id}}?",
+      "subtitle": "Optionally add a note. The order will show as Cancel by Admin.",
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "Add a note for this cancellation…",
+      "close": "Close",
+      "submit": "Cancel order"
     },
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
@@ -818,6 +842,9 @@
       "back": "Back to Orders",
       "title": "{{id}} · Order",
       "notFound": "Order not found.",
+      "loading": "Loading order details…",
+      "loadFailed": "Could not load order details.",
+      "delete": "Delete order",
       "supplierSection": "Supplier Information",
       "factorySection": "Factory Information",
       "produced": "Produced",
@@ -827,6 +854,18 @@
   "adminDeliveryLogistics": {
     "title": "Delivery & Logistics",
     "subtitle": "Monitor active deliveries and shipment details.",
+    "filterLabel": "Filter:",
+    "searchPlaceholder": "Search auction, order, product, transporter…",
+    "empty": "No deliveries match your filters.",
+    "loading": "Loading deliveries…",
+    "loadFailed": "Could not load deliveries.",
+    "retry": "Try again",
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results"
+    },
     "status": {
       "assigned": "Assigned",
       "pickedUp": "Picked Up",
@@ -836,7 +875,9 @@
     "detail": {
       "back": "Back to Delivery & Logistics",
       "title": "{{id}} · Delivery",
-      "notFound": "Delivery not found."
+      "notFound": "Delivery not found.",
+      "loading": "Loading delivery details…",
+      "loadFailed": "Could not load delivery details."
     }
   },
   "adminAffiliateDirectory": {

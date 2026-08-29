@@ -286,12 +286,12 @@ function AdminAuctionCard({ auction, t }) {
     <CardShell accent>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-lg font-bold text-[var(--primary-text)]">{auction.title}</h3>
-          <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+          <h3 className="text-lg font-bold text-(--primary-text)">{auction.title}</h3>
+          <p className="mt-0.5 text-sm text-(--secondary-text)">
             {t('auction.auctionId')}: {auction.auctionId}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-[var(--active)]">
+        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-(--active)">
           {auction.dateLabel ? (
             <span className="inline-flex items-center gap-1.5">
               <FiCalendar className="size-4" aria-hidden />
@@ -315,7 +315,7 @@ function AdminAuctionCard({ auction, t }) {
       </div>
 
       <div className="mt-5 flex min-h-0 flex-1 flex-col rounded-xl bg-gray-50 p-4">
-        <p className="mb-3 shrink-0 text-sm font-bold text-[var(--primary-text)]">
+        <p className="mb-3 shrink-0 text-sm font-bold text-(--primary-text)">
           {t('auction.competingBids')}
         </p>
 
@@ -325,7 +325,7 @@ function AdminAuctionCard({ auction, t }) {
               <span className="inline-flex items-center justify-center rounded-lg bg-white p-3 text-gray-400 shadow-sm">
                 <FiTruck className="size-5" aria-hidden />
               </span>
-              <p className="mt-3 text-sm text-[var(--secondary-text)]">
+              <p className="mt-3 text-sm text-(--secondary-text)">
                 {t('auction.noCompetingBids')}
               </p>
             </div>
@@ -340,29 +340,29 @@ function AdminAuctionCard({ auction, t }) {
               {bids.map((bid, idx) => (
                 <li
                   key={bid.id || `bid-${idx}`}
-                  className="flex min-h-[3.5rem] items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-3 py-3"
+                  className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-3 py-3"
                 >
                   <div className="flex min-w-0 items-start gap-2.5">
                     <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-600">
                       <FiTruck className="size-4" strokeWidth={2} aria-hidden />
                     </span>
                     <span className="min-w-0">
-                      <span className="block truncate text-sm font-semibold text-[var(--primary-text)]">
+                      <span className="block truncate text-sm font-semibold text-(--primary-text)">
                         {bid.transporterName}
                       </span>
-                      <span className="mt-0.5 block text-xs text-[var(--secondary-text)]">
+                      <span className="mt-0.5 block text-xs text-(--secondary-text)">
                         {bid.at || bid.label}
                       </span>
                     </span>
                   </div>
-                  <span className="shrink-0 text-sm font-bold text-[var(--primary-text)]">
+                  <span className="shrink-0 text-sm font-bold text-(--primary-text)">
                     {formatMoney(bid.amount)}
                   </span>
                 </li>
               ))}
             </ul>
             {hasMoreBids ? (
-              <p className="mt-2 shrink-0 text-center text-xs text-[var(--secondary-text)]">
+              <p className="mt-2 shrink-0 text-center text-xs text-(--secondary-text)">
                 {t('auction.scrollForMoreBids', 'Scroll to see more bids')}
               </p>
             ) : null}
