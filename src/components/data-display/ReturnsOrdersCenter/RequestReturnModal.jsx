@@ -1,36 +1,84 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiUpload, FiX } from 'react-icons/fi'
+
+const ALLOWED_EVIDENCE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+])
 
 export default function RequestReturnModal({
   open,
   onClose,
   item,
   onSubmit,
+  isSubmitting = false,
 }) {
   const { t } = useTranslation()
   const titleId = useId()
+  const fileInputId = useId()
+  const fileInputRef = useRef(null)
   const [reason, setReason] = useState('')
   const [description, setDescription] = useState('')
   const [damagedCount, setDamagedCount] = useState('')
   const [refundAccount, setRefundAccount] = useState('')
+  const [evidence, setEvidence] = useState([])
+
+  useEffect(() => {
+    if (!open) {
+      setReason('')
+      setDescription('')
+      setDamagedCount('')
+      setRefundAccount('')
+      setEvidence([])
+    }
+  }, [open, item?.id])
 
   if (!open || !item) return null
 
-  const handleSubmit = (event) => {
+  const handleFiles = (event) => {
+    const files = Array.from(event.target.files ?? [])
+    if (!files.length) return
+
+    const validFiles = files.filter((file) =>
+      ALLOWED_EVIDENCE_TYPES.has(file.type),
+    )
+
+    if (validFiles.length !== files.length) {
+      toast.error(t('returnsCenter.modal.evidenceInvalidType'))
+    }
+
+    if (validFiles.length) {
+      setEvidence((prev) => [...prev, ...validFiles])
+    }
+
+    event.target.value = ''
+  }
+
+  const removeEvidence = (index) => {
+    setEvidence((prev) => prev.filter((_, fileIndex) => fileIndex !== index))
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    onSubmit?.({
-      item,
-      reason,
-      description,
-      damagedCount,
-      refundAccount,
-    })
-    setReason('')
-    setDescription('')
-    setDamagedCount('')
-    setRefundAccount('')
-    onClose?.()
+
+    try {
+      await onSubmit?.({
+        item,
+        reason: reason.trim(),
+        description: description.trim(),
+        damagedCount: damagedCount.trim(),
+        refundAccount: refundAccount.trim(),
+        evidence,
+      })
+    } catch {
+      // Parent handles error feedback.
+    }
   }
 
   return (
@@ -107,8 +155,12 @@ export default function RequestReturnModal({
           <label className="block text-sm font-medium text-[var(--primary-text)]">
             {t('returnsCenter.modal.damagedItem')}
             <input
+              required
+              inputMode="numeric"
               value={damagedCount}
-              onChange={(event) => setDamagedCount(event.target.value)}
+              onChange={(event) =>
+                setDamagedCount(event.target.value.replace(/\D/g, ''))
+              }
               placeholder={t('returnsCenter.modal.damagedItemPh')}
               className="mt-1.5 h-11 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-[var(--active)]"
             />
@@ -117,8 +169,12 @@ export default function RequestReturnModal({
           <label className="block text-sm font-medium text-[var(--primary-text)]">
             {t('returnsCenter.modal.refundAccount')}
             <input
+              required
+              inputMode="numeric"
               value={refundAccount}
-              onChange={(event) => setRefundAccount(event.target.value)}
+              onChange={(event) =>
+                setRefundAccount(event.target.value.replace(/\D/g, ''))
+              }
               placeholder={t('returnsCenter.modal.refundAccountPh')}
               className="mt-1.5 h-11 w-full rounded-lg border border-gray-200 px-3 text-sm outline-none focus:border-[var(--active)]"
             />
@@ -128,8 +184,18 @@ export default function RequestReturnModal({
             <p className="text-sm font-medium text-[var(--primary-text)]">
               {t('returnsCenter.modal.evidence')}
             </p>
+            <input
+              ref={fileInputRef}
+              id={fileInputId}
+              type="file"
+              multiple
+              accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,image/jpeg,image/png,image/webp,application/pdf"
+              className="sr-only"
+              onChange={handleFiles}
+            />
             <button
               type="button"
+              onClick={() => fileInputRef.current?.click()}
               className="mt-1.5 flex w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-[#FAFAFA] px-4 py-8 text-center transition-colors hover:border-[var(--active)]"
             >
               <FiUpload
@@ -144,11 +210,33 @@ export default function RequestReturnModal({
                 {t('returnsCenter.modal.uploadTypes')}
               </span>
             </button>
+            {evidence.length > 0 ? (
+              <ul className="mt-3 space-y-2">
+                {evidence.map((file, index) => (
+                  <li
+                    key={`${file.name}-${index}`}
+                    className="flex items-center justify-between gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                  >
+                    <span className="min-w-0 truncate text-[var(--primary-text)]">
+                      {file.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeEvidence(index)}
+                      className="shrink-0 text-xs font-semibold text-red-600 hover:underline"
+                    >
+                      {t('returnsCenter.modal.removeFile')}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <button
             type="submit"
-            className="h-11 w-full rounded-lg bg-[var(--active)] text-sm font-bold tracking-wide text-white uppercase hover:brightness-95"
+            disabled={isSubmitting}
+            className="h-11 w-full rounded-lg bg-[var(--active)] text-sm font-bold tracking-wide text-white uppercase hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t('returnsCenter.modal.submit')}
           </button>

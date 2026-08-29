@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiChevronDown, FiEye, FiEyeOff } from 'react-icons/fi'
+import { sanitizePhoneInput } from '@/utils/phoneUtils'
 
 export function Field({ label, children, className = '' }) {
   return (
@@ -31,6 +32,27 @@ export function TextInput({
       type={type}
       value={value ?? ''}
       onChange={(event) => onChange?.(event.target.value)}
+      placeholder={placeholder}
+      className={`${controlBase} h-11 px-3 ${className}`}
+      {...rest}
+    />
+  )
+}
+
+export function PhoneInput({
+  value,
+  onChange,
+  placeholder,
+  className = '',
+  ...rest
+}) {
+  return (
+    <input
+      type="tel"
+      inputMode="tel"
+      autoComplete="tel"
+      value={value ?? ''}
+      onChange={(event) => onChange?.(sanitizePhoneInput(event.target.value))}
       placeholder={placeholder}
       className={`${controlBase} h-11 px-3 ${className}`}
       {...rest}

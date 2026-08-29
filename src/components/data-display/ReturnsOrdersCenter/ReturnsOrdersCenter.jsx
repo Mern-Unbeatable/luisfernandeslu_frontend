@@ -8,6 +8,7 @@ import ReturnsCenterToolbar from './ReturnsCenterToolbar'
 export default function ReturnsOrdersCenter({
   orders = [],
   returns = [],
+  isFetching = false,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -51,7 +52,12 @@ export default function ReturnsOrdersCenter({
   }, [returns, query])
 
   return (
-    <div className={`mx-auto w-full max-w-4xl ${className}`}>
+    <div
+      className={[
+        `mx-auto w-full max-w-4xl ${className}`,
+        isFetching ? 'opacity-60' : '',
+      ].join(' ')}
+    >
       <ReturnsCenterToolbar
         tab={tab}
         onTabChange={handleTabChange}
@@ -111,6 +117,10 @@ export default function ReturnsOrdersCenter({
             </ul>
           )}
         </div>
+      ) : filteredOrders.length === 0 ? (
+        <p className="mt-6 py-10 text-center text-sm text-[var(--secondary-text)]">
+          {t('returnsCenter.ordersEmpty')}
+        </p>
       ) : (
         <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {filteredOrders.map((order) => (
@@ -131,7 +141,7 @@ export default function ReturnsOrdersCenter({
                     </p>
                   </div>
                   <StatusBadge
-                    status="processing"
+                    status={order.status}
                     label={t(`returnsCenter.status.${order.status}`, order.status)}
                   />
                 </div>

@@ -1734,6 +1734,7 @@
       "namePlaceholder": "Your name or company",
       "emailPlaceholder": "you@example.com",
       "phonePlaceholder": "+1 (555) 000-0000",
+      "phoneInvalid": "Enter a valid phone number (8–15 digits, numbers only).",
       "updateProfile": "Update Profile",
       "saveChanges": "SAVE CHANGES",
       "warehouseLocation": "Warehouse Location",
@@ -1783,7 +1784,12 @@
       "passwordUpdateSuccess": "Password updated.",
       "passwordUpdateFailed": "Could not update password.",
       "ibanUpdateSuccess": "IBAN updated.",
-      "ibanUpdateFailed": "Could not update IBAN."
+      "ibanUpdateFailed": "Could not update IBAN.",
+      "avatarInvalidType": "Please upload a JPEG, PNG, or WEBP image.",
+      "avatarUploadSuccess": "Profile picture updated.",
+      "avatarUploadFailed": "Could not upload profile picture.",
+      "avatarRemoveSuccess": "Profile picture removed.",
+      "avatarRemoveFailed": "Could not remove profile picture."
     }
   },
   "auth": {
@@ -2062,11 +2068,27 @@
     "trackOrder": "Track Order",
     "cancelOrder": "Cancel Order",
     "writeReview": "Write a Review",
+    "downloadInvoice": "Download Invoice",
     "empty": "You have no orders yet.",
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
+    "cancelSuccess": "Order cancelled.",
+    "cancelFailed": "Could not cancel order.",
+    "invoiceDownloadSuccess": "Invoice download started.",
+    "invoiceDownloadFailed": "Could not download invoice.",
+    "filters": {
+      "all": "All",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
     "status": {
       "shipped": "Shipped",
       "processing": "Processing",
-      "delivered": "Delivered"
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     }
   },
   "buyerOrderDetail": {
@@ -2077,12 +2099,14 @@
     "quantity": "Quantity",
     "price": "Price",
     "total": "Total",
-    "chat": "Chat"
+    "chat": "Chat",
+    "deliveryOtp": "Delivery OTP: {{otp}}"
   },
   "cancelReasonModal": {
     "title": "Cancel Reason",
     "label": "Write cancel reason",
     "placeholder": "",
+    "reasonRequired": "Please enter a cancellation reason.",
     "submit": "Submit",
     "close": "Close"
   },
@@ -2092,6 +2116,13 @@
     "columnAction": "Action",
     "writeReview": "Write a review",
     "empty": "No products waiting for a review.",
+    "loading": "Loading products to review…",
+    "loadFailed": "Could not load products to review.",
+    "retry": "Try again",
+    "submitSuccess": "Review submitted.",
+    "submitFailed": "Could not submit review.",
+    "ratingRequired": "Please select a rating.",
+    "reviewRequired": "Please write a review.",
     "shippingStatus": {
       "delivered": "Delivered"
     }
@@ -2227,6 +2258,10 @@
     "returnRefund": "Return/Refund",
     "myReturnsTitle": "My Returns",
     "returnsEmpty": "No return requests match your search.",
+    "ordersEmpty": "No orders available for return.",
+    "loading": "Loading returns…",
+    "loadFailed": "Could not load returns data.",
+    "retry": "Try again",
     "reasonInline": "Reason: {{reason}}",
     "updatedOn": "UPDATE {{date}}",
     "requestTitle": "Return Request #{{id}}",
@@ -2257,9 +2292,14 @@
       "refundAccountPh": "Put your Account Number",
       "evidence": "Upload Evidence",
       "uploadHint": "Click to upload or drag and drop",
-      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "uploadTypes": "JPEG, PNG, WEBP, PDF, DOC, DOCX — up to 10MB each",
+      "removeFile": "Remove",
+      "evidenceRequired": "Please upload at least one evidence file.",
+      "evidenceInvalidType": "Only JPEG, PNG, WEBP, PDF, DOC, and DOCX files are allowed.",
       "submit": "SUBMIT RETURN"
     },
+    "submitSuccess": "Return request submitted.",
+    "submitFailed": "Could not submit return request.",
     "status": {
       "delivered": "DELIVERED"
     }

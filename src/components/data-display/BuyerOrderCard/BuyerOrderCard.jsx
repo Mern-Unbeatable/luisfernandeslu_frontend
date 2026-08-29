@@ -75,7 +75,9 @@ export default function BuyerOrderCard({
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <p className="text-xs text-[var(--secondary-text)] sm:text-sm">
-            {t('buyerOrders.orderId', { id: order.id })}
+            {t('buyerOrders.orderId', {
+              id: order.orderNumber ?? order.id,
+            })}
           </p>
           <StatusBadge status={order.status} label={statusLabel} />
         </div>
