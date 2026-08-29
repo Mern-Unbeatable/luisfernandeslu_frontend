@@ -117,6 +117,14 @@ export const transporterApi = baseApi.injectEndpoints({
       }),
       providesTags: [{ type: 'Payment', id: 'LIST' }],
     }),
+    getTransporterDashboard: builder.query({
+      query: ({ period = 'thisYear' } = {}) => ({
+        url: '/api/transporter/dashboard',
+        method: 'GET',
+        params: { period },
+      }),
+      providesTags: [{ type: 'Transporter', id: 'DASHBOARD' }],
+    }),
     requestTransporterWithdrawal: builder.mutation({
       query: ({ amount, businessName, routingNumber, accountNumber }) => ({
         url: '/api/transporter/payments-payouts/withdrawals',
@@ -201,6 +209,7 @@ export const {
   useUpdateTransporterDeliveryStatusMutation,
   useVerifyTransporterDeliveryOtpMutation,
   useGetTransporterPaymentsPayoutsQuery,
+  useGetTransporterDashboardQuery,
   useRequestTransporterWithdrawalMutation,
   useGetTransporterInsuranceQuery,
   useUploadTransporterInsuranceMutation,

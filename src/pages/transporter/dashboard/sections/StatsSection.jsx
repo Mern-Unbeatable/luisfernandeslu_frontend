@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fi'
 import StatusCard from '../../../../components/data-display/StatusCard'
 
-export default function StatsSection() {
+export default function StatsSection({ stats = {} }) {
   const { t } = useTranslation()
 
   return (
@@ -17,42 +17,42 @@ export default function StatsSection() {
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.activeAuctions')}
-        value="12"
+        value={stats.activeAuctions || '—'}
         icon={FaGavel}
         iconTone="brand"
       />
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.wonDeliveries')}
-        value="8"
+        value={stats.wonDeliveries || '—'}
         icon={FiCheckCircle}
         iconTone="teal"
       />
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.inTransit')}
-        value="5"
+        value={stats.inTransit || '—'}
         icon={FiTruck}
         iconTone="warning"
       />
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.completedToday')}
-        value="3"
+        value={stats.completedToday || '—'}
         icon={FiPackage}
         iconTone="purple"
       />
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.todaysEarnings')}
-        value="€24,500"
+        value={stats.todaysEarnings || '—'}
         icon={FiDollarSign}
         iconTone="teal"
       />
       <StatusCard
         variant="default"
         label={t('transporterDashboard.cards.pendingEarnings')}
-        value="€12,300"
+        value={stats.pendingEarnings || '—'}
         icon={FiClock}
         iconTone="warning"
       />
