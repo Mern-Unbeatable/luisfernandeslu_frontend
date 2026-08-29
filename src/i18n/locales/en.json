@@ -3371,7 +3371,13 @@
       "customer": "Customer",
       "amount": "Amount",
       "date": "Date"
-    }
+    },
+    "empty": "No invoices found.",
+    "detailTitle": "Invoice Details",
+    "close": "Close",
+    "orderTotal": "Order Total",
+    "commissionPercent": "Commission",
+    "partyPayout": "Party Payout"
   },
   "affiliateOverview": {
     "title": "Affiliate Earnings Dashboard",

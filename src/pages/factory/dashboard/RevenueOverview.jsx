@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import { Line } from 'react-chartjs-2'
 import {
@@ -35,15 +34,16 @@ export default function RevenueOverview({
   subtitle = 'Monthly revenue for the last 6 months',
   filterAriaLabel = 'Revenue period filter',
   labels = [],
-  series = {},
-  filterOptions = ['This year', 'Last year'],
-  defaultFilter,
+  values = [],
+  maxValue,
+  yTicks = [],
+  year,
+  filterOptions = [],
+  filter,
+  onFilterChange,
 }) {
-  const [filter, setFilter] = useState(
-    defaultFilter || getFilterValue(filterOptions[0]) || 'This year',
-  )
-
-  const values = series[filter] || Object.values(series)[0] || []
+  const chartMax = Math.max(Number(maxValue) || 0, 1)
+  const hasFilter = filterOptions.length > 0 && typeof onFilterChange === 'function'
 
   const chartData = {
     labels,
@@ -78,6 +78,11 @@ export default function RevenueOverview({
     ],
   }
 
+  const tickOptions =
+    yTicks.length > 0
+      ? { values: yTicks }
+      : { stepSize: Math.max(Math.ceil(chartMax / 4), 1) }
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -93,6 +98,8 @@ export default function RevenueOverview({
         padding: 10,
         displayColors: false,
         callbacks: {
+          title: (context) =>
+            year ? `${context[0].label}, ${year}` : context[0].label,
           label: (context) => `€${Number(context.raw).toLocaleString()}`,
         },
       },
@@ -108,17 +115,12 @@ export default function RevenueOverview({
       },
       y: {
         min: 0,
-        max: 8000,
+        max: chartMax,
         ticks: {
-          stepSize: 2000,
+          ...tickOptions,
           color: '#9ca3af',
           font: { size: 11 },
           callback: (value) => `€${value}`,
-        },
-        grid: {
-          color: '#e5e7eb',
-          borderDash: [4, 4],
-          drawTicks: false,
         },
         grid: {
           color: '#e5e7eb',
@@ -144,27 +146,29 @@ export default function RevenueOverview({
           </p>
         </div>
 
-        <label className="relative inline-flex w-full max-w-full shrink-0 overflow-hidden self-start sm:w-auto">
-          <select
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-            className="h-9 w-full max-w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:w-auto"
-            aria-label={filterAriaLabel}
-          >
-            {filterOptions.map((option) => {
-              const value = getFilterValue(option)
-              return (
-                <option key={value} value={value}>
-                  {getFilterLabel(option)}
-                </option>
-              )
-            })}
-          </select>
-          <FiChevronDown
-            className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
-            aria-hidden
-          />
-        </label>
+        {hasFilter ? (
+          <label className="relative inline-flex w-full max-w-full shrink-0 overflow-hidden self-start sm:w-auto">
+            <select
+              value={filter}
+              onChange={(event) => onFilterChange(event.target.value)}
+              className="h-9 w-full max-w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white py-1.5 pr-9 pl-3 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:w-auto"
+              aria-label={filterAriaLabel}
+            >
+              {filterOptions.map((option) => {
+                const value = getFilterValue(option)
+                return (
+                  <option key={value} value={value}>
+                    {getFilterLabel(option)}
+                  </option>
+                )
+              })}
+            </select>
+            <FiChevronDown
+              className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
+              aria-hidden
+            />
+          </label>
+        ) : null}
       </div>
 
       <div className="mt-6 h-72 w-full sm:h-80">
