@@ -11,6 +11,8 @@ const panelClass = 'rounded-lg bg-[#F3F4F6] p-5 sm:p-6'
 export default function BuyerOrderInformation({
   order,
   onChatDriver,
+  onDownloadInvoice,
+  isTracking = false,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -25,12 +27,30 @@ export default function BuyerOrderInformation({
     <div className={`grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-8 ${className}`}>
       <div className="min-w-0 space-y-6">
         <header>
-          <h1 className="text-xl font-bold text-[var(--primary-text)] sm:text-2xl">
-            {t('buyerOrderDetail.title', { number: order.orderNumber })}
-          </h1>
-          <div className="mt-2">
-            <StatusBadge status={order.status} label={statusLabel} />
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h1 className="text-xl font-bold text-[var(--primary-text)] sm:text-2xl">
+                {t('buyerOrderDetail.title', { number: order.orderNumber })}
+              </h1>
+              <div className="mt-2">
+                <StatusBadge status={order.status} label={statusLabel} />
+              </div>
+            </div>
+            {onDownloadInvoice ? (
+              <button
+                type="button"
+                onClick={onDownloadInvoice}
+                className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--active)] px-5 py-2 text-sm font-semibold text-white hover:brightness-95"
+              >
+                {t('buyerOrders.downloadInvoice')}
+              </button>
+            ) : null}
           </div>
+          {order.deliveryOtp ? (
+            <p className="mt-3 text-sm text-[var(--secondary-text)]">
+              {t('buyerOrderDetail.deliveryOtp', { otp: order.deliveryOtp })}
+            </p>
+          ) : null}
         </header>
 
         <section className={panelClass}>
@@ -111,7 +131,13 @@ export default function BuyerOrderInformation({
         <DriverContactCard driver={order.driver} onChat={onChatDriver} />
 
         {order.progressSteps?.length ? (
-          <div className={`${panelClass} lg:bg-[#F3F4F6]`}>
+          <div
+            className={[
+              panelClass,
+              'lg:bg-[#F3F4F6]',
+              isTracking ? 'opacity-60' : '',
+            ].join(' ')}
+          >
             <BuyerOrderProgress steps={order.progressSteps} />
           </div>
         ) : null}

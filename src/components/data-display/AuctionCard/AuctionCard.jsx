@@ -272,20 +272,26 @@ function TransporterAuctionCard({
   )
 }
 
+const ADMIN_BID_VISIBLE_COUNT = 3
+// ~3.5rem per row (py-3 + icon) + 0.5rem gap (space-y-2)
+const ADMIN_BIDS_LIST_MAX_HEIGHT = `calc(${ADMIN_BID_VISIBLE_COUNT} * 3.5rem + ${ADMIN_BID_VISIBLE_COUNT - 1} * 0.5rem)`
+
 /** Image 3 — admin competing bids */
 function AdminAuctionCard({ auction, t }) {
+  const bids = Array.isArray(auction.bids) ? auction.bids : []
+  const hasBids = bids.length > 0
+  const hasMoreBids = bids.length > ADMIN_BID_VISIBLE_COUNT
+
   return (
     <CardShell accent>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-lg font-bold text-[var(--primary-text)]">
-            {auction.title}
-          </h3>
-          <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+          <h3 className="text-lg font-bold text-(--primary-text)">{auction.title}</h3>
+          <p className="mt-0.5 text-sm text-(--secondary-text)">
             {t('auction.auctionId')}: {auction.auctionId}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-[var(--active)]">
+        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-(--active)">
           {auction.dateLabel ? (
             <span className="inline-flex items-center gap-1.5">
               <FiCalendar className="size-4" aria-hidden />
@@ -302,59 +308,66 @@ function AdminAuctionCard({ auction, t }) {
       </div>
 
       <div className="mt-5 flex flex-col gap-3.5">
-        <AuctionDetailRow
-          icon={AuctionIcons.Package}
-          label={t('auction.quantity')}
-          value={auction.quantity}
-        />
-        <AuctionDetailRow
-          icon={AuctionIcons.MapPin}
-          iconColor="green"
-          label={t('auction.pickup')}
-          value={auction.pickupLocation}
-        />
-        <AuctionDetailRow
-          icon={AuctionIcons.MapPin}
-          iconColor="blue"
-          label={t('auction.delivery')}
-          value={auction.deliveryLocation}
-        />
-        <AuctionDetailRow
-          icon={AuctionIcons.Distance}
-          label={t('auction.distance')}
-          value={auction.distance}
-        />
+        <AuctionDetailRow icon={AuctionIcons.Package} label={t('auction.quantity')} value={auction.quantity} />
+        <AuctionDetailRow icon={AuctionIcons.MapPin} iconColor="green" label={t('auction.pickup')} value={auction.pickupLocation} />
+        <AuctionDetailRow icon={AuctionIcons.MapPin} iconColor="blue" label={t('auction.delivery')} value={auction.deliveryLocation} />
+        <AuctionDetailRow icon={AuctionIcons.Distance} label={t('auction.distance')} value={auction.distance} />
       </div>
 
-      <div className="mt-5 rounded-xl bg-gray-50 p-4">
-        <p className="mb-3 text-sm font-bold text-[var(--primary-text)]">
+      <div className="mt-5 flex min-h-0 flex-1 flex-col rounded-xl bg-gray-50 p-4">
+        <p className="mb-3 shrink-0 text-sm font-bold text-(--primary-text)">
           {t('auction.competingBids')}
         </p>
-        <ul className="flex flex-col gap-2.5">
-          {(auction.bids || []).map((bid) => (
-            <li
-              key={bid.id}
-              className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-3 py-3"
-            >
-              <div className="flex min-w-0 items-start gap-2.5">
-                <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-600">
-                  <FiTruck className="size-4" strokeWidth={2} aria-hidden />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-semibold text-[var(--primary-text)]">
-                    {bid.transporterName}
-                  </span>
-                  <span className="mt-0.5 block text-xs text-[var(--secondary-text)]">
-                    {bid.at || bid.label}
-                  </span>
-                </span>
-              </div>
-              <span className="shrink-0 text-sm font-bold text-[var(--primary-text)]">
-                {formatMoney(bid.amount)}
+
+        {!hasBids ? (
+          <div className="flex flex-1 items-center justify-center py-6">
+            <div className="text-center">
+              <span className="inline-flex items-center justify-center rounded-lg bg-white p-3 text-gray-400 shadow-sm">
+                <FiTruck className="size-5" aria-hidden />
               </span>
-            </li>
-          ))}
-        </ul>
+              <p className="mt-3 text-sm text-(--secondary-text)">
+                {t('auction.noCompetingBids')}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex min-h-0 flex-1 flex-col">
+            <ul
+              className="shrink-0 space-y-2 overflow-y-auto pr-1"
+              style={{ maxHeight: ADMIN_BIDS_LIST_MAX_HEIGHT }}
+              aria-label={t('auction.competingBids')}
+            >
+              {bids.map((bid, idx) => (
+                <li
+                  key={bid.id || `bid-${idx}`}
+                  className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-3 py-3"
+                >
+                  <div className="flex min-w-0 items-start gap-2.5">
+                    <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-600">
+                      <FiTruck className="size-4" strokeWidth={2} aria-hidden />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold text-(--primary-text)">
+                        {bid.transporterName}
+                      </span>
+                      <span className="mt-0.5 block text-xs text-(--secondary-text)">
+                        {bid.at || bid.label}
+                      </span>
+                    </span>
+                  </div>
+                  <span className="shrink-0 text-sm font-bold text-(--primary-text)">
+                    {formatMoney(bid.amount)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {hasMoreBids ? (
+              <p className="mt-2 shrink-0 text-center text-xs text-(--secondary-text)">
+                {t('auction.scrollForMoreBids', 'Scroll to see more bids')}
+              </p>
+            ) : null}
+          </div>
+        )}
       </div>
     </CardShell>
   )
@@ -394,5 +407,5 @@ export default function AuctionCard({
   else body = <CreatedAuctionCard {...props} />
 
   if (!className) return body
-  return <div className={className}>{body}</div>
+  return <div className={`flex h-full flex-col ${className}`}>{body}</div>
 }

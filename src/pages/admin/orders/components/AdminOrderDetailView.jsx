@@ -96,7 +96,7 @@ export default function AdminOrderDetailView({
             <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
               Order Details
             </h1>
-            <StatusBadge status={status} />
+            <StatusBadge status={status} label={order.statusLabel} />
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
             <MetaCard label="Order ID" value={order.orderId} />

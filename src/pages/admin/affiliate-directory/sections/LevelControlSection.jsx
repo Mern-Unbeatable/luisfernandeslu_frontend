@@ -1,6 +1,17 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { FiAward, FiCheck, FiEdit2, FiMove, FiTrash2 } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
+import {
+  useCreateAdminAffiliateLevelMutation,
+  useDeleteAdminAffiliateLevelMutation,
+  useGetAdminAffiliateLevelsQuery,
+  useReorderAdminAffiliateLevelsMutation,
+  useUpdateAdminAffiliateLevelMutation,
+} from '@/features/admin/adminAffiliateApi'
+import { mapAdminAffiliateLevel } from '@/features/admin/adminAffiliateMappers'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { confirmDelete } from '@/utils/confirmDialog'
 
 function reorderItems(items, fromIndex, toIndex) {
   if (fromIndex === toIndex) return items
@@ -12,7 +23,6 @@ function reorderItems(items, fromIndex, toIndex) {
 
 function CommissionLevelCard({
   level,
-  subtitle,
   activeLabel,
   commissionSplitLabel,
   payoutNote,
@@ -67,7 +77,7 @@ function CommissionLevelCard({
         {level.name}
       </h3>
       <p className="text-[10px] font-semibold tracking-wide text-[var(--secondary-text)] uppercase">
-        {subtitle}
+        {level.requirement || '—'}
       </p>
       <p className="mt-4 text-[10px] font-semibold tracking-wide text-[var(--secondary-text)] uppercase">
         {commissionSplitLabel}
@@ -106,27 +116,82 @@ const EMPTY_FORM = {
   levelName: '',
   commissionPercent: '',
   membersRequired: '',
-  description: 'Recurring Lifetime payout spilt',
+  description: 'Recurring Lifetime payout split',
+  isActive: false,
 }
 
-export default function LevelControlSection({ levels = [], onLevelsChange }) {
+export default function LevelControlSection() {
   const { t } = useTranslation()
   const I18N = 'adminAffiliateDirectory.levelControl'
   const [form, setForm] = useState({ ...EMPTY_FORM })
+  const [editingId, setEditingId] = useState(null)
   const [dragIndex, setDragIndex] = useState(null)
   const [dropIndex, setDropIndex] = useState(null)
 
-  const handleDelete = (level) => {
-    onLevelsChange?.(levels.filter((item) => item.id !== level.id))
-  }
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch,
+  } = useGetAdminAffiliateLevelsQuery()
+
+  const [createLevel, { isLoading: isCreating }] =
+    useCreateAdminAffiliateLevelMutation()
+  const [updateLevel, { isLoading: isUpdating }] =
+    useUpdateAdminAffiliateLevelMutation()
+  const [deleteLevel, { isLoading: isDeleting }] =
+    useDeleteAdminAffiliateLevelMutation()
+  const [reorderLevels, { isLoading: isReordering }] =
+    useReorderAdminAffiliateLevelsMutation()
+
+  const levels = useMemo(
+    () => (data?.levels ?? []).map(mapAdminAffiliateLevel),
+    [data?.levels],
+  )
+
+  const showInitialLoading = isLoading && !data
+  const isSaving = isCreating || isUpdating
+  const isBusy = isSaving || isDeleting || isReordering
 
   const handleEdit = (level) => {
+    setEditingId(level.id)
     setForm({
       levelName: level.name,
       commissionPercent: String(level.commissionPercent),
       membersRequired: String(level.membersRequired),
       description: level.description,
+      isActive: level.isActive,
     })
+  }
+
+  const handleDelete = async (level) => {
+    const confirmed = await confirmDelete({
+      title: t(`${I18N}.deleteConfirmTitle`),
+      text: t(`${I18N}.deleteConfirm`, { name: level.name }),
+      confirmText: t(`${I18N}.deleteConfirmButton`),
+      cancelText: t(`${I18N}.form.cancel`),
+    })
+    if (!confirmed) return
+
+    try {
+      const result = await deleteLevel(level.id).unwrap()
+
+      if (result?.success === false) {
+        toast.error(getAuthErrorMessage(result, t(`${I18N}.deleteFailed`)))
+        return
+      }
+
+      if (editingId === level.id) {
+        setEditingId(null)
+        setForm({ ...EMPTY_FORM })
+      }
+
+      toast.success(result?.message || t(`${I18N}.deleteSuccess`))
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t(`${I18N}.deleteFailed`)))
+    }
   }
 
   const handleDragStart = (index) => (event) => {
@@ -141,18 +206,31 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
     if (dropIndex !== index) setDropIndex(index)
   }
 
-  const handleDrop = (index) => (event) => {
+  const handleDrop = (index) => async (event) => {
     event.preventDefault()
     const fromIndex =
       dragIndex ?? Number.parseInt(event.dataTransfer.getData('text/plain'), 10)
-    if (Number.isNaN(fromIndex) || fromIndex === index) {
-      setDragIndex(null)
-      setDropIndex(null)
-      return
-    }
-    onLevelsChange?.(reorderItems(levels, fromIndex, index))
+
     setDragIndex(null)
     setDropIndex(null)
+
+    if (Number.isNaN(fromIndex) || fromIndex === index) return
+
+    const reordered = reorderItems(levels, fromIndex, index)
+    const ids = reordered.map((level) => level.id)
+
+    try {
+      const result = await reorderLevels({ ids }).unwrap()
+
+      if (result?.success === false) {
+        toast.error(getAuthErrorMessage(result, t(`${I18N}.reorderFailed`)))
+        return
+      }
+
+      toast.success(result?.message || t(`${I18N}.reorderSuccess`))
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t(`${I18N}.reorderFailed`)))
+    }
   }
 
   const handleDragEnd = () => {
@@ -160,55 +238,106 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
     setDropIndex(null)
   }
 
-  const handleCancel = () => setForm({ ...EMPTY_FORM })
-
-  const handleSave = (event) => {
-    event.preventDefault()
-    if (!form.levelName.trim()) return
-    const next = {
-      id: `lvl-${Date.now()}`,
-      name: form.levelName.trim(),
-      subtitleKey: 'customTier',
-      commissionPercent: Number(form.commissionPercent) || 0,
-      membersRequired: Number(form.membersRequired) || 0,
-      description: form.description,
-      isActive: false,
-    }
-    onLevelsChange?.([...levels, next])
+  const handleCancel = () => {
+    setEditingId(null)
     setForm({ ...EMPTY_FORM })
   }
 
+  const handleSave = async (event) => {
+    event.preventDefault()
+    if (!form.levelName.trim()) return
+
+    const payload = {
+      name: form.levelName.trim(),
+      commissionPercent: Number(form.commissionPercent) || 0,
+      membersRequired: Number(form.membersRequired) || 0,
+      description: form.description.trim(),
+    }
+
+    try {
+      if (editingId) {
+        const result = await updateLevel({
+          tierId: editingId,
+          ...payload,
+          isActive: form.isActive,
+        }).unwrap()
+
+        if (result?.success === false) {
+          toast.error(getAuthErrorMessage(result, t(`${I18N}.saveFailed`)))
+          return
+        }
+
+        toast.success(result?.message || t(`${I18N}.updateSuccess`))
+      } else {
+        const result = await createLevel(payload).unwrap()
+
+        if (result?.success === false) {
+          toast.error(getAuthErrorMessage(result, t(`${I18N}.saveFailed`)))
+          return
+        }
+
+        toast.success(result?.message || t(`${I18N}.createSuccess`))
+      }
+
+      handleCancel()
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t(`${I18N}.saveFailed`)))
+    }
+  }
+
+  const formTitle = editingId ? t(`${I18N}.editTitle`) : t(`${I18N}.createTitle`)
+
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 xl:flex-row xl:flex-wrap">
-        {levels.map((level, index) => (
-          <CommissionLevelCard
-            key={level.id}
-            level={level}
-            subtitle={t(`${I18N}.tierSubtitles.${level.subtitleKey}`, {
-              defaultValue: level.subtitleKey,
-            })}
-            activeLabel={t(`${I18N}.activeBadge`)}
-            commissionSplitLabel={t(`${I18N}.commissionSplit`)}
-            payoutNote={t(`${I18N}.payoutNote`)}
-            editLabel={t(`${I18N}.edit`)}
-            deleteLabel={t(`${I18N}.delete`)}
-            draggable
-            isDragging={dragIndex === index}
-            isDropTarget={dropIndex === index && dragIndex !== index}
-            onDragStart={handleDragStart(index)}
-            onDragOver={handleDragOver(index)}
-            onDrop={handleDrop(index)}
-            onDragEnd={handleDragEnd}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, t(`${I18N}.loadFailed`))}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            {t('adminAffiliateDirectory.retry')}
+          </button>
+        </div>
+      ) : null}
+
+      {showInitialLoading ? (
+        <p className="text-sm text-[var(--secondary-text)]">
+          {t(`${I18N}.loading`)}
+        </p>
+      ) : (
+        <div
+          className={`flex flex-col gap-4 xl:flex-row xl:flex-wrap ${
+            isFetching && data ? 'opacity-60 transition-opacity' : ''
+          }`}
+        >
+          {levels.map((level, index) => (
+            <CommissionLevelCard
+              key={level.id}
+              level={level}
+              activeLabel={t(`${I18N}.activeBadge`)}
+              commissionSplitLabel={t(`${I18N}.commissionSplit`)}
+              payoutNote={level.description || t(`${I18N}.payoutNote`)}
+              editLabel={t(`${I18N}.edit`)}
+              deleteLabel={t(`${I18N}.delete`)}
+              draggable={!isBusy}
+              isDragging={dragIndex === index}
+              isDropTarget={dropIndex === index && dragIndex !== index}
+              onDragStart={handleDragStart(index)}
+              onDragOver={handleDragOver(index)}
+              onDrop={handleDrop(index)}
+              onDragEnd={handleDragEnd}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
 
       <section className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="text-lg font-bold text-[var(--primary-text)]">
-          {t(`${I18N}.createTitle`)}
+          {formTitle}
         </h2>
         <form className="mt-5 space-y-5" onSubmit={handleSave}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -223,7 +352,8 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
                   setForm((prev) => ({ ...prev, levelName: e.target.value }))
                 }
                 placeholder={t(`${I18N}.form.levelNamePlaceholder`)}
-                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)]"
+                disabled={isBusy}
+                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </label>
             <label className="block">
@@ -242,7 +372,8 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
                   }))
                 }
                 placeholder="5"
-                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)]"
+                disabled={isBusy}
+                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </label>
             <label className="block">
@@ -260,7 +391,8 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
                   }))
                 }
                 placeholder="5"
-                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)]"
+                disabled={isBusy}
+                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </label>
           </div>
@@ -274,20 +406,37 @@ export default function LevelControlSection({ levels = [], onLevelsChange }) {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, description: e.target.value }))
               }
-              className="mt-1.5 w-full resize-y rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)]"
+              disabled={isBusy}
+              className="mt-1.5 w-full resize-y rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
             />
           </label>
+          {editingId ? (
+            <label className="inline-flex items-center gap-2 text-sm font-medium text-[var(--primary-text)]">
+              <input
+                type="checkbox"
+                checked={form.isActive}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, isActive: e.target.checked }))
+                }
+                disabled={isBusy}
+                className="size-4 rounded border-gray-300 text-[var(--active)] focus:ring-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
+              />
+              {t(`${I18N}.form.isActive`)}
+            </label>
+          ) : null}
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
               onClick={handleCancel}
-              className="rounded-lg border border-gray-200 bg-[#FBF7F0] px-5 py-2.5 text-sm font-semibold text-[var(--primary-text)] hover:bg-amber-50"
+              disabled={isBusy}
+              className="rounded-lg border border-gray-200 bg-[#FBF7F0] px-5 py-2.5 text-sm font-semibold text-[var(--primary-text)] hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {t(`${I18N}.form.cancel`)}
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white hover:brightness-95"
+              disabled={isBusy}
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <FiCheck className="size-4" aria-hidden />
               {t(`${I18N}.form.save`)}

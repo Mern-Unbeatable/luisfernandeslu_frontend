@@ -2,7 +2,7 @@ import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiUser } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
-import { Field, PrimaryButton, SecretInput, TextInput } from './FormControls'
+import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
 import { resolveProfileConfig } from './roleConfig'
 import {
   BuyerAccountSection,
@@ -129,9 +129,14 @@ function AccountFields({
           <TextInput
             type="email"
             value={form.email}
-            readOnly
-            aria-readonly="true"
-            className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
+            onChange={cfg.emailEditable ? setField('email') : undefined}
+            readOnly={!cfg.emailEditable}
+            aria-readonly={cfg.emailEditable ? undefined : 'true'}
+            className={
+              cfg.emailEditable
+                ? undefined
+                : 'cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200'
+            }
           />
         </Field>
         {cfg.showAccountPhone ? (
@@ -264,7 +269,7 @@ function IbanCard({ cfg, form, setField, onSave, t }) {
           />
         </Field>
         <Field label={t(cfg.ibanPhoneLabelKey)}>
-          <SecretInput
+          <PhoneInput
             value={form.ibanPhone}
             onChange={setField('ibanPhone')}
             placeholder={t(cfg.ibanPhonePlaceholderKey)}
@@ -357,24 +362,27 @@ export default function PanelProfile({
     })
   }
 
-  const handleAvatarPick = (event) => {
+  const handleAvatarPick = async (event) => {
     const file = event.target.files?.[0]
     if (!file) return
-    onUploadAvatar?.(file)
+    event.target.value = ''
+
+    if (onUploadAvatar) {
+      await onUploadAvatar(file)
+      return
+    }
+
     const url = URL.createObjectURL(file)
     patch({ avatarUrl: url })
-    event.target.value = ''
   }
 
   const handleRemoveAvatar = async () => {
-    try {
-      await onRemoveAvatar?.()
-      if (!isControlled) {
-        patch({ avatarUrl: null })
-      }
-    } catch {
-      // Parent handles error toast and restores avatar if needed.
+    if (onRemoveAvatar) {
+      await onRemoveAvatar()
+      return
     }
+
+    patch({ avatarUrl: null })
   }
 
   const handleUpdateProfile = () => {
@@ -448,6 +456,7 @@ export default function PanelProfile({
                 fileRef={fileRef}
                 fileInputId={fileInputId}
                 onPick={handleAvatarPick}
+                onRemove={onRemoveAvatar ? handleRemoveAvatar : undefined}
                 cfg={cfg}
                 t={t}
               />

@@ -624,9 +624,51 @@
     "boostTier": "Boost Tier",
     "duration": "Duration",
     "emptyRequests": "No boost requests match this filter.",
+    "emptyFeatured": "No featured products right now.",
+    "loading": "Loading promotions…",
+    "loadFailed": "Could not load promotions.",
     "actions": {
       "accept": "Accept",
       "reject": "Reject"
+    },
+    "approveSuccess": "Promotion approved.",
+    "rejectSuccess": "Promotion rejected.",
+    "actionFailed": "Could not update promotion.",
+    "rejectModal": {
+      "title": "Reject {{name}}",
+      "subtitle": "Provide a reason for rejecting this boost request.",
+      "reasonLabel": "Rejection reason",
+      "reasonPlaceholder": "Explain why this promotion is being rejected...",
+      "reasonRequired": "Please enter a rejection reason.",
+      "cancel": "Cancel",
+      "submit": "Reject promotion"
+    },
+    "retry": "Try again",
+    "promotionPlans": {
+      "sectionTitle": "Promotion Plans",
+      "sectionSubtitle": "Configure featured visibility packages suppliers can purchase.",
+      "loading": "Loading promotion plans…",
+      "loadFailed": "Could not load promotion plans.",
+      "empty": "No promotion plans yet.",
+      "activeBadge": "Active",
+      "durationDays": "Duration (days)",
+      "edit": "Edit",
+      "createTitle": "Create Promotion Plan",
+      "editTitle": "Edit Promotion Plan",
+      "createSuccess": "Promotion plan created.",
+      "updateSuccess": "Promotion plan updated.",
+      "saveFailed": "Could not save promotion plan.",
+      "form": {
+        "label": "Plan label",
+        "labelPlaceholder": "7 days featured",
+        "durationDays": "Duration (days)",
+        "price": "Price",
+        "currency": "Currency",
+        "sortOrder": "Sort order",
+        "isActive": "Active plan",
+        "cancel": "Cancel",
+        "save": "Save plan"
+      }
     }
   },
   "adminFinancePayments": {
@@ -712,6 +754,11 @@
   "adminDisputesResolution": {
     "title": "Disputes Resolution",
     "subtitle": "Manage customer disputes, returns, and resolution cases",
+    "loading": "Loading disputes…",
+    "loadFailed": "Could not load disputes.",
+    "retry": "Try again",
+    "statusUpdated": "Dispute status updated.",
+    "statusUpdateFailed": "Could not update dispute status.",
     "searchPlaceholder": "Search dispute ID, order, customer, supplier...",
     "empty": "No disputes match your filters.",
     "filters": {
@@ -744,7 +791,8 @@
     "detail": {
       "back": "Back to Disputes Resolution",
       "title": "{{id}} · Dispute",
-      "notFound": "Dispute not found."
+      "notFound": "Dispute not found.",
+      "loading": "Loading dispute details…"
     }
   },
   "adminAuction": {
@@ -753,12 +801,20 @@
     "filterLabel": "Filter:",
     "dateLabel": "Board date",
     "empty": "No auctions match this filter.",
+    "loading": "Loading auctions…",
+    "loadFailed": "Could not load auctions.",
+    "retry": "Retry",
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results"
+    },
     "filters": {
       "all": "All",
       "endingSoon": "Ending Soon",
       "nearestFirst": "Nearest First",
       "ended": "Ended"
     }
+    ,
+    "noCompetingBids": "No competing transporter bids"
   },
   "adminOrders": {
     "title": "Orders",
@@ -793,13 +849,37 @@
       "new": "New",
       "pending": "Pending",
       "processing": "Processing",
+      "in_production": "In Production",
+      "produced": "Produced",
+      "ready": "Ready",
       "assigned": "Assigned",
       "completed": "Completed",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "cancelByAdmin": "Cancel by Admin"
     },
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
+    "statusUpdated": "Order status updated.",
+    "actionFailed": "Could not update order status.",
+    "deleteConfirm": "Order {{id}} will be permanently deleted. This cannot be undone.",
+    "deleteConfirmTitle": "Delete order?",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "deleteSuccess": "Order deleted.",
     "actions": {
       "seeDetails": "See Details",
+      "accept": "Accept",
+      "statusSection": "Change status",
       "delete": "Delete"
+    },
+    "cancelModal": {
+      "title": "Cancel order {{id}}?",
+      "subtitle": "Optionally add a note. The order will show as Cancel by Admin.",
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "Add a note for this cancellation…",
+      "close": "Close",
+      "submit": "Cancel order"
     },
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
@@ -810,6 +890,9 @@
       "back": "Back to Orders",
       "title": "{{id}} · Order",
       "notFound": "Order not found.",
+      "loading": "Loading order details…",
+      "loadFailed": "Could not load order details.",
+      "delete": "Delete order",
       "supplierSection": "Supplier Information",
       "factorySection": "Factory Information",
       "produced": "Produced",
@@ -819,6 +902,18 @@
   "adminDeliveryLogistics": {
     "title": "Delivery & Logistics",
     "subtitle": "Monitor active deliveries and shipment details.",
+    "filterLabel": "Filter:",
+    "searchPlaceholder": "Search auction, order, product, transporter…",
+    "empty": "No deliveries match your filters.",
+    "loading": "Loading deliveries…",
+    "loadFailed": "Could not load deliveries.",
+    "retry": "Try again",
+    "filters": {
+      "allStatus": "All Status"
+    },
+    "pagination": {
+      "summary": "Showing {{from}} to {{to}} of {{total}} results"
+    },
     "status": {
       "assigned": "Assigned",
       "pickedUp": "Picked Up",
@@ -828,7 +923,9 @@
     "detail": {
       "back": "Back to Delivery & Logistics",
       "title": "{{id}} · Delivery",
-      "notFound": "Delivery not found."
+      "notFound": "Delivery not found.",
+      "loading": "Loading delivery details…",
+      "loadFailed": "Could not load delivery details."
     }
   },
   "adminAffiliateDirectory": {
@@ -885,7 +982,8 @@
       "suspended": "Suspended"
     },
     "commissionStatus": {
-      "approved": "Approved"
+      "approved": "Approved",
+      "pending": "Pending"
     },
     "payoutStatus": {
       "pending": "Pending",
@@ -900,8 +998,19 @@
     "actions": {
       "seeDetails": "See details",
       "suspend": "Suspend",
+      "activate": "Activate",
       "delete": "Delete"
     },
+    "loading": "Loading affiliates…",
+    "loadFailed": "Could not load affiliates.",
+    "retry": "Try again",
+    "statusUpdated": "Affiliate status updated.",
+    "actionFailed": "Could not update affiliate status.",
+    "deleteConfirmTitle": "Delete affiliate?",
+    "deleteConfirm": "{{name}} will be permanently removed. This cannot be undone.",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "deleteSuccess": "Affiliate deleted.",
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
@@ -928,11 +1037,27 @@
         "accountNumber": "Account Number",
         "requestDate": "Request Date",
         "status": "STATUS"
-      }
+      },
+      "loadFailed": "Could not load payout requests.",
+      "statusUpdated": "Payout status updated.",
+      "actionFailed": "Could not update payout status."
     },
     "levelControl": {
       "pageTitle": "Commission Level Milestone System",
       "pageSubtitle": "Define milestone tiers, required referral targets, and corresponding payout rate commissions.",
+      "loading": "Loading commission levels…",
+      "loadFailed": "Could not load commission levels.",
+      "saveFailed": "Could not save commission level.",
+      "createSuccess": "Commission level created.",
+      "updateSuccess": "Commission level updated.",
+      "editTitle": "Edit Commission Level",
+      "deleteConfirmTitle": "Delete commission level?",
+      "deleteConfirm": "{{name}} will be permanently removed. This cannot be undone.",
+      "deleteConfirmButton": "Delete",
+      "deleteSuccess": "Commission level deleted.",
+      "deleteFailed": "Could not delete commission level.",
+      "reorderSuccess": "Commission levels reordered.",
+      "reorderFailed": "Could not reorder commission levels.",
       "activeBadge": "Active",
       "commissionSplit": "Commission Split",
       "payoutNote": "Recurring Lifetime payout spilt",
@@ -953,6 +1078,7 @@
         "commission": "Commission %",
         "membersRequired": "Member Required",
         "description": "Description",
+        "isActive": "Active tier",
         "cancel": "Cancel",
         "save": "Save Level"
       }
@@ -961,6 +1087,9 @@
       "back": "Back",
       "title": "{{name}} · Affiliate",
       "notFound": "Affiliate not found.",
+      "loading": "Loading affiliate details…",
+      "loadFailed": "Could not load affiliate details.",
+      "delete": "Delete affiliate",
       "joined": "Joined",
       "code": "Code",
       "tier": "Tier",
@@ -977,6 +1106,7 @@
       },
       "clients": {
         "sectionTitle": "Referred Clients",
+        "loadFailed": "Could not load referred clients.",
         "columns": {
           "clientInfo": "Client Info",
           "phone": "Phone Number",
@@ -991,6 +1121,7 @@
       },
       "commissions": {
         "sectionTitle": "Commission Log Ledger",
+        "loadFailed": "Could not load commission history.",
         "columns": {
           "transactionId": "Transaction ID",
           "date": "Date",
@@ -1003,6 +1134,7 @@
       },
       "payouts": {
         "sectionTitle": "Commission Log Ledger",
+        "loadFailed": "Could not load payout history.",
         "columns": {
           "referenceId": "Refernce ID",
           "requestedDate": "Requested Date",
@@ -1019,13 +1151,22 @@
         "timeframe": "Time range",
         "thisYear": "This year",
         "marketplaceRev": "Marketplace Rev",
-        "affiliateCommission": "Affiliate Commission"
+        "affiliateCommission": "Affiliate Commission",
+        "loading": "Loading analytics…",
+        "loadFailed": "Could not load revenue analytics."
       }
     }
   },
   "adminRolesPermissions": {
     "title": "Role & Permission Strategy",
     "subtitle": "Documentation of the access control layers implemented in Construpreco. This ensures data security and a focused user experience for each staff role.",
+    "loading": "Loading permissions…",
+    "loadFailed": "Could not load role permissions.",
+    "retry": "Try again",
+    "permissionsUpdated": "Permissions updated.",
+    "permissionsUpdateFailed": "Could not update permissions.",
+    "inviteSuccess": "Invite sent.",
+    "inviteFailed": "Could not send invite.",
     "roles": {
       "moderator": "Moderator",
       "admin": "Admin",
@@ -1074,14 +1215,22 @@
   "adminSettings": {
     "title": "Settings",
     "subtitle": "Configure platform shipping, tax, and auction defaults.",
+    "loading": "Loading settings…",
+    "loadFailed": "Could not load settings.",
+    "retry": "Try again",
+    "saveSuccess": "Settings saved.",
+    "saveFailed": "Could not save settings.",
+    "resetSuccess": "Settings reset.",
+    "resetFailed": "Could not reset settings.",
     "unsaved": "Unsaved",
     "saveChange": "Save Change",
     "reset": "Reset",
     "calculate": "Calculate",
     "shipping": {
       "title": "Shipping Charge Management",
-      "description": "Set base per-kilometer rates and preview shipping costs.",
-      "baseRateTitle": "Base Shipping Rate",
+      "description": "Set per-kilometer rates by vehicle type and preview shipping costs.",
+      "vehicleRatesTitle": "Vehicle Rates",
+      "vehicleLabel": "Vehicle rate",
       "perKmLabel": "Per Kilometer Charge",
       "calculatorTitle": "Shipping Cost Calculator",
       "distanceLabel": "Distance",
@@ -1585,6 +1734,7 @@
       "namePlaceholder": "Your name or company",
       "emailPlaceholder": "you@example.com",
       "phonePlaceholder": "+1 (555) 000-0000",
+      "phoneInvalid": "Enter a valid phone number (8–15 digits, numbers only).",
       "updateProfile": "Update Profile",
       "saveChanges": "SAVE CHANGES",
       "warehouseLocation": "Warehouse Location",
@@ -1625,7 +1775,21 @@
       "billingAddress": "Billing Address",
       "shippingAddress": "Shipping Address",
       "companyOptional": "Company Name (Optional)",
-      "changePasswordUpper": "CHANGE PASSWORD"
+      "changePasswordUpper": "CHANGE PASSWORD",
+      "loading": "Loading profile…",
+      "loadFailed": "Could not load profile.",
+      "retry": "Try again",
+      "updateSuccess": "Profile updated.",
+      "updateFailed": "Could not update profile.",
+      "passwordUpdateSuccess": "Password updated.",
+      "passwordUpdateFailed": "Could not update password.",
+      "ibanUpdateSuccess": "IBAN updated.",
+      "ibanUpdateFailed": "Could not update IBAN.",
+      "avatarInvalidType": "Please upload a JPEG, PNG, or WEBP image.",
+      "avatarUploadSuccess": "Profile picture updated.",
+      "avatarUploadFailed": "Could not upload profile picture.",
+      "avatarRemoveSuccess": "Profile picture removed.",
+      "avatarRemoveFailed": "Could not remove profile picture."
     }
   },
   "auth": {
@@ -1904,11 +2068,27 @@
     "trackOrder": "Track Order",
     "cancelOrder": "Cancel Order",
     "writeReview": "Write a Review",
+    "downloadInvoice": "Download Invoice",
     "empty": "You have no orders yet.",
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
+    "cancelSuccess": "Order cancelled.",
+    "cancelFailed": "Could not cancel order.",
+    "invoiceDownloadSuccess": "Invoice download started.",
+    "invoiceDownloadFailed": "Could not download invoice.",
+    "filters": {
+      "all": "All",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
     "status": {
       "shipped": "Shipped",
       "processing": "Processing",
-      "delivered": "Delivered"
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
     }
   },
   "buyerOrderDetail": {
@@ -1919,12 +2099,14 @@
     "quantity": "Quantity",
     "price": "Price",
     "total": "Total",
-    "chat": "Chat"
+    "chat": "Chat",
+    "deliveryOtp": "Delivery OTP: {{otp}}"
   },
   "cancelReasonModal": {
     "title": "Cancel Reason",
     "label": "Write cancel reason",
     "placeholder": "",
+    "reasonRequired": "Please enter a cancellation reason.",
     "submit": "Submit",
     "close": "Close"
   },
@@ -1934,6 +2116,13 @@
     "columnAction": "Action",
     "writeReview": "Write a review",
     "empty": "No products waiting for a review.",
+    "loading": "Loading products to review…",
+    "loadFailed": "Could not load products to review.",
+    "retry": "Try again",
+    "submitSuccess": "Review submitted.",
+    "submitFailed": "Could not submit review.",
+    "ratingRequired": "Please select a rating.",
+    "reviewRequired": "Please write a review.",
     "shippingStatus": {
       "delivered": "Delivered"
     }
@@ -1947,6 +2136,9 @@
     "submit": "Submit"
   },
   "companyOrders": {
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
     "colOrderId": "Order ID",
     "colProduct": "Product Name",
     "colProject": "Project",
@@ -1983,6 +2175,10 @@
     }
   },
   "companyProjects": {
+    "loading": "Loading projects…",
+    "loadFailed": "Could not load projects.",
+    "retry": "Try again",
+    "empty": "No projects found.",
     "backToProjects": "← Back to Projects",
     "backToProjectDetails": "← Back to Project Details",
     "materialTypes": "Material Types",
@@ -2007,15 +2203,21 @@
     "progress": "Progress",
     "nextInstallment": "Next Installment",
     "monthlyPayment": "Monthly Payment",
-    "installmentTimeline": "Installment Timeline"
+    "installmentTimeline": "Installment Timeline",
+    "deliveryProgress": "Delivery Progress"
   },
   "disputesCenter": {
     "backToList": "Back to Disputes",
+    "loading": "Loading disputes…",
+    "loadFailed": "Could not load disputes data.",
+    "retry": "Try again",
     "searchPlaceholder": "Search by ID, product, or order...",
     "statusFilter": "Status",
     "newDispute": "New Dispute",
     "recentTitle": "Recent Disputes ({{count}})",
     "empty": "No disputes match your search.",
+    "submitSuccess": "Dispute submitted.",
+    "submitFailed": "Could not submit dispute.",
     "idLabel": "ID: {{id}}",
     "orderMeta": "Order: {{orderId}} ({{date}})",
     "sellerLabel": "Seller: {{name}}",
@@ -2041,15 +2243,21 @@
       "subtitle": "Provide details about the issue you're experiencing with your order.",
       "selectOrder": "Select Order",
       "selectOrderPh": "Choose an order to dispute",
+      "selectItems": "Select Items (optional)",
+      "selectItemsHint": "Leave unchecked to dispute all items on this order.",
       "issueType": "Issue Type",
       "issueTypePh": "What is the problem?",
       "description": "Description",
       "descriptionPh": "Please describe the issue in detail...",
       "evidence": "Evidence (Photos/Videos)",
+      "evidenceRequired": "Please upload at least one evidence file.",
+      "evidenceInvalidType": "Only JPEG, PNG, and WEBP files are allowed.",
+      "removeEvidence": "Remove file",
       "uploadHint": "Click to upload or drag and drop",
-      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "uploadTypes": "JPEG, PNG, WEBP",
       "cancel": "CANCEL",
       "submit": "SUBMIT DISPUTE",
+      "submitting": "Submitting…",
       "close": "Close"
     }
   },
@@ -2069,6 +2277,10 @@
     "returnRefund": "Return/Refund",
     "myReturnsTitle": "My Returns",
     "returnsEmpty": "No return requests match your search.",
+    "ordersEmpty": "No orders available for return.",
+    "loading": "Loading returns…",
+    "loadFailed": "Could not load returns data.",
+    "retry": "Try again",
     "reasonInline": "Reason: {{reason}}",
     "updatedOn": "UPDATE {{date}}",
     "requestTitle": "Return Request #{{id}}",
@@ -2099,9 +2311,14 @@
       "refundAccountPh": "Put your Account Number",
       "evidence": "Upload Evidence",
       "uploadHint": "Click to upload or drag and drop",
-      "uploadTypes": "PNG, JPG, MP4 up to 10MB",
+      "uploadTypes": "JPEG, PNG, WEBP, PDF, DOC, DOCX — up to 10MB each",
+      "removeFile": "Remove",
+      "evidenceRequired": "Please upload at least one evidence file.",
+      "evidenceInvalidType": "Only JPEG, PNG, WEBP, PDF, DOC, and DOCX files are allowed.",
       "submit": "SUBMIT RETURN"
     },
+    "submitSuccess": "Return request submitted.",
+    "submitFailed": "Could not submit return request.",
     "status": {
       "delivered": "DELIVERED"
     }
@@ -2624,6 +2841,8 @@
     "distance": "Distance",
     "bidHistory": "Bid History",
     "competingBids": "Competing Transporter Bids",
+    "noCompetingBids": "No competing transporter bids",
+    "scrollForMoreBids": "Scroll to see more bids",
     "enterBid": "Enter your bid",
     "placeBid": "Place Bid",
     "details": {

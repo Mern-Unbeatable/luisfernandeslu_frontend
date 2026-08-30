@@ -14,7 +14,7 @@ export default function ReturnRequestDetailView({
     <div className={`mx-auto w-full max-w-5xl ${className}`}>
       <Link
         to="/returns?tab=return"
-        className="inline-flex items-center gap-1.5 text-sm text-[var(--secondary-text)] hover:text-[var(--active)]"
+        className="mt-6 inline-flex items-center gap-1.5 text-sm text-[var(--secondary-text)] hover:text-[var(--active)]"
       >
         <FiArrowLeft className="size-4" aria-hidden />
         {t('returnsCenter.backToOrders')}

@@ -3,7 +3,7 @@ import {
   CHECKOUT_CITY_OPTIONS,
   CHECKOUT_REGION_OPTIONS,
 } from '@/pages/public_page/checkout/data/checkoutDemo'
-import { Field, PrimaryButton, SecretInput, SelectInput, TextInput } from './FormControls'
+import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
 
 function SectionTitle({ children }) {
   return (
@@ -13,32 +13,43 @@ function SectionTitle({ children }) {
   )
 }
 
-export function BuyerAvatar({ form, fileRef, fileInputId, onPick, t }) {
+export function BuyerAvatar({ form, fileRef, fileInputId, onPick, onRemove, t }) {
   return (
-    <div className="relative inline-flex">
-      <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-gray-500 sm:size-24">
-        {form.avatarUrl ? (
-          <img src={form.avatarUrl} alt="" className="size-full object-cover" />
-        ) : (
-          <FiUser className="size-10" strokeWidth={1.5} />
-        )}
+    <div className="inline-flex flex-col items-start gap-2">
+      <div className="relative inline-flex">
+        <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-gray-500 sm:size-24">
+          {form.avatarUrl ? (
+            <img src={form.avatarUrl} alt="" className="size-full object-cover" />
+          ) : (
+            <FiUser className="size-10" strokeWidth={1.5} />
+          )}
+        </div>
+        <input
+          ref={fileRef}
+          id={fileInputId}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="sr-only"
+          onChange={onPick}
+        />
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="absolute right-0 bottom-0 flex size-8 items-center justify-center rounded-full border-2 border-white bg-[var(--active)] text-white shadow-sm hover:opacity-90"
+          aria-label={t('panel.profile.uploadNew')}
+        >
+          <FiCamera className="size-4" strokeWidth={2} />
+        </button>
       </div>
-      <input
-        ref={fileRef}
-        id={fileInputId}
-        type="file"
-        accept="image/*"
-        className="sr-only"
-        onChange={onPick}
-      />
-      <button
-        type="button"
-        onClick={() => fileRef.current?.click()}
-        className="absolute right-0 bottom-0 flex size-8 items-center justify-center rounded-full border-2 border-white bg-[var(--active)] text-white shadow-sm hover:opacity-90"
-        aria-label={t('panel.profile.uploadNew')}
-      >
-        <FiCamera className="size-4" strokeWidth={2} />
-      </button>
+      {form.avatarUrl && onRemove ? (
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-xs font-semibold text-red-600 hover:underline"
+        >
+          {t('panel.profile.remove')}
+        </button>
+      ) : null}
     </div>
   )
 }
@@ -50,6 +61,7 @@ export function BuyerAccountSection({
   fileRef,
   fileInputId,
   onPick,
+  onRemove,
   cfg,
   t,
 }) {
@@ -62,6 +74,7 @@ export function BuyerAccountSection({
           fileRef={fileRef}
           fileInputId={fileInputId}
           onPick={onPick}
+          onRemove={onRemove}
           t={t}
         />
       </div>
@@ -90,7 +103,7 @@ export function BuyerAccountSection({
           />
         </Field>
         <Field label={t('panel.profile.phoneNumber')}>
-          <TextInput
+          <PhoneInput
             value={form.phone}
             onChange={setField('phone')}
             placeholder={t('panel.profile.phonePlaceholder')}
@@ -232,7 +245,11 @@ export function BuyerAddressCard({ titleKey, values, onChange, onSave, t }) {
             />
           </Field>
           <Field label={t('panel.profile.phoneNumber')} className="sm:col-span-2">
-            <TextInput value={values.phone} onChange={set('phone')} />
+            <PhoneInput
+              value={values.phone}
+              onChange={set('phone')}
+              placeholder={t('panel.profile.phonePlaceholder')}
+            />
           </Field>
         </div>
         <div className="flex justify-start pt-2">

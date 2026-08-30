@@ -11,4 +11,13 @@ export const API_TAG_TYPES = [
   'Payment',
   'Insurance',
   'Invoice',
+  'Affiliate',
+  'PromotionPlan',
+  'Promotion',
+  'RolePermission',
+  'AdminSettings',
+  'Dispute',
+  'CustomerReturn',
+  'CustomerDispute',
+  'CompanyProject',
 ]

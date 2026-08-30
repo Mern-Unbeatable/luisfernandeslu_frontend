@@ -10,6 +10,7 @@ export default function SettingsConfigCard({
   onReset,
   saveLabel,
   resetLabel,
+  actionsDisabled = false,
 }) {
   return (
     <article className="flex h-full flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
@@ -33,7 +34,8 @@ export default function SettingsConfigCard({
             <button
               type="button"
               onClick={onSave}
-              className="inline-flex h-10 items-center rounded-lg bg-[var(--active)] px-5 text-sm font-semibold text-white hover:brightness-95"
+              disabled={actionsDisabled}
+              className="inline-flex h-10 items-center rounded-lg bg-[var(--active)] px-5 text-sm font-semibold text-white hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {saveLabel}
             </button>
@@ -42,7 +44,8 @@ export default function SettingsConfigCard({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex h-10 items-center rounded-lg border border-gray-200 bg-white px-5 text-sm font-semibold text-[var(--primary-text)] hover:bg-gray-50"
+              disabled={actionsDisabled}
+              className="inline-flex h-10 items-center rounded-lg border border-gray-200 bg-white px-5 text-sm font-semibold text-[var(--primary-text)] hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {resetLabel}
             </button>
