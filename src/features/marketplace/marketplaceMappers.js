@@ -8,12 +8,16 @@ function formatEuro(amount) {
   })}`
 }
 
-/** Map marketplace sponsored list item → ProductCard props */
-export function mapSponsoredProduct(product) {
+/** Shared marketplace list → ProductCard / ProductListingCard props */
+export function mapMarketplaceCatalogProduct(product) {
   const unit = product.unit || ''
   const priceText = formatEuro(product.price)
   const companyPriceText =
     product.b2bPrice != null ? formatEuro(product.b2bPrice) : null
+  const minOrder =
+    product.minOrder != null && Number(product.minOrder) > 0
+      ? Number(product.minOrder)
+      : null
 
   return {
     id: product.id,
@@ -22,8 +26,12 @@ export function mapSponsoredProduct(product) {
     title: product.title,
     description: product.description,
     price: priceText ?? '—',
+    priceText: priceText
+      ? `Price: ${priceText}${unit ? ` per ${unit}` : ''}`
+      : '—',
     unit,
-    minOrder: product.minOrder ?? null,
+    minOrder,
+    minOrderLabel: minOrder != null ? `Min: ${minOrder}` : undefined,
     company: product.company || '—',
     rating:
       product.rating != null && Number(product.rating) > 0
@@ -33,6 +41,14 @@ export function mapSponsoredProduct(product) {
     companyPriceText: companyPriceText
       ? `Company: ${companyPriceText}${unit ? ` /${unit}` : ''}`
       : undefined,
-    bulkOptionLabel: product.hasBulkOption ? 'Bulk options available' : undefined,
+    bulkOptionLabel: product.hasBulkOption
+      ? 'Bulk options available'
+      : undefined,
+    isSponsored: Boolean(product.isSponsored),
   }
+}
+
+/** @deprecated prefer mapMarketplaceCatalogProduct */
+export function mapSponsoredProduct(product) {
+  return mapMarketplaceCatalogProduct(product)
 }
