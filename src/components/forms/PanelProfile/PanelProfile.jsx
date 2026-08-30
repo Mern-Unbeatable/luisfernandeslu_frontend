@@ -366,9 +366,15 @@ export default function PanelProfile({
     event.target.value = ''
   }
 
-  const handleRemoveAvatar = () => {
-    onRemoveAvatar?.()
-    patch({ avatarUrl: null })
+  const handleRemoveAvatar = async () => {
+    try {
+      await onRemoveAvatar?.()
+      if (!isControlled) {
+        patch({ avatarUrl: null })
+      }
+    } catch {
+      // Parent handles error toast and restores avatar if needed.
+    }
   }
 
   const handleUpdateProfile = () => {

@@ -35,7 +35,7 @@ export const transporterProfileApi = baseApi.injectEndpoints({
     uploadTransporterAvatar: builder.mutation({
       query: (file) => {
         const formData = new FormData()
-        formData.append('avatar', file)
+        formData.append('image', file)
         return {
           url: '/api/transporter/profile/avatar',
           method: 'POST',

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import PanelProfile from '@/components/forms/PanelProfile'
+import { env } from '@/config/env'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeTransporterPasswordMutation,
@@ -29,6 +30,21 @@ function emptyForm() {
   }
 }
 
+function resolveAvatarUrl(url) {
+  if (!url) return null
+  if (
+    url.startsWith('blob:')
+    || url.startsWith('http://')
+    || url.startsWith('https://')
+    || url.startsWith('data:')
+  ) {
+    return url
+  }
+
+  const path = url.startsWith('/') ? url : `/${url}`
+  return `${env.apiUrl}${path}`
+}
+
 function mapTransporterProfileToForm(profile) {
   return {
     displayName: profile?.displayName || profile?.name || '',
@@ -41,7 +57,7 @@ function mapTransporterProfileToForm(profile) {
     confirmPassword: '',
     iban: profile?.iban || '',
     ibanPhone: profile?.ibanPhone || '',
-    avatarUrl: profile?.avatarUrl || null,
+    avatarUrl: resolveAvatarUrl(profile?.avatarUrl),
   }
 }
 
@@ -95,12 +111,11 @@ export default function ProfilePage() {
     }
   }
 
-  const handleChangePassword = async ({
-    currentPassword,
-    newPassword,
-    confirmPassword,
-  }) => {
-    if (!String(newPassword || '').trim()) {
+  const handleChangePassword = async ({ newPassword, confirmPassword }) => {
+    const password = String(newPassword || '').trim()
+    const confirm = String(confirmPassword || '').trim()
+
+    if (!password) {
       toast.error(
         t('panel.profile.newPasswordRequired', {
           defaultValue: 'New password is required',
@@ -108,7 +123,7 @@ export default function ProfilePage() {
       )
       return
     }
-    if (newPassword !== confirmPassword) {
+    if (password !== confirm) {
       toast.error(
         t('panel.profile.passwordMismatch', {
           defaultValue: 'New password and confirm password do not match',
@@ -119,9 +134,8 @@ export default function ProfilePage() {
 
     try {
       const result = await changePassword({
-        ...(currentPassword ? { currentPassword } : {}),
-        newPassword,
-        confirmPassword,
+        password,
+        confirmPassword: confirm,
       }).unwrap()
       toast.success(
         result?.message ||
@@ -140,6 +154,11 @@ export default function ProfilePage() {
         iban: String(iban || '').trim(),
         ibanPhone: String(ibanPhone || '').trim(),
       }).unwrap()
+
+      if (result?.profile) {
+        setForm(mapTransporterProfileToForm(result.profile))
+      }
+
       toast.success(
         result?.message ||
           t('panel.profile.ibanSaved', {
@@ -155,10 +174,7 @@ export default function ProfilePage() {
     try {
       const result = await uploadAvatar(file).unwrap()
       if (result?.profile) {
-        setForm((prev) => ({
-          ...prev,
-          avatarUrl: result.profile.avatarUrl || null,
-        }))
+        setForm(mapTransporterProfileToForm(result.profile))
       }
       toast.success(
         result?.message ||
@@ -167,19 +183,27 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
+      if (data?.profile) {
+        setForm(mapTransporterProfileToForm(data.profile))
+      }
       toast.error(getAuthErrorMessage(err, 'Failed to upload avatar'))
     }
   }
 
   const handleRemoveAvatar = async () => {
+    if (!form.avatarUrl) {
+      return
+    }
+
     try {
       const result = await removeAvatar().unwrap()
+
       if (result?.profile) {
-        setForm((prev) => ({
-          ...prev,
-          avatarUrl: result.profile.avatarUrl || null,
-        }))
+        setForm(mapTransporterProfileToForm(result.profile))
+      } else {
+        setForm((prev) => ({ ...prev, avatarUrl: null }))
       }
+
       toast.success(
         result?.message ||
           t('panel.profile.avatarRemoved', {
@@ -187,6 +211,9 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
+      if (data?.profile) {
+        setForm(mapTransporterProfileToForm(data.profile))
+      }
       toast.error(getAuthErrorMessage(err, 'Failed to remove avatar'))
     }
   }
