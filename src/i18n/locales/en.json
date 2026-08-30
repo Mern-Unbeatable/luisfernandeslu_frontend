@@ -2136,6 +2136,9 @@
     "submit": "Submit"
   },
   "companyOrders": {
+    "loading": "Loading orders…",
+    "loadFailed": "Could not load orders.",
+    "retry": "Try again",
     "colOrderId": "Order ID",
     "colProduct": "Product Name",
     "colProject": "Project",
@@ -2172,6 +2175,10 @@
     }
   },
   "companyProjects": {
+    "loading": "Loading projects…",
+    "loadFailed": "Could not load projects.",
+    "retry": "Try again",
+    "empty": "No projects found.",
     "backToProjects": "← Back to Projects",
     "backToProjectDetails": "← Back to Project Details",
     "materialTypes": "Material Types",
@@ -2196,7 +2203,8 @@
     "progress": "Progress",
     "nextInstallment": "Next Installment",
     "monthlyPayment": "Monthly Payment",
-    "installmentTimeline": "Installment Timeline"
+    "installmentTimeline": "Installment Timeline",
+    "deliveryProgress": "Delivery Progress"
   },
   "disputesCenter": {
     "backToList": "Back to Disputes",

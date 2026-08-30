@@ -5,6 +5,8 @@ import {
   FiDollarSign,
 } from 'react-icons/fi'
 import InstallmentTimeline from '@/components/data-display/InstallmentTimeline/InstallmentTimeline'
+import BuyerOrderProgress from '@/components/data-display/BuyerOrderProgress/BuyerOrderProgress'
+import DriverContactCard from '@/components/data-display/DriverContactCard/DriverContactCard'
 import { MetaCard } from '@/components/data-display/OrderDetails/shared'
 
 export default function CompanyMaterialDetail({
@@ -13,6 +15,7 @@ export default function CompanyMaterialDetail({
   showPay = true,
   onPayNow,
   onCancelInstallment,
+  onChatDriver,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -72,12 +75,16 @@ export default function CompanyMaterialDetail({
             </div>
           </div>
           <div className="text-left sm:text-right">
-            <p className="text-sm font-semibold text-[var(--active)]">
-              {material.planLabel}
-            </p>
-            <p className="mt-1 text-xs text-[var(--secondary-text)]">
-              {material.planRange}
-            </p>
+            {material.planLabel ? (
+              <p className="text-sm font-semibold text-[var(--active)]">
+                {material.planLabel}
+              </p>
+            ) : null}
+            {material.planRange ? (
+              <p className="mt-1 text-xs text-[var(--secondary-text)]">
+                {material.planRange}
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -154,7 +161,30 @@ export default function CompanyMaterialDetail({
             value={payment.monthlyPayment}
           />
         </div>
+
+        {payment.note ? (
+          <p className="mt-4 text-sm text-[var(--secondary-text)]">
+            {payment.note}
+          </p>
+        ) : null}
       </section>
+
+      {material.driver ? (
+        <div className="mt-6">
+          <DriverContactCard driver={material.driver} onChat={onChatDriver} />
+        </div>
+      ) : null}
+
+      {material.progressSteps?.length ? (
+        <div className="mt-8 rounded-xl border border-gray-200 bg-white p-5 sm:p-8">
+          <h2 className="text-lg font-bold text-[var(--primary-text)]">
+            {t('companyProjects.deliveryProgress')}
+          </h2>
+          <div className="mt-6">
+            <BuyerOrderProgress steps={material.progressSteps} />
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-8">
         <InstallmentTimeline
