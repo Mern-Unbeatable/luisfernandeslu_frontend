@@ -242,7 +242,7 @@ export default function RegisterPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton disabled={isLoading}>
+        <AuthSubmitButton disabled={isLoading} loading={isLoading}>
           {registerCfg.submitKey
             ? t(registerCfg.submitKey)
             : t('auth.register.submit')}

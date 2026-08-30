@@ -77,15 +77,28 @@ export default function AuthField({
   )
 }
 
-export function AuthSubmitButton({ children, disabled = false }) {
+export function AuthSubmitButton({
+  children,
+  disabled = false,
+  loading = false,
+}) {
+  const isDisabled = disabled || loading
+
   return (
     <button
       type="submit"
-      disabled={disabled}
+      disabled={isDisabled}
+      aria-busy={loading || undefined}
       className={`mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--active)] text-base font-semibold text-white transition-opacity ${
-        disabled ? 'cursor-not-allowed opacity-60' : 'hover:opacity-90'
+        isDisabled ? 'cursor-not-allowed opacity-70' : 'hover:opacity-90'
       }`}
     >
+      {loading ? (
+        <span
+          aria-hidden
+          className="inline-block size-5 shrink-0 animate-spin rounded-full border-2 border-solid border-white border-r-transparent"
+        />
+      ) : null}
       {children}
     </button>
   )

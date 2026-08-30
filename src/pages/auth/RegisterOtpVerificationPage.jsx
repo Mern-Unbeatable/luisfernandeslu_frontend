@@ -187,7 +187,7 @@ export default function RegisterOtpVerificationPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton disabled={isVerifying}>
+        <AuthSubmitButton disabled={isVerifying} loading={isVerifying}>
           {t('auth.forgot.verify')}
         </AuthSubmitButton>
       </form>

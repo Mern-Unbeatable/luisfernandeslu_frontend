@@ -243,7 +243,7 @@ export default function LoginPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton disabled={isLoading}>
+        <AuthSubmitButton disabled={isLoading} loading={isLoading}>
           {loginCfg.submitKey
             ? t(loginCfg.submitKey)
             : isMarketing

@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
           </p>
         ) : null}
 
-        <AuthSubmitButton disabled={isLoading}>
+        <AuthSubmitButton disabled={isLoading} loading={isLoading}>
           {t('auth.forgot.sendCode')}
           <FiArrowRight className="size-5" strokeWidth={2.25} aria-hidden />
         </AuthSubmitButton>
