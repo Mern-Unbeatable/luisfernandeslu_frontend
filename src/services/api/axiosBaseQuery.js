@@ -7,8 +7,8 @@ export function axiosBaseQuery() {
     data,
     params,
     headers,
-    skipAuthRefresh,
     responseType,
+    skipAuthRefresh,
   }) => {
     try {
       const isFormData =
@@ -26,6 +26,7 @@ export function axiosBaseQuery() {
         method: normalizedMethod,
         data: isDelete ? undefined : data,
         params,
+        responseType,
         skipAuthRefresh,
         responseType,
         headers: {

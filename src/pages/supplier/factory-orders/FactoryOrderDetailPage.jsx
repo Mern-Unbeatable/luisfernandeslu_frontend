@@ -1,45 +1,63 @@
-import { useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Seo from '@/components/common/Seo/Seo';
-import OrderDetails from '@/components/data-display/OrderDetails';
-import { getSupplierFactoryOrderDetail } from '@/data/demoData';
+import { useMemo, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Seo from "@/components/common/Seo/Seo";
+import OrderDetails from "@/components/data-display/OrderDetails";
+import { useGetSupplierFactoryOrderByIdQuery } from "@/features/supplier/factory-orders/factoryOrdersApi";
 
 export default function FactoryOrderDetailPage() {
   const { orderId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [statusOverride, setStatusOverride] = useState(
-    location.state?.status ?? null,
-  );
+  const statusOverride = location.state?.status ?? null;
   const [installments, setInstallments] = useState(null);
 
-  // TODO: replace getSupplierFactoryOrderDetail with supplier factory order API fetch
+  const {
+    data: orderData,
+    isLoading,
+    isError,
+  } = useGetSupplierFactoryOrderByIdQuery(orderId, {
+    skip: !orderId,
+  });
+
   const order = useMemo(() => {
-    const detail = getSupplierFactoryOrderDetail(orderId, statusOverride);
-    if (!detail) return null;
+    if (!orderData) return null;
 
     return {
-      ...detail,
-      installments: installments ?? detail.installments,
+      ...orderData,
+      ...(statusOverride ? { status: statusOverride } : {}),
+      installments: installments ?? orderData.installments,
     };
-  }, [orderId, statusOverride, installments]);
+  }, [orderData, statusOverride, installments]);
 
-  if (!order) {
+  if (isLoading) {
     return (
       <>
-        <Seo title={t('panel.supplierFactoryOrders.notFound')} />
+        <Seo title={t("panel.supplierFactoryOrders.title")} />
+        <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+          <p className="text-sm text-[var(--secondary-text)]">
+            Loading factory order…
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  if (isError || !order) {
+    return (
+      <>
+        <Seo title={t("panel.supplierFactoryOrders.notFound")} />
 
         <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
           <p className="text-base font-semibold text-[var(--primary-text)]">
-            {t('panel.supplierFactoryOrders.notFound')}
+            {t("panel.supplierFactoryOrders.notFound")}
           </p>
           <Link
             to="/supplier/factory-orders"
             className="mt-4 inline-flex text-sm font-semibold text-[var(--active)] hover:underline"
           >
-            {t('panel.supplierFactoryOrders.backToOrders')}
+            {t("panel.supplierFactoryOrders.backToOrders")}
           </Link>
         </div>
       </>
@@ -51,7 +69,7 @@ export default function FactoryOrderDetailPage() {
       const source = prev ?? order.installments;
       return source.map((installment) =>
         installment.id === item.id
-          ? { ...installment, status: 'completed' }
+          ? { ...installment, status: "completed" }
           : installment,
       );
     });
@@ -67,28 +85,32 @@ export default function FactoryOrderDetailPage() {
   };
 
   const handleChat = () => {
-    navigate('/supplier/chat');
+    navigate("/supplier/chat");
   };
 
   return (
     <>
-      <Seo title={t('panel.supplierFactoryOrders.orderDetailsTitle')} />
+      <Seo title={t("panel.supplierFactoryOrders.orderDetailsTitle")} />
 
       <nav
         className="mb-4 text-sm text-neutral-600"
-        aria-label={t('panel.supplierFactoryOrders.breadcrumbLabel')}
+        aria-label={t("panel.supplierFactoryOrders.breadcrumbLabel")}
       >
         <Link
           to="/supplier/factory-orders"
           className="transition-colors hover:text-[var(--active)]"
         >
-          {t('panel.supplierFactoryOrders.breadcrumbFactoryOrder')}
+          {t("panel.supplierFactoryOrders.breadcrumbFactoryOrder")}
         </Link>
-        <span className="mx-1.5 text-neutral-400" aria-hidden>&gt;</span>
-        <span>{t('panel.supplierFactoryOrders.breadcrumbChatOrder')}</span>
-        <span className="mx-1.5 text-neutral-400" aria-hidden>&gt;</span>
+        <span className="mx-1.5 text-neutral-400" aria-hidden>
+          &gt;
+        </span>
+        <span>{t("panel.supplierFactoryOrders.breadcrumbChatOrder")}</span>
+        <span className="mx-1.5 text-neutral-400" aria-hidden>
+          &gt;
+        </span>
         <span className="font-medium text-[var(--active)]">
-          {t('panel.supplierFactoryOrders.breadcrumbOrderDetails')}
+          {t("panel.supplierFactoryOrders.breadcrumbOrderDetails")}
         </span>
       </nav>
 

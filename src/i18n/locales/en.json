@@ -197,28 +197,19 @@
       "slides": {
         "hero-1": {
           "badge": "Fast Delivery",
-          "titleLines": [
-            "Save More on Bulk",
-            "Orders"
-          ],
+          "titleLines": ["Save More on Bulk", "Orders"],
           "description": "Special pricing for large quantity orders. Perfect for contractors & builders.",
           "ctaLabel": "Get Bulk Quote"
         },
         "hero-2": {
           "badge": "Fast Delivery",
-          "titleLines": [
-            "Quality Materials for",
-            "Every Project"
-          ],
+          "titleLines": ["Quality Materials for", "Every Project"],
           "description": "Source cement, steel, and tools from verified suppliers across the region.",
           "ctaLabel": "Shop Now"
         },
         "hero-3": {
           "badge": "Fast Delivery",
-          "titleLines": [
-            "Built for Contractors",
-            "& Builders"
-          ],
+          "titleLines": ["Built for Contractors", "& Builders"],
           "description": "Streamlined ordering, bulk pricing, and reliable delivery to your job site.",
           "ctaLabel": "Get Bulk Quote"
         }
@@ -1345,7 +1336,9 @@
       "viewOrder": "View order",
       "previous": "Previous",
       "next": "Next",
-      "showingResults": "Showing {{from}} to {{to}} of {{total}} results"
+      "showingResults": "Showing {{from}} to {{to}} of {{total}} results",
+      "emptyOrders": "No orders found for this period.",
+      "requestFailed": "Unable to load the supplier overview right now."
     },
     "supplierProducts": {
       "title": "Product Management",
@@ -1736,6 +1729,8 @@
       "phonePlaceholder": "+1 (555) 000-0000",
       "phoneInvalid": "Enter a valid phone number (8–15 digits, numbers only).",
       "updateProfile": "Update Profile",
+      "edit": "Edit",
+      "cancel": "Cancel",
       "saveChanges": "SAVE CHANGES",
       "warehouseLocation": "Warehouse Location",
       "warehouseLocationSupplier": "Ware House Location",
@@ -1748,6 +1743,7 @@
       "currentPassword": "Current Password",
       "newPassword": "New Password",
       "confirmNewPassword": "Confirm New Password",
+      "passwordHidden": "Password is hidden for security.",
       "password": "Password",
       "confirmPassword": "Confirm Password",
       "ibanTitle": "IBAN Number",
@@ -3329,6 +3325,7 @@
     "startAuctionTitle": "Start Auction",
     "activeDetailTitle": "Active Auctions",
     "assignedDetailTitle": "Assigned Delivers Details",
+    "auctionCreated": "Auction created successfully",
     "activeAuctions": {
       "title": "Active Auctions",
       "subtitle": "Pending bids and auction items"
@@ -3342,6 +3339,9 @@
     "title": "Earnings & Payment",
     "subtitle": "Manage your earnings and payment information",
     "paymentHistory": "Payment History",
+    "commissionInvoices": "Commission Invoices",
+    "invoiceSearchPlaceholder": "Search invoice ID, order ID, or participant...",
+    "invoiceEmpty": "No commission invoices found",
     "cards": {
       "totalEarnings": "Total Earnings",
       "thisMonth": "This Month",
@@ -3349,26 +3349,19 @@
       "adminCommissionDesc": "20% per order",
       "availableBalance": "Available Balance",
       "withdrawFunds": "Withdraw Funds",
+      "withdrawNote": "Withdrawals are not available in the current supplier API",
       "pendingAmount": "Pending Amount"
     },
-    "columns": {
+    "invoiceColumns": {
       "date": "Date",
-      "type": "Type",
-      "accountType": "Account Type",
-      "accountNumber": "Account Number",
+      "invoiceId": "Invoice ID",
+      "orderId": "Order ID",
+      "participant": "Participant",
       "amount": "Amount",
-      "status": "Status"
+      "actions": "Actions"
     },
-    "type": {
-      "withdrawal": "Withdrawal"
-    },
-    "accountType": {
-      "stripe": "Stripe",
-      "bankTransfer": "Bank Transfer"
-    },
-    "status": {
-      "approved": "Approved",
-      "pending": "Pending"
+    "invoiceActions": {
+      "download": "Download PDF"
     },
     "withdraw": {
       "title": "Withdraw Funds",

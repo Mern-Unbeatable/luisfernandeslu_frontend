@@ -197,28 +197,19 @@
       "slides": {
         "hero-1": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Ahorre más en",
-            "pedidos al por mayor"
-          ],
+          "titleLines": ["Ahorre más en", "pedidos al por mayor"],
           "description": "Precios especiales para grandes cantidades. Perfecto para contratistas y constructores.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         },
         "hero-2": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Materiales de calidad para",
-            "cada proyecto"
-          ],
+          "titleLines": ["Materiales de calidad para", "cada proyecto"],
           "description": "Cemento, acero y herramientas de proveedores verificados en la región.",
           "ctaLabel": "Comprar ahora"
         },
         "hero-3": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Hecho para contratistas",
-            "y constructores"
-          ],
+          "titleLines": ["Hecho para contratistas", "y constructores"],
           "description": "Pedidos simplificados, precios al por mayor y entrega fiable en la obra.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         }
@@ -1117,7 +1108,9 @@
       "viewOrder": "Ver pedido",
       "previous": "Anterior",
       "next": "Siguiente",
-      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "emptyOrders": "No se encontraron pedidos para este período.",
+      "requestFailed": "No se pudo cargar la vista general del proveedor ahora mismo."
     },
     "supplierProducts": {
       "title": "Gestión de productos",
@@ -1507,6 +1500,8 @@
       "emailPlaceholder": "tu@ejemplo.com",
       "phonePlaceholder": "+34 000 000 000",
       "updateProfile": "Actualizar perfil",
+      "edit": "Editar",
+      "cancel": "Cancelar",
       "saveChanges": "GUARDAR CAMBIOS",
       "warehouseLocation": "Ubicación del almacén",
       "warehouseLocationSupplier": "Ubicación del almacén",
@@ -1519,6 +1514,7 @@
       "currentPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
       "confirmNewPassword": "Confirmar nueva contraseña",
+      "passwordHidden": "La contraseña está oculta por seguridad.",
       "password": "Contraseña",
       "confirmPassword": "Confirmar contraseña",
       "ibanTitle": "Número IBAN",
@@ -2957,6 +2953,9 @@
     "title": "Ganancias y pagos",
     "subtitle": "Gestiona tus ganancias e información de pago",
     "paymentHistory": "Historial de pagos",
+    "commissionInvoices": "Facturas de comisión",
+    "invoiceSearchPlaceholder": "Buscar ID de factura, pedido o participante...",
+    "invoiceEmpty": "No se encontraron facturas de comisión",
     "cards": {
       "totalEarnings": "Ganancias totales",
       "thisMonth": "Este mes",
@@ -2964,37 +2963,19 @@
       "adminCommissionDesc": "20% por pedido",
       "availableBalance": "Saldo disponible",
       "withdrawFunds": "Retirar fondos",
+      "withdrawNote": "Las retiradas no están disponibles en la API actual del proveedor",
       "pendingAmount": "Importe pendiente"
     },
-    "columns": {
+    "invoiceColumns": {
       "date": "Fecha",
-      "type": "Tipo",
-      "accountType": "Tipo de cuenta",
-      "accountNumber": "Número de cuenta",
+      "invoiceId": "ID de factura",
+      "orderId": "ID del pedido",
+      "participant": "Participante",
       "amount": "Importe",
-      "status": "Estado"
+      "actions": "Acciones"
     },
-    "type": {
-      "withdrawal": "Retiro"
-    },
-    "accountType": {
-      "stripe": "Stripe",
-      "bankTransfer": "Transferencia bancaria"
-    },
-    "status": {
-      "approved": "Aprobado",
-      "pending": "Pendiente"
-    },
-    "withdraw": {
-      "title": "Retirar fondos",
-      "amount": "Importe",
-      "businessName": "Nombre de la empresa/organización",
-      "routingNumber": "Número de routing",
-      "accountNumber": "Número de cuenta",
-      "cancel": "Cancelar",
-      "submit": "Enviar",
-      "closeOverlay": "Cerrar overlay",
-      "close": "Cerrar"
+    "invoiceActions": {
+      "download": "Descargar PDF"
     }
   },
   "supplierAnalytics": {

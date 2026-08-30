@@ -6,7 +6,14 @@ import { FiPackage, FiX } from 'react-icons/fi';
 const fieldClass =
   'h-12 w-full rounded-lg border border-gray-200 bg-[#FFFBF5] px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]';
 
-export default function RestockModal({ open, onClose, product, onSubmit }) {
+export default function RestockModal({
+  open,
+  onClose,
+  product,
+  onSubmit,
+  submitting = false,
+  error = '',
+}) {
   const { t } = useTranslation();
   const titleId = useId();
   const [quantity, setQuantity] = useState('');
@@ -17,7 +24,7 @@ export default function RestockModal({ open, onClose, product, onSubmit }) {
     setQuantity('');
 
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') onClose?.();
+      if (event.key === 'Escape' && !submitting) onClose?.();
     };
     document.addEventListener('keydown', onKeyDown);
     const previousOverflow = document.body.style.overflow;
@@ -27,15 +34,14 @@ export default function RestockModal({ open, onClose, product, onSubmit }) {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open, onClose]);
+  }, [open, onClose, submitting]);
 
   if (!open) return null;
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!quantity.trim()) return;
-    onSubmit?.({ product, quantity: quantity.trim() });
-    onClose?.();
+    if (!quantity.trim() || submitting) return;
+    await onSubmit?.({ product, quantity: quantity.trim() });
   };
 
   return createPortal(
@@ -44,7 +50,9 @@ export default function RestockModal({ open, onClose, product, onSubmit }) {
         type="button"
         aria-label={t('panel.supplierInventory.modalClose')}
         className="absolute inset-0 bg-black/45"
-        onClick={onClose}
+        onClick={() => {
+          if (!submitting) onClose?.();
+        }}
       />
 
       <div
@@ -74,8 +82,9 @@ export default function RestockModal({ open, onClose, product, onSubmit }) {
           <button
             type="button"
             onClick={onClose}
+            disabled={submitting}
             aria-label={t('panel.supplierInventory.modalClose')}
-            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-gray-100"
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-gray-100 disabled:opacity-50"
           >
             <FiX className="size-5" strokeWidth={1.75} aria-hidden />
           </button>
@@ -95,24 +104,33 @@ export default function RestockModal({ open, onClose, product, onSubmit }) {
                   'panel.supplierInventory.fieldAddQuantityPlaceholder',
                 )}
                 className={fieldClass}
+                disabled={submitting}
               />
             </label>
+            {error ? (
+              <p className="mt-3 text-sm font-medium text-red-600">{error}</p>
+            ) : null}
           </div>
 
           <div className="grid grid-cols-2 gap-3 border-t border-gray-200 px-5 py-4">
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+              disabled={submitting}
+              className="inline-flex h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50 disabled:opacity-50"
             >
               {t('panel.supplierInventory.modalCancel')}
             </button>
             <button
               type="submit"
-              disabled={!quantity.trim()}
+              disabled={!quantity.trim() || submitting}
               className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {t('panel.supplierInventory.modalSendOffer')}
+              {submitting
+                ? t('panel.supplierInventory.modalSaving', {
+                    defaultValue: 'Saving…',
+                  })
+                : t('panel.supplierInventory.modalSendOffer')}
             </button>
           </div>
         </form>

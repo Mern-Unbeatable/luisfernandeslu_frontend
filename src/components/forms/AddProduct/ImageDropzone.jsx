@@ -16,7 +16,23 @@ function formatMeta(meta = []) {
 function fileKey(file, index) {
   if (!file) return `missing-${index}`;
   if (typeof file === 'string') return file;
-  return `${file.name}-${file.size}-${file.lastModified}-${index}`;
+  if (file instanceof File || file instanceof Blob) {
+    return `${file.name || 'blob'}-${file.size}-${file.lastModified || 0}-${index}`;
+  }
+  return file.url || file.src || file.path || `image-${index}`;
+}
+
+function previewUrl(file) {
+  if (!file) return '';
+  if (typeof file === 'string') return file;
+  if (file instanceof File || file instanceof Blob) {
+    return URL.createObjectURL(file);
+  }
+  return file.url || file.src || file.path || '';
+}
+
+function isObjectUrlSource(file) {
+  return file instanceof File || file instanceof Blob;
 }
 
 function toList(files, maxFiles) {
@@ -40,13 +56,13 @@ export default function ImageDropzone({
 
   useEffect(() => {
     const current = toList(files, maxFiles);
-    const urls = current.map((file) =>
-      typeof file === 'string' ? file : URL.createObjectURL(file),
-    );
+    const urls = current.map(previewUrl);
     setPreviews(urls);
     return () => {
-      urls.forEach((url, index) => {
-        if (typeof current[index] !== 'string') URL.revokeObjectURL(url);
+      current.forEach((file, index) => {
+        if (isObjectUrlSource(file) && urls[index]) {
+          URL.revokeObjectURL(urls[index]);
+        }
       });
     };
   }, [files, maxFiles]);

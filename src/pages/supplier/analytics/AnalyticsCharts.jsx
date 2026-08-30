@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 import {
   ArcElement,
   BarElement,
@@ -11,8 +11,8 @@ import {
   LineElement,
   PointElement,
   Tooltip,
-} from 'chart.js';
-import { DEMO_SUPPLIER_ANALYTICS } from '@/data/demoData';
+} from "chart.js";
+import { DEMO_SUPPLIER_ANALYTICS } from "@/data/demoData";
 
 ChartJS.register(
   CategoryScale,
@@ -25,59 +25,63 @@ ChartJS.register(
   Legend,
 );
 
-const REVENUE_COLOR = '#14B8A6';
-const EXPENSES_COLOR = '#EF4444';
-const PROFIT_COLOR = '#22C55E';
-const REGULAR_BAR_COLOR = '#E8D4B8';
-const COMPANY_BAR_COLOR = '#F59E0B';
+const REVENUE_COLOR = "#14B8A6";
+const EXPENSES_COLOR = "#EF4444";
+const PROFIT_COLOR = "#22C55E";
+const REGULAR_BAR_COLOR = "#E8D4B8";
+const COMPANY_BAR_COLOR = "#F59E0B";
 
 const baseTooltip = {
-  backgroundColor: '#ffffff',
-  titleColor: '#9ca3af',
-  bodyColor: '#111827',
-  borderColor: '#e5e7eb',
+  backgroundColor: "#ffffff",
+  titleColor: "#9ca3af",
+  bodyColor: "#111827",
+  borderColor: "#e5e7eb",
   borderWidth: 1,
   padding: 12,
   displayColors: true,
 };
 
 const MONTH_KEYS = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'oct',
-  'nov',
-  'dec',
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec",
 ];
 
-function ChartShell({ title, children, className = '' }) {
+function ChartShell({ title, children, className = "" }) {
   return (
     <div
       className={`rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6 ${className}`}
     >
-      <h2 className='text-lg font-bold text-[var(--primary-text)]'>{title}</h2>
+      <h2 className="text-lg font-bold text-[var(--primary-text)]">{title}</h2>
       {children}
     </div>
   );
 }
 
-export function RevenueExpensesProfitChart() {
+export function RevenueExpensesProfitChart({
+  analytics = DEMO_SUPPLIER_ANALYTICS,
+}) {
   const { t } = useTranslation();
   const labels = MONTH_KEYS.map((key) => t(`supplierAnalytics.months.${key}`));
-  const series = DEMO_SUPPLIER_ANALYTICS.revenueExpensesProfit;
+  const series =
+    analytics.revenueExpensesProfit ||
+    DEMO_SUPPLIER_ANALYTICS.revenueExpensesProfit;
 
   const data = useMemo(
     () => ({
       labels,
       datasets: [
         {
-          label: t('supplierAnalytics.charts.revenue'),
+          label: t("supplierAnalytics.charts.revenue"),
           data: series.revenue,
           borderColor: REVENUE_COLOR,
           backgroundColor: REVENUE_COLOR,
@@ -87,7 +91,7 @@ export function RevenueExpensesProfitChart() {
           borderWidth: 2.5,
         },
         {
-          label: t('supplierAnalytics.charts.expenses'),
+          label: t("supplierAnalytics.charts.expenses"),
           data: series.expenses,
           borderColor: EXPENSES_COLOR,
           backgroundColor: EXPENSES_COLOR,
@@ -97,7 +101,7 @@ export function RevenueExpensesProfitChart() {
           borderWidth: 2.5,
         },
         {
-          label: t('supplierAnalytics.charts.profit'),
+          label: t("supplierAnalytics.charts.profit"),
           data: series.profit,
           borderColor: PROFIT_COLOR,
           backgroundColor: PROFIT_COLOR,
@@ -117,13 +121,13 @@ export function RevenueExpensesProfitChart() {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'bottom',
+          position: "bottom",
           labels: {
             boxWidth: 10,
             boxHeight: 10,
             usePointStyle: false,
             padding: 16,
-            color: '#4b5563',
+            color: "#4b5563",
             font: { size: 12 },
           },
         },
@@ -138,7 +142,7 @@ export function RevenueExpensesProfitChart() {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: '#9ca3af', font: { size: 11 } },
+          ticks: { color: "#9ca3af", font: { size: 11 } },
           border: { display: false },
         },
         y: {
@@ -146,11 +150,11 @@ export function RevenueExpensesProfitChart() {
           max: 20000,
           ticks: {
             stepSize: 5000,
-            color: '#9ca3af',
+            color: "#9ca3af",
             font: { size: 11 },
             callback: (value) => `€${value / 1000}k`,
           },
-          grid: { color: '#f3f4f6' },
+          grid: { color: "#f3f4f6" },
           border: { display: false },
         },
       },
@@ -159,27 +163,28 @@ export function RevenueExpensesProfitChart() {
   );
 
   return (
-    <ChartShell title={t('supplierAnalytics.charts.revenueExpensesProfit')}>
-      <div className='mt-6 h-72 w-full sm:h-80'>
+    <ChartShell title={t("supplierAnalytics.charts.revenueExpensesProfit")}>
+      <div className="mt-6 h-72 w-full sm:h-80">
         <Line data={data} options={options} />
       </div>
     </ChartShell>
   );
 }
 
-export function RevenueBreakdownChart() {
+export function RevenueBreakdownChart({ analytics = DEMO_SUPPLIER_ANALYTICS }) {
   const { t } = useTranslation();
-  const breakdown = DEMO_SUPPLIER_ANALYTICS.revenueBreakdown;
+  const breakdown =
+    analytics.revenueBreakdown || DEMO_SUPPLIER_ANALYTICS.revenueBreakdown;
 
   const items = [
     {
-      key: 'regular',
-      label: t('supplierAnalytics.charts.regularSales'),
+      key: "regular",
+      label: t("supplierAnalytics.charts.regularSales"),
       ...breakdown.regular,
     },
     {
-      key: 'company',
-      label: t('supplierAnalytics.charts.companySales'),
+      key: "company",
+      label: t("supplierAnalytics.charts.companySales"),
       ...breakdown.company,
     },
   ];
@@ -203,7 +208,7 @@ export function RevenueBreakdownChart() {
     () => ({
       responsive: true,
       maintainAspectRatio: false,
-      cutout: '62%',
+      cutout: "62%",
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -221,27 +226,27 @@ export function RevenueBreakdownChart() {
   );
 
   return (
-    <ChartShell title={t('supplierAnalytics.charts.revenueBreakdown')}>
-      <div className='mt-6 flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between'>
-        <div className='h-52 w-full max-w-[220px] sm:h-56'>
+    <ChartShell title={t("supplierAnalytics.charts.revenueBreakdown")}>
+      <div className="mt-6 flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="h-52 w-full max-w-[220px] sm:h-56">
           <Doughnut data={data} options={options} />
         </div>
 
-        <ul className='w-full min-w-0 space-y-4 sm:max-w-[220px]'>
+        <ul className="w-full min-w-0 space-y-4 sm:max-w-[220px]">
           {items.map((item) => (
-            <li key={item.key} className='text-sm'>
-              <span className='inline-flex items-center gap-2 text-[var(--primary-text)]'>
+            <li key={item.key} className="text-sm">
+              <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
                 <span
-                  className='size-2.5 shrink-0 rounded-full'
+                  className="size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: item.color }}
                   aria-hidden
                 />
                 {item.label}
               </span>
-              <p className='mt-1 pl-4 text-base font-bold text-[var(--primary-text)]'>
+              <p className="mt-1 pl-4 text-base font-bold text-[var(--primary-text)]">
                 {item.amount}
               </p>
-              <p className='pl-4 text-xs text-[var(--secondary-text)]'>
+              <p className="pl-4 text-xs text-[var(--secondary-text)]">
                 {item.percent}%
               </p>
             </li>
@@ -252,24 +257,28 @@ export function RevenueBreakdownChart() {
   );
 }
 
-export function SalesByCustomerTypeChart() {
+export function SalesByCustomerTypeChart({
+  analytics = DEMO_SUPPLIER_ANALYTICS,
+}) {
   const { t } = useTranslation();
   const labels = MONTH_KEYS.map((key) => t(`supplierAnalytics.months.${key}`));
-  const sales = DEMO_SUPPLIER_ANALYTICS.salesByCustomerType;
+  const sales =
+    analytics.salesByCustomerType ||
+    DEMO_SUPPLIER_ANALYTICS.salesByCustomerType;
 
   const data = useMemo(
     () => ({
       labels,
       datasets: [
         {
-          label: t('supplierAnalytics.charts.regularCustomers'),
+          label: t("supplierAnalytics.charts.regularCustomers"),
           data: sales.regular,
           backgroundColor: REGULAR_BAR_COLOR,
           borderRadius: 4,
           barThickness: 14,
         },
         {
-          label: t('supplierAnalytics.charts.companyCustomers'),
+          label: t("supplierAnalytics.charts.companyCustomers"),
           data: sales.company,
           backgroundColor: COMPANY_BAR_COLOR,
           borderRadius: 4,
@@ -286,13 +295,13 @@ export function SalesByCustomerTypeChart() {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'bottom',
+          position: "bottom",
           labels: {
             boxWidth: 10,
             boxHeight: 10,
             usePointStyle: true,
             padding: 16,
-            color: '#4b5563',
+            color: "#4b5563",
             font: { size: 12 },
           },
         },
@@ -307,7 +316,7 @@ export function SalesByCustomerTypeChart() {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: '#9ca3af', font: { size: 11 } },
+          ticks: { color: "#9ca3af", font: { size: 11 } },
           border: { display: false },
         },
         y: {
@@ -315,11 +324,11 @@ export function SalesByCustomerTypeChart() {
           max: 10000,
           ticks: {
             stepSize: 2500,
-            color: '#9ca3af',
+            color: "#9ca3af",
             font: { size: 11 },
             callback: (value) => `€${value / 1000}k`,
           },
-          grid: { color: '#f3f4f6' },
+          grid: { color: "#f3f4f6" },
           border: { display: false },
         },
       },
@@ -328,13 +337,13 @@ export function SalesByCustomerTypeChart() {
   );
 
   return (
-    <ChartShell title={t('supplierAnalytics.charts.salesByCustomerType')}>
-      <div className='mt-6 h-72 w-full sm:h-80'>
+    <ChartShell title={t("supplierAnalytics.charts.salesByCustomerType")}>
+      <div className="mt-6 h-72 w-full sm:h-80">
         <Bar data={data} options={options} />
       </div>
 
-      <div className='mt-6 rounded-lg border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-900'>
-        {t('supplierAnalytics.charts.insight')}
+      <div className="mt-6 rounded-lg border border-sky-100 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+        {t("supplierAnalytics.charts.insight")}
       </div>
     </ChartShell>
   );

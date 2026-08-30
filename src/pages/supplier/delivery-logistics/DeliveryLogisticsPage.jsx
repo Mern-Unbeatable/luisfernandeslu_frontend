@@ -1,274 +1,212 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import Seo from '@/components/common/Seo/Seo'
-import Pagination from '@/components/common/Pagination/Pagination'
-import AuctionCard from '@/components/data-display/AuctionCard'
-import AuctionDetails from '@/components/data-display/AuctionDetails'
-import CreateAuction from '@/components/forms/CreateAuction'
+import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Seo from "@/components/common/Seo/Seo";
+import Pagination from "@/components/common/Pagination/Pagination";
+import AuctionCard from "@/components/data-display/AuctionCard";
+import AuctionDetails from "@/components/data-display/AuctionDetails";
+import CreateAuction from "@/components/forms/CreateAuction";
+import { DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS } from "@/data/demoData";
 import {
-  DEMO_AUCTION_ASSIGNED,
-  DEMO_AUCTION_CREATED,
-  DEMO_AUCTION_DETAILS_ACTIVE,
-  DEMO_AUCTION_DETAILS_ASSIGNED,
-  DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS,
-} from '@/data/demoData'
+  useCreateSupplierAuctionMutation,
+  useGetSupplierActiveAuctionByIdQuery,
+  useGetSupplierActiveAuctionsQuery,
+  useGetSupplierAssignedAuctionByIdQuery,
+  useGetSupplierAssignedAuctionsQuery,
+} from "@/features/supplier/auctions/auctionsApi";
+import { getApiErrorMessage } from "@/features/supplier/apiError";
+import { toast } from "react-hot-toast";
 
-const PAGE_SIZE = 4
+const PAGE_SIZE = 4;
 
-const ACTIVE_AUCTIONS = [
-  DEMO_AUCTION_CREATED,
-  {
-    id: 'auc-ord-003',
-    orderId: 'ORD-2026-003',
-    pickupLocation: '450 Factory Rd, Phoenix, AZ',
-    customerName: 'Maria Garcia',
-    deliveryLocation: '88 Harbor Way, San Diego, CA',
-    productName: 'Portland Cement - 500 Bags',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-004',
-    orderId: 'ORD-2026-004',
-    pickupLocation: 'Ambuja Cement Factory, Kalyan',
-    customerName: 'Metro Construction',
-    deliveryLocation: 'Metro Construction Site, Andheri West',
-    productName: 'Premium Portland Cement',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-007',
-    orderId: 'ORD-2026-007',
-    pickupLocation: '2200 Quarry Lane, Tucson, AZ',
-    customerName: 'Daniel Wright',
-    deliveryLocation: '15 Desert View Blvd, Tucson, AZ',
-    productName: 'Crushed Stone Aggregate',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-008',
-    orderId: 'ORD-2026-008',
-    pickupLocation: '88 Mill Road, Portland, OR',
-    customerName: 'Olivia Chen',
-    deliveryLocation: '402 Bridge St, Seattle, WA',
-    productName: 'Timber Beams - Grade A',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-009',
-    orderId: 'ORD-2026-009',
-    pickupLocation: '600 Brick Yard, Atlanta, GA',
-    customerName: 'James Brown',
-    deliveryLocation: '91 Peachtree St, Atlanta, GA',
-    productName: 'Clay Bricks - 10,000 Units',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-010',
-    orderId: 'ORD-2026-010',
-    pickupLocation: '33 Sand Depot, Miami, FL',
-    customerName: 'Sofia Alvarez',
-    deliveryLocation: '120 Ocean Dr, Miami Beach, FL',
-    productName: 'Fine Sand Bulk Load',
-    status: 'open',
-  },
-  {
-    id: 'auc-ord-011',
-    orderId: 'ORD-2026-011',
-    pickupLocation: '1700 Steel Works, Chicago, IL',
-    customerName: 'Noah Patel',
-    deliveryLocation: '55 Lakeshore Dr, Chicago, IL',
-    productName: 'Structural Steel Plates',
-    status: 'open',
-  },
-]
-
-const ASSIGNED_DELIVERIES = [
-  DEMO_AUCTION_ASSIGNED,
-  {
-    id: 'auc-ord-005',
-    orderId: 'ORD-2026-005',
-    productName: 'Steel Rebar Bundle',
-    pickupLocation: '2100 Industrial Park, Austin, TX',
-    deliveryLocation: '77 Riverside Ave, Austin, TX',
-    assignedTransporter: 'RoadRunner Freight',
-    bidPrice: 3200,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-006',
-    orderId: 'ORD-2026-006',
-    productName: 'Ready-Mix Concrete Load',
-    pickupLocation: '12 Batch Plant Rd, Denver, CO',
-    deliveryLocation: '900 Civic Center, Denver, CO',
-    assignedTransporter: 'HaulMaster Inc.',
-    bidPrice: 1850,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-012',
-    orderId: 'ORD-2026-012',
-    productName: 'Glass Facade Panels',
-    pickupLocation: '45 Glass Works, Boston, MA',
-    deliveryLocation: '800 Harbor Point, Boston, MA',
-    assignedTransporter: 'FastShip Logistics',
-    bidPrice: 5600,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-013',
-    orderId: 'ORD-2026-013',
-    productName: 'PVC Piping Bundles',
-    pickupLocation: '910 Pipe Depot, Columbus, OH',
-    deliveryLocation: '210 High St, Columbus, OH',
-    assignedTransporter: 'BulkFreight Co',
-    bidPrice: 2100,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-014',
-    orderId: 'ORD-2026-014',
-    productName: 'Roofing Sheets - Galvanized',
-    pickupLocation: '300 Metal Yard, Dallas, TX',
-    deliveryLocation: '66 Commerce Loop, Fort Worth, TX',
-    assignedTransporter: 'Swift Transport Co.',
-    bidPrice: 2750,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-015',
-    orderId: 'ORD-2026-015',
-    productName: 'Ceramic Floor Tiles',
-    pickupLocation: '18 Tile Factory, San Jose, CA',
-    deliveryLocation: '404 Market St, San Francisco, CA',
-    assignedTransporter: 'QuickDelivery Express',
-    bidPrice: 3400,
-    status: 'assigned',
-  },
-  {
-    id: 'auc-ord-016',
-    orderId: 'ORD-2026-016',
-    productName: 'Insulation Foam Boards',
-    pickupLocation: '72 Foam Plant, Minneapolis, MN',
-    deliveryLocation: '1500 Nicolet Mall, Minneapolis, MN',
-    assignedTransporter: 'HaulMaster Inc.',
-    bidPrice: 1950,
-    status: 'assigned',
-  },
-]
-
-function buildDetailsAuction(auction) {
-  const isAssigned = auction.status === 'assigned'
-
-  if (isAssigned) {
-    return {
-      ...DEMO_AUCTION_DETAILS_ASSIGNED,
-      id: auction.id,
-      orderId: auction.orderId,
-      pickupLocation: auction.pickupLocation,
-      product: {
-        ...DEMO_AUCTION_DETAILS_ASSIGNED.product,
-        name: auction.productName,
-      },
-      customer: {
-        ...DEMO_AUCTION_DETAILS_ASSIGNED.customer,
-        deliveryAddress: auction.deliveryLocation,
-      },
-      shipping: {
-        ...DEMO_AUCTION_DETAILS_ASSIGNED.shipping,
-        pickupLocation: auction.pickupLocation,
-      },
-      transporter: {
-        ...DEMO_AUCTION_DETAILS_ASSIGNED.transporter,
-        name: auction.assignedTransporter || 'Swift Transport Co.',
-        bidAmount:
-          auction.bidPrice != null
-            ? `€${Number(auction.bidPrice).toLocaleString()}`
-            : DEMO_AUCTION_DETAILS_ASSIGNED.transporter.bidAmount,
-      },
-    }
+function toDisplayText(value) {
+  if (value == null) return "";
+  if (typeof value === "string" || typeof value === "number")
+    return String(value);
+  if (typeof value === "object") {
+    return (
+      value.name ||
+      value.fullName ||
+      value.title ||
+      value.label ||
+      value.email ||
+      value.phone ||
+      ""
+    );
   }
+  return String(value);
+}
+
+function normalizeAuctionForCard(auction) {
+  if (!auction) return null;
+
+  const status = String(auction.status || "open").toLowerCase();
+  const isAssigned = status === "assigned";
 
   return {
-    ...DEMO_AUCTION_DETAILS_ACTIVE,
-    id: auction.id,
-    orderId: auction.orderId,
-    pickupLocation: auction.pickupLocation,
-    product: {
-      ...DEMO_AUCTION_DETAILS_ACTIVE.product,
-      name: auction.productName,
-    },
+    id: auction.id ?? auction.auctionId ?? "",
+    auctionId: auction.auctionId ?? auction.id ?? "",
+    orderId: auction.orderId ?? "",
+    pickupLocation:
+      auction.pickupLocation || auction.shipping?.pickupLocation || "",
+    customerName: auction.customerName || auction.customer?.name || "",
+    deliveryLocation:
+      auction.deliveryLocation || auction.shipping?.deliveryLocation || "",
+    productName:
+      auction.productName || auction.product?.name || auction.title || "",
+    assignedTransporter: toDisplayText(
+      auction.assignedTransporter || auction.transporter,
+    ),
+    bidPrice: auction.bidPrice ?? auction.price ?? auction.amount ?? 0,
+    status: isAssigned ? "assigned" : "open",
+  };
+}
+
+function buildDetailsAuction(auction) {
+  if (!auction) return null;
+
+  const status = String(auction.status || "open").toLowerCase();
+  const isAssigned = status === "assigned";
+
+  return {
+    id: auction.id ?? auction.auctionId ?? "",
+    orderId: auction.orderId ?? "",
+    status,
+    pickupLocation:
+      auction.pickupLocation || auction.shipping?.pickupLocation || "",
+    deliveryLocation:
+      auction.deliveryLocation || auction.shipping?.deliveryLocation || "",
     customer: {
-      ...DEMO_AUCTION_DETAILS_ACTIVE.customer,
-      name: auction.customerName || DEMO_AUCTION_DETAILS_ACTIVE.customer.name,
-      deliveryAddress: auction.deliveryLocation,
+      name: auction.customerName || auction.customer?.name || "",
+      phone: auction.customer?.phone || "",
+      email: auction.customer?.email || "",
+      deliveryAddress:
+        auction.deliveryLocation || auction.shipping?.deliveryLocation || "",
+    },
+    product: {
+      name: auction.productName || auction.product?.name || auction.title || "",
+      sku: auction.product?.sku || "",
+      weight: auction.product?.weight || "",
+      price: auction.product?.price || auction.bidPrice || "",
     },
     shipping: {
-      ...DEMO_AUCTION_DETAILS_ACTIVE.shipping,
-      pickupLocation: auction.pickupLocation,
+      pickupLocation:
+        auction.pickupLocation || auction.shipping?.pickupLocation || "",
+      unloadingInstructions: auction.shipping?.unloadingInstructions || "",
+      accessCondition: auction.shipping?.accessCondition || "",
+      additionalNotes: auction.shipping?.additionalNotes || "",
     },
-  }
+    transporter: {
+      name: toDisplayText(auction.assignedTransporter || auction.transporter),
+      phone: toDisplayText(auction.transporter?.phone),
+      vehicleType: toDisplayText(auction.transporter?.vehicleType),
+      bidAmount:
+        auction.bidPrice != null
+          ? `€${Number(auction.bidPrice).toLocaleString()}`
+          : "",
+      assignedAt: toDisplayText(auction.transporter?.assignedAt),
+    },
+    bids: Array.isArray(auction.bids) ? auction.bids : [],
+  };
 }
 
 export default function DeliveryLogisticsPage() {
-  const { t } = useTranslation()
-  const [activeAuctions, setActiveAuctions] = useState(ACTIVE_AUCTIONS)
-  const [assignedDeliveries] = useState(ASSIGNED_DELIVERIES)
-  const [activePage, setActivePage] = useState(1)
-  const [assignedPage, setAssignedPage] = useState(1)
-  const [view, setView] = useState('list')
-  const [selectedAuction, setSelectedAuction] = useState(null)
+  const { t } = useTranslation();
+  const [activePage, setActivePage] = useState(1);
+  const [assignedPage, setAssignedPage] = useState(1);
+  const [view, setView] = useState("list");
+  const [selectedAuction, setSelectedAuction] = useState(null);
 
-  const activeTotalPages = Math.max(
-    1,
-    Math.ceil(activeAuctions.length / PAGE_SIZE),
-  )
-  const assignedTotalPages = Math.max(
-    1,
-    Math.ceil(assignedDeliveries.length / PAGE_SIZE),
-  )
-  const safeActivePage = Math.min(activePage, activeTotalPages)
-  const safeAssignedPage = Math.min(assignedPage, assignedTotalPages)
+  const {
+    data: activeData,
+    isLoading: isActiveLoading,
+    error: activeError,
+  } = useGetSupplierActiveAuctionsQuery({ page: activePage, limit: PAGE_SIZE });
+  const {
+    data: assignedData,
+    isLoading: isAssignedLoading,
+    error: assignedError,
+  } = useGetSupplierAssignedAuctionsQuery({
+    page: assignedPage,
+    limit: PAGE_SIZE,
+  });
+  const [createAuction, { isLoading: isCreating }] =
+    useCreateSupplierAuctionMutation();
 
-  const pagedActiveAuctions = activeAuctions.slice(
-    (safeActivePage - 1) * PAGE_SIZE,
-    safeActivePage * PAGE_SIZE,
-  )
-  const pagedAssignedDeliveries = assignedDeliveries.slice(
-    (safeAssignedPage - 1) * PAGE_SIZE,
-    safeAssignedPage * PAGE_SIZE,
-  )
+  const activeAuctions = useMemo(
+    () =>
+      (activeData?.auctions || []).map(normalizeAuctionForCard).filter(Boolean),
+    [activeData],
+  );
+  const assignedDeliveries = useMemo(
+    () =>
+      (assignedData?.auctions || [])
+        .map(normalizeAuctionForCard)
+        .filter(Boolean),
+    [assignedData],
+  );
 
-  const openDetails = (auction) => {
-    setSelectedAuction(auction)
-    setView('details')
-  }
+  const activeTotalPages = Math.max(1, Number(activeData?.totalPages || 1));
+  const assignedTotalPages = Math.max(1, Number(assignedData?.totalPages || 1));
+  const safeActivePage = Math.min(activePage, activeTotalPages);
+  const safeAssignedPage = Math.min(assignedPage, assignedTotalPages);
+
+  const openDetails = useCallback((auction) => {
+    setSelectedAuction(auction);
+    setView("details");
+  }, []);
+
+  const { data: selectedActiveDetails } = useGetSupplierActiveAuctionByIdQuery(
+    selectedAuction?.id || selectedAuction?.auctionId,
+    { skip: !selectedAuction || selectedAuction.status !== "open" },
+  );
+  const { data: selectedAssignedDetails } =
+    useGetSupplierAssignedAuctionByIdQuery(
+      selectedAuction?.id || selectedAuction?.auctionId,
+      { skip: !selectedAuction || selectedAuction.status === "open" },
+    );
+
+  const selectedDetailsAuction = useMemo(() => {
+    const payload =
+      selectedAuction?.status === "assigned"
+        ? selectedAssignedDetails
+        : selectedActiveDetails;
+    if (payload) return buildDetailsAuction({ ...selectedAuction, ...payload });
+    if (selectedAuction) return buildDetailsAuction(selectedAuction);
+    return null;
+  }, [selectedActiveDetails, selectedAssignedDetails, selectedAuction]);
+
+  const activeErrorMessage = activeError
+    ? getApiErrorMessage(activeError, t("common.requestFailed"))
+    : "";
+  const assignedErrorMessage = assignedError
+    ? getApiErrorMessage(assignedError, t("common.requestFailed"))
+    : "";
 
   const closeView = () => {
-    setSelectedAuction(null)
-    setView('list')
-  }
+    setSelectedAuction(null);
+    setView("list");
+  };
 
-  const handleCreateSubmit = (form) => {
-    const next = {
-      id: `auc-ord-${Date.now()}`,
-      orderId:
-        form.orderId ||
-        `ORD-2026-${String(activeAuctions.length + 10).padStart(3, '0')}`,
-      pickupLocation: form.pickupLocation || form.deliveryAddress || '—',
-      customerName: form.customerName || '—',
-      deliveryLocation: form.deliveryAddress || '—',
-      productName: form.productName || '—',
-      status: 'open',
+  const handleCreateSubmit = async (form) => {
+    try {
+      const payload = {
+        orderId: form.orderId,
+        requiredVehicleType: "HEAVY_TRUCK",
+      };
+
+      await createAuction(payload).unwrap();
+      setActivePage(1);
+      setView("list");
+      toast.success(t("supplierDeliveryLogistics.auctionCreated"));
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, t("common.requestFailed")));
     }
-    setActiveAuctions((prev) => [next, ...prev])
-    setActivePage(1)
-    setView('list')
-  }
+  };
 
-  if (view === 'create') {
+  if (view === "create") {
     return (
       <>
-        <Seo title={t('supplierDeliveryLogistics.startAuctionTitle')} />
+        <Seo title={t("supplierDeliveryLogistics.startAuctionTitle")} />
         <CreateAuction
           role="supplier"
           placeholders={DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS}
@@ -276,66 +214,86 @@ export default function DeliveryLogisticsPage() {
           onSubmit={handleCreateSubmit}
         />
       </>
-    )
+    );
   }
 
-  if (view === 'details' && selectedAuction) {
-    const isAssigned = selectedAuction.status === 'assigned'
+  if (view === "details" && selectedAuction) {
+    const isAssigned = selectedAuction.status === "assigned";
 
     return (
       <>
         <Seo
           title={
             isAssigned
-              ? t('supplierDeliveryLogistics.assignedDetailTitle')
-              : t('supplierDeliveryLogistics.activeDetailTitle')
+              ? t("supplierDeliveryLogistics.assignedDetailTitle")
+              : t("supplierDeliveryLogistics.activeDetailTitle")
           }
         />
         <AuctionDetails
           role="supplier"
-          status={isAssigned ? 'assigned' : 'active'}
-          auction={buildDetailsAuction(selectedAuction)}
+          status={isAssigned ? "assigned" : "active"}
+          auction={
+            selectedDetailsAuction || buildDetailsAuction(selectedAuction)
+          }
           onBack={closeView}
         />
       </>
-    )
+    );
   }
 
   return (
     <>
-      <Seo title={t('supplierDeliveryLogistics.title')} />
+      <Seo title={t("supplierDeliveryLogistics.title")} />
       <div className="space-y-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-              {t('supplierDeliveryLogistics.title')}
+              {t("supplierDeliveryLogistics.title")}
             </h1>
             <p className="mt-1 text-sm text-[var(--secondary-text)]">
-              {t('supplierDeliveryLogistics.subtitle')}
+              {t("supplierDeliveryLogistics.subtitle")}
             </p>
           </div>
 
           <button
             type="button"
-            onClick={() => setView('create')}
+            onClick={() => setView("create")}
             className="inline-flex items-center justify-center rounded-full bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
           >
-            {t('supplierDeliveryLogistics.startAuction')}
+            {t("supplierDeliveryLogistics.startAuction")}
           </button>
         </div>
 
         <section className="space-y-4">
           <div>
             <h2 className="text-lg font-bold text-[var(--primary-text)]">
-              {t('supplierDeliveryLogistics.activeAuctions.title')}
+              {t("supplierDeliveryLogistics.activeAuctions.title")}
             </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              {t('supplierDeliveryLogistics.activeAuctions.subtitle')}
+              {t("supplierDeliveryLogistics.activeAuctions.subtitle")}
             </p>
           </div>
 
+          {activeErrorMessage ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {activeErrorMessage}
+            </div>
+          ) : null}
+
+          {isActiveLoading ? (
+            <div className="text-sm text-[var(--secondary-text)]">
+              {t("common.loading")}
+            </div>
+          ) : null}
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {pagedActiveAuctions.map((auction) => (
+            {!isActiveLoading && activeAuctions.length === 0 ? (
+              <div className="col-span-full rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-[var(--secondary-text)]">
+                {t("common.noData")}
+              </div>
+            ) : null}
+
+            {activeAuctions.map((auction) => (
               <AuctionCard
                 key={auction.id}
                 role="supplier"
@@ -357,15 +315,33 @@ export default function DeliveryLogisticsPage() {
         <section className="space-y-4">
           <div>
             <h2 className="text-lg font-bold text-[var(--primary-text)]">
-              {t('supplierDeliveryLogistics.assignedDeliveries.title')}
+              {t("supplierDeliveryLogistics.assignedDeliveries.title")}
             </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              {t('supplierDeliveryLogistics.assignedDeliveries.subtitle')}
+              {t("supplierDeliveryLogistics.assignedDeliveries.subtitle")}
             </p>
           </div>
 
+          {assignedErrorMessage ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {assignedErrorMessage}
+            </div>
+          ) : null}
+
+          {isAssignedLoading ? (
+            <div className="text-sm text-[var(--secondary-text)]">
+              {t("common.loading")}
+            </div>
+          ) : null}
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {pagedAssignedDeliveries.map((auction) => (
+            {!isAssignedLoading && assignedDeliveries.length === 0 ? (
+              <div className="col-span-full rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-[var(--secondary-text)]">
+                {t("common.noData")}
+              </div>
+            ) : null}
+
+            {assignedDeliveries.map((auction) => (
               <AuctionCard
                 key={auction.id}
                 role="supplier"
@@ -385,5 +361,5 @@ export default function DeliveryLogisticsPage() {
         </section>
       </div>
     </>
-  )
+  );
 }

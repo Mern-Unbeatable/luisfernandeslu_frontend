@@ -6,6 +6,8 @@ export const API_TAG_TYPES = [
   'Transporter',
   'Product',
   'Order',
+  'Inventory',
+  'Category',
   'Auction',
   'Delivery',
   'Payment',
