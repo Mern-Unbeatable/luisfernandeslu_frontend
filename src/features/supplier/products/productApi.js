@@ -137,6 +137,7 @@ export const supplierProductApi = baseApi.injectEndpoints({
       invalidatesTags: (_result, _error, { id }) => [
         { type: 'Product', id },
         { type: 'Promotion', id: 'LIST' },
+        { type: 'Promotion', id: 'SPONSORED_LIST' },
       ],
     }),
     paySupplierProductPromotion: builder.mutation({
@@ -149,6 +150,7 @@ export const supplierProductApi = baseApi.injectEndpoints({
         { type: 'Product', id: productId },
         { type: 'Product', id: 'LIST' },
         { type: 'Promotion', id: 'LIST' },
+        { type: 'Promotion', id: 'SPONSORED_LIST' },
       ],
     }),
   }),

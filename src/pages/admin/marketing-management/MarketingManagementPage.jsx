@@ -20,6 +20,7 @@ import { mapAdminPromotion } from '@/features/admin/adminPromotionMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import MarketingBoostMeta from './components/MarketingBoostMeta'
 import MarketingRequestActions from './components/MarketingRequestActions'
+import MarketingRemoveSponsoredAction from './components/MarketingRemoveSponsoredAction'
 import PromotionRejectModal from './components/PromotionRejectModal'
 import PromotionPlansSection from './sections/PromotionPlansSection'
 import { MARKETING_STATS, MARKETING_TABS } from './data/marketingDemo'
@@ -223,12 +224,44 @@ export default function MarketingManagementPage() {
     [updatePromotion, t],
   )
 
+  const handleRemoveSponsored = useCallback(
+    async (row) => {
+      setUpdatingPromotionId(row.id)
+
+      try {
+        const result = await updatePromotion({
+          promotionId: row.id,
+          status: 'removed',
+        }).unwrap()
+
+        if (result?.success === false) {
+          toast.error(getAuthErrorMessage(result, t(`${I18N_KEY}.actionFailed`)))
+          return
+        }
+
+        toast.success(
+          result?.message || t(`${I18N_KEY}.removeSponsoredSuccess`, {
+            defaultValue: 'Sponsored product removed.',
+          }),
+        )
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, t(`${I18N_KEY}.actionFailed`)))
+      } finally {
+        setUpdatingPromotionId(null)
+      }
+    },
+    [updatePromotion, t],
+  )
+
   const handleRejectOpen = useCallback((row) => {
     setRejectTarget({
       id: row.id,
       name: row.card.title,
     })
   }, [])
+
+  const canRemoveSponsored = (row) =>
+    row.status === 'active' || row.status === 'featured'
 
   return (
     <div className="space-y-8 sm:space-y-10">
@@ -338,6 +371,11 @@ export default function MarketingManagementPage() {
                       onReject={() => handleRejectOpen(row)}
                     />
                   </>
+                ) : canRemoveSponsored(row) ? (
+                  <MarketingRemoveSponsoredAction
+                    disabled={updatingPromotionId === row.id}
+                    onRemove={() => handleRemoveSponsored(row)}
+                  />
                 ) : null}
               </div>
             ))}
@@ -388,14 +426,25 @@ export default function MarketingManagementPage() {
             ].join(' ')}
           >
             {featuredRows.map((row) => (
-              <ProductCard
+              <div
                 key={row.id}
-                type="dashboard"
-                role="admin"
-                context="promotion"
-                status="featured"
-                product={row.card}
-              />
+                className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
+              >
+                <ProductCard
+                  className="rounded-none border-0 shadow-none"
+                  type="dashboard"
+                  role="admin"
+                  context="promotion"
+                  status="featured"
+                  product={row.card}
+                />
+                {canRemoveSponsored(row) ? (
+                  <MarketingRemoveSponsoredAction
+                    disabled={updatingPromotionId === row.id}
+                    onRemove={() => handleRemoveSponsored(row)}
+                  />
+                ) : null}
+              </div>
             ))}
           </div>
         )}

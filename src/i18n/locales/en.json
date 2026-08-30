@@ -184,6 +184,10 @@
     "title": "CONSTRUPRECO",
     "subtitle": "Fresh React + Tailwind setup with Redux Toolkit, RTK Query & Axios",
     "sponsoredProductsTitle": "Sponsored Products",
+    "sponsoredProductsLoading": "Loading sponsored products…",
+    "sponsoredProductsLoadFailed": "Could not load sponsored products.",
+    "sponsoredProductsEmpty": "No sponsored products right now.",
+    "sponsoredProductsRetry": "Try again",
     "topSellingTitle": "Top Selling Product",
     "affiliateCta": {
       "title": "It transforms sharing into gains.",
@@ -620,10 +624,12 @@
     "loadFailed": "Could not load promotions.",
     "actions": {
       "accept": "Accept",
-      "reject": "Reject"
+      "reject": "Reject",
+      "removeSponsored": "Remove sponsored"
     },
     "approveSuccess": "Promotion approved.",
     "rejectSuccess": "Promotion rejected.",
+    "removeSponsoredSuccess": "Sponsored product removed.",
     "actionFailed": "Could not update promotion.",
     "rejectModal": {
       "title": "Reject {{name}}",

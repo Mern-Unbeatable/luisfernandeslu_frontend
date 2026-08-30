@@ -23,7 +23,7 @@ export const authApi = baseApi.injectEndpoints({
           dispatch(setCredentials(parseAuthPayload(data)))
         } catch {}
       },
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', { type: 'Promotion', id: 'SPONSORED_LIST' }],
     }),
     register: builder.mutation({
       query: ({ role, payload }) => ({
@@ -40,7 +40,7 @@ export const authApi = baseApi.injectEndpoints({
           dispatch(setCredentials(parseAuthPayload(data)))
         } catch {}
       },
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ['Auth', { type: 'Promotion', id: 'SPONSORED_LIST' }],
     }),
     verifyOtp: builder.mutation({
       query: ({ email, otp, role }) => ({

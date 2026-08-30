@@ -36,6 +36,7 @@ export const adminPromotionApi = baseApi.injectEndpoints({
       invalidatesTags: (_result, _error, { promotionId }) => [
         { type: 'Promotion', id: promotionId },
         { type: 'Promotion', id: 'ADMIN_LIST' },
+        { type: 'Promotion', id: 'SPONSORED_LIST' },
       ],
     }),
   }),

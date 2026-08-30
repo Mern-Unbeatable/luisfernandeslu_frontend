@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   FiCheckCircle,
   FiEdit2,
@@ -179,19 +179,40 @@ export default function ProductCard({
 }
 
 function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
+  const [loadState, setLoadState] = useState(image ? 'loading' : 'empty')
+
+  useEffect(() => {
+    setLoadState(image ? 'loading' : 'empty')
+  }, [image])
+
   const BadgeIcon = badge?.icon ? ICON_MAP[badge.icon] : null
+  const showImage = Boolean(image) && loadState !== 'error'
 
   return (
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-      {image ? (
+      {loadState === 'loading' && showImage ? (
+        <div
+          className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100"
+          aria-hidden
+        />
+      ) : null}
+
+      {showImage ? (
         <img
           src={image}
           alt={title || 'Product'}
-          className="size-full object-cover"
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoadState('loaded')}
+          onError={() => setLoadState('error')}
+          className={[
+            'size-full object-cover transition-opacity duration-300',
+            loadState === 'loaded' ? 'opacity-100' : 'opacity-0',
+          ].join(' ')}
         />
       ) : (
-        <div className="flex size-full items-center justify-center text-xs text-gray-400">
-          No image
+        <div className="flex size-full items-center justify-center px-3 text-center text-xs text-gray-400">
+          {title || 'No image'}
         </div>
       )}
       {badge ? (
@@ -231,7 +252,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
             ) : null}
           </p>
           {product.minOrder ? (
-            <p className="text-[10px] text-[var(--secondary-text)]">
+            <p className="text-xs font-bold text-[var(--secondary-text)]">
               Min: {product.minOrder}
             </p>
           ) : null}

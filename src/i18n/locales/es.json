@@ -184,6 +184,10 @@
     "title": "CONSTRUPRECO",
     "subtitle": "Setup React + Tailwind con Redux Toolkit, RTK Query y Axios",
     "sponsoredProductsTitle": "Productos patrocinados",
+    "sponsoredProductsLoading": "Cargando productos patrocinados…",
+    "sponsoredProductsLoadFailed": "No se pudieron cargar los productos patrocinados.",
+    "sponsoredProductsEmpty": "No hay productos patrocinados ahora.",
+    "sponsoredProductsRetry": "Reintentar",
     "topSellingTitle": "Productos más vendidos",
     "affiliateCta": {
       "title": "Convierte compartir en ganancias.",
@@ -540,7 +544,8 @@
     "emptyRequests": "Ninguna solicitud de boost coincide con este filtro.",
     "actions": {
       "accept": "Aceptar",
-      "reject": "Rechazar"
+      "reject": "Rechazar",
+      "removeSponsored": "Quitar patrocinio"
     }
   },
   "adminFinancePayments": {
