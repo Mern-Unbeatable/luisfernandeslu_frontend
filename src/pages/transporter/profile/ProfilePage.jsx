@@ -62,11 +62,28 @@ export default function ProfilePage() {
   }, [data?.profile])
 
   const handleUpdateProfile = async ({ name, phone }) => {
+    const trimmedName = String(name || '').trim()
+    const trimmedPhone = String(phone || '').trim()
+
+    if (!trimmedName) {
+      toast.error(
+        t('panel.profile.nameRequired', {
+          defaultValue: 'Name is required',
+        }),
+      )
+      return
+    }
+
     try {
       const result = await updateProfile({
-        name: String(name || '').trim(),
-        phone: String(phone || '').trim(),
+        name: trimmedName,
+        phone: trimmedPhone,
       }).unwrap()
+
+      if (result?.profile) {
+        setForm(mapTransporterProfileToForm(result.profile))
+      }
+
       toast.success(
         result?.message ||
           t('panel.profile.updateSuccess', {
