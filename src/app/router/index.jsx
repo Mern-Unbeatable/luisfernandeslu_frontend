@@ -587,7 +587,7 @@ function RootLayout() {
 
 function BuyerShell() {
   const user = useSelector((state) => state.auth.user);
-  const { logout: onLogout } = useAuthLogout();
+  const { logout: onLogout, isLoggingOut } = useAuthLogout();
   const role = BUYER_ROLE_IDS.includes(user?.role) ? user.role : "company";
 
   return (
@@ -595,13 +595,14 @@ function BuyerShell() {
       role={role}
       userName={user?.name?.split(" ")[0] || "User"}
       onLogout={onLogout}
+      isLoggingOut={isLoggingOut}
     />
   );
 }
 
 function PanelShell() {
   const user = useSelector((state) => state.auth.user);
-  const { logout: onLogout } = useAuthLogout();
+  const { logout: onLogout, isLoggingOut } = useAuthLogout();
   const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : "supplier";
 
   return (
@@ -609,6 +610,7 @@ function PanelShell() {
       role={role}
       userName={user?.name || "User"}
       onLogout={onLogout}
+      isLoggingOut={isLoggingOut}
     />
   );
 }

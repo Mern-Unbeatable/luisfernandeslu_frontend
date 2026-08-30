@@ -7,6 +7,7 @@ const itemBase =
 export default function BuyerSidebar({
   items = [],
   onLogout,
+  isLoggingOut = false,
   onNavigate,
   className = '',
 }) {
@@ -41,8 +42,16 @@ export default function BuyerSidebar({
         <button
           type="button"
           onClick={onLogout}
-          className={`${itemBase} border-gray-200 text-left text-[var(--primary-text)] hover:text-[var(--active)]`}
+          disabled={isLoggingOut}
+          aria-busy={isLoggingOut || undefined}
+          className={`${itemBase} flex items-center gap-2 border-gray-200 text-left text-[var(--primary-text)] hover:text-[var(--active)] disabled:cursor-not-allowed disabled:opacity-70`}
         >
+          {isLoggingOut ? (
+            <span
+              aria-hidden
+              className="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-solid border-[var(--active)] border-r-transparent"
+            />
+          ) : null}
           {t('buyer.logOut')}
         </button>
       </nav>

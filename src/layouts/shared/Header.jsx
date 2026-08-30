@@ -322,9 +322,17 @@ export default function Header() {
                       role="menuitem"
                       onClick={onLogout}
                       disabled={isLoggingOut}
-                      className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-red-500 transition-colors hover:bg-red-50"
+                      aria-busy={isLoggingOut || undefined}
+                      className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-red-500 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
                     >
-                      <FiLogOut className="size-4 shrink-0" strokeWidth={1.75} />
+                      {isLoggingOut ? (
+                        <span
+                          aria-hidden
+                          className="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-solid border-red-500 border-r-transparent"
+                        />
+                      ) : (
+                        <FiLogOut className="size-4 shrink-0" strokeWidth={1.75} />
+                      )}
                       {t('header.logOut')}
                     </button>
                   </div>
@@ -417,9 +425,17 @@ export default function Header() {
                   type="button"
                   onClick={onLogout}
                   disabled={isLoggingOut}
+                  aria-busy={isLoggingOut || undefined}
                   className="flex items-center gap-3 px-4 py-3 text-left text-red-500 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  <FiLogOut className="size-5 shrink-0" strokeWidth={1.75} />
+                  {isLoggingOut ? (
+                    <span
+                      aria-hidden
+                      className="inline-block size-5 shrink-0 animate-spin rounded-full border-2 border-solid border-red-500 border-r-transparent"
+                    />
+                  ) : (
+                    <FiLogOut className="size-5 shrink-0" strokeWidth={1.75} />
+                  )}
                   <span className="text-sm font-medium">{t('header.logOut')}</span>
                 </button>
               </>
