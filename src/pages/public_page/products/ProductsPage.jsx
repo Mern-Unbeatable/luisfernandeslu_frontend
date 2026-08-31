@@ -24,6 +24,7 @@ import {
 } from '@/features/products/productApi'
 import ProductsSidebar from './components/ProductsSidebar'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+import useCartAction from '@/hooks/useCartAction'
 
 function resolveListingRole(viewer, user) {
   if (
@@ -45,11 +46,12 @@ export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const user = useSelector((state) => state.auth.user)
   const authRole = resolveStorefrontBuyerRole(user)
+  const { handleAddToCart } = useCartAction()
 
   const handleListingAction = useCallback(
     (actionId, product) => {
       if (actionId === 'add_to_cart') {
-        navigate('/cart')
+        handleAddToCart()
         return
       }
       if (actionId === 'view_details' && product?.slug) {

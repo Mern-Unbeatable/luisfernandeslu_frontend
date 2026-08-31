@@ -12,6 +12,7 @@ import {
 } from '@/features/marketplace/marketplaceApi'
 import useHomeSectionPagination from '../hooks/useHomeSectionPagination'
 import HomeStatsBar from './HomeStatsBar'
+import useCartAction from '@/hooks/useCartAction'
 
 function resolveListingRole(viewer, user) {
   if (
@@ -33,6 +34,7 @@ export default function TopSellingProductsSection() {
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
   const authRole = resolveStorefrontBuyerRole(user)
+  const { handleAddToCart } = useCartAction()
 
   const {
     data,
@@ -64,7 +66,7 @@ export default function TopSellingProductsSection() {
   const handleListingAction = useCallback(
     (actionId, product) => {
       if (actionId === 'add_to_cart') {
-        navigate('/cart')
+        handleAddToCart()
         return
       }
       if (actionId === 'view_details' && product?.slug) {

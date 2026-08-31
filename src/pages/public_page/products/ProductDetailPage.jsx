@@ -9,6 +9,7 @@ import NotFoundPage from '../NotFoundPage'
 import SendQuoteModal from './components/SendQuoteModal'
 import { useGetMarketplaceProductBySlugQuery } from '@/features/marketplace/marketplaceApi'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
+import useCartAction from '@/hooks/useCartAction'
 
 function resolveDetailRole(viewer, user) {
   if (
@@ -43,6 +44,7 @@ export default function ProductDetailPage() {
   const [quoteOpen, setQuoteOpen] = useState(false)
   const authRole = resolveStorefrontBuyerRole(user)
   const pricingView = authRole === 'company' ? 'company' : 'retail'
+  const { handleAddToCart } = useCartAction()
 
   const {
     data,
@@ -71,7 +73,7 @@ export default function ProductDetailPage() {
       navigate(listingRole === 'company' ? '/checkout/company' : '/checkout')
     }
     if (actionId === 'add_to_cart') {
-      navigate('/cart')
+      handleAddToCart()
     }
   }
 
