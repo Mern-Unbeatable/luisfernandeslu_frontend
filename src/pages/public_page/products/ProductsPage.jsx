@@ -327,7 +327,7 @@ export default function ProductsPage() {
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-8 xl:gap-10">
           <ProductsSidebar
-            className="lg:sticky lg:top-24 lg:self-start"
+            className="lg:sticky lg:top-48 lg:self-start"
             minPrice={minPrice}
             maxPrice={maxPrice}
             onMinPriceChange={(value) => {
