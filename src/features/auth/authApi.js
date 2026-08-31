@@ -28,6 +28,7 @@ export const authApi = baseApi.injectEndpoints({
         { type: 'Promotion', id: 'SPONSORED_LIST' },
         { type: 'Product', id: 'TOP_SELLING_LIST' },
         { type: 'Product', id: 'MARKETPLACE_LIST' },
+        { type: 'Product', id: 'MARKETPLACE_DETAIL' },
       ],
     }),
     register: builder.mutation({
@@ -50,6 +51,7 @@ export const authApi = baseApi.injectEndpoints({
         { type: 'Promotion', id: 'SPONSORED_LIST' },
         { type: 'Product', id: 'TOP_SELLING_LIST' },
         { type: 'Product', id: 'MARKETPLACE_LIST' },
+        { type: 'Product', id: 'MARKETPLACE_DETAIL' },
       ],
     }),
     verifyOtp: builder.mutation({

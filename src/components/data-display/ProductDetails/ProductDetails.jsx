@@ -18,9 +18,11 @@ export default function ProductDetails({
   quantity: quantityProp,
   onQuantityChange,
   onAction,
+  actions: actionsOverride,
   className = '',
 }) {
   const view = resolveDetailsView(role, context)
+  const actions = actionsOverride ?? view.actions
   const [quantity, setQuantity] = useState(quantityProp ?? 1)
 
   const actionLayout =
@@ -218,7 +220,7 @@ export default function ProductDetails({
             ) : null}
 
             <ProductActions
-              actions={view.actions}
+              actions={actions}
               showQuantity={view.showQuantity}
               quantity={quantity}
               onQuantityChange={changeQty}

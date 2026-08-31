@@ -10,6 +10,8 @@ import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
 import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
+import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
+import ProductsPageSkeleton from "../../pages/public_page/products/components/ProductsPageSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -35,9 +37,11 @@ const Home = Loadable(
 );
 const PublicProducts = Loadable(
   lazy(() => import("../../pages/public_page/products/ProductsPage")),
+  <ProductsPageSkeleton />,
 );
 const PublicProductDetail = Loadable(
   lazy(() => import("../../pages/public_page/products/ProductDetailPage")),
+  <ProductDetailPageSkeleton />,
 );
 const UserCheckout = Loadable(
   lazy(() => import("../../pages/public_page/checkout/UserCheckoutPage")),

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../components/StorefrontProductListingCell'
-import ProductCardSkeleton from '@/components/data-display/ProductCard/ProductCardSkeleton'
+import ProductsPageSkeleton from './components/ProductsPageSkeleton'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 import {
@@ -318,6 +318,10 @@ export default function ProductsPage() {
     resetPageParam()
   }, [resetPageParam])
 
+  if ((isLoading && !data) || isResolvingCategoryFilter) {
+    return <ProductsPageSkeleton />
+  }
+
   return (
     <div className="w-full bg-white py-6 sm:py-8 lg:py-10">
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
@@ -362,15 +366,7 @@ export default function ProductsPage() {
               ) : null}
             </div>
 
-            {(isLoading && !data) || isResolvingCategoryFilter ? (
-              <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6">
-                {Array.from({ length: MARKETPLACE_PRODUCTS_PAGE_SIZE }, (_, i) => (
-                  <li key={`products-skel-${i}`} className="flex h-full min-w-0">
-                    <ProductCardSkeleton className="h-full w-full" />
-                  </li>
-                ))}
-              </ul>
-            ) : isError ? (
+            {isError ? (
               <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
                 <p className="text-sm text-red-700">
                   {error?.data?.message

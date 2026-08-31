@@ -1,5 +1,8 @@
 import { baseApi } from '../../services/api/baseApi'
-import { mapMarketplaceCatalogProduct } from './marketplaceMappers'
+import {
+  mapMarketplaceCatalogProduct,
+  mapMarketplaceDetailProduct,
+} from './marketplaceMappers'
 
 export const SPONSORED_PRODUCTS_PAGE_SIZE = 8
 /** Hard cap shared with backend `MAX_SPONSORED_SLOTS`. */
@@ -25,6 +28,12 @@ function serializeMarketplaceListQuery(endpointName, queryArgs, defaultLimit) {
     minPrice,
     maxPrice,
   })})`
+}
+
+function serializeDetailQuery(endpointName, queryArgs) {
+  const slug = String(queryArgs?.slug ?? queryArgs ?? '').toLowerCase()
+  const pricingView = queryArgs?.pricingView ?? 'retail'
+  return `${endpointName}(${JSON.stringify({ slug, pricingView })})`
 }
 
 function serializePricingQuery(endpointName, queryArgs, defaultLimit) {
@@ -120,6 +129,29 @@ export const marketplaceApi = baseApi.injectEndpoints({
       }),
       providesTags: [{ type: 'Product', id: 'MARKETPLACE_LIST' }],
     }),
+    getMarketplaceProductBySlug: builder.query({
+      query: ({ slug, pricingView = 'retail' } = {}) => ({
+        url: `/api/marketplace/products/${encodeURIComponent(slug)}`,
+        method: 'GET',
+      }),
+      serializeQueryArgs: ({ endpointName, queryArgs }) =>
+        serializeDetailQuery(endpointName, queryArgs),
+      transformResponse: (response) => ({
+        product: mapMarketplaceDetailProduct(
+          response?.product ?? {},
+          response?.viewer ?? null,
+        ),
+        viewer: response?.viewer ?? null,
+        message: response?.message,
+      }),
+      providesTags: (_result, _error, arg) => {
+        const slug = String(arg?.slug ?? arg ?? '').toLowerCase()
+        return [
+          { type: 'Product', id: `MARKETPLACE_DETAIL_${slug}` },
+          { type: 'Product', id: 'MARKETPLACE_DETAIL' },
+        ]
+      },
+    }),
   }),
 })
 
@@ -127,4 +159,5 @@ export const {
   useGetSponsoredProductsQuery,
   useGetTopSellingProductsQuery,
   useGetMarketplaceProductsQuery,
+  useGetMarketplaceProductBySlugQuery,
 } = marketplaceApi
