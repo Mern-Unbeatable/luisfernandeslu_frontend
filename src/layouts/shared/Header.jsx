@@ -7,6 +7,7 @@ import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageS
 import CategoryBar from './CategoryBar'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
 import { useAuthLogout } from '../../features/auth/useAuthLogout'
+import { useGetCartQuery } from '../../features/cart/cartApi'
 import {
   FiSearch,
   FiMessageSquare,
@@ -55,6 +56,9 @@ export default function Header() {
   const [headerBottom, setHeaderBottom] = useState(0)
   const headerRef = useRef(null)
   const searchInputRef = useRef(null)
+
+  const { data: cartData } = useGetCartQuery(undefined, { skip: !isAuthenticated })
+  const cartItemCount = cartData?.cart?.items?.length || 0
 
   const onLogout = () => {
     setMenuOpen(false)
@@ -277,9 +281,14 @@ export default function Header() {
                   to={to}
                   aria-label={t(`header.${key}`)}
                   aria-current={utilityAriaCurrent(key)}
-                  className={utilityIconClass(key)}
+                  className={`relative ${utilityIconClass(key)}`}
                 >
                   <Icon className="size-6" strokeWidth={1.75} />
+                  {key === 'cart' && cartItemCount > 0 ? (
+                    <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                      {cartItemCount}
+                    </span>
+                  ) : null}
                 </Link>
               ) : (
                 <button
@@ -393,7 +402,14 @@ export default function Header() {
                       : 'text-[var(--primary-text)]'
                   }`}
                 >
-                  <Icon className="size-5 shrink-0" strokeWidth={1.75} />
+                  <div className="relative">
+                    <Icon className="size-5 shrink-0" strokeWidth={1.75} />
+                    {key === 'cart' && cartItemCount > 0 ? (
+                      <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                        {cartItemCount}
+                      </span>
+                    ) : null}
+                  </div>
                   <span className="text-sm font-medium">{t(`header.${key}`)}</span>
                 </Link>
               ) : (
