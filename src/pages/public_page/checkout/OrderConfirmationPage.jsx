@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   FiCalendar,
@@ -7,14 +7,52 @@ import {
   FiMail,
   FiMapPin,
   FiPackage,
+  FiLoader
 } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
 import OrderConfirmationSummary from './components/OrderConfirmationSummary'
-import { ORDER_CONFIRMATION_META } from './data/orderConfirmationDemo'
+import { useGetCheckoutQuery } from '@/features/checkout/checkoutApi'
+import dayjs from 'dayjs'
 
 export default function OrderConfirmationPage() {
   const { t } = useTranslation()
-  const meta = ORDER_CONFIRMATION_META
+  const [searchParams] = useSearchParams()
+  const checkoutId = searchParams.get('id')
+  
+  const { data, isLoading, isError } = useGetCheckoutQuery(checkoutId, {
+    skip: !checkoutId
+  })
+
+  const checkout = data?.body
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[400px] items-center justify-center py-12">
+        <FiLoader className="size-8 animate-spin text-[var(--active)]" />
+      </div>
+    )
+  }
+
+  if (isError || !checkout) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center py-12">
+        <p className="text-lg text-red-500 font-semibold">{t('orderConfirmationPage.notFound', { defaultValue: 'Order not found' })}</p>
+        <Link to="/" className="mt-4 text-[var(--active)] hover:underline">
+          {t('orderConfirmationPage.goHome', { defaultValue: 'Go back home' })}
+        </Link>
+      </div>
+    )
+  }
+
+  // Calculate estimated delivery: +2 and +5 days for demo purposes
+  const createdAt = dayjs(checkout.createdAt)
+  const deliveryDateFrom = createdAt.add(2, 'day').format('MMMM D, YYYY')
+  const deliveryDateTo = createdAt.add(5, 'day').format('MMMM D, YYYY')
+  
+  const address = checkout.shippingAddress
+  const deliveryAddress = address 
+    ? `${address.streetAddress}, ${address.city}, ${address.zipCode}`
+    : '—'
 
   return (
     <div className="w-full bg-[#F9FAFB] py-8 sm:py-10 lg:py-12">
@@ -47,17 +85,17 @@ export default function OrderConfirmationPage() {
               <div className="rounded-lg bg-gray-100 p-5 sm:p-6">
                 <p className="text-base font-bold text-[var(--primary-text)]">
                   {t('orderConfirmationPage.orderNumber', {
-                    number: meta.orderNumber,
+                    number: checkout.checkoutNumber,
                   })}
                 </p>
                 <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[var(--secondary-text)]">
                   <span className="inline-flex items-center gap-1.5">
                     <FiCalendar className="size-4 shrink-0" aria-hidden />
-                    {meta.orderDate}
+                    {createdAt.format('MMMM D, YYYY')}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <FiMail className="size-4 shrink-0" aria-hidden />
-                    {meta.email}
+                    {checkout.email}
                   </span>
                 </div>
               </div>
@@ -75,7 +113,7 @@ export default function OrderConfirmationPage() {
               </h2>
               <p className="mt-1 text-sm text-[var(--secondary-text)]">
                 {t('orderConfirmationPage.shipmentItems', {
-                  count: meta.shipmentItemCount,
+                  count: checkout.items?.length || 0,
                 })}
               </p>
 
@@ -90,7 +128,7 @@ export default function OrderConfirmationPage() {
                         {t('orderConfirmationPage.deliveryAddress')}
                       </p>
                       <p className="mt-1 text-sm leading-relaxed text-[var(--secondary-text)]">
-                        {meta.deliveryAddress}
+                        {deliveryAddress}
                       </p>
                     </div>
                   </div>
@@ -107,7 +145,7 @@ export default function OrderConfirmationPage() {
                           {t('orderConfirmationPage.estimatedDelivery')}
                         </p>
                         <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                          {meta.deliveryDateFrom} - {meta.deliveryDateTo}
+                          {deliveryDateFrom} - {deliveryDateTo}
                         </p>
                       </div>
                     </div>
@@ -122,8 +160,8 @@ export default function OrderConfirmationPage() {
                         <p className="text-sm font-semibold text-[var(--primary-text)]">
                           {t('orderConfirmationPage.shippingMethod')}
                         </p>
-                        <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                          {meta.shippingMethod}
+                        <p className="mt-1 text-sm text-[var(--secondary-text)] flex flex-col capitalize">
+                          {checkout.unloadingType || 'Standard'}
                         </p>
                       </div>
                     </div>
@@ -140,7 +178,7 @@ export default function OrderConfirmationPage() {
             </Link>
           </div>
 
-          <OrderConfirmationSummary />
+          <OrderConfirmationSummary checkout={checkout} />
         </div>
       </div>
     </div>

@@ -10,10 +10,14 @@ import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
 import { useGetCustomerProfileQuery } from '@/features/customer/customerProfileApi'
+import { usePlaceCheckoutMutation } from '@/features/checkout/checkoutApi'
+import { useGetCartQuery } from '@/features/cart/cartApi'
+import toast from 'react-hot-toast'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
 export default function UserCheckoutPage() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const navigate = useNavigate()  
   
   const { data: profileData } = useGetCustomerProfileQuery()
   const savedAddress = profileData?.profile?.billingAddress
@@ -22,6 +26,10 @@ export default function UserCheckoutPage() {
   const [billing, setBilling] = useState(emptyBillingValues)
   const [shipping, setShipping] = useState(emptyShippingValues)
   const [useCustomBilling, setUseCustomBilling] = useState(false)
+  const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
+  const { data: cartData } = useGetCartQuery()
+
+  const cartItems = cartData?.cart?.items || []
 
   useEffect(() => {
     if (savedAddress && !useCustomBilling) {
@@ -29,9 +37,68 @@ export default function UserCheckoutPage() {
     }
   }, [savedAddress, useCustomBilling])
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    navigate('/order/confirmation')
+    
+    if (cartItems.length === 0) {
+      toast.error(t('checkoutPage.emptyCart'))
+      return
+    }
+
+    const cartItemIds = cartItems.map(item => item.id)
+
+    let finalBillingAddress = null
+    if (!useCustomBilling && hasSavedAddress) {
+      finalBillingAddress = {
+        title: 'Profile Billing',
+        streetAddress: savedAddress.address || '—',
+        city: savedAddress.city || '—',
+        state: savedAddress.region || '—',
+        zipCode: savedAddress.zipCode || '—',
+        country: savedAddress.country || 'Portugal'
+      }
+    } else {
+      finalBillingAddress = {
+        title: 'Custom Billing',
+        streetAddress: billing.address || '—',
+        city: billing.city || '—',
+        state: billing.region || '—',
+        zipCode: billing.zipCode || '—',
+        country: 'Portugal'
+      }
+    }
+
+    const payload = {
+      cartItemIds,
+      firstName: billing.firstName || savedAddress?.firstName || '—',
+      lastName: billing.lastName || savedAddress?.lastName || '—',
+      email: billing.email || savedAddress?.email || 'test@test.com',
+      phone: billing.phone || savedAddress?.phone || '000000',
+      billingAddress: finalBillingAddress,
+      shippingAddress: {
+        title: 'Shipping',
+        streetAddress: shipping.address || '—',
+        city: shipping.city || '—',
+        state: shipping.region || '—',
+        zipCode: shipping.zipCode || '—',
+        country: 'Portugal'
+      },
+      unloadingType: shipping.unloadingType || 'Forklift',
+      unloadingLocationDescription: shipping.unloadingLocationDescription,
+      accessConditions: shipping.accessConditions,
+      paymentMethod: 'multibanco',
+    }
+
+    try {
+      const result = await placeCheckout(payload).unwrap()
+      if (result.success) {
+        navigate(`/order/confirmation?id=${result.checkout.id}`)
+      } else {
+        toast.error(getAuthErrorMessage(result, t('checkoutPage.placeOrderFailed')))
+      }
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t('checkoutPage.placeOrderFailed')))
+    }
   }
 
   return (
@@ -94,7 +161,11 @@ export default function UserCheckoutPage() {
             <ShippingUnloadingForm values={shipping} onChange={setShipping} />
           </form>
 
-          <CheckoutOrderSummary backTo="/products" />
+          <CheckoutOrderSummary 
+            backTo="/products" 
+            shippingForm={shipping}
+            isSubmitting={isSubmitting}
+          />
         </div>
       </div>
     </div>

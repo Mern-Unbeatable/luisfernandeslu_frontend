@@ -7,12 +7,23 @@ import {
   CheckoutField,
   CheckoutSelect,
   CheckoutTextArea,
+  CheckoutTextInput,
 } from './checkoutFields'
+import AddressAutocomplete from './AddressAutocomplete'
 
 export default function ShippingUnloadingForm({ values, onChange }) {
   const { t } = useTranslation()
 
   const set = (key) => (value) => onChange({ ...values, [key]: value })
+
+  const handleLocationSelect = (loc) => {
+    onChange({
+      ...values,
+      address: loc.address,
+      city: loc.city,
+      region: loc.region,
+    })
+  }
 
   const mapOptions = (options) =>
     options.map((option) => ({
@@ -32,7 +43,45 @@ export default function ShippingUnloadingForm({ values, onChange }) {
         {t('checkoutPage.shippingIntro')}
       </p>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-6 space-y-8">
+        <div>
+          <h3 className="text-base font-semibold text-[var(--primary-text)] mb-4">
+            {t('checkoutPage.deliveryAddress', { defaultValue: 'Delivery Address' })}
+          </h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <CheckoutField label={t('checkoutPage.address')} className="sm:col-span-3">
+              <AddressAutocomplete
+                value={values.address}
+                onChange={set('address')}
+                onLocationSelect={handleLocationSelect}
+                placeholder={t('checkoutPage.address')}
+              />
+            </CheckoutField>
+            
+            <CheckoutField label={t('checkoutPage.region')}>
+              <CheckoutTextInput
+                value={values.region}
+                onChange={set('region')}
+                placeholder={t('checkoutPage.region')}
+              />
+            </CheckoutField>
+            <CheckoutField label={t('checkoutPage.city')}>
+              <CheckoutTextInput
+                value={values.city}
+                onChange={set('city')}
+                placeholder={t('checkoutPage.city')}
+              />
+            </CheckoutField>
+            <CheckoutField label={t('checkoutPage.zipCode')}>
+              <CheckoutTextInput
+                value={values.zipCode}
+                onChange={set('zipCode')}
+                placeholder={t('checkoutPage.zipCode')}
+              />
+            </CheckoutField>
+          </div>
+        </div>
+
         <div>
           <h3 className="text-base font-semibold text-[var(--primary-text)]">
             {t('checkoutPage.unloadingRequirements')}
@@ -84,6 +133,10 @@ export default function ShippingUnloadingForm({ values, onChange }) {
 }
 
 export const emptyShippingValues = {
+  region: '',
+  city: '',
+  zipCode: '',
+  address: '',
   unloadingType: '',
   unloadingLocation: '',
   accessConditions: '',

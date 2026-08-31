@@ -8,6 +8,7 @@ import {
   CheckoutSelect,
   CheckoutTextInput,
 } from './checkoutFields'
+import AddressAutocomplete from './AddressAutocomplete'
 
 export default function BillingInformationForm({
   values,
@@ -95,30 +96,34 @@ export default function BillingInformationForm({
             </CheckoutField>
 
             <div className="grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-3">
+              <CheckoutField label={t('checkoutPage.address')} className="sm:col-span-3">
+                <AddressAutocomplete
+                  value={values.address}
+                  onChange={set('address')}
+                  onLocationSelect={(loc) => {
+                    onChange({
+                      ...values,
+                      address: loc.address,
+                      city: loc.city,
+                      region: loc.region,
+                    })
+                  }}
+                  placeholder={t('checkoutPage.address')}
+                />
+              </CheckoutField>
+
               <CheckoutField label={t('checkoutPage.region')}>
-                <CheckoutSelect
+                <CheckoutTextInput
                   value={values.region}
                   onChange={set('region')}
-                  options={CHECKOUT_REGION_OPTIONS.map((option) => ({
-                    ...option,
-                    label:
-                      option.value === ''
-                        ? t('checkoutPage.selectPlaceholder')
-                        : option.label,
-                  }))}
+                  placeholder={t('checkoutPage.region')}
                 />
               </CheckoutField>
               <CheckoutField label={t('checkoutPage.city')}>
-                <CheckoutSelect
+                <CheckoutTextInput
                   value={values.city}
                   onChange={set('city')}
-                  options={CHECKOUT_CITY_OPTIONS.map((option) => ({
-                    ...option,
-                    label:
-                      option.value === ''
-                        ? t('checkoutPage.selectPlaceholder')
-                        : option.label,
-                  }))}
+                  placeholder={t('checkoutPage.city')}
                 />
               </CheckoutField>
               <CheckoutField label={t('checkoutPage.zipCode')}>
@@ -129,14 +134,6 @@ export default function BillingInformationForm({
                 />
               </CheckoutField>
             </div>
-
-            <CheckoutField label={t('checkoutPage.address')} className="sm:col-span-2">
-              <CheckoutTextInput
-                value={values.address}
-                onChange={set('address')}
-                placeholder={t('checkoutPage.address')}
-              />
-            </CheckoutField>
           </>
         )}
 

@@ -1,13 +1,18 @@
 import { useTranslation } from 'react-i18next'
-import {
-  ORDER_CONFIRMATION_ITEMS,
-  ORDER_CONFIRMATION_META,
-  ORDER_CONFIRMATION_TOTALS,
-} from '../data/orderConfirmationDemo'
 
-export default function OrderConfirmationSummary() {
+export default function OrderConfirmationSummary({ checkout }) {
   const { t } = useTranslation()
-  const { subtotal, shipping, vat, total, currency } = ORDER_CONFIRMATION_TOTALS
+
+  if (!checkout) return null
+
+  const items = checkout.items || []
+  const { subtotal, shipping, vat, total, currency } = checkout.totals || {
+    subtotal: 0,
+    shipping: 0,
+    vat: 0,
+    total: 0,
+    currency: 'EUR'
+  }
 
   return (
     <aside className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-24">
@@ -15,20 +20,20 @@ export default function OrderConfirmationSummary() {
         {t('checkoutPage.orderSummaryTitle')}
       </h2>
 
-      <ul className="mt-5 space-y-4 border-b border-gray-200 pb-5">
-        {ORDER_CONFIRMATION_ITEMS.map((item) => (
+      <ul className="mt-5 space-y-4 border-b border-gray-200 pb-5 max-h-[300px] overflow-y-auto">
+        {items.map((item) => (
           <li key={item.id} className="flex gap-3">
             <img
-              src={item.image}
-              alt=""
+              src={item.image || 'https://placehold.co/100'}
+              alt={item.title}
               className="size-14 shrink-0 rounded-md border border-gray-200 object-cover"
             />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium leading-snug text-[var(--primary-text)]">
+              <p className="text-sm font-medium leading-snug text-[var(--primary-text)] line-clamp-2">
                 {item.title}
               </p>
               <p className="mt-1 text-sm font-medium text-[var(--active)]">
-                {item.quantity} x €{item.unitPrice}
+                {item.quantity} x {item.unitPriceText}
               </p>
             </div>
           </li>
@@ -66,9 +71,9 @@ export default function OrderConfirmationSummary() {
         €{total.toFixed(2)} {currency}
       </p>
 
-      <p className="mt-4 text-center text-sm font-medium text-[var(--active)]">
+      <p className="mt-4 text-center text-sm font-medium text-[var(--active)] uppercase">
         {t('orderConfirmationPage.paymentMethod', {
-          method: ORDER_CONFIRMATION_META.paymentMethod,
+          method: checkout.paymentMethod || 'multibanco',
         })}
       </p>
     </aside>
