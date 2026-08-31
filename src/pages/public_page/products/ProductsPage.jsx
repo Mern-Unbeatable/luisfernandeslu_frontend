@@ -3,23 +3,48 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../components/StorefrontProductListingCell'
+import ProductCardSkeleton from '@/components/data-display/ProductCard/ProductCardSkeleton'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
-import ProductsSidebar from './components/ProductsSidebar'
 import {
-  PRODUCTS_LIST,
-  PRODUCTS_PAGE_SIZE,
-  getProductsTotalPages,
-} from './data/productsListing'
-import { filterProducts } from './utils/filterProducts'
+  MARKETPLACE_PRODUCTS_PAGE_SIZE,
+  useGetMarketplaceProductsQuery,
+} from '@/features/marketplace/marketplaceApi'
+import {
+  findCatalogTaxonomy,
+  findCategorySlugForSubcategory,
+  mapSlugToId,
+  pickProductTypes,
+  pickSubcategories,
+} from '@/features/marketplace/catalogFilter'
+import {
+  useGetCategoriesQuery,
+  useGetProductTypesQuery,
+  useGetSubCategoriesQuery,
+} from '@/features/products/productApi'
+import ProductsSidebar from './components/ProductsSidebar'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
+
+function resolveListingRole(viewer, user) {
+  if (
+    viewer?.isCompany
+    || viewer?.role === 'company'
+    || viewer?.pricingView === 'company'
+  ) {
+    return 'company'
+  }
+  if (viewer?.role === 'customer' || viewer?.role === 'guest') {
+    return 'customer'
+  }
+  return resolveStorefrontBuyerRole(user)
+}
 
 export default function ProductsPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const user = useSelector((state) => state.auth.user)
-  const listingRole = resolveStorefrontBuyerRole(user)
+  const authRole = resolveStorefrontBuyerRole(user)
 
   const handleListingAction = useCallback(
     (actionId, product) => {
@@ -34,21 +59,158 @@ export default function ProductsPage() {
     [navigate],
   )
 
-  const [minPrice, setMinPrice] = useState(300)
+  const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(500)
-  const [priceBracketId, setPriceBracketId] = useState('300-500')
-  const [categoryIds, setCategoryIds] = useState(
-    () => new Set(['cement-mortar-concrete']),
-  )
+  const [priceBracketId, setPriceBracketId] = useState(null)
+  const [categoryIds, setCategoryIds] = useState(() => new Set())
   const [typeIds, setTypeIds] = useState(() => new Set())
   const [expandedSubcategoryIds, setExpandedSubcategoryIds] = useState(
-    () => new Set(['cements']),
+    () => new Set(),
   )
   const [activeCategoryId, setActiveCategoryId] = useState(
-    'cement-mortar-concrete',
+    PRODUCT_CATEGORIES[0]?.id ?? '',
   )
 
   const page = Math.max(1, Number(searchParams.get('page')) || 1)
+  const search = searchParams.get('search')?.trim() || ''
+  const urlCategorySlug = searchParams.get('category')?.trim() || ''
+  const urlSubSlug = searchParams.get('sub')?.trim() || ''
+  const urlTypeSlug = searchParams.get('type')?.trim() || ''
+
+  const { data: categoriesPayload, isLoading: isCategoriesLoading } =
+    useGetCategoriesQuery()
+  const categorySlugToId = useMemo(
+    () => mapSlugToId(categoriesPayload?.categories ?? []),
+    [categoriesPayload],
+  )
+
+  const selectedTypeSlug = useMemo(() => {
+    if (typeIds.size === 1) return [...typeIds][0]
+    if (typeIds.size > 1) return [...typeIds][0]
+    return urlTypeSlug || null
+  }, [typeIds, urlTypeSlug])
+
+  const selectedSubSlug = useMemo(() => {
+    if (urlSubSlug) return urlSubSlug
+    if (selectedTypeSlug) {
+      return findCatalogTaxonomy({ typeSlug: selectedTypeSlug })?.subSlug ?? null
+    }
+    return null
+  }, [urlSubSlug, selectedTypeSlug])
+
+  const rootCategorySlug = useMemo(() => {
+    if (categoryIds.size > 0) {
+      return categoryIds.has(activeCategoryId)
+        ? activeCategoryId
+        : [...categoryIds][0]
+    }
+    if (urlCategorySlug) return urlCategorySlug
+    if (selectedSubSlug) return findCategorySlugForSubcategory(selectedSubSlug)
+    if (selectedTypeSlug) {
+      return findCatalogTaxonomy({ typeSlug: selectedTypeSlug })?.categorySlug
+        ?? null
+    }
+    return null
+  }, [
+    categoryIds,
+    activeCategoryId,
+    urlCategorySlug,
+    selectedSubSlug,
+    selectedTypeSlug,
+  ])
+
+  const rootCategoryUuid = rootCategorySlug
+    ? categorySlugToId[rootCategorySlug]
+    : null
+
+  const { data: subcategoriesPayload, isFetching: isSubcategoriesFetching } =
+    useGetSubCategoriesQuery(rootCategoryUuid, {
+      skip: !rootCategoryUuid,
+    })
+  const subSlugToId = useMemo(
+    () => mapSlugToId(pickSubcategories(subcategoriesPayload)),
+    [subcategoriesPayload],
+  )
+
+  const subCategoryUuid = selectedSubSlug
+    ? subSlugToId[selectedSubSlug]
+    : null
+
+  const { data: productTypesPayload, isFetching: isProductTypesFetching } =
+    useGetProductTypesQuery(subCategoryUuid, {
+      skip: !subCategoryUuid || !selectedTypeSlug,
+    })
+  const typeSlugToId = useMemo(
+    () => mapSlugToId(pickProductTypes(productTypesPayload)),
+    [productTypesPayload],
+  )
+
+  const apiCategoryId = useMemo(() => {
+    if (selectedTypeSlug && typeSlugToId[selectedTypeSlug]) {
+      return typeSlugToId[selectedTypeSlug]
+    }
+    if (selectedSubSlug && subSlugToId[selectedSubSlug]) {
+      return subSlugToId[selectedSubSlug]
+    }
+    if (rootCategorySlug && categorySlugToId[rootCategorySlug]) {
+      return categorySlugToId[rootCategorySlug]
+    }
+    return undefined
+  }, [
+    selectedTypeSlug,
+    typeSlugToId,
+    selectedSubSlug,
+    subSlugToId,
+    rootCategorySlug,
+    categorySlugToId,
+  ])
+
+  const categoryFilterActive = Boolean(
+    categoryIds.size > 0
+    || urlCategorySlug
+    || selectedSubSlug
+    || selectedTypeSlug,
+  )
+  const isResolvingCategoryFilter =
+    categoryFilterActive
+    && !apiCategoryId
+    && (
+      isCategoriesLoading
+      || (rootCategorySlug && !rootCategoryUuid)
+      || (rootCategoryUuid && selectedSubSlug && isSubcategoriesFetching)
+      || (subCategoryUuid && selectedTypeSlug && isProductTypesFetching)
+    )
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch,
+  } = useGetMarketplaceProductsQuery(
+    {
+      page,
+      limit: MARKETPLACE_PRODUCTS_PAGE_SIZE,
+      categoryId: apiCategoryId,
+      search: search || undefined,
+      minPrice,
+      maxPrice,
+      pricingView: authRole === 'company' ? 'company' : 'retail',
+    },
+    { skip: isResolvingCategoryFilter },
+  )
+
+  const products = data?.products ?? []
+  const pagination = data?.pagination
+  const listingRole = useMemo(
+    () => resolveListingRole(data?.viewer, user),
+    [data?.viewer, user],
+  )
+  const isCompanyView = listingRole === 'company'
+  const totalResults = pagination?.total ?? 0
+  const totalPages = Math.max(1, pagination?.totalPages ?? 1)
+  const safePage = Math.min(page, totalPages)
 
   useEffect(() => {
     const categoryId = searchParams.get('category')
@@ -69,24 +231,14 @@ export default function ProductsPage() {
     }
   }, [searchParams])
 
-  const filteredProducts = useMemo(
-    () =>
-      filterProducts(PRODUCTS_LIST, {
-        minPrice,
-        maxPrice,
-        categoryIds,
-        typeIds,
-      }),
-    [minPrice, maxPrice, categoryIds, typeIds],
-  )
-
-  const totalPages = getProductsTotalPages(filteredProducts.length)
-  const safePage = Math.min(page, totalPages)
-
-  const visibleProducts = useMemo(() => {
-    const start = (safePage - 1) * PRODUCTS_PAGE_SIZE
-    return filteredProducts.slice(start, start + PRODUCTS_PAGE_SIZE)
-  }, [filteredProducts, safePage])
+  useEffect(() => {
+    if (page > totalPages) {
+      const params = new URLSearchParams(searchParams)
+      if (totalPages <= 1) params.delete('page')
+      else params.set('page', String(totalPages))
+      setSearchParams(params, { replace: true })
+    }
+  }, [page, totalPages, searchParams, setSearchParams])
 
   const setPage = useCallback(
     (nextPage) => {
@@ -114,16 +266,28 @@ export default function ProductsPage() {
       return next
     })
     setActiveCategoryId(categoryId)
+    setTypeIds(new Set())
     resetPageParam()
   }
 
   const toggleType = (typeId) => {
+    const willCheck = !typeIds.has(typeId)
     setTypeIds((prev) => {
       const next = new Set(prev)
       if (next.has(typeId)) next.delete(typeId)
       else next.add(typeId)
       return next
     })
+    if (willCheck) {
+      const path = findCatalogTaxonomy({ typeSlug: typeId })
+      if (path?.categorySlug) {
+        setCategoryIds(new Set([path.categorySlug]))
+        setActiveCategoryId(path.categorySlug)
+        if (path.subSlug) {
+          setExpandedSubcategoryIds((prev) => new Set(prev).add(path.subSlug))
+        }
+      }
+    }
     resetPageParam()
   }
 
@@ -144,13 +308,13 @@ export default function ProductsPage() {
   }
 
   const clearFilters = useCallback(() => {
-    setMinPrice(300)
+    setMinPrice(0)
     setMaxPrice(500)
-    setPriceBracketId('300-500')
-    setCategoryIds(new Set(['cement-mortar-concrete']))
+    setPriceBracketId(null)
+    setCategoryIds(new Set())
     setTypeIds(new Set())
-    setActiveCategoryId('cement-mortar-concrete')
-    setExpandedSubcategoryIds(new Set(['cements']))
+    setActiveCategoryId(PRODUCT_CATEGORIES[0]?.id ?? '')
+    setExpandedSubcategoryIds(new Set())
     resetPageParam()
   }, [resetPageParam])
 
@@ -180,19 +344,57 @@ export default function ProductsPage() {
             onToggleSubcategory={toggleSubcategory}
             activeCategoryId={activeCategoryId}
             onActivateCategory={activateCategory}
-            resultCount={filteredProducts.length}
+            resultCount={totalResults}
             onClearFilters={clearFilters}
           />
 
           <div className="min-w-0 flex-1">
-            <p className="mb-4 hidden text-sm text-[var(--secondary-text)] lg:mb-6 lg:block">
-              {t('productsPage.resultsCount', { count: filteredProducts.length })}
-            </p>
+            <div className="mb-4 hidden items-center justify-between gap-3 lg:mb-6 lg:flex">
+              <p className="text-sm text-[var(--secondary-text)]">
+                {t('productsPage.resultsCount', { count: totalResults })}
+              </p>
+              {isCompanyView ? (
+                <p className="text-xs font-medium text-[var(--active)] sm:text-sm">
+                  {t('productsPage.companyPricing', {
+                    defaultValue: 'Company pricing shown',
+                  })}
+                </p>
+              ) : null}
+            </div>
 
-            {visibleProducts.length ? (
+            {(isLoading && !data) || isResolvingCategoryFilter ? (
               <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6">
-                {visibleProducts.map((product) => (
-                  <li key={product.id} className="flex min-w-0">
+                {Array.from({ length: MARKETPLACE_PRODUCTS_PAGE_SIZE }, (_, i) => (
+                  <li key={`products-skel-${i}`} className="flex h-full min-w-0">
+                    <ProductCardSkeleton className="h-full w-full" />
+                  </li>
+                ))}
+              </ul>
+            ) : isError ? (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
+                <p className="text-sm text-red-700">
+                  {error?.data?.message
+                    || t('productsPage.loadFailed', {
+                      defaultValue: 'Could not load products.',
+                    })}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => refetch()}
+                  className="mt-3 text-sm font-semibold text-[var(--active)] hover:underline"
+                >
+                  {t('productsPage.retry', { defaultValue: 'Try again' })}
+                </button>
+              </div>
+            ) : products.length ? (
+              <ul
+                className={[
+                  'grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6',
+                  isFetching ? 'opacity-60' : '',
+                ].join(' ')}
+              >
+                {products.map((product) => (
+                  <li key={product.id} className="flex h-full min-w-0">
                     <StorefrontProductListingCell
                       product={product}
                       role={listingRole}
@@ -212,7 +414,7 @@ export default function ProductsPage() {
               </div>
             )}
 
-            {filteredProducts.length > 0 ? (
+            {!isLoading && !isError && products.length > 0 ? (
               <Pagination
                 className="mt-8 sm:mt-10"
                 page={safePage}

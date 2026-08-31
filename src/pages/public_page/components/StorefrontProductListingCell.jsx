@@ -29,7 +29,7 @@ export default function StorefrontProductListingCell({
 
   if (isCompanyBuyer) {
     return (
-      <Link to={detailTo} className="flex min-w-0 flex-1">
+      <Link to={detailTo} className="flex h-full min-w-0 flex-1">
         <ProductListingCard
           product={product}
           role={role}
@@ -42,7 +42,7 @@ export default function StorefrontProductListingCell({
   }
 
   return (
-    <div className="relative flex min-w-0 flex-1 flex-col">
+    <div className="relative flex h-full min-w-0 flex-1 flex-col">
       <Link
         to={detailTo}
         className="absolute inset-0 z-0 rounded-lg"

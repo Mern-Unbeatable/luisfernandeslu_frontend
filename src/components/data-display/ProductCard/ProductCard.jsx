@@ -80,6 +80,7 @@ export default function ProductCard({
           ? 'border-2 border-[var(--active)]'
           : 'border border-gray-200',
         onCardClick ? 'cursor-pointer' : '',
+        'h-full',
         className,
       ].join(' ')}
     >
@@ -99,10 +100,12 @@ export default function ProductCard({
         ) : null}
 
         {product.description ? (
-          <p className="text-[13px] text-[var(--secondary-text)] line-clamp-2">
+          <p className="min-h-[2.5rem] text-[13px] text-[var(--secondary-text)] line-clamp-2">
             {product.description}
           </p>
-        ) : null}
+        ) : (
+          <p className="min-h-[2.5rem]" aria-hidden />
+        )}
 
         {product.bulkOptionLabel ? (
           <p className="text-[13px] font-medium text-[#F64C00]">
@@ -141,7 +144,7 @@ export default function ProductCard({
         ) : null}
 
         {(showQuantity || product.showQuantity) && !isFeatured ? (
-          <div className="mt-2 flex items-center gap-3">
+          <div className="mt-auto flex items-center gap-3 pt-2">
             <QuantityControl
               value={qty}
               onDecrease={() => changeQty(qty - 1)}
@@ -296,12 +299,12 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
         type="button"
         onClick={(event) => {
           event.stopPropagation()
-          onIncrease()
+          onDecrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Increase quantity"
+        aria-label="Decrease quantity"
       >
-        +
+        −
       </button>
       <span className="flex size-8 items-center justify-center bg-[var(--active)] text-xs font-semibold text-white">
         {value}
@@ -310,12 +313,12 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
         type="button"
         onClick={(event) => {
           event.stopPropagation()
-          onDecrease()
+          onIncrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Decrease quantity"
+        aria-label="Increase quantity"
       >
-        −
+        +
       </button>
     </div>
   )
