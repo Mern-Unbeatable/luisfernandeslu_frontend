@@ -14,10 +14,15 @@ export default function BillingInformationForm({
   onChange,
   showProjectFields = false,
   showCompanyFields = false,
+  hideBillingFields = false,
 }) {
   const { t } = useTranslation()
 
   const set = (key) => (value) => onChange({ ...values, [key]: value })
+
+  if (hideBillingFields && !showProjectFields) {
+    return null
+  }
 
   return (
     <section className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 lg:p-8">
@@ -26,110 +31,114 @@ export default function BillingInformationForm({
       </h2>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {showCompanyFields ? (
+        {!hideBillingFields && (
           <>
-            <CheckoutField
-              label={t('checkoutPage.companyName')}
-              className="sm:col-span-2"
-            >
+            {showCompanyFields ? (
+              <>
+                <CheckoutField
+                  label={t('checkoutPage.companyName')}
+                  className="sm:col-span-2"
+                >
+                  <CheckoutTextInput
+                    value={values.companyName}
+                    onChange={set('companyName')}
+                    placeholder={t('checkoutPage.companyName')}
+                  />
+                </CheckoutField>
+                <CheckoutField label={t('checkoutPage.vatNumber')}>
+                  <CheckoutTextInput
+                    value={values.vatNumber}
+                    onChange={set('vatNumber')}
+                    placeholder={t('checkoutPage.vatNumber')}
+                  />
+                </CheckoutField>
+                <CheckoutField label={t('checkoutPage.contactPerson')}>
+                  <CheckoutTextInput
+                    value={values.contactPerson}
+                    onChange={set('contactPerson')}
+                    placeholder={t('checkoutPage.contactPerson')}
+                  />
+                </CheckoutField>
+              </>
+            ) : null}
+
+            <CheckoutField label={t('checkoutPage.firstName')}>
               <CheckoutTextInput
-                value={values.companyName}
-                onChange={set('companyName')}
-                placeholder={t('checkoutPage.companyName')}
+                value={values.firstName}
+                onChange={set('firstName')}
+                placeholder={t('checkoutPage.firstName')}
               />
             </CheckoutField>
-            <CheckoutField label={t('checkoutPage.vatNumber')}>
+            <CheckoutField label={t('checkoutPage.lastName')}>
               <CheckoutTextInput
-                value={values.vatNumber}
-                onChange={set('vatNumber')}
-                placeholder={t('checkoutPage.vatNumber')}
+                value={values.lastName}
+                onChange={set('lastName')}
+                placeholder={t('checkoutPage.lastName')}
               />
             </CheckoutField>
-            <CheckoutField label={t('checkoutPage.contactPerson')}>
+
+            <CheckoutField label={t('checkoutPage.email')}>
               <CheckoutTextInput
-                value={values.contactPerson}
-                onChange={set('contactPerson')}
-                placeholder={t('checkoutPage.contactPerson')}
+                type="email"
+                value={values.email}
+                onChange={set('email')}
+                placeholder={t('checkoutPage.email')}
+              />
+            </CheckoutField>
+            <CheckoutField label={t('checkoutPage.phone')}>
+              <CheckoutTextInput
+                type="tel"
+                value={values.phone}
+                onChange={set('phone')}
+                placeholder={t('checkoutPage.phone')}
+              />
+            </CheckoutField>
+
+            <div className="grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-3">
+              <CheckoutField label={t('checkoutPage.region')}>
+                <CheckoutSelect
+                  value={values.region}
+                  onChange={set('region')}
+                  options={CHECKOUT_REGION_OPTIONS.map((option) => ({
+                    ...option,
+                    label:
+                      option.value === ''
+                        ? t('checkoutPage.selectPlaceholder')
+                        : option.label,
+                  }))}
+                />
+              </CheckoutField>
+              <CheckoutField label={t('checkoutPage.city')}>
+                <CheckoutSelect
+                  value={values.city}
+                  onChange={set('city')}
+                  options={CHECKOUT_CITY_OPTIONS.map((option) => ({
+                    ...option,
+                    label:
+                      option.value === ''
+                        ? t('checkoutPage.selectPlaceholder')
+                        : option.label,
+                  }))}
+                />
+              </CheckoutField>
+              <CheckoutField label={t('checkoutPage.zipCode')}>
+                <CheckoutTextInput
+                  value={values.zipCode}
+                  onChange={set('zipCode')}
+                  placeholder={t('checkoutPage.zipCode')}
+                />
+              </CheckoutField>
+            </div>
+
+            <CheckoutField label={t('checkoutPage.address')} className="sm:col-span-2">
+              <CheckoutTextInput
+                value={values.address}
+                onChange={set('address')}
+                placeholder={t('checkoutPage.address')}
               />
             </CheckoutField>
           </>
-        ) : null}
-
-        <CheckoutField label={t('checkoutPage.firstName')}>
-          <CheckoutTextInput
-            value={values.firstName}
-            onChange={set('firstName')}
-            placeholder={t('checkoutPage.firstName')}
-          />
-        </CheckoutField>
-        <CheckoutField label={t('checkoutPage.lastName')}>
-          <CheckoutTextInput
-            value={values.lastName}
-            onChange={set('lastName')}
-            placeholder={t('checkoutPage.lastName')}
-          />
-        </CheckoutField>
-
-        <CheckoutField label={t('checkoutPage.email')}>
-          <CheckoutTextInput
-            type="email"
-            value={values.email}
-            onChange={set('email')}
-            placeholder={t('checkoutPage.email')}
-          />
-        </CheckoutField>
-        <CheckoutField label={t('checkoutPage.phone')}>
-          <CheckoutTextInput
-            type="tel"
-            value={values.phone}
-            onChange={set('phone')}
-            placeholder={t('checkoutPage.phone')}
-          />
-        </CheckoutField>
-
-        <div className="grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-3">
-          <CheckoutField label={t('checkoutPage.region')}>
-            <CheckoutSelect
-              value={values.region}
-              onChange={set('region')}
-              options={CHECKOUT_REGION_OPTIONS.map((option) => ({
-                ...option,
-                label:
-                  option.value === ''
-                    ? t('checkoutPage.selectPlaceholder')
-                    : option.label,
-              }))}
-            />
-          </CheckoutField>
-          <CheckoutField label={t('checkoutPage.city')}>
-            <CheckoutSelect
-              value={values.city}
-              onChange={set('city')}
-              options={CHECKOUT_CITY_OPTIONS.map((option) => ({
-                ...option,
-                label:
-                  option.value === ''
-                    ? t('checkoutPage.selectPlaceholder')
-                    : option.label,
-              }))}
-            />
-          </CheckoutField>
-          <CheckoutField label={t('checkoutPage.zipCode')}>
-            <CheckoutTextInput
-              value={values.zipCode}
-              onChange={set('zipCode')}
-              placeholder={t('checkoutPage.zipCode')}
-            />
-          </CheckoutField>
-        </div>
-
-        <CheckoutField label={t('checkoutPage.address')} className="sm:col-span-2">
-          <CheckoutTextInput
-            value={values.address}
-            onChange={set('address')}
-            placeholder={t('checkoutPage.address')}
-          />
-        </CheckoutField>
+        )}
 
         {showProjectFields ? (
           <>
