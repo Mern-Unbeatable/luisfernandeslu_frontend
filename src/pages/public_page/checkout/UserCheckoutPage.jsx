@@ -6,11 +6,15 @@ import BillingInformationForm, {
   emptyBillingValues,
 } from './components/BillingInformationForm'
 import CheckoutOrderSummary from './components/CheckoutOrderSummary'
+import ShippingUnloadingForm, {
+  emptyShippingValues,
+} from './components/ShippingUnloadingForm'
 
 export default function UserCheckoutPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [billing, setBilling] = useState(emptyBillingValues)
+  const [shipping, setShipping] = useState(emptyShippingValues)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -27,6 +31,7 @@ export default function UserCheckoutPage() {
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8 xl:gap-10">
           <form id="checkout-form" onSubmit={handleSubmit} className="space-y-6">
             <BillingInformationForm values={billing} onChange={setBilling} />
+            <ShippingUnloadingForm values={shipping} onChange={setShipping} />
           </form>
 
           <CheckoutOrderSummary backTo="/products" />
