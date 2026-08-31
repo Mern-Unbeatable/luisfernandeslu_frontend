@@ -22,4 +22,5 @@ export const API_TAG_TYPES = [
   'CustomerReturn',
   'CustomerDispute',
   'CompanyProject',
+  'Cart',
 ]

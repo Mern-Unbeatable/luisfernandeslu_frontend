@@ -20,6 +20,7 @@ export default function ProductDetails({
   onAction,
   actions: actionsOverride,
   className = '',
+  loadingAction,
 }) {
   const view = resolveDetailsView(role, context)
   const actions = actionsOverride ?? view.actions
@@ -226,6 +227,7 @@ export default function ProductDetails({
               onQuantityChange={changeQty}
               onAction={(actionId) => onAction?.(actionId, product, quantity)}
               layout={actionLayout}
+              loadingAction={loadingAction}
             />
 
             {view.showSeller && product.seller ? (

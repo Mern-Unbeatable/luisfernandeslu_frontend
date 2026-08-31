@@ -64,16 +64,15 @@ export default function TopSellingProductsSection() {
   }, [page, totalPages, setPage])
 
   const handleListingAction = useCallback(
-    (actionId, product) => {
+    async (actionId, product) => {
       if (actionId === 'add_to_cart') {
-        handleAddToCart()
-        return
+        return handleAddToCart(product?.id, product?.defaultQuantity ?? 1)
       }
       if (actionId === 'view_details' && product?.slug) {
         navigate(`/products/${product.slug}`)
       }
     },
-    [navigate],
+    [navigate, handleAddToCart],
   )
 
   return (

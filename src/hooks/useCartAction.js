@@ -2,13 +2,28 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
+import { useAddCartItemMutation } from '@/features/cart/cartApi'
 
 export default function useCartAction() {
   const navigate = useNavigate()
   const { isAuthenticated } = useSelector((state) => state.auth)
+  const [addCartItem] = useAddCartItemMutation()
 
-  const handleAddToCart = useCallback(() => {
+  const handleAddToCart = useCallback(async (productId, quantity = 1) => {
     if (isAuthenticated) {
+      if (productId) {
+        try {
+          await addCartItem({ productId, quantity }).unwrap()
+          return true
+        } catch (err) {
+          Swal.fire({
+            title: 'Error',
+            text: err?.data?.message || 'Failed to add item to cart',
+            icon: 'error',
+          })
+          return false
+        }
+      }
       navigate('/cart')
       return true
     }
@@ -41,7 +56,7 @@ export default function useCartAction() {
     })
 
     return false
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate, addCartItem])
 
   return { handleAddToCart }
 }

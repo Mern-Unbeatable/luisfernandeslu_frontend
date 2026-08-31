@@ -40,6 +40,7 @@ export default function ProductCard({
   className = '',
 }) {
   const [qty, setQty] = useState(quantityProp ?? 1)
+  const [loadingAction, setLoadingAction] = useState(null)
 
   const resolvedBadge = resolveBadge({
     type,
@@ -61,8 +62,14 @@ export default function ProductCard({
   const isFeatured = type === 'featured'
   const isMarketplaceMeta = isSponsored
 
-  const handleAction = (actionId) => {
-    onAction?.(actionId, product)
+  const handleAction = async (actionId) => {
+    if (!onAction) return
+    setLoadingAction(actionId)
+    try {
+      await onAction(actionId, product)
+    } finally {
+      setLoadingAction(null)
+    }
   }
 
   const changeQty = (next) => {
@@ -158,13 +165,14 @@ export default function ProductCard({
                 variant: 'primary',
               }}
               className="flex-1"
+              isLoading={loadingAction === 'add_to_cart'}
               onClick={() => handleAction('add_to_cart')}
             />
           </div>
         ) : null}
 
         {!isFeatured && !isMarketplaceMeta && !(showQuantity || product.showQuantity) ? (
-          <ActionFooter actions={resolvedActions} onAction={handleAction} />
+          <ActionFooter actions={resolvedActions} onAction={handleAction} loadingAction={loadingAction} />
         ) : null}
 
         {!isFeatured
@@ -173,7 +181,7 @@ export default function ProductCard({
         && resolvedActions.length > 0
         && !resolvedActions.some((a) => a.id === 'view_details')
           ? (
-              <ActionFooter actions={resolvedActions} onAction={handleAction} />
+              <ActionFooter actions={resolvedActions} onAction={handleAction} loadingAction={loadingAction} />
             )
           : null}
       </div>
@@ -324,7 +332,7 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
   )
 }
 
-function ActionFooter({ actions, onAction }) {
+function ActionFooter({ actions, onAction, loadingAction }) {
   if (!actions?.length) return null
 
   const icons = actions.filter((a) => a.kind === 'icon')
@@ -337,6 +345,7 @@ function ActionFooter({ actions, onAction }) {
         <ActionButton
           action={fulls[0]}
           className="w-full"
+          isLoading={loadingAction === fulls[0].id}
           onClick={() => onAction(fulls[0].id)}
         />
       </div>
@@ -351,6 +360,7 @@ function ActionFooter({ actions, onAction }) {
             <ActionButton
               key={action.id}
               action={action}
+              isLoading={loadingAction === action.id}
               onClick={() => onAction(action.id)}
             />
           ))}
@@ -360,6 +370,7 @@ function ActionFooter({ actions, onAction }) {
             key={action.id}
             action={action}
             className="min-w-0 flex-1"
+            isLoading={loadingAction === action.id}
             onClick={() => onAction(action.id)}
           />
         ))}
@@ -374,6 +385,7 @@ function ActionFooter({ actions, onAction }) {
           key={action.id}
           action={action}
           className={action.kind === 'icon' ? 'shrink-0' : 'min-w-0 flex-1'}
+          isLoading={loadingAction === action.id}
           onClick={() => onAction(action.id)}
         />
       ))}
@@ -381,21 +393,26 @@ function ActionFooter({ actions, onAction }) {
   )
 }
 
-function ActionButton({ action, onClick, className = '' }) {
+function ActionButton({ action, onClick, className = '', isLoading }) {
   const Icon = action.icon ? ICON_MAP[action.icon] : null
 
   if (action.kind === 'icon') {
     return (
       <button
         type="button"
+        disabled={isLoading}
         onClick={(event) => {
           event.stopPropagation()
           onClick?.()
         }}
         aria-label={action.label || action.id}
-        className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 ${className}`}
+        className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 disabled:opacity-50 ${className}`}
       >
-        {Icon ? <Icon className="size-3.5" /> : null}
+        {isLoading ? (
+          <span className="size-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+        ) : Icon ? (
+          <Icon className="size-3.5" />
+        ) : null}
       </button>
     )
   }
@@ -411,13 +428,18 @@ function ActionButton({ action, onClick, className = '' }) {
   return (
     <button
       type="button"
+      disabled={isLoading}
       onClick={(event) => {
         event.stopPropagation()
         onClick?.()
       }}
-      className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
+      className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors disabled:opacity-50 ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
     >
-      {Icon ? <Icon className="size-4" /> : null}
+      {isLoading ? (
+        <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      ) : Icon ? (
+        <Icon className="size-4" />
+      ) : null}
       {action.label}
     </button>
   )

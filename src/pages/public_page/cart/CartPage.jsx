@@ -4,26 +4,71 @@ import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import CartItemsPanel from './components/CartItemsPanel'
 import CartTotalsCard from './components/CartTotalsCard'
-import {
-  DEMO_CART_ITEMS,
-  computeCartTotals,
-} from './data/cartDemo'
+import CartPageSkeleton from './components/CartPageSkeleton'
+import { useGetCartQuery } from '@/features/cart/cartApi'
 
 function resolveCheckoutPath(user) {
   return user?.role === 'customer' ? '/checkout' : '/checkout/company'
 }
 
+function computeLiveTotals(items, selectedIds, fees) {
+  const selected = items.filter((item) => selectedIds.has(item.id))
+  
+  const subtotalBeforeDiscount = selected.reduce(
+    (sum, item) => sum + (item.promo?.originalSubtotal ?? item.subtotal),
+    0
+  )
+  const discountAmount = selected.reduce(
+    (sum, item) => sum + (item.promo?.discountAmount ?? 0),
+    0
+  )
+  const subtotal = subtotalBeforeDiscount - discountAmount
+  
+  const hasSelection = selected.length > 0
+  const vatRate = Number(fees?.vatRate) || 0
+  
+  let vat = 0
+  if (hasSelection) {
+    if (vatRate > 0) {
+      vat = (subtotal * vatRate) / 100
+    } else {
+      vat = Number(fees?.vat) || 0
+    }
+  }
+
+  const total = hasSelection ? subtotal + vat : 0
+
+  return {
+    subtotalBeforeDiscount,
+    discount: discountAmount,
+    subtotal,
+    vat,
+    total,
+    currency: fees?.currency || 'EUR',
+  }
+}
+
 export default function CartPage() {
   const { t } = useTranslation()
   const user = useSelector((state) => state.auth.user)
-  const [items, setItems] = useState(DEMO_CART_ITEMS)
-  const [selectedIds, setSelectedIds] = useState(
-    () => new Set(DEMO_CART_ITEMS.map((item) => item.id)),
-  )
+  
+  const { data, isLoading } = useGetCartQuery()
+  const cartData = data?.cart || {}
+  const items = useMemo(() => cartData.items || [], [cartData.items])
+  const promos = useMemo(() => cartData.promos || [], [cartData.promos])
+  const fees = useMemo(() => cartData.fees || {}, [cartData.fees])
+
+  const [selectedIds, setSelectedIds] = useState(() => new Set())
+  const [hasInitialized, setHasInitialized] = useState(false)
+
+  if (items.length > 0 && !hasInitialized) {
+    setSelectedIds(new Set(items.map((item) => item.id)))
+    setHasInitialized(true)
+  }
 
   const totals = useMemo(
-    () => computeCartTotals(items, selectedIds),
-    [items, selectedIds],
+    () => computeLiveTotals(items, selectedIds, fees),
+    [items, selectedIds, fees],
   )
 
   const toggleItem = (id) => {
@@ -44,22 +89,19 @@ export default function CartPage() {
     })
   }
 
-  const updateQuantity = (id, quantity) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item)),
+  const hasSelection = items.some((item) => selectedIds.has(item.id))
+
+  if (isLoading && !data) {
+    return (
+      <div className="w-full bg-[#F9FAFB] py-6 sm:py-8 lg:py-10">
+        <Seo
+          title={t('cartPage.seoTitle')}
+          description={t('cartPage.seoDescription')}
+        />
+        <CartPageSkeleton />
+      </div>
     )
   }
-
-  const removeItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id))
-    setSelectedIds((prev) => {
-      const next = new Set(prev)
-      next.delete(id)
-      return next
-    })
-  }
-
-  const hasSelection = items.some((item) => selectedIds.has(item.id))
 
   return (
     <div className="w-full bg-[#F9FAFB] py-6 sm:py-8 lg:py-10">
@@ -75,14 +117,14 @@ export default function CartPage() {
             selectedIds={selectedIds}
             onToggleItem={toggleItem}
             onToggleAll={toggleAll}
-            onQuantityChange={updateQuantity}
-            onRemove={removeItem}
+            isLoading={isLoading}
           />
 
           <CartTotalsCard
             totals={totals}
+            promos={promos}
             checkoutPath={resolveCheckoutPath(user)}
-            disabled={!hasSelection}
+            disabled={!hasSelection || isLoading}
           />
         </div>
       </div>

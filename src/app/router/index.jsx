@@ -12,6 +12,7 @@ import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
 import ProductsPageSkeleton from "../../pages/public_page/products/components/ProductsPageSkeleton";
+import CartPageSkeleton from "../../pages/public_page/cart/components/CartPageSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -54,6 +55,7 @@ const OrderConfirmation = Loadable(
 );
 const PublicCart = Loadable(
   lazy(() => import("../../pages/public_page/cart/CartPage")),
+  <CartPageSkeleton />
 );
 const PublicMessages = Loadable(
   lazy(() => import("../../pages/public_page/messages/MessagesPage")),

@@ -67,13 +67,20 @@ export default function ProductDetailPage() {
     [listingRole, product?.actions],
   )
 
-  const handleAction = (actionId) => {
+  const [loadingAction, setLoadingAction] = useState(null)
+
+  const handleAction = async (actionId) => {
     if (actionId === 'send_quote') setQuoteOpen(true)
     if (actionId === 'buy_now') {
       navigate(listingRole === 'company' ? '/checkout/company' : '/checkout')
     }
     if (actionId === 'add_to_cart') {
-      handleAddToCart()
+      setLoadingAction('add_to_cart')
+      try {
+        await handleAddToCart(product?.id, product?.defaultQuantity ?? 1)
+      } finally {
+        setLoadingAction(null)
+      }
     }
   }
 
@@ -126,6 +133,7 @@ export default function ProductDetailPage() {
           quantity={product.defaultQuantity ?? 1}
           actions={actions}
           onAction={handleAction}
+          loadingAction={loadingAction}
         />
       </div>
 

@@ -11,10 +11,10 @@ const ICON_MAP = {
   ban: FiSlash,
 }
 
-function ActionButton({ action, onClick, className = '' }) {
+function ActionButton({ action, onClick, className = '', isLoading }) {
   const Icon = action.icon ? ICON_MAP[action.icon] : null
   const base =
-    'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5'
+    'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5 disabled:opacity-50'
 
   const variants = {
     primary: 'bg-[var(--active)] text-white hover:brightness-95',
@@ -26,10 +26,15 @@ function ActionButton({ action, onClick, className = '' }) {
   return (
     <button
       type="button"
+      disabled={isLoading}
       onClick={() => onClick?.(action.id)}
       className={`${base} ${variants[action.variant] || variants.primary} ${className}`}
     >
-      {Icon ? <Icon className="size-4 shrink-0" aria-hidden /> : null}
+      {isLoading ? (
+        <span className="size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden />
+      ) : Icon ? (
+        <Icon className="size-4 shrink-0" aria-hidden />
+      ) : null}
       <span>{action.label}</span>
     </button>
   )
@@ -49,6 +54,7 @@ export default function ProductActions({
   onQuantityChange,
   onAction,
   layout = 'customer',
+  loadingAction,
 }) {
   if (!actions.length && !showQuantity) return null
 
@@ -56,7 +62,7 @@ export default function ProductActions({
     return (
       <div className="flex flex-row gap-3">
         {actions.map((action) => (
-          <ActionButton key={action.id} action={action} onClick={onAction} />
+          <ActionButton key={action.id} action={action} isLoading={loadingAction === action.id} onClick={onAction} />
         ))}
       </div>
     )
@@ -78,6 +84,7 @@ export default function ProductActions({
         {primary ? (
           <ActionButton
             action={primary}
+            isLoading={loadingAction === primary.id}
             onClick={onAction}
             className="min-w-0"
           />
@@ -90,6 +97,7 @@ export default function ProductActions({
             <ActionButton
               key={action.id}
               action={action}
+              isLoading={loadingAction === action.id}
               onClick={onAction}
             />
           ))}
