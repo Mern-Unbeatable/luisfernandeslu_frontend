@@ -77,6 +77,15 @@ export default function CartTotalsCard({
         )}
 
         <div className="flex justify-between gap-4">
+          <dt className="text-[var(--secondary-text)]">{t('checkoutPage.shipping', { defaultValue: 'Shipping' })}</dt>
+          <dd className="text-right">
+            <span className="text-[13px] italic text-[var(--secondary-text)]">
+              {t('cartPage.calculatedAtCheckout', { defaultValue: 'Calculated at checkout' })}
+            </span>
+          </dd>
+        </div>
+
+        <div className="flex justify-between gap-4">
           <dt className="text-[var(--secondary-text)]">{t('checkoutPage.vat')}</dt>
           <dd className="font-medium text-[var(--primary-text)]">
             €{vat.toFixed(2)}
