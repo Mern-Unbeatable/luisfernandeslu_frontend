@@ -13,7 +13,7 @@ export default function AddressAutocomplete({
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef(null)
-  const isSelectingRef = useRef(false)
+  const lastSelectedValue = useRef(null)
 
   const [trigger, { data, isFetching }] = useLazySuggestLocationsQuery()
   const locations = data?.locations || []
@@ -21,8 +21,13 @@ export default function AddressAutocomplete({
   // Debounced search on value
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Only trigger if we have at least 2 chars and not actively selecting
-      if (value && value.length >= 2 && !isSelectingRef.current) {
+      if (value === lastSelectedValue.current) {
+        setIsOpen(false)
+        return
+      }
+
+      // Only trigger if we have at least 2 chars
+      if (value && value.length >= 2) {
         trigger({ q: value })
         setIsOpen(true)
       } else if (!value || value.length < 2) {
@@ -44,7 +49,7 @@ export default function AddressAutocomplete({
   }, [])
 
   const handleSelect = (loc) => {
-    isSelectingRef.current = true
+    lastSelectedValue.current = loc.text
     setIsOpen(false)
     
     // Call the parent handler with the selected location object
@@ -54,16 +59,15 @@ export default function AddressAutocomplete({
         city: loc.place || '',
         region: loc.region || '',
         country: loc.country || '',
+        zipCode: loc.postcode || '',
       })
     } else if (onChange) {
       onChange(loc.text)
     }
-    
-    setTimeout(() => { isSelectingRef.current = false }, 500)
   }
 
   const handleChange = (e) => {
-    isSelectingRef.current = false
+    lastSelectedValue.current = null
     if (onChange) onChange(e.target.value)
   }
 

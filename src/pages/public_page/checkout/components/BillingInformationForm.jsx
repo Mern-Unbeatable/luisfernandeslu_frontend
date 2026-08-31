@@ -106,6 +106,7 @@ export default function BillingInformationForm({
                       address: loc.address,
                       city: loc.city,
                       region: loc.region,
+                      zipCode: loc.zipCode,
                     })
                   }}
                   placeholder={t('checkoutPage.address')}

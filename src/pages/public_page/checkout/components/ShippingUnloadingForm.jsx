@@ -22,6 +22,7 @@ export default function ShippingUnloadingForm({ values, onChange }) {
       address: loc.address,
       city: loc.city,
       region: loc.region,
+      zipCode: loc.zipCode,
     })
   }
 

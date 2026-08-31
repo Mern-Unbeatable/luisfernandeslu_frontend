@@ -25,12 +25,12 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
   const [removePromo, { isLoading: isRemoving }] = useRemovePromoCodeMutation()
 
   useEffect(() => {
-    if (shippingForm && shippingForm.unloadingType && shippingForm.city && cartItems.length > 0) {
+    if (shippingForm && shippingForm.city && cartItems.length > 0) {
       const timer = setTimeout(async () => {
         try {
           const result = await quoteShipping({
             cartItemIds: cartItems.map(i => i.id),
-            unloadingType: shippingForm.unloadingType,
+            unloadingType: shippingForm.unloadingType || 'Forklift',
             shippingAddress: {
               streetAddress: shippingForm.address || '—',
               city: shippingForm.city || '—',
@@ -40,7 +40,7 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
             },
             sameAsBilling: false
           }).unwrap()
-          setShippingCost(result.shippingCost ?? result.quote ?? 0)
+          setShippingCost(result.shipping ?? result.shippingCost ?? result.quote ?? 0)
         } catch (e) {
           // Ignore quote errors
         }
