@@ -1302,7 +1302,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Affiliate */
       {
         path: "/affiliate",
         element: <ProtectedRoute allowedRoles={["affiliate"]} />,
@@ -1350,7 +1349,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      /* Admin */
       {
         path: "/admin",
         element: (
