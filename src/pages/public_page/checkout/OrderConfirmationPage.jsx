@@ -54,6 +54,11 @@ export default function OrderConfirmationPage() {
     ? `${address.streetAddress}, ${address.city}, ${address.zipCode}`
     : '—'
 
+  const totalItems = checkout.orders?.reduce(
+    (acc, order) => acc + (order.lineItems?.reduce((sum, item) => sum + (item.quantity || 1), 0) || 0),
+    0
+  ) || 0
+
   return (
     <div className="w-full bg-[#F9FAFB] py-8 sm:py-10 lg:py-12">
       <Seo
@@ -113,7 +118,7 @@ export default function OrderConfirmationPage() {
               </h2>
               <p className="mt-1 text-sm text-[var(--secondary-text)]">
                 {t('orderConfirmationPage.shipmentItems', {
-                  count: checkout.items?.length || 0,
+                  count: totalItems,
                 })}
               </p>
 

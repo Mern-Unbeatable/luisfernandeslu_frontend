@@ -97,7 +97,7 @@
     "seoDescription": "Your CONSTRUPRECO order has been placed successfully.",
     "title": "Order Confirmed!",
     "subtitle": "Thank you for your purchase",
-    "orderNumber": "Order Number #{number}",
+    "orderNumber": "Order Number #{{number}}",
     "emailSent": "A confirmation email has been sent to your inbox",
     "shippedTitle": "Shipped to Your Address",
     "shipmentItems": "{{count}} items in this shipment",

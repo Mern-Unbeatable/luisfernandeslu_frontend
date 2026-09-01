@@ -97,7 +97,7 @@
     "seoDescription": "Su pedido en CONSTRUPRECO se ha realizado correctamente.",
     "title": "¡Pedido confirmado!",
     "subtitle": "Gracias por su compra",
-    "orderNumber": "N.º de pedido #{number}",
+    "orderNumber": "N.º de pedido #{{number}}",
     "emailSent": "Se ha enviado un correo de confirmación a su bandeja de entrada",
     "shippedTitle": "Enviado a su dirección",
     "shipmentItems": "{{count}} artículos en este envío",
