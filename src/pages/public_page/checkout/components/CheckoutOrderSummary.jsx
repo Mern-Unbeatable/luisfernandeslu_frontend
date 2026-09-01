@@ -10,7 +10,17 @@ import {
 } from '@/features/cart/cartApi'
 import { useQuoteShippingMutation } from '@/features/checkout/checkoutApi'
 
-export default function CheckoutOrderSummary({ backTo = '/products', shippingForm, isSubmitting, cartItems = [], promos = [], fees = {} }) {
+export default function CheckoutOrderSummary({ 
+  backTo = '/products', 
+  shippingForm, 
+  isSubmitting, 
+  cartItems = [], 
+  promos = [], 
+  fees = {},
+  directBuy,
+  directPromos,
+  onDirectPromoUpdate
+}) {
   const { t } = useTranslation()
   const [coupon, setCoupon] = useState('')
   const [shippingCost, setShippingCost] = useState(0)
@@ -23,8 +33,7 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
     if (shippingForm && shippingForm.city && cartItems.length > 0) {
       const timer = setTimeout(async () => {
         try {
-          const result = await quoteShipping({
-            cartItemIds: cartItems.map(i => i.id),
+          const payload = {
             unloadingType: shippingForm.unloadingType || 'Forklift',
             shippingAddress: {
               streetAddress: shippingForm.address || '—',
@@ -34,7 +43,14 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
               country: 'Portugal'
             },
             sameAsBilling: false
-          }).unwrap()
+          }
+          if (directBuy) {
+            payload.directBuy = directBuy
+            payload.promos = directPromos
+          } else {
+            payload.cartItemIds = cartItems.map(i => i.id)
+          }
+          const result = await quoteShipping(payload).unwrap()
           setShippingCost(result.shipping ?? result.shippingCost ?? result.quote ?? 0)
         } catch (e) {
           // Ignore quote errors
@@ -72,7 +88,13 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
   const handleApplyPromo = async () => {
     if (!coupon.trim()) return
     try {
-      await applyPromo({ code: coupon.trim() }).unwrap()
+      if (directBuy) {
+        if (!directPromos.includes(coupon.trim())) {
+          await onDirectPromoUpdate([...directPromos, coupon.trim()])
+        }
+      } else {
+        await applyPromo({ code: coupon.trim() }).unwrap()
+      }
       setCoupon('')
       Swal.fire({
         title: 'Success',
@@ -92,7 +114,11 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
 
   const handleRemovePromo = async (code) => {
     try {
-      await removePromo({ code }).unwrap()
+      if (directBuy) {
+        await onDirectPromoUpdate(directPromos.filter(p => p !== code))
+      } else {
+        await removePromo({ code }).unwrap()
+      }
     } catch (err) {
       Swal.fire({
         title: 'Error',

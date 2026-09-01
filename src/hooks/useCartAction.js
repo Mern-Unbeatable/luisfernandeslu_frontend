@@ -13,8 +13,8 @@ export default function useCartAction() {
     if (isAuthenticated) {
       if (productId) {
         try {
-          await addCartItem({ productId, quantity }).unwrap()
-          return true
+          const result = await addCartItem({ productId, quantity }).unwrap()
+          return result.id || true
         } catch (err) {
           Swal.fire({
             title: 'Error',

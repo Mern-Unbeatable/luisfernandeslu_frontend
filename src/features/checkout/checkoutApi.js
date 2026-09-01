@@ -16,6 +16,13 @@ export const checkoutApi = baseApi.injectEndpoints({
         data: body,
       }),
     }),
+    quoteDirectBuy: builder.mutation({
+      query: (body) => ({
+        url: '/api/checkout/direct-buy/quote',
+        method: 'POST',
+        data: body,
+      }),
+    }),
     placeCheckout: builder.mutation({
       query: (body) => ({
         url: '/api/checkout',
@@ -44,6 +51,7 @@ export const checkoutApi = baseApi.injectEndpoints({
 export const {
   useGetCheckoutQuery,
   useQuoteShippingMutation,
+  useQuoteDirectBuyMutation,
   usePlaceCheckoutMutation,
   useConfirmMockPaymentMutation,
   useSuggestLocationsQuery,

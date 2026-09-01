@@ -10,7 +10,7 @@ import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
 import { useGetCustomerProfileQuery } from '@/features/customer/customerProfileApi'
-import { usePlaceCheckoutMutation } from '@/features/checkout/checkoutApi'
+import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
 import toast from 'react-hot-toast'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
@@ -28,11 +28,30 @@ export default function UserCheckoutPage() {
   const [shipping, setShipping] = useState(emptyShippingValues)
   const [useCustomBilling, setUseCustomBilling] = useState(false)
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
-  const { data: cartData } = useGetCartQuery()
+  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!location.state?.directBuy })
+  const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
+  
+  const directBuy = location.state?.directBuy
+  const [directPromos, setDirectPromos] = useState([])
+  const [initialDirectQuoteDone, setInitialDirectQuoteDone] = useState(false)
 
-  const allCartItems = cartData?.cart?.items || []
+  useEffect(() => {
+    if (directBuy && !initialDirectQuoteDone) {
+      quoteDirect({ directBuy, promos: directPromos })
+        .unwrap()
+        .catch((err) => {
+          console.error("Direct buy quote error:", err)
+          toast.error("Failed to fetch product price.")
+        })
+      setInitialDirectQuoteDone(true)
+    }
+  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos])
+
+  const cartData = directBuy ? directDataResponse?.cart : cartDataQuery?.cart
+  
+  const allCartItems = cartData?.items || []
   const selectedIds = location.state?.selectedIds
-  const cartItems = selectedIds && selectedIds.length > 0
+  const cartItems = selectedIds && selectedIds.length > 0 && !directBuy
     ? allCartItems.filter(item => selectedIds.includes(item.id))
     : allCartItems
 
@@ -45,12 +64,12 @@ export default function UserCheckoutPage() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && !directBuy) {
       toast.error(t('checkoutPage.emptyCart'))
       return
     }
 
-    const cartItemIds = cartItems.map(item => item.id)
+    const cartItemIds = directBuy ? undefined : cartItems.map(item => item.id)
 
     let finalBillingAddress = null
     if (!useCustomBilling && hasSavedAddress) {
@@ -92,6 +111,8 @@ export default function UserCheckoutPage() {
       unloadingLocationDescription: shipping.unloadingLocationDescription,
       accessConditions: shipping.accessConditions,
       paymentMethod: 'multibanco',
+      directBuy: directBuy || undefined,
+      promos: directBuy ? directPromos : undefined,
     }
 
     try {
@@ -167,12 +188,18 @@ export default function UserCheckoutPage() {
           </form>
 
           <CheckoutOrderSummary 
-            backTo="/cart" 
+            backTo={directBuy ? `/product/${location.state?.productSlug || ''}` : "/cart"} 
             shippingForm={shipping} 
             isSubmitting={isSubmitting} 
             cartItems={cartItems}
-            promos={cartData?.cart?.promos || []}
-            fees={cartData?.cart?.fees || {}}
+            promos={cartData?.promos || []}
+            fees={cartData?.fees || {}}
+            directBuy={directBuy}
+            directPromos={directPromos}
+            onDirectPromoUpdate={async (newPromos) => {
+              setDirectPromos(newPromos)
+              await quoteDirect({ directBuy, promos: newPromos }).unwrap()
+            }}
           />
         </div>
       </div>
