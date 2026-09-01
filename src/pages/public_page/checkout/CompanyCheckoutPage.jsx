@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import BillingInformationForm, {
@@ -18,6 +18,7 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 export default function CompanyCheckoutPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { data: profileData } = useGetCompanyProfileQuery()
   const savedAddress = profileData?.profile?.billingAddress
@@ -29,7 +30,11 @@ export default function CompanyCheckoutPage() {
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
   const { data: cartData } = useGetCartQuery()
 
-  const cartItems = cartData?.cart?.items || []
+  const allCartItems = cartData?.cart?.items || []
+  const selectedIds = location.state?.selectedIds
+  const cartItems = selectedIds && selectedIds.length > 0
+    ? allCartItems.filter(item => selectedIds.includes(item.id))
+    : allCartItems
 
   useEffect(() => {
     if (savedAddress && !useCustomBilling) {
@@ -94,7 +99,7 @@ export default function CompanyCheckoutPage() {
     try {
       const result = await placeCheckout(payload).unwrap()
       if (result.success) {
-        navigate(`/order/confirmation?id=${result.checkout.id}`)
+        navigate(`/order/confirmation?id=${result.id}`)
       } else {
         toast.error(getAuthErrorMessage(result, t('checkoutPage.placeOrderFailed')))
       }
@@ -166,9 +171,12 @@ export default function CompanyCheckoutPage() {
           </form>
 
           <CheckoutOrderSummary 
-            backTo="/products"
+            backTo="/cart"
             shippingForm={shipping}
             isSubmitting={isSubmitting}
+            cartItems={cartItems}
+            promos={cartData?.cart?.promos || []}
+            fees={cartData?.cart?.fees || {}}
           />
         </div>
       </div>

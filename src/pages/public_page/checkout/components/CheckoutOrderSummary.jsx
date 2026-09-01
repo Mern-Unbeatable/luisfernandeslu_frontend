@@ -10,15 +10,10 @@ import {
 } from '@/features/cart/cartApi'
 import { useQuoteShippingMutation } from '@/features/checkout/checkoutApi'
 
-export default function CheckoutOrderSummary({ backTo = '/products', shippingForm, isSubmitting }) {
+export default function CheckoutOrderSummary({ backTo = '/products', shippingForm, isSubmitting, cartItems = [], promos = [], fees = {} }) {
   const { t } = useTranslation()
   const [coupon, setCoupon] = useState('')
   const [shippingCost, setShippingCost] = useState(0)
-
-  const { data: cartData, isLoading: isCartLoading } = useGetCartQuery()
-  const cartItems = cartData?.cart?.items || []
-  const promos = cartData?.cart?.promos || []
-  const fees = cartData?.cart?.fees || {}
 
   const [quoteShipping, { isLoading: isQuoting }] = useQuoteShippingMutation()
   const [applyPromo, { isLoading: isApplying }] = useApplyPromoCodeMutation()
@@ -107,7 +102,7 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
     }
   }
 
-  const isBusy = isSubmitting || isCartLoading || isApplying || isRemoving || isQuoting
+  const isBusy = isSubmitting || isApplying || isRemoving || isQuoting
 
   return (
     <aside className={`rounded-lg border border-gray-200 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-48 ${isBusy ? 'opacity-80' : ''}`}>
@@ -133,7 +128,7 @@ export default function CheckoutOrderSummary({ backTo = '/products', shippingFor
             </div>
           </li>
         ))}
-        {cartItems.length === 0 && !isCartLoading && (
+        {cartItems.length === 0 && (
           <li className="text-sm text-[var(--secondary-text)] italic">
             {t('checkoutPage.emptyCart', { defaultValue: 'Your cart is empty' })}
           </li>

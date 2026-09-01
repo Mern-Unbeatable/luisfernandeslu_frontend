@@ -10,6 +10,7 @@ export default function CartTotalsCard({
   promos = [],
   checkoutPath,
   disabled,
+  selectedIds,
 }) {
   const { t } = useTranslation()
   const [coupon, setCoupon] = useState('')
@@ -152,6 +153,7 @@ export default function CartTotalsCard({
         ) : (
           <Link
             to={checkoutPath}
+            state={{ selectedIds: selectedIds ? Array.from(selectedIds) : [] }}
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[var(--active)] text-sm font-bold tracking-wide text-white transition-opacity hover:opacity-95"
           >
             {t('cartPage.proceedCheckout')}

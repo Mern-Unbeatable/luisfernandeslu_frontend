@@ -125,6 +125,7 @@ export default function CartPage() {
             promos={promos}
             checkoutPath={resolveCheckoutPath(user)}
             disabled={!hasSelection || isLoading}
+            selectedIds={selectedIds}
           />
         </div>
       </div>

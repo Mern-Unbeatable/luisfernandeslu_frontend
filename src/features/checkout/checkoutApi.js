@@ -22,7 +22,7 @@ export const checkoutApi = baseApi.injectEndpoints({
         method: 'POST',
         data: body,
       }),
-      invalidatesTags: [{ type: 'Cart', id: 'LIST' }], // Placing checkout clears cart
+      invalidatesTags: ['Cart'], // Placing checkout clears cart
     }),
     confirmMockPayment: builder.mutation({
       query: (id) => ({

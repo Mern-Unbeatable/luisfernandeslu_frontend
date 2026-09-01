@@ -23,7 +23,7 @@ export default function OrderConfirmationPage() {
     skip: !checkoutId
   })
 
-  const checkout = data?.body
+  const checkout = data?.checkout
 
   if (isLoading) {
     return (

@@ -15,7 +15,7 @@ export default function OrderConfirmationSummary({ checkout }) {
   }
 
   return (
-    <aside className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-24">
+    <aside className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-48">
       <h2 className="text-lg font-bold text-[var(--primary-text)]">
         {t('checkoutPage.orderSummaryTitle')}
       </h2>
