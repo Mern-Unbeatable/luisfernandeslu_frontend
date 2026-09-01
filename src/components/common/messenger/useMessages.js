@@ -44,6 +44,38 @@ export default function useMessages({ variant = 'default' } = {}) {
     )
   }, [])
 
+  const openThread = useCallback((params) => {
+    if (!params.type && !params.chatId) return
+    
+    const threadId = params.chatId || params.quoteId || params.orderId || params.productId || params.peerUserId || `mock-${Date.now()}`
+    
+    setChats((prev) => {
+      if (prev.find(c => c.id === threadId)) return prev
+      
+      let name = 'New Chat'
+      if (params.type === 'QUOTE') name = `Quote Request`
+      else if (params.type === 'ORDER_TRANSPORT') name = `Order Transport`
+      else if (params.type === 'FACTORY_SUPPLIER') name = `Factory Supplier`
+      else if (params.type === 'ADMIN_SUPPORT') name = `Admin Support`
+
+      return [
+        {
+          id: threadId,
+          name,
+          avatar: '/images/avatar-placeholder.png',
+          lastMessage: 'Chat opened...',
+          time: 'Just now',
+          unreadCount: 0,
+          status: 'online',
+          type: params.type,
+        },
+        ...prev
+      ]
+    })
+    
+    setActivePartnerId(threadId)
+  }, [])
+
   const sendMessage = useCallback(
     async (text) => {
       const value = String(text || '').trim()
@@ -217,6 +249,7 @@ export default function useMessages({ variant = 'default' } = {}) {
     activePartnerId,
     activeChat,
     selectChat,
+    openThread,
     sendMessage,
     editMessage,
     deleteMessage,

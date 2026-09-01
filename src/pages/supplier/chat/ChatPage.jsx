@@ -1,97 +1,47 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import Messenger from "@/components/common/messenger/Messenger";
-import {
-  useCreateSupplierQuoteOfferMutation,
-  useGetSupplierQuoteByIdQuery,
-  useGetSupplierQuoteChatsQuery,
-  useGetSupplierQuoteMessagesQuery,
-  useSendSupplierQuoteMessageMutation,
-} from "@/features/supplier/quotes/quotesApi";
+import useLiveChat from "@/features/chat/useLiveChat";
+import { useCreateSupplierQuoteOfferMutation } from "@/features/supplier/quotes/quotesApi";
 
 export default function ChatPage() {
   const { t } = useTranslation();
-  const [activeQuoteId, setActiveQuoteId] = useState(null);
-  const [isPartnerTyping, setIsPartnerTyping] = useState(false);
-  const [actionMessageId, setActionMessageId] = useState(null);
+  const [searchParams] = useSearchParams();
+  const state = useLiveChat();
 
-  const { data: chatsResponse, isLoading: isChatsLoading } =
-    useGetSupplierQuoteChatsQuery({ page: 1, limit: 12 });
-  const chats = useMemo(() => chatsResponse?.chats ?? [], [chatsResponse]);
-
-  const { data: selectedThread } = useGetSupplierQuoteByIdQuery(activeQuoteId, {
-    skip: !activeQuoteId,
-  });
-
-  const resolvedActiveQuoteId = activeQuoteId ?? chats[0]?.id ?? null;
-
-  const { data: messages = [], isLoading: isMessagesLoading } =
-    useGetSupplierQuoteMessagesQuery(
-      { quoteId: resolvedActiveQuoteId },
-      { skip: !resolvedActiveQuoteId },
-    );
-
-  const [sendMessageMutation, { isLoading: isSendingMessage }] =
-    useSendSupplierQuoteMessageMutation();
   const [createOfferMutation, { isLoading: isCreatingOffer }] =
     useCreateSupplierQuoteOfferMutation();
 
-  const activeChat = useMemo(() => {
-    const activeFromList = chats.find(
-      (chat) => chat.id === resolvedActiveQuoteId,
-    );
-    return selectedThread ?? activeFromList ?? null;
-  }, [selectedThread, resolvedActiveQuoteId, chats]);
-
-  const selectChat = useCallback((id) => {
-    setActiveQuoteId(id);
-    setIsPartnerTyping(false);
-  }, []);
-
-  const sendMessage = useCallback(
-    async (text) => {
-      const value = String(text || "").trim();
-      if (!value || !resolvedActiveQuoteId) return false;
-
-      await sendMessageMutation({
-        quoteId: resolvedActiveQuoteId,
-        message: value,
-      });
-      return true;
-    },
-    [resolvedActiveQuoteId, sendMessageMutation],
-  );
-
-  const editMessage = useCallback(async () => false, []);
-  const deleteMessage = useCallback(async () => false, []);
-  const handleTyping = useCallback(() => {
-    setIsPartnerTyping(true);
-  }, []);
-  const stopTyping = useCallback(() => {
-    setIsPartnerTyping(false);
-  }, []);
+  // Open thread from URL params (e.g. from buy-from-factory or quote notification)
+  useEffect(() => {
+    const params = Object.fromEntries(searchParams.entries())
+    if (params.type) {
+      state.openThread({
+        type: params.type,
+        quoteRequestId: params.quoteId,
+        productId: params.productId,
+        orderId: params.orderId,
+        peerUserId: params.peerUserId,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
 
   const createOffer = useCallback(
     async (form) => {
-      if (!resolvedActiveQuoteId) return false;
-
+      if (!state.activeChatId) return false;
+      const activeThread = state.activeChat;
+      // Get the quote ID from the active thread's raw data
+      const quoteId = activeThread?.raw?.quoteRequestId || state.activeChatId;
       await createOfferMutation({
-        quoteId: resolvedActiveQuoteId,
+        quoteId,
         payload: form,
       });
-
       return true;
     },
-    [resolvedActiveQuoteId, createOfferMutation],
-  );
-
-  const handleSendMessage = useCallback(
-    async (text) => {
-      setActionMessageId(null);
-      return sendMessage(text);
-    },
-    [sendMessage],
+    [state.activeChatId, state.activeChat, createOfferMutation],
   );
 
   return (
@@ -101,21 +51,21 @@ export default function ChatPage() {
       <div className="h-[min(720px,calc(100dvh-10rem))] min-h-[780px] w-full">
         <Messenger
           className="h-full shadow-sm"
-          chats={chats}
-          messages={messages}
-          activePartnerId={resolvedActiveQuoteId}
-          activeChat={activeChat}
-          onSelectChat={selectChat}
-          onSend={handleSendMessage}
-          onEditMessage={editMessage}
-          onDeleteMessage={deleteMessage}
-          onTyping={handleTyping}
-          onStopTyping={stopTyping}
+          chats={state.chats}
+          messages={state.messages}
+          activePartnerId={state.activePartnerId}
+          activeChat={state.activeChat}
+          onSelectChat={state.selectChat}
+          onSend={state.sendMessage}
+          onEditMessage={state.editMessage}
+          onDeleteMessage={state.deleteMessage}
+          onTyping={state.handleTyping}
+          onStopTyping={state.stopTyping}
           onCreateOffer={createOffer}
-          isPartnerTyping={isPartnerTyping}
-          isSending={isSendingMessage || isCreatingOffer}
-          isLoading={isChatsLoading || isMessagesLoading}
-          actionMessageId={actionMessageId}
+          isPartnerTyping={state.isPartnerTyping}
+          isSending={state.isSending || isCreatingOffer}
+          isLoading={state.isLoading}
+          actionMessageId={state.actionMessageId}
           sidebarTitle={t("panel.supplierChat.sidebarTitle")}
           showSidebarEdit
         />

@@ -60,3 +60,4 @@ import "../supplier/return-requests/returnRequestsApi";
 import "../supplier/disputes/disputesApi";
 import "../supplier/profile/profileApi";
 import "../cart/cartApi";
+import "../chat/chatApi";

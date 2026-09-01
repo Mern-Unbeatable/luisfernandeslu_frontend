@@ -14,6 +14,7 @@ export default function SendQuoteModal({
   onClose,
   product = {},
   onSubmit,
+  isSubmitting = false,
 }) {
   const { t } = useTranslation()
   const titleId = useId()
@@ -49,10 +50,10 @@ export default function SendQuoteModal({
       productId: product.id,
       productTitle: product.title,
       budget,
-      quantity,
+      quantity: quantity || '1',
       message,
     })
-    onClose?.()
+    // Note: onClose is called by parent after successful API call
   }
 
   return createPortal(
@@ -163,9 +164,10 @@ export default function SendQuoteModal({
 
           <button
             type="submit"
-            className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold tracking-wide text-white transition-opacity hover:opacity-95"
+            disabled={isSubmitting}
+            className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold tracking-wide text-white transition-opacity hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {t('sendQuoteModal.submit')}
+            {isSubmitting ? 'Sending...' : t('sendQuoteModal.submit')}
           </button>
         </form>
       </div>

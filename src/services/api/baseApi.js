@@ -55,6 +55,8 @@ export const baseApi = createApi({
     "Profile",
     "ReturnRequest",
     "Dispute",
+    "ChatThread",
+    "ChatMessage",
   ],
   endpoints: () => ({}),
 });

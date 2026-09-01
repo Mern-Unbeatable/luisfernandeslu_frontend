@@ -1,22 +1,11 @@
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
-import useMessages from '@/components/common/messenger/useMessages'
-
-/** Default thread on load (Ope — matches admin chat mock). */
-const DEFAULT_CHAT_ID = 'c2'
+import useLiveChat from '@/features/chat/useLiveChat'
 
 export default function ChatPage() {
   const { t } = useTranslation()
-  const state = useMessages()
-
-  useEffect(() => {
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      state.selectChat(DEFAULT_CHAT_ID)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- open default inbox thread on desktop only
-  }, [])
+  const state = useLiveChat()
 
   return (
     <div className="flex min-h-0 flex-col space-y-4">

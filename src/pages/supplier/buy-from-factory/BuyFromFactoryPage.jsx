@@ -38,9 +38,7 @@ export default function BuyFromFactoryPage() {
   const handleAction = useCallback(
     (actionId, item) => {
       if (actionId !== "send_message") return;
-      navigate("/supplier/chat", {
-        state: { factoryId: item?.factoryId, productId: item?.id },
-      });
+      navigate(`/supplier/chat?type=FACTORY_SUPPLIER&productId=${item?.id}`);
     },
     [navigate],
   );

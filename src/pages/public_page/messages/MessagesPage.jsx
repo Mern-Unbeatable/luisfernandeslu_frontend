@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
-import useMessages from '@/components/common/messenger/useMessages'
+import useLiveChat from '@/features/chat/useLiveChat'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 
 export default function MessagesPage() {
@@ -15,14 +15,21 @@ export default function MessagesPage() {
   const role = resolveStorefrontBuyerRole(user)
   const isCompany = role === 'company'
 
-  const state = useMessages()
+  const state = useLiveChat()
 
   useEffect(() => {
-    const chatId = searchParams.get('chat')
-    if (chatId) {
-      state.selectChat(chatId)
+    const params = Object.fromEntries(searchParams.entries())
+    if (params.type || params.chat) {
+      state.openThread({
+        chatId: params.chat,
+        type: params.type,
+        quoteId: params.quoteId,
+        orderId: params.orderId,
+        productId: params.productId,
+        peerUserId: params.peerUserId,
+      })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- sync inbox from URL once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
   return (

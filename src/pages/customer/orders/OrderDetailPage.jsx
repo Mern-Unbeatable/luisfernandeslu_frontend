@@ -117,7 +117,7 @@ export default function OrderDetailPage() {
     <BuyerOrderInformation
       order={order}
       isTracking={isTrackFetching}
-      onChatDriver={() => navigate('/messages')}
+      onChatDriver={() => navigate(`/messages?type=ORDER_TRANSPORT&orderId=${order.id}`)}
       onDownloadInvoice={
         order.actions?.canDownloadInvoice ? handleDownloadInvoice : undefined
       }

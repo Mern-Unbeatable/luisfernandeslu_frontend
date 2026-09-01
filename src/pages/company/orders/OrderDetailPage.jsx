@@ -55,7 +55,7 @@ export default function OrderDetailPage() {
   return (
     <CompanyOrderDetail
       order={order}
-      onChatDriver={() => navigate('/messages')}
+      onChatDriver={() => navigate(`/messages?type=ORDER_TRANSPORT&orderId=${order.id}`)}
     />
   )
 }

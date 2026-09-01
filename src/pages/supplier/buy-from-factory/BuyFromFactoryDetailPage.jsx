@@ -52,9 +52,7 @@ export default function BuyFromFactoryDetailPage() {
 
   const handleAction = (actionId) => {
     if (actionId !== "send_message") return;
-    navigate("/supplier/chat", {
-      state: { factoryId: product.factoryId, productId: product.id },
-    });
+    navigate(`/supplier/chat?type=FACTORY_SUPPLIER&productId=${product.id}`);
   };
 
   return (

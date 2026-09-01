@@ -8,7 +8,7 @@ import { resolveDetailsView } from '@/components/data-display/ProductDetails/res
 import Seo from '@/components/common/Seo/Seo'
 import NotFoundPage from '../NotFoundPage'
 import SendQuoteModal from './components/SendQuoteModal'
-import { useGetMarketplaceProductBySlugQuery } from '@/features/marketplace/marketplaceApi'
+import { useGetMarketplaceProductBySlugQuery, useCreateProductQuoteMutation } from '@/features/marketplace/marketplaceApi'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 import useCartAction from '@/hooks/useCartAction'
 
@@ -44,9 +44,11 @@ export default function ProductDetailPage() {
   const user = useSelector((state) => state.auth.user)
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const [quoteOpen, setQuoteOpen] = useState(false)
+  const [isSubmittingQuote, setIsSubmittingQuote] = useState(false)
   const authRole = resolveStorefrontBuyerRole(user)
   const pricingView = authRole === 'company' ? 'company' : 'retail'
   const { handleAddToCart } = useCartAction()
+  const [createProductQuote] = useCreateProductQuoteMutation()
 
   const {
     data,
@@ -179,6 +181,36 @@ export default function ProductDetailPage() {
         open={quoteOpen}
         onClose={() => setQuoteOpen(false)}
         product={product}
+        isSubmitting={isSubmittingQuote}
+        onSubmit={async (data) => {
+          setIsSubmittingQuote(true)
+          try {
+            await createProductQuote({
+              productId: product.id,
+              data: {
+                budget: data.budget,
+                quantity: String(data.quantity),
+                message: data.message || '',
+              },
+            }).unwrap()
+            setQuoteOpen(false)
+            navigate('/messages')
+          } catch (err) {
+            console.error('Failed to send quote:', err)
+            Swal.fire({
+              icon: 'error',
+              title: 'Failed to send quote',
+              text: err?.data?.message || err?.message || 'Something went wrong. Please try again.',
+              confirmButtonText: 'OK',
+              buttonsStyling: false,
+              customClass: {
+                confirmButton: 'rounded-lg border-2 border-[var(--active)] bg-[var(--active)] px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90',
+              }
+            })
+          } finally {
+            setIsSubmittingQuote(false)
+          }
+        }}
       />
     </div>
   )

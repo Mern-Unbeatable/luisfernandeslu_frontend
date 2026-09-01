@@ -152,6 +152,14 @@ export const marketplaceApi = baseApi.injectEndpoints({
         ]
       },
     }),
+    createProductQuote: builder.mutation({
+      query: ({ productId, data }) => ({
+        url: `/api/marketplace/products/${productId}/quote`,
+        method: 'POST',
+        data,
+      }),
+      invalidatesTags: ['Product', 'Quote', 'ChatThread'],
+    }),
   }),
 })
 
@@ -160,4 +168,5 @@ export const {
   useGetTopSellingProductsQuery,
   useGetMarketplaceProductsQuery,
   useGetMarketplaceProductBySlugQuery,
+  useCreateProductQuoteMutation,
 } = marketplaceApi
