@@ -54,7 +54,6 @@ export default function MessagesPage() {
               onDeleteMessage={state.deleteMessage}
               onTyping={state.handleTyping}
               onStopTyping={state.stopTyping}
-              onCreateOffer={isCompany ? state.createOffer : undefined}
               onPayNow={
                 !isCompany
                   ? () => navigate('/checkout')

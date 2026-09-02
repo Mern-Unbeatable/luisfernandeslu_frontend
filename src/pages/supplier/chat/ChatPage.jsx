@@ -67,7 +67,6 @@ export default function ChatPage() {
           isLoading={state.isLoading}
           actionMessageId={state.actionMessageId}
           sidebarTitle={t("panel.supplierChat.sidebarTitle")}
-          showSidebarEdit
         />
       </div>
     </>
