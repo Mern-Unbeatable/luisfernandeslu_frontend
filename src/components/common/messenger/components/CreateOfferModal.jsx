@@ -39,10 +39,7 @@ const emptyForm = () => ({
   accessConditions: '',
   totalPrice: '',
   installmentMonths: '',
-  installments: [
-    { price: '', quantity: '' },
-    { price: '', quantity: '' },
-  ],
+  installments: [],
 });
 
 export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }) {
@@ -123,6 +120,11 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
           quantity: qtyPerInst,
         }));
         return { ...prev, installments: newInstallments };
+      });
+    } else {
+      setForm((prev) => {
+        if (prev.installments.length === 0) return prev;
+        return { ...prev, installments: [] };
       });
     }
   }, [form.installmentMonths, form.totalPrice, form.totalQuantity, open]);
@@ -234,7 +236,7 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
             <TextField
               label='Total Quantity'
               value={form.totalQuantity}
-              placeholder='.tons'
+              placeholder='.bags'
               onChange={(value) => setField('totalQuantity', value)}
             />
             <ComboboxField
@@ -270,7 +272,7 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
             <div className='grid grid-cols-2 gap-3 pt-1'>
               <TextField
                 label='Total Price'
-                icon={<FiDollarSign className='size-3.5' />}
+                icon={<span className='text-[15px] font-medium leading-none'>€</span>}
                 value={form.totalPrice}
                 placeholder='€'
                 onChange={(value) => setField('totalPrice', value)}
