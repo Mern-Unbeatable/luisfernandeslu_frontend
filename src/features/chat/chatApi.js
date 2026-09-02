@@ -74,7 +74,7 @@ export const chatApi = baseApi.injectEndpoints({
             partner: partnerUser,
             lastMessage: lastMessageText,
             time: formatChatTime(parseDate(thread.updatedAt)),
-            unreadCount: 0,
+            unreadCount: thread.unreadCount || 0,
             online: isOnline,
             raw: thread,
           }
@@ -108,10 +108,34 @@ export const chatApi = baseApi.injectEndpoints({
         }))
       },
     }),
+
+    markAsRead: builder.mutation({
+      query: ({ threadId }) => ({
+        url: `/api/chat/threads/${threadId}/read`,
+        method: 'POST',
+      }),
+      async onQueryStarted({ threadId, userId }, { dispatch, queryFulfilled }) {
+        // Optimistically update unreadCount to 0
+        const patchResult = dispatch(
+          chatApi.util.updateQueryData('getChatThreads', { userId }, (draft) => {
+            const thread = draft.chats.find((t) => t.id === String(threadId))
+            if (thread) {
+              thread.unreadCount = 0
+            }
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+    }),
   }),
 })
 
 export const {
   useGetChatThreadsQuery,
   useGetChatMessagesQuery,
+  useMarkAsReadMutation,
 } = chatApi

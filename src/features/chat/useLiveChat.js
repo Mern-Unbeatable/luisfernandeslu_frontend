@@ -252,6 +252,8 @@ export default function useLiveChat(initialThreadId = null) {
     setIsPartnerTyping(false)
   }, [activeThreadId, safeJoin])
 
+  const [markAsRead] = chatApi.useMarkAsReadMutation()
+
   const selectChat = useCallback((threadId) => {
     const socket = socketRef.current
     if (socket && activeThreadIdRef.current) {
@@ -259,17 +261,9 @@ export default function useLiveChat(initialThreadId = null) {
     }
     setActiveThreadId(String(threadId))
 
-    // Clear unread count locally
-    dispatch(
-      chatApi.util.updateQueryData('getChatThreads', { userId: user?.id }, (draft) => {
-        if (!draft?.chats) return
-        const thread = draft.chats.find(c => c.id === String(threadId))
-        if (thread) {
-          thread.unreadCount = 0
-        }
-      })
-    )
-  }, [dispatch, user?.id])
+    // Clear unread count locally and in backend
+    markAsRead({ threadId, userId: user?.id })
+  }, [markAsRead, user?.id])
 
   const openThread = useCallback(async (params) => {
     const socket = socketRef.current

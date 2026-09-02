@@ -8,6 +8,7 @@ import CategoryBar from './CategoryBar'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
 import { useAuthLogout } from '../../features/auth/useAuthLogout'
 import { useGetCartQuery } from '../../features/cart/cartApi'
+import { useGetChatThreadsQuery } from '../../features/chat/chatApi'
 import {
   FiSearch,
   FiMessageSquare,
@@ -60,7 +61,13 @@ export default function Header() {
   const { data: cartData } = useGetCartQuery(undefined, { skip: !isAuthenticated })
   const cartItemCount = cartData?.cart?.items?.length || 0
 
-  const onLogout = () => {
+  const { data: chatData } = useGetChatThreadsQuery(
+    { userId: user?.id },
+    { skip: !isAuthenticated || !user?.id, pollingInterval: 10000 }
+  )
+  const unreadChatCount = chatData?.chats?.reduce((acc, chat) => acc + (chat.unreadCount || 0), 0) || 0
+
+  const onLogout = async () => {
     setMenuOpen(false)
     handleLogout()
   }
@@ -287,6 +294,10 @@ export default function Header() {
                   {key === 'cart' && cartItemCount > 0 ? (
                     <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
                       {cartItemCount}
+                    </span>
+                  ) : key === 'messages' && unreadChatCount > 0 ? (
+                    <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                      {unreadChatCount}
                     </span>
                   ) : null}
                 </Link>
