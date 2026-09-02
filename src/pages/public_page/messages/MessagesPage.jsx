@@ -58,21 +58,12 @@ export default function MessagesPage() {
               onDeleteMessage={state.deleteMessage}
               onTyping={state.handleTyping}
               onStopTyping={state.stopTyping}
-              onPayNow={async (msg) => {
+              onPayNow={(msg) => {
+                const quoteId = state.activeChat?.raw?.quoteRequestId || state.activeChat?.id
+                const stateNav = { directBuy: { offerId: msg?.offer?.id, offer: msg?.offer, quoteId } }
                 if (isCompany) {
-                  const quoteId = state.activeChat?.raw?.quoteRequestId || state.activeChat?.id
-                  const offerId = msg?.offer?.id
-                  if (!quoteId || !offerId) return
-                  try {
-                    const result = await payOffer({ quoteId, offerId }).unwrap()
-                    if (result.checkout?.id) {
-                      navigate(`/order/confirmation?id=${result.checkout.id}`)
-                    }
-                  } catch (err) {
-                    toast.error(err?.data?.message || 'Failed to process payment')
-                  }
+                  navigate('/checkout/company', { state: stateNav })
                 } else {
-                  const stateNav = { directBuy: { offerId: msg?.offer?.id } }
                   navigate('/checkout', { state: stateNav })
                 }
               }}

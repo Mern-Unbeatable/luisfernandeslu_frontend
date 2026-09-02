@@ -12,6 +12,7 @@ import ShippingUnloadingForm, {
 import { useGetCompanyProfileQuery } from '@/features/company/companyProfileApi'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
+import { usePaySupplierQuoteOfferMutation } from '@/features/supplier/quotes/quotesApi'
 import toast from 'react-hot-toast'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
@@ -24,31 +25,83 @@ export default function CompanyCheckoutPage() {
   const savedAddress = profileData?.profile?.billingAddress
   const hasSavedAddress = Boolean(savedAddress && savedAddress.address)
 
-  const [billing, setBilling] = useState(emptyBillingValues)
-  const [shipping, setShipping] = useState(emptyShippingValues)
+  const directBuy = location.state?.directBuy
+  const isOfferBuy = Boolean(directBuy?.offerId)
+  const offerData = directBuy?.offer
+
+  const mapUnloading = (label) => {
+    if (!label) return ''
+    const map = {
+      'Crane (12m)': 'crane-12',
+      'Crane (24m)': 'crane-24',
+      'Tipper Truck': 'tipper',
+      'Forklift': 'forklift',
+      'Manual Unloading': 'manual'
+    }
+    return map[label] || label
+  }
+
+  const mapAccess = (label) => {
+    if (!label) return ''
+    const map = {
+      'Easy Access': 'easy',
+      'Narrow Road': 'narrow',
+      'Restricted Area': 'restricted',
+      'Difficult Terrain': 'terrain',
+      'Manual Unloading': 'manual' // CreateOfferModal has this
+    }
+    return map[label] || label
+  }
+
+  const [billing, setBilling] = useState({
+    ...emptyBillingValues,
+    projectName: offerData?.projectName || '',
+    projectLocation: offerData?.deliveryLocation || offerData?.projectLocation || '',
+  })
+  
+  const [shipping, setShipping] = useState({
+    ...emptyShippingValues,
+    address: offerData?.deliveryLocation || '',
+    unloadingType: mapUnloading(offerData?.unloadingType),
+    accessConditions: mapAccess(offerData?.accessConditions),
+  })
+  
   const [useCustomBilling, setUseCustomBilling] = useState(false)
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
-  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!location.state?.directBuy })
+  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy })
   const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
+  const [payOffer, { isLoading: isPayingOffer }] = usePaySupplierQuoteOfferMutation()
   
-  const directBuy = location.state?.directBuy
   const [directPromos, setDirectPromos] = useState([])
   const [initialDirectQuoteDone, setInitialDirectQuoteDone] = useState(false)
 
   useEffect(() => {
-    if (directBuy && !initialDirectQuoteDone) {
+    if (directBuy && !isOfferBuy && !initialDirectQuoteDone) {
       quoteDirect({ directBuy, promos: directPromos }).unwrap().catch(() => {})
       setInitialDirectQuoteDone(true)
     }
-  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos])
+  }, [directBuy, isOfferBuy, initialDirectQuoteDone, quoteDirect, directPromos])
 
-  const cartData = directBuy ? directDataResponse?.cart : cartDataQuery?.cart
+  const cartData = directBuy && !isOfferBuy ? directDataResponse?.cart : cartDataQuery?.cart
   
   const allCartItems = cartData?.items || []
   const selectedIds = location.state?.selectedIds
-  const cartItems = selectedIds && selectedIds.length > 0 && !directBuy
+  let cartItems = selectedIds && selectedIds.length > 0 && !directBuy
     ? allCartItems.filter(item => selectedIds.includes(item.id))
     : allCartItems
+
+  if (isOfferBuy && offerData) {
+    const qty = Number(offerData.totalQuantity) || 1
+    const price = Number(offerData.totalPrice) || 0
+    cartItems = [{
+      id: offerData.id,
+      title: offerData.productName || offerData.title || 'Special Offer',
+      image: 'https://placehold.co/100?text=Offer',
+      quantity: qty,
+      unitPriceText: `€${(price / qty).toFixed(2)}`,
+      subtotal: price,
+    }]
+  }
 
   useEffect(() => {
     if (savedAddress && !useCustomBilling) {
@@ -59,6 +112,18 @@ export default function CompanyCheckoutPage() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     
+    if (isOfferBuy) {
+      try {
+        const result = await payOffer({ quoteId: directBuy.quoteId, offerId: directBuy.offerId }).unwrap()
+        if (result.checkout?.id) {
+          navigate(`/order/confirmation?id=${result.checkout.id}`)
+        }
+      } catch (err) {
+        toast.error(err?.data?.message || 'Failed to process payment')
+      }
+      return
+    }
+
     if (cartItems.length === 0 && !directBuy) {
       toast.error(t('checkoutPage.emptyCart'))
       return
