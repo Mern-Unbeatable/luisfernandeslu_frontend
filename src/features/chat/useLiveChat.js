@@ -93,7 +93,8 @@ export default function useLiveChat(initialThreadId = null) {
               sender: chatMessage.senderId === userIdRef.current ? 'me' : 'them',
               senderId: chatMessage.senderId,
               time: new Date(chatMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              type: chatMessage.messageType || chatMessage.type || 'text',
+              type: String(chatMessage.messageType || chatMessage.type || 'text').toLowerCase(),
+              offer: chatMessage.offer,
               raw: chatMessage,
             }
             draft.push(mapped)

@@ -85,6 +85,47 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
       document.body.style.overflow = prev;
     };
   }, [open, onClose]);
+  // Auto-calculate Total Price
+  useEffect(() => {
+    if (!open) return;
+    const qty = parseFloat(form.totalQuantity) || 0;
+    const foundProduct = productsData?.products?.find((p) => p.product?.title === form.productName);
+    const unitPrice = foundProduct?.raw?.basePrice || foundProduct?.raw?.price || 0;
+    
+    // Only auto-update if we have a valid quantity and unit price
+    if (qty > 0 && unitPrice > 0) {
+      const calculatedPrice = (qty * unitPrice).toFixed(2);
+      setForm((prev) => {
+        // Prevent infinite loops by only updating if changed
+        if (prev.totalPrice === calculatedPrice) return prev;
+        return { ...prev, totalPrice: calculatedPrice };
+      });
+    }
+  }, [form.productName, form.totalQuantity, productsData, open]);
+
+  // Auto-calculate Installments
+  useEffect(() => {
+    if (!open) return;
+    const months = parseInt(form.installmentMonths, 10);
+    if (months > 0) {
+      const price = parseFloat(form.totalPrice) || 0;
+      const qty = parseFloat(form.totalQuantity) || 0;
+      
+      const pricePerInst = (price / months).toFixed(2);
+      const qtyPerInst = (qty / months).toFixed(2);
+      
+      setForm((prev) => {
+        // Only update if the length changed to avoid overwriting manual edits immediately
+        if (prev.installments.length === months) return prev;
+        
+        const newInstallments = Array.from({ length: months }).map(() => ({
+          price: pricePerInst,
+          quantity: qtyPerInst,
+        }));
+        return { ...prev, installments: newInstallments };
+      });
+    }
+  }, [form.installmentMonths, form.totalPrice, form.totalQuantity, open]);
 
   if (!open) return null;
 
@@ -113,9 +154,17 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
     
     // Find productId if they typed a known product name
     const foundProduct = productsData?.products?.find((p) => p.product?.title === form.productName);
+    
+    // Clean up installments array (remove empty rows)
+    const validInstallments = form.installments.filter(
+      (inst) => inst.price !== '' && inst.quantity !== ''
+    );
+
     const submitForm = {
       ...form,
       productId: foundProduct ? foundProduct.id : undefined,
+      installments: validInstallments.length > 0 ? validInstallments : undefined,
+      installmentMonths: form.installmentMonths ? form.installmentMonths : undefined,
     };
     
     onSubmit?.(submitForm);
