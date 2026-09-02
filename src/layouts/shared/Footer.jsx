@@ -4,6 +4,7 @@ import Logo from '../../components/common/Logo/Logo'
 import {
   FaFacebookF,
   FaTwitter,
+  FaWhatsapp ,
   FaPinterestP,
   FaLinkedinIn,
 } from 'react-icons/fa'
@@ -11,6 +12,7 @@ import {
 const socialLinks = [
   { Icon: FaFacebookF, label: 'Facebook' },
   { Icon: FaTwitter, label: 'Twitter' },
+  { Icon: FaWhatsapp , label: 'FaWhatsapp ' },
   { Icon: FaPinterestP, label: 'Pinterest' },
   { Icon: FaLinkedinIn, label: 'LinkedIn' },
 ]
