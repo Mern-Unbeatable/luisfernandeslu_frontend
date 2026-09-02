@@ -253,7 +253,7 @@ export default function CompanyCheckoutPage() {
           </form>
 
           <CheckoutOrderSummary 
-            backTo={directBuy ? `/product/${location.state?.productSlug || ''}` : "/cart"} 
+            backTo={isOfferBuy ? '/messages' : directBuy ? `/product/${location.state?.productSlug || ''}` : '/cart'} 
             shippingForm={shipping} 
             isSubmitting={isSubmitting} 
             cartItems={cartItems}
