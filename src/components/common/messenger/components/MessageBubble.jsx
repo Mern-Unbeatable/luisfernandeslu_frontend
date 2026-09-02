@@ -45,6 +45,54 @@ export default function MessageBubble({
     )
   }
 
+  if (message.type === 'system' && !message.isDeleted) {
+    // Check if it's the initial Quote Request message to style it like a card
+    const quoteMatch = displayText.match(/Quote request sent for "(.*?)". Budget: (.*?)\.(.*)/s)
+    if (quoteMatch) {
+      const [_, product, budget, restText] = quoteMatch
+      return (
+        <div className="my-2 flex w-full justify-center">
+          <div className="w-full max-w-[340px] overflow-hidden rounded-xl border border-indigo-200 bg-indigo-50/50 shadow-sm sm:max-w-md">
+            <div className="border-b border-indigo-100 bg-indigo-100/50 px-4 py-3">
+              <p className="text-sm font-bold text-indigo-900">New Quote Request</p>
+              <p className="text-xs text-indigo-700">Awaiting supplier response</p>
+            </div>
+            <div className="p-4">
+              <div className="mb-3 rounded-lg bg-white p-3 shadow-sm">
+                <p className="text-[11px] uppercase tracking-wider text-gray-500">Product</p>
+                <p className="mt-0.5 text-sm font-bold text-gray-900">{product}</p>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-1 rounded-lg bg-white p-3 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-wider text-gray-500">Budget</p>
+                  <p className="mt-0.5 text-sm font-bold text-[var(--active)]">{budget}</p>
+                </div>
+                <div className="flex-1 rounded-lg bg-white p-3 shadow-sm">
+                  <p className="text-[11px] uppercase tracking-wider text-gray-500">Quantity</p>
+                  <p className="mt-0.5 text-sm font-semibold text-gray-800">
+                    {restText.replace(/Quantity:|^\s+|\s+$/g, '').trim()}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center px-4 pb-3">
+               <Meta time={message.time} align="center" />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    // Normal system message fallback
+    return (
+      <div className="my-3 flex w-full justify-center">
+        <div className="rounded-lg bg-gray-100 px-4 py-2 text-center text-xs font-medium text-gray-600">
+          {displayText}
+        </div>
+      </div>
+    )
+  }
+
   if (isOutgoing) {
     return (
       <div className="flex justify-end">
