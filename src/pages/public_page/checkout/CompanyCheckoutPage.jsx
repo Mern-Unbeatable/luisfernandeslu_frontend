@@ -9,6 +9,7 @@ import CheckoutOrderSummary from './components/CheckoutOrderSummary'
 import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
+import PaymentMethodSelector from './components/PaymentMethodSelector'
 import { useGetCompanyProfileQuery } from '@/features/company/companyProfileApi'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
@@ -66,6 +67,8 @@ export default function CompanyCheckoutPage() {
     accessConditions: mapAccess(offerData?.accessConditions),
   })
   
+  const [paymentMethod, setPaymentMethod] = useState('MULTIBANCO')
+  const [mbwayPhone, setMbwayPhone] = useState('')
   const [useCustomBilling, setUseCustomBilling] = useState(false)
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
   const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy && !isOfferBuy })
@@ -173,7 +176,8 @@ export default function CompanyCheckoutPage() {
       unloadingType: shipping.unloadingType || 'Forklift',
       unloadingLocationDescription: shipping.unloadingLocationDescription,
       accessConditions: shipping.accessConditions,
-      paymentMethod: 'multibanco',
+      paymentMethod: paymentMethod.toLowerCase(),
+      mbwayPhone: paymentMethod === 'MBWAY' ? mbwayPhone : undefined,
       directBuy: directBuy || undefined,
       promos: directBuy ? directPromos : undefined,
     }
@@ -181,7 +185,11 @@ export default function CompanyCheckoutPage() {
     try {
       const result = await placeCheckout(payload).unwrap()
       if (result.success) {
-        navigate(`/order/confirmation?id=${result.id}`)
+        if (paymentMethod === 'CREDITCARD' && result.payment?.url?.startsWith('http')) {
+          window.location.href = result.payment.url
+        } else {
+          navigate(`/order/confirmation?id=${result.id}`)
+        }
       } else {
         toast.error(getAuthErrorMessage(result, t('checkoutPage.placeOrderFailed')))
       }
@@ -250,6 +258,13 @@ export default function CompanyCheckoutPage() {
             )}
 
             <ShippingUnloadingForm values={shipping} onChange={setShipping} />
+
+            <PaymentMethodSelector 
+              value={paymentMethod} 
+              onChange={setPaymentMethod} 
+              mbwayPhone={mbwayPhone} 
+              onMbwayPhoneChange={setMbwayPhone} 
+            />
           </form>
 
           <CheckoutOrderSummary 
