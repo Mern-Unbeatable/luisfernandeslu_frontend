@@ -12,14 +12,21 @@ export default function useLiveChat(initialThreadId = null) {
   const { accessToken, user } = useSelector((state) => state.auth)
 
   const [activeThreadId, setActiveThreadId] = useState(initialThreadId)
+  const [isPartnerTyping, setIsPartnerTyping] = useState(false)
   // Use ref so socket never causes re-renders or recreation from other state changes
   const socketRef = useRef(null)
   const activeThreadIdRef = useRef(activeThreadId)
+  const typingTimerRef = useRef(null)
+  const userIdRef = useRef(user?.id)
 
   // Keep ref in sync with state
   useEffect(() => {
     activeThreadIdRef.current = activeThreadId
   }, [activeThreadId])
+
+  useEffect(() => {
+    userIdRef.current = user?.id
+  }, [user?.id])
 
   const { data: inboxData, isLoading: isLoadingChats, refetch: refetchChats } = useGetChatThreadsQuery({ userId: user?.id })
   const { data: messagesData, isLoading: isLoadingMessages } = useGetChatMessagesQuery(
@@ -48,13 +55,34 @@ export default function useLiveChat(initialThreadId = null) {
       }
     })
 
+    newSocket.on('connect_error', (err) => {
+      console.error('Chat socket connect error:', err)
+    })
+
+    // Listen for presence updates
+    newSocket.on('user:presence', (payload) => {
+      const { userId, status } = payload
+      dispatch(
+        chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
+          if (!draft?.chats) return
+          draft.chats.forEach(chat => {
+            // Find partner in chat participants (mapped by backend)
+            const isPartner = chat.raw?.participants?.some(p => p.id === userId && p.id !== userIdRef.current)
+            if (isPartner) {
+              chat.online = status === 'online'
+            }
+          })
+        })
+      )
+    })
+
     newSocket.on('chat:message', (payload) => {
       const { threadId, chatMessage } = payload
 
       // Update RTK Query cache manually for messages
       if (threadId) {
         dispatch(
-          chatApi.util.updateQueryData('getChatMessages', { threadId, userId: user?.id }, (draft) => {
+          chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
             // Avoid duplicate messages
             const alreadyExists = draft.some((m) => String(m.id) === String(chatMessage.id))
             if (alreadyExists) return
@@ -62,7 +90,7 @@ export default function useLiveChat(initialThreadId = null) {
             const mapped = {
               id: String(chatMessage.id),
               text: chatMessage.text || chatMessage.messageText || chatMessage.message || '',
-              sender: chatMessage.senderId === user?.id ? 'me' : 'them',
+              sender: chatMessage.senderId === userIdRef.current ? 'me' : 'them',
               senderId: chatMessage.senderId,
               time: new Date(chatMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               type: chatMessage.messageType || chatMessage.type || 'text',
@@ -75,7 +103,7 @@ export default function useLiveChat(initialThreadId = null) {
 
       // Update thread list (move to top with last message preview)
       dispatch(
-        chatApi.util.updateQueryData('getChatThreads', { userId: user?.id }, (draft) => {
+        chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
           if (!draft?.chats) return
           const threadIndex = draft.chats.findIndex(c => c.id === String(threadId))
           if (threadIndex > -1) {
@@ -96,6 +124,96 @@ export default function useLiveChat(initialThreadId = null) {
       )
     })
 
+    // Handle message edit from server
+    newSocket.on('chat:edited', (payload) => {
+      console.log('Received chat:edited', payload, 'User ID in closure:', userIdRef.current)
+      const { threadId, chatMessage } = payload
+      if (!threadId || !chatMessage) return
+      
+      // Update messages cache
+      dispatch(
+        chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
+          console.log('chat:edited updating draft. Current messages:', draft.length)
+          const idx = draft.findIndex((m) => String(m.id) === String(chatMessage.id))
+          if (idx !== -1) {
+            draft[idx] = {
+              ...draft[idx],
+              text: chatMessage.messageText || '',
+              editedAt: chatMessage.editedAt,
+              raw: chatMessage,
+            }
+            console.log('chat:edited updated message successfully', draft[idx])
+          } else {
+            console.warn('chat:edited: Message not found in draft', chatMessage.id)
+          }
+        })
+      )
+
+      // Update thread list
+      dispatch(
+        chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
+          if (!draft?.chats) return
+          const thread = draft.chats.find(c => c.id === String(threadId))
+          if (thread) {
+            thread.lastMessage = chatMessage.messageText || 'New message'
+          }
+        })
+      )
+    })
+
+    // Handle message delete from server
+    newSocket.on('chat:deleted', (payload) => {
+      console.log('Received chat:deleted', payload, 'User ID in closure:', userIdRef.current)
+      const { threadId, messageId } = payload
+      if (!threadId || !messageId) return
+
+      // Update messages cache
+      dispatch(
+        chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
+          const idx = draft.findIndex((m) => String(m.id) === String(messageId))
+          if (idx !== -1) {
+            draft[idx] = {
+              ...draft[idx],
+              text: 'This message was deleted',
+              isDeleted: true,
+            }
+          }
+        })
+      )
+
+      // Update thread list
+      dispatch(
+        chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
+          if (!draft?.chats) return
+          const thread = draft.chats.find(c => c.id === String(threadId))
+          if (thread) {
+            // We assume it might be the last message.
+            thread.lastMessage = 'This message was deleted'
+          }
+        })
+      )
+    })
+
+
+    // Handle typing indicator from other user
+    newSocket.on('chat:typing', (payload) => {
+      // Only show typing if it's for the currently active thread and not from ourselves
+      if (
+        String(payload.threadId) === String(activeThreadIdRef.current) &&
+        payload.userId !== user?.id
+      ) {
+        if (payload.isTyping) {
+          setIsPartnerTyping(true)
+          // Auto-clear typing after 3 seconds (in case stop event is missed)
+          clearTimeout(typingTimerRef.current)
+          typingTimerRef.current = setTimeout(() => setIsPartnerTyping(false), 3000)
+        } else {
+          clearTimeout(typingTimerRef.current)
+          setIsPartnerTyping(false)
+        }
+      }
+    })
+
     newSocket.on('chat:error', (error) => {
       console.error('Chat Socket Error:', error)
     })
@@ -105,19 +223,33 @@ export default function useLiveChat(initialThreadId = null) {
     return () => {
       newSocket.disconnect()
       socketRef.current = null
+      clearTimeout(typingTimerRef.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken])
 
-  // Join thread room when active thread changes (without recreating socket)
-  useEffect(() => {
+  // Helper: emit to socket, waiting for connect if needed
+  const safeJoin = useCallback((threadId) => {
     const socket = socketRef.current
-    if (socket && socket.connected && activeThreadId) {
-      socket.emit('chat:join', { threadId: activeThreadId }, (ack) => {
+    if (!socket) return
+    const doJoin = () => {
+      socket.emit('chat:join', { threadId }, (ack) => {
         if (!ack?.ok) console.error('Failed to join room', ack?.message)
       })
     }
-  }, [activeThreadId])
+    if (socket.connected) {
+      doJoin()
+    } else {
+      socket.once('connect', doJoin)
+    }
+  }, [])
+
+  // Join thread room when active thread changes (without recreating socket)
+  useEffect(() => {
+    if (activeThreadId) safeJoin(activeThreadId)
+    // Clear typing indicator when switching threads
+    setIsPartnerTyping(false)
+  }, [activeThreadId, safeJoin])
 
   const selectChat = useCallback((threadId) => {
     const socket = socketRef.current
@@ -165,6 +297,61 @@ export default function useLiveChat(initialThreadId = null) {
     })
   }, [])
 
+  const editMessage = useCallback(async (messageId, text) => {
+    const socket = socketRef.current
+    if (!socket || !messageId || !text?.trim()) return false
+
+    // Optimistic local cache update immediately
+    const threadId = activeThreadIdRef.current
+    if (threadId) {
+      dispatch(
+        chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
+          const idx = draft.findIndex((m) => String(m.id) === String(messageId))
+          if (idx !== -1) {
+            draft[idx] = { ...draft[idx], text, editedAt: new Date().toISOString() }
+          }
+        })
+      )
+    }
+
+    // Fire-and-forget to server (with 5s timeout)
+    return new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(true), 5000)
+      socket.emit('chat:edit', { messageId, text }, (ack) => {
+        clearTimeout(timer)
+        if (!ack?.ok) console.error('Failed to edit message:', ack?.message)
+        resolve(true) // always resolve — UI already updated optimistically
+      })
+    })
+  }, [dispatch])
+
+  const deleteMessage = useCallback(async (messageId) => {
+    const socket = socketRef.current
+    if (!socket || !messageId) return false
+
+    // Optimistic local cache update immediately
+    const threadId = activeThreadIdRef.current
+    if (threadId) {
+      dispatch(
+        chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
+          const idx = draft.findIndex((m) => String(m.id) === String(messageId))
+          if (idx !== -1) {
+            draft[idx] = { ...draft[idx], text: 'This message was deleted', isDeleted: true }
+          }
+        })
+      )
+    }
+
+    return new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(true), 5000)
+      socket.emit('chat:delete', { messageId }, (ack) => {
+        clearTimeout(timer)
+        if (!ack?.ok) console.error('Failed to delete message:', ack?.message)
+        resolve(true)
+      })
+    })
+  }, [dispatch, user?.id])
+
   return {
     chats: inboxData?.chats || [],
     messages: messagesData || [],
@@ -173,15 +360,15 @@ export default function useLiveChat(initialThreadId = null) {
     activePartnerId: activeThreadId,
     isLoading: isLoadingChats || isLoadingMessages,
     isSending: false,
-    isPartnerTyping: false,
+    isPartnerTyping,
     actionMessageId: null,
     sharedInbox: false,
 
     selectChat,
     openThread,
     sendMessage,
-    editMessage: async () => {},
-    deleteMessage: async () => {},
+    editMessage,
+    deleteMessage,
     handleTyping: () => {
       const socket = socketRef.current
       if (socket && activeThreadIdRef.current) {

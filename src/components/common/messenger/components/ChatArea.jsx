@@ -27,6 +27,7 @@ export default function ChatArea({
 }) {
   const [inputText, setInputText] = useState('')
   const [editingMessageId, setEditingMessageId] = useState(null)
+  const [isEditPending, setIsEditPending] = useState(false)
   const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -58,8 +59,16 @@ export default function ChatArea({
     if (!inputText.trim() || isSending) return
 
     if (editingMessageId) {
-      const success = await onEditMessage?.(editingMessageId, inputText)
-      if (success) cancelEdit()
+      const messageId = editingMessageId
+      const text = inputText
+      // Optimistic: close edit UI immediately, then send to server
+      cancelEdit()
+      setIsEditPending(true)
+      try {
+        await onEditMessage?.(messageId, text)
+      } finally {
+        setIsEditPending(false)
+      }
       return
     }
 
@@ -157,13 +166,24 @@ export default function ChatArea({
         )}
 
         {isPartnerTyping ? (
-          <div className="flex items-center gap-2 text-xs text-[var(--secondary-text)]">
+          <div className="flex items-end gap-2">
             <UserAvatar
               partner={activeChat.partner}
               className="size-7"
               textClassName="text-[9px]"
             />
-            <span className="rounded-2xl bg-gray-100 px-3 py-2">Typing...</span>
+            <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-gray-100 px-4 py-3">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="size-2 rounded-full bg-gray-400"
+                  style={{
+                    animation: 'typingBounce 1.2s ease-in-out infinite',
+                    animationDelay: `${i * 0.2}s`,
+                  }}
+                />
+              ))}
+            </div>
           </div>
         ) : null}
       </div>

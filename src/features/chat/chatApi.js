@@ -44,23 +44,38 @@ export const chatApi = baseApi.injectEndpoints({
         const mapped = threads.map((thread) => {
           const lastMsg = thread.lastMessage || {}
           
-          // Find partner name from participants
-          let partnerName = 'Conversation'
+          // Find partner from participants (mapped by backend)
+          let partnerUser = null
           if (thread.participants && thread.participants.length > 0) {
-            const partner = thread.participants.find(p => p.id !== currentUserId)
-            if (partner) {
-              partnerName = partner.name || 'Conversation'
+            const partnerRow = thread.participants.find(p => p.id !== currentUserId)
+            if (partnerRow) {
+              partnerUser = partnerRow
             }
           }
           
+          const partnerName = partnerUser?.name || 'Conversation'
+          const partnerAvatar = partnerUser?.avatar || partnerUser?.image || null
+          const isOnline = partnerUser?.online || false
+
+          // Handle last message logic properly
+          let lastMessageText = 'New conversation'
+          if (typeof lastMsg === 'string') {
+            lastMessageText = lastMsg
+          } else if (lastMsg.isDeleted) {
+            lastMessageText = 'This message was deleted'
+          } else if (lastMsg.text || lastMsg.messageText || lastMsg.message) {
+            lastMessageText = lastMsg.text || lastMsg.messageText || lastMsg.message
+          }
+
           return {
             id: String(thread.id),
             name: thread.title || thread.name || partnerName,
-            avatar: null,
-            lastMessage: typeof lastMsg === 'string' ? lastMsg : (lastMsg.text || lastMsg.messageText || lastMsg.message || 'New conversation'),
+            avatar: partnerAvatar,
+            partner: partnerUser,
+            lastMessage: lastMessageText,
             time: formatChatTime(parseDate(thread.updatedAt)),
             unreadCount: 0,
-            online: false,
+            online: isOnline,
             raw: thread,
           }
         })
@@ -81,11 +96,13 @@ export const chatApi = baseApi.injectEndpoints({
         const msgs = response?.data?.messages || []
         return msgs.map((msg) => ({
           id: String(msg.id),
-          text: msg.text || msg.messageText || msg.message || '',
+          text: msg.isDeleted ? 'This message was deleted' : (msg.text || msg.messageText || msg.message || ''),
           sender: msg.senderId === arg?.userId ? 'me' : (msg.senderId || 'system'),
           senderId: msg.senderId,
           time: formatChatTime(parseDate(msg.createdAt)),
           type: msg.messageType || msg.type || 'text',
+          isDeleted: Boolean(msg.isDeleted),
+          editedAt: msg.editedAt || null,
           raw: msg,
         }))
       },
