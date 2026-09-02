@@ -68,7 +68,7 @@ export default function CompanyCheckoutPage() {
   
   const [useCustomBilling, setUseCustomBilling] = useState(false)
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
-  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy })
+  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy && !isOfferBuy })
   const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
   const [payOffer, { isLoading: isPayingOffer }] = usePaySupplierQuoteOfferMutation()
   
@@ -91,8 +91,9 @@ export default function CompanyCheckoutPage() {
     : allCartItems
 
   if (isOfferBuy && offerData) {
-    const qty = Number(offerData.totalQuantity) || 1
-    const price = Number(offerData.totalPrice) || 0
+    const firstInstallment = offerData.installments?.[0]
+    const qty = firstInstallment ? Number(firstInstallment.quantity) || 1 : (Number(offerData.totalQuantity) || 1)
+    const price = firstInstallment ? Number(firstInstallment.amount) || 0 : (Number(offerData.totalPrice) || 0)
     cartItems = [{
       id: offerData.id,
       title: offerData.productName || offerData.title || 'Special Offer',

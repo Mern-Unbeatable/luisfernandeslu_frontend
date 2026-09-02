@@ -45,8 +45,13 @@ export default function CheckoutOrderSummary({
             sameAsBilling: false
           }
           if (directBuy) {
-            payload.directBuy = directBuy
-            payload.promos = directPromos
+            if (directBuy.offerId) {
+              // Offer checkout: only send offerId
+              payload.directBuy = { offerId: directBuy.offerId }
+            } else {
+              payload.directBuy = directBuy
+              payload.promos = directPromos
+            }
           } else {
             payload.cartItemIds = cartItems.map(i => i.id)
           }
