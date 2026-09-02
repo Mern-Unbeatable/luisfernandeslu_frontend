@@ -49,7 +49,8 @@ export function pickPage(payload, fallback = 1) {
 }
 
 export function toSelectOptions(items = []) {
-  return items
+  const arr = Array.isArray(items) ? items : pickList(items, ['categories', 'items', 'data', 'content']);
+  return arr
     .map((item) => {
       const value = item?.id ?? item?.value ?? ''
       const label =

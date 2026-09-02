@@ -345,6 +345,14 @@ export const supplierQuoteApi = baseApi.injectEndpoints({
         { type: "Quote", id: `${arg?.quoteId}-messages` },
       ],
     }),
+
+    getBuyerProjectsForQuote: builder.query({
+      query: (quoteId) => ({
+        url: `/api/quotes/${quoteId}/buyer-projects`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.projects || [],
+    }),
   }),
 });
 
@@ -354,4 +362,5 @@ export const {
   useGetSupplierQuoteMessagesQuery,
   useSendSupplierQuoteMessageMutation,
   useCreateSupplierQuoteOfferMutation,
+  useGetBuyerProjectsForQuoteQuery,
 } = supplierQuoteApi;

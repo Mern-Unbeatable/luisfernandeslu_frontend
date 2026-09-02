@@ -87,6 +87,7 @@ export default function Messenger({
       {canCreateOffer ? (
         <CreateOfferModal
           open={offerModalOpen}
+          activeChat={activeChat}
           onClose={() => setOfferModalOpen(false)}
           onSubmit={handleOfferSubmit}
         />
