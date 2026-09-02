@@ -353,6 +353,17 @@ export const supplierQuoteApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response?.projects || [],
     }),
+
+    paySupplierQuoteOffer: builder.mutation({
+      query: ({ quoteId, offerId }) => ({
+        url: `/api/quotes/${quoteId}/offers/${offerId}/pay`,
+        method: "POST",
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: "Quote", id: arg?.quoteId },
+        { type: "Quote", id: `${arg?.quoteId}-messages` },
+      ],
+    }),
   }),
 });
 
@@ -363,4 +374,5 @@ export const {
   useSendSupplierQuoteMessageMutation,
   useCreateSupplierQuoteOfferMutation,
   useGetBuyerProjectsForQuoteQuery,
+  usePaySupplierQuoteOfferMutation,
 } = supplierQuoteApi;

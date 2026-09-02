@@ -6,6 +6,8 @@ import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
 import useLiveChat from '@/features/chat/useLiveChat'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
+import { usePaySupplierQuoteOfferMutation } from '@/features/supplier/quotes/quotesApi'
+import toast from 'react-hot-toast'
 
 export default function MessagesPage() {
   const { t } = useTranslation()
@@ -32,6 +34,8 @@ export default function MessagesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
+  const [payOffer, { isLoading: isPaying }] = usePaySupplierQuoteOfferMutation()
+
   return (
     <div className="w-full bg-[#F9FAFB] py-4 sm:py-6 lg:py-8">
       <Seo
@@ -54,20 +58,29 @@ export default function MessagesPage() {
               onDeleteMessage={state.deleteMessage}
               onTyping={state.handleTyping}
               onStopTyping={state.stopTyping}
-              onPayNow={
-                !isCompany
-                  ? () => navigate('/checkout')
-                  : undefined
-              }
-              onNegotiate={
-                !isCompany
-                  ? () => {
-                      void state.sendMessage(
-                        "I'd like to negotiate the terms of this offer.",
-                      )
+              onPayNow={async (msg) => {
+                if (isCompany) {
+                  const quoteId = state.activeChat?.raw?.quoteRequestId || state.activeChat?.id
+                  const offerId = msg?.offer?.id
+                  if (!quoteId || !offerId) return
+                  try {
+                    const result = await payOffer({ quoteId, offerId }).unwrap()
+                    if (result.checkout?.id) {
+                      navigate(`/order/confirmation?id=${result.checkout.id}`)
                     }
-                  : undefined
-              }
+                  } catch (err) {
+                    toast.error(err?.data?.message || 'Failed to process payment')
+                  }
+                } else {
+                  const stateNav = { directBuy: { offerId: msg?.offer?.id } }
+                  navigate('/checkout', { state: stateNav })
+                }
+              }}
+              onNegotiate={() => {
+                void state.sendMessage(
+                  "I'd like to negotiate the terms of this offer.",
+                )
+              }}
               isPartnerTyping={state.isPartnerTyping}
               isSending={state.isSending}
               isLoading={state.isLoading}
