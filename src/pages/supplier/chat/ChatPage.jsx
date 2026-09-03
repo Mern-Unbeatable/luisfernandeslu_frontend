@@ -16,6 +16,8 @@ export default function ChatPage() {
 
   // Open thread from URL params (e.g. from buy-from-factory or quote notification)
   useEffect(() => {
+    if (!state.isSocketConnected) return;
+
     const params = Object.fromEntries(searchParams.entries())
     if (params.type) {
       state.openThread({
@@ -25,9 +27,12 @@ export default function ChatPage() {
         orderId: params.orderId,
         peerUserId: params.peerUserId,
       })
+    } else if (Object.keys(params).length === 0) {
+      // They clicked the sidebar 'Chat' link which has no params, so we reset the selected chat
+      state.selectChat(null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams])
+  }, [searchParams, state.isSocketConnected])
 
   const createOffer = useCallback(
     async (form) => {
@@ -61,7 +66,7 @@ export default function ChatPage() {
           onDeleteMessage={state.deleteMessage}
           onTyping={state.handleTyping}
           onStopTyping={state.stopTyping}
-          onCreateOffer={createOffer}
+          onCreateOffer={state.activeChat?.raw?.type === 'QUOTE' ? createOffer : undefined}
           isPartnerTyping={state.isPartnerTyping}
           isSending={state.isSending || isCreatingOffer}
           isLoading={state.isLoading}

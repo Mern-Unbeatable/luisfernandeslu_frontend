@@ -50,7 +50,7 @@ export default function PanelSidebar({
       >
         <ul className="flex flex-col gap-0.5">
           {items.map((item) => {
-            const to = qs ? `${item.to}?${qs}` : item.to
+            const to = item.to
             const Icon = item.Icon
             return (
               <li key={item.to}>

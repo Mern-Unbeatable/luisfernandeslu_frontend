@@ -153,6 +153,7 @@ export default function ChatArea({
               <MessageBubble
                 key={message.id}
                 message={message}
+                partner={activeChat?.partner}
                 showPartnerAvatar={showPartnerAvatar}
                 onStartEdit={startEdit}
                 onDeleteMessage={onDeleteMessage}

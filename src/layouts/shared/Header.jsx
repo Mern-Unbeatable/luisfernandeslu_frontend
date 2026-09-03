@@ -9,6 +9,7 @@ import { getHomePathForRole } from "../../features/auth/demoUsers";
 import { useAuthLogout } from "../../features/auth/useAuthLogout";
 import { useGetCartQuery } from "../../features/cart/cartApi";
 import { useGetChatThreadsQuery } from "../../features/chat/chatApi";
+import toast from "react-hot-toast";
 import {
   FiSearch,
   FiMessageSquare,
@@ -263,6 +264,12 @@ export default function Header() {
                   <Link
                     key={key}
                     to={to}
+                    onClick={(e) => {
+                      if (key === "messages" && !isAuthenticated) {
+                        e.preventDefault();
+                        toast.error(t("header.loginRequiredMessages", "Please log in to view messages"));
+                      }
+                    }}
                     aria-label={t(`header.${key}`)}
                     aria-current={utilityAriaCurrent(key)}
                     className={`relative ${utilityIconClass(key)}`}
@@ -387,7 +394,14 @@ export default function Header() {
                   <Link
                     key={key}
                     to={to}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => {
+                      if (key === "messages" && !isAuthenticated) {
+                        e.preventDefault();
+                        toast.error(t("header.loginRequiredMessages", "Please log in to view messages"));
+                        return;
+                      }
+                      setMenuOpen(false);
+                    }}
                     aria-current={utilityAriaCurrent(key)}
                     className={`flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50 ${
                       (key === "messages" && isMessagesRoute) ||

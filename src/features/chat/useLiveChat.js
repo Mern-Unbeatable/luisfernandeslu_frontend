@@ -13,6 +13,8 @@ export default function useLiveChat(initialThreadId = null) {
 
   const [activeThreadId, setActiveThreadId] = useState(initialThreadId)
   const [isPartnerTyping, setIsPartnerTyping] = useState(false)
+  const [isOpening, setIsOpening] = useState(false)
+  const [isSocketConnected, setIsSocketConnected] = useState(false)
   // Use ref so socket never causes re-renders or recreation from other state changes
   const socketRef = useRef(null)
   const activeThreadIdRef = useRef(activeThreadId)
@@ -47,12 +49,17 @@ export default function useLiveChat(initialThreadId = null) {
 
     newSocket.on('connect', () => {
       console.log('LiveChat socket connected', newSocket.id)
+      setIsSocketConnected(true)
       // Re-join active thread if reconnected
       if (activeThreadIdRef.current) {
         newSocket.emit('chat:join', { threadId: activeThreadIdRef.current }, (ack) => {
           if (!ack?.ok) console.error('Failed to re-join room', ack?.message)
         })
       }
+    })
+
+    newSocket.on('disconnect', () => {
+      setIsSocketConnected(false)
     })
 
     newSocket.on('connect_error', (err) => {
@@ -259,18 +266,48 @@ export default function useLiveChat(initialThreadId = null) {
     if (socket && activeThreadIdRef.current) {
       socket.emit('chat:leave', { threadId: activeThreadIdRef.current })
     }
-    setActiveThreadId(String(threadId))
+    setActiveThreadId(threadId ? String(threadId) : null)
 
     // Clear unread count locally and in backend
-    markAsRead({ threadId, userId: user?.id })
+    if (threadId) {
+      markAsRead({ threadId, userId: user?.id })
+    }
   }, [markAsRead, user?.id])
 
   const openThread = useCallback(async (params) => {
     const socket = socketRef.current
     if (!socket) return null
+    setIsOpening(true)
     return new Promise((resolve) => {
       socket.emit('chat:open', params, (response) => {
+        setIsOpening(false)
         if (response?.ok && response?.thread) {
+          // Optimistically add the new thread to the inbox cache so it can be selected immediately
+          dispatch(
+            chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
+              if (draft?.chats) {
+                const exists = draft.chats.find((c) => String(c.id) === String(response.thread.id))
+                if (!exists) {
+                  const partnerRow = response.thread.participants?.find(p => p.id !== userIdRef.current)
+                  const mappedThread = {
+                    id: String(response.thread.id),
+                    name: response.thread.title || response.thread.name || partnerRow?.name || 'Conversation',
+                    avatar: partnerRow?.avatar || partnerRow?.image || null,
+                    partner: partnerRow || null,
+                    lastMessage: 'New conversation',
+                    time: new Intl.DateTimeFormat('en-US', {
+                      month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+                    }).format(new Date()),
+                    unreadCount: 0,
+                    online: false,
+                    raw: response.thread,
+                  }
+                  draft.chats.unshift(mappedThread)
+                }
+              }
+            })
+          )
+          
           selectChat(response.thread.id)
           resolve(response.thread.id)
         } else {
@@ -279,7 +316,7 @@ export default function useLiveChat(initialThreadId = null) {
         }
       })
     })
-  }, [selectChat])
+  }, [selectChat, dispatch])
 
   const sendMessage = useCallback((text, attachments = []) => {
     const socket = socketRef.current
@@ -353,7 +390,8 @@ export default function useLiveChat(initialThreadId = null) {
     activeChatId: activeThreadId,
     activeChat: activeThread,
     activePartnerId: activeThreadId,
-    isLoading: isLoadingChats || isLoadingMessages,
+    isLoading: isLoadingChats || isLoadingMessages || isOpening,
+    isSocketConnected,
     isSending: false,
     isPartnerTyping,
     actionMessageId: null,

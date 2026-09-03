@@ -6,6 +6,7 @@ import UserAvatar from './UserAvatar'
 
 export default function MessageBubble({
   message,
+  partner,
   onStartEdit,
   onDeleteMessage,
   onPayNow,
@@ -130,7 +131,7 @@ export default function MessageBubble({
     <div className="flex items-end gap-2">
       {showPartnerAvatar ? (
         <UserAvatar
-          partner={message.partner}
+          partner={partner}
           className="size-8"
           textClassName="text-[10px]"
         />
