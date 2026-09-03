@@ -8,12 +8,15 @@ export default function AddressAutocomplete({
   value, 
   onChange, 
   onLocationSelect, 
-  placeholder 
+  placeholder,
+  inputClassName = checkoutInputClass,
+  disabled = false
 }) {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef(null)
   const lastSelectedValue = useRef(null)
+  const isTyping = useRef(false)
 
   const [trigger, { data, isFetching }] = useLazySuggestLocationsQuery()
   const locations = data?.locations || []
@@ -21,6 +24,8 @@ export default function AddressAutocomplete({
   // Debounced search on value
   useEffect(() => {
     const timer = setTimeout(() => {
+      if (!isTyping.current) return
+      
       if (value === lastSelectedValue.current) {
         setIsOpen(false)
         return
@@ -49,25 +54,28 @@ export default function AddressAutocomplete({
   }, [])
 
   const handleSelect = (loc) => {
-    lastSelectedValue.current = loc.text
+    const fullAddress = loc.placeName || loc.text
+    lastSelectedValue.current = fullAddress
+    isTyping.current = false
     setIsOpen(false)
     
     // Call the parent handler with the selected location object
     if (onLocationSelect) {
       onLocationSelect({
-        address: loc.text,
+        address: fullAddress,
         city: loc.place || '',
         region: loc.region || '',
         country: loc.country || '',
         zipCode: loc.postcode || '',
       })
     } else if (onChange) {
-      onChange(loc.text)
+      onChange(fullAddress)
     }
   }
 
   const handleChange = (e) => {
     lastSelectedValue.current = null
+    isTyping.current = true
     if (onChange) onChange(e.target.value)
   }
 
@@ -79,11 +87,12 @@ export default function AddressAutocomplete({
           value={value || ''}
           onChange={handleChange}
           onFocus={() => {
-            if (locations.length > 0) setIsOpen(true)
+            if (locations.length > 0 && value !== lastSelectedValue.current) setIsOpen(true)
           }}
           placeholder={placeholder || t('checkoutPage.addressPlaceholder', 'Start typing an address...')}
-          className={`${checkoutInputClass} pr-10`}
+          className={`${inputClassName} pr-10`}
           autoComplete="off"
+          disabled={disabled}
         />
         <div className="absolute top-1/2 right-3 -translate-y-1/2 text-[var(--secondary-text)] pointer-events-none">
           {isFetching ? (

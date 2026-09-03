@@ -15,6 +15,7 @@ import {
   useSaveSupplierWarehousesMutation,
   useUpdateSupplierProfileMutation,
 } from "@/features/supplier/profile/profileApi";
+import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
 
 const EMPTY_SUPPLIER_PROFILE = {
   displayName: "",
@@ -365,7 +366,7 @@ export default function ProfilePage() {
                     key={warehouse?.id || index}
                     label={`${t("panel.profile.warehouseN", { n: index + 1 })}`}
                   >
-                    <TextInput
+                    <AddressAutocomplete
                       value={warehouse?.address ?? ""}
                       onChange={(value) => {
                         setWarehouseDraft((current) =>
@@ -376,7 +377,17 @@ export default function ProfilePage() {
                           ),
                         );
                       }}
+                      onLocationSelect={(loc) => {
+                        setWarehouseDraft((current) =>
+                          current.map((item, itemIndex) =>
+                            itemIndex === index
+                              ? { ...item, address: loc.address }
+                              : item,
+                          ),
+                        );
+                      }}
                       placeholder={t("panel.profile.warehousePlaceholder")}
+                      inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3 disabled:bg-gray-50 disabled:text-gray-500"
                       disabled={!editingWarehouses}
                     />
                   </Field>

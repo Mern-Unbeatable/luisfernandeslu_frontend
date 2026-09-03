@@ -2,6 +2,7 @@ import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiUser } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
+import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete'
 import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
 import { resolveProfileConfig } from './roleConfig'
 import {
@@ -170,10 +171,12 @@ function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, warehouseTitleKe
             key={item.id}
             label={t('panel.profile.warehouseN', { n: index + 1 })}
           >
-            <TextInput
+            <AddressAutocomplete
               value={item.address}
               onChange={(address) => onUpdate(item.id, address)}
+              onLocationSelect={(loc) => onUpdate(item.id, loc.address)}
               placeholder={t('panel.profile.warehousePlaceholder')}
+              inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3"
             />
           </Field>
         ))}
