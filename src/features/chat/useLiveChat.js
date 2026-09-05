@@ -288,7 +288,13 @@ export default function useLiveChat(initialThreadId = null) {
               if (draft?.chats) {
                 const exists = draft.chats.find((c) => String(c.id) === String(response.thread.id))
                 if (!exists) {
-                  const partnerRow = response.thread.participants?.find(p => p.id !== userIdRef.current)
+                  const nonSelf = (response.thread.participants || []).filter(p => p.id !== userIdRef.current)
+                  let partnerRow
+                  if (response.thread.type === 'ORDER_TRANSPORT') {
+                    partnerRow = nonSelf.find(p => p.role === 'TRANSPORTER') || nonSelf[0]
+                  } else {
+                    partnerRow = nonSelf[0]
+                  }
                   const mappedThread = {
                     id: String(response.thread.id),
                     name: response.thread.title || response.thread.name || partnerRow?.name || 'Conversation',
@@ -299,7 +305,7 @@ export default function useLiveChat(initialThreadId = null) {
                       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
                     }).format(new Date()),
                     unreadCount: 0,
-                    online: false,
+                    online: partnerRow?.online || false,
                     raw: response.thread,
                   }
                   draft.chats.unshift(mappedThread)

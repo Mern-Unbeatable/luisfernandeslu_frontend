@@ -47,9 +47,11 @@ export const chatApi = baseApi.injectEndpoints({
           // Find partner from participants (mapped by backend)
           let partnerUser = null
           if (thread.participants && thread.participants.length > 0) {
-            const partnerRow = thread.participants.find(p => p.id !== currentUserId)
-            if (partnerRow) {
-              partnerUser = partnerRow
+            const nonSelf = thread.participants.filter(p => p.id !== currentUserId)
+            if (thread.type === 'ORDER_TRANSPORT') {
+              partnerUser = nonSelf.find(p => p.role === 'TRANSPORTER') || nonSelf[0]
+            } else {
+              partnerUser = nonSelf[0]
             }
           }
           
