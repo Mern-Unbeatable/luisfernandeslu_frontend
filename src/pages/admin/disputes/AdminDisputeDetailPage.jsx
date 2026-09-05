@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
@@ -11,12 +12,14 @@ import {
 } from '@/features/admin/adminDisputeApi'
 import { mapAdminDisputeDetail } from '@/features/admin/adminDisputeMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import useDisputeChat from '@/features/chat/useDisputeChat'
 
 const I18N_KEY = 'adminDisputesResolution'
 
 export default function AdminDisputeDetailPage() {
   const { t } = useTranslation()
   const { disputeId } = useParams()
+  const { user } = useSelector((state) => state.auth)
 
   const {
     data,
@@ -31,7 +34,28 @@ export default function AdminDisputeDetailPage() {
 
   const [updateDisputeStatus] = useUpdateAdminDisputeStatusMutation()
 
-  const dispute = mapAdminDisputeDetail(data)
+  const baseDispute = mapAdminDisputeDetail(data)
+
+  const {
+    messages: liveMessages,
+    status: liveStatus,
+    sendMessage,
+  } = useDisputeChat({
+    disputeId: disputeId ?? '',
+    initialMessages: baseDispute?.messages ?? [],
+    initialStatus: baseDispute?.status ?? 'under_review',
+  })
+
+  const dispute = baseDispute
+    ? {
+        ...baseDispute,
+        status: liveStatus || baseDispute.status,
+        messages:
+          liveMessages.length > 0
+            ? liveMessages
+            : (baseDispute.messages ?? []),
+      }
+    : null
 
   const handleStatusChange = useCallback(
     async (status) => {
@@ -118,7 +142,9 @@ export default function AdminDisputeDetailPage() {
           variant="dashboard"
           dispute={dispute}
           currentUserRole="admin"
+          currentUserId={user?.id}
           onStatusChange={handleStatusChange}
+          onSendMessage={sendMessage}
         />
       </div>
     </div>

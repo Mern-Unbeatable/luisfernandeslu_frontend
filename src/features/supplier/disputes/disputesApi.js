@@ -48,6 +48,7 @@ function mapDisputeDetail(payload) {
     evidence: Array.isArray(dispute.evidence)
       ? dispute.evidence.map(String)
       : [],
+    messages: Array.isArray(dispute.messages) ? dispute.messages : [],
     chat: dispute.chat ?? null,
     raw: dispute,
   };

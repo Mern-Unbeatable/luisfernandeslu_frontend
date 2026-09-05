@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
@@ -9,12 +10,14 @@ import {
   useGetSupplierDisputeByIdQuery,
   useUpdateSupplierDisputeStatusMutation,
 } from "@/features/supplier/disputes/disputesApi";
+import useDisputeChat from "@/features/chat/useDisputeChat";
 
 export default function DisputeDetailPage() {
   const { t } = useTranslation();
   const { disputeId } = useParams();
+  const { user } = useSelector((state) => state.auth);
   const {
-    data: dispute,
+    data: baseDispute,
     isLoading,
     error,
   } = useGetSupplierDisputeByIdQuery(disputeId, { skip: !disputeId });
@@ -27,6 +30,27 @@ export default function DisputeDetailPage() {
     },
     [disputeId, updateDisputeStatus],
   );
+
+  const {
+    messages: liveMessages,
+    status: liveStatus,
+    sendMessage,
+  } = useDisputeChat({
+    disputeId: disputeId ?? "",
+    initialMessages: baseDispute?.messages ?? [],
+    initialStatus: baseDispute?.status ?? "under_review",
+  });
+
+  const dispute = baseDispute
+    ? {
+        ...baseDispute,
+        status: liveStatus || baseDispute.status,
+        messages:
+          liveMessages.length > 0
+            ? liveMessages
+            : (baseDispute.messages ?? []),
+      }
+    : null;
 
   const errorMessage = error
     ? getApiErrorMessage(error, t("common.requestFailed"))
@@ -97,10 +121,9 @@ export default function DisputeDetailPage() {
         variant="dashboard"
         dispute={dispute}
         currentUserRole="seller"
+        currentUserId={user?.id}
         onStatusChange={handleStatusChange}
-        onSendMessage={(text) => {
-          // TODO: wire supplier dispute message API
-        }}
+        onSendMessage={sendMessage}
       />
     </div>
   );

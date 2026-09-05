@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -7,10 +8,12 @@ import NotFoundPage from '@/pages/public_page/NotFoundPage'
 import Seo from '@/components/common/Seo/Seo'
 import { useGetCustomerDisputeByIdQuery } from '@/features/customer/customerDisputeApi'
 import { mapCustomerDisputeDetail } from '@/features/customer/customerDisputeMappers'
+import useDisputeChat from '@/features/chat/useDisputeChat'
 
 export default function DisputeDetailPage() {
   const { disputeId } = useParams()
   const { t } = useTranslation()
+  const { user } = useSelector((state) => state.auth)
 
   const {
     data,
@@ -23,15 +26,24 @@ export default function DisputeDetailPage() {
   })
 
   const baseDispute = useMemo(() => mapCustomerDisputeDetail(data), [data])
-  const [messages, setMessages] = useState([])
 
-  useEffect(() => {
-    if (baseDispute) {
-      setMessages(baseDispute.messages ?? [])
-    }
-  }, [baseDispute])
+  const {
+    messages: liveMessages,
+    status: liveStatus,
+    sendMessage,
+  } = useDisputeChat({
+    disputeId: disputeId ?? '',
+    initialMessages: baseDispute?.messages ?? [],
+    initialStatus: baseDispute?.status ?? 'under_review',
+  })
 
-  const dispute = baseDispute ? { ...baseDispute, messages } : null
+  const dispute = baseDispute
+    ? {
+        ...baseDispute,
+        status: liveStatus || baseDispute.status,
+        messages: liveMessages.length > 0 ? liveMessages : (baseDispute.messages ?? []),
+      }
+    : null
 
   if (isLoading && !data) {
     return (
@@ -88,22 +100,11 @@ export default function DisputeDetailPage() {
           variant="public"
           dispute={dispute}
           currentUserRole="buyer"
-          onSendMessage={(text) => {
-            setMessages((prev) => [
-              ...prev,
-              {
-                id: `local-${Date.now()}`,
-                author: 'You',
-                roleLabel: 'Buyer',
-                role: 'buyer',
-                align: 'right',
-                at: new Date().toLocaleString(),
-                text,
-              },
-            ])
-          }}
+          currentUserId={user?.id}
+          onSendMessage={sendMessage}
         />
       </div>
     </div>
   )
 }
+
