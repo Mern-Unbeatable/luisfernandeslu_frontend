@@ -160,6 +160,17 @@ export const marketplaceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Product', 'Quote', 'ChatThread'],
     }),
+    getSearchSuggestions: builder.query({
+      query: (q) => ({
+        url: '/api/marketplace/products/suggestions',
+        method: 'GET',
+        params: { q },
+      }),
+      transformResponse: (response) => ({
+        products: response?.products ?? [],
+        categories: response?.categories ?? [],
+      }),
+    }),
   }),
 })
 
@@ -169,4 +180,6 @@ export const {
   useGetMarketplaceProductsQuery,
   useGetMarketplaceProductBySlugQuery,
   useCreateProductQuoteMutation,
+  useGetSearchSuggestionsQuery,
 } = marketplaceApi
+

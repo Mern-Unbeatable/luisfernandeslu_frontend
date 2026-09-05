@@ -354,6 +354,27 @@ export default function ProductsPage() {
           />
 
           <div className="min-w-0 flex-1">
+            {search ? (
+              <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50/70 px-4 py-2.5 text-sm text-[var(--primary-text)]">
+                <p>
+                  <span>Search results for: </span>
+                  <span className="font-semibold text-[var(--active)]">"{search}"</span>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = new URLSearchParams(searchParams)
+                    next.delete('search')
+                    next.delete('page')
+                    setSearchParams(next, { replace: true })
+                  }}
+                  className="text-xs font-semibold text-[var(--secondary-text)] hover:text-red-600 underline"
+                >
+                  Clear search
+                </button>
+              </div>
+            ) : null}
+
             <div className="mb-4 hidden items-center justify-between gap-3 lg:mb-6 lg:flex">
               <p className="text-sm text-[var(--secondary-text)]">
                 {t('productsPage.resultsCount', { count: totalResults })}
