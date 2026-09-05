@@ -355,9 +355,10 @@ export const supplierQuoteApi = baseApi.injectEndpoints({
     }),
 
     paySupplierQuoteOffer: builder.mutation({
-      query: ({ quoteId, offerId }) => ({
+      query: ({ quoteId, offerId, shippingFee, paymentMethod, mbwayPhone }) => ({
         url: `/api/quotes/${quoteId}/offers/${offerId}/pay`,
         method: "POST",
+        data: { shippingFee, paymentMethod, mbwayPhone },
       }),
       invalidatesTags: (_result, _error, arg) => [
         { type: "Quote", id: arg?.quoteId },

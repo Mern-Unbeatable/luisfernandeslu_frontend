@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import Messenger from "@/components/common/messenger/Messenger";
@@ -9,6 +9,7 @@ import { useCreateSupplierQuoteOfferMutation } from "@/features/supplier/quotes/
 export default function ChatPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const state = useLiveChat();
 
   const [createOfferMutation, { isLoading: isCreatingOffer }] =
@@ -67,6 +68,12 @@ export default function ChatPage() {
           onTyping={state.handleTyping}
           onStopTyping={state.stopTyping}
           onCreateOffer={state.activeChat?.raw?.type === 'QUOTE' ? createOffer : undefined}
+          onPayNow={(msg) => {
+            const quoteId = state.activeChat?.raw?.quoteRequestId || state.activeChat?.id
+            const chatType = state.activeChat?.raw?.type
+            const stateNav = { directBuy: { offerId: msg?.offer?.id, offer: msg?.offer, quoteId, chatType } }
+            navigate('/checkout/company', { state: stateNav })
+          }}
           isPartnerTyping={state.isPartnerTyping}
           isSending={state.isSending || isCreatingOffer}
           isLoading={state.isLoading}

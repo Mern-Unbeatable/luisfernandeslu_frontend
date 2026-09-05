@@ -8,8 +8,13 @@ import {
   FiPackage,
   FiX,
 } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
 import { useGetSupplierProductsQuery } from '@/features/supplier/products/productApi';
 import { useGetBuyerProjectsForQuoteQuery } from '@/features/supplier/quotes/quotesApi';
+import { useGetFactoryProductsQuery } from '@/features/factory-products/factoryProductApi';
+import { useGetFactoryProfileQuery } from '@/features/factory-profile/factoryProfileApi';
+import { useGetSupplierProfileQuery } from '@/features/supplier/profile/profileApi';
+import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete';
 
 const UNLOADING_TYPES = [
   'Crane (12m)',
@@ -47,17 +52,34 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
 
   const quoteId = activeChat?.raw?.quoteRequestId || activeChat?.id;
 
-  const { data: productsData } = useGetSupplierProductsQuery({ limit: 1000 }, { skip: !open });
-  const { data: projectsData } = useGetBuyerProjectsForQuoteQuery(quoteId, { skip: !open || !quoteId });
+  const user = useSelector((state) => state.auth?.user);
+  const isFactory = user?.role === 'factory';
+  const isSupplier = user?.role === 'supplier';
+  
+  const isPartnerSupplier = activeChat?.raw?.type === 'FACTORY_SUPPLIER' || activeChat?.partner?.role === 'supplier';
+
+  const { data: supplierProductsData, error: supplierProductsError } = useGetSupplierProductsQuery({ limit: 50, tab: 'all' }, { skip: !open || !isSupplier });
+  const { data: factoryProductsData, error: factoryProductsError } = useGetFactoryProductsQuery({ limit: 50, tab: 'active' }, { skip: !open || !isFactory });
+  const productsData = isFactory ? factoryProductsData : supplierProductsData;
+  const productsError = isFactory ? factoryProductsError : supplierProductsError;
+
+  const { data: supplierProfile } = useGetSupplierProfileQuery(undefined, { skip: !open || !isSupplier });
+  const { data: factoryProfile } = useGetFactoryProfileQuery(undefined, { skip: !open || !isFactory });
+  const profileData = isFactory ? factoryProfile : supplierProfile;
+
+  const { data: projectsData } = useGetBuyerProjectsForQuoteQuery(quoteId, { skip: !open || !quoteId || isPartnerSupplier });
+
+  console.log('CreateOfferModal debug:', { isFactory, productsData, productsError, factoryProductsData });
 
   const productOptions = useMemo(() => {
-    return productsData?.products?.map((p) => p.product?.title).filter(Boolean) || [];
+    const actualProducts = productsData?.products || productsData?.data?.products || [];
+    return actualProducts.map((p) => p?.product?.title || p?.title || p?.name).filter(Boolean);
   }, [productsData]);
 
   const warehouseOptions = useMemo(() => {
-    const locs = productsData?.products?.map((p) => p.warehouseLocation).filter(Boolean) || [];
-    return [...new Set(locs)];
-  }, [productsData]);
+    const warehouses = isFactory ? profileData?.profile?.warehouses : profileData?.warehouses;
+    return warehouses?.map((w) => w.address).filter(Boolean) || [];
+  }, [profileData, isFactory]);
 
   const projectOptions = useMemo(() => {
     return projectsData?.map((p) => p.projectName) || [];
@@ -86,8 +108,12 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
   useEffect(() => {
     if (!open) return;
     const qty = parseFloat(form.totalQuantity) || 0;
-    const foundProduct = productsData?.products?.find((p) => p.product?.title === form.productName);
-    const unitPrice = foundProduct?.raw?.basePrice || foundProduct?.raw?.price || 0;
+    const actualProducts = productsData?.products || productsData?.data?.products || [];
+    const foundProduct = actualProducts.find((p) => {
+      const title = p?.product?.title || p?.title || p?.name;
+      return title === form.productName;
+    });
+    const unitPrice = foundProduct?.raw?.basePrice || foundProduct?.basePrice || foundProduct?.raw?.price || 0;
     
     // Only auto-update if we have a valid quantity and unit price
     if (qty > 0 && unitPrice > 0) {
@@ -104,8 +130,8 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
   useEffect(() => {
     if (!open) return;
     const months = parseInt(form.installmentMonths, 10);
+    const price = parseFloat(form.totalPrice) || 0;
     if (months > 0) {
-      const price = parseFloat(form.totalPrice) || 0;
       const qty = parseFloat(form.totalQuantity) || 0;
       
       const pricePerInst = (price / months).toFixed(2);
@@ -129,6 +155,8 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
     }
   }, [form.installmentMonths, form.totalPrice, form.totalQuantity, open]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   if (!open) return null;
 
   const setField = (key, value) => {
@@ -151,11 +179,16 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
     
     // Find productId if they typed a known product name
-    const foundProduct = productsData?.products?.find((p) => p.product?.title === form.productName);
+    const actualProducts = productsData?.products || productsData?.data?.products || [];
+    const foundProduct = actualProducts.find((p) => {
+      const title = p?.product?.title || p?.title || p?.name;
+      return title === form.productName;
+    });
     
     // Clean up installments array (remove empty rows)
     const validInstallments = form.installments.filter(
@@ -164,13 +197,22 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
 
     const submitForm = {
       ...form,
+      supplierId: activeChat?.partner?.id,
+      projectName: form.projectName || undefined,
       productId: foundProduct ? foundProduct.id : undefined,
       installments: validInstallments.length > 0 ? validInstallments : undefined,
       installmentMonths: form.installmentMonths ? form.installmentMonths : undefined,
     };
     
-    onSubmit?.(submitForm);
-    onClose?.();
+    try {
+      setIsSubmitting(true);
+      await onSubmit?.(submitForm);
+      onClose?.();
+    } catch (err) {
+      console.error('Failed to submit offer', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return createPortal(
@@ -239,21 +281,30 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
               placeholder='.bags'
               onChange={(value) => setField('totalQuantity', value)}
             />
-            <ComboboxField
-              label='Project Name'
-              value={form.projectName}
-              placeholder='Select or type Project Name'
-              options={projectOptions}
-              onChange={(value) => setField('projectName', value)}
-            />
-            <ComboboxField
-              label='Delivery Location'
-              icon={<FiMapPin className='size-3.5' />}
-              value={form.deliveryLocation}
-              placeholder='Select or type delivery location'
-              options={deliveryLocationOptions}
-              onChange={(value) => setField('deliveryLocation', value)}
-            />
+            {!isPartnerSupplier && (
+              <ComboboxField
+                label='Project Name'
+                value={form.projectName}
+                placeholder='Select or type Project Name'
+                options={projectOptions}
+                onChange={(value) => setField('projectName', value)}
+              />
+            )}
+            <div className='relative block'>
+              <span className='mb-1.5 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]'>
+                <span className='text-[var(--secondary-text)]'><FiMapPin className='size-3.5' /></span>
+                Delivery Location
+              </span>
+              <div className={`relative flex items-center rounded-md focus-within:ring-2 focus-within:ring-[var(--active)]/30 ${INPUT_BG}`}>
+                <AddressAutocomplete
+                  value={form.deliveryLocation}
+                  onChange={(value) => setField('deliveryLocation', value)}
+                  onLocationSelect={(loc) => setField('deliveryLocation', loc.address)}
+                  placeholder='Select or type delivery location'
+                  inputClassName='w-full bg-transparent border-0 px-3 py-2.5 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)]'
+                />
+              </div>
+            </div>
             <SelectField
               label='Types of unloading Needed'
               value={form.unloadingType}
@@ -325,9 +376,10 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
             </button>
             <button
               type='submit'
-              className='rounded-md bg-[var(--active)] px-4 py-2 text-sm font-semibold text-white hover:brightness-95'
+              disabled={isSubmitting}
+              className='rounded-md bg-[var(--active)] px-4 py-2 text-sm font-semibold text-white hover:brightness-95 disabled:opacity-70 disabled:cursor-not-allowed'
             >
-              Send Offer
+              {isSubmitting ? 'Sending...' : 'Send Offer'}
             </button>
           </div>
         </form>

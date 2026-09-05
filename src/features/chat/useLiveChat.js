@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
-import { useGetChatThreadsQuery, useGetChatMessagesQuery, chatApi } from './chatApi'
+import { useGetChatThreadsQuery, useGetChatMessagesQuery, chatApi, useCreateFactoryOfferMutation, usePayFactoryOfferMutation } from './chatApi'
 import { useDispatch } from 'react-redux'
 
 // The backend server URL for socket connection
@@ -384,6 +384,9 @@ export default function useLiveChat(initialThreadId = null) {
     })
   }, [dispatch, user?.id])
 
+  const [createFactoryOffer] = useCreateFactoryOfferMutation()
+  const [payFactoryOffer] = usePayFactoryOfferMutation()
+
   return {
     chats: inboxData?.chats || [],
     messages: messagesData || [],
@@ -414,6 +417,30 @@ export default function useLiveChat(initialThreadId = null) {
         socket.emit('chat:typing', { threadId: activeThreadIdRef.current, isTyping: false })
       }
     },
-    createOffer: async () => {},
+    createOffer: async (form) => {
+      if (!activeThreadIdRef.current) return
+      try {
+        await createFactoryOffer({
+          threadId: activeThreadIdRef.current,
+          ...form,
+        }).unwrap()
+      } catch (err) {
+        console.error('Failed to create offer:', err)
+        throw err
+      }
+    },
+    payOffer: async (message) => {
+      try {
+        const res = await payFactoryOffer({ offerId: message.offer.id }).unwrap()
+        if (res?.data?.url) {
+          window.location.href = res.data.url
+        } else if (res?.url) {
+          window.location.href = res.url
+        }
+      } catch (err) {
+        console.error('Failed to pay offer:', err)
+        throw err
+      }
+    },
   }
 }

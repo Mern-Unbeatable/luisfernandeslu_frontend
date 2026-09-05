@@ -19,27 +19,30 @@ export default function CheckoutOrderSummary({
   fees = {},
   directBuy,
   directPromos,
-  onDirectPromoUpdate
+  onDirectPromoUpdate,
+  onShippingQuoted
 }) {
   const { t } = useTranslation()
   const [coupon, setCoupon] = useState('')
   const [shippingCost, setShippingCost] = useState(0)
+  const [quotedFees, setQuotedFees] = useState(null)
 
   const [quoteShipping, { isLoading: isQuoting }] = useQuoteShippingMutation()
   const [applyPromo, { isLoading: isApplying }] = useApplyPromoCodeMutation()
   const [removePromo, { isLoading: isRemoving }] = useRemovePromoCodeMutation()
 
   useEffect(() => {
-    if (shippingForm && shippingForm.city && cartItems.length > 0) {
+    const hasAddress = shippingForm && (shippingForm.city || shippingForm.address)
+    if (hasAddress && cartItems.length > 0) {
       const timer = setTimeout(async () => {
         try {
           const payload = {
             unloadingType: shippingForm.unloadingType || 'Forklift',
             shippingAddress: {
-              streetAddress: shippingForm.address || '—',
-              city: shippingForm.city || '—',
-              state: shippingForm.region || '—',
-              zipCode: shippingForm.zipCode || '—',
+              streetAddress: shippingForm.address || '',
+              city: shippingForm.city || '',
+              state: shippingForm.region || '',
+              zipCode: shippingForm.zipCode || '',
               country: 'Portugal'
             },
             sameAsBilling: false
@@ -56,7 +59,14 @@ export default function CheckoutOrderSummary({
             payload.cartItemIds = cartItems.map(i => i.id)
           }
           const result = await quoteShipping(payload).unwrap()
-          setShippingCost(result.shipping ?? result.shippingCost ?? result.quote ?? 0)
+          const shipping = result.shipping ?? result.shippingCost ?? result.quote ?? 0
+          setShippingCost(shipping)
+          if (result.fees) {
+            setQuotedFees(result.fees)
+          }
+          if (onShippingQuoted) {
+            onShippingQuoted(shipping)
+          }
         } catch (e) {
           // Ignore quote errors
         }
@@ -64,6 +74,7 @@ export default function CheckoutOrderSummary({
       return () => clearTimeout(timer)
     } else {
       setShippingCost(0)
+      setQuotedFees(null)
     }
   }, [shippingForm, cartItems, quoteShipping])
 
@@ -77,10 +88,12 @@ export default function CheckoutOrderSummary({
   )
   const subtotal = subtotalBeforeDiscount - discount
 
-  const vatRate = Number(fees.vatRate) || 0
+  const vatRate = Number(fees.vatRate) || Number(quotedFees?.vatRate) || 0
   let vat = 0
   if (cartItems.length > 0) {
-    if (vatRate > 0) {
+    if (quotedFees?.vat != null && quotedFees.vat > 0) {
+      vat = Number(quotedFees.vat)
+    } else if (vatRate > 0) {
       vat = ((subtotal + shippingCost) * vatRate) / 100
     } else {
       vat = Number(fees.vat) || 0

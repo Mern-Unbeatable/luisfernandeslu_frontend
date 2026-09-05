@@ -173,14 +173,16 @@ export default function OfferCard({
                 <FiCheck className="size-4" strokeWidth={2.25} />
                 Pay Now
               </button>
-              <button
-                type="button"
-                onClick={onNegotiate}
-                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#1E293B] px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90"
-              >
-                <FiMessageSquare className="size-4" strokeWidth={1.75} />
-                Negotiate
-              </button>
+              {onNegotiate ? (
+                <button
+                  type="button"
+                  onClick={onNegotiate}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#1E293B] px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90"
+                >
+                  <FiMessageSquare className="size-4" strokeWidth={1.75} />
+                  Negotiate
+                </button>
+              ) : null}
             </>
           )}
         </div>

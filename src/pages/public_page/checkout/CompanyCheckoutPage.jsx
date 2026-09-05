@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import BillingInformationForm, {
@@ -11,9 +12,11 @@ import ShippingUnloadingForm, {
 } from './components/ShippingUnloadingForm'
 import PaymentMethodSelector from './components/PaymentMethodSelector'
 import { useGetCompanyProfileQuery } from '@/features/company/companyProfileApi'
+import { useGetSupplierProfileQuery } from '@/features/supplier/profile/profileApi'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
 import { usePaySupplierQuoteOfferMutation } from '@/features/supplier/quotes/quotesApi'
+import { usePayFactoryOfferMutation } from '@/features/chat/chatApi'
 import toast from 'react-hot-toast'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
@@ -21,8 +24,13 @@ export default function CompanyCheckoutPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
+  
+  const role = useSelector((state) => state.auth?.user?.role)
 
-  const { data: profileData } = useGetCompanyProfileQuery()
+  const { data: companyProfile } = useGetCompanyProfileQuery(undefined, { skip: role !== 'company' })
+  const { data: supplierProfile } = useGetSupplierProfileQuery(undefined, { skip: role !== 'supplier' })
+  const profileData = role === 'supplier' ? supplierProfile : companyProfile
+  
   const savedAddress = profileData?.profile?.billingAddress
   const hasSavedAddress = Boolean(savedAddress && savedAddress.address)
 
@@ -71,9 +79,13 @@ export default function CompanyCheckoutPage() {
   const [mbwayPhone, setMbwayPhone] = useState('')
   const [useCustomBilling, setUseCustomBilling] = useState(false)
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
-  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy && !isOfferBuy })
+  const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!directBuy })
   const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
-  const [payOffer, { isLoading: isPayingOffer }] = usePaySupplierQuoteOfferMutation()
+  const [payQuoteOffer, { isLoading: isPayingQuoteOffer }] = usePaySupplierQuoteOfferMutation()
+  const [payFactoryOffer, { isLoading: isPayingFactoryOffer }] = usePayFactoryOfferMutation()
+  const [shippingCost, setShippingCost] = useState(0)
+  
+  const isPayingOffer = isPayingQuoteOffer || isPayingFactoryOffer
   
   const [directPromos, setDirectPromos] = useState([])
   const [initialDirectQuoteDone, setInitialDirectQuoteDone] = useState(false)
@@ -118,8 +130,19 @@ export default function CompanyCheckoutPage() {
     
     if (isOfferBuy) {
       try {
-        const result = await payOffer({ quoteId: directBuy.quoteId, offerId: directBuy.offerId }).unwrap()
-        if (result.checkout?.id) {
+        let result
+        const paymentPayload = {
+          paymentMethod: paymentMethod.toLowerCase(),
+          mbwayPhone: paymentMethod === 'MBWAY' ? mbwayPhone : undefined,
+        }
+        if (directBuy.chatType === 'FACTORY_SUPPLIER' || directBuy.isFactoryOffer) {
+          result = await payFactoryOffer({ offerId: directBuy.offerId, shippingFee: shippingCost, ...paymentPayload }).unwrap()
+        } else {
+          result = await payQuoteOffer({ quoteId: directBuy.quoteId, offerId: directBuy.offerId, shippingFee: shippingCost, ...paymentPayload }).unwrap()
+        }
+        if (result.url) {
+          window.location.href = result.url
+        } else if (result.checkout?.id) {
           navigate(`/order/confirmation?id=${result.checkout.id}`)
         }
       } catch (err) {
@@ -208,53 +231,57 @@ export default function CompanyCheckoutPage() {
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8 xl:gap-10">
           <form id="checkout-form" onSubmit={handleSubmit} className="space-y-6">
             
-            {hasSavedAddress && !useCustomBilling ? (
-              <div className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 lg:p-8">
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-[var(--primary-text)]">
-                    {t('checkoutPage.billingTitle')}
-                  </h2>
-                  <button
-                    type="button"
-                    onClick={() => setUseCustomBilling(true)}
-                    className="text-sm font-semibold text-[var(--active)] hover:underline"
-                  >
-                    Use different address
-                  </button>
-                </div>
-                <div className="text-sm text-[var(--secondary-text)]">
-                  <p className="font-semibold text-[var(--primary-text)]">
-                    {savedAddress.firstName} {savedAddress.lastName}
-                  </p>
-                  <p className="mt-1">{savedAddress.address}</p>
-                  <p>
-                    {savedAddress.city}, {savedAddress.region} {savedAddress.zipCode}
-                  </p>
-                  <p>{savedAddress.country}</p>
-                  <p className="mt-2">{savedAddress.email}</p>
-                  <p>{savedAddress.phone}</p>
-                </div>
-              </div>
-            ) : null}
+            {role !== 'supplier' && (
+              <>
+                {hasSavedAddress && !useCustomBilling ? (
+                  <div className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 lg:p-8">
+                    <div className="mb-4 flex items-center justify-between">
+                      <h2 className="text-xl font-bold text-[var(--primary-text)]">
+                        {t('checkoutPage.billingTitle')}
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setUseCustomBilling(true)}
+                        className="text-sm font-semibold text-[var(--active)] hover:underline"
+                      >
+                        Use different address
+                      </button>
+                    </div>
+                    <div className="text-sm text-[var(--secondary-text)]">
+                      <p className="font-semibold text-[var(--primary-text)]">
+                        {savedAddress.firstName} {savedAddress.lastName}
+                      </p>
+                      <p className="mt-1">{savedAddress.address}</p>
+                      <p>
+                        {savedAddress.city}, {savedAddress.region} {savedAddress.zipCode}
+                      </p>
+                      <p>{savedAddress.country}</p>
+                      <p className="mt-2">{savedAddress.email}</p>
+                      <p>{savedAddress.phone}</p>
+                    </div>
+                  </div>
+                ) : null}
 
-            <BillingInformationForm
-              values={billing}
-              onChange={setBilling}
-              showProjectFields
-              showCompanyFields
-              hideBillingFields={hasSavedAddress && !useCustomBilling}
-            />
+                <BillingInformationForm
+                  values={billing}
+                  onChange={setBilling}
+                  showProjectFields
+                  showCompanyFields
+                  hideBillingFields={hasSavedAddress && !useCustomBilling}
+                />
 
-            {hasSavedAddress && useCustomBilling && (
-              <div className="flex justify-end -mt-2">
-                <button
-                  type="button"
-                  onClick={() => setUseCustomBilling(false)}
-                  className="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
-                >
-                  Cancel and use saved address
-                </button>
-              </div>
+                {hasSavedAddress && useCustomBilling && (
+                  <div className="flex justify-end -mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setUseCustomBilling(false)}
+                      className="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
+                    >
+                      Cancel and use saved address
+                    </button>
+                  </div>
+                )}
+              </>
             )}
 
             <ShippingUnloadingForm values={shipping} onChange={setShipping} />
@@ -280,6 +307,7 @@ export default function CompanyCheckoutPage() {
               setDirectPromos(newPromos)
               await quoteDirect({ directBuy, promos: newPromos }).unwrap()
             }}
+            onShippingQuoted={setShippingCost}
           />
         </div>
       </div>

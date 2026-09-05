@@ -187,6 +187,13 @@ export default function useMessages({ variant = 'default' } = {}) {
       }
 
       const firstPrice = form.installments?.[0]?.price
+      const totalNum = Number(form.totalPrice) || 0
+      const firstNum = Number(firstPrice) || 0
+      const remaining = Math.max(totalNum - firstNum, 0)
+      const installMonths = parseInt(form.installmentMonths, 10) || 0
+      const remainingMonths = firstPrice ? Math.max(installMonths - 1, 0) : installMonths
+      const monthly = remainingMonths > 0 ? (remaining / remainingMonths).toFixed(2) : null
+
       const offer = {
         title: 'Offer Card',
         statusLabel: 'Awaiting their response',
@@ -201,13 +208,10 @@ export default function useMessages({ variant = 'default' } = {}) {
           ? {
               firstInstallment: `€${firstPrice}`,
               remainingBalance: form.totalPrice
-                ? `€${Math.max(
-                    Number(form.totalPrice) - Number(firstPrice),
-                    0,
-                  )}`
+                ? `€${remaining.toFixed(2)}`
                 : '—',
-              note: form.installmentMonths
-                ? `Pay in ${form.installmentMonths} installments`
+              note: monthly
+                ? `Pay €${monthly}/month for ${remainingMonths} month${remainingMonths === 1 ? '' : 's'}`
                 : '',
             }
           : undefined,

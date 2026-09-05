@@ -109,9 +109,9 @@ export default function Header() {
   }, [searchOpen]);
 
   const utilityIcons = [
-    { Icon: FiMessageSquare, key: "messages", to: "/messages" },
-    { Icon: FiShoppingCart, key: "cart", to: "/cart" },
-  ];
+    { Icon: FiMessageSquare, key: "messages", to: "/messages", roles: ["company", "customer"] },
+    { Icon: FiShoppingCart, key: "cart", to: "/cart", roles: ["customer", "company"] },
+  ].filter(({ roles }) => !roles || roles.includes(user?.role));
 
   const closeSearch = () => setSearchOpen(false);
 
