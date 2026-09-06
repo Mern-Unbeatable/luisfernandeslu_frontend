@@ -10,6 +10,7 @@ import {
 import { FaEuroSign } from 'react-icons/fa'
 import StatusCard from '@/components/data-display/StatusCard'
 import DataTable from '@/components/data-display/DataTable/DataTable'
+import Skeleton from '@/components/common/Skeleton/Skeleton'
 import {
   useCreateAffiliateWithdrawalMutation,
   useGetAffiliateEarningsQuery,
@@ -362,35 +363,50 @@ export default function CommissionsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatusCard
-          label={t('affiliateCommissions.cards.totalEarnings')}
-          value={isLoading ? '—' : formatEuro(summary?.totalEarningsThisMonth)}
-          description={t('affiliateCommissions.cards.thisMonth')}
-          icon={FiArrowDownLeft}
-          iconTone="brand"
-        />
-        <StatusCard
-          variant="action"
-          label={t('affiliateCommissions.cards.availableBalance')}
-          value={isLoading ? '—' : formatEuro(summary?.availableBalance)}
-          icon={FaEuroSign}
-          iconTone="brand"
-          actionLabel={t('affiliateCommissions.cards.withdrawFunds')}
-          onAction={openWithdraw}
-        />
-        <StatusCard
-          label={t('affiliateCommissions.cards.pendingAmount')}
-          value={isLoading ? '—' : formatEuro(summary?.pendingAmount)}
-          icon={FiBarChart2}
-          iconTone="brand"
-        />
-        <StatusCard
-          label={t('affiliateCommissions.cards.totalEarnings')}
-          value={isLoading ? '—' : formatEuro(summary?.totalEarningsLifetime)}
-          description={t('affiliateCommissions.cards.lifeTime')}
-          icon={FiArrowDownLeft}
-          iconTone="brand"
-        />
+        {isLoading && !data ? (
+          Array.from({ length: 4 }).map((_, idx) => (
+            <div
+              key={`commission-stat-${idx}`}
+              className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm space-y-3"
+            >
+              <Skeleton className="size-10 rounded-lg" />
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-7 w-32" />
+            </div>
+          ))
+        ) : (
+          <>
+            <StatusCard
+              label={t('affiliateCommissions.cards.totalEarnings')}
+              value={formatEuro(summary?.totalEarningsThisMonth)}
+              description={t('affiliateCommissions.cards.thisMonth')}
+              icon={FiArrowDownLeft}
+              iconTone="brand"
+            />
+            <StatusCard
+              variant="action"
+              label={t('affiliateCommissions.cards.availableBalance')}
+              value={formatEuro(summary?.availableBalance)}
+              icon={FaEuroSign}
+              iconTone="brand"
+              actionLabel={t('affiliateCommissions.cards.withdrawFunds')}
+              onAction={openWithdraw}
+            />
+            <StatusCard
+              label={t('affiliateCommissions.cards.pendingAmount')}
+              value={formatEuro(summary?.pendingAmount)}
+              icon={FiBarChart2}
+              iconTone="brand"
+            />
+            <StatusCard
+              label={t('affiliateCommissions.cards.totalEarnings')}
+              value={formatEuro(summary?.totalEarningsLifetime)}
+              description={t('affiliateCommissions.cards.lifeTime')}
+              icon={FiArrowDownLeft}
+              iconTone="brand"
+            />
+          </>
+        )}
       </div>
 
       <section className="space-y-4">
@@ -400,7 +416,8 @@ export default function CommissionsPage() {
 
         <DataTable
           columns={columns}
-          data={isLoading ? [] : filtered}
+          data={filtered}
+          loading={isLoading && !data}
           showSearch
           searchValue={search}
           onSearchChange={(value) => {

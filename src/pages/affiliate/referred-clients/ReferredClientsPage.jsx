@@ -114,7 +114,8 @@ export default function ReferredClientsPage() {
 
       <DataTable
         columns={columns}
-        data={isLoading ? [] : rows}
+        data={rows}
+        loading={isLoading && !data}
         showSearch
         searchValue={search}
         onSearchChange={(value) => {

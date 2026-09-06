@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import PanelProfile from '@/components/forms/PanelProfile'
+import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
 import {
   useChangeAffiliatePasswordMutation,
   useGetAffiliateIbanQuery,
@@ -119,7 +120,7 @@ export default function SettingsPage() {
     <>
       <Seo title={t('panel.profile.title')} />
       {isLoading ? (
-        <p className="text-sm text-[var(--secondary-text)]">—</p>
+        <PanelProfileSkeleton showIban={true} />
       ) : (
         <PanelProfile
           role="affiliate"

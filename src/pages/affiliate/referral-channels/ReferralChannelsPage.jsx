@@ -8,6 +8,7 @@ import {
   FiX,
 } from 'react-icons/fi'
 import { MdQrCode2 } from 'react-icons/md'
+import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { useGetAffiliateReferralQuery } from '@/features/affiliate/affiliateReferralApi'
 
 function QrIcon({ className = 'size-5' }) {
@@ -135,9 +136,13 @@ export default function ReferralChannelsPage() {
             <p className="text-[11px] font-medium tracking-wide text-[var(--secondary-text)] uppercase">
               {t('affiliateReferralChannels.promotionalCode')}
             </p>
-            <p className="mt-1 text-3xl font-bold tracking-wide text-[var(--primary-text)]">
-              {isLoading ? '—' : referralCode || '—'}
-            </p>
+            {isLoading && !channel ? (
+              <Skeleton className="mt-2 h-8 w-44" />
+            ) : (
+              <p className="mt-1 text-3xl font-bold tracking-wide text-[var(--primary-text)]">
+                {referralCode || '—'}
+              </p>
+            )}
           </div>
 
           <button
@@ -164,14 +169,18 @@ export default function ReferralChannelsPage() {
           >
             {t('affiliateReferralChannels.directShareLink')}
           </label>
-          <input
-            id="direct-share-link"
-            type="text"
-            readOnly
-            value={isLoading ? '' : shareLink}
-            onFocus={(event) => event.target.select()}
-            className="mt-2 h-11 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
-          />
+          {isLoading && !channel ? (
+            <Skeleton className="mt-2 h-11 w-full rounded-lg" />
+          ) : (
+            <input
+              id="direct-share-link"
+              type="text"
+              readOnly
+              value={shareLink}
+              onFocus={(event) => event.target.select()}
+              className="mt-2 h-11 w-full rounded-lg border border-gray-200 bg-white px-3.5 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+            />
+          )}
         </div>
       </div>
 

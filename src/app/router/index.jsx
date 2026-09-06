@@ -439,27 +439,27 @@ const AffiliateReferralChannels = Loadable(
     () =>
       import("../../pages/affiliate/referral-channels/ReferralChannelsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AffiliateReferredClients = Loadable(
   lazy(
     () => import("../../pages/affiliate/referred-clients/ReferredClientsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AffiliateCommissions = Loadable(
   lazy(() => import("../../pages/affiliate/commissions/CommissionsPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AffiliateLevels = Loadable(
   lazy(
     () => import("../../pages/affiliate/affiliate-levels/AffiliateLevelsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AffiliateSettings = Loadable(
   lazy(() => import("../../pages/affiliate/settings/SettingsPage")),
-  <PanelSkeleton />,
+  null,
 );
 
 /* ─── Admin ──────────────────────────────────────────────────────── */

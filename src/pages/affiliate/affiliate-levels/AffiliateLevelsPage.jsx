@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { FiAward } from 'react-icons/fi'
 import StatusCard from '@/components/data-display/StatusCard'
+import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { useGetAffiliateLevelsQuery } from '@/features/affiliate/affiliateLevelsApi'
 
 function tierRequirement(tier) {
@@ -80,45 +81,61 @@ export default function AffiliateLevelsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        {tiers.map((tier) => {
-          const isActive = Boolean(tier.isCurrent)
-
-          return (
+        {isLoading && !data ? (
+          Array.from({ length: 5 }).map((_, idx) => (
             <div
-              key={tier.id}
-              className={`relative rounded-2xl border p-3 pb-2 transition-colors ${
-                isActive
-                  ? 'border-[var(--active)] bg-[#FFF8F0]'
-                  : 'border-transparent bg-transparent'
-              }`}
+              key={`level-skel-${idx}`}
+              className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm space-y-3"
             >
-              {isActive ? (
-                <span className="absolute top-4 right-4 z-10 inline-flex rounded-full bg-[var(--active)] px-2.5 py-0.5 text-xs font-semibold text-white">
-                  {t('affiliateLevels.active')}
-                </span>
-              ) : null}
-
-              <p className="px-1 pr-16 text-base font-bold text-[var(--primary-text)]">
-                {tier.name}
-              </p>
-              <p className="mt-0.5 px-1 text-xs text-[var(--secondary-text)]">
-                {tierRequirement(tier)}
-              </p>
-
-              <div className="mt-3">
-                <StatusCard
-                  label={t('affiliateLevels.commissionSplit')}
-                  value={`${tier.commissionPercent}%`}
-                  description={
-                    tier.description || t('affiliateLevels.commissionSplitDesc')
-                  }
-                  icon={FiAward}
-                  iconTone="brand"
-                />
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-4 w-32" />
+              <div className="mt-4 space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-7 w-16" />
               </div>
             </div>
-          )
-        })}
+          ))
+        ) : (
+          tiers.map((tier) => {
+            const isActive = Boolean(tier.isCurrent)
+
+            return (
+              <div
+                key={tier.id}
+                className={`relative rounded-2xl border p-3 pb-2 transition-colors ${
+                  isActive
+                    ? 'border-[var(--active)] bg-[#FFF8F0]'
+                    : 'border-transparent bg-transparent'
+                }`}
+              >
+                {isActive ? (
+                  <span className="absolute top-4 right-4 z-10 inline-flex rounded-full bg-[var(--active)] px-2.5 py-0.5 text-xs font-semibold text-white">
+                    {t('affiliateLevels.active')}
+                  </span>
+                ) : null}
+
+                <p className="px-1 pr-16 text-base font-bold text-[var(--primary-text)]">
+                  {tier.name}
+                </p>
+                <p className="mt-0.5 px-1 text-xs text-[var(--secondary-text)]">
+                  {tierRequirement(tier)}
+                </p>
+
+                <div className="mt-3">
+                  <StatusCard
+                    label={t('affiliateLevels.commissionSplit')}
+                    value={`${tier.commissionPercent}%`}
+                    description={
+                      tier.description || t('affiliateLevels.commissionSplitDesc')
+                    }
+                    icon={FiAward}
+                    iconTone="brand"
+                  />
+                </div>
+              </div>
+            )
+          })
+        )}
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ import StatusCard from '@/components/data-display/StatusCard'
 import { useGetAffiliateOverviewQuery } from '@/features/affiliate/affiliateOverviewApi'
 import ActiveTierStatus from './ActiveTierStatus'
 import EarningAnalytics from './EarningAnalytics'
+import PanelDashboardSkeleton from '@/components/common/Skeleton/PanelDashboardSkeleton'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
@@ -27,6 +28,11 @@ export default function OverviewDashboardPage() {
 
   const { data, isLoading } = useGetAffiliateOverviewQuery({ year })
   const overview = data?.overview
+
+  if (isLoading && !overview) {
+    return <PanelDashboardSkeleton />
+  }
+
   const stats = overview?.stats
   const tier = overview?.tier
   const earningAnalytics = overview?.earningAnalytics
