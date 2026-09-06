@@ -15,6 +15,7 @@ import {
 } from '../../../features/transporter/insuranceMappers'
 import PolicyListSection from './sections/PolicyListSection'
 import UploadInsuranceModal from './sections/UploadInsuranceModal'
+import Skeleton from '../../../components/common/Skeleton/Skeleton'
 
 export default function InsurancePage() {
   const { t } = useTranslation()
@@ -130,7 +131,54 @@ export default function InsurancePage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-gray-500">Loading insurance policies…</p>
+        <div className="space-y-6" role="status" aria-busy="true" aria-label="Loading">
+          <span className="sr-only">Loading</span>
+          {/* Status banner skeleton */}
+          <div className="h-16 w-full rounded-lg bg-gray-100 animate-pulse" />
+
+          {/* Required section skeleton */}
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6 space-y-4">
+            <Skeleton className="h-5 w-48" />
+            <Skeleton className="h-4 w-72" />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 pt-2">
+              <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 space-y-2">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-4 w-full" />
+              </div>
+              <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-4 space-y-2">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-4 w-full" />
+              </div>
+            </div>
+          </div>
+
+          {/* Policy cards skeleton */}
+          <div className="space-y-4">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div
+                key={`policy-skel-${i}`}
+                className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
+              >
+                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/30 px-5 py-4">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                </div>
+                <div className="p-5 sm:p-6">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-5">
+                    <div className="space-y-4 sm:col-span-2">
+                      <Skeleton className="h-4 w-28" />
+                      <Skeleton className="h-5 w-36" />
+                    </div>
+                    <div className="space-y-4 sm:col-span-3">
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-5 w-44" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : null}
 
       {isError ? (

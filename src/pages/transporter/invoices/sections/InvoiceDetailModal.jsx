@@ -47,7 +47,15 @@ export default function InvoiceDetailModal({
 
         <div className="px-5 py-4">
           {isLoading ? (
-            <p className="text-sm text-gray-500">Loading invoice…</p>
+            <div className="space-y-3 py-2" role="status" aria-busy="true" aria-label="Loading">
+              <span className="sr-only">Loading</span>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={`inv-skel-${i}`} className="flex items-center justify-between border-b border-gray-100 py-3">
+                  <div className="h-4 w-24 rounded-md bg-gray-200 animate-pulse" />
+                  <div className="h-4 w-32 rounded-md bg-gray-200 animate-pulse" />
+                </div>
+              ))}
+            </div>
           ) : null}
 
           {isError ? (

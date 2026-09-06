@@ -370,59 +370,59 @@ const TransporterDashboard = Loadable(
 );
 const TransporterAuctionBoard = Loadable(
   lazy(() => import("../../pages/transporter/auction-board/AuctionBoardPage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterAssignDeliveriesLayout = Loadable(
   lazy(
     () =>
       import("../../pages/transporter/assign-deliveries/AssignDeliveriesLayout"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterAssignDeliveries = Loadable(
   lazy(
     () =>
       import("../../pages/transporter/assign-deliveries/AssignDeliveriesPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterVerifyDelivery = Loadable(
   lazy(
     () =>
       import("../../pages/transporter/assign-deliveries/VerifyDeliveryPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterPaymentsPayouts = Loadable(
   lazy(
     () =>
       import("../../pages/transporter/payments-payouts/PaymentsPayoutsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterOrderHistory = Loadable(
   lazy(() => import("../../pages/transporter/order-history/OrderHistoryPage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterChat = Loadable(
   lazy(() => import("../../pages/transporter/chat/ChatPage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterInsurance = Loadable(
   lazy(() => import("../../pages/transporter/insurance/InsurancePage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterMap = Loadable(
   lazy(() => import("../../pages/transporter/map/MapPage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterInvoices = Loadable(
   lazy(() => import("../../pages/transporter/invoices/InvoicesPage")),
-  <PanelSkeleton />,
+  null,
 );
 const TransporterProfile = Loadable(
   lazy(() => import("../../pages/transporter/profile/ProfilePage")),
-  <PanelSkeleton />,
+  null,
 );
 
 /* ─── Affiliate ──────────────────────────────────────────────────── */

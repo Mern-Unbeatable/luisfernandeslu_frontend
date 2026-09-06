@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import Toast from '../../../components/common/Toast'
+import DeliveryTimelineSkeleton from '@/components/common/Skeleton/DeliveryTimelineSkeleton'
+import AuctionDetailsSkeleton from '@/components/common/Skeleton/AuctionDetailsSkeleton'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import {
   useGetTransporterDeliveryQuery,
@@ -166,7 +168,7 @@ export default function AssignDeliveriesPage() {
 
   if (selectedAuctionId) {
     if (isDetailLoading) {
-      return <p className="text-sm text-gray-500">Loading delivery details…</p>
+      return <AuctionDetailsSkeleton />
     }
 
     if (isDetailError) {
@@ -255,7 +257,7 @@ export default function AssignDeliveriesPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-gray-500">Loading deliveries…</p>
+        <DeliveryTimelineSkeleton count={3} />
       ) : null}
 
       {isError ? (
@@ -275,14 +277,16 @@ export default function AssignDeliveriesPage() {
         <p className="text-sm text-gray-500">No deliveries found.</p>
       ) : null}
 
-      <DeliveryTimeline
-        items={filteredDeliveries}
-        onStartTrip={handleStartTrip}
-        onMarkPickedUp={handleMarkPickedUp}
-        onNavigateToDelivery={handleNavigateToDelivery}
-        onVerifyDelivery={handleVerifyDeliveryClick}
-        onSeeDetails={handleSeeDetails}
-      />
+      {!isLoading && !isError && filteredDeliveries.length > 0 ? (
+        <DeliveryTimeline
+          items={filteredDeliveries}
+          onStartTrip={handleStartTrip}
+          onMarkPickedUp={handleMarkPickedUp}
+          onNavigateToDelivery={handleNavigateToDelivery}
+          onVerifyDelivery={handleVerifyDeliveryClick}
+          onSeeDetails={handleSeeDetails}
+        />
+      ) : null}
     </div>
   )
 }

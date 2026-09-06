@@ -4,6 +4,8 @@ import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import Pagination from '../../../components/common/Pagination/Pagination'
 import Toast from '../../../components/common/Toast'
+import AuctionCardSkeleton from '@/components/common/Skeleton/AuctionCardSkeleton'
+import { FiInbox, FiRefreshCw } from 'react-icons/fi'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import {
   useGetTransporterAuctionsQuery,
@@ -174,7 +176,11 @@ export default function AuctionBoardPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-gray-500">Loading auctions…</p>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <AuctionCardSkeleton key={`auction-skeleton-${idx}`} />
+          ))}
+        </div>
       ) : null}
 
       {isError ? (
@@ -197,25 +203,65 @@ export default function AuctionBoardPage() {
       ) : null}
 
       {!isLoading && !isError && filteredAuctions.length === 0 ? (
-        <p className="text-sm text-gray-500">No auctions found.</p>
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-16 text-center shadow-sm sm:px-12">
+          <div className="flex size-16 items-center justify-center rounded-2xl bg-amber-50 text-amber-500 shadow-inner">
+            <FiInbox className="size-8 stroke-[1.5]" />
+          </div>
+          <h3 className="mt-4 text-lg font-bold text-gray-900">
+            {t('transporterAuctionBoard.emptyTitle', {
+              defaultValue: 'No auctions available',
+            })}
+          </h3>
+          <p className="mt-1.5 max-w-md text-sm leading-relaxed text-gray-500">
+            {t('transporterAuctionBoard.emptySubtitle', {
+              defaultValue:
+                'There are currently no active auctions matching your criteria. Check back soon or reset your filter.',
+            })}
+          </p>
+          {filter !== 'all' ? (
+            <button
+              type="button"
+              onClick={() => setFilter('all')}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-amber-600 hover:shadow"
+            >
+              <FiRefreshCw className="size-3.5" />
+              {t('transporterAuctionBoard.clearFilter', {
+                defaultValue: 'Reset Filter',
+              })}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+            >
+              <FiRefreshCw className="size-3.5" />
+              {t('common.refresh', { defaultValue: 'Refresh' })}
+            </button>
+          )}
+        </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
-        {filteredAuctions.map((auction) => (
-          <AuctionCard
-            key={auction.id}
-            role="transporter"
-            auction={auction}
-            onPlaceBid={handlePlaceBid}
-          />
-        ))}
-      </div>
+      {!isLoading && !isError && filteredAuctions.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+            {filteredAuctions.map((auction) => (
+              <AuctionCard
+                key={auction.id}
+                role="transporter"
+                auction={auction}
+                onPlaceBid={handlePlaceBid}
+              />
+            ))}
+          </div>
 
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        </>
+      ) : null}
     </div>
   )
 }

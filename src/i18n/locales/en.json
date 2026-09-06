@@ -2986,7 +2986,10 @@
       "endingSoon": "Ending Soon",
       "nearestFirst": "Nearest First",
       "ended": "Ended"
-    }
+    },
+    "emptyTitle": "No auctions available",
+    "emptySubtitle": "There are currently no active auctions matching your criteria. Check back soon or reset your filter.",
+    "clearFilter": "Reset Filter"
   },
   "transporterAssignDeliveries": {
     "title": "Assigned Deliveries",

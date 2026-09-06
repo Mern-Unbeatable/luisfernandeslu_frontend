@@ -2614,7 +2614,10 @@
       "endingSoon": "Terminan pronto",
       "nearestFirst": "Más cercanas primero",
       "ended": "Finalizadas"
-    }
+    },
+    "emptyTitle": "No hay subastas disponibles",
+    "emptySubtitle": "Actualmente no hay subastas activas que coincidan con sus criterios. Vuelva pronto o restablezca el filtro.",
+    "clearFilter": "Restablecer filtro"
   },
   "transporterAssignDeliveries": {
     "title": "Entregas asignadas",

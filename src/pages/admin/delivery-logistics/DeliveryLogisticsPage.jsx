@@ -10,7 +10,7 @@ import {
   mapAdminLogisticsDelivery,
 } from '@/features/admin/adminLogisticsMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
-import DeliveryTimelineSkeleton from './components/DeliveryTimelineSkeleton'
+import DeliveryTimelineSkeleton from '@/components/common/Skeleton/DeliveryTimelineSkeleton'
 
 const I18N_KEY = 'adminDeliveryLogistics'
 const PAGE_SIZE = 20

@@ -134,7 +134,22 @@ export default function VerifyDeliveryPage() {
   }
 
   if (isDetailLoading && !listDelivery) {
-    return <p className="text-sm text-gray-500">Loading delivery…</p>
+    return (
+      <div className="mx-auto space-y-6 pb-12 animate-pulse">
+        <div className="flex flex-col items-center text-center">
+          <div className="size-14 rounded-full bg-gray-200" />
+          <div className="mt-4 h-7 w-48 rounded-md bg-gray-200" />
+          <div className="mt-2 h-4 w-72 rounded-md bg-gray-200" />
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6 space-y-4">
+          <div className="h-5 w-36 rounded-md bg-gray-200" />
+          <div className="space-y-3 pt-2">
+            <div className="h-4 w-full rounded-md bg-gray-200" />
+            <div className="h-4 w-3/4 rounded-md bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (isDetailError && !listDelivery) {

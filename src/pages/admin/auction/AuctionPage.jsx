@@ -11,7 +11,7 @@ import {
 } from '@/features/admin/adminAuctionMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { ADMIN_AUCTION_FILTER_OPTIONS } from './data/auctionsAdminDemo'
-import AuctionCardSkeleton from './components/AuctionCardSkeleton'
+import AuctionCardSkeleton from '@/components/common/Skeleton/AuctionCardSkeleton'
 
 const PAGE_SIZE = 20
 const I18N_KEY = 'adminAuction'

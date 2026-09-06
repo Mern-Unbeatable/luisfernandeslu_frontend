@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import DeliveryTimeline from '../../../components/data-display/DeliveryTimeline'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import Pagination from '../../../components/common/Pagination/Pagination'
+import DeliveryTimelineSkeleton from '@/components/common/Skeleton/DeliveryTimelineSkeleton'
+import AuctionDetailsSkeleton from '@/components/common/Skeleton/AuctionDetailsSkeleton'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import {
   useGetTransporterCompletedDeliveriesQuery,
@@ -65,7 +67,7 @@ export default function OrderHistoryPage() {
 
   if (selectedAuctionId) {
     if (isDetailLoading) {
-      return <p className="text-sm text-gray-500">Loading delivery details…</p>
+      return <AuctionDetailsSkeleton />
     }
 
     if (isDetailError) {
@@ -135,7 +137,7 @@ export default function OrderHistoryPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-gray-500">Loading completed deliveries…</p>
+        <DeliveryTimelineSkeleton count={3} />
       ) : null}
 
       {isError ? (
@@ -155,12 +157,14 @@ export default function OrderHistoryPage() {
         <p className="text-sm text-gray-500">No completed deliveries found.</p>
       ) : null}
 
-      <DeliveryTimeline
-        items={completedDeliveries}
-        onSeeDetails={handleSeeDetails}
-      />
+      {!isLoading && !isError && completedDeliveries.length > 0 ? (
+        <DeliveryTimeline
+          items={completedDeliveries}
+          onSeeDetails={handleSeeDetails}
+        />
+      ) : null}
 
-      {totalPages > 1 ? (
+      {!isLoading && !isError && totalPages > 1 ? (
         <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
       ) : null}
     </div>

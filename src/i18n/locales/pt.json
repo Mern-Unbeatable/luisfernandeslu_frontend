@@ -2614,7 +2614,10 @@
       "endingSoon": "A terminar em breve",
       "nearestFirst": "Mais próximos primeiro",
       "ended": "Terminados"
-    }
+    },
+    "emptyTitle": "Nenhum leilão disponível",
+    "emptySubtitle": "Não há leilões ativos correspondentes aos seus critérios no momento. Volte mais tarde ou redefina o filtro.",
+    "clearFilter": "Redefinir Filtro"
   },
   "transporterAssignDeliveries": {
     "title": "Entregas atribuídas",
