@@ -11,6 +11,7 @@ import {
 } from '@/features/admin/adminAuctionMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { ADMIN_AUCTION_FILTER_OPTIONS } from './data/auctionsAdminDemo'
+import AuctionCardSkeleton from './components/AuctionCardSkeleton'
 
 const PAGE_SIZE = 20
 const I18N_KEY = 'adminAuction'
@@ -117,9 +118,11 @@ export default function AuctionPage() {
       ) : null}
 
       {showInitialLoading ? (
-        <p className="rounded-xl border border-gray-200 bg-white px-5 py-10 text-center text-sm text-[var(--secondary-text)]">
-          {t(`${I18N_KEY}.loading`)}
-        </p>
+        <div className="grid auto-rows-fr grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 lg:gap-4">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <AuctionCardSkeleton key={`auction-skeleton-${idx}`} />
+          ))}
+        </div>
       ) : null}
 
       {!showInitialLoading && !isError && auctions.length === 0 ? (

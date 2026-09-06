@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { FiArrowRight, FiFileText, FiSettings } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import Skeleton from '@/components/common/Skeleton/Skeleton'
 import {
   useGetAdminSettingsQuery,
   useResetAdminSettingsAuctionMutation,
@@ -329,9 +330,14 @@ export default function SettingsPage() {
             actionsDisabled={isShippingBusy || showInitialLoading}
           >
             {showInitialLoading ? (
-              <p className="text-sm text-[var(--secondary-text)]">
-                {t(`${I18N_KEY}.loading`)}
-              </p>
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={`rate-skel-${i}`} className="space-y-1.5">
+                    <Skeleton className="h-3.5 w-24" />
+                    <Skeleton className="h-10 w-full rounded-lg" />
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="space-y-4">
                 {vehicleRatesDraft.map((rate) => (

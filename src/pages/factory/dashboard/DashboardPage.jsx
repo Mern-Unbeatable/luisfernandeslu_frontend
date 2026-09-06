@@ -6,6 +6,7 @@ import { useGetFactoryDashboardQuery } from '@/features/factory-dashboard/factor
 import { mapFactoryDashboard } from '@/features/factory-dashboard/dashboardMappers'
 import RevenueOverview from './RevenueOverview'
 import OrderStatus from './OrderStatus'
+import PanelDashboardSkeleton from '@/components/common/Skeleton/PanelDashboardSkeleton'
 
 const MONTH_KEYS = [
   'jan',
@@ -37,6 +38,10 @@ export default function DashboardPage() {
       ? dashboard.revenue.labels
       : MONTH_KEYS.map((key) => t(`factoryDashboard.months.${key}`))
 
+  if (isLoading) {
+    return <PanelDashboardSkeleton />
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -47,10 +52,6 @@ export default function DashboardPage() {
           {t('factoryDashboard.subtitle')}
         </p>
       </div>
-
-      {isLoading ? (
-        <p className="text-sm text-[var(--secondary-text)]">Loading dashboard…</p>
-      ) : null}
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -65,7 +66,7 @@ export default function DashboardPage() {
         </div>
       ) : null}
 
-      {!isLoading && !isError ? (
+      {!isError ? (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <StatusCard

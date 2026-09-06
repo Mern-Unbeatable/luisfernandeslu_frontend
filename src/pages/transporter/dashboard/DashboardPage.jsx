@@ -6,6 +6,7 @@ import { mapTransporterDashboard } from '../../../features/transporter/dashboard
 import StatsSection from './sections/StatsSection'
 import ActionsSection from './sections/ActionsSection'
 import RevenueSection from './sections/RevenueSection'
+import PanelDashboardSkeleton from '../../../components/common/Skeleton/PanelDashboardSkeleton'
 
 export default function DashboardPage() {
   const { t } = useTranslation()
@@ -19,6 +20,10 @@ export default function DashboardPage() {
     dashboard.welcomeName ||
     t('transporterDashboard.defaultName', { defaultValue: 'Transporter' })
 
+  if (isLoading) {
+    return <PanelDashboardSkeleton />
+  }
+
   return (
     <div className="space-y-8">
       <div>
@@ -29,10 +34,6 @@ export default function DashboardPage() {
           {t('transporterDashboard.welcome', { name: welcomeName })}
         </p>
       </div>
-
-      {isLoading ? (
-        <p className="text-sm text-gray-500">Loading dashboard…</p>
-      ) : null}
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -47,7 +48,7 @@ export default function DashboardPage() {
         </div>
       ) : null}
 
-      {!isLoading && !isError ? (
+      {!isError ? (
         <>
           <StatsSection stats={dashboard.stats} />
           <ActionsSection actions={dashboard.actions} />

@@ -9,6 +9,7 @@ import PageSkeleton from "../../components/common/Skeleton/PageSkeleton";
 import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
 import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
+import PanelDashboardSkeleton from "../../components/common/Skeleton/PanelDashboardSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
 import ProductsPageSkeleton from "../../pages/public_page/products/components/ProductsPageSkeleton";
@@ -200,7 +201,7 @@ const CompanyAffiliates = Loadable(
 
 const SupplierDashboard = Loadable(
   lazy(() => import("../../pages/supplier/dashboard/DashboardPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const SupplierProducts = Loadable(
   lazy(() => import("../../pages/supplier/products/ProductsPage")),
@@ -331,7 +332,7 @@ const SupplierProfile = Loadable(
 
 const FactoryDashboard = Loadable(
   lazy(() => import("../../pages/factory/dashboard/DashboardPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const FactoryProducts = Loadable(
   lazy(() => import("../../pages/factory/products/ProductsPage")),
@@ -365,7 +366,7 @@ const FactoryProfile = Loadable(
 
 const TransporterDashboard = Loadable(
   lazy(() => import("../../pages/transporter/dashboard/DashboardPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const TransporterAuctionBoard = Loadable(
   lazy(() => import("../../pages/transporter/auction-board/AuctionBoardPage")),
@@ -431,7 +432,7 @@ const AffiliateOverview = Loadable(
     () =>
       import("../../pages/affiliate/overview-dashboard/OverviewDashboardPage"),
   ),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const AffiliateReferralChannels = Loadable(
   lazy(
@@ -465,119 +466,119 @@ const AffiliateSettings = Loadable(
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/admin/dashboard/DashboardPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const AdminUserManagement = Loadable(
   lazy(() => import("../../pages/admin/user-management/UserManagementPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminSupplierManagement = Loadable(
   lazy(
     () =>
       import("../../pages/admin/supplier-management/SupplierManagementPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminFactoryManagement = Loadable(
   lazy(
     () => import("../../pages/admin/factory-management/FactoryManagementPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminTransporterManagement = Loadable(
   lazy(
     () =>
       import("../../pages/admin/transporter-management/TransporterManagementPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminProductModeration = Loadable(
   lazy(
     () => import("../../pages/admin/product-moderation/ProductModerationPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminProductModerationDetail = Loadable(
   lazy(
     () =>
       import("../../pages/admin/product-moderation/ProductModerationDetailPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminChat = Loadable(
   lazy(() => import("../../pages/admin/chat/ChatPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminMarketingManagement = Loadable(
   lazy(
     () =>
       import("../../pages/admin/marketing-management/MarketingManagementPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminFinancePayments = Loadable(
   lazy(() => import("../../pages/admin/finance-payments/FinancePaymentsPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminDisputes = Loadable(
   lazy(() => import("../../pages/admin/disputes/DisputesPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminDisputeDetail = Loadable(
   lazy(() => import("../../pages/admin/disputes/AdminDisputeDetailPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminAuction = Loadable(
   lazy(() => import("../../pages/admin/auction/AuctionPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminOrders = Loadable(
   lazy(() => import("../../pages/admin/orders/OrdersPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminOrderDetail = Loadable(
   lazy(() => import("../../pages/admin/orders/AdminOrderDetailPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminDeliveryLogistics = Loadable(
   lazy(
     () => import("../../pages/admin/delivery-logistics/DeliveryLogisticsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminDeliveryLogisticsDetail = Loadable(
   lazy(
     () =>
       import("../../pages/admin/delivery-logistics/DeliveryLogisticsDetailPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminAffiliateDirectory = Loadable(
   lazy(
     () =>
       import("../../pages/admin/affiliate-directory/AffiliateDirectoryPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminAffiliateDetail = Loadable(
   lazy(
     () => import("../../pages/admin/affiliate-directory/AffiliateDetailPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminRolesPermissions = Loadable(
   lazy(
     () => import("../../pages/admin/roles-permissions/RolesPermissionsPage"),
   ),
-  <PanelSkeleton />,
+  null,
 );
 const AdminSettings = Loadable(
   lazy(() => import("../../pages/admin/settings/SettingsPage")),
-  <PanelSkeleton />,
+  null,
 );
 const AdminProfile = Loadable(
   lazy(() => import("../../pages/admin/profile/ProfilePage")),
-  <PanelSkeleton />,
+  null,
 );
 
 /* ─── Shells ─────────────────────────────────────────────────────── */

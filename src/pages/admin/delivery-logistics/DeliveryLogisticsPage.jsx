@@ -10,6 +10,7 @@ import {
   mapAdminLogisticsDelivery,
 } from '@/features/admin/adminLogisticsMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import DeliveryTimelineSkeleton from './components/DeliveryTimelineSkeleton'
 
 const I18N_KEY = 'adminDeliveryLogistics'
 const PAGE_SIZE = 20
@@ -136,9 +137,7 @@ export default function DeliveryLogisticsPage() {
       ) : null}
 
       {showInitialLoading ? (
-        <p className="rounded-xl border border-gray-200 bg-white px-5 py-10 text-center text-sm text-[var(--secondary-text)]">
-          {t(`${I18N_KEY}.loading`)}
-        </p>
+        <DeliveryTimelineSkeleton count={3} />
       ) : null}
 
       {!showInitialLoading && !isError && items.length === 0 ? (
