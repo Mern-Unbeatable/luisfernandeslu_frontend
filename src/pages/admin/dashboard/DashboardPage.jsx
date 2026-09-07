@@ -13,8 +13,8 @@ export default function DashboardPage() {
   const { t } = useTranslation()
   const [channel, setChannel] = useState('all')
 
-  const { data, isLoading, isError, error } = useGetAdminDashboardOverviewQuery()
-  const dashboardData = data?.charts ? data : data?.data || data
+  const { data, isLoading } = useGetAdminDashboardOverviewQuery()
+  const dashboardData = data?.metrics ? data : data?.data || data
 
   return (
     <div className="space-y-8">

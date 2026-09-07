@@ -41,8 +41,9 @@ function SingleChannelLtv({ label, value }) {
 
 export default function PerformanceSection({ channel = 'all', data, isLoading }) {
   const { t } = useTranslation()
-  const performanceData = data || ADMIN_PERFORMANCE
-  const { retention, ltv, repurchase } = performanceData
+  const retention = data?.retention || ADMIN_PERFORMANCE.retention
+  const ltv = data?.ltv || ADMIN_PERFORMANCE.ltv
+  const repurchase = data?.repurchase || ADMIN_PERFORMANCE.repurchase
 
   const isSingleChannel = channel === 'b2b' || channel === 'b2c'
   const barTone =
