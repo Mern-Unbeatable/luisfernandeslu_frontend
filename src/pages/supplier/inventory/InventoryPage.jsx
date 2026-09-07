@@ -25,6 +25,7 @@ import {
 } from '@/data/demoData';
 import AddInventoryProductModal from './AddInventoryProductModal';
 import RestockModal from './RestockModal';
+import ErpIntegrationSection from './ErpIntegrationSection';
 
 const TAB_IDS = {
   management: 'management',
@@ -554,13 +555,8 @@ export default function InventoryPage() {
         />
 
         {!isManagementTab ? (
-          <div className="rounded-xl border border-gray-100 bg-gray-50 px-6 py-16 text-center">
-            <p className="text-base font-semibold text-[var(--primary-text)]">
-              {t('panel.supplierInventory.erpTitle')}
-            </p>
-            <p className="mt-2 text-sm text-[var(--secondary-text)]">
-              {t('panel.supplierInventory.erpSubtitle')}
-            </p>
+          <div className="pt-2">
+            <ErpIntegrationSection />
           </div>
         ) : null}
       </section>
