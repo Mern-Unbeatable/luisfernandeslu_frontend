@@ -49,6 +49,7 @@ export default function MaterialQualityFeedback({
   defaultReview = '',
   onReviewChange,
   onSubmit,
+  isSubmitting = false,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -112,7 +113,8 @@ export default function MaterialQualityFeedback({
 
         <button
           type="submit"
-          className="flex h-12 w-full items-center justify-center rounded-xl bg-[var(--active)] text-base font-bold text-white transition-opacity hover:opacity-95"
+          disabled={isSubmitting}
+          className="flex h-12 w-full items-center justify-center rounded-xl bg-[var(--active)] text-base font-bold text-white transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {t('materialQualityFeedback.submit')}
         </button>

@@ -35,7 +35,7 @@ export default function ReturnOrderDetailView({
             </p>
           </div>
           <StatusBadge
-            status="processing"
+            status={order.status}
             label={t(`returnsCenter.status.${order.status}`, order.status)}
           />
         </div>

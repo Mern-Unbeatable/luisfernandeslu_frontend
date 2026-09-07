@@ -5,7 +5,7 @@ import {
   FiRotateCcw,
   FiMessageSquare,
   FiShield,
-  FiMapPin,
+  // FiMapPin,
   FiFile,
   FiUser,
 } from 'react-icons/fi'
@@ -53,11 +53,11 @@ const transporterRole = {
       labelKey: 'panel.nav.insurance',
       Icon: FiShield,
     },
-    {
-      to: '/transporter/map',
-      labelKey: 'panel.nav.map',
-      Icon: FiMapPin,
-    },
+    // {
+    //   to: '/transporter/map',
+    //   labelKey: 'panel.nav.map',
+    //   Icon: FiMapPin,
+    // },
     {
       to: '/transporter/invoices',
       labelKey: 'panel.nav.invoices',

@@ -27,6 +27,11 @@ export default function AffiliateProfileCard({ affiliate, t }) {
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
               {affiliate.email}
             </p>
+            {affiliate.phone ? (
+              <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
+                {affiliate.phone}
+              </p>
+            ) : null}
             <ul className="mt-4 flex flex-col gap-2 text-sm text-[var(--secondary-text)] sm:flex-row sm:flex-wrap sm:gap-x-6">
               <li>
                 {t('adminAffiliateDirectory.detail.joined')}:{' '}

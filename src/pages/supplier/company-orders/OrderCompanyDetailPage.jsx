@@ -1,9 +1,13 @@
-import { useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import Seo from '@/components/common/Seo/Seo';
-import OrderDetails from '@/components/data-display/OrderDetails';
-import { getSupplierCompanyOrderDetail } from '@/data/demoData';
+import { useCallback, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Seo from "@/components/common/Seo/Seo";
+import OrderDetails from "@/components/data-display/OrderDetails";
+import {
+  useGetSupplierCompanyOrderByIdQuery,
+  useUpdateSupplierCompanyOrderStatusMutation,
+} from "@/features/supplier/company-orders/companyOrdersApi";
+import { axiosInstance } from "@/services/api/axiosInstance";
 
 export default function OrderCompanyDetailPage() {
   const { orderId } = useParams();
@@ -11,62 +15,120 @@ export default function OrderCompanyDetailPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [statusOverride, setStatusOverride] = useState(
-    location.state?.status ?? null,
+    location.state?.status ? String(location.state.status).toLowerCase() : null,
   );
 
-  const orderTab = location.state?.tab ?? 'direct';
+  const orderTab = location.state?.tab ?? "direct";
 
-  // TODO: replace getSupplierCompanyOrderDetail with supplier company order API fetch
-  const order = useMemo(() => {
-    const detail = getSupplierCompanyOrderDetail(orderId, statusOverride);
-    if (!detail) return null;
+  const {
+    data: order,
+    isLoading,
+    isError,
+  } = useGetSupplierCompanyOrderByIdQuery(orderId, {
+    skip: !orderId,
+  });
+  const [updateSupplierCompanyOrderStatus] =
+    useUpdateSupplierCompanyOrderStatusMutation();
 
-    return detail;
-  }, [orderId, statusOverride]);
+  const resolvedOrder = useMemo(() => {
+    if (!order) return null;
+    return statusOverride ? { ...order, status: statusOverride } : order;
+  }, [order, statusOverride]);
 
-  const isChatOrder = order?.hasInstallment ?? orderTab === 'chat';
+  const isChatOrder = resolvedOrder?.hasInstallment ?? orderTab === "chat";
 
-  if (!order) {
+  const handleAccept = useCallback(() => {
+    if (!orderId) return;
+    updateSupplierCompanyOrderStatus({
+      id: orderId,
+      status: "PENDING",
+    });
+    setStatusOverride("pending");
+  }, [orderId, updateSupplierCompanyOrderStatus]);
+
+  const handleDownloadInvoice = useCallback(async () => {
+    if (!orderId) return;
+
+    try {
+      const response = await axiosInstance.get(
+        `/api/supplier/company-orders/${orderId}/invoice`,
+        { responseType: "blob" },
+      );
+      const url = URL.createObjectURL(response.data);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `company-order-invoice-${orderId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Company order invoice download failed", error);
+    }
+  }, [orderId]);
+
+  const handleChat = useCallback(() => {
+    navigate("/supplier/chat");
+  }, [navigate]);
+
+  if (!orderId) {
     return (
       <>
-        <Seo title={t('panel.supplierCompanyOrders.notFound')} />
+        <Seo title={t("panel.supplierCompanyOrders.notFound")} />
 
         <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
-          <p className="text-base font-semibold text-[var(--primary-text)]">
-            {t('panel.supplierCompanyOrders.notFound')}
+          <p className="text-base font-semibold text-(--primary-text)">
+            {t("panel.supplierCompanyOrders.notFound")}
           </p>
           <Link
             to="/supplier/company-orders"
-            className="mt-4 inline-flex text-sm font-semibold text-[var(--active)] hover:underline"
+            className="mt-4 inline-flex text-sm font-semibold text-(--active) hover:underline"
           >
-            {t('panel.supplierCompanyOrders.backToOrders')}
+            {t("panel.supplierCompanyOrders.backToOrders")}
           </Link>
         </div>
       </>
     );
   }
 
-  const handleAccept = () => {
-    setStatusOverride(isChatOrder ? 'pending' : 'pending');
-    // TODO: wire accept company order API
-  };
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+        <p className="text-base font-semibold text-(--primary-text)">
+          Loading order details…
+        </p>
+      </div>
+    );
+  }
 
-  const handleDownloadInvoice = () => {
-    // TODO: wire download invoice API
-  };
+  if (isError || !resolvedOrder) {
+    return (
+      <>
+        <Seo title={t("panel.supplierCompanyOrders.notFound")} />
 
-  const handleChat = () => {
-    navigate('/supplier/chat');
-  };
+        <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+          <p className="text-base font-semibold text-(--primary-text)">
+            {t("panel.supplierCompanyOrders.notFound")}
+          </p>
+          <Link
+            to="/supplier/company-orders"
+            className="mt-4 inline-flex text-sm font-semibold text-(--active) hover:underline"
+          >
+            {t("panel.supplierCompanyOrders.backToOrders")}
+          </Link>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
-      <Seo title={t('panel.supplierCompanyOrders.orderDetailsTitle')} />
+      <Seo title={t("panel.supplierCompanyOrders.orderDetailsTitle")} />
 
       <OrderDetails
-        order={order}
+        order={resolvedOrder}
         hasInstallment={isChatOrder}
-        onBack={() => navigate('/supplier/company-orders')}
+        onBack={() => navigate("/supplier/company-orders")}
         onAccept={handleAccept}
         onDownloadInvoice={handleDownloadInvoice}
         onChat={handleChat}

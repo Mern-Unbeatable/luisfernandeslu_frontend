@@ -18,12 +18,19 @@ export default function DisputesCenter({
   orderOptions = [],
   onOpenDispute,
   onCreateDispute,
+  isSubmitting = false,
+  isFetching = false,
   className = '',
 }) {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [modalOpen, setModalOpen] = useState(false)
+
+  const handleCreateDispute = async (payload) => {
+    await onCreateDispute?.(payload)
+    setModalOpen(false)
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -40,7 +47,12 @@ export default function DisputesCenter({
   }, [disputes, query, statusFilter])
 
   return (
-    <div className={`mx-auto w-full max-w-6xl ${className}`}>
+    <div
+      className={[
+        `mx-auto w-full max-w-6xl ${className}`,
+        isFetching ? 'opacity-60' : '',
+      ].join(' ')}
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatusCard
           variant="inline"
@@ -139,9 +151,12 @@ export default function DisputesCenter({
 
       <RaiseDisputeModal
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          if (!isSubmitting) setModalOpen(false)
+        }}
         orderOptions={orderOptions}
-        onSubmit={onCreateDispute}
+        onSubmit={handleCreateDispute}
+        isSubmitting={isSubmitting}
       />
     </div>
   )

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { FiChevronDown } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import SegmentedTabs from '@/components/common/SegmentedTabs/SegmentedTabs'
 import Pagination from '@/components/common/Pagination/Pagination'
 import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import {
@@ -13,35 +14,6 @@ import {
 } from './data/moderationDemo'
 
 const PAGE_SIZE = 8
-
-function StatusTabsBar({ tabs, activeTab, onTabChange }) {
-  return (
-    <div
-      className="inline-flex w-fit max-w-full shrink-0 flex-wrap items-center rounded-lg bg-gray-100 p-1"
-      role="tablist"
-    >
-      {tabs.map((tab) => {
-        const isActive = tab.id === activeTab
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            onClick={() => onTabChange?.(tab.id)}
-            className={`rounded-md px-3 py-2 text-sm font-medium transition-colors sm:px-4 ${
-              isActive
-                ? 'bg-[var(--active)] text-white shadow-sm'
-                : 'bg-transparent text-[var(--primary-text)] hover:bg-white/80'
-            }`}
-          >
-            {tab.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
 
 export default function ProductModerationPage() {
   const { t } = useTranslation()
@@ -128,7 +100,8 @@ export default function ProductModerationPage() {
       </header>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <StatusTabsBar
+        <SegmentedTabs
+          standalone
           tabs={statusTabs}
           activeTab={statusTab}
           onTabChange={(id) => {

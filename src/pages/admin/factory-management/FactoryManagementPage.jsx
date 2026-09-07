@@ -1,31 +1,196 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
+import {
+  useApproveAdminFactoryMutation,
+  useDeleteAdminFactoryMutation,
+  useGetAdminFactoriesQuery,
+  useGetAdminFactoryStatsQuery,
+  useUpdateAdminFactoryCommissionMutation,
+  useUpdateAdminFactoryStatusMutation,
+} from '@/features/admin/adminFactoryApi'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import SupplierCommissionCell from '../supplier-management/components/SupplierCommissionCell'
 import SupplierDetailsModal from '../supplier-management/components/SupplierDetailsModal'
 import SupplierRowActionMenu from '../supplier-management/components/SupplierRowActionMenu'
 import SupplierStatusBadge from '../supplier-management/components/SupplierStatusBadge'
+import FactoryRejectModal from './components/FactoryRejectModal'
 import {
-  ADMIN_FACTORIES,
-  ADMIN_FACTORY_STATS,
   ADMIN_FACTORY_TABS,
-  filterFactoriesBySearch,
-  filterFactoriesByTab,
   formatFactoryRegisteredDate,
 } from './data/factoriesDemo'
 
-const PAGE_SIZE = 7
+const PAGE_SIZE = 20
 const I18N_KEY = 'adminFactoryManagement'
+
+function formatStatValue(value) {
+  if (value == null || value === '') return '—'
+  return typeof value === 'number' ? value.toLocaleString() : value
+}
+
+function formatCommissionPercent(value) {
+  const num = Number(value)
+  if (Number.isNaN(num)) return '0%'
+  return `${num}%`
+}
+
+function parseCommissionPercent(value) {
+  const num = Number.parseInt(String(value).replace('%', '').trim(), 10)
+  return Number.isNaN(num) ? null : num
+}
+
+function getFactoryStatusCode(row) {
+  return String(row?.statusCode || row?.status || '').toUpperCase()
+}
+
+function isFactoryActive(row) {
+  return getFactoryStatusCode(row) === 'ACTIVE'
+}
+
+function isFactoryPending(row) {
+  const code = getFactoryStatusCode(row)
+  const verification = String(row?.verificationStatus || '').toUpperCase()
+  return (
+    code === 'PENDING' ||
+    code === 'PENDING_VERIFICATION' ||
+    code === 'UNDER_REVIEW' ||
+    verification === 'PENDING_REVIEW' ||
+    verification === 'UNDER_REVIEW'
+  )
+}
+
+function isFactorySuspended(row) {
+  return getFactoryStatusCode(row) === 'SUSPENDED'
+}
+
+function mapFactoryRow(factory) {
+  return {
+    ...factory,
+    registered: factory.registeredDate ?? factory.registered,
+    commission: formatCommissionPercent(factory.commissionPercent),
+  }
+}
+
+function tabToApiStatus(tabId) {
+  if (tabId === 'pending') return 'pending'
+  if (tabId === 'suspended') return 'suspended'
+  return 'all'
+}
 
 export default function FactoryManagementPage() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [detailFactory, setDetailFactory] = useState(null)
-  const [rows, setRows] = useState(ADMIN_FACTORIES)
+  const [detailFactoryId, setDetailFactoryId] = useState(null)
+  const [rejectFactoryId, setRejectFactoryId] = useState(null)
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim())
+    }, 300)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [searchQuery])
+
+  const { data: statsResponse, isLoading: statsLoading } =
+    useGetAdminFactoryStatsQuery()
+
+  const { data: factoriesResponse, isLoading: factoriesLoading } =
+    useGetAdminFactoriesQuery({
+      status: tabToApiStatus(activeTab),
+      search: debouncedSearch,
+      page,
+      limit: PAGE_SIZE,
+    })
+
+  const [approveFactory] = useApproveAdminFactoryMutation()
+  const [updateFactoryStatus] = useUpdateAdminFactoryStatusMutation()
+  const [updateFactoryCommission] = useUpdateAdminFactoryCommissionMutation()
+  const [deleteFactory] = useDeleteAdminFactoryMutation()
+
+  const runAction = useCallback(
+    async (promise, fallbackSuccessKey) => {
+      try {
+        const data = await promise
+        if (data?.success === false) {
+          toast.error(getAuthErrorMessage(data, t(`${I18N_KEY}.actionFailed`)))
+          return
+        }
+        toast.success(data?.message || t(fallbackSuccessKey))
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, t(`${I18N_KEY}.actionFailed`)))
+      }
+    },
+    [t],
+  )
+
+  const handleApprove = useCallback(
+    (row) =>
+      runAction(
+        approveFactory(row.id).unwrap(),
+        `${I18N_KEY}.approveSuccess`,
+      ),
+    [approveFactory, runAction],
+  )
+
+  const handleStatusChange = useCallback(
+    (row, status) =>
+      runAction(
+        updateFactoryStatus({ factoryId: row.id, status }).unwrap(),
+        status === 'active'
+          ? `${I18N_KEY}.renewSuccess`
+          : `${I18N_KEY}.statusUpdated`,
+      ),
+    [runAction, updateFactoryStatus],
+  )
+
+  const handleCommissionChange = useCallback(
+    async (row, nextValue) => {
+      const commissionPercent = parseCommissionPercent(nextValue)
+      if (commissionPercent == null) {
+        toast.error(t(`${I18N_KEY}.actionFailed`))
+        return
+      }
+
+      await runAction(
+        updateFactoryCommission({ factoryId: row.id, commissionPercent }).unwrap(),
+        `${I18N_KEY}.commissionUpdated`,
+      )
+    },
+    [runAction, t, updateFactoryCommission],
+  )
+
+  const handleDeleteFactory = useCallback(
+    async (row) => {
+      const confirmed = window.confirm(
+        t(`${I18N_KEY}.deleteConfirm`, { name: row.name }),
+      )
+      if (!confirmed) return
+
+      try {
+        const data = await deleteFactory(row.id).unwrap()
+        if (data?.success === false) {
+          toast.error(getAuthErrorMessage(data, t(`${I18N_KEY}.actionFailed`)))
+          return
+        }
+        if (detailFactoryId === row.id) {
+          setDetailFactoryId(null)
+        }
+        if (rejectFactoryId === row.id) {
+          setRejectFactoryId(null)
+        }
+        toast.success(data?.message || t(`${I18N_KEY}.deleteSuccess`))
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, t(`${I18N_KEY}.actionFailed`)))
+      }
+    },
+    [deleteFactory, detailFactoryId, rejectFactoryId, t],
+  )
 
   const tabs = useMemo(
     () =>
@@ -36,27 +201,26 @@ export default function FactoryManagementPage() {
     [t],
   )
 
-  const filteredRows = useMemo(() => {
-    const byTab = filterFactoriesByTab(rows, activeTab)
-    return filterFactoriesBySearch(byTab, searchQuery)
-  }, [rows, activeTab, searchQuery])
-
-  const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const pagedRows = useMemo(
-    () =>
-      filteredRows.slice(
-        (safePage - 1) * PAGE_SIZE,
-        safePage * PAGE_SIZE,
-      ),
-    [filteredRows, safePage],
+  const tableRows = useMemo(
+    () => (factoriesResponse?.factories ?? []).map(mapFactoryRow),
+    [factoriesResponse],
   )
 
-  const handleCommissionChange = useCallback((rowId, commission) => {
-    setRows((prev) =>
-      prev.map((row) => (row.id === rowId ? { ...row, commission } : row)),
-    )
-  }, [])
+  const paginationMeta = factoriesResponse?.pagination
+  const total = paginationMeta?.total ?? 0
+  const totalPages = Math.max(1, paginationMeta?.totalPages ?? 1)
+  const paginationFrom = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1
+  const paginationTo = total === 0 ? 0 : Math.min(page * PAGE_SIZE, total)
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages)
+    }
+  }, [page, totalPages])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearch, activeTab])
 
   const menuActions = useMemo(
     () => [
@@ -64,38 +228,38 @@ export default function FactoryManagementPage() {
         id: 'details',
         label: t(`${I18N_KEY}.actions.seeDetails`),
         variant: 'primary',
-        onClick: (row) => setDetailFactory(row),
+        onClick: (row) => setDetailFactoryId(row.id),
       },
       {
         id: 'suspend',
         label: t(`${I18N_KEY}.actions.suspend`),
-        visible: (row) => row.status.toLowerCase() === 'active',
-        onClick: () => {},
+        visible: (row) => isFactoryActive(row) && !isFactoryPending(row),
+        onClick: (row) => handleStatusChange(row, 'suspended'),
       },
       {
         id: 'approved',
         label: t(`${I18N_KEY}.actions.approved`),
-        visible: (row) => row.status.toLowerCase() === 'pending',
-        onClick: () => {},
+        visible: (row) => isFactoryPending(row),
+        onClick: handleApprove,
       },
       {
         id: 'reject',
         label: t(`${I18N_KEY}.actions.reject`),
-        visible: (row) => row.status.toLowerCase() === 'pending',
-        onClick: () => {},
+        visible: (row) => isFactoryPending(row),
+        onClick: (row) => setRejectFactoryId(row.id),
       },
       {
         id: 'renew',
         label: t(`${I18N_KEY}.actions.renew`),
-        visible: (row) => row.status.toLowerCase() === 'suspended',
-        onClick: () => {},
+        visible: (row) => isFactorySuspended(row),
+        onClick: (row) => handleStatusChange(row, 'active'),
       },
       {
         id: 'delete',
         label: t(`${I18N_KEY}.actions.delete`),
         variant: 'danger',
-        visible: (row) => row.status.toLowerCase() !== 'pending',
-        onClick: () => {},
+        visible: (row) => !isFactoryPending(row),
+        onClick: handleDeleteFactory,
       },
       {
         id: 'message',
@@ -103,7 +267,7 @@ export default function FactoryManagementPage() {
         onClick: () => {},
       },
     ],
-    [t],
+    [handleApprove, handleDeleteFactory, handleStatusChange, t],
   )
 
   const columns = useMemo(
@@ -123,7 +287,7 @@ export default function FactoryManagementPage() {
           <SupplierCommissionCell
             i18nKey={I18N_KEY}
             value={value}
-            onChange={(next) => handleCommissionChange(row.id, next)}
+            onChange={(next) => handleCommissionChange(row, next)}
           />
         ),
       },
@@ -140,31 +304,29 @@ export default function FactoryManagementPage() {
         ),
       },
     ],
-    [t, handleCommissionChange, menuActions],
+    [handleCommissionChange, menuActions, t],
   )
+
+  const stats = statsResponse?.stats
 
   const statCards = [
     {
       label: t(`${I18N_KEY}.stats.totalFactories`),
-      value: ADMIN_FACTORY_STATS.totalFactories,
+      value: statsLoading ? '…' : formatStatValue(stats?.totalFactories),
     },
     {
       label: t(`${I18N_KEY}.stats.active`),
-      value: ADMIN_FACTORY_STATS.active,
+      value: statsLoading ? '…' : formatStatValue(stats?.active),
     },
     {
       label: t(`${I18N_KEY}.stats.underReview`),
-      value: ADMIN_FACTORY_STATS.underReview,
+      value: statsLoading ? '…' : formatStatValue(stats?.underReview),
     },
     {
       label: t(`${I18N_KEY}.stats.suspended`),
-      value: ADMIN_FACTORY_STATS.suspended,
+      value: statsLoading ? '…' : formatStatValue(stats?.suspended),
     },
   ]
-
-  const paginationFrom =
-    filteredRows.length === 0 ? 0 : (safePage - 1) * PAGE_SIZE + 1
-  const paginationTo = Math.min(safePage * PAGE_SIZE, filteredRows.length)
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -200,6 +362,7 @@ export default function FactoryManagementPage() {
         onTabChange={(id) => {
           setActiveTab(id)
           setSearchQuery('')
+          setDebouncedSearch('')
           setPage(1)
         }}
         showSearch
@@ -210,22 +373,23 @@ export default function FactoryManagementPage() {
         }}
         searchPlaceholder={t(`${I18N_KEY}.searchPlaceholder`)}
         columns={columns}
-        data={pagedRows}
+        data={tableRows}
         emptyMessage={t(`${I18N_KEY}.empty`)}
+        loading={factoriesLoading && !factoriesResponse}
         showPagination
         pagination={{
-          page: safePage,
+          page,
           pageSize: PAGE_SIZE,
-          total: filteredRows.length,
+          total,
           from: paginationFrom,
           to: paginationTo,
-          hasPrevious: safePage > 1,
-          hasNext: safePage < pageCount,
+          hasPrevious: page > 1,
+          hasNext: page < totalPages,
           onPageChange: setPage,
           summaryLabel: t(`${I18N_KEY}.pagination.summary`, {
             from: paginationFrom,
             to: paginationTo,
-            total: filteredRows.length,
+            total,
           }),
           previousLabel: t(`${I18N_KEY}.pagination.previous`),
           nextLabel: t(`${I18N_KEY}.pagination.next`),
@@ -235,9 +399,20 @@ export default function FactoryManagementPage() {
       <SupplierDetailsModal
         i18nKey={I18N_KEY}
         formatRegisteredDate={formatFactoryRegisteredDate}
-        open={Boolean(detailFactory)}
-        supplier={detailFactory}
-        onClose={() => setDetailFactory(null)}
+        open={Boolean(detailFactoryId)}
+        factoryId={detailFactoryId}
+        onClose={() => setDetailFactoryId(null)}
+      />
+
+      <FactoryRejectModal
+        open={Boolean(rejectFactoryId)}
+        factoryId={rejectFactoryId}
+        onClose={() => setRejectFactoryId(null)}
+        onRejected={() => {
+          if (detailFactoryId === rejectFactoryId) {
+            setDetailFactoryId(null)
+          }
+        }}
       />
     </div>
   )

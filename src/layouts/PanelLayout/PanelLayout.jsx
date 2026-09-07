@@ -14,6 +14,7 @@ export default function PanelLayout({
   role = 'supplier',
   userName = 'Atik Adnan',
   onLogout,
+  isLoggingOut = false,
 }) {
   const { t } = useTranslation()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -51,6 +52,7 @@ export default function PanelLayout({
           <PanelSidebar
             items={roleConfig.nav}
             onLogout={onLogout}
+            isLoggingOut={isLoggingOut}
             showMainMenu={roleConfig.showMainMenu !== false}
           />
         </div>
@@ -82,6 +84,7 @@ export default function PanelLayout({
                 closeMobile()
                 onLogout?.()
               }}
+              isLoggingOut={isLoggingOut}
               onClose={closeMobile}
               showMainMenu={roleConfig.showMainMenu !== false}
               className="h-full"
@@ -94,6 +97,7 @@ export default function PanelLayout({
             context={{
               userName,
               onLogout,
+              isLoggingOut,
               role,
               roleConfig,
             }}

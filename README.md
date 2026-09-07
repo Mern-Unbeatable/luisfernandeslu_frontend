@@ -25,7 +25,7 @@ Use **npm** + committed `package-lock.json` (not yarn). Coolify/Nixpacks chooses
 
 ### Demo login
 
-All demo accounts use password **`demo123`**. Accounts live in `src/data/demoData.js` (`DEMO_USERS`). Helpers: `src/features/auth/demoUsers.js`.
+All demo accounts use password **`Password123!`** (admin: **`AdminDemo123!`**). Accounts live in `src/data/demoData.js` (`DEMO_USERS`) and match backend `pnpm seed:demo`. Helpers: `src/features/auth/demoUsers.js`.
 
 | Role        | Email                  |
 | ----------- | ---------------------- |

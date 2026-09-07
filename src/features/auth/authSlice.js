@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { tokenStorage, storage } from '../../services/storage/localStorage'
+import { parseAuthPayload } from './authUtils'
 
 const USER_KEY = 'auth_user'
 
@@ -17,6 +18,26 @@ function persistUser(user) {
   else storage.remove(USER_KEY)
 }
 
+function applyAuthPayload(state, payload) {
+  const { user, accessToken, refreshToken } = parseAuthPayload(payload)
+
+  if (user) state.user = user
+  if (accessToken) state.accessToken = accessToken
+
+  state.isAuthenticated = Boolean(
+    (accessToken || state.accessToken) && state.user,
+  )
+
+  if (user) persistUser(state.user)
+
+  if (accessToken || refreshToken) {
+    tokenStorage.setTokens({
+      accessToken: accessToken || tokenStorage.getAccessToken(),
+      refreshToken: refreshToken || tokenStorage.getRefreshToken(),
+    })
+  }
+}
+
 const storedUser = readStoredUser()
 const storedToken = tokenStorage.getAccessToken()
 
@@ -31,22 +52,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials(state, action) {
-      const { user, accessToken, refreshToken } = action.payload
-
-      state.user = user ?? state.user
-      state.accessToken = accessToken ?? state.accessToken
-      state.isAuthenticated = Boolean(
-        (accessToken || state.accessToken) && state.user,
-      )
-
-      if (user) persistUser(state.user)
-
-      if (accessToken || refreshToken) {
-        tokenStorage.setTokens({
-          accessToken: accessToken || tokenStorage.getAccessToken(),
-          refreshToken: refreshToken || tokenStorage.getRefreshToken(),
-        })
-      }
+      applyAuthPayload(state, action.payload)
     },
     logout(state) {
       state.user = null

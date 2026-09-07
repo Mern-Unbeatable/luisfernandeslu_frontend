@@ -11,6 +11,7 @@ const activeLink = 'bg-[var(--active)] text-white'
 export default function PanelSidebar({
   items = [],
   onLogout,
+  isLoggingOut = false,
   onClose,
   showMainMenu = true,
   className = '',
@@ -49,7 +50,7 @@ export default function PanelSidebar({
       >
         <ul className="flex flex-col gap-0.5">
           {items.map((item) => {
-            const to = qs ? `${item.to}?${qs}` : item.to
+            const to = item.to
             const Icon = item.Icon
             return (
               <li key={item.to}>
@@ -80,9 +81,18 @@ export default function PanelSidebar({
         <button
           type="button"
           onClick={onLogout}
-          className={`${linkBase} w-full text-red-500 hover:bg-red-50`}
+          disabled={isLoggingOut}
+          aria-busy={isLoggingOut || undefined}
+          className={`${linkBase} w-full text-red-500 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70`}
         >
-          <FiLogOut className="size-[18px] shrink-0" strokeWidth={1.75} />
+          {isLoggingOut ? (
+            <span
+              aria-hidden
+              className="inline-block size-[18px] shrink-0 animate-spin rounded-full border-2 border-solid border-red-500 border-r-transparent"
+            />
+          ) : (
+            <FiLogOut className="size-[18px] shrink-0" strokeWidth={1.75} />
+          )}
           {t('panel.logOut')}
         </button>
       </div>

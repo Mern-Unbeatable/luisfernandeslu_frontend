@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   FiCheckCircle,
   FiEdit2,
@@ -40,6 +40,7 @@ export default function ProductCard({
   className = '',
 }) {
   const [qty, setQty] = useState(quantityProp ?? 1)
+  const [loadingAction, setLoadingAction] = useState(null)
 
   const resolvedBadge = resolveBadge({
     type,
@@ -61,8 +62,14 @@ export default function ProductCard({
   const isFeatured = type === 'featured'
   const isMarketplaceMeta = isSponsored
 
-  const handleAction = (actionId) => {
-    onAction?.(actionId, product)
+  const handleAction = async (actionId) => {
+    if (!onAction) return
+    setLoadingAction(actionId)
+    try {
+      await onAction(actionId, product)
+    } finally {
+      setLoadingAction(null)
+    }
   }
 
   const changeQty = (next) => {
@@ -80,6 +87,7 @@ export default function ProductCard({
           ? 'border-2 border-[var(--active)]'
           : 'border border-gray-200',
         onCardClick ? 'cursor-pointer' : '',
+        'h-full',
         className,
       ].join(' ')}
     >
@@ -99,10 +107,12 @@ export default function ProductCard({
         ) : null}
 
         {product.description ? (
-          <p className="text-[13px] text-[var(--secondary-text)] line-clamp-2">
+          <p className="min-h-[2.5rem] text-[13px] text-[var(--secondary-text)] line-clamp-2">
             {product.description}
           </p>
-        ) : null}
+        ) : (
+          <p className="min-h-[2.5rem]" aria-hidden />
+        )}
 
         {product.bulkOptionLabel ? (
           <p className="text-[13px] font-medium text-[#F64C00]">
@@ -141,7 +151,7 @@ export default function ProductCard({
         ) : null}
 
         {(showQuantity || product.showQuantity) && !isFeatured ? (
-          <div className="mt-2 flex items-center gap-3">
+          <div className="mt-auto flex items-center gap-3 pt-2">
             <QuantityControl
               value={qty}
               onDecrease={() => changeQty(qty - 1)}
@@ -155,13 +165,14 @@ export default function ProductCard({
                 variant: 'primary',
               }}
               className="flex-1"
+              isLoading={loadingAction === 'add_to_cart'}
               onClick={() => handleAction('add_to_cart')}
             />
           </div>
         ) : null}
 
         {!isFeatured && !isMarketplaceMeta && !(showQuantity || product.showQuantity) ? (
-          <ActionFooter actions={resolvedActions} onAction={handleAction} />
+          <ActionFooter actions={resolvedActions} onAction={handleAction} loadingAction={loadingAction} />
         ) : null}
 
         {!isFeatured
@@ -170,7 +181,7 @@ export default function ProductCard({
         && resolvedActions.length > 0
         && !resolvedActions.some((a) => a.id === 'view_details')
           ? (
-              <ActionFooter actions={resolvedActions} onAction={handleAction} />
+              <ActionFooter actions={resolvedActions} onAction={handleAction} loadingAction={loadingAction} />
             )
           : null}
       </div>
@@ -179,19 +190,40 @@ export default function ProductCard({
 }
 
 function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
+  const [loadState, setLoadState] = useState(image ? 'loading' : 'empty')
+
+  useEffect(() => {
+    setLoadState(image ? 'loading' : 'empty')
+  }, [image])
+
   const BadgeIcon = badge?.icon ? ICON_MAP[badge.icon] : null
+  const showImage = Boolean(image) && loadState !== 'error'
 
   return (
     <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-      {image ? (
+      {loadState === 'loading' && showImage ? (
+        <div
+          className="absolute inset-0 animate-pulse bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100"
+          aria-hidden
+        />
+      ) : null}
+
+      {showImage ? (
         <img
           src={image}
           alt={title || 'Product'}
-          className="size-full object-cover"
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoadState('loaded')}
+          onError={() => setLoadState('error')}
+          className={[
+            'size-full object-cover transition-opacity duration-300',
+            loadState === 'loaded' ? 'opacity-100' : 'opacity-0',
+          ].join(' ')}
         />
       ) : (
-        <div className="flex size-full items-center justify-center text-xs text-gray-400">
-          No image
+        <div className="flex size-full items-center justify-center px-3 text-center text-xs text-gray-400">
+          {title || 'No image'}
         </div>
       )}
       {badge ? (
@@ -231,7 +263,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
             ) : null}
           </p>
           {product.minOrder ? (
-            <p className="text-[10px] text-[var(--secondary-text)]">
+            <p className="text-xs font-bold text-[var(--secondary-text)]">
               Min: {product.minOrder}
             </p>
           ) : null}
@@ -275,12 +307,12 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
         type="button"
         onClick={(event) => {
           event.stopPropagation()
-          onIncrease()
+          onDecrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Increase quantity"
+        aria-label="Decrease quantity"
       >
-        +
+        −
       </button>
       <span className="flex size-8 items-center justify-center bg-[var(--active)] text-xs font-semibold text-white">
         {value}
@@ -289,18 +321,18 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
         type="button"
         onClick={(event) => {
           event.stopPropagation()
-          onDecrease()
+          onIncrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Decrease quantity"
+        aria-label="Increase quantity"
       >
-        −
+        +
       </button>
     </div>
   )
 }
 
-function ActionFooter({ actions, onAction }) {
+function ActionFooter({ actions, onAction, loadingAction }) {
   if (!actions?.length) return null
 
   const icons = actions.filter((a) => a.kind === 'icon')
@@ -313,6 +345,7 @@ function ActionFooter({ actions, onAction }) {
         <ActionButton
           action={fulls[0]}
           className="w-full"
+          isLoading={loadingAction === fulls[0].id}
           onClick={() => onAction(fulls[0].id)}
         />
       </div>
@@ -327,6 +360,7 @@ function ActionFooter({ actions, onAction }) {
             <ActionButton
               key={action.id}
               action={action}
+              isLoading={loadingAction === action.id}
               onClick={() => onAction(action.id)}
             />
           ))}
@@ -336,6 +370,7 @@ function ActionFooter({ actions, onAction }) {
             key={action.id}
             action={action}
             className="min-w-0 flex-1"
+            isLoading={loadingAction === action.id}
             onClick={() => onAction(action.id)}
           />
         ))}
@@ -350,6 +385,7 @@ function ActionFooter({ actions, onAction }) {
           key={action.id}
           action={action}
           className={action.kind === 'icon' ? 'shrink-0' : 'min-w-0 flex-1'}
+          isLoading={loadingAction === action.id}
           onClick={() => onAction(action.id)}
         />
       ))}
@@ -357,21 +393,26 @@ function ActionFooter({ actions, onAction }) {
   )
 }
 
-function ActionButton({ action, onClick, className = '' }) {
+function ActionButton({ action, onClick, className = '', isLoading }) {
   const Icon = action.icon ? ICON_MAP[action.icon] : null
 
   if (action.kind === 'icon') {
     return (
       <button
         type="button"
+        disabled={isLoading}
         onClick={(event) => {
           event.stopPropagation()
           onClick?.()
         }}
         aria-label={action.label || action.id}
-        className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 ${className}`}
+        className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 disabled:opacity-50 ${className}`}
       >
-        {Icon ? <Icon className="size-3.5" /> : null}
+        {isLoading ? (
+          <span className="size-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+        ) : Icon ? (
+          <Icon className="size-3.5" />
+        ) : null}
       </button>
     )
   }
@@ -387,13 +428,18 @@ function ActionButton({ action, onClick, className = '' }) {
   return (
     <button
       type="button"
+      disabled={isLoading}
       onClick={(event) => {
         event.stopPropagation()
         onClick?.()
       }}
-      className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
+      className={`flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-semibold transition-colors disabled:opacity-50 ${action.kind === 'full' ? 'rounded-full' : 'rounded-md'} ${variants[action.variant] || variants.primary} ${className}`}
     >
-      {Icon ? <Icon className="size-4" /> : null}
+      {isLoading ? (
+        <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      ) : Icon ? (
+        <Icon className="size-4" />
+      ) : null}
       {action.label}
     </button>
   )

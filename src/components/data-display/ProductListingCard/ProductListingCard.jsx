@@ -18,7 +18,9 @@ export default function ProductListingCard({
   const cardProduct = isCompanyBuyer
     ? {
         ...product,
-        bulkOptionLabel: product.minOrderLabel ?? 'Min ord 10 pcs',
+        bulkOptionLabel:
+          product.minOrderLabel
+          || (product.minOrder != null ? `Min: ${product.minOrder}` : undefined),
       }
     : product
 

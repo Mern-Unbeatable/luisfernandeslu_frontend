@@ -97,7 +97,7 @@
     "seoDescription": "A sua encomenda CONSTRUPRECO foi registada com sucesso.",
     "title": "Encomenda confirmada!",
     "subtitle": "Obrigado pela sua compra",
-    "orderNumber": "N.º de encomenda #{number}",
+    "orderNumber": "N.º de encomenda #{{number}}",
     "emailSent": "Foi enviado um email de confirmação para a sua caixa de entrada",
     "shippedTitle": "Enviado para a sua morada",
     "shipmentItems": "{{count}} artigos neste envio",
@@ -184,6 +184,10 @@
     "title": "CONSTRUPRECO",
     "subtitle": "Setup React + Tailwind com Redux Toolkit, RTK Query e Axios",
     "sponsoredProductsTitle": "Produtos patrocinados",
+    "sponsoredProductsLoading": "A carregar produtos patrocinados…",
+    "sponsoredProductsLoadFailed": "Não foi possível carregar os produtos patrocinados.",
+    "sponsoredProductsEmpty": "Não há produtos patrocinados de momento.",
+    "sponsoredProductsRetry": "Tentar novamente",
     "topSellingTitle": "Produtos mais vendidos",
     "affiliateCta": {
       "title": "Transforme partilhas em ganhos.",
@@ -197,28 +201,19 @@
       "slides": {
         "hero-1": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Poupe mais em",
-            "encomendas em volume"
-          ],
+          "titleLines": ["Poupe mais em", "encomendas em volume"],
           "description": "Preços especiais para grandes quantidades. Ideal para empreiteiros e construtores.",
           "ctaLabel": "Pedir orçamento em volume"
         },
         "hero-2": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Materiais de qualidade para",
-            "cada projeto"
-          ],
+          "titleLines": ["Materiais de qualidade para", "cada projeto"],
           "description": "Cimento, aço e ferramentas de fornecedores verificados em toda a região.",
           "ctaLabel": "Comprar agora"
         },
         "hero-3": {
           "badge": "Entrega rápida",
-          "titleLines": [
-            "Feito para empreiteiros",
-            "e construtores"
-          ],
+          "titleLines": ["Feito para empreiteiros", "e construtores"],
           "description": "Encomendas simplificadas, preços em volume e entrega fiável na obra.",
           "ctaLabel": "Pedir orçamento em volume"
         }
@@ -549,7 +544,8 @@
     "emptyRequests": "Nenhum pedido de boost corresponde a este filtro.",
     "actions": {
       "accept": "Aceitar",
-      "reject": "Rejeitar"
+      "reject": "Rejeitar",
+      "removeSponsored": "Remover patrocínio"
     }
   },
   "adminFinancePayments": {
@@ -1117,7 +1113,9 @@
       "viewOrder": "Ver pedido",
       "previous": "Anterior",
       "next": "Seguinte",
-      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+      "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "emptyOrders": "Nenhum pedido encontrado para este período.",
+      "requestFailed": "Não foi possível carregar a visão geral do fornecedor agora."
     },
     "supplierProducts": {
       "title": "Gestão de produtos",
@@ -1507,6 +1505,8 @@
       "emailPlaceholder": "voce@exemplo.com",
       "phonePlaceholder": "+351 000 000 000",
       "updateProfile": "Atualizar perfil",
+      "edit": "Editar",
+      "cancel": "Cancelar",
       "saveChanges": "GUARDAR ALTERAÇÕES",
       "warehouseLocation": "Localização do armazém",
       "warehouseLocationSupplier": "Localização do armazém",
@@ -1519,6 +1519,7 @@
       "currentPassword": "Palavra-passe atual",
       "newPassword": "Nova palavra-passe",
       "confirmNewPassword": "Confirmar nova palavra-passe",
+      "passwordHidden": "A palavra-passe está oculta por segurança.",
       "password": "Palavra-passe",
       "confirmPassword": "Confirmar palavra-passe",
       "ibanTitle": "Número IBAN",
@@ -1610,6 +1611,14 @@
       "ibanPh": "PT50 0002 0123 1234 5678 9013 4",
       "confirmPassword": "Confirmar palavra-passe",
       "passwordMismatch": "As palavras-passe não coincidem.",
+      "failed": "Falha no registo. Tente novamente.",
+      "success": "Registo concluído com sucesso.",
+      "otpTitle": "Verifique o seu email",
+      "otpSubtitle": "Introduza o código de verificação que enviámos para o seu email.",
+      "verificationSuccess": "Email verificado. Já pode iniciar sessão.",
+      "verificationFailed": "Código de verificação inválido ou expirado.",
+      "resendFailed": "Não foi possível reenviar o código. Tente novamente.",
+      "changeDetails": "Usar outro email",
       "factoryName": "Nome da fábrica",
       "uploadCompanyCert": "Certidão da empresa",
       "uploadFactoryCert": "Certidão da fábrica",
@@ -2599,12 +2608,16 @@
     "filterAria": "Filtrar leilões",
     "justNow": "Agora mesmo",
     "youTransporter": "Si (Transportador)",
+    "bidSuccess": "Proposta enviada com sucesso",
     "filters": {
       "all": "Todos",
       "endingSoon": "A terminar em breve",
       "nearestFirst": "Mais próximos primeiro",
       "ended": "Terminados"
-    }
+    },
+    "emptyTitle": "Nenhum leilão disponível",
+    "emptySubtitle": "Não há leilões ativos correspondentes aos seus critérios no momento. Volte mais tarde ou redefina o filtro.",
+    "clearFilter": "Redefinir Filtro"
   },
   "transporterAssignDeliveries": {
     "title": "Entregas atribuídas",
@@ -2664,11 +2677,14 @@
     },
     "types": {
       "delivery": "Entrega",
-      "payout": "Pagamento"
+      "payout": "Pagamento",
+      "withdrawal": "Levantamento"
     },
     "status": {
       "completed": "Concluído",
-      "pending": "Pendente"
+      "pending": "Pendente",
+      "approved": "Aprovado",
+      "rejected": "Rejeitado"
     },
     "withdraw": {
       "title": "Levantar fundos",
@@ -2678,7 +2694,14 @@
       "accountNumber": "Número de conta",
       "cancel": "Cancelar",
       "submit": "Enviar",
-      "close": "Fechar"
+      "submitting": "A enviar…",
+      "close": "Fechar",
+      "success": "Pedido de levantamento enviado",
+      "invalidAmount": "Introduza um montante válido maior que 0",
+      "invalidBusinessName": "O nome da empresa deve ter pelo menos 2 caracteres",
+      "invalidRouting": "O número de routing deve ter pelo menos 3 caracteres",
+      "invalidAccount": "O número de conta deve ter pelo menos 5 caracteres",
+      "insufficientBalance": "O montante excede o saldo disponível"
     }
   },
   "transporterOrderHistory": {
@@ -2820,6 +2843,7 @@
     "uploadCsv": "Carregar ficheiro CSV",
     "filters": "Filtros:",
     "allCategories": "Todas as categorias",
+    "searchPlaceholder": "Pesquisar SKU, título, estado...",
     "tabs": {
       "all": "Todos",
       "active": "Ativos",
@@ -2839,15 +2863,21 @@
     "untitled": "Sem título",
     "uploadModal": {
       "title": "Carregue o seu ficheiro",
-      "hint": "Apenas XLSX · Máx. 10 MB · A primeira folha deve chamar-se \"Sheet1\"",
-      "dropTitle": "Largue o XLSX aqui, ou clique para procurar",
-      "dropNote": "Vamos colocar na fila assim que clicar em Queue Import.",
+      "hint": "Apenas CSV · Máx. 10 MB · Máx. 100 linhas",
+      "dropTitle": "Largue o CSV aqui, ou clique para procurar",
+      "dropNote": "Vamos carregar assim que clicar em Queue Import.",
       "selected": "Selecionado: {{name}}",
-      "downloadExample": "Descarregar exemplo",
+      "downloadExample": "Descarregar modelo",
+      "downloadCategoryGuide": "Guia de categorias",
       "queueImport": "Queue Import",
+      "uploading": "A carregar…",
+      "downloading": "A descarregar…",
+      "uploadFailed": "Falha no carregamento. Tente novamente.",
+      "downloadFailed": "Falha ao descarregar o modelo CSV.",
+      "downloadGuideFailed": "Falha ao descarregar o guia de categorias.",
       "closeOverlay": "Fechar sobreposição",
       "close": "Fechar",
-      "browseAria": "Procurar ficheiro XLSX"
+      "browseAria": "Procurar ficheiro CSV"
     }
   },
   "factoryOrders": {
@@ -2931,6 +2961,9 @@
     "title": "Ganhos e pagamentos",
     "subtitle": "Faça a gestão dos seus ganhos e informações de pagamento",
     "paymentHistory": "Histórico de pagamentos",
+    "commissionInvoices": "Faturas de comissão",
+    "invoiceSearchPlaceholder": "Pesquisar ID da fatura, encomenda ou participante...",
+    "invoiceEmpty": "Nenhuma fatura de comissão encontrada",
     "cards": {
       "totalEarnings": "Ganhos totais",
       "thisMonth": "Este mês",
@@ -2938,37 +2971,19 @@
       "adminCommissionDesc": "20% por encomenda",
       "availableBalance": "Saldo disponível",
       "withdrawFunds": "Levantar fundos",
+      "withdrawNote": "Os levantamentos não estão disponíveis na API atual do fornecedor",
       "pendingAmount": "Montante pendente"
     },
-    "columns": {
+    "invoiceColumns": {
       "date": "Data",
-      "type": "Tipo",
-      "accountType": "Tipo de conta",
-      "accountNumber": "Número de conta",
+      "invoiceId": "ID da fatura",
+      "orderId": "ID da encomenda",
+      "participant": "Participante",
       "amount": "Montante",
-      "status": "Estado"
+      "actions": "Ações"
     },
-    "type": {
-      "withdrawal": "Levantamento"
-    },
-    "accountType": {
-      "stripe": "Stripe",
-      "bankTransfer": "Transferência bancária"
-    },
-    "status": {
-      "approved": "Aprovado",
-      "pending": "Pendente"
-    },
-    "withdraw": {
-      "title": "Levantar fundos",
-      "amount": "Montante",
-      "businessName": "Nome da empresa/organização",
-      "routingNumber": "Número de routing",
-      "accountNumber": "Número de conta",
-      "cancel": "Cancelar",
-      "submit": "Enviar",
-      "closeOverlay": "Fechar overlay",
-      "close": "Fechar"
+    "invoiceActions": {
+      "download": "Descarregar PDF"
     }
   },
   "supplierAnalytics": {

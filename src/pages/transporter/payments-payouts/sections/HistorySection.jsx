@@ -1,72 +1,40 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiCalendar, FiCheckCircle, FiClock } from 'react-icons/fi'
+import { FiCalendar, FiCheckCircle, FiClock, FiXCircle } from 'react-icons/fi'
 import DataTable from '../../../../components/data-display/DataTable/DataTable'
+import Pagination from '../../../../components/common/Pagination/Pagination'
 
-const TRANSACTIONS = [
-  {
-    id: 1,
-    date: '6/1/2026',
-    title: 'Portland Cement - 500 bags',
-    type: 'delivery',
-    orderId: 'ORD-2847-015',
-    status: 'completed',
-    amount: '+€8,500',
-    isIncome: true,
-  },
-  {
-    id: 2,
-    date: '5/31/2026',
-    title: 'TMT Rods - 200 pieces',
-    type: 'delivery',
-    orderId: 'ORD-2847-014',
-    status: 'pending',
-    amount: '+€12,000',
-    isIncome: true,
-  },
-  {
-    id: 3,
-    date: '5/30/2026',
-    title: 'Bank Transfer to HDFC ***4521',
-    type: 'payout',
-    orderId: 'PAYOUT-842',
-    status: 'completed',
-    amount: '-€45,000',
-    isIncome: false,
-  },
-  {
-    id: 4,
-    date: '5/30/2026',
-    title: 'Red Bricks - 10,000 pieces',
-    type: 'delivery',
-    orderId: 'ORD-2847-013',
-    status: 'completed',
-    amount: '+€6,200',
-    isIncome: true,
-  },
-  {
-    id: 5,
-    date: '5/29/2026',
-    title: 'Ready Mix Concrete - 6m³',
-    type: 'delivery',
-    orderId: 'ORD-2847-012',
-    status: 'completed',
-    amount: '+€15,500',
-    isIncome: true,
-  },
-  {
-    id: 6,
-    date: '5/29/2026',
-    title: 'River Sand - 15 tons',
-    type: 'delivery',
-    orderId: 'ORD-2847-011',
-    status: 'pending',
-    amount: '+€7,800',
-    isIncome: true,
-  },
-]
+function StatusBadge({ status, t }) {
+  const value = String(status || 'pending').toLowerCase()
+  const isApproved = value === 'approved' || value === 'completed'
+  const isRejected = value === 'rejected'
 
-export default function HistorySection() {
+  const className = isApproved
+    ? 'bg-emerald-50 text-emerald-600'
+    : isRejected
+      ? 'bg-red-50 text-red-600'
+      : 'bg-orange-50 text-orange-600'
+
+  const Icon = isApproved ? FiCheckCircle : isRejected ? FiXCircle : FiClock
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${className}`}
+    >
+      <Icon className="size-3" />
+      {t(`transporterPaymentsPayouts.status.${value}`, {
+        defaultValue: value,
+      })}
+    </span>
+  )
+}
+
+export default function HistorySection({
+  rows = [],
+  page = 1,
+  totalPages = 1,
+  onPageChange,
+}) {
   const { t } = useTranslation()
 
   const columns = useMemo(
@@ -75,7 +43,7 @@ export default function HistorySection() {
         key: 'date',
         header: t('transporterPaymentsPayouts.columns.date'),
         render: (value) => (
-          <span className="flex items-center gap-2 text-zinc-500 font-medium">
+          <span className="flex items-center gap-2 font-medium text-zinc-500">
             <FiCalendar className="size-4 text-zinc-400" />
             {value}
           </span>
@@ -105,27 +73,7 @@ export default function HistorySection() {
       {
         key: 'status',
         header: t('transporterPaymentsPayouts.columns.status'),
-        render: (value) => {
-          const isCompleted = value === 'completed'
-          return (
-            <span
-              className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                isCompleted
-                  ? 'bg-emerald-50 text-emerald-600'
-                  : 'bg-orange-50 text-orange-600'
-              }`}
-            >
-              {isCompleted ? (
-                <FiCheckCircle className="size-3" />
-              ) : (
-                <FiClock className="size-3" />
-              )}
-              {t(`transporterPaymentsPayouts.status.${value}`, {
-                defaultValue: value,
-              })}
-            </span>
-          )
-        },
+        render: (value) => <StatusBadge status={value} t={t} />,
       },
       {
         key: 'amount',
@@ -149,7 +97,22 @@ export default function HistorySection() {
       <h2 className="mb-4 text-2xl font-bold text-gray-900">
         {t('transporterPaymentsPayouts.historyTitle')}
       </h2>
-      <DataTable showCard={false} columns={columns} data={TRANSACTIONS} />
+
+      {rows.length === 0 ? (
+        <p className="text-sm text-gray-500">No transactions found.</p>
+      ) : (
+        <DataTable showCard={false} columns={columns} data={rows} />
+      )}
+
+      {totalPages > 1 ? (
+        <div className="mt-4">
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }

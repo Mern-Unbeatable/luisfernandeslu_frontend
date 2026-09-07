@@ -19,7 +19,9 @@ export default function AuthDemoAccounts({ role, onUse }) {
         {t('auth.demo.title')}
       </p>
       <p className="mt-1 text-xs text-[var(--secondary-text)]">
-        {t('auth.demo.hint', { password: DEMO_PASSWORD })}
+        {role === 'admin'
+          ? t('auth.demo.hint', { password: 'AdminDemo123!' })
+          : t('auth.demo.hint', { password: DEMO_PASSWORD })}
       </p>
       <ul className="mt-3 space-y-1.5">
         {users.map((user) => (

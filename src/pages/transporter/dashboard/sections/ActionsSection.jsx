@@ -4,16 +4,11 @@ import { FaGavel } from 'react-icons/fa'
 import { FiTruck, FiDollarSign } from 'react-icons/fi'
 import StatusCard from '../../../../components/data-display/StatusCard'
 
-export default function ActionsSection() {
+export default function ActionsSection({ actions = {} }) {
   const { t } = useTranslation()
-
-  const activeAuctionsCount = 12
-  const activeDeliveriesCount = 8
-  const availablePayout = '€36,800'
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      {/* View Auctions */}
       <Link
         to="/transporter/auction-board"
         className="group block transition-all"
@@ -22,15 +17,14 @@ export default function ActionsSection() {
           variant="default"
           value={t('transporterDashboard.actions.viewAuctions')}
           description={t('transporterDashboard.actions.auctionsNearYou', {
-            count: activeAuctionsCount,
+            count: actions.activeAuctions || 0,
           })}
           icon={FaGavel}
           iconTone="brand"
-          className="!bg-[var(--active)] !border-none !text-white [&_p]:!text-white/90 [&_p:nth-of-type(2)]:!text-white [&_span]:!bg-white/20 [&_span]:!text-white shadow-sm transition-all hover:brightness-95 hover:shadow-md"
+          className="!border-none !bg-[var(--active)] !text-white shadow-sm transition-all hover:brightness-95 hover:shadow-md [&_p:nth-of-type(2)]:!text-white [&_p]:!text-white/90 [&_span]:!bg-white/20 [&_span]:!text-white"
         />
       </Link>
 
-      {/* My Deliveries */}
       <Link
         to="/transporter/assign-deliveries"
         className="group block transition-all"
@@ -39,7 +33,7 @@ export default function ActionsSection() {
           variant="default"
           value={t('transporterDashboard.actions.myDeliveries')}
           description={t('transporterDashboard.actions.activeDeliveries', {
-            count: activeDeliveriesCount,
+            count: actions.activeDeliveries || 0,
           })}
           icon={FiTruck}
           iconTone="brand"
@@ -47,7 +41,6 @@ export default function ActionsSection() {
         />
       </Link>
 
-      {/* Request Payout */}
       <Link
         to="/transporter/payments-payouts"
         className="group block transition-all"
@@ -56,7 +49,7 @@ export default function ActionsSection() {
           variant="default"
           value={t('transporterDashboard.actions.requestPayout')}
           description={t('transporterDashboard.actions.availableAmount', {
-            amount: availablePayout,
+            amount: actions.availablePayout || '—',
           })}
           icon={FiDollarSign}
           iconTone="teal"

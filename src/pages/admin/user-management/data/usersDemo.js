@@ -92,7 +92,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Active',
     registered: '2026-05-01',
-    vatRate: '20%',
     address: 'Zona Industrial de Maia, Lote 12',
   },
   {
@@ -103,7 +102,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Active',
     registered: '2026-04-12',
-    vatRate: '20%',
     address: 'Parque Empresarial, Ed. B',
   },
   {
@@ -114,7 +112,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Suspended',
     registered: '2026-03-22',
-    vatRate: '40%',
     address: 'Rua do Alecrim 45',
   },
   {
@@ -125,7 +122,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Active',
     registered: '2026-02-14',
-    vatRate: '20%',
     address: 'Estrada Nacional 125, km 4',
   },
   {
@@ -136,7 +132,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Active',
     registered: '2026-01-30',
-    vatRate: '60%',
     address: 'Av. Infante Santo 33',
   },
   {
@@ -147,7 +142,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Active',
     registered: '2025-12-20',
-    vatRate: '20%',
     address: 'Rua Castilho 39, 7º',
   },
   {
@@ -158,7 +152,6 @@ export const ADMIN_COMPANY_USERS = [
     type: 'Company',
     status: 'Suspended',
     registered: '2025-11-02',
-    vatRate: '20%',
     address: 'Rua da Indústria 8',
   },
 ]
@@ -180,7 +173,6 @@ export function filterUsersBySearch(rows, query) {
       row.type,
       row.status,
       row.registered,
-      row.vatRate,
     ]
       .filter(Boolean)
       .join(' ')

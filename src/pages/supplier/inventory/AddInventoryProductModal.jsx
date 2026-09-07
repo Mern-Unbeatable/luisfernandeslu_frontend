@@ -1,28 +1,74 @@
-import { useEffect, useId, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { useTranslation } from 'react-i18next';
-import { FiBox, FiChevronDown, FiPackage, FiX } from 'react-icons/fi';
+import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
+import { FiBox, FiChevronDown, FiPackage, FiX } from "react-icons/fi";
 
 const fieldClass =
-  'h-12 w-full rounded-lg border border-gray-200 bg-[#FFFBF5] px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]';
+  "h-12 w-full rounded-lg border border-gray-200 bg-[#FFFBF5] px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]";
 
 const emptyForm = {
-  warehouseId: '',
-  categoryId: '',
-  productName: '',
-  sku: '',
-  totalQuantity: '',
-  price: '',
-  factoryName: '',
+  warehouseId: "",
+  categoryId: "",
+  subCategoryId: "",
+  productTypeId: "",
+  productName: "",
+  sku: "",
+  totalQuantity: "",
+  price: "",
+  factoryName: "",
 };
+
+function SelectField({
+  label,
+  icon: Icon = FiBox,
+  value,
+  onChange,
+  options,
+  placeholder,
+  disabled = false,
+}) {
+  return (
+    <label className="block">
+      <span className="mb-2 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
+        <Icon className="size-3.5 shrink-0" aria-hidden />
+        {label}
+      </span>
+      <div className="relative">
+        <select
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          className={`${fieldClass} cursor-pointer appearance-none pr-10 disabled:cursor-not-allowed disabled:opacity-60`}
+          aria-label={label}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <FiChevronDown
+          className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
+          aria-hidden
+        />
+      </div>
+    </label>
+  );
+}
 
 export default function AddInventoryProductModal({
   open,
   onClose,
   warehouseOptions = [],
   categoryOptions = [],
+  subCategoryOptions = [],
+  productTypeOptions = [],
   initialValues = null,
   onSubmit,
+  onCascadeChange,
+  submitting = false,
+  error = "",
 }) {
   const { t } = useTranslation();
   const titleId = useId();
@@ -35,59 +81,97 @@ export default function AddInventoryProductModal({
     setForm(
       initialValues
         ? {
-            warehouseId: initialValues.warehouseId || '',
-            categoryId: initialValues.categoryId || '',
-            productName: initialValues.productName || '',
-            sku: initialValues.sku || '',
-            totalQuantity: initialValues.totalQuantity || '',
-            price: initialValues.price || '',
-            factoryName: initialValues.factoryName || '',
+            warehouseId: initialValues.warehouseId || "",
+            categoryId: initialValues.categoryId || "",
+            subCategoryId: initialValues.subCategoryId || "",
+            productTypeId: initialValues.productTypeId || "",
+            productName: initialValues.productName || "",
+            sku: initialValues.sku || "",
+            totalQuantity: initialValues.totalQuantity || "",
+            price: initialValues.price || "",
+            factoryName: initialValues.factoryName || "",
           }
         : emptyForm,
     );
 
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') onClose?.();
+      if (event.key === "Escape" && !submitting) onClose?.();
     };
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener("keydown", onKeyDown);
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open, onClose, initialValues]);
+  }, [open, onClose, initialValues, submitting]);
 
   if (!open) return null;
 
   const handleChange = (field) => (event) => {
-    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    const value = event.target.value;
+
+    setForm((prev) => {
+      if (field === "categoryId") {
+        return {
+          ...prev,
+          categoryId: value,
+          subCategoryId: "",
+          productTypeId: "",
+        };
+      }
+
+      if (field === "subCategoryId") {
+        return {
+          ...prev,
+          subCategoryId: value,
+          productTypeId: "",
+        };
+      }
+
+      return {
+        ...prev,
+        [field]: value,
+      };
+    });
+
+    if (field === "categoryId" || field === "subCategoryId") {
+      const nextCategoryId = field === "categoryId" ? value : form.categoryId;
+      const nextSubCategoryId = field === "subCategoryId" ? value : "";
+
+      onCascadeChange?.({
+        categoryId: nextCategoryId,
+        subCategoryId: nextSubCategoryId,
+      });
+    }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSubmit?.({
+    if (submitting) return;
+    await onSubmit?.({
       ...form,
       id: initialValues?.id,
     });
-    onClose?.();
   };
 
   return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4 sm:p-6">
       <button
         type="button"
-        aria-label={t('panel.supplierInventory.modalClose')}
+        aria-label={t("panel.supplierInventory.modalClose")}
         className="absolute inset-0 bg-black/45"
-        onClick={onClose}
+        onClick={() => {
+          if (!submitting) onClose?.();
+        }}
       />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 flex max-h-[min(85vh,560px)] w-full max-w-md flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
+        className="relative z-10 flex max-h-[min(85vh,640px)] w-full max-w-md flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
       >
         <div className="flex shrink-0 items-start gap-3 border-b border-gray-200 px-5 py-4">
           <span
@@ -102,20 +186,21 @@ export default function AddInventoryProductModal({
               className="text-base font-bold text-[var(--primary-text)]"
             >
               {isEdit
-                ? t('panel.supplierInventory.editModalTitle')
-                : t('panel.supplierInventory.addModalTitle')}
+                ? t("panel.supplierInventory.editModalTitle")
+                : t("panel.supplierInventory.addModalTitle")}
             </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
               {isEdit
-                ? t('panel.supplierInventory.editModalSubtitle')
-                : t('panel.supplierInventory.addModalSubtitle')}
+                ? t("panel.supplierInventory.editModalSubtitle")
+                : t("panel.supplierInventory.addModalSubtitle")}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label={t('panel.supplierInventory.modalClose')}
-            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-gray-100"
+            disabled={submitting}
+            aria-label={t("panel.supplierInventory.modalClose")}
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-gray-100 disabled:opacity-50"
           >
             <FiX className="size-5" strokeWidth={1.75} aria-hidden />
           </button>
@@ -123,72 +208,68 @@ export default function AddInventoryProductModal({
 
         <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
           <div className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
-            <label className="block">
-              <span className="mb-2 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
-                <FiBox className="size-3.5 shrink-0" aria-hidden />
-                {t('panel.supplierInventory.fieldWarehouse')}
-              </span>
-              <div className="relative">
-                <select
-                  value={form.warehouseId}
-                  onChange={handleChange('warehouseId')}
-                  className={`${fieldClass} cursor-pointer appearance-none pr-10`}
-                  aria-label={t('panel.supplierInventory.fieldWarehouse')}
-                >
-                  <option value="">
-                    {t('panel.supplierInventory.fieldWarehousePlaceholder')}
-                  </option>
-                  {warehouseOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <FiChevronDown
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
-                  aria-hidden
-                />
-              </div>
-            </label>
+            <SelectField
+              label={t("panel.supplierInventory.fieldWarehouse")}
+              value={form.warehouseId}
+              onChange={handleChange("warehouseId")}
+              options={warehouseOptions}
+              placeholder={t(
+                "panel.supplierInventory.fieldWarehousePlaceholder",
+              )}
+            />
 
-            <label className="block">
-              <span className="mb-2 flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]">
-                <FiBox className="size-3.5 shrink-0" aria-hidden />
-                {t('panel.supplierInventory.fieldCategory')}
-              </span>
-              <div className="relative">
-                <select
-                  value={form.categoryId}
-                  onChange={handleChange('categoryId')}
-                  className={`${fieldClass} cursor-pointer appearance-none pr-10`}
-                  aria-label={t('panel.supplierInventory.fieldCategory')}
-                >
-                  <option value="">
-                    {t('panel.supplierInventory.fieldCategoryPlaceholder')}
-                  </option>
-                  {categoryOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <FiChevronDown
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-[var(--secondary-text)]"
-                  aria-hidden
-                />
-              </div>
-            </label>
+            <SelectField
+              label={t("panel.supplierInventory.fieldCategory")}
+              value={form.categoryId}
+              onChange={handleChange("categoryId")}
+              options={categoryOptions}
+              placeholder={t(
+                "panel.supplierInventory.fieldCategoryPlaceholder",
+              )}
+            />
+
+            <SelectField
+              label={t("panel.supplierInventory.fieldSubCategory", {
+                defaultValue: "Sub Category",
+              })}
+              value={form.subCategoryId}
+              onChange={handleChange("subCategoryId")}
+              options={subCategoryOptions}
+              placeholder={t(
+                "panel.supplierInventory.fieldSubCategoryPlaceholder",
+                {
+                  defaultValue: "Select subcategory",
+                },
+              )}
+              disabled={!form.categoryId}
+            />
+
+            <SelectField
+              label={t("panel.supplierInventory.fieldProductType", {
+                defaultValue: "Product Type",
+              })}
+              value={form.productTypeId}
+              onChange={handleChange("productTypeId")}
+              options={productTypeOptions}
+              placeholder={t(
+                "panel.supplierInventory.fieldProductTypePlaceholder",
+                {
+                  defaultValue: "Select product type",
+                },
+              )}
+              disabled={!form.subCategoryId}
+            />
 
             <label className="block">
               <span className="mb-2 block text-sm font-bold text-[var(--primary-text)]">
-                {t('panel.supplierInventory.fieldProductName')}
+                {t("panel.supplierInventory.fieldProductName")}
               </span>
               <input
                 type="text"
                 value={form.productName}
-                onChange={handleChange('productName')}
+                onChange={handleChange("productName")}
                 placeholder={t(
-                  'panel.supplierInventory.fieldProductNamePlaceholder',
+                  "panel.supplierInventory.fieldProductNamePlaceholder",
                 )}
                 className={fieldClass}
               />
@@ -196,27 +277,27 @@ export default function AddInventoryProductModal({
 
             <label className="block">
               <span className="mb-2 block text-sm font-bold text-[var(--primary-text)]">
-                {t('panel.supplierInventory.fieldSku')}
+                {t("panel.supplierInventory.fieldSku")}
               </span>
               <input
                 type="text"
                 value={form.sku}
-                onChange={handleChange('sku')}
-                placeholder={t('panel.supplierInventory.fieldSkuPlaceholder')}
+                onChange={handleChange("sku")}
+                placeholder={t("panel.supplierInventory.fieldSkuPlaceholder")}
                 className={fieldClass}
               />
             </label>
 
             <label className="block">
               <span className="mb-2 block text-sm font-bold text-[var(--primary-text)]">
-                {t('panel.supplierInventory.fieldTotalQuantity')}
+                {t("panel.supplierInventory.fieldTotalQuantity")}
               </span>
               <input
                 type="text"
                 value={form.totalQuantity}
-                onChange={handleChange('totalQuantity')}
+                onChange={handleChange("totalQuantity")}
                 placeholder={t(
-                  'panel.supplierInventory.fieldTotalQuantityPlaceholder',
+                  "panel.supplierInventory.fieldTotalQuantityPlaceholder",
                 )}
                 className={fieldClass}
               />
@@ -224,46 +305,56 @@ export default function AddInventoryProductModal({
 
             <label className="block">
               <span className="mb-2 block text-sm font-bold text-[var(--primary-text)]">
-                {t('panel.supplierInventory.fieldPrice')}
+                {t("panel.supplierInventory.fieldPrice")}
               </span>
               <input
                 type="text"
                 value={form.price}
-                onChange={handleChange('price')}
-                placeholder={t('panel.supplierInventory.fieldPricePlaceholder')}
+                onChange={handleChange("price")}
+                placeholder={t("panel.supplierInventory.fieldPricePlaceholder")}
                 className={fieldClass}
               />
             </label>
 
             <label className="block">
               <span className="mb-2 block text-sm font-bold text-[var(--primary-text)]">
-                {t('panel.supplierInventory.fieldFactoryName')}
+                {t("panel.supplierInventory.fieldFactoryName")}
               </span>
               <input
                 type="text"
                 value={form.factoryName}
-                onChange={handleChange('factoryName')}
+                onChange={handleChange("factoryName")}
                 placeholder={t(
-                  'panel.supplierInventory.fieldFactoryNamePlaceholder',
+                  "panel.supplierInventory.fieldFactoryNamePlaceholder",
                 )}
                 className={fieldClass}
               />
             </label>
+
+            {error ? (
+              <p className="text-sm font-medium text-red-600">{error}</p>
+            ) : null}
           </div>
 
           <div className="grid shrink-0 grid-cols-2 gap-3 border-t border-gray-200 bg-white px-5 py-4">
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+              disabled={submitting}
+              className="inline-flex h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50 disabled:opacity-50"
             >
-              {t('panel.supplierInventory.modalCancel')}
+              {t("panel.supplierInventory.modalCancel")}
             </button>
             <button
               type="submit"
-              className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95"
+              disabled={submitting}
+              className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {t('panel.supplierInventory.modalSendOffer')}
+              {submitting
+                ? t("panel.supplierInventory.modalSaving", {
+                    defaultValue: "Saving…",
+                  })
+                : t("panel.supplierInventory.modalSendOffer")}
             </button>
           </div>
         </form>

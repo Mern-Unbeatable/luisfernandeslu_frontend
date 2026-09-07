@@ -1,237 +1,156 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiCalendar, FiDownload, FiEye, FiFileText } from 'react-icons/fi'
 import DataTable from '@/components/data-display/DataTable/DataTable'
-
-const DUMMY_INVOICES = [
-  {
-    id: 'CI-01063',
-    type: 'Invoice',
-    orderId: 'ORD-001',
-    customer: 'Downtown Construction Co.',
-    amount: '€285.00',
-    date: '2024-05-28',
-  },
-  {
-    id: 'CI-01064',
-    type: 'Invoice',
-    orderId: 'ORD-002',
-    customer: 'West Side Building Project',
-    amount: '€180.00',
-    date: '2024-05-27',
-  },
-  {
-    id: 'CI-01065',
-    type: 'Invoice',
-    orderId: 'ORD-003',
-    customer: 'Suburban Housing Development',
-    amount: '€420.00',
-    date: '2024-05-26',
-  },
-  {
-    id: 'CI-01066',
-    type: 'Invoice',
-    orderId: 'ORD-004',
-    customer: 'Tax Authority',
-    amount: '€3,450.00',
-    date: '2024-05-01',
-  },
-  {
-    id: 'CI-01087',
-    type: 'Invoice',
-    orderId: 'ORD-025',
-    customer: 'Content Creation',
-    amount: '€4,250.00',
-    date: '2024-05-22',
-  },
-  {
-    id: 'CI-01088',
-    type: 'Invoice',
-    orderId: 'ORD-026',
-    customer: 'Harbor Bridge Works',
-    amount: '€960.00',
-    date: '2024-05-20',
-  },
-  {
-    id: 'CI-01089',
-    type: 'Invoice',
-    orderId: 'ORD-027',
-    customer: 'Metro Construction LLC',
-    amount: '€1,120.00',
-    date: '2024-05-18',
-  },
-  {
-    id: 'CI-01090',
-    type: 'Invoice',
-    orderId: 'ORD-028',
-    customer: 'Riverside Housing Co.',
-    amount: '€540.00',
-    date: '2024-05-15',
-  },
-  {
-    id: 'CI-01091',
-    type: 'Invoice',
-    orderId: 'ORD-029',
-    customer: 'Skyline Developers',
-    amount: '€2,780.00',
-    date: '2024-05-12',
-  },
-  {
-    id: 'CI-01092',
-    type: 'Invoice',
-    orderId: 'ORD-030',
-    customer: 'Greenfield Estates',
-    amount: '€675.00',
-    date: '2024-05-10',
-  },
-  {
-    id: 'CI-01093',
-    type: 'Invoice',
-    orderId: 'ORD-031',
-    customer: 'Central Plaza Project',
-    amount: '€1,890.00',
-    date: '2024-05-08',
-  },
-  {
-    id: 'CI-01094',
-    type: 'Invoice',
-    orderId: 'ORD-032',
-    customer: 'Oakwood Builders',
-    amount: '€310.00',
-    date: '2024-05-05',
-  },
-  {
-    id: 'CI-01095',
-    type: 'Invoice',
-    orderId: 'ORD-033',
-    customer: 'Summit Concrete Supply',
-    amount: '€2,150.00',
-    date: '2024-05-03',
-  },
-  {
-    id: 'CI-01096',
-    type: 'Invoice',
-    orderId: 'ORD-034',
-    customer: 'Lakeview Contractors',
-    amount: '€890.00',
-    date: '2024-05-02',
-  },
-]
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import {
+  useDownloadFactoryCommissionInvoicePdfMutation,
+  useGetFactoryCommissionInvoiceQuery,
+  useGetFactoryCommissionInvoicesQuery,
+} from '@/features/factory-invoices/factoryInvoiceApi'
+import {
+  downloadBlobFile,
+  mapFactoryInvoice,
+  mapFactoryInvoiceDetails,
+} from '@/features/factory-invoices/invoiceMappers'
+import InvoiceDetailModal from './InvoiceDetailModal'
 
 const PAGE_SIZE = 7
 
-function downloadInvoice(row, t) {
-  const typeLabel =
-    row.type === 'Invoice' ? t('factoryInvoices.typeInvoice') : row.type
-
-  const content = [
-    `${t('factoryInvoices.download.invoiceId')}: ${row.id}`,
-    `${t('factoryInvoices.download.type')}: ${typeLabel}`,
-    `${t('factoryInvoices.download.orderId')}: ${row.orderId}`,
-    `${t('factoryInvoices.download.customer')}: ${row.customer}`,
-    `${t('factoryInvoices.download.amount')}: ${row.amount}`,
-    `${t('factoryInvoices.download.date')}: ${row.date}`,
-  ].join('\n')
-
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `${row.id}.txt`
-  link.click()
-  URL.revokeObjectURL(url)
-}
-
-function getColumns(t) {
-  return [
-    {
-      key: 'id',
-      header: t('factoryInvoices.columns.invoiceId'),
-      render: (value) => (
-        <span className="inline-flex items-center gap-2 font-medium text-[var(--primary-text)]">
-          <FiFileText className="size-4 shrink-0 text-[var(--secondary-text)]" />
-          {value}
-        </span>
-      ),
-    },
-    {
-      key: 'type',
-      header: t('factoryInvoices.columns.type'),
-      render: (value) => (
-        <span className="inline-flex rounded-md border border-[color-mix(in_srgb,var(--active)_45%,white)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-2.5 py-1 text-xs font-medium text-[var(--active)]">
-          {value === 'Invoice' ? t('factoryInvoices.typeInvoice') : value}
-        </span>
-      ),
-    },
-    { key: 'orderId', header: t('factoryInvoices.columns.orderId') },
-    { key: 'customer', header: t('factoryInvoices.columns.customer') },
-    {
-      key: 'amount',
-      header: t('factoryInvoices.columns.amount'),
-      render: (value) => (
-        <span className="font-bold text-[var(--primary-text)]">{value}</span>
-      ),
-    },
-    {
-      key: 'date',
-      header: t('factoryInvoices.columns.date'),
-      render: (value) => (
-        <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
-          <FiCalendar className="size-4 shrink-0 text-[var(--secondary-text)]" />
-          {value}
-        </span>
-      ),
-    },
-    {
-      key: 'actions',
-      header: t('factoryInvoices.columns.actions'),
-      render: (_value, row) => (
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            aria-label={t('factoryInvoices.viewAria', { id: row.id })}
-            onClick={() => {}}
-            className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-          >
-            <FiEye className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={t('factoryInvoices.downloadAria', { id: row.id })}
-            onClick={() => downloadInvoice(row, t)}
-            className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
-          >
-            <FiDownload className="size-4" />
-          </button>
-        </div>
-      ),
-    },
-  ]
-}
-
 export default function InvoicesPage() {
   const { t } = useTranslation()
+  const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null)
 
-  const columns = getColumns(t)
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setSearch(searchInput.trim())
+      setPage(1)
+    }, 350)
+    return () => window.clearTimeout(timer)
+  }, [searchInput])
 
-  const filtered = DUMMY_INVOICES.filter((row) => {
-    const q = search.trim().toLowerCase()
-    if (!q) return true
+  const { data, isLoading, isError, error, refetch } =
+    useGetFactoryCommissionInvoicesQuery({
+      search,
+      page,
+      limit: PAGE_SIZE,
+    })
 
-    return (
-      String(row.id).toLowerCase().includes(q) ||
-      String(row.orderId).toLowerCase().includes(q) ||
-      String(row.customer).toLowerCase().includes(q)
-    )
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    isError: isDetailError,
+    error: detailError,
+  } = useGetFactoryCommissionInvoiceQuery(selectedInvoiceId, {
+    skip: !selectedInvoiceId,
   })
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const safePage = Math.min(page, pageCount)
-  const paged = filtered.slice(
-    (safePage - 1) * PAGE_SIZE,
-    safePage * PAGE_SIZE,
+  const [downloadPdf, { isLoading: isDownloading }] =
+    useDownloadFactoryCommissionInvoicePdfMutation()
+
+  const invoices = useMemo(
+    () => (data?.invoices || []).map(mapFactoryInvoice),
+    [data?.invoices],
+  )
+
+  const selectedInvoice = useMemo(
+    () => mapFactoryInvoiceDetails(detailData),
+    [detailData],
+  )
+
+  const pagination = data?.pagination || {}
+  const total = Number(pagination.total) || invoices.length
+  const totalPages = Math.max(1, Number(pagination.totalPages) || 1)
+  const pageSize = Number(pagination.limit) || PAGE_SIZE
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages)
+  }, [page, totalPages])
+
+  const handleDownload = useCallback(
+    async (invoiceId) => {
+      if (!invoiceId || isDownloading) return
+      try {
+        const blob = await downloadPdf(invoiceId).unwrap()
+        downloadBlobFile(blob, `${invoiceId}.pdf`)
+      } catch (err) {
+        toast.error(getAuthErrorMessage(err, 'Failed to download invoice'))
+      }
+    },
+    [downloadPdf, isDownloading],
+  )
+
+  const columns = useMemo(
+    () => [
+      {
+        key: 'id',
+        header: t('factoryInvoices.columns.invoiceId'),
+        render: (value) => (
+          <span className="inline-flex items-center gap-2 font-medium text-[var(--primary-text)]">
+            <FiFileText className="size-4 shrink-0 text-[var(--secondary-text)]" />
+            {value}
+          </span>
+        ),
+      },
+      {
+        key: 'type',
+        header: t('factoryInvoices.columns.type'),
+        render: (value) => (
+          <span className="inline-flex rounded-md border border-[color-mix(in_srgb,var(--active)_45%,white)] bg-[color-mix(in_srgb,var(--active)_12%,white)] px-2.5 py-1 text-xs font-medium text-[var(--active)]">
+            {value === 'Invoice' ? t('factoryInvoices.typeInvoice') : value}
+          </span>
+        ),
+      },
+      { key: 'orderId', header: t('factoryInvoices.columns.orderId') },
+      { key: 'customer', header: t('factoryInvoices.columns.customer') },
+      {
+        key: 'amount',
+        header: t('factoryInvoices.columns.amount'),
+        render: (value) => (
+          <span className="font-bold text-[var(--primary-text)]">{value}</span>
+        ),
+      },
+      {
+        key: 'date',
+        header: t('factoryInvoices.columns.date'),
+        render: (value) => (
+          <span className="inline-flex items-center gap-2 text-[var(--primary-text)]">
+            <FiCalendar className="size-4 shrink-0 text-[var(--secondary-text)]" />
+            {value}
+          </span>
+        ),
+      },
+      {
+        key: 'actions',
+        header: t('factoryInvoices.columns.actions'),
+        render: (_value, row) => (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label={t('factoryInvoices.viewAria', { id: row.id })}
+              onClick={() => setSelectedInvoiceId(row.id)}
+              className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)]"
+            >
+              <FiEye className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label={t('factoryInvoices.downloadAria', { id: row.id })}
+              onClick={() => handleDownload(row.id)}
+              disabled={isDownloading}
+              className="rounded-md p-1.5 text-[var(--secondary-text)] transition-colors hover:bg-gray-100 hover:text-[var(--primary-text)] disabled:opacity-50"
+            >
+              <FiDownload className="size-4" />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    [t, handleDownload, isDownloading],
   )
 
   return (
@@ -245,23 +164,48 @@ export default function InvoicesPage() {
         </p>
       </div>
 
+      {isError ? (
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <p>{getAuthErrorMessage(error, 'Failed to load invoices')}</p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-2 font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
+
       <DataTable
         columns={columns}
-        data={paged}
+        data={invoices}
+        loading={isLoading}
+        emptyMessage={t('factoryInvoices.empty', {
+          defaultValue: 'No invoices found.',
+        })}
         showSearch
-        searchValue={search}
-        onSearchChange={(value) => {
-          setSearch(value)
-          setPage(1)
-        }}
+        searchValue={searchInput}
+        onSearchChange={setSearchInput}
         searchPlaceholder={t('factoryInvoices.searchPlaceholder')}
         showPagination
         pagination={{
-          page: safePage,
-          pageSize: PAGE_SIZE,
-          total: filtered.length,
+          page,
+          pageSize,
+          total,
           onPageChange: setPage,
         }}
+      />
+
+      <InvoiceDetailModal
+        isOpen={Boolean(selectedInvoiceId)}
+        onClose={() => setSelectedInvoiceId(null)}
+        invoice={selectedInvoice}
+        isLoading={isDetailLoading}
+        isError={isDetailError}
+        errorMessage={getAuthErrorMessage(detailError, 'Failed to load invoice')}
+        onDownload={() => handleDownload(selectedInvoiceId)}
+        isDownloading={isDownloading}
       />
     </div>
   )

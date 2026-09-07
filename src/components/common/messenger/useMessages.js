@@ -44,6 +44,38 @@ export default function useMessages({ variant = 'default' } = {}) {
     )
   }, [])
 
+  const openThread = useCallback((params) => {
+    if (!params.type && !params.chatId) return
+    
+    const threadId = params.chatId || params.quoteId || params.orderId || params.productId || params.peerUserId || `mock-${Date.now()}`
+    
+    setChats((prev) => {
+      if (prev.find(c => c.id === threadId)) return prev
+      
+      let name = 'New Chat'
+      if (params.type === 'QUOTE') name = `Quote Request`
+      else if (params.type === 'ORDER_TRANSPORT') name = `Order Transport`
+      else if (params.type === 'FACTORY_SUPPLIER') name = `Factory Supplier`
+      else if (params.type === 'ADMIN_SUPPORT') name = `Admin Support`
+
+      return [
+        {
+          id: threadId,
+          name,
+          avatar: '/images/avatar-placeholder.png',
+          lastMessage: 'Chat opened...',
+          time: 'Just now',
+          unreadCount: 0,
+          status: 'online',
+          type: params.type,
+        },
+        ...prev
+      ]
+    })
+    
+    setActivePartnerId(threadId)
+  }, [])
+
   const sendMessage = useCallback(
     async (text) => {
       const value = String(text || '').trim()
@@ -155,6 +187,13 @@ export default function useMessages({ variant = 'default' } = {}) {
       }
 
       const firstPrice = form.installments?.[0]?.price
+      const totalNum = Number(form.totalPrice) || 0
+      const firstNum = Number(firstPrice) || 0
+      const remaining = Math.max(totalNum - firstNum, 0)
+      const installMonths = parseInt(form.installmentMonths, 10) || 0
+      const remainingMonths = firstPrice ? Math.max(installMonths - 1, 0) : installMonths
+      const monthly = remainingMonths > 0 ? (remaining / remainingMonths).toFixed(2) : null
+
       const offer = {
         title: 'Offer Card',
         statusLabel: 'Awaiting their response',
@@ -169,13 +208,10 @@ export default function useMessages({ variant = 'default' } = {}) {
           ? {
               firstInstallment: `€${firstPrice}`,
               remainingBalance: form.totalPrice
-                ? `€${Math.max(
-                    Number(form.totalPrice) - Number(firstPrice),
-                    0,
-                  )}`
+                ? `€${remaining.toFixed(2)}`
                 : '—',
-              note: form.installmentMonths
-                ? `Pay in ${form.installmentMonths} installments`
+              note: monthly
+                ? `Pay €${monthly}/month for ${remainingMonths} month${remainingMonths === 1 ? '' : 's'}`
                 : '',
             }
           : undefined,
@@ -217,6 +253,7 @@ export default function useMessages({ variant = 'default' } = {}) {
     activePartnerId,
     activeChat,
     selectChat,
+    openThread,
     sendMessage,
     editMessage,
     deleteMessage,

@@ -1,38 +1,122 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiDownload, FiTrash2 } from 'react-icons/fi'
+import toast from 'react-hot-toast'
+import { FiDownload } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
+import {
+  useGetAdminRolesPermissionsQuery,
+  useInviteAdminRoleMemberMutation,
+  useUpdateAdminRolePermissionsMutation,
+} from '@/features/admin/adminRolesPermissionsApi'
+import {
+  mapAdminRolePermissionEditRow,
+  mapAdminRolePermissionRole,
+  mapAdminRolePermissionVisibilityRow,
+  toAdminRolePermissionEditPayload,
+} from '@/features/admin/adminRolesPermissionsMappers'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import PermissionToggle from './components/PermissionToggle'
 import RolesPermissionsMatrixCard from './components/RolesPermissionsMatrixCard'
-import {
-  ADMIN_PERMISSION_EDIT_MATRIX,
-  ADMIN_PERMISSION_VISIBILITY_MATRIX,
-  INVITE_ROLE_OPTIONS,
-} from './data/rolesPermissionsAdminDemo'
 
 const I18N_KEY = 'adminRolesPermissions'
+const MATRIX_ROLE = 'moderator'
 
 export default function RolesPermissionsPage() {
   const { t } = useTranslation()
   const [inviteEmail, setInviteEmail] = useState('')
-  const [inviteRole, setInviteRole] = useState(INVITE_ROLE_OPTIONS[0].value)
-  const [editRows, setEditRows] = useState(ADMIN_PERMISSION_EDIT_MATRIX)
-  const [visibilityRows] = useState(ADMIN_PERMISSION_VISIBILITY_MATRIX)
+  const [inviteRole, setInviteRole] = useState('moderator')
+  const [editRows, setEditRows] = useState([])
 
-  const handleEditToggle = (id, next) => {
-    setEditRows((prev) =>
-      prev.map((row) =>
-        row.id === id ? { ...row, editEnabled: next } : row,
-      ),
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch,
+  } = useGetAdminRolesPermissionsQuery()
+
+  const [updateRolePermissions, { isLoading: isUpdatingPermissions }] =
+    useUpdateAdminRolePermissionsMutation()
+  const [inviteMember, { isLoading: isInviting }] =
+    useInviteAdminRoleMemberMutation()
+
+  const roles = useMemo(
+    () => (data?.roles ?? []).map(mapAdminRolePermissionRole),
+    [data?.roles],
+  )
+
+  const visibilityRows = useMemo(
+    () => (data?.visibilityMatrix ?? []).map(mapAdminRolePermissionVisibilityRow),
+    [data?.visibilityMatrix],
+  )
+
+  useEffect(() => {
+    setEditRows((data?.editMatrix ?? []).map(mapAdminRolePermissionEditRow))
+  }, [data?.editMatrix])
+
+  useEffect(() => {
+    if (roles.length === 0) return
+    setInviteRole((current) =>
+      roles.some((role) => role.value === current)
+        ? current
+        : roles[0].value,
     )
-  }
+  }, [roles])
 
-  const handleRemoveEditRow = (id) => {
-    setEditRows((prev) => prev.filter((row) => row.id !== id))
-  }
+  const handleEditToggle = useCallback(
+    async (id, next) => {
+      const previousRows = editRows
+      const nextRows = previousRows.map((row) =>
+        row.id === id ? { ...row, editEnabled: next } : row,
+      )
 
-  const handleSendInvite = () => {
-    setInviteEmail('')
+      setEditRows(nextRows)
+
+      try {
+        const result = await updateRolePermissions({
+          role: MATRIX_ROLE,
+          edit: toAdminRolePermissionEditPayload(nextRows),
+        }).unwrap()
+
+        if (result?.success === false) {
+          setEditRows(previousRows)
+          toast.error(
+            getAuthErrorMessage(result, t(`${I18N_KEY}.permissionsUpdateFailed`)),
+          )
+          return
+        }
+
+        toast.success(
+          result?.message || t(`${I18N_KEY}.permissionsUpdated`),
+        )
+      } catch (err) {
+        setEditRows(previousRows)
+        toast.error(
+          getAuthErrorMessage(err, t(`${I18N_KEY}.permissionsUpdateFailed`)),
+        )
+      }
+    },
+    [editRows, updateRolePermissions, t],
+  )
+
+  const handleSendInvite = async () => {
+    const email = inviteEmail.trim()
+    if (!email) return
+
+    try {
+      const result = await inviteMember({ email, role: inviteRole }).unwrap()
+
+      if (result?.success === false) {
+        toast.error(getAuthErrorMessage(result, t(`${I18N_KEY}.inviteFailed`)))
+        return
+      }
+
+      toast.success(result?.message || t(`${I18N_KEY}.inviteSuccess`))
+      setInviteEmail('')
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t(`${I18N_KEY}.inviteFailed`)))
+    }
   }
 
   const handleDownloadVisibility = () => {}
@@ -40,9 +124,8 @@ export default function RolesPermissionsPage() {
   const editColumns = useMemo(
     () => [
       {
-        key: 'moduleKey',
+        key: 'module',
         header: t(`${I18N_KEY}.columns.modulePage`),
-        render: (moduleKey) => t(`${I18N_KEY}.${moduleKey}`),
       },
       {
         key: 'editEnabled',
@@ -53,42 +136,24 @@ export default function RolesPermissionsPage() {
           <div className="flex justify-center">
             <PermissionToggle
               checked={editEnabled}
+              disabled={isUpdatingPermissions}
               onChange={(next) => handleEditToggle(row.id, next)}
               ariaLabel={t(`${I18N_KEY}.editMatrix.toggleAria`, {
-                module: t(`${I18N_KEY}.${row.moduleKey}`),
+                module: row.module,
               })}
             />
           </div>
         ),
       },
-      {
-        key: 'id',
-        header: t(`${I18N_KEY}.columns.action`),
-        headerClassName: 'text-right',
-        className: 'text-right',
-        render: (_, row) => (
-          <button
-            type="button"
-            onClick={() => handleRemoveEditRow(row.id)}
-            className="inline-flex size-9 items-center justify-center rounded-lg text-red-500 hover:bg-red-50"
-            aria-label={t(`${I18N_KEY}.editMatrix.deleteAria`, {
-              module: t(`${I18N_KEY}.${row.moduleKey}`),
-            })}
-          >
-            <FiTrash2 className="size-4" aria-hidden />
-          </button>
-        ),
-      },
     ],
-    [t],
+    [handleEditToggle, isUpdatingPermissions, t],
   )
 
   const visibilityColumns = useMemo(
     () => [
       {
-        key: 'moduleKey',
+        key: 'module',
         header: t(`${I18N_KEY}.columns.modulePage`),
-        render: (moduleKey) => t(`${I18N_KEY}.${moduleKey}`),
       },
       {
         key: 'visible',
@@ -113,6 +178,8 @@ export default function RolesPermissionsPage() {
     [t],
   )
 
+  const showInitialLoading = isLoading && !data
+
   return (
     <>
       <Seo title={t(`${I18N_KEY}.title`)} />
@@ -125,6 +192,19 @@ export default function RolesPermissionsPage() {
             {t(`${I18N_KEY}.subtitle`)}
           </p>
         </header>
+
+        {isError ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+            <p>{getAuthErrorMessage(error, t(`${I18N_KEY}.loadFailed`))}</p>
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="mt-2 font-semibold underline"
+            >
+              {t(`${I18N_KEY}.retry`)}
+            </button>
+          </div>
+        ) : null}
 
         <article className="w-full max-w-[min(100%,40rem)] rounded-xl border border-gray-200 border-t-[3px] border-t-[var(--active)] bg-white p-5 shadow-sm sm:p-6">
           <h2 className="text-base font-bold text-[var(--active)] sm:text-lg">
@@ -143,7 +223,8 @@ export default function RolesPermissionsPage() {
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 placeholder={t(`${I18N_KEY}.invite.emailPlaceholder`)}
-                className="h-10 w-full rounded-lg border border-[color-mix(in_srgb,var(--active)_22%,white)] bg-[color-mix(in_srgb,var(--active)_8%,white)] px-3 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+                disabled={isInviting}
+                className="h-10 w-full rounded-lg border border-[color-mix(in_srgb,var(--active)_22%,white)] bg-[color-mix(in_srgb,var(--active)_8%,white)] px-3 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
               />
             </label>
             <label className="flex w-full flex-col gap-1.5 sm:w-auto">
@@ -153,11 +234,12 @@ export default function RolesPermissionsPage() {
               <select
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value)}
-                className="h-10 w-full rounded-lg border border-[color-mix(in_srgb,var(--active)_22%,white)] bg-[color-mix(in_srgb,var(--active)_8%,white)] px-3 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+                disabled={isInviting || roles.length === 0}
+                className="h-10 w-full rounded-lg border border-[color-mix(in_srgb,var(--active)_22%,white)] bg-[color-mix(in_srgb,var(--active)_8%,white)] px-3 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {INVITE_ROLE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {t(`${I18N_KEY}.${option.labelKey}`)}
+                {roles.map((role) => (
+                  <option key={role.value} value={role.value}>
+                    {role.name}
                   </option>
                 ))}
               </select>
@@ -165,37 +247,57 @@ export default function RolesPermissionsPage() {
             <button
               type="button"
               onClick={handleSendInvite}
-              className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-[var(--active)] px-5 text-sm font-semibold text-white hover:brightness-95 sm:w-auto"
+              disabled={isInviting || !inviteEmail.trim()}
+              className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-[var(--active)] px-5 text-sm font-semibold text-white hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
               {t(`${I18N_KEY}.invite.send`)}
             </button>
           </div>
         </article>
 
-        <RolesPermissionsMatrixCard
-          title={t(`${I18N_KEY}.editMatrix.title`)}
-          columns={editColumns}
-          data={editRows}
-          emptyMessage={t(`${I18N_KEY}.editMatrix.empty`)}
-          getRowKey={(row) => row.id}
-        />
-
-        <RolesPermissionsMatrixCard
-          title={t(`${I18N_KEY}.visibilityMatrix.title`)}
-          headerAction={
-            <button
-              type="button"
-              onClick={handleDownloadVisibility}
-              className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white hover:brightness-95"
-            >
-              <FiDownload className="size-4" aria-hidden />
-              {t(`${I18N_KEY}.visibilityMatrix.download`)}
-            </button>
+        <div
+          className={
+            isFetching && data && !showInitialLoading
+              ? 'space-y-8 opacity-60 transition-opacity sm:space-y-10'
+              : 'space-y-8 sm:space-y-10'
           }
-          columns={visibilityColumns}
-          data={visibilityRows}
-          getRowKey={(row) => row.id}
-        />
+        >
+          <RolesPermissionsMatrixCard
+            title={t(`${I18N_KEY}.editMatrix.title`)}
+            columns={editColumns}
+            data={showInitialLoading ? [] : editRows}
+            loading={showInitialLoading}
+            emptyMessage={
+              showInitialLoading
+                ? t(`${I18N_KEY}.loading`)
+                : t(`${I18N_KEY}.editMatrix.empty`)
+            }
+            getRowKey={(row) => row.id}
+          />
+
+          <RolesPermissionsMatrixCard
+            title={t(`${I18N_KEY}.visibilityMatrix.title`)}
+            headerAction={
+              <button
+                type="button"
+                onClick={handleDownloadVisibility}
+                className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white hover:brightness-95"
+              >
+                <FiDownload className="size-4" aria-hidden />
+                {t(`${I18N_KEY}.visibilityMatrix.download`)}
+              </button>
+            }
+            columns={visibilityColumns}
+            data={showInitialLoading ? [] : visibilityRows}
+            loading={showInitialLoading}
+            emptyMessage={
+              showInitialLoading
+                ? t(`${I18N_KEY}.loading`)
+                : t(`${I18N_KEY}.editMatrix.empty`)
+            }
+            getRowKey={(row) => row.id}
+          />
+        </div>
       </div>
     </>
   )

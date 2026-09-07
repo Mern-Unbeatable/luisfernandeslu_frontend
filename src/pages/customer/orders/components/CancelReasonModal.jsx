@@ -1,7 +1,10 @@
 import { useEffect, useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiX } from 'react-icons/fi'
+import { useCancelCustomerOrderMutation } from '@/features/customer/customerOrderApi'
+import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
 const fieldClass =
   'min-h-[120px] w-full resize-y rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]'
@@ -10,11 +13,13 @@ export default function CancelReasonModal({
   open,
   onClose,
   order,
-  onSubmit,
+  onCancelled,
 }) {
   const { t } = useTranslation()
   const titleId = useId()
   const [reason, setReason] = useState('')
+  const [cancelOrder, { isLoading: isSubmitting }] =
+    useCancelCustomerOrderMutation()
 
   useEffect(() => {
     if (!open) return undefined
@@ -33,10 +38,34 @@ export default function CancelReasonModal({
 
   if (!open) return null
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    onSubmit?.({ orderId: order?.id, reason: reason.trim() })
-    onClose?.()
+
+    const trimmedReason = reason.trim()
+    if (!trimmedReason) {
+      toast.error(t('cancelReasonModal.reasonRequired'))
+      return
+    }
+
+    if (!order?.id) return
+
+    try {
+      const result = await cancelOrder({
+        orderId: order.id,
+        reason: trimmedReason,
+      }).unwrap()
+
+      if (result?.success === false) {
+        toast.error(getAuthErrorMessage(result, t('buyerOrders.cancelFailed')))
+        return
+      }
+
+      toast.success(result?.message || t('buyerOrders.cancelSuccess'))
+      onCancelled?.()
+      onClose?.()
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, t('buyerOrders.cancelFailed')))
+    }
   }
 
   return createPortal(
@@ -85,7 +114,8 @@ export default function CancelReasonModal({
           </label>
           <button
             type="submit"
-            className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold text-white hover:brightness-95"
+            disabled={isSubmitting}
+            className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold text-white hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t('cancelReasonModal.submit')}
           </button>

@@ -9,12 +9,16 @@ export default function ActiveTierStatus({
   clientsLabel,
   currentClients = 0,
   targetClients = 100,
+  progressPercent: progressPercentProp,
   helpText,
 }) {
-  const progressPercent = Math.min(
-    100,
-    Math.round((currentClients / Math.max(targetClients, 1)) * 100),
-  )
+  const progressPercent =
+    progressPercentProp != null
+      ? Math.min(100, Math.max(0, Number(progressPercentProp) || 0))
+      : Math.min(
+          100,
+          Math.round((currentClients / Math.max(targetClients, 1)) * 100),
+        )
   const clientsNeeded = Math.max(targetClients - currentClients, 0)
   const resolvedHelpText =
     helpText ||

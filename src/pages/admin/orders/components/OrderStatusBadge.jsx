@@ -3,6 +3,9 @@ const STYLES = {
   pending:
     'bg-[color-mix(in_srgb,var(--active)_18%,white)] text-[var(--active)]',
   processing: 'bg-pink-100 text-pink-700',
+  in_production: 'bg-amber-100 text-amber-800',
+  produced: 'bg-violet-100 text-violet-700',
+  ready: 'bg-indigo-100 text-indigo-700',
   assigned: 'bg-gray-700 text-white',
   cancel: 'bg-red-100 text-red-700',
   cancelled: 'bg-red-100 text-red-700',

@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 function copyGeneratedImagesPlugin() {
   try {
@@ -59,4 +62,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

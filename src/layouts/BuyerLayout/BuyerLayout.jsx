@@ -100,6 +100,7 @@ export default function BuyerLayout({
   role = 'company',
   userName = 'John',
   onLogout,
+  isLoggingOut = false,
 }) {
   const { t } = useTranslation()
   const { pathname } = useLocation()
@@ -197,7 +198,11 @@ export default function BuyerLayout({
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-[5%]">
           {/* Desktop sidebar — % of row */}
           <div className="hidden w-full shrink-0 lg:block lg:w-[22%] lg:sticky lg:top-38 lg:self-start">
-            <BuyerSidebar items={roleConfig.nav} onLogout={onLogout} />
+            <BuyerSidebar
+              items={roleConfig.nav}
+              onLogout={onLogout}
+              isLoggingOut={isLoggingOut}
+            />
           </div>
 
           {/* Mobile drawer: 80% width, slides left → right */}
@@ -243,6 +248,7 @@ export default function BuyerLayout({
                     setMenuOpen(false)
                     onLogout?.()
                   }}
+                  isLoggingOut={isLoggingOut}
                   onNavigate={() => setMenuOpen(false)}
                 />
               </div>
@@ -251,7 +257,9 @@ export default function BuyerLayout({
 
           {/* Main content — full width on mobile */}
           <div className="w-full min-w-0 flex-1 lg:w-[73%]">
-            <Outlet context={{ userName, onLogout, role, roleConfig }} />
+            <Outlet
+              context={{ userName, onLogout, isLoggingOut, role, roleConfig }}
+            />
           </div>
         </div>
       </main>

@@ -17,25 +17,43 @@ export default function CompanyOrdersTable({
   onViewOrder,
   page = 1,
   pageSize = 10,
+  total: totalProp,
+  totalPages: totalPagesProp,
+  serverPaginated = false,
+  isFetching = false,
   onPageChange,
   className = '',
 }) {
   const { t } = useTranslation()
 
-  const filtered =
-    statusFilter === 'all'
+  const filtered = serverPaginated
+    ? orders
+    : statusFilter === 'all'
       ? orders
       : orders.filter((row) => row.status === statusFilter)
 
-  const total = filtered.length
-  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const total = serverPaginated ? (totalProp ?? 0) : filtered.length
+  const totalPages = serverPaginated
+    ? Math.max(1, totalPagesProp ?? 1)
+    : Math.max(1, Math.ceil(total / pageSize))
   const safePage = Math.min(Math.max(page, 1), totalPages)
-  const start = (safePage - 1) * pageSize
-  const visible = filtered.slice(start, start + pageSize)
+  const clientStart = (safePage - 1) * pageSize
+  const visible = serverPaginated
+    ? orders
+    : filtered.slice(clientStart, clientStart + pageSize)
+  const showingFrom = serverPaginated
+    ? (total ? (safePage - 1) * pageSize + 1 : 0)
+    : (total ? clientStart + 1 : 0)
+  const showingTo = serverPaginated
+    ? Math.min(safePage * pageSize, total)
+    : Math.min(clientStart + pageSize, total)
 
   return (
     <div
-      className={`overflow-hidden rounded-lg border border-gray-200 bg-white ${className}`}
+      className={[
+        `overflow-hidden rounded-lg border border-gray-200 bg-white ${className}`,
+        isFetching ? 'opacity-60' : '',
+      ].join(' ')}
     >
       <div className="flex flex-col gap-3 border-b border-gray-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <h2 className="text-lg font-bold text-[var(--primary-text)]">
@@ -75,7 +93,7 @@ export default function CompanyOrdersTable({
             {visible.map((row) => (
               <tr key={row.id} className="border-t border-gray-200">
                 <td className="px-4 py-4 font-medium text-[var(--primary-text)] sm:px-6">
-                  #{row.id}
+                  #{row.orderNumber ?? row.id}
                 </td>
                 <td className="px-4 py-4 text-[var(--primary-text)]">
                   {row.productName}
@@ -101,7 +119,9 @@ export default function CompanyOrdersTable({
                   <button
                     type="button"
                     onClick={() => onViewOrder?.(row)}
-                    aria-label={t('companyOrders.viewOrder', { id: row.id })}
+                    aria-label={t('companyOrders.viewOrder', {
+                      id: row.orderNumber ?? row.id,
+                    })}
                     className="inline-flex size-9 items-center justify-center rounded-md border border-gray-200 text-[var(--primary-text)] hover:border-[var(--active)] hover:text-[var(--active)]"
                   >
                     <FiEye className="size-4" aria-hidden />
@@ -122,8 +142,8 @@ export default function CompanyOrdersTable({
       <div className="flex flex-col gap-3 border-t border-gray-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p className="text-sm text-[var(--secondary-text)]">
           {t('companyOrders.showing', {
-            from: total ? start + 1 : 0,
-            to: Math.min(start + pageSize, total),
+            from: showingFrom,
+            to: showingTo,
             total,
           })}
         </p>

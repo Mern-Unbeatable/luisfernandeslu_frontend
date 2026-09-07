@@ -46,7 +46,7 @@ export default function CompanyOrderDetail({
       <header className="border-b border-gray-100 pb-6">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-lg font-bold text-[var(--primary-text)] sm:text-xl">
-            {order.id}
+            {order.orderNumber ?? order.id}
           </h1>
           <StatusBadge status={order.status} label={statusLabel} />
         </div>

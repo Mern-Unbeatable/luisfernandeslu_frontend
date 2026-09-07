@@ -23,12 +23,13 @@ export default function AuthLayout() {
   const matchAdminLogin = useMatch('/admin/login')
   const matchSignup = useMatch('/signup')
   const matchSignupRole = useMatch('/signup/:role')
+  const matchSignupVerify = useMatch('/signup/:role/verify')
   const matchForgot = useMatch('/forgot-password')
   const matchForgotOtp = useMatch('/forgot-password/otp')
   const matchForgotReset = useMatch('/forgot-password/reset')
   const role = roleParam || (matchAdminLogin ? 'admin' : null)
-  const isRegister = Boolean(matchSignupRole)
-  const isSignupFlow = Boolean(matchSignup || matchSignupRole)
+  const isRegister = Boolean(matchSignupRole || matchSignupVerify)
+  const isSignupFlow = Boolean(matchSignup || matchSignupRole || matchSignupVerify)
   const isAdminLogin = Boolean(matchAdminLogin)
   const config = role ? getRoleAuthConfig(role) : null
   const layout = config?.layout || 'photo'
@@ -37,6 +38,10 @@ export default function AuthLayout() {
   const fromAuthHub = Boolean(location.state?.fromAuthHub)
 
   const goBack = () => {
+    if (matchSignupVerify) {
+      navigate(`/signup/${role}`, { state: location.state })
+      return
+    }
     if (matchForgotReset) {
       navigate('/forgot-password/otp')
       return

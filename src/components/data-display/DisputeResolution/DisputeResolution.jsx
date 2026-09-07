@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FiPaperclip, FiSend } from 'react-icons/fi'
 
 /**
@@ -10,8 +10,8 @@ import { FiPaperclip, FiSend } from 'react-icons/fi'
 export default function DisputeResolution({
   variant = 'public',
   dispute = {},
-  /** Kept for callers / future “who is typing” — bubbles always put buyer on the right. */
-  currentUserRole: _currentUserRole = 'buyer',
+  currentUserRole = 'buyer',
+  currentUserId = null,
   onSendMessage,
   onAttach,
   onStatusChange,
@@ -51,6 +51,8 @@ export default function DisputeResolution({
       <CommunicationThread
         className="mt-5"
         messages={messages}
+        currentUserRole={currentUserRole}
+        currentUserId={currentUserId}
         showStatusPills={isDashboard}
         status={status}
         onStatusChange={onStatusChange}
@@ -155,6 +157,8 @@ function DescriptionCard({
 
 function CommunicationThread({
   messages,
+  currentUserRole = 'buyer',
+  currentUserId = null,
   showStatusPills,
   status,
   onStatusChange,
@@ -164,6 +168,15 @@ function CommunicationThread({
 }) {
   const [draft, setDraft] = useState('')
   const fileRef = useRef(null)
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const handleSend = (event) => {
     event.preventDefault()
@@ -172,6 +185,11 @@ function CommunicationThread({
     onSendMessage?.(text)
     setDraft('')
   }
+
+  const normalizedViewerRole = String(currentUserRole || '').toLowerCase()
+  const isViewerBuyer = ['customer', 'company', 'buyer'].includes(normalizedViewerRole)
+  const isViewerSupplier = ['supplier', 'seller'].includes(normalizedViewerRole)
+  const isViewerAdmin = ['admin'].includes(normalizedViewerRole)
 
   return (
     <Card className={`flex flex-col overflow-hidden !p-0 ${className}`}>
@@ -183,15 +201,26 @@ function CommunicationThread({
 
       <div className="flex max-h-[28rem] min-h-[20rem] flex-col gap-6 overflow-y-auto px-5 py-5 sm:px-6">
         {messages.map((message) => {
-          const isBuyer =
-            message.role === 'buyer' ||
-            message.align === 'right' ||
-            message.roleLabel?.toLowerCase() === 'buyer'
+          const msgRole = String(message.role || '').toLowerCase()
+          const msgRoleLabel = String(message.roleLabel || '').toLowerCase()
+
+          // Check if this message was sent by the current viewer
+          let isOwn = false
+          if (currentUserId && message.senderId && String(message.senderId) === String(currentUserId)) {
+            isOwn = true
+          } else if (isViewerBuyer && (msgRole === 'buyer' || msgRoleLabel === 'buyer')) {
+            isOwn = true
+          } else if (isViewerSupplier && (msgRole === 'supplier' || msgRole === 'seller' || msgRoleLabel === 'seller' || msgRoleLabel === 'supplier')) {
+            isOwn = true
+          } else if (isViewerAdmin && (msgRole === 'admin' || msgRoleLabel === 'admin')) {
+            isOwn = true
+          }
+
           return (
             <div
               key={message.id}
               className={`flex flex-col gap-1.5 ${
-                isBuyer ? 'items-end' : 'items-start'
+                isOwn ? 'items-end' : 'items-start'
               }`}
             >
               <p className="text-xs text-neutral-500">
@@ -205,7 +234,7 @@ function CommunicationThread({
               </p>
               <div
                 className={`max-w-[min(100%,34rem)] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                  isBuyer
+                  isOwn
                     ? 'rounded-br-md bg-[#2D3036] text-white'
                     : 'rounded-bl-md bg-[#E7E7E8] text-zinc-800'
                 }`}
@@ -215,6 +244,7 @@ function CommunicationThread({
             </div>
           )
         })}
+        <div ref={messagesEndRef} />
       </div>
 
       <form

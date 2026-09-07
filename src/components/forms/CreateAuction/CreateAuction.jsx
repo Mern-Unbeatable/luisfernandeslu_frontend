@@ -77,6 +77,15 @@ export default function CreateAuction({
     onSubmit?.(form)
   }
 
+  const handleFormKeyDown = (event) => {
+    if (event.key !== 'Enter') return
+    const tag = String(event.target?.tagName || '').toLowerCase()
+    // Allow Enter only inside textarea; block accidental form submit from inputs
+    if (tag !== 'textarea') {
+      event.preventDefault()
+    }
+  }
+
   return (
     <div className={`mx-auto w-full ${className}`}>
       <header className="mb-6">
@@ -98,7 +107,11 @@ export default function CreateAuction({
         </p>
       </header>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit}
+        onKeyDown={handleFormKeyDown}
+        className="flex flex-col gap-5"
+      >
         <Section title={t('auction.create.orderInfo')}>
           <Field label={t('auction.create.orderId')}>
             <input

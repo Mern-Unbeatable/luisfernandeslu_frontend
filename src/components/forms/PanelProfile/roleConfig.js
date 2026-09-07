@@ -60,6 +60,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     showAvatarActions: false,
     showAccountPhone: false,
     showWarehouses: false,
+    emailEditable: true,
     passwordMode: 'full',
     showIban: true,
     subtitleKey: 'panel.profile.subtitle',

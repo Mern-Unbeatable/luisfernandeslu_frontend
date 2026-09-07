@@ -13,6 +13,10 @@ export default function CompanyProjectDetail({
   project,
   page = 1,
   pageSize = 10,
+  total: totalProp,
+  totalPages: totalPagesProp,
+  serverPaginated = false,
+  isFetching = false,
   onPageChange,
   onViewMaterial,
   onBack,
@@ -21,11 +25,23 @@ export default function CompanyProjectDetail({
   const { t } = useTranslation()
   if (!project) return null
 
-  const total = project.materials?.length ?? 0
-  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const total = serverPaginated
+    ? (totalProp ?? 0)
+    : (project.materials?.length ?? 0)
+  const totalPages = serverPaginated
+    ? Math.max(1, totalPagesProp ?? 1)
+    : Math.max(1, Math.ceil(total / pageSize))
   const safePage = Math.min(Math.max(page, 1), totalPages)
-  const start = (safePage - 1) * pageSize
-  const visible = (project.materials ?? []).slice(start, start + pageSize)
+  const clientStart = (safePage - 1) * pageSize
+  const visible = serverPaginated
+    ? (project.materials ?? [])
+    : (project.materials ?? []).slice(clientStart, clientStart + pageSize)
+  const showingFrom = serverPaginated
+    ? (total ? (safePage - 1) * pageSize + 1 : 0)
+    : (total ? clientStart + 1 : 0)
+  const showingTo = serverPaginated
+    ? Math.min(safePage * pageSize, total)
+    : Math.min(clientStart + pageSize, total)
 
   const columns = [
     {
@@ -64,7 +80,12 @@ export default function CompanyProjectDetail({
   ]
 
   return (
-    <div className={className}>
+    <div
+      className={[
+        className,
+        isFetching ? 'opacity-60' : '',
+      ].join(' ')}
+    >
       {onBack ? (
         <button
           type="button"
@@ -124,8 +145,8 @@ export default function CompanyProjectDetail({
           total,
           onPageChange,
           summaryLabel: t('companyProjects.showing', {
-            from: total ? start + 1 : 0,
-            to: Math.min(start + pageSize, total),
+            from: showingFrom,
+            to: showingTo,
             total,
           }),
           previousLabel: t('companyProjects.previous'),

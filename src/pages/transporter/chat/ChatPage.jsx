@@ -1,11 +1,32 @@
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
-import useMessages from '@/components/common/messenger/useMessages'
+import useLiveChat from '@/features/chat/useLiveChat'
+
+/** Default thread on load (optional). */
+const DEFAULT_CHAT_ID = 'c1'
 
 export default function ChatPage() {
   const { t } = useTranslation()
-  const state = useMessages()
+  const [searchParams] = useSearchParams()
+  const state = useLiveChat()
+
+  useEffect(() => {
+    const params = Object.fromEntries(searchParams.entries())
+    if (params.type || params.chat) {
+      state.openThread({
+        chatId: params.chat,
+        type: params.type,
+        quoteId: params.quoteId,
+        orderId: params.orderId,
+        productId: params.productId,
+        peerUserId: params.peerUserId,
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
 
   return (
     <>

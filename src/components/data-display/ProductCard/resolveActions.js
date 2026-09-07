@@ -84,7 +84,7 @@ export function resolveActions({
   // Factory dashboard
   if (role === 'factory' && type === 'dashboard') {
     if (status === 'pending') {
-      return [{ id: 'delete', kind: 'full', label: 'Delete', variant: 'danger' }]
+      return [{ id: 'cancel', kind: 'full', label: 'Cancel', variant: 'primary' }]
     }
     if (status === 'rejected') {
       return [
