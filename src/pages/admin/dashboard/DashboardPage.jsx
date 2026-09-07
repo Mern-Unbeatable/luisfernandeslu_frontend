@@ -7,10 +7,14 @@ import MetricsSection from './sections/MetricsSection'
 import QuickActionsSection from './sections/QuickActionsSection'
 import ChartsSection from './sections/ChartsSection'
 import PerformanceSection from './sections/PerformanceSection'
+import { useGetAdminDashboardOverviewQuery } from '@/features/admin/adminDashboardApi'
 
 export default function DashboardPage() {
   const { t } = useTranslation()
   const [channel, setChannel] = useState('all')
+
+  const { data, isLoading, isError, error } = useGetAdminDashboardOverviewQuery()
+  const dashboardData = data?.charts ? data : data?.data || data
 
   return (
     <div className="space-y-8">
@@ -39,10 +43,22 @@ export default function DashboardPage() {
         ariaLabel={t('adminDashboard.channels.label')}
       />
 
-      <MetricsSection channel={channel} />
+      <MetricsSection
+        channel={channel}
+        data={dashboardData?.metrics}
+        isLoading={isLoading}
+      />
       <QuickActionsSection />
-      <ChartsSection channel={channel} />
-      <PerformanceSection channel={channel} />
+      <ChartsSection
+        channel={channel}
+        data={dashboardData?.charts}
+        isLoading={isLoading}
+      />
+      <PerformanceSection
+        channel={channel}
+        data={dashboardData?.performance}
+        isLoading={isLoading}
+      />
     </div>
   )
 }
