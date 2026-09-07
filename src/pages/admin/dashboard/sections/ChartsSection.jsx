@@ -135,8 +135,9 @@ export default function ChartsSection({ channel = 'all', data, isLoading }) {
         tooltip: {
           ...baseTooltip,
           callbacks: {
-            label: (ctx) =>
-              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
+            label(ctx) {
+              return `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString('en-US')}`
+            },
           },
         },
       },
@@ -182,6 +183,12 @@ export default function ChartsSection({ channel = 'all', data, isLoading }) {
 
     return { labels, datasets }
   }, [channel, labels, ordersB2B, ordersB2C, t])
+
+  const maxOrders = useMemo(() => {
+    const allVals = [...ordersB2B, ...ordersB2C]
+    const highest = Math.max(...allVals, 10)
+    return Math.ceil(highest / 100) * 100
+  }, [ordersB2B, ordersB2C])
 
   const ordersOptions = useMemo(
     () => ({
