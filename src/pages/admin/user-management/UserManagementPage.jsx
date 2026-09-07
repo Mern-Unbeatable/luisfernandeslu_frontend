@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
@@ -11,12 +12,13 @@ import {
   useUpdateAdminUserStatusMutation,
 } from '@/features/admin/adminUserApi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { confirmDelete } from '@/utils/confirmDialog'
 import UserDetailsModal from './components/UserDetailsModal'
 import TypeBadge from './components/TypeBadge'
 import AccountStatusBadge from './components/AccountStatusBadge'
 import { ADMIN_USER_TABS } from './data/usersDemo'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
@@ -31,6 +33,7 @@ function isUserSuspended(row) {
 
 export default function UserManagementPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('customer')
   const [statusFilter, setStatusFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -39,6 +42,14 @@ export default function UserManagementPage() {
   const [detailUserId, setDetailUserId] = useState(null)
 
   const isCustomerTab = activeTab === 'customer'
+
+  const handleMessageUser = useCallback(
+    (userId) => {
+      if (!userId) return
+      navigate(`/admin/chat?type=ADMIN_SUPPORT&peerUserId=${userId}`)
+    },
+    [navigate],
+  )
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -80,9 +91,12 @@ export default function UserManagementPage() {
 
   const handleDeleteUser = useCallback(
     async (row) => {
-      const confirmed = window.confirm(
-        t('adminUserManagement.deleteConfirm', { name: row.name }),
-      )
+      const confirmed = await confirmDelete({
+        title: t('adminUserManagement.actions.delete'),
+        text: t('adminUserManagement.deleteConfirm', { name: row.name }),
+        confirmText: t('adminUserManagement.actions.delete'),
+        cancelText: t('common.cancel', 'Cancel'),
+      })
       if (!confirmed) return
 
       try {
@@ -121,11 +135,11 @@ export default function UserManagementPage() {
         {
           id: 'message',
           label: t('adminUserManagement.actions.message'),
-          onClick: () => {},
+          onClick: () => handleMessageUser(row.id),
         },
       ]
     },
-    [handleDeleteUser, handleStatusChange, t],
+    [handleDeleteUser, handleMessageUser, handleStatusChange, t],
   )
 
   const tabs = useMemo(
@@ -318,6 +332,7 @@ export default function UserManagementPage() {
         open={Boolean(detailUserId)}
         userId={detailUserId}
         onClose={() => setDetailUserId(null)}
+        onMessage={handleMessageUser}
       />
     </div>
   )

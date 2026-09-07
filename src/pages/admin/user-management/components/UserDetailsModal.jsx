@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { FiFileText, FiMapPin, FiX } from 'react-icons/fi'
+import { FiFileText, FiMapPin, FiMessageSquare, FiX } from 'react-icons/fi'
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { useGetAdminUserByIdQuery } from '@/features/admin/adminUserApi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
@@ -15,7 +15,7 @@ function DetailField({ label, value, className = '' }) {
   )
 }
 
-export default function UserDetailsModal({ open, userId, onClose }) {
+export default function UserDetailsModal({ open, userId, onClose, onMessage }) {
   const { t } = useTranslation()
   const { data, isLoading, isError, error } = useGetAdminUserByIdQuery(userId, {
     skip: !open || !userId,
@@ -122,6 +122,22 @@ export default function UserDetailsModal({ open, userId, onClose }) {
                   {t('adminUserManagement.modal.address')}
                 </p>
                 <p className="mt-2 text-sm text-[var(--primary-text)]">{user.address}</p>
+              </div>
+            ) : null}
+
+            {onMessage ? (
+              <div className="mt-6 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose?.()
+                    onMessage(user.id)
+                  }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--active)] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:opacity-90 focus:outline-none"
+                >
+                  <FiMessageSquare className="size-4" aria-hidden />
+                  {t('adminUserManagement.actions.message')}
+                </button>
               </div>
             ) : null}
           </>

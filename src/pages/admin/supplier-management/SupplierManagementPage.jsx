@@ -14,6 +14,7 @@ import {
   useDeleteAdminSupplierMutation,
 } from '@/features/admin/adminSupplierApi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { confirmAction, confirmDelete } from '@/utils/confirmDialog'
 import SupplierCommissionCell from './components/SupplierCommissionCell'
 import SupplierDetailsModal from './components/SupplierDetailsModal'
 import SupplierRowActionMenu from './components/SupplierRowActionMenu'
@@ -23,7 +24,7 @@ import {
   formatSupplierRegisteredDate,
 } from './data/suppliersDemo'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
@@ -138,9 +139,12 @@ export default function SupplierManagementPage() {
 
   const handleReject = useCallback(
     async (row) => {
-      const confirmed = window.confirm(
-        t('adminSupplierManagement.rejectConfirm', { name: row.name }),
-      )
+      const confirmed = await confirmAction({
+        title: t('adminSupplierManagement.actions.reject'),
+        text: t('adminSupplierManagement.rejectConfirm', { name: row.name }),
+        confirmText: t('adminSupplierManagement.actions.reject'),
+        cancelText: t('common.cancel', 'Cancel'),
+      })
       if (!confirmed) return
 
       await runAction(
@@ -178,9 +182,12 @@ export default function SupplierManagementPage() {
 
   const handleDeleteSupplier = useCallback(
     async (row) => {
-      const confirmed = window.confirm(
-        t('adminSupplierManagement.deleteConfirm', { name: row.name }),
-      )
+      const confirmed = await confirmDelete({
+        title: t('adminSupplierManagement.actions.delete'),
+        text: t('adminSupplierManagement.deleteConfirm', { name: row.name }),
+        confirmText: t('adminSupplierManagement.actions.delete'),
+        cancelText: t('common.cancel', 'Cancel'),
+      })
       if (!confirmed) return
 
       try {

@@ -38,6 +38,20 @@ export default function useLiveChat(initialThreadId = null) {
 
   const activeThread = inboxData?.chats?.find((c) => c.id === activeThreadId) || null
 
+  // Track all known participant IDs for presence sync
+  const participantIdsRef = useRef(new Set())
+  useEffect(() => {
+    if (inboxData?.chats) {
+      inboxData.chats.forEach(chat => {
+        chat.raw?.participants?.forEach(p => {
+          if (String(p.id) !== String(user?.id)) {
+            participantIdsRef.current.add(String(p.id))
+          }
+        })
+      })
+    }
+  }, [inboxData, user?.id])
+
   // Create socket ONCE when accessToken is available — never recreate on thread change
   useEffect(() => {
     if (!accessToken) return
@@ -56,6 +70,27 @@ export default function useLiveChat(initialThreadId = null) {
           if (!ack?.ok) console.error('Failed to re-join room', ack?.message)
         })
       }
+      // Request presence status for all known participants to sync online status
+      const knownIds = [...participantIdsRef.current]
+      if (knownIds.length > 0) {
+        newSocket.emit('presence:get', { userIds: knownIds }, (ack) => {
+          if (ack?.ok && ack?.users) {
+            ack.users.forEach(({ userId: uid, online }) => {
+              dispatch(
+                chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
+                  if (!draft?.chats) return
+                  draft.chats.forEach(chat => {
+                    const isPartner = chat.raw?.participants?.some(p => String(p.id) === String(uid) && String(p.id) !== String(userIdRef.current))
+                    if (isPartner) {
+                      chat.online = online
+                    }
+                  })
+                })
+              )
+            })
+          }
+        })
+      }
     })
 
     newSocket.on('disconnect', () => {
@@ -69,12 +104,13 @@ export default function useLiveChat(initialThreadId = null) {
     // Listen for presence updates
     newSocket.on('user:presence', (payload) => {
       const { userId, status } = payload
+      const presenceUserId = String(userId)
       dispatch(
         chatApi.util.updateQueryData('getChatThreads', { userId: userIdRef.current }, (draft) => {
           if (!draft?.chats) return
           draft.chats.forEach(chat => {
             // Find partner in chat participants (mapped by backend)
-            const isPartner = chat.raw?.participants?.some(p => p.id === userId && p.id !== userIdRef.current)
+            const isPartner = chat.raw?.participants?.some(p => String(p.id) === presenceUserId && String(p.id) !== String(userIdRef.current))
             if (isPartner) {
               chat.online = status === 'online'
             }

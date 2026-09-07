@@ -194,7 +194,18 @@ export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
     return payload.message.filter(Boolean).join(', ') || fallback
   }
 
-  if (payload.message) return payload.message
+  if (payload.message) {
+    const msg = String(payload.message)
+    if (
+      msg.includes('foreign key constraint') ||
+      msg.includes('RESTRICT setting') ||
+      msg.includes('prisma.user.delete') ||
+      msg.includes('HasRelatedRecords')
+    ) {
+      return 'This user cannot be deleted because they have associated orders or records in the system. Please suspend the user instead.'
+    }
+    return msg
+  }
 
   if (typeof payload.error === 'string') return payload.error
 
