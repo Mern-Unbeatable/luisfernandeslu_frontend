@@ -1,5 +1,6 @@
 import '../auth/authApi'
 import '../users/userApi'
+import '../admin/adminDashboardApi'
 import '../admin/adminUserApi'
 import '../admin/adminSupplierApi'
 import '../admin/adminFactoryApi'

@@ -63,11 +63,27 @@ function ChartCard({ title, children, timeframe, onTimeframeChange, timeLabel })
   )
 }
 
-export default function ChartsSection({ channel = 'all' }) {
+export default function ChartsSection({ channel = 'all', data, isLoading }) {
   const { t } = useTranslation()
   const [revenueRange, setRevenueRange] = useState('thisYear')
   const [ordersRange, setOrdersRange] = useState('thisYear')
   const timeLabel = t('adminDashboard.charts.thisYear')
+
+  const labels = data?.labels || ADMIN_REVENUE_CHART_LABELS
+
+  const revenueB2B = Array.isArray(data?.revenue?.[revenueRange]?.b2b)
+    ? data.revenue[revenueRange].b2b
+    : ADMIN_REVENUE_B2B
+  const revenueB2C = Array.isArray(data?.revenue?.[revenueRange]?.b2c)
+    ? data.revenue[revenueRange].b2c
+    : ADMIN_REVENUE_B2C
+
+  const ordersB2B = Array.isArray(data?.orders?.[ordersRange]?.b2b)
+    ? data.orders[ordersRange].b2b
+    : ADMIN_ORDER_B2B
+  const ordersB2C = Array.isArray(data?.orders?.[ordersRange]?.b2c)
+    ? data.orders[ordersRange].b2c
+    : ADMIN_ORDER_B2C
 
   const revenueData = useMemo(() => {
     const datasets = []
@@ -75,7 +91,7 @@ export default function ChartsSection({ channel = 'all' }) {
     if (channel === 'all' || channel === 'b2b') {
       datasets.push({
         label: t('adminDashboard.charts.b2bRevenue'),
-        data: ADMIN_REVENUE_B2B,
+        data: revenueB2B,
         borderColor: B2B_COLOR,
         backgroundColor: B2B_COLOR,
         tension: 0.35,
@@ -88,7 +104,7 @@ export default function ChartsSection({ channel = 'all' }) {
     if (channel === 'all' || channel === 'b2c') {
       datasets.push({
         label: t('adminDashboard.charts.b2cRevenue'),
-        data: ADMIN_REVENUE_B2C,
+        data: revenueB2C,
         borderColor: B2C_COLOR,
         backgroundColor: B2C_COLOR,
         tension: 0.35,
@@ -98,8 +114,14 @@ export default function ChartsSection({ channel = 'all' }) {
       })
     }
 
-    return { labels: ADMIN_REVENUE_CHART_LABELS, datasets }
-  }, [channel, t])
+    return { labels, datasets }
+  }, [channel, labels, revenueB2B, revenueB2C, t])
+
+  const maxRevenue = useMemo(() => {
+    const allVals = [...revenueB2B, ...revenueB2C]
+    const highest = Math.max(...allVals, 1000)
+    return Math.ceil(highest / 10000) * 10000
+  }, [revenueB2B, revenueB2C])
 
   const revenueOptions = useMemo(
     () => ({
@@ -122,17 +144,17 @@ export default function ChartsSection({ channel = 'all' }) {
         x: { grid: { display: false }, ticks: { color: '#9ca3af' } },
         y: {
           min: 0,
-          max: 80000,
+          max: maxRevenue,
           ticks: {
             color: '#9ca3af',
-            stepSize: 20000,
+            stepSize: Math.max(1000, Math.round(maxRevenue / 4)),
             callback: (v) => v,
           },
           grid: { color: '#f3f4f6' },
         },
       },
     }),
-    [],
+    [maxRevenue],
   )
 
   const ordersData = useMemo(() => {
@@ -141,7 +163,7 @@ export default function ChartsSection({ channel = 'all' }) {
     if (channel === 'all' || channel === 'b2b') {
       datasets.push({
         label: t('adminDashboard.charts.b2bOrders'),
-        data: ADMIN_ORDER_B2B,
+        data: ordersB2B,
         backgroundColor: B2B_COLOR,
         borderRadius: 4,
         barThickness: channel === 'b2b' ? 18 : 14,
@@ -151,15 +173,15 @@ export default function ChartsSection({ channel = 'all' }) {
     if (channel === 'all' || channel === 'b2c') {
       datasets.push({
         label: t('adminDashboard.charts.b2cOrders'),
-        data: ADMIN_ORDER_B2C,
+        data: ordersB2C,
         backgroundColor: B2C_BAR_COLOR,
         borderRadius: 4,
         barThickness: channel === 'b2c' ? 18 : 14,
       })
     }
 
-    return { labels: ADMIN_REVENUE_CHART_LABELS, datasets }
-  }, [channel, t])
+    return { labels, datasets }
+  }, [channel, labels, ordersB2B, ordersB2C, t])
 
   const ordersOptions = useMemo(
     () => ({
@@ -196,7 +218,7 @@ export default function ChartsSection({ channel = 'all' }) {
         onTimeframeChange={setRevenueRange}
         timeLabel={timeLabel}
       >
-        <Line key={`revenue-${channel}`} data={revenueData} options={revenueOptions} />
+        <Line key={`revenue-${channel}-${revenueRange}`} data={revenueData} options={revenueOptions} />
       </ChartCard>
       <ChartCard
         title={t('adminDashboard.charts.orderVolume')}
@@ -204,7 +226,7 @@ export default function ChartsSection({ channel = 'all' }) {
         onTimeframeChange={setOrdersRange}
         timeLabel={timeLabel}
       >
-        <Bar key={`orders-${channel}`} data={ordersData} options={ordersOptions} />
+        <Bar key={`orders-${channel}-${ordersRange}`} data={ordersData} options={ordersOptions} />
       </ChartCard>
     </div>
   )
