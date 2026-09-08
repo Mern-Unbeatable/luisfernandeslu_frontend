@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useOutletContext } from 'react-router-dom'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
-import RejectionBanner from '../../../components/common/RejectionBanner'
+import SuspendedAccessGate from '../../../components/common/account-lock/SuspendedAccessGate'
 import { useGetTransporterDashboardQuery } from '../../../features/transporter/transporterApi'
 import { mapTransporterDashboard } from '../../../features/transporter/dashboardMappers'
 import StatsSection from './sections/StatsSection'
@@ -16,12 +16,22 @@ export default function DashboardPage() {
   const [period, setPeriod] = useState('thisYear')
 
   const { data, isLoading, isError, error, refetch } =
-    useGetTransporterDashboardQuery({ period })
+    useGetTransporterDashboardQuery({ period }, { skip: isSuspended })
 
   const dashboard = useMemo(() => mapTransporterDashboard(data), [data])
   const welcomeName =
     dashboard.welcomeName ||
     t('transporterDashboard.defaultName', { defaultValue: 'Transporter' })
+
+  if (isSuspended) {
+    return (
+      <SuspendedAccessGate
+        role="transporter"
+        rejectionReason={rejectionReason}
+        dashboardTitle={t('transporterDashboard.title')}
+      />
+    )
+  }
 
   if (isLoading) {
     return <PanelDashboardSkeleton />
@@ -38,12 +48,6 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {isSuspended && (
-        <RejectionBanner rejectionReason={rejectionReason} />
-      )}
-
-      {!isSuspended && (
-      <>
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           <p>{getAuthErrorMessage(error, 'Failed to load dashboard')}</p>
@@ -68,8 +72,6 @@ export default function DashboardPage() {
           />
         </>
       ) : null}
-      </>
-      )}
     </div>
   )
 }

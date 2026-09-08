@@ -9,7 +9,7 @@ import {
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
-import RejectionBanner from "@/components/common/RejectionBanner";
+import SuspendedAccessGate from "@/components/common/account-lock/SuspendedAccessGate";
 import DataTable from "@/components/data-display/DataTable/DataTable";
 import StatusCard from "@/components/data-display/StatusCard";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
@@ -97,11 +97,14 @@ export default function DashboardPage() {
   const [page, setPage] = useState(1);
 
   const pageSize = 7;
-  const { data, isLoading, isFetching, error } = useGetSupplierOverviewQuery({
-    period: Number(period),
-    page,
-    limit: pageSize,
-  });
+  const { data, isLoading, isFetching, error } = useGetSupplierOverviewQuery(
+    {
+      period: Number(period),
+      page,
+      limit: pageSize,
+    },
+    { skip: isSuspended },
+  );
 
   const [orders, setOrders] = useState([]);
 
@@ -259,6 +262,14 @@ export default function DashboardPage() {
     <>
       <Seo title={t("panel.supplierDashboard.title")} />
 
+      {isSuspended ? (
+        <SuspendedAccessGate
+          role="supplier"
+          rejectionReason={rejectionReason}
+          dashboardTitle={t("panel.supplierDashboard.title")}
+        />
+      ) : (
+      <>
       <header className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
           {t("panel.supplierDashboard.title")}
@@ -268,14 +279,6 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      {isSuspended && (
-        <div className="mb-6">
-          <RejectionBanner rejectionReason={rejectionReason} />
-        </div>
-      )}
-
-      {!isSuspended && (
-      <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {STAT_CARD_CONFIG.map((card) => (
           <StatusCard

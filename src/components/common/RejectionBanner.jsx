@@ -1,35 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { FiAlertTriangle } from 'react-icons/fi'
+import {
+  getDocumentLabel,
+  parseRejectionReason,
+} from './account-lock/documentFields'
 
-const DOCUMENT_LABELS = {
-  companyCertificateUrl: 'Company Certificate',
-  commercialRegistrationUrl: 'Commercial Registration',
-  nifDocumentUrl: 'NIF Document',
-  idDocumentUrl: 'ID Proof',
-  addressProofUrl: 'Address Proof',
-  ibanProofUrl: 'IBAN Proof',
-  insuranceDocumentUrl: 'Insurance Document',
-  transporterInsuranceUrl: 'Transporter Insurance',
-  factoryCertificateUrl: 'Factory Certificate',
-}
-
-function parseRejectionReason(rejectionReason) {
-  if (!rejectionReason) return { reason: '', invalidDocuments: [] }
-
-  const parts = rejectionReason.split(' | ')
-  const reason = parts[0] || ''
-
-  const invalidDocs = []
-  if (parts[1]?.startsWith('Invalid documents:')) {
-    const docsStr = parts[1].replace('Invalid documents:', '').trim()
-    docsStr.split(',').forEach((doc) => {
-      const trimmed = doc.trim()
-      if (trimmed) invalidDocs.push(trimmed)
-    })
-  }
-
-  return { reason, invalidDocuments: invalidDocs }
-}
+export { parseRejectionReason }
 
 export default function RejectionBanner({ rejectionReason, onReSubmit }) {
   const { t } = useTranslation()
@@ -61,7 +37,7 @@ export default function RejectionBanner({ rejectionReason, onReSubmit }) {
               <ul className="mt-1 list-inside list-disc space-y-1">
                 {invalidDocuments.map((doc) => (
                   <li key={doc} className="text-sm text-red-700">
-                    {DOCUMENT_LABELS[doc] || doc}
+                    {getDocumentLabel(doc)}
                   </li>
                 ))}
               </ul>
