@@ -19,6 +19,7 @@ import {
   normalizeCustomerOrderStatus,
 } from "@/features/orders/customerOrderStatus";
 import { SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE } from "@/data/demoData";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 const CUSTOMER_ORDER_STAT_CARDS = [
   {
@@ -382,6 +383,10 @@ export default function OrdersCustomerPage() {
     (total === 0
       ? 0
       : Math.min(safePage * SUPPLIER_CUSTOMER_ORDERS_PAGE_SIZE, total));
+
+  if (isLoading && !ordersResponse) {
+    return <FactoryOrdersPageSkeleton />
+  }
 
   return (
     <>

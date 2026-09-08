@@ -17,6 +17,7 @@ import PromoCodeDetailsModal from "./components/PromoCodeDetailsModal.jsx";
 import PromoCodeDeleteModal from "./components/PromoCodeDeleteModal.jsx";
 import { TAB_IDS } from "./utils/promoCode.constants.js";
 import { usePromoCodeTableController } from "./hooks/usePromoCodeTableController.jsx";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 export default function PromoCodesPage() {
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ export default function PromoCodesPage() {
     tableFilters,
     pagedPromoCodes,
     isLoading,
+    isInitialLoading,
     pagination,
     selectedPromoCodeId,
     selectedPromoCode: selectedPromoCodeData,
@@ -193,6 +195,8 @@ export default function PromoCodesPage() {
             onAction={handleProductDetailsAction}
           />
         </div>
+      ) : isInitialLoading ? (
+        <FactoryOrdersPageSkeleton />
       ) : (
         <>
           <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
