@@ -5,6 +5,7 @@ import factoryRole from './factory'
 import transporterRole from './transporter'
 import affiliateRole from './affiliate'
 import adminRole from './admin'
+import moderatorRole from './moderator'
 
 /**
  * Role configs for sidebar / layout only.
@@ -22,6 +23,7 @@ const PANEL_ROLES = {
   transporter: transporterRole,
   affiliate: affiliateRole,
   admin: adminRole,
+  moderator: moderatorRole,
 }
 
 export const PANEL_ROLE_IDS = Object.keys(PANEL_ROLES)
@@ -51,6 +53,7 @@ export {
   transporterRole,
   affiliateRole,
   adminRole,
+  moderatorRole,
   BUYER_ROLES,
   PANEL_ROLES,
 }

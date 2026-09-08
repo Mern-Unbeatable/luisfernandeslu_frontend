@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useParams, useMatch, useLocation } from 'r
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { FiMail, FiLock } from 'react-icons/fi'
-import { setCredentials } from '../../features/auth/authSlice'
+import { setCredentials, logout as logoutAction } from '../../features/auth/authSlice'
 import { useLoginMutation } from '../../features/auth/authApi'
 import {
   API_LOGIN_ROLES,
@@ -13,6 +13,7 @@ import {
   findDemoUser,
   getHomePathForRole,
 } from '../../features/auth/demoUsers'
+import { getPostLoginStaffPath } from '../../roles/staffNav'
 import {
   getRoleAuthConfig,
   AUTH_ROLE_IDS,
@@ -30,9 +31,14 @@ export default function LoginPage() {
   const location = useLocation()
   const { role: roleParam } = useParams()
   const isAdminLogin = Boolean(useMatch('/admin/login'))
-  const role = isAdminLogin ? 'admin' : roleParam
-  const roleValid = !role || AUTH_ROLE_IDS.includes(role)
-  const config = roleValid && role ? getRoleAuthConfig(role) : null
+  const isModeratorLogin = Boolean(useMatch('/moderator/login'))
+  // Staff accounts authenticate via the admin API; area decides home path.
+  const role = isAdminLogin || isModeratorLogin ? 'admin' : roleParam
+  const uiRole = isModeratorLogin ? 'moderator' : role
+  const roleValid =
+    isModeratorLogin || !role || AUTH_ROLE_IDS.includes(role)
+  const config =
+    roleValid && uiRole ? getRoleAuthConfig(uiRole) || getRoleAuthConfig(role) : null
   const layout = config?.layout || 'photo'
   const loginCfg = config?.login || {
     titleKey: 'auth.loginTitle',
@@ -49,6 +55,10 @@ export default function LoginPage() {
 
   if (roleParam === 'admin') {
     return <Navigate to="/admin/login" replace />
+  }
+
+  if (roleParam === 'moderator') {
+    return <Navigate to="/moderator/login" replace />
   }
 
   if (!roleValid) {
@@ -88,7 +98,32 @@ export default function LoginPage() {
         return
       }
 
-      navigate(getHomePathForRole(data?.user?.role || role), { replace: true })
+      const loggedInUser = data?.user
+      if (isModeratorLogin) {
+        if (loggedInUser?.staffRole !== 'moderator') {
+          dispatch(logoutAction())
+          setError(
+            t('auth.moderatorOnlyAccount', {
+              defaultValue:
+                'This login is for moderators only. Use Admin Login for admin accounts.',
+            }),
+          )
+          return
+        }
+        navigate('/moderator', { replace: true })
+        return
+      }
+
+      if (isAdminLogin || loggedInUser?.role === 'admin') {
+        if (loggedInUser?.staffRole === 'moderator') {
+          navigate('/moderator', { replace: true })
+          return
+        }
+        navigate(getPostLoginStaffPath(loggedInUser), { replace: true })
+        return
+      }
+
+      navigate(getHomePathForRole(loggedInUser?.role || role), { replace: true })
     } catch (err) {
       const status = err?.status
       if (status === 'FETCH_ERROR' || !status) {
@@ -129,8 +164,9 @@ export default function LoginPage() {
   const isMarketing = layout === 'marketing'
   const fieldVariant = isMarketing ? 'marketing' : 'photo'
   const forgotBeside = Boolean(loginCfg.forgotBesideLabel)
-  const showModeToggle = isMarketing && role && role !== 'admin'
-  const showSignUpFooter = !loginCfg.showLegal && role !== 'admin'
+  const showModeToggle = isMarketing && role && role !== 'admin' && !isModeratorLogin
+  const showSignUpFooter =
+    !loginCfg.showLegal && role !== 'admin' && !isModeratorLogin
 
   return (
     <div className="mx-auto w-full max-w-xl">

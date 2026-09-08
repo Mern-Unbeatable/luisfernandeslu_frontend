@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useLogoutMutation } from './authApi'
 
 export function getLoginRouteForUser(user) {
+  if (user?.staffRole === 'moderator') return '/moderator/login'
   if (user?.role === 'admin') return '/admin/login'
   if (user?.role) return `/login/${user.role}`
   return '/login'

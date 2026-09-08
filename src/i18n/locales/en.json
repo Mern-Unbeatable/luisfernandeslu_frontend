@@ -1162,20 +1162,24 @@
     "retry": "Try again",
     "permissionsUpdated": "Permissions updated.",
     "permissionsUpdateFailed": "Could not update permissions.",
-    "inviteSuccess": "Invite sent.",
-    "inviteFailed": "Could not send invite.",
+    "inviteSuccess": "Moderator created successfully.",
+    "inviteFailed": "Could not create moderator.",
     "roles": {
       "moderator": "Moderator",
       "admin": "Admin",
       "viewer": "Viewer"
     },
     "invite": {
-      "title": "Invite your team",
-      "description": "Easily add new members to a role by entering their email addresses below. Once invited, they'll receive an email with a link to join.",
+      "title": "Create moderator",
+      "description": "Create a moderator account with email and password. They sign in at /moderator/login and only see pages you enable below.",
       "emailLabel": "Email Address",
       "emailPlaceholder": "name@company.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "passwordMin": "Password must be at least 8 characters.",
+      "moderatorOnlyHint": "Only moderator accounts can be created here. Login: /moderator/login",
       "roleLabel": "Role",
-      "send": "Send Invite"
+      "send": "Create Moderator"
     },
     "editMatrix": {
       "title": "Edit Matrix",
@@ -1266,7 +1270,8 @@
       "factory": "Factory",
       "transporter": "Transporter",
       "affiliate": "Affiliate",
-      "admin": "Admin"
+      "admin": "Admin",
+      "moderator": "Moderator"
     },
     "nav": {
       "dashboard": "Dashboard",
@@ -1854,6 +1859,10 @@
       "loginTitle": "Admin Login",
       "loginSubtitle": "Sign in to the CONSTRUPRECO admin panel."
     },
+    "moderator": {
+      "loginTitle": "Moderator Login",
+      "loginSubtitle": "Sign in to the CONSTRUPRECO moderator panel."
+    },
     "legal": {
       "prefix": "By continuing, you agree to our",
       "terms": "Terms of Service",
@@ -1870,7 +1879,8 @@
       "factory": "Factory",
       "transporter": "Transporter",
       "affiliate": "Affiliate",
-      "admin": "Admin"
+      "admin": "Admin",
+      "moderator": "Moderator"
     },
     "register": {
       "submit": "Sign Up",

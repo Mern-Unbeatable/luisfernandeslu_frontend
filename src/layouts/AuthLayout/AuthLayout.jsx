@@ -21,16 +21,21 @@ export default function AuthLayout() {
   const [searchParams] = useSearchParams()
   const { role: roleParam } = useParams()
   const matchAdminLogin = useMatch('/admin/login')
+  const matchModeratorLogin = useMatch('/moderator/login')
   const matchSignup = useMatch('/signup')
   const matchSignupRole = useMatch('/signup/:role')
   const matchSignupVerify = useMatch('/signup/:role/verify')
   const matchForgot = useMatch('/forgot-password')
   const matchForgotOtp = useMatch('/forgot-password/otp')
   const matchForgotReset = useMatch('/forgot-password/reset')
-  const role = roleParam || (matchAdminLogin ? 'admin' : null)
+  const role =
+    roleParam ||
+    (matchModeratorLogin ? 'moderator' : null) ||
+    (matchAdminLogin ? 'admin' : null)
   const isRegister = Boolean(matchSignupRole || matchSignupVerify)
   const isSignupFlow = Boolean(matchSignup || matchSignupRole || matchSignupVerify)
   const isAdminLogin = Boolean(matchAdminLogin)
+  const isModeratorLogin = Boolean(matchModeratorLogin)
   const config = role ? getRoleAuthConfig(role) : null
   const layout = config?.layout || 'photo'
   const mode = isRegister ? 'register' : 'login'
@@ -69,6 +74,10 @@ export default function AuthLayout() {
         navigate('/admin/login')
         return
       }
+      if (forgotRole === 'moderator') {
+        navigate('/moderator/login')
+        return
+      }
       if (forgotRole) {
         navigate(`/login/${forgotRole}`, { state: hubState })
         return
@@ -76,7 +85,7 @@ export default function AuthLayout() {
       navigate('/login')
       return
     }
-    if (isAdminLogin) {
+    if (isAdminLogin || isModeratorLogin) {
       navigate('/')
       return
     }

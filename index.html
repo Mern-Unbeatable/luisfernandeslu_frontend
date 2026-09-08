@@ -15,7 +15,7 @@
     <!-- Installable only on panel roles; injected before React so Chrome can detect PWA -->
     <script>
       (function () {
-        var panels = ['supplier', 'factory', 'transporter', 'affiliate', 'admin']
+        var panels = ['supplier', 'factory', 'transporter', 'affiliate', 'admin', 'moderator']
         var path = location.pathname.split('?')[0]
         var role = null
         for (var i = 0; i < panels.length; i++) {
@@ -31,6 +31,8 @@
             role = auth[2].toLowerCase()
           } else if (path === '/admin/login' || path.indexOf('/admin/login/') === 0) {
             role = 'admin'
+          } else if (path === '/moderator/login' || path.indexOf('/moderator/login/') === 0) {
+            role = 'moderator'
           }
         }
         if (!role) return
