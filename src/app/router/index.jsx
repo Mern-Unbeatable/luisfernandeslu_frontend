@@ -22,6 +22,7 @@ import FactoryDeliveryPageSkeleton from "../../pages/factory/components/FactoryD
 import FactoryInvoicesPageSkeleton from "../../pages/factory/components/FactoryInvoicesPageSkeleton";
 import ProductDetailsSkeleton from "../../components/data-display/ProductDetails/ProductDetailsSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
+import PanelPwaManager from "../../pwa/PanelPwaManager";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import { routeSeo } from "../../config/seo";
@@ -598,6 +599,7 @@ function RootLayout() {
   return (
     <>
       <ScrollToTop />
+      <PanelPwaManager />
       <Outlet />
     </>
   );
