@@ -949,12 +949,16 @@
       "viewer": "Visualizador"
     },
     "invite": {
-      "title": "Convide a sua equipa",
-      "description": "Adicione facilmente novos membros a uma função introduzindo os respetivos endereços de e-mail abaixo. Após o convite, receberão um e-mail com um link para aderir.",
+      "title": "Criar moderador",
+      "description": "Crie uma conta de moderador com e-mail e palavra-passe. Eles entram no Admin Login e só veem as páginas que ativar abaixo.",
       "emailLabel": "Endereço de e-mail",
       "emailPlaceholder": "nome@empresa.com",
+      "passwordLabel": "Palavra-passe",
+      "passwordPlaceholder": "Pelo menos 8 caracteres",
+      "passwordMin": "A palavra-passe deve ter pelo menos 8 caracteres.",
+      "moderatorOnlyHint": "Aqui só podem ser criadas contas de moderador.",
       "roleLabel": "Função",
-      "send": "Enviar convite"
+      "send": "Criar moderador"
     },
     "editMatrix": {
       "title": "Matriz de edição",

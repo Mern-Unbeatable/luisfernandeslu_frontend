@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PublicLayout from "../../layouts/PublicLayout/PublicLayout";
 import BuyerLayout from "../../layouts/BuyerLayout/BuyerLayout";
@@ -24,6 +24,7 @@ import ProductDetailsSkeleton from "../../components/data-display/ProductDetails
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
 import PanelPwaManager from "../../pwa/PanelPwaManager";
 import ProtectedRoute from "./ProtectedRoute";
+import StaffAreaGuard from "./StaffAreaGuard";
 import PublicRoute from "./PublicRoute";
 import { routeSeo } from "../../config/seo";
 import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from "../../roles";
@@ -621,14 +622,21 @@ function BuyerShell() {
 }
 
 function PanelShell() {
+  const location = useLocation();
   const user = useSelector((state) => state.auth.user);
   const { logout: onLogout, isLoggingOut } = useAuthLogout();
-  const role = PANEL_ROLE_IDS.includes(user?.role) ? user.role : "supplier";
+  const isModeratorArea = location.pathname.startsWith("/moderator");
+  const role = isModeratorArea
+    ? "moderator"
+    : PANEL_ROLE_IDS.includes(user?.role)
+      ? user.role
+      : "supplier";
+  const displayName = user?.name || (isModeratorArea ? "Moderator" : "User");
 
   return (
     <PanelLayout
       role={role}
-      userName={user?.name || "User"}
+      userName={displayName}
       onLogout={onLogout}
       isLoggingOut={isLoggingOut}
     />
@@ -884,6 +892,11 @@ export const router = createBrowserRouter([
               },
               {
                 path: "/admin/login",
+                element: <Login />,
+                handle: { seo: routeSeo.login },
+              },
+              {
+                path: "/moderator/login",
                 element: <Login />,
                 handle: { seo: routeSeo.login },
               },
@@ -1375,122 +1388,259 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            element: <PanelShell />,
+            element: <StaffAreaGuard area="admin" />,
             children: [
               {
-                index: true,
-                element: <AdminDashboard />,
-                handle: panelSeo("panel.nav.dashboard"),
+                element: <PanelShell />,
+                children: [
+                  {
+                    index: true,
+                    element: <AdminDashboard />,
+                    handle: panelSeo("panel.nav.dashboard"),
+                  },
+                  {
+                    path: "user-management",
+                    element: <AdminUserManagement />,
+                    handle: panelSeo("panel.nav.userManagement"),
+                  },
+                  {
+                    path: "supplier-management",
+                    element: <AdminSupplierManagement />,
+                    handle: panelSeo("panel.nav.supplierManagement"),
+                  },
+                  {
+                    path: "factory-management",
+                    element: <AdminFactoryManagement />,
+                    handle: panelSeo("panel.nav.factoryManagement"),
+                  },
+                  {
+                    path: "transporter-management",
+                    element: <AdminTransporterManagement />,
+                    handle: panelSeo("panel.nav.transporterManagement"),
+                  },
+                  {
+                    path: "product-moderation",
+                    element: <AdminProductModeration />,
+                    handle: panelSeo("panel.nav.productModeration"),
+                  },
+                  {
+                    path: "product-moderation/:productId",
+                    element: <AdminProductModerationDetail />,
+                    handle: panelSeo("panel.nav.productModeration"),
+                  },
+                  {
+                    path: "chat",
+                    element: <AdminChat />,
+                    handle: panelSeo("panel.nav.chat"),
+                  },
+                  {
+                    path: "marketing-management",
+                    element: <AdminMarketingManagement />,
+                    handle: panelSeo("panel.nav.marketingManagement"),
+                  },
+                  {
+                    path: "finance-payments",
+                    element: <AdminFinancePayments />,
+                    handle: panelSeo("panel.nav.financePayments"),
+                  },
+                  {
+                    path: "disputes",
+                    element: <AdminDisputes />,
+                    handle: panelSeo("panel.nav.disputesResolution"),
+                  },
+                  {
+                    path: "disputes/:disputeId",
+                    element: <AdminDisputeDetail />,
+                    handle: panelSeo("panel.nav.disputesResolution"),
+                  },
+                  {
+                    path: "auction",
+                    element: <AdminAuction />,
+                    handle: panelSeo("panel.nav.auction"),
+                  },
+                  {
+                    path: "orders",
+                    element: <AdminOrders />,
+                    handle: panelSeo("panel.nav.orders"),
+                  },
+                  {
+                    path: "orders/:orderId",
+                    element: <AdminOrderDetail />,
+                    handle: panelSeo("panel.nav.orders"),
+                  },
+                  {
+                    path: "delivery-logistics",
+                    element: <AdminDeliveryLogistics />,
+                    handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                  },
+                  {
+                    path: "delivery-logistics/:deliveryId",
+                    element: <AdminDeliveryLogisticsDetail />,
+                    handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                  },
+                  {
+                    path: "affiliate-directory",
+                    element: <AdminAffiliateDirectory />,
+                    handle: panelSeo("panel.nav.affiliateDirectory"),
+                  },
+                  {
+                    path: "affiliate-directory/:affiliateId",
+                    element: <AdminAffiliateDetail />,
+                    handle: panelSeo("panel.nav.affiliateDirectory"),
+                  },
+                  {
+                    path: "roles-permissions",
+                    element: <AdminRolesPermissions />,
+                    handle: panelSeo("panel.nav.rolesPermissions"),
+                  },
+                  {
+                    path: "settings",
+                    element: <AdminSettings />,
+                    handle: panelSeo("panel.nav.settings"),
+                  },
+                  {
+                    path: "profile",
+                    element: <AdminProfile />,
+                    handle: panelSeo("panel.nav.profile"),
+                  },
+                  {
+                    path: "*",
+                    element: <ComingSoon />,
+                    handle: panelSeo("panel.nav.dashboard"),
+                  },
+                ],
               },
+            ],
+          },
+        ],
+      },
+
+      {
+        path: "/moderator",
+        element: (
+          <ProtectedRoute
+            allowedRoles={["admin"]}
+            redirectTo="/moderator/login"
+          />
+        ),
+        children: [
+          {
+            element: <StaffAreaGuard area="moderator" />,
+            children: [
               {
-                path: "user-management",
-                element: <AdminUserManagement />,
-                handle: panelSeo("panel.nav.userManagement"),
-              },
-              {
-                path: "supplier-management",
-                element: <AdminSupplierManagement />,
-                handle: panelSeo("panel.nav.supplierManagement"),
-              },
-              {
-                path: "factory-management",
-                element: <AdminFactoryManagement />,
-                handle: panelSeo("panel.nav.factoryManagement"),
-              },
-              {
-                path: "transporter-management",
-                element: <AdminTransporterManagement />,
-                handle: panelSeo("panel.nav.transporterManagement"),
-              },
-              {
-                path: "product-moderation",
-                element: <AdminProductModeration />,
-                handle: panelSeo("panel.nav.productModeration"),
-              },
-              {
-                path: "product-moderation/:productId",
-                element: <AdminProductModerationDetail />,
-                handle: panelSeo("panel.nav.productModeration"),
-              },
-              {
-                path: "chat",
-                element: <AdminChat />,
-                handle: panelSeo("panel.nav.chat"),
-              },
-              {
-                path: "marketing-management",
-                element: <AdminMarketingManagement />,
-                handle: panelSeo("panel.nav.marketingManagement"),
-              },
-              {
-                path: "finance-payments",
-                element: <AdminFinancePayments />,
-                handle: panelSeo("panel.nav.financePayments"),
-              },
-              {
-                path: "disputes",
-                element: <AdminDisputes />,
-                handle: panelSeo("panel.nav.disputesResolution"),
-              },
-              {
-                path: "disputes/:disputeId",
-                element: <AdminDisputeDetail />,
-                handle: panelSeo("panel.nav.disputesResolution"),
-              },
-              {
-                path: "auction",
-                element: <AdminAuction />,
-                handle: panelSeo("panel.nav.auction"),
-              },
-              {
-                path: "orders",
-                element: <AdminOrders />,
-                handle: panelSeo("panel.nav.orders"),
-              },
-              {
-                path: "orders/:orderId",
-                element: <AdminOrderDetail />,
-                handle: panelSeo("panel.nav.orders"),
-              },
-              {
-                path: "delivery-logistics",
-                element: <AdminDeliveryLogistics />,
-                handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
-              },
-              {
-                path: "delivery-logistics/:deliveryId",
-                element: <AdminDeliveryLogisticsDetail />,
-                handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
-              },
-              {
-                path: "affiliate-directory",
-                element: <AdminAffiliateDirectory />,
-                handle: panelSeo("panel.nav.affiliateDirectory"),
-              },
-              {
-                path: "affiliate-directory/:affiliateId",
-                element: <AdminAffiliateDetail />,
-                handle: panelSeo("panel.nav.affiliateDirectory"),
-              },
-              {
-                path: "roles-permissions",
-                element: <AdminRolesPermissions />,
-                handle: panelSeo("panel.nav.rolesPermissions"),
-              },
-              {
-                path: "settings",
-                element: <AdminSettings />,
-                handle: panelSeo("panel.nav.settings"),
-              },
-              {
-                path: "profile",
-                element: <AdminProfile />,
-                handle: panelSeo("panel.nav.profile"),
-              },
-              {
-                path: "*",
-                element: <ComingSoon />,
-                handle: panelSeo("panel.nav.dashboard"),
+                element: <PanelShell />,
+                children: [
+                  {
+                    index: true,
+                    element: <AdminDashboard />,
+                    handle: panelSeo("panel.nav.dashboard"),
+                  },
+                  {
+                    path: "user-management",
+                    element: <AdminUserManagement />,
+                    handle: panelSeo("panel.nav.userManagement"),
+                  },
+                  {
+                    path: "supplier-management",
+                    element: <AdminSupplierManagement />,
+                    handle: panelSeo("panel.nav.supplierManagement"),
+                  },
+                  {
+                    path: "factory-management",
+                    element: <AdminFactoryManagement />,
+                    handle: panelSeo("panel.nav.factoryManagement"),
+                  },
+                  {
+                    path: "transporter-management",
+                    element: <AdminTransporterManagement />,
+                    handle: panelSeo("panel.nav.transporterManagement"),
+                  },
+                  {
+                    path: "product-moderation",
+                    element: <AdminProductModeration />,
+                    handle: panelSeo("panel.nav.productModeration"),
+                  },
+                  {
+                    path: "product-moderation/:productId",
+                    element: <AdminProductModerationDetail />,
+                    handle: panelSeo("panel.nav.productModeration"),
+                  },
+                  {
+                    path: "chat",
+                    element: <AdminChat />,
+                    handle: panelSeo("panel.nav.chat"),
+                  },
+                  {
+                    path: "marketing-management",
+                    element: <AdminMarketingManagement />,
+                    handle: panelSeo("panel.nav.marketingManagement"),
+                  },
+                  {
+                    path: "finance-payments",
+                    element: <AdminFinancePayments />,
+                    handle: panelSeo("panel.nav.financePayments"),
+                  },
+                  {
+                    path: "disputes",
+                    element: <AdminDisputes />,
+                    handle: panelSeo("panel.nav.disputesResolution"),
+                  },
+                  {
+                    path: "disputes/:disputeId",
+                    element: <AdminDisputeDetail />,
+                    handle: panelSeo("panel.nav.disputesResolution"),
+                  },
+                  {
+                    path: "auction",
+                    element: <AdminAuction />,
+                    handle: panelSeo("panel.nav.auction"),
+                  },
+                  {
+                    path: "orders",
+                    element: <AdminOrders />,
+                    handle: panelSeo("panel.nav.orders"),
+                  },
+                  {
+                    path: "orders/:orderId",
+                    element: <AdminOrderDetail />,
+                    handle: panelSeo("panel.nav.orders"),
+                  },
+                  {
+                    path: "delivery-logistics",
+                    element: <AdminDeliveryLogistics />,
+                    handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                  },
+                  {
+                    path: "delivery-logistics/:deliveryId",
+                    element: <AdminDeliveryLogisticsDetail />,
+                    handle: panelSeo("panel.nav.deliveryLogisticsAdmin"),
+                  },
+                  {
+                    path: "affiliate-directory",
+                    element: <AdminAffiliateDirectory />,
+                    handle: panelSeo("panel.nav.affiliateDirectory"),
+                  },
+                  {
+                    path: "affiliate-directory/:affiliateId",
+                    element: <AdminAffiliateDetail />,
+                    handle: panelSeo("panel.nav.affiliateDirectory"),
+                  },
+                  {
+                    path: "settings",
+                    element: <AdminSettings />,
+                    handle: panelSeo("panel.nav.settings"),
+                  },
+                  {
+                    path: "profile",
+                    element: <AdminProfile />,
+                    handle: panelSeo("panel.nav.profile"),
+                  },
+                  {
+                    path: "*",
+                    element: <ComingSoon />,
+                    handle: panelSeo("panel.nav.dashboard"),
+                  },
+                ],
               },
             ],
           },

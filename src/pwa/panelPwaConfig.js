@@ -5,12 +5,13 @@ export const PWA_PANEL_ROLES = [
   'transporter',
   'affiliate',
   'admin',
+  'moderator',
 ]
 
 export const PWA_PANEL_PREFIXES = PWA_PANEL_ROLES.map((role) => `/${role}`)
 
 function matchPanelRoleFromAuthPath(pathname) {
-  // /login/supplier, /register/factory, /admin/login
+  // /login/supplier, /register/factory, /admin/login, /moderator/login
   const loginMatch = pathname.match(/^\/(login|register)\/([^/]+)/i)
   if (loginMatch) {
     const role = String(loginMatch[2] || '').toLowerCase()
@@ -18,6 +19,12 @@ function matchPanelRoleFromAuthPath(pathname) {
   }
   if (pathname === '/admin/login' || pathname.startsWith('/admin/login/')) {
     return 'admin'
+  }
+  if (
+    pathname === '/moderator/login' ||
+    pathname.startsWith('/moderator/login/')
+  ) {
+    return 'moderator'
   }
   return null
 }
@@ -49,6 +56,7 @@ export function getPanelRoleLabel(basePath) {
     '/transporter': 'Transporter',
     '/affiliate': 'Affiliate',
     '/admin': 'Admin',
+    '/moderator': 'Moderator',
   }
   return map[basePath] || 'Panel'
 }

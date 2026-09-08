@@ -949,12 +949,16 @@
       "viewer": "Visor"
     },
     "invite": {
-      "title": "Invite a su equipo",
-      "description": "Añada fácilmente nuevos miembros a un rol introduciendo sus direcciones de correo abajo. Tras la invitación, recibirán un correo con un enlace para unirse.",
+      "title": "Crear moderador",
+      "description": "Cree una cuenta de moderador con correo y contraseña. Inician sesión en Admin Login y solo verán las páginas que active abajo.",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "nombre@empresa.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Al menos 8 caracteres",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "moderatorOnlyHint": "Aquí solo se pueden crear cuentas de moderador.",
       "roleLabel": "Rol",
-      "send": "Enviar invitación"
+      "send": "Crear moderador"
     },
     "editMatrix": {
       "title": "Matriz de edición",

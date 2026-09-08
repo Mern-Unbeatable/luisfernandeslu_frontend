@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
@@ -15,6 +16,8 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
 export default function ProfilePage() {
   const { t } = useTranslation()
+  const staffRole = useSelector((state) => state.auth.user?.staffRole)
+  const isModerator = staffRole === 'moderator'
   const [form, setForm] = useState(() => mapAdminProfileToForm(null))
 
   const { data, isLoading, isError, error, refetch } = useGetAdminProfileQuery()
@@ -72,6 +75,7 @@ export default function ProfilePage() {
   }
 
   const handleSaveIban = async ({ iban, ibanPhone }) => {
+    if (isModerator) return
     try {
       const result = await updateIban({
         iban: String(iban || '').trim(),
@@ -110,7 +114,7 @@ export default function ProfilePage() {
       ) : null}
 
       {isLoading ? (
-        <PanelProfileSkeleton showIban={true} />
+        <PanelProfileSkeleton showIban={!isModerator} />
       ) : (
         <PanelProfile
           role="admin"
@@ -118,7 +122,8 @@ export default function ProfilePage() {
           onChange={setForm}
           onUpdateProfile={handleUpdateProfile}
           onChangePassword={handleChangePassword}
-          onSaveIban={handleSaveIban}
+          onSaveIban={isModerator ? undefined : handleSaveIban}
+          showIban={!isModerator}
         />
       )}
     </>

@@ -6,6 +6,8 @@ import Seo from '../../components/common/Seo/Seo'
 import PanelSidebar from './PanelSidebar'
 import PanelHeader from './PanelHeader'
 import { getPanelRoleConfig } from '../../roles'
+import { filterAdminNav } from '../../roles/admin'
+import { filterModeratorNav } from '../../roles/moderator'
 import { useGetMeQuery } from '../../features/auth/authApi'
 
 /**
@@ -28,6 +30,16 @@ export default function PanelLayout({
   const isSuspended = user?.status === 'SUSPENDED'
   const [mobileOpen, setMobileOpen] = useState(false)
   const roleConfig = getPanelRoleConfig(role)
+  const navItems =
+    role === 'admin'
+      ? filterAdminNav(roleConfig.nav, user)
+      : role === 'moderator'
+        ? filterModeratorNav(roleConfig.nav, user)
+        : roleConfig.nav
+  const roleLabel =
+    role === 'moderator'
+      ? t('panel.roles.moderator', { defaultValue: 'Moderator' })
+      : t(roleConfig.labelKey)
 
   useEffect(() => {
     if (!mobileOpen) return undefined
@@ -61,7 +73,7 @@ export default function PanelLayout({
 
       <PanelHeader
         userName={userName}
-        roleLabel={t(roleConfig.labelKey)}
+        roleLabel={roleLabel}
         homeTo="/"
         onMenuOpen={() => setMobileOpen(true)}
       />
@@ -69,7 +81,7 @@ export default function PanelLayout({
       <div className="flex min-h-0 flex-1">
         <div className="sticky top-16 hidden h-[calc(100vh-4rem)] lg:block">
           <PanelSidebar
-            items={roleConfig.nav}
+            items={navItems}
             onLogout={onLogout}
             isLoggingOut={isLoggingOut}
             isSuspended={isSuspended}
@@ -98,7 +110,7 @@ export default function PanelLayout({
             }`}
           >
             <PanelSidebar
-              items={roleConfig.nav}
+              items={navItems}
               onLogout={() => {
                 closeMobile()
                 onLogout?.()

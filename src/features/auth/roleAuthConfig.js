@@ -63,6 +63,18 @@ const ROLE_AUTH = {
     },
   },
 
+  moderator: {
+    id: 'moderator',
+    layout: 'photo',
+    shortNameKey: 'auth.demo.moderator',
+    login: {
+      titleKey: 'auth.moderator.loginTitle',
+      subtitleKey: 'auth.moderator.loginSubtitle',
+      showSocial: false,
+      showDemo: false,
+    },
+  },
+
   company: {
     id: 'company',
     layout: 'photo',
