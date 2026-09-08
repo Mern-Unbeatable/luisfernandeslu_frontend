@@ -35,7 +35,7 @@ import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 import dummyProductImage from '@/assets/images/dummy-post-square.png'
 import UploadXlsxModal from './UploadXlsxModal'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 8
 const DUMMY_PRODUCT_IMAGE = dummyProductImage
 
 const TAB_IDS = ['all', 'active', 'pending', 'rejected']

@@ -19,7 +19,7 @@ import {
 } from '@/features/factory-orders/factoryOrderApi'
 import FactoryOrdersPageSkeleton from '../components/FactoryOrdersPageSkeleton'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 6
 
 const STATUS_FILTER_OPTIONS = [
   { value: 'all', labelKey: 'allStatus' },

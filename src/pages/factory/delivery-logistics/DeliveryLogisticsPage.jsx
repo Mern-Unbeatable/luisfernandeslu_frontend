@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import { FiInbox } from 'react-icons/fi'
 import AuctionCard from '@/components/data-display/AuctionCard'
 import AuctionDetails from '@/components/data-display/AuctionDetails'
 import CreateAuction from '@/components/forms/CreateAuction'
@@ -19,6 +20,24 @@ import {
 
 const PAGE_SIZE = 4
 const DEFAULT_VEHICLE_TYPE = 'HEAVY_TRUCK'
+
+function EmptyAuctionsBox({ title, description }) {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-14 text-center shadow-sm sm:px-10">
+      <div className="flex size-14 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--active)_12%,white)] text-[var(--active)]">
+        <FiInbox className="size-7 stroke-[1.5]" aria-hidden />
+      </div>
+      <h3 className="mt-4 text-base font-bold text-[var(--primary-text)] sm:text-lg">
+        {title}
+      </h3>
+      {description ? (
+        <p className="mt-1.5 max-w-md text-sm leading-relaxed text-[var(--secondary-text)]">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  )
+}
 
 function formatMoney(value) {
   if (value == null || value === '') return '—'
@@ -428,7 +447,18 @@ export default function DeliveryLogisticsPage() {
             ))}
           </div>
         ) : activeAuctions.length === 0 ? (
-          <p className="text-sm text-[var(--secondary-text)]">No active auctions.</p>
+          <EmptyAuctionsBox
+            title={t('factoryDeliveryLogistics.activeAuctions.emptyTitle', {
+              defaultValue: 'No active auctions',
+            })}
+            description={t(
+              'factoryDeliveryLogistics.activeAuctions.emptySubtitle',
+              {
+                defaultValue:
+                  'You have no open delivery auctions right now. Request a delivery to create a new auction.',
+              },
+            )}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             {activeAuctions.map((auction) => (
@@ -443,11 +473,13 @@ export default function DeliveryLogisticsPage() {
           </div>
         )}
 
-        <Pagination
-          page={safeActivePage}
-          totalPages={activeTotalPages}
-          onPageChange={setActivePage}
-        />
+        {activeAuctions.length > 0 ? (
+          <Pagination
+            page={safeActivePage}
+            totalPages={activeTotalPages}
+            onPageChange={setActivePage}
+          />
+        ) : null}
       </section>
 
       <section className="space-y-4">
@@ -467,7 +499,21 @@ export default function DeliveryLogisticsPage() {
             ))}
           </div>
         ) : assignedDeliveries.length === 0 ? (
-          <p className="text-sm text-[var(--secondary-text)]">No assigned deliveries.</p>
+          <EmptyAuctionsBox
+            title={t(
+              'factoryDeliveryLogistics.assignedDeliveries.emptyTitle',
+              {
+                defaultValue: 'No assigned deliveries',
+              },
+            )}
+            description={t(
+              'factoryDeliveryLogistics.assignedDeliveries.emptySubtitle',
+              {
+                defaultValue:
+                  'Assigned deliveries will appear here once a transporter wins an auction.',
+              },
+            )}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             {assignedDeliveries.map((auction) => (
@@ -482,11 +528,13 @@ export default function DeliveryLogisticsPage() {
           </div>
         )}
 
-        <Pagination
-          page={safeAssignedPage}
-          totalPages={assignedTotalPages}
-          onPageChange={setAssignedPage}
-        />
+        {assignedDeliveries.length > 0 ? (
+          <Pagination
+            page={safeAssignedPage}
+            totalPages={assignedTotalPages}
+            onPageChange={setAssignedPage}
+          />
+        ) : null}
       </section>
     </div>
   )
