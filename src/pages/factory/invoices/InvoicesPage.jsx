@@ -17,7 +17,7 @@ import {
 import InvoiceDetailModal from './InvoiceDetailModal'
 import FactoryInvoicesPageSkeleton from '../components/FactoryInvoicesPageSkeleton'
 
-const PAGE_SIZE = 7
+const PAGE_SIZE = 9
 
 export default function InvoicesPage() {
   const { t } = useTranslation()
