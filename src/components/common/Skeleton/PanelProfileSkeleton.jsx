@@ -69,6 +69,26 @@ export default function PanelProfileSkeleton({ showWarehouses = false, showIban 
             <Skeleton className="h-11 w-36 rounded-md" />
           </div>
         </div>
+
+        {showWarehouses ? (
+          <div className="border-t border-gray-100 pt-6 space-y-5">
+            <Skeleton className="h-5 w-40" />
+            <div className="space-y-3">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div
+                  key={`warehouse-${i}`}
+                  className="rounded-xl border border-gray-100 p-4 space-y-3"
+                >
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-11 w-full rounded-md" />
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-end">
+              <Skeleton className="h-11 w-36 rounded-md" />
+            </div>
+          </div>
+        ) : null}
       </section>
 
       {/* IBAN Card Skeleton */}

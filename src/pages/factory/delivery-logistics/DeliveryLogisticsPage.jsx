@@ -6,6 +6,8 @@ import AuctionDetails from '@/components/data-display/AuctionDetails'
 import CreateAuction from '@/components/forms/CreateAuction'
 import { DEFAULT_CREATE_AUCTION } from '@/components/forms/CreateAuction/defaults'
 import Pagination from '@/components/common/Pagination/Pagination'
+import AuctionCardSkeleton from '@/components/common/Skeleton/AuctionCardSkeleton'
+import FactoryDeliveryPageSkeleton from '../components/FactoryDeliveryPageSkeleton'
 import {
   useCreateFactoryAuctionMutation,
   useGetActiveFactoryAuctionByIdQuery,
@@ -379,6 +381,15 @@ export default function DeliveryLogisticsPage() {
     )
   }
 
+  if (
+    isActiveLoading
+    && isAssignedLoading
+    && !activeResponse
+    && !assignedResponse
+  ) {
+    return <FactoryDeliveryPageSkeleton />
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -411,7 +422,11 @@ export default function DeliveryLogisticsPage() {
         </div>
 
         {isActiveLoading ? (
-          <p className="text-sm text-[var(--secondary-text)]">Loading…</p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <AuctionCardSkeleton key={`active-skel-${i}`} />
+            ))}
+          </div>
         ) : activeAuctions.length === 0 ? (
           <p className="text-sm text-[var(--secondary-text)]">No active auctions.</p>
         ) : (
@@ -446,7 +461,11 @@ export default function DeliveryLogisticsPage() {
         </div>
 
         {isAssignedLoading ? (
-          <p className="text-sm text-[var(--secondary-text)]">Loading…</p>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <AuctionCardSkeleton key={`assigned-skel-${i}`} />
+            ))}
+          </div>
         ) : assignedDeliveries.length === 0 ? (
           <p className="text-sm text-[var(--secondary-text)]">No assigned deliveries.</p>
         ) : (

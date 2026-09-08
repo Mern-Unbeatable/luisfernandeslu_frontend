@@ -51,6 +51,14 @@ export const transporterProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Transporter', id: 'PROFILE' }],
     }),
+    resubmitTransporterDocuments: builder.mutation({
+      query: (formData) => ({
+        url: '/api/transporter/profile/resubmit-documents',
+        method: 'POST',
+        data: formData,
+      }),
+      invalidatesTags: [{ type: 'Transporter', id: 'PROFILE' }],
+    }),
   }),
 })
 
@@ -61,4 +69,5 @@ export const {
   useUpdateTransporterIbanMutation,
   useUploadTransporterAvatarMutation,
   useRemoveTransporterAvatarMutation,
+  useResubmitTransporterDocumentsMutation,
 } = transporterProfileApi

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
+import RejectionBanner from "@/components/common/RejectionBanner";
 import {
   Field,
   PrimaryButton,
@@ -258,6 +259,10 @@ export default function ProfilePage() {
             {t("panel.profile.subtitle")}
           </p>
         </header>
+
+        {!isLoading && !isError && profile?.rejectionReason && (
+          <RejectionBanner rejectionReason={profile.rejectionReason} />
+        )}
 
         {isLoading ? (
           <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-[var(--secondary-text)]">

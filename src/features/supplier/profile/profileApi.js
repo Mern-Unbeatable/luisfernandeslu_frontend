@@ -20,6 +20,8 @@ function normalizeSupplierProfile(payload = {}) {
     warehouses,
     iban: String(profile.iban ?? ""),
     ibanPhone: String(profile.ibanPhone ?? ""),
+    rejectionReason: profile.rejectionReason || null,
+    verificationStatus: profile.verificationStatus || 'UNVERIFIED',
   };
 }
 
@@ -80,6 +82,14 @@ export const supplierProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
+    resubmitSupplierDocuments: builder.mutation({
+      query: (formData) => ({
+        url: "/api/supplier/profile/resubmit-documents",
+        method: "POST",
+        data: formData,
+      }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
+    }),
   }),
 });
 
@@ -89,4 +99,5 @@ export const {
   useSaveSupplierWarehousesMutation,
   useChangeSupplierPasswordMutation,
   useSaveSupplierIbanMutation,
+  useResubmitSupplierDocumentsMutation,
 } = supplierProfileApi;

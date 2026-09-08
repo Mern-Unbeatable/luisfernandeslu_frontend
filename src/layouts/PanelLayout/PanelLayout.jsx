@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Seo from '../../components/common/Seo/Seo'
 import PanelSidebar from './PanelSidebar'
@@ -17,6 +18,8 @@ export default function PanelLayout({
   isLoggingOut = false,
 }) {
   const { t } = useTranslation()
+  const user = useSelector((state) => state.auth.user)
+  const isSuspended = user?.status === 'SUSPENDED'
   const [mobileOpen, setMobileOpen] = useState(false)
   const roleConfig = getPanelRoleConfig(role)
 
@@ -34,6 +37,34 @@ export default function PanelLayout({
   }, [mobileOpen])
 
   const closeMobile = () => setMobileOpen(false)
+
+  // For suspended users, only show header with logout (no sidebar)
+  if (isSuspended) {
+    return (
+      <div className="flex min-h-screen flex-col bg-[#F5F6F8]">
+        <Seo />
+        <PanelHeader
+          userName={userName}
+          roleLabel={t(roleConfig.labelKey)}
+          homeTo="/"
+          onMenuOpen={() => {}}
+        />
+        <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <Outlet
+            context={{
+              userName,
+              onLogout,
+              isLoggingOut,
+              role,
+              roleConfig,
+              isSuspended,
+              rejectionReason: user?.profile?.rejectionReason,
+            }}
+          />
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F5F6F8]">

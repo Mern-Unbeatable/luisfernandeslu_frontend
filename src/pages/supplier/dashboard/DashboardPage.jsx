@@ -6,9 +6,10 @@ import {
   FiPackage,
   FiShoppingBag,
 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
+import RejectionBanner from "@/components/common/RejectionBanner";
 import DataTable from "@/components/data-display/DataTable/DataTable";
 import StatusCard from "@/components/data-display/StatusCard";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
@@ -90,6 +91,7 @@ function formatStatValue(value, format) {
 export default function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { isSuspended, rejectionReason } = useOutletContext();
   const currentYear = new Date().getFullYear();
   const [period, setPeriod] = useState(String(currentYear));
   const [page, setPage] = useState(1);
@@ -266,6 +268,14 @@ export default function DashboardPage() {
         </p>
       </header>
 
+      {isSuspended && (
+        <div className="mb-6">
+          <RejectionBanner rejectionReason={rejectionReason} />
+        </div>
+      )}
+
+      {!isSuspended && (
+      <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {STAT_CARD_CONFIG.map((card) => (
           <StatusCard
@@ -366,6 +376,8 @@ export default function DashboardPage() {
           />
         </div>
       </section>
+      </>
+      )}
     </>
   );
 }

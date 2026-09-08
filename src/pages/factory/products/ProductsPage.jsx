@@ -7,6 +7,7 @@ import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
+import FactoryProductsPageSkeleton from '../components/FactoryProductsPageSkeleton'
 import {
   useCreateFactoryProductMutation,
   useGenerateFactoryProductAiMutation,
@@ -162,7 +163,8 @@ export default function ProductsPage() {
     [activeTab, page, category, search],
   )
 
-  const { data: factoryProductsResponse } = useGetFactoryProductsQuery(queryParams)
+  const { data: factoryProductsResponse, isLoading: isProductsLoading } =
+    useGetFactoryProductsQuery(queryParams)
   const { data: categoriesResponse } = useGetCategoriesQuery()
   const [createFactoryProduct, { isLoading: isCreating }] =
     useCreateFactoryProductMutation()
@@ -556,6 +558,10 @@ export default function ProductsPage() {
         />
       </div>
     )
+  }
+
+  if (isProductsLoading && !factoryProductsResponse) {
+    return <FactoryProductsPageSkeleton />
   }
 
   return (

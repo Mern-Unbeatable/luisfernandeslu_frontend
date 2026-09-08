@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useOutletContext } from 'react-router-dom'
 import StatusCard from '@/components/data-display/StatusCard'
+import RejectionBanner from '@/components/common/RejectionBanner'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { useGetFactoryDashboardQuery } from '@/features/factory-dashboard/factoryDashboardApi'
 import { mapFactoryDashboard } from '@/features/factory-dashboard/dashboardMappers'
@@ -25,6 +27,7 @@ const MONTH_KEYS = [
 
 export default function DashboardPage() {
   const { t } = useTranslation()
+  const { isSuspended, rejectionReason } = useOutletContext()
   const { data, isLoading, isError, error, refetch } =
     useGetFactoryDashboardQuery()
 
@@ -53,6 +56,12 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {isSuspended && (
+        <RejectionBanner rejectionReason={rejectionReason} />
+      )}
+
+      {!isSuspended && (
+      <>
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           <p>{getAuthErrorMessage(error, 'Failed to load dashboard')}</p>
@@ -126,6 +135,8 @@ export default function DashboardPage() {
           </div>
         </>
       ) : null}
+      </>
+      )}
     </div>
   )
 }

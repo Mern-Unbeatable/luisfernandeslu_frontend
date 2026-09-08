@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
+import RejectionBanner from '@/components/common/RejectionBanner'
 import PanelProfile from '@/components/forms/PanelProfile'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
@@ -11,6 +12,7 @@ import {
   useUpdateFactoryProfileMutation,
   useUpdateFactoryWarehousesMutation,
 } from '@/features/factory-profile/factoryProfileApi'
+import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
 
 function emptyForm() {
   return {
@@ -197,7 +199,7 @@ export default function ProfilePage() {
     return (
       <>
         <Seo title={t('panel.profile.title')} />
-        <p className="text-sm text-gray-500">Loading profile…</p>
+        <PanelProfileSkeleton showWarehouses showIban />
       </>
     )
   }
@@ -223,6 +225,11 @@ export default function ProfilePage() {
   return (
     <>
       <Seo title={t('panel.profile.title')} />
+      {form?.rejectionReason && (
+        <div className="mb-6">
+          <RejectionBanner rejectionReason={form.rejectionReason} />
+        </div>
+      )}
       <PanelProfile
         role="factory"
         value={form}

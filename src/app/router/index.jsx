@@ -10,10 +10,16 @@ import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
 import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import PanelDashboardSkeleton from "../../components/common/Skeleton/PanelDashboardSkeleton";
+import PanelProfileSkeleton from "../../components/common/Skeleton/PanelProfileSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
 import ProductsPageSkeleton from "../../pages/public_page/products/components/ProductsPageSkeleton";
 import CartPageSkeleton from "../../pages/public_page/cart/components/CartPageSkeleton";
+import FactoryProductsPageSkeleton from "../../pages/factory/components/FactoryProductsPageSkeleton";
+import FactoryOrdersPageSkeleton from "../../pages/factory/components/FactoryOrdersPageSkeleton";
+import FactoryChatPageSkeleton from "../../pages/factory/components/FactoryChatPageSkeleton";
+import FactoryDeliveryPageSkeleton from "../../pages/factory/components/FactoryDeliveryPageSkeleton";
+import FactoryInvoicesPageSkeleton from "../../pages/factory/components/FactoryInvoicesPageSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -126,6 +132,10 @@ const RegisterOtpVerification = Loadable(
 );
 const ResetPassword = Loadable(
   lazy(() => import("../../pages/auth/ResetPasswordPage")),
+  <AuthSkeleton />,
+);
+const AccountSuspended = Loadable(
+  lazy(() => import("../../pages/public_page/AccountSuspendedPage")),
   <AuthSkeleton />,
 );
 
@@ -336,30 +346,30 @@ const FactoryDashboard = Loadable(
 );
 const FactoryProducts = Loadable(
   lazy(() => import("../../pages/factory/products/ProductsPage")),
-  <PanelSkeleton />,
+  <FactoryProductsPageSkeleton />,
 );
 const FactoryOrders = Loadable(
   lazy(() => import("../../pages/factory/orders/OrdersPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const FactoryChat = Loadable(
   lazy(() => import("../../pages/factory/chat/ChatPage")),
-  <PanelSkeleton />,
+  <FactoryChatPageSkeleton />,
 );
 const FactoryDeliveryLogistics = Loadable(
   lazy(
     () =>
       import("../../pages/factory/delivery-logistics/DeliveryLogisticsPage"),
   ),
-  <PanelSkeleton />,
+  <FactoryDeliveryPageSkeleton />,
 );
 const FactoryInvoices = Loadable(
   lazy(() => import("../../pages/factory/invoices/InvoicesPage")),
-  <PanelSkeleton />,
+  <FactoryInvoicesPageSkeleton />,
 );
 const FactoryProfile = Loadable(
   lazy(() => import("../../pages/factory/profile/ProfilePage")),
-  <PanelSkeleton />,
+  <PanelProfileSkeleton showWarehouses showIban />,
 );
 
 /* ─── Transporter ────────────────────────────────────────────────── */
@@ -788,6 +798,11 @@ export const router = createBrowserRouter([
                 path: "/forgot-password/reset",
                 element: <ResetPassword />,
                 handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: "/account-suspended",
+                element: <AccountSuspended />,
+                handle: { seo: { title: 'Account Suspended' } },
               },
             ],
           },
