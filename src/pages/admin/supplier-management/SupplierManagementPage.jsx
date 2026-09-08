@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
@@ -8,14 +9,15 @@ import {
   useApproveAdminSupplierMutation,
   useGetAdminSupplierStatsQuery,
   useGetAdminSuppliersQuery,
-  useRejectAdminSupplierMutation,
   useUpdateAdminSupplierCommissionMutation,
   useUpdateAdminSupplierStatusMutation,
   useDeleteAdminSupplierMutation,
 } from '@/features/admin/adminSupplierApi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { confirmDelete } from '@/utils/confirmDialog'
 import SupplierCommissionCell from './components/SupplierCommissionCell'
 import SupplierDetailsModal from './components/SupplierDetailsModal'
+import SupplierRejectModal from './components/SupplierRejectModal'
 import SupplierRowActionMenu from './components/SupplierRowActionMenu'
 import SupplierStatusBadge from './components/SupplierStatusBadge'
 import {
@@ -23,7 +25,7 @@ import {
   formatSupplierRegisteredDate,
 } from './data/suppliersDemo'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
@@ -80,11 +82,21 @@ function tabToApiStatus(tabId) {
 
 export default function SupplierManagementPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
   const [detailSupplierId, setDetailSupplierId] = useState(null)
+  const [rejectSupplierId, setRejectSupplierId] = useState(null)
+
+  const handleMessageSupplier = useCallback(
+    (userId) => {
+      if (!userId) return
+      navigate(`/admin/chat?type=ADMIN_SUPPORT&peerUserId=${userId}`)
+    },
+    [navigate],
+  )
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -106,7 +118,6 @@ export default function SupplierManagementPage() {
     })
 
   const [approveSupplier] = useApproveAdminSupplierMutation()
-  const [rejectSupplier] = useRejectAdminSupplierMutation()
   const [updateSupplierStatus] = useUpdateAdminSupplierStatusMutation()
   const [updateSupplierCommission] = useUpdateAdminSupplierCommissionMutation()
   const [deleteSupplier] = useDeleteAdminSupplierMutation()
@@ -137,18 +148,10 @@ export default function SupplierManagementPage() {
   )
 
   const handleReject = useCallback(
-    async (row) => {
-      const confirmed = window.confirm(
-        t('adminSupplierManagement.rejectConfirm', { name: row.name }),
-      )
-      if (!confirmed) return
-
-      await runAction(
-        rejectSupplier(row.id).unwrap(),
-        'adminSupplierManagement.rejectSuccess',
-      )
+    (row) => {
+      setRejectSupplierId(row.id)
     },
-    [rejectSupplier, runAction, t],
+    [],
   )
 
   const handleStatusChange = useCallback(
@@ -178,9 +181,12 @@ export default function SupplierManagementPage() {
 
   const handleDeleteSupplier = useCallback(
     async (row) => {
-      const confirmed = window.confirm(
-        t('adminSupplierManagement.deleteConfirm', { name: row.name }),
-      )
+      const confirmed = await confirmDelete({
+        title: t('adminSupplierManagement.actions.delete'),
+        text: t('adminSupplierManagement.deleteConfirm', { name: row.name }),
+        confirmText: t('adminSupplierManagement.actions.delete'),
+        cancelText: t('common.cancel', 'Cancel'),
+      })
       if (!confirmed) return
 
       try {
@@ -272,10 +278,10 @@ export default function SupplierManagementPage() {
       {
         id: 'message',
         label: t('adminSupplierManagement.actions.message'),
-        onClick: () => {},
+        onClick: (row) => handleMessageSupplier(row.id),
       },
     ],
-    [handleApprove, handleDeleteSupplier, handleReject, handleStatusChange, t],
+    [handleApprove, handleDeleteSupplier, handleMessageSupplier, handleReject, handleStatusChange, t],
   )
 
   const columns = useMemo(
@@ -408,6 +414,15 @@ export default function SupplierManagementPage() {
         open={Boolean(detailSupplierId)}
         supplierId={detailSupplierId}
         onClose={() => setDetailSupplierId(null)}
+      />
+
+      <SupplierRejectModal
+        open={Boolean(rejectSupplierId)}
+        supplierId={rejectSupplierId}
+        onClose={() => setRejectSupplierId(null)}
+        onRejected={() => {
+          setRejectSupplierId(null)
+        }}
       />
     </div>
   )

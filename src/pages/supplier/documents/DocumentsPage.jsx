@@ -17,6 +17,7 @@ import {
   useLazyGetSupplierDocumentPdfQuery,
 } from "@/features/supplier/documents/documentsApi";
 import GenerateDocumentModal from "./GenerateDocumentModal";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 const SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE = 7;
 
@@ -302,6 +303,10 @@ export default function DocumentsPage() {
     ],
     [t, handleViewDocument, handleDownloadDocument],
   );
+
+  if (isDocumentsLoading && !documentsResponse) {
+    return <FactoryOrdersPageSkeleton />
+  }
 
   return (
     <>

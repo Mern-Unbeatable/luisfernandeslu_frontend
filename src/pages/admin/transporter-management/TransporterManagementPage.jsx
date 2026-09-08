@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
@@ -82,12 +83,21 @@ function tabToApiStatus(tabId) {
 
 export default function TransporterManagementPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
   const [detailTransporterId, setDetailTransporterId] = useState(null)
   const [rejectTransporterId, setRejectTransporterId] = useState(null)
+
+  const handleMessageTransporter = useCallback(
+    (userId) => {
+      if (!userId) return
+      navigate(`/admin/chat?type=ADMIN_SUPPORT&peerUserId=${userId}`)
+    },
+    [navigate],
+  )
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -267,10 +277,10 @@ export default function TransporterManagementPage() {
       {
         id: 'message',
         label: t(`${I18N_KEY}.actions.message`),
-        onClick: () => {},
+        onClick: (row) => handleMessageTransporter(row.id),
       },
     ],
-    [handleApprove, handleDeleteTransporter, handleStatusChange, t],
+    [handleApprove, handleDeleteTransporter, handleMessageTransporter, handleStatusChange, t],
   )
 
   const columns = useMemo(

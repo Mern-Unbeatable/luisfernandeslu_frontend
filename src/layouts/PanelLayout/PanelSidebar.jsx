@@ -1,11 +1,13 @@
-import { NavLink, useSearchParams } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { FiLogOut, FiX } from 'react-icons/fi'
+import { FiLock, FiLogOut, FiX } from 'react-icons/fi'
 
 const linkBase =
   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors'
 
 const activeLink = 'bg-[var(--active)] text-white'
+const lockedLink =
+  'cursor-not-allowed text-sky-600 hover:bg-sky-50 hover:text-sky-700'
 
 /** Panel left nav only (no logo — logo lives in PanelHeader). */
 export default function PanelSidebar({
@@ -14,11 +16,10 @@ export default function PanelSidebar({
   isLoggingOut = false,
   onClose,
   showMainMenu = true,
+  isSuspended = false,
   className = '',
 }) {
   const { t } = useTranslation()
-  const [params] = useSearchParams()
-  const qs = params.toString()
 
   return (
     <aside
@@ -52,6 +53,32 @@ export default function PanelSidebar({
           {items.map((item) => {
             const to = item.to
             const Icon = item.Icon
+            const isDashboard = item.end === true
+            const isLocked = isSuspended && !isDashboard
+
+            if (isLocked) {
+              return (
+                <li key={item.to}>
+                  <div
+                    role="link"
+                    aria-disabled="true"
+                    title={t('accountLock.navLocked', 'Upload documents to unlock')}
+                    className={`${linkBase} ${lockedLink}`}
+                  >
+                    {Icon ? (
+                      <Icon className="size-[18px] shrink-0 text-sky-600" strokeWidth={1.75} />
+                    ) : null}
+                    <span className="min-w-0 flex-1 truncate">{t(item.labelKey)}</span>
+                    <FiLock
+                      className="size-3.5 shrink-0 text-sky-600"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                  </div>
+                </li>
+              )
+            }
+
             return (
               <li key={item.to}>
                 <NavLink

@@ -43,11 +43,12 @@ export const adminSupplierApi = baseApi.injectEndpoints({
       ],
     }),
     rejectAdminSupplier: builder.mutation({
-      query: (supplierId) => ({
+      query: ({ supplierId, reason, invalidDocuments }) => ({
         url: `/api/admin/suppliers/${supplierId}/reject`,
         method: 'POST',
+        data: { reason, invalidDocuments },
       }),
-      invalidatesTags: (_result, _error, supplierId) => [
+      invalidatesTags: (_result, _error, { supplierId }) => [
         { type: 'Supplier', id: 'ADMIN_LIST' },
         { type: 'Supplier', id: 'ADMIN_STATS' },
         { type: 'Supplier', id: supplierId },

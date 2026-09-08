@@ -9,6 +9,7 @@ import {
   useGetSupplierFactoryOrderFactoriesQuery,
   useGetSupplierFactoryOrdersQuery,
 } from "@/features/supplier/factory-orders/factoryOrdersApi";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 const SUPPLIER_FACTORY_ORDERS_PAGE_SIZE = 7;
 
@@ -364,6 +365,10 @@ export default function FactoryOrdersPage() {
     [companyFilter, statusFilter, companyOptions, statusOptions, t],
   );
 
+  if (isLoading && !ordersData) {
+    return <FactoryOrdersPageSkeleton />
+  }
+
   return (
     <>
       <Seo title={t("panel.supplierFactoryOrders.title")} />
@@ -380,56 +385,51 @@ export default function FactoryOrdersPage() {
       </div>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        {isLoading || isFetching || isDeleting ? (
-          <div className="py-10 text-center text-sm text-[var(--secondary-text)]">
-            Loading factory orders…
-          </div>
-        ) : (
-          <DataTable
-            showCard={false}
-            showTabs
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-            columns={columns}
-            data={pagedOrders}
-            getRowKey={(row) => row.id}
-            showActions
-            getActions={getRowActions}
-            actionHeader={t("panel.supplierFactoryOrders.colAction")}
-            emptyMessage={emptyMessage}
-            showPagination
-            showSearch
-            searchValue={search}
-            onSearchChange={(value) => {
-              setSearch(value);
-              setPage(1);
-            }}
-            searchPlaceholder={t(
-              "panel.supplierFactoryOrders.searchPlaceholder",
-            )}
-            showFilters={isOrdersTab}
-            filterLabel={t("panel.supplierFactoryOrders.sortBy")}
-            filters={tableFilters}
-            pagination={{
-              page: safePage,
-              pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
-              total,
+        <DataTable
+          showCard={false}
+          showTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          columns={columns}
+          data={pagedOrders}
+          getRowKey={(row) => row.id}
+          showActions
+          getActions={getRowActions}
+          actionHeader={t("panel.supplierFactoryOrders.colAction")}
+          emptyMessage={emptyMessage}
+          showPagination
+          showSearch
+          loading={isFetching || isDeleting}
+          searchValue={search}
+          onSearchChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+          searchPlaceholder={t(
+            "panel.supplierFactoryOrders.searchPlaceholder",
+          )}
+          showFilters={isOrdersTab}
+          filterLabel={t("panel.supplierFactoryOrders.sortBy")}
+          filters={tableFilters}
+          pagination={{
+            page: safePage,
+            pageSize: SUPPLIER_FACTORY_ORDERS_PAGE_SIZE,
+            total,
+            from,
+            to,
+            hasPrevious: safePage > 1,
+            hasNext: safePage < pageCount,
+            onPageChange: setPage,
+            summaryLabel: t("panel.supplierFactoryOrders.showingResults", {
               from,
               to,
-              hasPrevious: safePage > 1,
-              hasNext: safePage < pageCount,
-              onPageChange: setPage,
-              summaryLabel: t("panel.supplierFactoryOrders.showingResults", {
-                from,
-                to,
-                total,
-              }),
-              previousLabel: t("panel.supplierFactoryOrders.previous"),
-              nextLabel: t("panel.supplierFactoryOrders.next"),
-            }}
-          />
-        )}
+              total,
+            }),
+            previousLabel: t("panel.supplierFactoryOrders.previous"),
+            nextLabel: t("panel.supplierFactoryOrders.next"),
+          }}
+        />
       </section>
     </>
   );

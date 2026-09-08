@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import { fileURLToPath, URL } from 'node:url'
 import fs from 'node:fs'
 import path from 'node:path'
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
 
 function copyGeneratedImagesPlugin() {
   try {
@@ -31,7 +29,59 @@ function copyGeneratedImagesPlugin() {
 }
 
 export default defineConfig({
-  plugins: [copyGeneratedImagesPlugin(), react(), tailwindcss()],
+  plugins: [
+    copyGeneratedImagesPlugin(),
+    react(),
+    tailwindcss(),
+    VitePWA({
+      // Manual register — only supplier/factory/transporter/affiliate/admin
+      injectRegister: false,
+      registerType: 'autoUpdate',
+      filename: 'sw.js',
+      includeAssets: [
+        'logo.svg',
+        'pwa-192.png',
+        'pwa-512.png',
+        'manifests/*.webmanifest',
+      ],
+      // Role manifests live in /public/manifests; linked at runtime (not blob URLs)
+      manifest: false,
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.destination === 'image',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'panel-images',
+              expiration: {
+                maxEntries: 80,
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+              },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'panel-api',
+              networkTimeoutSeconds: 8,
+              expiration: {
+                maxEntries: 40,
+                maxAgeSeconds: 60 * 5,
+              },
+            },
+          },
+        ],
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -7,6 +7,7 @@ import ProductCard from '@/components/data-display/ProductCard/ProductCard'
 import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import AddProduct from '@/components/forms/AddProduct/AddProduct'
 import Pagination from '@/components/common/Pagination/Pagination'
+import FactoryProductsPageSkeleton from '../components/FactoryProductsPageSkeleton'
 import {
   useCreateFactoryProductMutation,
   useGenerateFactoryProductAiMutation,
@@ -34,7 +35,7 @@ import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 import dummyProductImage from '@/assets/images/dummy-post-square.png'
 import UploadXlsxModal from './UploadXlsxModal'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 8
 const DUMMY_PRODUCT_IMAGE = dummyProductImage
 
 const TAB_IDS = ['all', 'active', 'pending', 'rejected']
@@ -162,7 +163,8 @@ export default function ProductsPage() {
     [activeTab, page, category, search],
   )
 
-  const { data: factoryProductsResponse } = useGetFactoryProductsQuery(queryParams)
+  const { data: factoryProductsResponse, isLoading: isProductsLoading } =
+    useGetFactoryProductsQuery(queryParams)
   const { data: categoriesResponse } = useGetCategoriesQuery()
   const [createFactoryProduct, { isLoading: isCreating }] =
     useCreateFactoryProductMutation()
@@ -556,6 +558,10 @@ export default function ProductsPage() {
         />
       </div>
     )
+  }
+
+  if (isProductsLoading && !factoryProductsResponse) {
+    return <FactoryProductsPageSkeleton />
   }
 
   return (

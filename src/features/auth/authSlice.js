@@ -54,6 +54,20 @@ const authSlice = createSlice({
     setCredentials(state, action) {
       applyAuthPayload(state, action.payload)
     },
+    patchAuthUser(state, action) {
+      if (!state.user) return
+      const patch = action.payload || {}
+      const nextProfile =
+        patch.profile != null
+          ? { ...(state.user.profile || {}), ...patch.profile }
+          : state.user.profile
+      state.user = {
+        ...state.user,
+        ...patch,
+        profile: nextProfile,
+      }
+      persistUser(state.user)
+    },
     logout(state) {
       state.user = null
       state.accessToken = null
@@ -64,5 +78,5 @@ const authSlice = createSlice({
   },
 })
 
-export const { setCredentials, logout } = authSlice.actions
+export const { setCredentials, patchAuthUser, logout } = authSlice.actions
 export default authSlice.reducer

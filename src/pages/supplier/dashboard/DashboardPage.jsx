@@ -6,9 +6,10 @@ import {
   FiPackage,
   FiShoppingBag,
 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
+import SuspendedAccessGate from "@/components/common/account-lock/SuspendedAccessGate";
 import DataTable from "@/components/data-display/DataTable/DataTable";
 import StatusCard from "@/components/data-display/StatusCard";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
@@ -90,16 +91,20 @@ function formatStatValue(value, format) {
 export default function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { isSuspended, rejectionReason } = useOutletContext();
   const currentYear = new Date().getFullYear();
   const [period, setPeriod] = useState(String(currentYear));
   const [page, setPage] = useState(1);
 
   const pageSize = 7;
-  const { data, isLoading, isFetching, error } = useGetSupplierOverviewQuery({
-    period: Number(period),
-    page,
-    limit: pageSize,
-  });
+  const { data, isLoading, isFetching, error } = useGetSupplierOverviewQuery(
+    {
+      period: Number(period),
+      page,
+      limit: pageSize,
+    },
+    { skip: isSuspended },
+  );
 
   const [orders, setOrders] = useState([]);
 
@@ -257,6 +262,14 @@ export default function DashboardPage() {
     <>
       <Seo title={t("panel.supplierDashboard.title")} />
 
+      {isSuspended ? (
+        <SuspendedAccessGate
+          role="supplier"
+          rejectionReason={rejectionReason}
+          dashboardTitle={t("panel.supplierDashboard.title")}
+        />
+      ) : (
+      <>
       <header className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
           {t("panel.supplierDashboard.title")}
@@ -366,6 +379,8 @@ export default function DashboardPage() {
           />
         </div>
       </section>
+      </>
+      )}
     </>
   );
 }

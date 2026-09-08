@@ -10,11 +10,19 @@ import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
 import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import PanelDashboardSkeleton from "../../components/common/Skeleton/PanelDashboardSkeleton";
+import PanelProfileSkeleton from "../../components/common/Skeleton/PanelProfileSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
 import ProductsPageSkeleton from "../../pages/public_page/products/components/ProductsPageSkeleton";
 import CartPageSkeleton from "../../pages/public_page/cart/components/CartPageSkeleton";
+import FactoryProductsPageSkeleton from "../../pages/factory/components/FactoryProductsPageSkeleton";
+import FactoryOrdersPageSkeleton from "../../pages/factory/components/FactoryOrdersPageSkeleton";
+import FactoryChatPageSkeleton from "../../pages/factory/components/FactoryChatPageSkeleton";
+import FactoryDeliveryPageSkeleton from "../../pages/factory/components/FactoryDeliveryPageSkeleton";
+import FactoryInvoicesPageSkeleton from "../../pages/factory/components/FactoryInvoicesPageSkeleton";
+import ProductDetailsSkeleton from "../../components/data-display/ProductDetails/ProductDetailsSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
+import PanelPwaManager from "../../pwa/PanelPwaManager";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import { routeSeo } from "../../config/seo";
@@ -128,6 +136,10 @@ const ResetPassword = Loadable(
   lazy(() => import("../../pages/auth/ResetPasswordPage")),
   <AuthSkeleton />,
 );
+const AccountSuspended = Loadable(
+  lazy(() => import("../../pages/public_page/AccountSuspendedPage")),
+  <AuthSkeleton />,
+);
 
 /* ─── Customer ───────────────────────────────────────────────────── */
 
@@ -205,11 +217,11 @@ const SupplierDashboard = Loadable(
 );
 const SupplierProducts = Loadable(
   lazy(() => import("../../pages/supplier/products/ProductsPage")),
-  <PanelSkeleton />,
+  <FactoryProductsPageSkeleton />,
 );
 const SupplierProductDetail = Loadable(
   lazy(() => import("../../pages/supplier/products/ProductDetailPage")),
-  <PanelSkeleton />,
+  <ProductDetailsSkeleton />,
 );
 const SupplierAddProduct = Loadable(
   lazy(() => import("../../pages/supplier/products/AddProductPage")),
@@ -217,7 +229,7 @@ const SupplierAddProduct = Loadable(
 );
 const SupplierPromoCodes = Loadable(
   lazy(() => import("../../pages/supplier/promo-codes/PromoCodesPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierCreatePromoCode = Loadable(
   lazy(() => import("../../pages/supplier/promo-codes/CreatePromoCodePage")),
@@ -225,7 +237,7 @@ const SupplierCreatePromoCode = Loadable(
 );
 const SupplierOrdersCustomer = Loadable(
   lazy(() => import("../../pages/supplier/orders-customer/OrdersCustomerPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierOrderCustomerDetail = Loadable(
   lazy(
@@ -236,7 +248,7 @@ const SupplierOrderCustomerDetail = Loadable(
 );
 const SupplierCompanyOrders = Loadable(
   lazy(() => import("../../pages/supplier/company-orders/CompanyOrdersPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierOrderCompanyDetail = Loadable(
   lazy(
@@ -246,28 +258,28 @@ const SupplierOrderCompanyDetail = Loadable(
 );
 const SupplierDocuments = Loadable(
   lazy(() => import("../../pages/supplier/documents/DocumentsPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierChat = Loadable(
   lazy(() => import("../../pages/supplier/chat/ChatPage")),
-  <PanelSkeleton />,
+  <FactoryChatPageSkeleton />,
 );
 const SupplierBuyFromFactory = Loadable(
   lazy(
     () => import("../../pages/supplier/buy-from-factory/BuyFromFactoryPage"),
   ),
-  <PanelSkeleton />,
+  <FactoryProductsPageSkeleton />,
 );
 const SupplierBuyFromFactoryDetail = Loadable(
   lazy(
     () =>
       import("../../pages/supplier/buy-from-factory/BuyFromFactoryDetailPage"),
   ),
-  <PanelSkeleton />,
+  <ProductDetailsSkeleton />,
 );
 const SupplierFactoryOrders = Loadable(
   lazy(() => import("../../pages/supplier/factory-orders/FactoryOrdersPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierFactoryOrderDetail = Loadable(
   lazy(
@@ -277,32 +289,32 @@ const SupplierFactoryOrderDetail = Loadable(
 );
 const SupplierInventory = Loadable(
   lazy(() => import("../../pages/supplier/inventory/InventoryPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierDeliveryLogistics = Loadable(
   lazy(
     () =>
       import("../../pages/supplier/delivery-logistics/DeliveryLogisticsPage"),
   ),
-  <PanelSkeleton />,
+  <FactoryDeliveryPageSkeleton />,
 );
 const SupplierPaymentsFinance = Loadable(
   lazy(
     () => import("../../pages/supplier/payments-finance/PaymentsFinancePage"),
   ),
-  <PanelSkeleton />,
+  <FactoryInvoicesPageSkeleton />,
 );
 const SupplierAnalytics = Loadable(
   lazy(() => import("../../pages/supplier/analytics/AnalyticsPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const SupplierReviews = Loadable(
   lazy(() => import("../../pages/supplier/reviews/ReviewsPage")),
-  <PanelSkeleton />,
+  <PanelDashboardSkeleton />,
 );
 const SupplierReturnRequests = Loadable(
   lazy(() => import("../../pages/supplier/return-requests/ReturnRequestsPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const SupplierReturnRequestDetail = Loadable(
   lazy(
@@ -313,7 +325,7 @@ const SupplierReturnRequestDetail = Loadable(
 );
 const SupplierDisputes = Loadable(
   lazy(() => import("../../pages/supplier/disputes/DisputesPage")),
-  <PanelSkeleton />,
+  <FactoryInvoicesPageSkeleton />,
 );
 const SupplierDisputeDetail = Loadable(
   lazy(() => import("../../pages/supplier/disputes/DisputeDetailPage")),
@@ -321,11 +333,11 @@ const SupplierDisputeDetail = Loadable(
 );
 const SupplierInvoices = Loadable(
   lazy(() => import("../../pages/supplier/invoices/InvoicesPage")),
-  <PanelSkeleton />,
+  <FactoryInvoicesPageSkeleton />,
 );
 const SupplierProfile = Loadable(
   lazy(() => import("../../pages/supplier/profile/ProfilePage")),
-  <PanelSkeleton />,
+  <PanelProfileSkeleton showWarehouses showIban />,
 );
 
 /* ─── Factory ────────────────────────────────────────────────────── */
@@ -336,30 +348,30 @@ const FactoryDashboard = Loadable(
 );
 const FactoryProducts = Loadable(
   lazy(() => import("../../pages/factory/products/ProductsPage")),
-  <PanelSkeleton />,
+  <FactoryProductsPageSkeleton />,
 );
 const FactoryOrders = Loadable(
   lazy(() => import("../../pages/factory/orders/OrdersPage")),
-  <PanelSkeleton />,
+  <FactoryOrdersPageSkeleton />,
 );
 const FactoryChat = Loadable(
   lazy(() => import("../../pages/factory/chat/ChatPage")),
-  <PanelSkeleton />,
+  <FactoryChatPageSkeleton />,
 );
 const FactoryDeliveryLogistics = Loadable(
   lazy(
     () =>
       import("../../pages/factory/delivery-logistics/DeliveryLogisticsPage"),
   ),
-  <PanelSkeleton />,
+  <FactoryDeliveryPageSkeleton />,
 );
 const FactoryInvoices = Loadable(
   lazy(() => import("../../pages/factory/invoices/InvoicesPage")),
-  <PanelSkeleton />,
+  <FactoryInvoicesPageSkeleton />,
 );
 const FactoryProfile = Loadable(
   lazy(() => import("../../pages/factory/profile/ProfilePage")),
-  <PanelSkeleton />,
+  <PanelProfileSkeleton showWarehouses showIban />,
 );
 
 /* ─── Transporter ────────────────────────────────────────────────── */
@@ -587,6 +599,7 @@ function RootLayout() {
   return (
     <>
       <ScrollToTop />
+      <PanelPwaManager />
       <Outlet />
     </>
   );
@@ -788,6 +801,11 @@ export const router = createBrowserRouter([
                 path: "/forgot-password/reset",
                 element: <ResetPassword />,
                 handle: { seo: routeSeo.forgotPassword },
+              },
+              {
+                path: "/account-suspended",
+                element: <AccountSuspended />,
+                handle: { seo: { title: 'Account Suspended' } },
               },
             ],
           },

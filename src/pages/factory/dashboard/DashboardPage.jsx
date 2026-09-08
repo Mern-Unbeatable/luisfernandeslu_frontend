@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useOutletContext } from 'react-router-dom'
 import StatusCard from '@/components/data-display/StatusCard'
+import SuspendedAccessGate from '@/components/common/account-lock/SuspendedAccessGate'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { useGetFactoryDashboardQuery } from '@/features/factory-dashboard/factoryDashboardApi'
 import { mapFactoryDashboard } from '@/features/factory-dashboard/dashboardMappers'
@@ -25,8 +27,9 @@ const MONTH_KEYS = [
 
 export default function DashboardPage() {
   const { t } = useTranslation()
+  const { isSuspended, rejectionReason } = useOutletContext()
   const { data, isLoading, isError, error, refetch } =
-    useGetFactoryDashboardQuery()
+    useGetFactoryDashboardQuery(undefined, { skip: isSuspended })
 
   const dashboard = useMemo(
     () => mapFactoryDashboard(data, t),
@@ -37,6 +40,16 @@ export default function DashboardPage() {
     dashboard.revenue.labels.length === 12
       ? dashboard.revenue.labels
       : MONTH_KEYS.map((key) => t(`factoryDashboard.months.${key}`))
+
+  if (isSuspended) {
+    return (
+      <SuspendedAccessGate
+        role="factory"
+        rejectionReason={rejectionReason}
+        dashboardTitle={t('factoryDashboard.title')}
+      />
+    )
+  }
 
   if (isLoading) {
     return <PanelDashboardSkeleton />

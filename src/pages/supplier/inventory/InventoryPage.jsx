@@ -23,6 +23,7 @@ import {
   DEMO_SUPPLIER_INVENTORY_WAREHOUSES,
   SUPPLIER_INVENTORY_PAGE_SIZE,
 } from '@/data/demoData';
+import FactoryOrdersPageSkeleton from '@/pages/factory/components/FactoryOrdersPageSkeleton';
 import AddInventoryProductModal from './AddInventoryProductModal';
 import RestockModal from './RestockModal';
 import ErpIntegrationSection from './ErpIntegrationSection';
@@ -458,6 +459,10 @@ export default function InventoryPage() {
         }),
       )
     : '';
+
+  if (listLoading && !inventory) {
+    return <FactoryOrdersPageSkeleton />
+  }
 
   return (
     <>

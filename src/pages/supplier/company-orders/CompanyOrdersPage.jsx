@@ -13,6 +13,7 @@ import {
   useUpdateSupplierCompanyOrderStatusMutation,
 } from "@/features/supplier/company-orders/companyOrdersApi";
 import { SUPPLIER_COMPANY_ORDERS_PAGE_SIZE } from "@/data/demoData";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 const TAB_IDS = {
   direct: "direct",
@@ -450,6 +451,16 @@ export default function CompanyOrdersPage() {
     activeTab === TAB_IDS.direct
       ? isDirectLoading || isDirectFetching
       : isChatLoading || isChatFetching;
+
+  const activeResponse =
+    activeTab === TAB_IDS.direct ? directOrdersResponse : chatOrdersResponse;
+  const isInitialLoading =
+    (activeTab === TAB_IDS.direct ? isDirectLoading : isChatLoading)
+    && !activeResponse;
+
+  if (isInitialLoading) {
+    return <FactoryOrdersPageSkeleton />
+  }
 
   return (
     <>

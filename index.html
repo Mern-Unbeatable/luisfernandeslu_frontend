@@ -9,7 +9,38 @@
       content="CONSTRUPRECO — the most complete building materials marketplace. Fast delivery and trusted suppliers."
     />
     <meta name="theme-color" content="#18181b" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="/pwa-192.png" />
     <meta name="robots" content="index, follow" />
+    <!-- Installable only on panel roles; injected before React so Chrome can detect PWA -->
+    <script>
+      (function () {
+        var panels = ['supplier', 'factory', 'transporter', 'affiliate', 'admin']
+        var path = location.pathname.split('?')[0]
+        var role = null
+        for (var i = 0; i < panels.length; i++) {
+          var prefix = '/' + panels[i]
+          if (path === prefix || path.indexOf(prefix + '/') === 0) {
+            role = panels[i]
+            break
+          }
+        }
+        if (!role) {
+          var auth = path.match(/^\/(login|register)\/([^/]+)/i)
+          if (auth && panels.indexOf(auth[2].toLowerCase()) !== -1) {
+            role = auth[2].toLowerCase()
+          } else if (path === '/admin/login' || path.indexOf('/admin/login/') === 0) {
+            role = 'admin'
+          }
+        }
+        if (!role) return
+        var link = document.createElement('link')
+        link.id = 'panel-pwa-manifest'
+        link.rel = 'manifest'
+        link.href = '/manifests/' + role + '.webmanifest'
+        document.head.appendChild(link)
+      })()
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

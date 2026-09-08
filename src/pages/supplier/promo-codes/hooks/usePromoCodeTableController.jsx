@@ -362,6 +362,7 @@ export function usePromoCodeTableController({ t, navigate }) {
     tableFilters,
     pagedPromoCodes,
     isLoading: isLoading || isFetching,
+    isInitialLoading: !promoCodeResponse && (isLoading || isFetching),
     pagination: {
       page: safePromoCodePage,
       pageSize: SUPPLIER_PROMO_CODES_PAGE_SIZE,

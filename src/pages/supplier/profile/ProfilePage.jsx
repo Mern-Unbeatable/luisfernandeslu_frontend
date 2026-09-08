@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
+import RejectionBanner from "@/components/common/RejectionBanner";
 import {
   Field,
   PrimaryButton,
@@ -16,6 +17,7 @@ import {
   useUpdateSupplierProfileMutation,
 } from "@/features/supplier/profile/profileApi";
 import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
+import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
 
 const EMPTY_SUPPLIER_PROFILE = {
   displayName: "",
@@ -249,6 +251,9 @@ export default function ProfilePage() {
       <Toaster position="top-right" reverseOrder={false} />
       <Seo title={t("panel.profile.title")} />
 
+      {isLoading ? (
+        <PanelProfileSkeleton showWarehouses showIban />
+      ) : (
       <div className="space-y-6">
         <header>
           <h1 className="font-serif text-3xl font-bold tracking-tight text-[var(--primary-text)] sm:text-4xl">
@@ -259,11 +264,9 @@ export default function ProfilePage() {
           </p>
         </header>
 
-        {isLoading ? (
-          <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-[var(--secondary-text)]">
-            {t("common.loading")}
-          </div>
-        ) : null}
+        {!isError && profile?.rejectionReason && (
+          <RejectionBanner rejectionReason={profile.rejectionReason} />
+        )}
 
         {isError ? (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -273,7 +276,7 @@ export default function ProfilePage() {
           </div>
         ) : null}
 
-        {!isLoading && !isError ? (
+        {!isError ? (
           <>
             <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
               <div className="mb-5 flex items-center justify-between gap-3">
@@ -593,6 +596,7 @@ export default function ProfilePage() {
 
         {renderStatus()}
       </div>
+      )}
     </>
   );
 }

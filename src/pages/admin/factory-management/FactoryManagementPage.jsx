@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
@@ -82,12 +83,21 @@ function tabToApiStatus(tabId) {
 
 export default function FactoryManagementPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
   const [detailFactoryId, setDetailFactoryId] = useState(null)
   const [rejectFactoryId, setRejectFactoryId] = useState(null)
+
+  const handleMessageFactory = useCallback(
+    (userId) => {
+      if (!userId) return
+      navigate(`/admin/chat?type=ADMIN_SUPPORT&peerUserId=${userId}`)
+    },
+    [navigate],
+  )
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -264,10 +274,10 @@ export default function FactoryManagementPage() {
       {
         id: 'message',
         label: t(`${I18N_KEY}.actions.message`),
-        onClick: () => {},
+        onClick: (row) => handleMessageFactory(row.id),
       },
     ],
-    [handleApprove, handleDeleteFactory, handleStatusChange, t],
+    [handleApprove, handleDeleteFactory, handleMessageFactory, handleStatusChange, t],
   )
 
   const columns = useMemo(

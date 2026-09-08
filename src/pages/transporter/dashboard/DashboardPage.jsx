@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useOutletContext } from 'react-router-dom'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
+import SuspendedAccessGate from '../../../components/common/account-lock/SuspendedAccessGate'
 import { useGetTransporterDashboardQuery } from '../../../features/transporter/transporterApi'
 import { mapTransporterDashboard } from '../../../features/transporter/dashboardMappers'
 import StatsSection from './sections/StatsSection'
@@ -10,15 +12,26 @@ import PanelDashboardSkeleton from '../../../components/common/Skeleton/PanelDas
 
 export default function DashboardPage() {
   const { t } = useTranslation()
+  const { isSuspended, rejectionReason } = useOutletContext()
   const [period, setPeriod] = useState('thisYear')
 
   const { data, isLoading, isError, error, refetch } =
-    useGetTransporterDashboardQuery({ period })
+    useGetTransporterDashboardQuery({ period }, { skip: isSuspended })
 
   const dashboard = useMemo(() => mapTransporterDashboard(data), [data])
   const welcomeName =
     dashboard.welcomeName ||
     t('transporterDashboard.defaultName', { defaultValue: 'Transporter' })
+
+  if (isSuspended) {
+    return (
+      <SuspendedAccessGate
+        role="transporter"
+        rejectionReason={rejectionReason}
+        dashboardTitle={t('transporterDashboard.title')}
+      />
+    )
+  }
 
   if (isLoading) {
     return <PanelDashboardSkeleton />

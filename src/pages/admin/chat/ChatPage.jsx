@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import Messenger from '@/components/common/messenger/Messenger'
@@ -5,7 +7,27 @@ import useLiveChat from '@/features/chat/useLiveChat'
 
 export default function ChatPage() {
   const { t } = useTranslation()
+  const [searchParams] = useSearchParams()
   const state = useLiveChat()
+
+  useEffect(() => {
+    if (!state.isSocketConnected) return
+
+    const params = Object.fromEntries(searchParams.entries())
+    if (params.type || params.chat || params.peerUserId) {
+      state.openThread({
+        chatId: params.chat,
+        type: params.type || (params.peerUserId ? 'ADMIN_SUPPORT' : undefined),
+        peerUserId: params.peerUserId,
+        quoteRequestId: params.quoteId,
+        orderId: params.orderId,
+        productId: params.productId,
+      })
+    } else if (Object.keys(params).length === 0) {
+      state.selectChat(null)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, state.isSocketConnected])
 
   return (
     <div className="flex min-h-0 flex-col space-y-4">

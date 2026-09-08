@@ -1,10 +1,13 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FiInbox } from "react-icons/fi";
 import Seo from "@/components/common/Seo/Seo";
 import Pagination from "@/components/common/Pagination/Pagination";
 import AuctionCard from "@/components/data-display/AuctionCard";
 import AuctionDetails from "@/components/data-display/AuctionDetails";
 import CreateAuction from "@/components/forms/CreateAuction";
+import AuctionCardSkeleton from "@/components/common/Skeleton/AuctionCardSkeleton";
+import FactoryDeliveryPageSkeleton from "@/pages/factory/components/FactoryDeliveryPageSkeleton";
 import { DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS } from "@/data/demoData";
 import {
   useCreateSupplierAuctionMutation,
@@ -17,6 +20,24 @@ import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { toast } from "react-hot-toast";
 
 const PAGE_SIZE = 4;
+
+function EmptyAuctionsBox({ title, description }) {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-14 text-center shadow-sm sm:px-10">
+      <div className="flex size-14 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--active)_12%,white)] text-[var(--active)]">
+        <FiInbox className="size-7 stroke-[1.5]" aria-hidden />
+      </div>
+      <h3 className="mt-4 text-base font-bold text-[var(--primary-text)] sm:text-lg">
+        {title}
+      </h3>
+      {description ? (
+        <p className="mt-1.5 max-w-md text-sm leading-relaxed text-[var(--secondary-text)]">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 function toDisplayText(value) {
   if (value == null) return "";
@@ -241,6 +262,15 @@ export default function DeliveryLogisticsPage() {
     );
   }
 
+  if (isActiveLoading && isAssignedLoading && !activeData && !assignedData) {
+    return (
+      <>
+        <Seo title={t("supplierDeliveryLogistics.title")} />
+        <FactoryDeliveryPageSkeleton />
+      </>
+    );
+  }
+
   return (
     <>
       <Seo title={t("supplierDeliveryLogistics.title")} />
@@ -281,35 +311,46 @@ export default function DeliveryLogisticsPage() {
           ) : null}
 
           {isActiveLoading ? (
-            <div className="text-sm text-[var(--secondary-text)]">
-              {t("common.loading")}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                <AuctionCardSkeleton key={`active-skel-${i}`} />
+              ))}
             </div>
+          ) : activeAuctions.length === 0 ? (
+            <EmptyAuctionsBox
+              title={t("supplierDeliveryLogistics.activeAuctions.emptyTitle", {
+                defaultValue: "No active auctions",
+              })}
+              description={t(
+                "supplierDeliveryLogistics.activeAuctions.emptySubtitle",
+                {
+                  defaultValue:
+                    "You have no open delivery auctions right now. Start an auction to find a transporter.",
+                },
+              )}
+            />
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {activeAuctions.map((auction) => (
+                <AuctionCard
+                  key={auction.id}
+                  role="supplier"
+                  status="open"
+                  auction={auction}
+                  onViewDetails={openDetails}
+                />
+              ))}
+            </div>
+          )}
+
+          {activeAuctions.length > 0 ? (
+            <Pagination
+              className="mt-2"
+              page={safeActivePage}
+              totalPages={activeTotalPages}
+              onPageChange={setActivePage}
+            />
           ) : null}
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {!isActiveLoading && activeAuctions.length === 0 ? (
-              <div className="col-span-full rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-[var(--secondary-text)]">
-                {t("common.noData")}
-              </div>
-            ) : null}
-
-            {activeAuctions.map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                role="supplier"
-                status="open"
-                auction={auction}
-                onViewDetails={openDetails}
-              />
-            ))}
-          </div>
-
-          <Pagination
-            className="mt-2"
-            page={safeActivePage}
-            totalPages={activeTotalPages}
-            onPageChange={setActivePage}
-          />
         </section>
 
         <section className="space-y-4">
@@ -329,35 +370,49 @@ export default function DeliveryLogisticsPage() {
           ) : null}
 
           {isAssignedLoading ? (
-            <div className="text-sm text-[var(--secondary-text)]">
-              {t("common.loading")}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                <AuctionCardSkeleton key={`assigned-skel-${i}`} />
+              ))}
             </div>
+          ) : assignedDeliveries.length === 0 ? (
+            <EmptyAuctionsBox
+              title={t(
+                "supplierDeliveryLogistics.assignedDeliveries.emptyTitle",
+                {
+                  defaultValue: "No assigned deliveries",
+                },
+              )}
+              description={t(
+                "supplierDeliveryLogistics.assignedDeliveries.emptySubtitle",
+                {
+                  defaultValue:
+                    "Assigned deliveries will appear here once a transporter wins an auction.",
+                },
+              )}
+            />
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {assignedDeliveries.map((auction) => (
+                <AuctionCard
+                  key={auction.id}
+                  role="supplier"
+                  status="assigned"
+                  auction={auction}
+                  onViewDetails={openDetails}
+                />
+              ))}
+            </div>
+          )}
+
+          {assignedDeliveries.length > 0 ? (
+            <Pagination
+              className="mt-2"
+              page={safeAssignedPage}
+              totalPages={assignedTotalPages}
+              onPageChange={setAssignedPage}
+            />
           ) : null}
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {!isAssignedLoading && assignedDeliveries.length === 0 ? (
-              <div className="col-span-full rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-sm text-[var(--secondary-text)]">
-                {t("common.noData")}
-              </div>
-            ) : null}
-
-            {assignedDeliveries.map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                role="supplier"
-                status="assigned"
-                auction={auction}
-                onViewDetails={openDetails}
-              />
-            ))}
-          </div>
-
-          <Pagination
-            className="mt-2"
-            page={safeAssignedPage}
-            totalPages={assignedTotalPages}
-            onPageChange={setAssignedPage}
-          />
         </section>
       </div>
     </>

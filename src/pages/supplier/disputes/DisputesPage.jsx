@@ -13,6 +13,7 @@ import {
   useUpdateSupplierDisputeStatusMutation,
 } from "@/features/supplier/disputes/disputesApi";
 import DisputeStatusBadge from "./DisputeStatusBadge";
+import FactoryInvoicesPageSkeleton from "@/pages/factory/components/FactoryInvoicesPageSkeleton";
 
 const STATUS_FILTER_OPTIONS = ["all", "pending", "under_review", "resolved"];
 
@@ -172,6 +173,10 @@ export default function DisputesPage() {
   const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1;
   const to = total === 0 ? 0 : Math.min(safePage * pageSize, total);
 
+  if (isLoading && !data) {
+    return <FactoryInvoicesPageSkeleton />
+  }
+
   return (
     <>
       <Seo
@@ -194,16 +199,10 @@ export default function DisputesPage() {
           </div>
         ) : null}
 
-        {isLoading || isFetching ? (
-          <div className="text-sm text-[var(--secondary-text)]">
-            {t("common.loading")}
-          </div>
-        ) : null}
-
         <DataTable
           columns={columns}
           data={paged}
-          loading={isLoading || isFetching}
+          loading={isFetching}
           getRowKey={(row) => row.id}
           emptyMessage={t("supplierDisputesResolution.empty")}
           showSearch

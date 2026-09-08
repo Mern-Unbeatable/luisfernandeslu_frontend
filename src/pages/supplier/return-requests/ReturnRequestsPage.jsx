@@ -13,6 +13,7 @@ import {
   useUpdateSupplierReturnRequestStatusMutation,
 } from "@/features/supplier/return-requests/returnRequestsApi";
 import ReturnStatusBadge from "./ReturnStatusBadge";
+import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
 
 const STATUS_FILTER_OPTIONS = [
   "all",
@@ -210,6 +211,10 @@ export default function ReturnRequestsPage() {
   const from = total === 0 ? 0 : (safePage - 1) * pageSize + 1;
   const to = total === 0 ? 0 : Math.min(safePage * pageSize, total);
 
+  if (isLoading && !data) {
+    return <FactoryOrdersPageSkeleton />
+  }
+
   return (
     <>
       <Seo title={t("supplierReturnRequests.title")} />
@@ -226,12 +231,6 @@ export default function ReturnRequestsPage() {
         {errorMessage ? (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {errorMessage}
-          </div>
-        ) : null}
-
-        {isLoading || isFetching ? (
-          <div className="text-sm text-[var(--secondary-text)]">
-            {t("common.loading")}
           </div>
         ) : null}
 
@@ -257,7 +256,7 @@ export default function ReturnRequestsPage() {
         <DataTable
           columns={columns}
           data={paged}
-          loading={isLoading || isFetching}
+          loading={isFetching}
           getRowKey={(row) => row.id}
           showSearch
           searchValue={search}

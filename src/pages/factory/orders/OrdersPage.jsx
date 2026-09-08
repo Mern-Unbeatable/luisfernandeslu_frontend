@@ -17,8 +17,9 @@ import {
   useGetFactoryOrdersQuery,
   useUpdateFactoryOrderStatusMutation,
 } from '@/features/factory-orders/factoryOrderApi'
+import FactoryOrdersPageSkeleton from '../components/FactoryOrdersPageSkeleton'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 6
 
 const STATUS_FILTER_OPTIONS = [
   { value: 'all', labelKey: 'allStatus' },
@@ -350,6 +351,10 @@ export default function OrdersPage() {
     )
   }
 
+  if (isLoading && !ordersResponse) {
+    return <FactoryOrdersPageSkeleton />
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -397,11 +402,8 @@ export default function OrdersPage() {
       <DataTable
         columns={columns}
         data={rows}
-        emptyMessage={
-          isLoading
-            ? t('common.loading', { defaultValue: 'Loading…' })
-            : t('common.noData', { defaultValue: 'No orders found.' })
-        }
+        loading={isLoading}
+        emptyMessage={t('common.noData', { defaultValue: 'No orders found.' })}
         showSearch
         searchValue={search}
         onSearchChange={(value) => {
