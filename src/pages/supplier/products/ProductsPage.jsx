@@ -21,6 +21,7 @@ import {
   usePromoteSupplierProductMutation,
   useUploadSupplierProductsCsvMutation,
 } from "@/features/supplier/products/productApi";
+import { useGetSupplierProfileQuery } from "@/features/supplier/profile/profileApi";
 import { SUPPLIER_PRODUCTS_PAGE_SIZE } from "@/data/demoData";
 import DeleteProductModal from "./components/DeleteProductModal";
 import PromoteProductModal from "./components/PromoteProductModal";
@@ -38,6 +39,15 @@ const TAB_CONFIG = [
 export default function ProductsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { data: supplierProfile } = useGetSupplierProfileQuery();
+  const hasEupagoCredentials = Boolean(supplierProfile?.hasEupagoCredentials);
+
+  const requireEupago = () => {
+    if (hasEupagoCredentials) return true;
+    toast.error(t("panel.profile.eupagoRequiredForProducts"));
+    navigate("/supplier/profile");
+    return false;
+  };
   const [activeTab, setActiveTab] = useState("all");
   const [category, setCategory] = useState("all");
   const [page, setPage] = useState(1);
@@ -251,14 +261,20 @@ export default function ProductsPage() {
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <button
             type="button"
-            onClick={() => navigate("/supplier/products/add")}
+            onClick={() => {
+              if (!requireEupago()) return;
+              navigate("/supplier/products/add");
+            }}
             className="inline-flex items-center justify-center rounded-md bg-(--active) px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:brightness-95 sm:text-sm"
           >
             {t("panel.supplierProducts.addProduct")}
           </button>
           <button
             type="button"
-            onClick={() => setCsvOpen(true)}
+            onClick={() => {
+              if (!requireEupago()) return;
+              setCsvOpen(true);
+            }}
             className="inline-flex items-center justify-center rounded-md border border-(--active) bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-(--active) transition-colors hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] sm:text-sm"
           >
             {t("panel.supplierProducts.uploadCsv")}
