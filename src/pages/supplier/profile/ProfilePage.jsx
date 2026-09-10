@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
@@ -9,15 +9,25 @@ import {
   SecretInput,
   TextInput,
 } from "@/components/forms/PanelProfile/FormControls";
+import { BuyerAvatar } from "@/components/forms/PanelProfile/BuyerProfileSections";
 import {
   useChangeSupplierPasswordMutation,
   useGetSupplierProfileQuery,
-  useSaveSupplierIbanMutation,
+  useRemoveSupplierAvatarMutation,
+  useSaveSupplierEupagoMutation,
   useSaveSupplierWarehousesMutation,
   useUpdateSupplierProfileMutation,
+  useUploadSupplierAvatarMutation,
 } from "@/features/supplier/profile/profileApi";
 import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
 import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
+import EupagoCredentialsCard from "@/components/forms/PanelProfile/EupagoCredentialsCard";
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
 
 const EMPTY_SUPPLIER_PROFILE = {
   displayName: "",
@@ -27,8 +37,6 @@ const EMPTY_SUPPLIER_PROFILE = {
   phone: "",
   avatarUrl: null,
   warehouses: [],
-  iban: "",
-  ibanPhone: "",
 };
 
 const EMPTY_PASSWORD = {
@@ -46,20 +54,31 @@ export default function ProfilePage() {
     error,
   } = useGetSupplierProfileQuery();
 
-  const [updateProfile] = useUpdateSupplierProfileMutation();
-  const [saveWarehouses] = useSaveSupplierWarehousesMutation();
-  const [changePassword] = useChangeSupplierPasswordMutation();
-  const [saveIban] = useSaveSupplierIbanMutation();
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateSupplierProfileMutation();
+  const [saveWarehouses, { isLoading: isSavingWarehouses }] =
+    useSaveSupplierWarehousesMutation();
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeSupplierPasswordMutation();
+  const [saveEupago, { isLoading: isSavingEupago }] =
+    useSaveSupplierEupagoMutation();
+  const [uploadAvatar] = useUploadSupplierAvatarMutation();
+  const [removeAvatar] = useRemoveSupplierAvatarMutation();
+
+  const avatarFileRef = useRef(null);
+  const avatarFileInputId = useId();
 
   const [draft, setDraft] = useState(EMPTY_SUPPLIER_PROFILE);
   const [warehouseDraft, setWarehouseDraft] = useState([]);
   const [passwordDraft, setPasswordDraft] = useState(EMPTY_PASSWORD);
-  const [ibanDraft, setIbanDraft] = useState({ iban: "", ibanPhone: "" });
+  const [eupagoDraft, setEupagoDraft] = useState({
+    eupagoApiKey: "",
+    eupagoExternKey: "",
+  });
 
   const [editingAccount, setEditingAccount] = useState(false);
   const [editingWarehouses, setEditingWarehouses] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
-  const [editingIban, setEditingIban] = useState(false);
 
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
@@ -73,14 +92,8 @@ export default function ProfilePage() {
       phone: nextProfile.phone ?? "",
       avatarUrl: nextProfile.avatarUrl ?? null,
       warehouses: nextProfile.warehouses ?? [],
-      iban: nextProfile.iban ?? "",
-      ibanPhone: nextProfile.ibanPhone ?? "",
     });
     setWarehouseDraft(nextProfile.warehouses ?? []);
-    setIbanDraft({
-      iban: nextProfile.iban ?? "",
-      ibanPhone: nextProfile.ibanPhone ?? "",
-    });
   }, [profile]);
 
   const accountLabel = useMemo(
@@ -95,7 +108,6 @@ export default function ProfilePage() {
   const handleAccountUpdate = async () => {
     const payload = {
       name: draft.name,
-      email: draft.email,
       phone: draft.phone,
     };
 
@@ -198,34 +210,67 @@ export default function ProfilePage() {
     setPasswordDraft(EMPTY_PASSWORD);
   };
 
-  const handleIbanUpdate = async () => {
-    const payload = {
-      iban: ibanDraft.iban,
-      ibanPhone: ibanDraft.ibanPhone,
-    };
-
-    setStatus({ type: "loading", message: "Updating IBAN..." });
-
+  const handleEupagoSave = async () => {
     try {
-      await saveIban(payload).unwrap();
-      setStatus({ type: "success", message: "IBAN updated successfully." });
-      toast.success("IBAN updated successfully.");
-      setEditingIban(false);
+      await saveEupago({
+        eupagoApiKey: String(eupagoDraft.eupagoApiKey || "").trim() || undefined,
+        eupagoExternKey:
+          String(eupagoDraft.eupagoExternKey || "").trim() || undefined,
+      }).unwrap();
+      setEupagoDraft({ eupagoApiKey: "", eupagoExternKey: "" });
+      toast.success(
+        t("panel.profile.eupagoSaved", {
+          defaultValue: "EuPago credentials saved",
+        }),
+      );
     } catch (error) {
-      console.error("Supplier IBAN update failed:", error);
       const message =
-        error?.data?.message || error?.message || "Unable to update IBAN.";
-      setStatus({ type: "error", message });
+        error?.data?.message ||
+        error?.message ||
+        "Unable to save EuPago credentials.";
       toast.error(message);
     }
   };
 
-  const handleIbanCancel = () => {
-    setEditingIban(false);
-    setIbanDraft({
-      iban: profile?.iban ?? "",
-      ibanPhone: profile?.ibanPhone ?? "",
-    });
+  const handleAvatarPick = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    event.target.value = "";
+
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t("panel.profile.avatarInvalidType", {
+          defaultValue: "Use a JPEG, PNG, or WEBP image",
+        }),
+      );
+      return;
+    }
+
+    try {
+      await uploadAvatar(file).unwrap();
+      toast.success(
+        t("panel.profile.avatarUpdated", { defaultValue: "Avatar updated" }),
+      );
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.message || "Failed to upload avatar",
+      );
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    if (!draft.avatarUrl) return;
+    try {
+      await removeAvatar().unwrap();
+      setDraft((current) => ({ ...current, avatarUrl: null }));
+      toast.success(
+        t("panel.profile.avatarRemoved", { defaultValue: "Avatar removed" }),
+      );
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.message || "Failed to remove avatar",
+      );
+    }
   };
 
   const renderStatus = () => {
@@ -252,7 +297,7 @@ export default function ProfilePage() {
       <Seo title={t("panel.profile.title")} />
 
       {isLoading ? (
-        <PanelProfileSkeleton showWarehouses showIban />
+        <PanelProfileSkeleton showWarehouses />
       ) : (
       <div className="space-y-6">
         <header>
@@ -296,6 +341,25 @@ export default function ProfilePage() {
                 ) : null}
               </div>
 
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <BuyerAvatar
+                  form={draft}
+                  fileRef={avatarFileRef}
+                  fileInputId={avatarFileInputId}
+                  onPick={handleAvatarPick}
+                  onRemove={handleRemoveAvatar}
+                  t={t}
+                />
+                <div className="min-w-0">
+                  <h3 className="truncate font-serif text-base font-semibold text-[var(--primary-text)] sm:text-lg">
+                    {draft.displayName || draft.name || accountLabel}
+                  </h3>
+                  <p className="truncate text-sm text-[var(--secondary-text)]">
+                    {draft.displayEmail || draft.email || "—"}
+                  </p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label={t("panel.profile.name")}>
                   <TextInput
@@ -310,9 +374,10 @@ export default function ProfilePage() {
                   <TextInput
                     type="email"
                     value={draft.email}
-                    onChange={(value) => setField("email", value)}
-                    placeholder={t("panel.profile.emailPlaceholder")}
-                    disabled={!editingAccount}
+                    readOnly
+                    aria-readonly="true"
+                    disabled
+                    className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
                   />
                 </Field>
 
@@ -338,7 +403,10 @@ export default function ProfilePage() {
                   >
                     {t("panel.profile.cancel")}
                   </button>
-                  <PrimaryButton onClick={handleAccountUpdate}>
+                  <PrimaryButton
+                    onClick={handleAccountUpdate}
+                    loading={isUpdatingProfile}
+                  >
                     {t("panel.profile.updateProfile")}
                   </PrimaryButton>
                 </div>
@@ -423,7 +491,10 @@ export default function ProfilePage() {
                   >
                     {t("panel.profile.cancel")}
                   </button>
-                  <PrimaryButton onClick={handleWarehouseUpdate}>
+                  <PrimaryButton
+                    onClick={handleWarehouseUpdate}
+                    loading={isSavingWarehouses}
+                  >
                     {t("panel.profile.save")}
                   </PrimaryButton>
                 </div>
@@ -504,93 +575,25 @@ export default function ProfilePage() {
                   >
                     {t("panel.profile.cancel")}
                   </button>
-                  <PrimaryButton onClick={handlePasswordUpdate}>
+                  <PrimaryButton
+                    onClick={handlePasswordUpdate}
+                    loading={isChangingPassword}
+                  >
                     {t("panel.profile.changePassword")}
                   </PrimaryButton>
                 </div>
               ) : null}
             </section>
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
-              <div className="mb-5 flex items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-base font-semibold text-[var(--primary-text)]">
-                    {t("panel.profile.ibanTitle")}
-                  </h2>
-                </div>
-                {!editingIban ? (
-                  <button
-                    type="button"
-                    onClick={() => setEditingIban(true)}
-                    className="rounded-md bg-[var(--active)] px-3 py-2 text-sm font-semibold text-white hover:opacity-90"
-                  >
-                    {t("panel.profile.edit")}
-                  </button>
-                ) : null}
-              </div>
-
-              {editingIban ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Field label={t("panel.profile.ibanNumber")}>
-                    <SecretInput
-                      value={ibanDraft.iban}
-                      onChange={(value) =>
-                        setIbanDraft((current) => ({ ...current, iban: value }))
-                      }
-                      placeholder={t("panel.profile.ibanPlaceholder")}
-                    />
-                  </Field>
-
-                  <Field label={t("panel.profile.ibanPhoneEurope")}>
-                    <SecretInput
-                      value={ibanDraft.ibanPhone}
-                      onChange={(value) =>
-                        setIbanDraft((current) => ({
-                          ...current,
-                          ibanPhone: value,
-                        }))
-                      }
-                      placeholder={t("panel.profile.ibanPhonePlaceholder")}
-                    />
-                  </Field>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                    <p className="text-xs uppercase tracking-wide text-[var(--secondary-text)]">
-                      {t("panel.profile.ibanNumber")}
-                    </p>
-                    <p className="mt-2 font-medium text-[var(--primary-text)]">
-                      {profile?.iban || "—"}
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                    <p className="text-xs uppercase tracking-wide text-[var(--secondary-text)]">
-                      {t("panel.profile.ibanPhoneEurope")}
-                    </p>
-                    <p className="mt-2 font-medium text-[var(--primary-text)]">
-                      {profile?.ibanPhone || "—"}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {editingIban ? (
-                <div className="mt-5 flex justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={handleIbanCancel}
-                    className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-[var(--primary-text)] hover:bg-gray-50"
-                  >
-                    {t("panel.profile.cancel")}
-                  </button>
-                  <PrimaryButton onClick={handleIbanUpdate}>
-                    {t("panel.profile.saveIban")}
-                  </PrimaryButton>
-                </div>
-              ) : null}
-            </section>
+            <EupagoCredentialsCard
+              form={eupagoDraft}
+              setField={(key) => (value) =>
+                setEupagoDraft((current) => ({ ...current, [key]: value }))
+              }
+              onSave={handleEupagoSave}
+              saving={isSavingEupago}
+              t={t}
+            />
           </>
         ) : null}
 

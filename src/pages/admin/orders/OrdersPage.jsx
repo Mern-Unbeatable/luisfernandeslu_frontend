@@ -11,19 +11,17 @@ import {
   useUpdateAdminOrderStatusMutation,
 } from '@/features/admin/adminOrderApi'
 import {
-  getAdminOrderChangeableStatuses,
   getAdminOrderStatusOptions,
   mapAdminOrder,
 } from '@/features/admin/adminOrderMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { confirmDelete } from '@/utils/confirmDialog'
-import AdminOrderCancelModal from './components/AdminOrderCancelModal'
 import OrderCustomerTypeBadge from './components/OrderCustomerTypeBadge'
 import OrderStatusBadge from './components/OrderStatusBadge'
 import { ADMIN_ORDER_TABS, formatOrderMoney } from './data/ordersAdminDemo'
 
 const I18N_KEY = 'adminOrders'
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 export default function OrdersPage() {
   const { t } = useTranslation()
@@ -34,11 +32,8 @@ export default function OrdersPage() {
   const [customerTypeFilter, setCustomerTypeFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
   const [page, setPage] = useState(1)
-  const [cancelTarget, setCancelTarget] = useState(null)
 
-  const [updateOrderStatus, { isLoading: isUpdatingStatus }] =
-    useUpdateAdminOrderStatusMutation()
-
+  const [updateOrderStatus] = useUpdateAdminOrderStatusMutation()
   const [deleteOrder] = useDeleteAdminOrderMutation()
 
   useEffect(() => {
@@ -121,30 +116,6 @@ export default function OrdersPage() {
     [runStatusUpdate],
   )
 
-  const handleStatusChange = useCallback(
-    (row, status) => {
-      if (status === 'cancel') {
-        setCancelTarget(row)
-        return
-      }
-      runStatusUpdate(row, status)
-    },
-    [runStatusUpdate],
-  )
-
-  const handleCancelConfirm = useCallback(
-    async (reason) => {
-      if (!cancelTarget) return
-      const ok = await runStatusUpdate(
-        cancelTarget,
-        'cancel',
-        reason || undefined,
-      )
-      if (ok) setCancelTarget(null)
-    },
-    [cancelTarget, runStatusUpdate],
-  )
-
   const handleDelete = useCallback(
     async (row) => {
       const confirmed = await confirmDelete({
@@ -186,28 +157,6 @@ export default function OrdersPage() {
           label: t(`${I18N_KEY}.actions.accept`),
           onClick: handleAccept,
         })
-      } else {
-        const changeableStatuses = getAdminOrderChangeableStatuses(
-          activeTab,
-          row.status,
-        )
-
-        if (changeableStatuses.length > 0) {
-          actions.push({
-            id: 'status-section',
-            label: t(`${I18N_KEY}.actions.statusSection`),
-            variant: 'section',
-          })
-
-          changeableStatuses.forEach((status) => {
-            actions.push({
-              id: `status-${status}`,
-              label: t(`${I18N_KEY}.status.${status}`),
-              variant: status === 'cancel' ? 'danger' : undefined,
-              onClick: (item) => handleStatusChange(item, status),
-            })
-          })
-        }
       }
 
       actions.push({
@@ -219,7 +168,7 @@ export default function OrdersPage() {
 
       return actions
     },
-    [t, navigate, activeTab, handleAccept, handleStatusChange, handleDelete],
+    [t, navigate, handleAccept, handleDelete],
   )
 
   const tabs = useMemo(
@@ -406,15 +355,6 @@ export default function OrdersPage() {
           }}
         />
       </div>
-
-      <AdminOrderCancelModal
-        open={Boolean(cancelTarget)}
-        orderId={cancelTarget?.id}
-        orderLabel={cancelTarget?.orderId}
-        isSubmitting={isUpdatingStatus}
-        onClose={() => setCancelTarget(null)}
-        onConfirm={handleCancelConfirm}
-      />
     </div>
   )
 }
