@@ -22,20 +22,22 @@ export default function ProfilePage() {
 
   const { data, isLoading, isError, error, refetch } = useGetAdminProfileQuery()
 
-  const [updateProfile] = useUpdateAdminProfileMutation()
-  const [changePassword] = useChangeAdminProfilePasswordMutation()
-  const [updateIban] = useUpdateAdminProfileIbanMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateAdminProfileMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeAdminProfilePasswordMutation()
+  const [updateEupago, { isLoading: isSavingEupago }] =
+    useUpdateAdminProfileIbanMutation()
 
   useEffect(() => {
     if (!data?.profile) return
     setForm(mapAdminProfileToForm(data.profile))
   }, [data?.profile])
 
-  const handleUpdateProfile = async ({ name, email }) => {
+  const handleUpdateProfile = async ({ name }) => {
     try {
       const result = await updateProfile({
         name: String(name || '').trim(),
-        email: String(email || '').trim(),
       }).unwrap()
 
       if (result?.success === false) {
@@ -74,20 +76,32 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveIban = async ({ iban, ibanPhone }) => {
+  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
     if (isModerator) return
     try {
-      const result = await updateIban({
-        iban: String(iban || '').trim(),
-        ibanPhone: String(ibanPhone || '').trim(),
+      const result = await updateEupago({
+        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
+        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
       }).unwrap()
 
       if (result?.success === false) {
-        toast.error(getAuthErrorMessage(result, t('panel.profile.ibanUpdateFailed')))
+        toast.error(
+          getAuthErrorMessage(result, t('panel.profile.ibanUpdateFailed')),
+        )
         return
       }
 
-      toast.success(result?.message || t('panel.profile.ibanUpdateSuccess'))
+      setForm((prev) => ({
+        ...prev,
+        eupagoApiKey: '',
+        eupagoExternKey: '',
+      }))
+      toast.success(
+        result?.message ||
+          t('panel.profile.eupagoSaved', {
+            defaultValue: 'EuPago credentials saved',
+          }),
+      )
     } catch (err) {
       toast.error(getAuthErrorMessage(err, t('panel.profile.ibanUpdateFailed')))
     }
@@ -122,8 +136,12 @@ export default function ProfilePage() {
           onChange={setForm}
           onUpdateProfile={handleUpdateProfile}
           onChangePassword={handleChangePassword}
-          onSaveIban={isModerator ? undefined : handleSaveIban}
-          showIban={!isModerator}
+          onSaveEupago={isModerator ? undefined : handleSaveEupago}
+          showIban={false}
+          showEupagoCredentials={!isModerator}
+          isUpdatingProfile={isUpdatingProfile}
+          isChangingPassword={isChangingPassword}
+          isSavingEupago={isSavingEupago}
         />
       )}
     </>

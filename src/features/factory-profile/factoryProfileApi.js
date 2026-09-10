@@ -40,6 +40,14 @@ export const factoryProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
     }),
+    updateFactoryEupago: builder.mutation({
+      query: (body) => ({
+        url: '/api/factory/profile/eupago',
+        method: 'PUT',
+        data: body,
+      }),
+      invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
+    }),
     resubmitFactoryDocuments: builder.mutation({
       query: (formData) => ({
         url: '/api/factory/profile/resubmit-documents',
@@ -57,5 +65,6 @@ export const {
   useUpdateFactoryWarehousesMutation,
   useChangeFactoryPasswordMutation,
   useUpdateFactoryIbanMutation,
+  useUpdateFactoryEupagoMutation,
   useResubmitFactoryDocumentsMutation,
 } = factoryProfileApi

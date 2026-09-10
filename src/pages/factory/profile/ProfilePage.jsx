@@ -8,7 +8,7 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeFactoryPasswordMutation,
   useGetFactoryProfileQuery,
-  useUpdateFactoryIbanMutation,
+  useUpdateFactoryEupagoMutation,
   useUpdateFactoryProfileMutation,
   useUpdateFactoryWarehousesMutation,
 } from '@/features/factory-profile/factoryProfileApi'
@@ -24,8 +24,9 @@ function emptyForm() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    iban: '',
-    ibanPhone: '',
+    eupagoApiKey: '',
+    eupagoExternKey: '',
+    hasEupagoCredentials: false,
     avatarUrl: null,
     warehouses: [],
   }
@@ -49,8 +50,9 @@ function mapFactoryProfileToForm(profile) {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    iban: profile?.iban || '',
-    ibanPhone: profile?.ibanPhone || '',
+    eupagoApiKey: '',
+    eupagoExternKey: '',
+    hasEupagoCredentials: Boolean(profile?.hasEupagoCredentials),
     avatarUrl: profile?.avatarUrl || null,
     warehouses,
   }
@@ -79,21 +81,24 @@ export default function ProfilePage() {
   const [form, setForm] = useState(emptyForm)
 
   const { data, isLoading, isError, error, refetch } = useGetFactoryProfileQuery()
-  const [updateProfile] = useUpdateFactoryProfileMutation()
-  const [updateWarehouses] = useUpdateFactoryWarehousesMutation()
-  const [changePassword] = useChangeFactoryPasswordMutation()
-  const [updateIban] = useUpdateFactoryIbanMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateFactoryProfileMutation()
+  const [updateWarehouses, { isLoading: isSavingWarehouses }] =
+    useUpdateFactoryWarehousesMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeFactoryPasswordMutation()
+  const [updateEupago, { isLoading: isSavingEupago }] =
+    useUpdateFactoryEupagoMutation()
 
   useEffect(() => {
     if (!data?.profile) return
     setForm(mapFactoryProfileToForm(data.profile))
   }, [data?.profile])
 
-  const handleUpdateProfile = async ({ name, email, phone }) => {
+  const handleUpdateProfile = async ({ name, phone }) => {
     try {
       const result = await updateProfile({
         name: String(name || '').trim(),
-        email: String(email || '').trim(),
         phone: String(phone || '').trim(),
       }).unwrap()
       toast.success(
@@ -178,20 +183,26 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveIban = async ({ iban, ibanPhone }) => {
+  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
     try {
-      const result = await updateIban({
-        iban: String(iban || '').trim(),
-        ibanPhone: String(ibanPhone || '').trim(),
+      const result = await updateEupago({
+        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
+        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
       }).unwrap()
+      setForm((prev) => ({
+        ...prev,
+        eupagoApiKey: '',
+        eupagoExternKey: '',
+        hasEupagoCredentials: true,
+      }))
       toast.success(
         result?.message ||
-          t('panel.profile.ibanSaved', {
-            defaultValue: 'IBAN saved',
+          t('panel.profile.eupagoSaved', {
+            defaultValue: 'EuPago credentials saved',
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save IBAN'))
+      toast.error(getAuthErrorMessage(err, 'Failed to save EuPago credentials'))
     }
   }
 
@@ -199,7 +210,7 @@ export default function ProfilePage() {
     return (
       <>
         <Seo title={t('panel.profile.title')} />
-        <PanelProfileSkeleton showWarehouses showIban />
+        <PanelProfileSkeleton showWarehouses />
       </>
     )
   }
@@ -238,7 +249,12 @@ export default function ProfilePage() {
         onUpdateProfile={handleUpdateProfile}
         onSaveWarehouses={handleSaveWarehouses}
         onChangePassword={handleChangePassword}
-        onSaveIban={handleSaveIban}
+        onSaveEupago={handleSaveEupago}
+        showIban={false}
+        isUpdatingProfile={isUpdatingProfile}
+        isSavingWarehouses={isSavingWarehouses}
+        isChangingPassword={isChangingPassword}
+        isSavingEupago={isSavingEupago}
       />
     </>
   )

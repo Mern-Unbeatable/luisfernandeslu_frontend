@@ -13,7 +13,7 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import DeliveryTimelineSkeleton from '@/components/common/Skeleton/DeliveryTimelineSkeleton'
 
 const I18N_KEY = 'adminDeliveryLogistics'
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10;
 
 const STATUS_LABEL_KEYS = {
   assigned: 'status.assigned',

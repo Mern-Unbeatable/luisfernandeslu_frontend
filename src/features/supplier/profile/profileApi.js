@@ -20,6 +20,9 @@ function normalizeSupplierProfile(payload = {}) {
     warehouses,
     iban: String(profile.iban ?? ""),
     ibanPhone: String(profile.ibanPhone ?? ""),
+    eupagoApiKey: "",
+    eupagoExternKey: "",
+    hasEupagoCredentials: Boolean(profile.hasEupagoCredentials),
     rejectionReason: profile.rejectionReason || null,
     verificationStatus: profile.verificationStatus || 'UNVERIFIED',
   };
@@ -82,6 +85,17 @@ export const supplierProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
+    saveSupplierEupago: builder.mutation({
+      query: ({ eupagoApiKey, eupagoExternKey }) => ({
+        url: "/api/supplier/profile/eupago",
+        method: "PUT",
+        data: {
+          eupagoApiKey,
+          eupagoExternKey,
+        },
+      }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
+    }),
     resubmitSupplierDocuments: builder.mutation({
       query: (formData) => ({
         url: "/api/supplier/profile/resubmit-documents",
@@ -99,5 +113,6 @@ export const {
   useSaveSupplierWarehousesMutation,
   useChangeSupplierPasswordMutation,
   useSaveSupplierIbanMutation,
+  useSaveSupplierEupagoMutation,
   useResubmitSupplierDocumentsMutation,
 } = supplierProfileApi;

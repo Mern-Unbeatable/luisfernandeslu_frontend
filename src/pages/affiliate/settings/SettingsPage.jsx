@@ -58,9 +58,12 @@ export default function SettingsPage() {
   const { data: ibanResponse, isLoading: isIbanLoading } =
     useGetAffiliateIbanQuery()
 
-  const [updateProfile] = useUpdateAffiliateProfileMutation()
-  const [changePassword] = useChangeAffiliatePasswordMutation()
-  const [updateIban] = useUpdateAffiliateIbanMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateAffiliateProfileMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeAffiliatePasswordMutation()
+  const [updateIban, { isLoading: isSavingIban }] =
+    useUpdateAffiliateIbanMutation()
 
   const profile = profileResponse?.profile
   const iban = ibanResponse?.iban
@@ -130,6 +133,9 @@ export default function SettingsPage() {
           onUpdateProfile={handleUpdateProfile}
           onChangePassword={handleChangePassword}
           onSaveIban={handleSaveIban}
+          isUpdatingProfile={isUpdatingProfile}
+          isChangingPassword={isChangingPassword}
+          isSavingIban={isSavingIban}
         />
       )}
     </>

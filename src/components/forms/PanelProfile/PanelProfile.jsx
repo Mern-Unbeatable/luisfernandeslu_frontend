@@ -10,6 +10,7 @@ import {
   BuyerAddressCard,
   BuyerPasswordSection,
 } from './BuyerProfileSections'
+import EupagoCredentialsCard from './EupagoCredentialsCard'
 
 function emptyPassword() {
   return { currentPassword: '', newPassword: '', confirmPassword: '' }
@@ -111,6 +112,7 @@ function AccountFields({
   setField,
   onSave,
   withTopBorder = false,
+  saving = false,
   t,
 }) {
   return (
@@ -130,14 +132,9 @@ function AccountFields({
           <TextInput
             type="email"
             value={form.email}
-            onChange={cfg.emailEditable ? setField('email') : undefined}
-            readOnly={!cfg.emailEditable}
-            aria-readonly={cfg.emailEditable ? undefined : 'true'}
-            className={
-              cfg.emailEditable
-                ? undefined
-                : 'cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200'
-            }
+            readOnly
+            aria-readonly="true"
+            className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
           />
         </Field>
         {cfg.showAccountPhone ? (
@@ -151,7 +148,7 @@ function AccountFields({
         ) : null}
       </div>
       <div className={`mt-5 flex ${alignClass(cfg.profileActionsAlign)}`}>
-        <PrimaryButton onClick={onSave}>
+        <PrimaryButton onClick={onSave} loading={saving}>
           {t(cfg.updateProfileLabelKey)}
         </PrimaryButton>
       </div>
@@ -159,7 +156,15 @@ function AccountFields({
   )
 }
 
-function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, warehouseTitleKey, t }) {
+function WarehouseFields({
+  warehouses,
+  onUpdate,
+  onAdd,
+  onSave,
+  warehouseTitleKey,
+  saving = false,
+  t,
+}) {
   return (
     <div className="mt-8 border-t border-gray-100 pt-8">
       <h3 className="text-sm font-semibold text-[var(--primary-text)]">
@@ -189,7 +194,9 @@ function WarehouseFields({ warehouses, onUpdate, onAdd, onSave, warehouseTitleKe
         {t('panel.profile.addWarehouse')}
       </button>
       <div className="mt-5 flex justify-end">
-        <PrimaryButton onClick={onSave}>{t('panel.profile.save')}</PrimaryButton>
+        <PrimaryButton onClick={onSave} loading={saving}>
+          {t('panel.profile.save')}
+        </PrimaryButton>
       </div>
     </div>
   )
@@ -202,6 +209,7 @@ function PasswordFields({
   onSave,
   withTopBorder = true,
   stacked = false,
+  saving = false,
   t,
 }) {
   const isFull = cfg.passwordMode === 'full'
@@ -245,7 +253,7 @@ function PasswordFields({
         </Field>
       </div>
       <div className={`mt-5 flex ${alignClass(cfg.passwordActionsAlign)}`}>
-        <PrimaryButton size="lg" onClick={onSave}>
+        <PrimaryButton size="lg" onClick={onSave} loading={saving}>
           {t(cfg.changePasswordLabelKey)}
         </PrimaryButton>
       </div>
@@ -253,33 +261,59 @@ function PasswordFields({
   )
 }
 
-function IbanCard({ cfg, form, setField, onSave, t }) {
+function IbanCard({ cfg, form, setField, onSave, saving = false, t }) {
   const ibanAlign = cfg.ibanActionsAlign || 'end'
+  const titleKey = cfg.ibanTitleKey || 'panel.profile.ibanTitle'
+  const numberLabelKey = cfg.ibanNumberLabelKey || 'panel.profile.ibanNumber'
+  const placeholderKey =
+    cfg.ibanPlaceholderKey || 'panel.profile.ibanPlaceholder'
+  const primaryWriteOnly = Boolean(cfg.ibanPrimaryWriteOnly)
+  const secondaryWriteOnly = Boolean(cfg.ibanSecondaryWriteOnly)
+  const SecondaryInput =
+    cfg.ibanSecondaryAsSecret || secondaryWriteOnly ? SecretInput : PhoneInput
 
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 px-5 py-4 sm:px-8">
         <h3 className="text-sm font-bold tracking-wide text-[var(--primary-text)] uppercase">
-          {t('panel.profile.ibanTitle')}
+          {t(titleKey)}
         </h3>
       </div>
       <div className="space-y-4 p-5 sm:p-8">
-        <Field label={t('panel.profile.ibanNumber')}>
+        <Field label={t(numberLabelKey)}>
           <SecretInput
             value={form.iban}
             onChange={setField('iban')}
-            placeholder={t('panel.profile.ibanPlaceholder')}
+            placeholder={t(placeholderKey)}
+            revealable={!primaryWriteOnly}
+            autoComplete="new-password"
           />
+          {cfg.ibanPrimaryNoteKey ? (
+            <p className="mt-1.5 text-xs text-[var(--secondary-text)]">
+              {t(cfg.ibanPrimaryNoteKey)}
+            </p>
+          ) : null}
         </Field>
         <Field label={t(cfg.ibanPhoneLabelKey)}>
-          <PhoneInput
+          <SecondaryInput
             value={form.ibanPhone}
             onChange={setField('ibanPhone')}
             placeholder={t(cfg.ibanPhonePlaceholderKey)}
+            {...(cfg.ibanSecondaryAsSecret || secondaryWriteOnly
+              ? {
+                  revealable: !secondaryWriteOnly,
+                  autoComplete: 'new-password',
+                }
+              : null)}
           />
+          {cfg.ibanSecondaryNoteKey ? (
+            <p className="mt-1.5 text-xs text-[var(--secondary-text)]">
+              {t(cfg.ibanSecondaryNoteKey)}
+            </p>
+          ) : null}
         </Field>
         <div className={`flex pt-2 ${alignClass(ibanAlign)}`}>
-          <PrimaryButton onClick={onSave}>
+          <PrimaryButton onClick={onSave} loading={saving}>
             {t('panel.profile.saveIban')}
           </PrimaryButton>
         </div>
@@ -301,6 +335,7 @@ export default function PanelProfile({
   onSaveWarehouses,
   onChangePassword,
   onSaveIban,
+  onSaveEupago,
   onSaveBillingAddress,
   onSaveShippingAddress,
   onUploadAvatar,
@@ -310,10 +345,18 @@ export default function PanelProfile({
   showAccountPhone,
   showWarehouses,
   showIban,
+  showEupagoCredentials,
   passwordMode,
   ibanPhoneLabelKey,
   showAvatarActions,
   layout,
+  isUpdatingProfile = false,
+  isSavingWarehouses = false,
+  isChangingPassword = false,
+  isSavingIban = false,
+  isSavingEupago = false,
+  isSavingBillingAddress = false,
+  isSavingShippingAddress = false,
   className = '',
 }) {
   const { t } = useTranslation()
@@ -321,6 +364,7 @@ export default function PanelProfile({
     showAccountPhone,
     showWarehouses,
     showIban,
+    showEupagoCredentials,
     passwordMode,
     ibanPhoneLabelKey,
     showAvatarActions,
@@ -429,6 +473,13 @@ export default function PanelProfile({
     })
   }
 
+  const handleSaveEupago = () => {
+    onSaveEupago?.({
+      eupagoApiKey: form.eupagoApiKey,
+      eupagoExternKey: form.eupagoExternKey,
+    })
+  }
+
   const warehouses = form.warehouses || []
   const isSplit = cfg.layout === 'split'
   const isBuyer = cfg.layout === 'buyer'
@@ -456,6 +507,7 @@ export default function PanelProfile({
                 form={form}
                 setField={setField}
                 onSave={handleUpdateProfile}
+                saving={isUpdatingProfile}
                 fileRef={fileRef}
                 fileInputId={fileInputId}
                 onPick={handleAvatarPick}
@@ -468,6 +520,7 @@ export default function PanelProfile({
                 form={form}
                 setField={setField}
                 onSave={handleChangePassword}
+                saving={isChangingPassword}
                 t={t}
               />
             </Card>
@@ -478,6 +531,7 @@ export default function PanelProfile({
                 form={form}
                 setField={setField}
                 onSave={handleSaveIban}
+                saving={isSavingIban}
                 t={t}
               />
             ) : null}
@@ -489,6 +543,7 @@ export default function PanelProfile({
                   values={form.billingAddress || {}}
                   onChange={(billingAddress) => patch({ billingAddress })}
                   onSave={() => onSaveBillingAddress?.(form.billingAddress)}
+                  saving={isSavingBillingAddress}
                   t={t}
                 />
                 <BuyerAddressCard
@@ -496,6 +551,7 @@ export default function PanelProfile({
                   values={form.shippingAddress || {}}
                   onChange={(shippingAddress) => patch({ shippingAddress })}
                   onSave={() => onSaveShippingAddress?.(form.shippingAddress)}
+                  saving={isSavingShippingAddress}
                   t={t}
                 />
               </div>
@@ -518,6 +574,7 @@ export default function PanelProfile({
                 form={form}
                 setField={setField}
                 onSave={handleUpdateProfile}
+                saving={isUpdatingProfile}
                 t={t}
               />
             </Card>
@@ -530,6 +587,7 @@ export default function PanelProfile({
                 onSave={handleChangePassword}
                 withTopBorder={false}
                 stacked
+                saving={isChangingPassword}
                 t={t}
               />
             </Card>
@@ -551,6 +609,7 @@ export default function PanelProfile({
               setField={setField}
               onSave={handleUpdateProfile}
               withTopBorder
+              saving={isUpdatingProfile}
               t={t}
             />
             {cfg.showWarehouses ? (
@@ -560,6 +619,7 @@ export default function PanelProfile({
                 onAdd={addWarehouse}
                 onSave={handleSaveWarehouses}
                 warehouseTitleKey={cfg.warehouseTitleKey}
+                saving={isSavingWarehouses}
                 t={t}
               />
             ) : null}
@@ -568,6 +628,7 @@ export default function PanelProfile({
               form={form}
               setField={setField}
               onSave={handleChangePassword}
+              saving={isChangingPassword}
               t={t}
             />
           </Card>
@@ -579,6 +640,17 @@ export default function PanelProfile({
             form={form}
             setField={setField}
             onSave={handleSaveIban}
+            saving={isSavingIban}
+            t={t}
+          />
+        ) : null}
+
+        {!isBuyer && cfg.showEupagoCredentials ? (
+          <EupagoCredentialsCard
+            form={form}
+            setField={setField}
+            onSave={handleSaveEupago}
+            saving={isSavingEupago}
             t={t}
           />
         ) : null}
