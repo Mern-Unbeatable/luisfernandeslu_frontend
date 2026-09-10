@@ -2,11 +2,11 @@
  * Exact section map from the My Profile mockups (per role).
  * Label fields are i18n keys under `panel.profile.*`.
  *
- * 1 admin       — name+email, full password, IBAN
+ * 1 admin       — name+email, full password, Eupago credentials
  * 2 affiliate   — name+email+phone, simple password, IBAN
  * 3 transporter — split cards, avatar upload, personal info, IBAN
- * 4 factory     — phone + warehouses, simple password, IBAN
- * 5 supplier    — phone + warehouses, full password, IBAN
+ * 4 factory     — phone + warehouses, simple password, Eupago credentials
+ * 5 supplier    — phone + warehouses, full password, Eupago credentials
  * 6 customer    — buyer account: avatar, address fields, password, IBAN, billing/shipping
  * 7 company     — same buyer account layout as customer
  */
@@ -57,12 +57,13 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   admin: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: false,
     showWarehouses: false,
-    emailEditable: true,
+    emailEditable: false,
     passwordMode: 'full',
-    showIban: true,
+    showIban: false,
+    showEupagoCredentials: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',
@@ -73,12 +74,10 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.changePassword',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneEupago',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
   affiliate: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: false,
     passwordMode: 'simple',
@@ -118,11 +117,12 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   factory: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: true,
     passwordMode: 'simple',
-    showIban: true,
+    showIban: false,
+    showEupagoCredentials: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',
@@ -133,16 +133,15 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.changePassword',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneBackup',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholderLong',
   },
   supplier: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: true,
     passwordMode: 'full',
-    showIban: true,
+    showIban: false,
+    showEupagoCredentials: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     warehouseTitleKey: 'panel.profile.warehouseLocationSupplier',
@@ -154,9 +153,6 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.changePassword',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanActionsAlign: 'start',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneEupago',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
 }
 
@@ -166,5 +162,5 @@ export function resolveProfileConfig(role, overrides = {}) {
   const cleaned = Object.fromEntries(
     Object.entries(overrides).filter(([, value]) => value !== undefined),
   )
-  return { ...base, ...cleaned }
+  return { ...base, ...cleaned, emailEditable: false }
 }

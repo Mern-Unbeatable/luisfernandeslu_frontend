@@ -154,6 +154,7 @@ export function buildRegisterPayload(role, values) {
         fullName: values.fullName?.trim() ?? '',
         email: values.email?.trim() ?? '',
         password: values.password ?? '',
+        referenceCode: values.referenceCode?.trim() ?? '',
       }
     case 'company':
       return {

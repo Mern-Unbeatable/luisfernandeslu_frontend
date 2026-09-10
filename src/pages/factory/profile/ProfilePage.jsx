@@ -8,11 +8,19 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeFactoryPasswordMutation,
   useGetFactoryProfileQuery,
-  useUpdateFactoryIbanMutation,
+  useRemoveFactoryAvatarMutation,
+  useUpdateFactoryEupagoMutation,
   useUpdateFactoryProfileMutation,
   useUpdateFactoryWarehousesMutation,
+  useUploadFactoryAvatarMutation,
 } from '@/features/factory-profile/factoryProfileApi'
 import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 function emptyForm() {
   return {
@@ -24,8 +32,9 @@ function emptyForm() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    iban: '',
-    ibanPhone: '',
+    eupagoApiKey: '',
+    eupagoExternKey: '',
+    hasEupagoCredentials: false,
     avatarUrl: null,
     warehouses: [],
   }
@@ -49,8 +58,9 @@ function mapFactoryProfileToForm(profile) {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    iban: profile?.iban || '',
-    ibanPhone: profile?.ibanPhone || '',
+    eupagoApiKey: '',
+    eupagoExternKey: '',
+    hasEupagoCredentials: Boolean(profile?.hasEupagoCredentials),
     avatarUrl: profile?.avatarUrl || null,
     warehouses,
   }
@@ -79,21 +89,26 @@ export default function ProfilePage() {
   const [form, setForm] = useState(emptyForm)
 
   const { data, isLoading, isError, error, refetch } = useGetFactoryProfileQuery()
-  const [updateProfile] = useUpdateFactoryProfileMutation()
-  const [updateWarehouses] = useUpdateFactoryWarehousesMutation()
-  const [changePassword] = useChangeFactoryPasswordMutation()
-  const [updateIban] = useUpdateFactoryIbanMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateFactoryProfileMutation()
+  const [updateWarehouses, { isLoading: isSavingWarehouses }] =
+    useUpdateFactoryWarehousesMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeFactoryPasswordMutation()
+  const [updateEupago, { isLoading: isSavingEupago }] =
+    useUpdateFactoryEupagoMutation()
+  const [uploadAvatar] = useUploadFactoryAvatarMutation()
+  const [removeAvatar] = useRemoveFactoryAvatarMutation()
 
   useEffect(() => {
     if (!data?.profile) return
     setForm(mapFactoryProfileToForm(data.profile))
   }, [data?.profile])
 
-  const handleUpdateProfile = async ({ name, email, phone }) => {
+  const handleUpdateProfile = async ({ name, phone }) => {
     try {
       const result = await updateProfile({
         name: String(name || '').trim(),
-        email: String(email || '').trim(),
         phone: String(phone || '').trim(),
       }).unwrap()
       toast.success(
@@ -178,20 +193,69 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveIban = async ({ iban, ibanPhone }) => {
+  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
     try {
-      const result = await updateIban({
-        iban: String(iban || '').trim(),
-        ibanPhone: String(ibanPhone || '').trim(),
+      const result = await updateEupago({
+        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
+        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
       }).unwrap()
+      setForm((prev) => ({
+        ...prev,
+        eupagoApiKey: '',
+        eupagoExternKey: '',
+        hasEupagoCredentials: true,
+      }))
       toast.success(
         result?.message ||
-          t('panel.profile.ibanSaved', {
-            defaultValue: 'IBAN saved',
+          t('panel.profile.eupagoSaved', {
+            defaultValue: 'EuPago credentials saved',
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save IBAN'))
+      toast.error(getAuthErrorMessage(err, 'Failed to save EuPago credentials'))
+    }
+  }
+
+  const handleUploadAvatar = async (file) => {
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t('panel.profile.avatarInvalidType', {
+          defaultValue: 'Use a JPEG, PNG, or WEBP image',
+        }),
+      )
+      return
+    }
+    try {
+      const result = await uploadAvatar(file).unwrap()
+      if (result?.profile) {
+        setForm(mapFactoryProfileToForm(result.profile))
+      } else {
+        await refetch()
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
+      )
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, 'Failed to upload avatar'))
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    if (!form.avatarUrl) return
+    try {
+      const result = await removeAvatar().unwrap()
+      if (result?.profile) {
+        setForm(mapFactoryProfileToForm(result.profile))
+      } else {
+        setForm((prev) => ({ ...prev, avatarUrl: null }))
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
+      )
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, 'Failed to remove avatar'))
     }
   }
 
@@ -199,7 +263,7 @@ export default function ProfilePage() {
     return (
       <>
         <Seo title={t('panel.profile.title')} />
-        <PanelProfileSkeleton showWarehouses showIban />
+        <PanelProfileSkeleton showWarehouses />
       </>
     )
   }
@@ -238,7 +302,14 @@ export default function ProfilePage() {
         onUpdateProfile={handleUpdateProfile}
         onSaveWarehouses={handleSaveWarehouses}
         onChangePassword={handleChangePassword}
-        onSaveIban={handleSaveIban}
+        onSaveEupago={handleSaveEupago}
+        onUploadAvatar={handleUploadAvatar}
+        onRemoveAvatar={handleRemoveAvatar}
+        showIban={false}
+        isUpdatingProfile={isUpdatingProfile}
+        isSavingWarehouses={isSavingWarehouses}
+        isChangingPassword={isChangingPassword}
+        isSavingEupago={isSavingEupago}
       />
     </>
   )

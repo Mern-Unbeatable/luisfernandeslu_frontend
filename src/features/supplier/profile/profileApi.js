@@ -20,6 +20,9 @@ function normalizeSupplierProfile(payload = {}) {
     warehouses,
     iban: String(profile.iban ?? ""),
     ibanPhone: String(profile.ibanPhone ?? ""),
+    eupagoApiKey: "",
+    eupagoExternKey: "",
+    hasEupagoCredentials: Boolean(profile.hasEupagoCredentials),
     rejectionReason: profile.rejectionReason || null,
     verificationStatus: profile.verificationStatus || 'UNVERIFIED',
   };
@@ -82,6 +85,36 @@ export const supplierProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
+    saveSupplierEupago: builder.mutation({
+      query: ({ eupagoApiKey, eupagoExternKey }) => ({
+        url: "/api/supplier/profile/eupago",
+        method: "PUT",
+        data: {
+          eupagoApiKey,
+          eupagoExternKey,
+        },
+      }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
+    }),
+    uploadSupplierAvatar: builder.mutation({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("avatar", file);
+        return {
+          url: "/api/supplier/profile/avatar",
+          method: "POST",
+          data: formData,
+        };
+      },
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
+    }),
+    removeSupplierAvatar: builder.mutation({
+      query: () => ({
+        url: "/api/supplier/profile/avatar",
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Profile", id: "supplier" }],
+    }),
     resubmitSupplierDocuments: builder.mutation({
       query: (formData) => ({
         url: "/api/supplier/profile/resubmit-documents",
@@ -99,5 +132,8 @@ export const {
   useSaveSupplierWarehousesMutation,
   useChangeSupplierPasswordMutation,
   useSaveSupplierIbanMutation,
+  useSaveSupplierEupagoMutation,
+  useUploadSupplierAvatarMutation,
+  useRemoveSupplierAvatarMutation,
   useResubmitSupplierDocumentsMutation,
 } = supplierProfileApi;

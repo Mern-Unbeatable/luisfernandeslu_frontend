@@ -35,11 +35,16 @@ export default function ProfilePage() {
   const { data, isLoading, isError, error, refetch } =
     useGetCompanyProfileQuery()
 
-  const [updateProfile] = useUpdateCompanyProfileMutation()
-  const [changePassword] = useChangeCompanyProfilePasswordMutation()
-  const [updateIban] = useUpdateCompanyProfileIbanMutation()
-  const [updateBillingAddress] = useUpdateCompanyBillingAddressMutation()
-  const [updateShippingAddress] = useUpdateCompanyShippingAddressMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateCompanyProfileMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeCompanyProfilePasswordMutation()
+  const [updateIban, { isLoading: isSavingIban }] =
+    useUpdateCompanyProfileIbanMutation()
+  const [updateBillingAddress, { isLoading: isSavingBillingAddress }] =
+    useUpdateCompanyBillingAddressMutation()
+  const [updateShippingAddress, { isLoading: isSavingShippingAddress }] =
+    useUpdateCompanyShippingAddressMutation()
   const [uploadAvatar] = useUploadCompanyProfileAvatarMutation()
   const [deleteAvatar] = useDeleteCompanyProfileAvatarMutation()
 
@@ -243,6 +248,11 @@ export default function ProfilePage() {
           onSaveShippingAddress={handleSaveShippingAddress}
           onUploadAvatar={handleUploadAvatar}
           onRemoveAvatar={handleRemoveAvatar}
+          isUpdatingProfile={isUpdatingProfile}
+          isChangingPassword={isChangingPassword}
+          isSavingIban={isSavingIban}
+          isSavingBillingAddress={isSavingBillingAddress}
+          isSavingShippingAddress={isSavingShippingAddress}
         />
       )}
     </>
