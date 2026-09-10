@@ -194,10 +194,11 @@ function renderPrimaryAction(item, actions) {
 
   if (normalized === 'assigned') {
     if (item.tripStarted) {
+      if (!actions.onMarkPickedUp) return null
       return (
         <button
           type="button"
-          onClick={() => actions.onMarkPickedUp?.(item)}
+          onClick={() => actions.onMarkPickedUp(item)}
           className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
         >
           <FiCheckCircle className="size-3" />
@@ -206,10 +207,11 @@ function renderPrimaryAction(item, actions) {
       )
     }
 
+    if (!actions.onStartTrip) return null
     return (
       <button
         type="button"
-        onClick={() => actions.onStartTrip?.(item)}
+        onClick={() => actions.onStartTrip(item)}
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiNavigation className="size-3" />
@@ -219,10 +221,11 @@ function renderPrimaryAction(item, actions) {
   }
 
   if (normalized === 'picked_up') {
+    if (!actions.onNavigateToDelivery) return null
     return (
       <button
         type="button"
-        onClick={() => actions.onNavigateToDelivery?.(item)}
+        onClick={() => actions.onNavigateToDelivery(item)}
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiTruck className="size-3" />
@@ -232,10 +235,11 @@ function renderPrimaryAction(item, actions) {
   }
 
   if (normalized === 'in_transit') {
+    if (!actions.onVerifyDelivery) return null
     return (
       <button
         type="button"
-        onClick={() => actions.onVerifyDelivery?.(item)}
+        onClick={() => actions.onVerifyDelivery(item)}
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiCheckCircle className="size-3" />
