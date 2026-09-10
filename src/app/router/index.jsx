@@ -530,6 +530,10 @@ const AdminMarketingManagement = Loadable(
   ),
   null,
 );
+const AdminPromotionPlans = Loadable(
+  lazy(() => import("../../pages/admin/promotion-plans/PromotionPlansPage")),
+  null,
+);
 const AdminFinancePayments = Loadable(
   lazy(() => import("../../pages/admin/finance-payments/FinancePaymentsPage")),
   null,
@@ -1440,6 +1444,11 @@ export const router = createBrowserRouter([
                     handle: panelSeo("panel.nav.marketingManagement"),
                   },
                   {
+                    path: "promotion-plans",
+                    element: <AdminPromotionPlans />,
+                    handle: panelSeo("panel.nav.promotionPlans"),
+                  },
+                  {
                     path: "finance-payments",
                     element: <AdminFinancePayments />,
                     handle: panelSeo("panel.nav.financePayments"),
@@ -1575,6 +1584,11 @@ export const router = createBrowserRouter([
                     path: "marketing-management",
                     element: <AdminMarketingManagement />,
                     handle: panelSeo("panel.nav.marketingManagement"),
+                  },
+                  {
+                    path: "promotion-plans",
+                    element: <AdminPromotionPlans />,
+                    handle: panelSeo("panel.nav.promotionPlans"),
                   },
                   {
                     path: "finance-payments",

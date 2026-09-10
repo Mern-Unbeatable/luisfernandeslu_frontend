@@ -12,18 +12,22 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 
 const I18N_KEY = 'adminMarketingManagement.promotionPlans'
 
-const CURRENCIES = ['USD', 'EUR']
+const PLAN_CURRENCY = 'EUR'
 
 const EMPTY_FORM = {
   label: '',
   durationDays: '',
   price: '',
-  currency: 'USD',
   isActive: true,
-  sortOrder: '',
 }
 
-function PromotionPlanCard({ plan, activeLabel, durationLabel, onEdit, editLabel }) {
+function PromotionPlanCard({
+  plan,
+  activeLabel,
+  durationLabel,
+  onEdit,
+  editLabel,
+}) {
   return (
     <article className="flex min-w-[11rem] flex-1 flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="flex items-start justify-between gap-2">
@@ -59,7 +63,7 @@ function PromotionPlanCard({ plan, activeLabel, durationLabel, onEdit, editLabel
   )
 }
 
-export default function PromotionPlansSection() {
+export default function PromotionPlansSection({ asPage = false }) {
   const { t } = useTranslation()
   const [form, setForm] = useState({ ...EMPTY_FORM })
   const [editingId, setEditingId] = useState(null)
@@ -82,7 +86,11 @@ export default function PromotionPlansSection() {
     () =>
       [...(data?.plans ?? [])]
         .map(mapAdminPromotionPlan)
-        .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)),
+        .sort((a, b) => {
+          const priceDiff = Number(a.price) - Number(b.price)
+          if (priceDiff !== 0) return priceDiff
+          return Number(a.durationDays) - Number(b.durationDays)
+        }),
     [data?.plans],
   )
 
@@ -95,9 +103,7 @@ export default function PromotionPlansSection() {
       label: plan.label,
       durationDays: String(plan.durationDays),
       price: String(plan.price),
-      currency: plan.currency,
       isActive: plan.isActive,
-      sortOrder: plan.sortOrder == null ? '' : String(plan.sortOrder),
     })
   }
 
@@ -110,17 +116,19 @@ export default function PromotionPlansSection() {
     event.preventDefault()
     if (!form.label.trim()) return
 
+    const payload = {
+      label: form.label.trim(),
+      durationDays: Number(form.durationDays) || 0,
+      price: Number(form.price) || 0,
+      currency: PLAN_CURRENCY,
+      isActive: form.isActive,
+    }
+
     try {
       if (editingId) {
         const result = await updatePlan({
           planId: editingId,
-          label: form.label.trim(),
-          durationDays: Number(form.durationDays) || 0,
-          price: Number(form.price) || 0,
-          currency: form.currency,
-          isActive: form.isActive,
-          sortOrder:
-            form.sortOrder === '' ? undefined : Number(form.sortOrder) || 0,
+          ...payload,
         }).unwrap()
 
         if (result?.success === false) {
@@ -130,14 +138,7 @@ export default function PromotionPlansSection() {
 
         toast.success(result?.message || t(`${I18N_KEY}.updateSuccess`))
       } else {
-        const result = await createPlan({
-          label: form.label.trim(),
-          durationDays: Number(form.durationDays) || 0,
-          price: Number(form.price) || 0,
-          currency: form.currency,
-          isActive: form.isActive,
-          sortOrder: Number(form.sortOrder) || plans.length + 1,
-        }).unwrap()
+        const result = await createPlan(payload).unwrap()
 
         if (result?.success === false) {
           toast.error(getAuthErrorMessage(result, t(`${I18N_KEY}.saveFailed`)))
@@ -160,10 +161,22 @@ export default function PromotionPlansSection() {
   return (
     <section className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-[var(--primary-text)] sm:text-xl">
-          {t(`${I18N_KEY}.sectionTitle`)}
-        </h2>
-        <p className="mt-1 text-sm text-[var(--secondary-text)]">
+        {asPage ? (
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--primary-text)] sm:text-[1.75rem]">
+            {t(`${I18N_KEY}.sectionTitle`)}
+          </h1>
+        ) : (
+          <h2 className="text-lg font-bold text-[var(--primary-text)] sm:text-xl">
+            {t(`${I18N_KEY}.sectionTitle`)}
+          </h2>
+        )}
+        <p
+          className={`mt-1 text-sm ${
+            asPage
+              ? 'font-normal text-[#6B7280] sm:text-base'
+              : 'text-[var(--secondary-text)]'
+          }`}
+        >
           {t(`${I18N_KEY}.sectionSubtitle`)}
         </p>
       </div>
@@ -254,53 +267,23 @@ export default function PromotionPlansSection() {
               <span className="text-xs font-semibold tracking-wide text-[var(--secondary-text)] uppercase">
                 {t(`${I18N_KEY}.form.price`)}
               </span>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={form.price}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, price: e.target.value }))
-                }
-                placeholder="29.90"
-                disabled={isSaving}
-                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
-              />
-            </label>
-            <label className="block">
-              <span className="text-xs font-semibold tracking-wide text-[var(--secondary-text)] uppercase">
-                {t(`${I18N_KEY}.form.currency`)}
-              </span>
-              <select
-                value={form.currency}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, currency: e.target.value }))
-                }
-                disabled={isSaving}
-                className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {CURRENCIES.map((currency) => (
-                  <option key={currency} value={currency}>
-                    {currency}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="text-xs font-semibold tracking-wide text-[var(--secondary-text)] uppercase">
-                {t(`${I18N_KEY}.form.sortOrder`)}
-              </span>
-              <input
-                type="number"
-                min="1"
-                value={form.sortOrder}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, sortOrder: e.target.value }))
-                }
-                placeholder="1"
-                disabled={isSaving}
-                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
-              />
+              <div className="relative mt-1.5">
+                <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm font-semibold text-[var(--secondary-text)]">
+                  €
+                </span>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.price}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, price: e.target.value }))
+                  }
+                  placeholder="29.90"
+                  disabled={isSaving}
+                  className="w-full rounded-lg border border-gray-200 py-2.5 pr-3 pl-8 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
+                />
+              </div>
             </label>
           </div>
           <label className="inline-flex items-center gap-2 text-sm font-medium text-[var(--primary-text)]">
