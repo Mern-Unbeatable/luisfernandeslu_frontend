@@ -68,9 +68,12 @@ export default function ProfilePage() {
   const [form, setForm] = useState(emptyForm)
 
   const { data, isLoading, isError, error, refetch } = useGetTransporterProfileQuery()
-  const [updateProfile] = useUpdateTransporterProfileMutation()
-  const [changePassword] = useChangeTransporterPasswordMutation()
-  const [updateIban] = useUpdateTransporterIbanMutation()
+  const [updateProfile, { isLoading: isUpdatingProfile }] =
+    useUpdateTransporterProfileMutation()
+  const [changePassword, { isLoading: isChangingPassword }] =
+    useChangeTransporterPasswordMutation()
+  const [updateIban, { isLoading: isSavingIban }] =
+    useUpdateTransporterIbanMutation()
   const [uploadAvatar] = useUploadTransporterAvatarMutation()
   const [removeAvatar] = useRemoveTransporterAvatarMutation()
 
@@ -264,6 +267,9 @@ export default function ProfilePage() {
         onSaveIban={handleSaveIban}
         onUploadAvatar={handleUploadAvatar}
         onRemoveAvatar={handleRemoveAvatar}
+        isUpdatingProfile={isUpdatingProfile}
+        isChangingPassword={isChangingPassword}
+        isSavingIban={isSavingIban}
       />
     </>
   )
