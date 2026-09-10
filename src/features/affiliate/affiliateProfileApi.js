@@ -43,6 +43,25 @@ export const affiliateProfileApi = baseApi.injectEndpoints({
         { type: 'User', id: 'AFFILIATE_EARNINGS' },
       ],
     }),
+    uploadAffiliateAvatar: builder.mutation({
+      query: (file) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
+        return {
+          url: '/api/affiliate/profile/avatar',
+          method: 'POST',
+          data: formData,
+        }
+      },
+      invalidatesTags: [{ type: 'User', id: 'AFFILIATE_PROFILE' }],
+    }),
+    removeAffiliateAvatar: builder.mutation({
+      query: () => ({
+        url: '/api/affiliate/profile/avatar',
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'User', id: 'AFFILIATE_PROFILE' }],
+    }),
   }),
 })
 
@@ -52,4 +71,6 @@ export const {
   useChangeAffiliatePasswordMutation,
   useGetAffiliateIbanQuery,
   useUpdateAffiliateIbanMutation,
+  useUploadAffiliateAvatarMutation,
+  useRemoveAffiliateAvatarMutation,
 } = affiliateProfileApi

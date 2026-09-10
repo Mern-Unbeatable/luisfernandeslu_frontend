@@ -34,6 +34,7 @@ import {
   mapProductToFormValue,
   resolveAiField,
 } from "@/features/supplier/products/productMappers";
+import { useGetSupplierProfileQuery } from "@/features/supplier/profile/profileApi";
 import { DEMO_WAREHOUSE_OPTIONS } from "@/data/demoData";
 
 export default function AddProductPage() {
@@ -43,6 +44,23 @@ export default function AddProductPage() {
   const { t } = useTranslation();
   const isEdit = Boolean(productId);
   const isResubmit = searchParams.get("resubmit") === "1";
+  const { data: supplierProfile } = useGetSupplierProfileQuery();
+  const hasEupagoCredentials = Boolean(supplierProfile?.hasEupagoCredentials);
+
+  useEffect(() => {
+    if (isEdit || isResubmit) return;
+    if (supplierProfile && !hasEupagoCredentials) {
+      toast.error(t("panel.profile.eupagoRequiredForProducts"));
+      navigate("/supplier/profile", { replace: true });
+    }
+  }, [
+    hasEupagoCredentials,
+    isEdit,
+    isResubmit,
+    navigate,
+    supplierProfile,
+    t,
+  ]);
 
   const [form, setForm] = useState(DEFAULT_ADD_PRODUCT);
   const [hydratedId, setHydratedId] = useState(null);
