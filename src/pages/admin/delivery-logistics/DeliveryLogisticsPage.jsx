@@ -26,21 +26,11 @@ export default function DeliveryLogisticsPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setDebouncedSearch(searchQuery.trim())
-    }, 300)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [searchQuery])
-
-  useEffect(() => {
     setPage(1)
-  }, [statusFilter, debouncedSearch])
+  }, [statusFilter])
 
   const {
     data,
@@ -51,7 +41,6 @@ export default function DeliveryLogisticsPage() {
     refetch,
   } = useGetAdminLogisticsQuery({
     status: statusFilter,
-    search: debouncedSearch,
     page,
     limit: PAGE_SIZE,
   })
@@ -83,7 +72,7 @@ export default function DeliveryLogisticsPage() {
         description={t(`${I18N_KEY}.subtitle`)}
       />
 
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <header>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--primary-text)] sm:text-[1.75rem]">
             {t(`${I18N_KEY}.title`)}
@@ -93,34 +82,23 @@ export default function DeliveryLogisticsPage() {
           </p>
         </header>
 
-        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto lg:shrink-0">
-          <input
-            type="search"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder={t(`${I18N_KEY}.searchPlaceholder`)}
-            className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm text-[var(--primary-text)] outline-none focus:border-[var(--active)] sm:min-w-[240px]"
-            aria-label={t(`${I18N_KEY}.searchPlaceholder`)}
-          />
-
-          <label className="flex items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
-            {t(`${I18N_KEY}.filterLabel`)}
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
-              aria-label={t(`${I18N_KEY}.filterLabel`)}
-            >
-              {ADMIN_LOGISTICS_STATUS_FILTERS.map((status) => (
-                <option key={status} value={status}>
-                  {status === 'all'
-                    ? t(`${I18N_KEY}.filters.allStatus`)
-                    : t(`${I18N_KEY}.${STATUS_LABEL_KEYS[status]}`)}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+        <label className="flex shrink-0 items-center gap-2 text-sm font-medium text-[var(--secondary-text)]">
+          {t(`${I18N_KEY}.filterLabel`)}
+          <select
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+            aria-label={t(`${I18N_KEY}.filterLabel`)}
+          >
+            {ADMIN_LOGISTICS_STATUS_FILTERS.map((status) => (
+              <option key={status} value={status}>
+                {status === 'all'
+                  ? t(`${I18N_KEY}.filters.allStatus`)
+                  : t(`${I18N_KEY}.${STATUS_LABEL_KEYS[status]}`)}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {isError ? (

@@ -732,7 +732,8 @@
       "supplierSection": "Información del proveedor",
       "factorySection": "Información de la fábrica",
       "produced": "Producido",
-      "assigned": "Asignado"
+      "assigned": "Asignado",
+      "chatUnavailable": "El chat no está disponible para este contacto."
     }
   },
   "adminDeliveryLogistics": {
