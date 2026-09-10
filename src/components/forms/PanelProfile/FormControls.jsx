@@ -87,41 +87,52 @@ export function SecretInput({
   onChange,
   placeholder,
   className = '',
+  revealable = true,
   ...rest
 }) {
   const { t } = useTranslation()
   const [visible, setVisible] = useState(false)
+  const showPlain = revealable && visible
 
   return (
     <div className="relative w-full">
       <input
-        type={visible ? 'text' : 'password'}
+        type={showPlain ? 'text' : 'password'}
         value={value ?? ''}
         onChange={(event) => onChange?.(event.target.value)}
         placeholder={placeholder}
-        className={`${controlBase} h-11 px-3 pr-11 ${className}`}
+        className={`${controlBase} h-11 px-3 ${revealable ? 'pr-11' : ''} ${className}`}
         autoComplete="off"
         {...rest}
       />
-      <button
-        type="button"
-        onClick={() => setVisible((v) => !v)}
-        className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 hover:text-[var(--primary-text)]"
-        aria-label={
-          visible ? t('panel.profile.hideValue') : t('panel.profile.showValue')
-        }
-      >
-        {visible ? (
-          <FiEyeOff className="size-4" strokeWidth={1.75} />
-        ) : (
-          <FiEye className="size-4" strokeWidth={1.75} />
-        )}
-      </button>
+      {revealable ? (
+        <button
+          type="button"
+          onClick={() => setVisible((v) => !v)}
+          className="absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 hover:text-[var(--primary-text)]"
+          aria-label={
+            visible ? t('panel.profile.hideValue') : t('panel.profile.showValue')
+          }
+        >
+          {visible ? (
+            <FiEyeOff className="size-4" strokeWidth={1.75} />
+          ) : (
+            <FiEye className="size-4" strokeWidth={1.75} />
+          )}
+        </button>
+      ) : null}
     </div>
   )
 }
 
-export function PrimaryButton({ children, className = '', size = 'md', ...rest }) {
+export function PrimaryButton({
+  children,
+  className = '',
+  size = 'md',
+  loading = false,
+  disabled,
+  ...rest
+}) {
   const sizeClass =
     size === 'lg'
       ? 'h-12 min-w-[11rem] rounded-lg px-8 text-base'
@@ -130,9 +141,17 @@ export function PrimaryButton({ children, className = '', size = 'md', ...rest }
   return (
     <button
       type="button"
-      className={`inline-flex items-center justify-center bg-[var(--active)] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${sizeClass} ${className}`}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      className={`inline-flex items-center justify-center gap-2 bg-[var(--active)] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${sizeClass} ${className}`}
       {...rest}
     >
+      {loading ? (
+        <span
+          className="size-4 shrink-0 animate-spin rounded-full border-2 border-white/30 border-t-white"
+          aria-hidden
+        />
+      ) : null}
       {children}
     </button>
   )

@@ -22,11 +22,10 @@ import MarketingBoostMeta from './components/MarketingBoostMeta'
 import MarketingRequestActions from './components/MarketingRequestActions'
 import MarketingRemoveSponsoredAction from './components/MarketingRemoveSponsoredAction'
 import PromotionRejectModal from './components/PromotionRejectModal'
-import PromotionPlansSection from './sections/PromotionPlansSection'
 import { MARKETING_STATS, MARKETING_TABS } from './data/marketingDemo'
 
 const I18N_KEY = 'adminMarketingManagement'
-const PAGE_SIZE = 12
+const PAGE_SIZE = 8
 
 function productCardStatus(rowStatus) {
   if (rowStatus === 'pending') return 'pending'
@@ -38,7 +37,7 @@ function resolveStatusParam(tabId) {
   if (tabId === 'pending') return 'pending'
   if (tabId === 'active') return 'active'
   if (tabId === 'completed') return 'completed'
-  return ''
+  return 'all'
 }
 
 export default function MarketingManagementPage() {
@@ -80,7 +79,7 @@ export default function MarketingManagementPage() {
     isFetching: featuredFetching,
     refetch: refetchFeatured,
   } = useGetAdminPromotionsQuery({
-    status: '',
+    status: 'all',
     featured: true,
     search: '',
     page: featuredPage,
@@ -104,7 +103,7 @@ export default function MarketingManagementPage() {
   })
 
   const { data: featuredCountData } = useGetAdminPromotionsQuery({
-    status: '',
+    status: 'all',
     featured: true,
     search: '',
     page: 1,
@@ -291,8 +290,6 @@ export default function MarketingManagementPage() {
           />
         ))}
       </div>
-
-      <PromotionPlansSection />
 
       <SegmentedTabs
         standalone
