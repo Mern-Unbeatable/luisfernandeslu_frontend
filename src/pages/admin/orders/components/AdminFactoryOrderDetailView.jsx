@@ -90,14 +90,16 @@ function TransporterBanner({ transporter = {}, onChat }) {
             {transporter.phone}
           </p>
         ) : null}
-        <button
-          type="button"
-          onClick={() => onChat?.(transporter)}
-          className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-        >
-          <FiMessageSquare className="size-4" aria-hidden />
-          Chat
-        </button>
+        {transporter.id ? (
+          <button
+            type="button"
+            onClick={() => onChat?.(transporter)}
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            <FiMessageSquare className="size-4" aria-hidden />
+            Message
+          </button>
+        ) : null}
       </div>
     </div>
   )
@@ -139,9 +141,21 @@ export default function AdminFactoryOrderDetailView({
       <div className="mb-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div>
           <SectionEyebrow>Recipient</SectionEyebrow>
-          <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-            {supplierSectionTitle}
-          </h2>
+          <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+            <h2 className="text-lg font-bold text-[var(--primary-text)]">
+              {supplierSectionTitle}
+            </h2>
+            {supplier.id ? (
+              <button
+                type="button"
+                onClick={() => onChat?.(supplier)}
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
+              >
+                <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
+                Message
+              </button>
+            ) : null}
+          </div>
           <p className="text-base font-bold text-[var(--primary-text)]">
             {supplier.name}
           </p>
@@ -160,9 +174,21 @@ export default function AdminFactoryOrderDetailView({
 
         <div>
           <SectionEyebrow>Factory</SectionEyebrow>
-          <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-            {factorySectionTitle}
-          </h2>
+          <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+            <h2 className="text-lg font-bold text-[var(--primary-text)]">
+              {factorySectionTitle}
+            </h2>
+            {factory.id ? (
+              <button
+                type="button"
+                onClick={() => onChat?.(factory)}
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
+              >
+                <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
+                Message
+              </button>
+            ) : null}
+          </div>
           <p className="text-base font-bold text-[var(--primary-text)]">
             {factory.name}
           </p>
