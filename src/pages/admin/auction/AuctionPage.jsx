@@ -13,7 +13,7 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { ADMIN_AUCTION_FILTER_OPTIONS } from './data/auctionsAdminDemo'
 import AuctionCardSkeleton from '@/components/common/Skeleton/AuctionCardSkeleton'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 9
 const I18N_KEY = 'adminAuction'
 
 export default function AuctionPage() {
