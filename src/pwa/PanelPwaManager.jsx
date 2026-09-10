@@ -7,10 +7,71 @@ import {
   promptInstallPanelPwa,
   syncPanelPwa,
 } from './panelPwa'
-import { isPanelPwaPath } from './panelPwaConfig'
+import {
+  getPanelBasePath,
+  isPanelPwaAuthPath,
+  isPanelPwaPath,
+} from './panelPwaConfig'
+
+const DISMISS_STORAGE_PREFIX = 'pwa-install-dismissed'
+const OFFERED_STORAGE_PREFIX = 'pwa-install-offered-panel'
+const DISMISS_TTL_MS = 14 * 24 * 60 * 60 * 1000
+
+function dismissStorageKey(basePath) {
+  return `${DISMISS_STORAGE_PREFIX}:${basePath}`
+}
+
+function offeredStorageKey(basePath) {
+  return `${OFFERED_STORAGE_PREFIX}:${basePath}`
+}
+
+function readDismissed(basePath) {
+  try {
+    const raw = localStorage.getItem(dismissStorageKey(basePath))
+    if (!raw) return false
+    const parsed = JSON.parse(raw)
+    if (!parsed?.at) return false
+    if (Date.now() - Number(parsed.at) > DISMISS_TTL_MS) {
+      localStorage.removeItem(dismissStorageKey(basePath))
+      return false
+    }
+    return true
+  } catch {
+    return false
+  }
+}
+
+function writeDismissed(basePath) {
+  try {
+    localStorage.setItem(
+      dismissStorageKey(basePath),
+      JSON.stringify({ at: Date.now() }),
+    )
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+function readOfferedThisSession(basePath) {
+  try {
+    return sessionStorage.getItem(offeredStorageKey(basePath)) === '1'
+  } catch {
+    return false
+  }
+}
+
+function writeOfferedThisSession(basePath) {
+  try {
+    sessionStorage.setItem(offeredStorageKey(basePath), '1')
+  } catch {
+    /* ignore */
+  }
+}
 
 /**
- * Syncs PWA on/off by route and shows an install banner on panel apps only.
+ * Syncs PWA on/off by route.
+ * Install banner: login/register for PWA roles, plus once after login
+ * on the panel — not on every in-app page change.
  */
 export default function PanelPwaManager() {
   const { t } = useTranslation()
@@ -18,14 +79,17 @@ export default function PanelPwaManager() {
   const [installAvailable, setInstallAvailable] = useState(false)
   const [dismissed, setDismissed] = useState(false)
 
+  const basePath = getPanelBasePath(pathname)
+  const isAuthPath = isPanelPwaAuthPath(pathname)
+  const isPanelPath = isPanelPwaPath(pathname)
+
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       await syncPanelPwa(pathname)
-      if (!cancelled) {
-        setInstallAvailable(canInstallPanelPwa())
-        setDismissed(false)
-      }
+      if (cancelled) return
+      setInstallAvailable(canInstallPanelPwa())
+      setDismissed(readDismissed(getPanelBasePath(pathname)))
     })()
     return () => {
       cancelled = true
@@ -33,10 +97,14 @@ export default function PanelPwaManager() {
   }, [pathname])
 
   useEffect(() => {
-    const onAvailable = () => setInstallAvailable(true)
+    const onAvailable = () => {
+      setInstallAvailable(true)
+      setDismissed(readDismissed(getPanelBasePath(window.location.pathname)))
+    }
     const onInstalled = () => {
       setInstallAvailable(false)
       setDismissed(true)
+      writeDismissed(getPanelBasePath(window.location.pathname))
     }
     window.addEventListener('panel-pwa:install-available', onAvailable)
     window.addEventListener('panel-pwa:installed', onInstalled)
@@ -46,7 +114,25 @@ export default function PanelPwaManager() {
     }
   }, [])
 
-  if (!isPanelPwaPath(pathname) || !installAvailable || dismissed) {
+  const mayOfferOnThisRoute =
+    isPanelPath &&
+    !dismissed &&
+    installAvailable &&
+    (isAuthPath || !readOfferedThisSession(basePath))
+
+  useEffect(() => {
+    if (!mayOfferOnThisRoute || isAuthPath) return
+    // Mark panel offer once so later /admin/* navigations stay quiet.
+    writeOfferedThisSession(basePath)
+  }, [mayOfferOnThisRoute, isAuthPath, basePath])
+
+  const dismiss = () => {
+    setDismissed(true)
+    writeDismissed(basePath)
+    writeOfferedThisSession(basePath)
+  }
+
+  if (!mayOfferOnThisRoute) {
     return null
   }
 
@@ -71,9 +157,12 @@ export default function PanelPwaManager() {
               type="button"
               onClick={async () => {
                 const result = await promptInstallPanelPwa()
-                if (result?.outcome !== 'accepted') {
-                  setInstallAvailable(canInstallPanelPwa())
+                if (result?.outcome === 'accepted') {
+                  dismiss()
+                  return
                 }
+                setInstallAvailable(canInstallPanelPwa())
+                if (!canInstallPanelPwa()) dismiss()
               }}
               className="rounded-lg bg-[var(--active)] px-3 py-1.5 text-xs font-bold text-white uppercase hover:brightness-95"
             >
@@ -81,7 +170,7 @@ export default function PanelPwaManager() {
             </button>
             <button
               type="button"
-              onClick={() => setDismissed(true)}
+              onClick={dismiss}
               className="rounded-lg px-3 py-1.5 text-xs font-medium text-[var(--secondary-text)] hover:bg-gray-50"
             >
               {t('pwa.notNow', 'Not now')}
@@ -90,7 +179,7 @@ export default function PanelPwaManager() {
         </div>
         <button
           type="button"
-          onClick={() => setDismissed(true)}
+          onClick={dismiss}
           className="rounded-md p-1 text-[var(--secondary-text)] hover:bg-gray-100"
           aria-label={t('common.close', 'Close')}
         >
