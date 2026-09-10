@@ -57,7 +57,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   admin: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: false,
     showWarehouses: false,
     emailEditable: false,
@@ -77,7 +77,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   affiliate: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: false,
     passwordMode: 'simple',
@@ -117,7 +117,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   factory: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: true,
     passwordMode: 'simple',
@@ -136,7 +136,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
   },
   supplier: {
     layout: 'combined',
-    showAvatarActions: false,
+    showAvatarActions: true,
     showAccountPhone: true,
     showWarehouses: true,
     passwordMode: 'full',

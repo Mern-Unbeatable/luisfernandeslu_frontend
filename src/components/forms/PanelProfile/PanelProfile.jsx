@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiUser } from 'react-icons/fi'
+import { FiCamera, FiUser } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
 import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete'
 import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
@@ -45,62 +45,56 @@ function AvatarBlock({
 }) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-      <div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-gray-500 sm:size-[72px]">
-        {form.avatarUrl ? (
-          <img
-            src={form.avatarUrl}
-            alt=""
-            className="size-full object-cover"
-          />
-        ) : (
-          <FiUser className="size-8" strokeWidth={1.5} />
-        )}
+      <div className="relative inline-flex shrink-0">
+        <div className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-gray-500 sm:size-[72px]">
+          {form.avatarUrl ? (
+            <img
+              src={form.avatarUrl}
+              alt=""
+              className="size-full object-cover"
+            />
+          ) : (
+            <FiUser className="size-8" strokeWidth={1.5} />
+          )}
+        </div>
+        {showAvatarActions ? (
+          <>
+            <input
+              ref={fileRef}
+              id={fileInputId}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="sr-only"
+              onChange={onPick}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 border-white bg-[var(--active)] text-white shadow-sm hover:opacity-90 sm:size-8"
+              aria-label={t('panel.profile.uploadNew')}
+            >
+              <FiCamera className="size-3.5 sm:size-4" strokeWidth={2} />
+            </button>
+          </>
+        ) : null}
       </div>
 
       <div className="min-w-0 flex-1">
-        {showAvatarActions ? (
-          <>
-            <h2 className="text-base font-semibold text-[var(--primary-text)]">
-              {t('panel.profile.profilePicture')}
-            </h2>
-            <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              {t('panel.profile.profilePictureHint')}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <input
-                ref={fileRef}
-                id={fileInputId}
-                type="file"
-                accept="image/*"
-                className="sr-only"
-                onChange={onPick}
-              />
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                className="inline-flex h-8 items-center rounded-md bg-emerald-400 px-3 text-xs font-semibold text-white hover:bg-emerald-500"
-              >
-                {t('panel.profile.uploadNew')}
-              </button>
-              <button
-                type="button"
-                onClick={onRemove}
-                className="inline-flex h-8 items-center rounded-md bg-rose-300 px-3 text-xs font-semibold text-white hover:bg-rose-400"
-              >
-                {t('panel.profile.remove')}
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <h2 className="truncate font-serif text-base font-semibold text-[var(--primary-text)] sm:text-lg">
-              {form.displayName || form.name || '—'}
-            </h2>
-            <p className="truncate text-sm text-[var(--secondary-text)]">
-              {form.displayEmail || form.email || '—'}
-            </p>
-          </>
-        )}
+        <h2 className="truncate font-serif text-base font-semibold text-[var(--primary-text)] sm:text-lg">
+          {form.displayName || form.name || '—'}
+        </h2>
+        <p className="truncate text-sm text-[var(--secondary-text)]">
+          {form.displayEmail || form.email || '—'}
+        </p>
+        {showAvatarActions && form.avatarUrl && onRemove ? (
+          <button
+            type="button"
+            onClick={onRemove}
+            className="mt-1.5 text-xs font-semibold text-red-600 hover:underline"
+          >
+            {t('panel.profile.remove')}
+          </button>
+        ) : null}
       </div>
     </div>
   )

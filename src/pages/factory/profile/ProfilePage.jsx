@@ -8,11 +8,19 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeFactoryPasswordMutation,
   useGetFactoryProfileQuery,
+  useRemoveFactoryAvatarMutation,
   useUpdateFactoryEupagoMutation,
   useUpdateFactoryProfileMutation,
   useUpdateFactoryWarehousesMutation,
+  useUploadFactoryAvatarMutation,
 } from '@/features/factory-profile/factoryProfileApi'
 import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 function emptyForm() {
   return {
@@ -89,6 +97,8 @@ export default function ProfilePage() {
     useChangeFactoryPasswordMutation()
   const [updateEupago, { isLoading: isSavingEupago }] =
     useUpdateFactoryEupagoMutation()
+  const [uploadAvatar] = useUploadFactoryAvatarMutation()
+  const [removeAvatar] = useRemoveFactoryAvatarMutation()
 
   useEffect(() => {
     if (!data?.profile) return
@@ -206,6 +216,49 @@ export default function ProfilePage() {
     }
   }
 
+  const handleUploadAvatar = async (file) => {
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t('panel.profile.avatarInvalidType', {
+          defaultValue: 'Use a JPEG, PNG, or WEBP image',
+        }),
+      )
+      return
+    }
+    try {
+      const result = await uploadAvatar(file).unwrap()
+      if (result?.profile) {
+        setForm(mapFactoryProfileToForm(result.profile))
+      } else {
+        await refetch()
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
+      )
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, 'Failed to upload avatar'))
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    if (!form.avatarUrl) return
+    try {
+      const result = await removeAvatar().unwrap()
+      if (result?.profile) {
+        setForm(mapFactoryProfileToForm(result.profile))
+      } else {
+        setForm((prev) => ({ ...prev, avatarUrl: null }))
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
+      )
+    } catch (err) {
+      toast.error(getAuthErrorMessage(err, 'Failed to remove avatar'))
+    }
+  }
+
   if (isLoading) {
     return (
       <>
@@ -250,6 +303,8 @@ export default function ProfilePage() {
         onSaveWarehouses={handleSaveWarehouses}
         onChangePassword={handleChangePassword}
         onSaveEupago={handleSaveEupago}
+        onUploadAvatar={handleUploadAvatar}
+        onRemoveAvatar={handleRemoveAvatar}
         showIban={false}
         isUpdatingProfile={isUpdatingProfile}
         isSavingWarehouses={isSavingWarehouses}

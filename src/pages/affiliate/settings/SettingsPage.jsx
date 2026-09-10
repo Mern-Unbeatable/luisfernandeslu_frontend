@@ -8,9 +8,17 @@ import {
   useChangeAffiliatePasswordMutation,
   useGetAffiliateIbanQuery,
   useGetAffiliateProfileQuery,
+  useRemoveAffiliateAvatarMutation,
   useUpdateAffiliateIbanMutation,
   useUpdateAffiliateProfileMutation,
+  useUploadAffiliateAvatarMutation,
 } from '@/features/affiliate/affiliateProfileApi'
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 function emptyForm() {
   return {
@@ -44,7 +52,7 @@ function mapToForm(profile, iban) {
     ibanPhone: iban?.linkedPhoneNumber ?? profile?.phoneNumber ?? '',
     businessName:
       iban?.businessName ?? profile?.companyName ?? profile?.name ?? '',
-    avatarUrl: null,
+    avatarUrl: profile?.avatarUrl ?? null,
     warehouses: [],
   }
 }
@@ -53,7 +61,7 @@ export default function SettingsPage() {
   const { t } = useTranslation()
   const [form, setForm] = useState(emptyForm)
 
-  const { data: profileResponse, isLoading: isProfileLoading } =
+  const { data: profileResponse, isLoading: isProfileLoading, refetch } =
     useGetAffiliateProfileQuery()
   const { data: ibanResponse, isLoading: isIbanLoading } =
     useGetAffiliateIbanQuery()
@@ -64,6 +72,8 @@ export default function SettingsPage() {
     useChangeAffiliatePasswordMutation()
   const [updateIban, { isLoading: isSavingIban }] =
     useUpdateAffiliateIbanMutation()
+  const [uploadAvatar] = useUploadAffiliateAvatarMutation()
+  const [removeAvatar] = useRemoveAffiliateAvatarMutation()
 
   const profile = profileResponse?.profile
   const iban = ibanResponse?.iban
@@ -117,6 +127,49 @@ export default function SettingsPage() {
     }
   }
 
+  const handleUploadAvatar = async (file) => {
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t('panel.profile.avatarInvalidType', {
+          defaultValue: 'Use a JPEG, PNG, or WEBP image',
+        }),
+      )
+      return
+    }
+    try {
+      const result = await uploadAvatar(file).unwrap()
+      if (result?.profile) {
+        setForm(mapToForm(result.profile, iban))
+      } else {
+        await refetch()
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
+      )
+    } catch (error) {
+      toast.error(error?.data?.message || error?.error || 'Failed to upload avatar')
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    if (!form.avatarUrl) return
+    try {
+      const result = await removeAvatar().unwrap()
+      if (result?.profile) {
+        setForm(mapToForm(result.profile, iban))
+      } else {
+        setForm((prev) => ({ ...prev, avatarUrl: null }))
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
+      )
+    } catch (error) {
+      toast.error(error?.data?.message || error?.error || 'Failed to remove avatar')
+    }
+  }
+
   const isLoading = isProfileLoading || isIbanLoading
 
   return (
@@ -133,6 +186,8 @@ export default function SettingsPage() {
           onUpdateProfile={handleUpdateProfile}
           onChangePassword={handleChangePassword}
           onSaveIban={handleSaveIban}
+          onUploadAvatar={handleUploadAvatar}
+          onRemoveAvatar={handleRemoveAvatar}
           isUpdatingProfile={isUpdatingProfile}
           isChangingPassword={isChangingPassword}
           isSavingIban={isSavingIban}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
@@ -9,16 +9,25 @@ import {
   SecretInput,
   TextInput,
 } from "@/components/forms/PanelProfile/FormControls";
+import { BuyerAvatar } from "@/components/forms/PanelProfile/BuyerProfileSections";
 import {
   useChangeSupplierPasswordMutation,
   useGetSupplierProfileQuery,
+  useRemoveSupplierAvatarMutation,
   useSaveSupplierEupagoMutation,
   useSaveSupplierWarehousesMutation,
   useUpdateSupplierProfileMutation,
+  useUploadSupplierAvatarMutation,
 } from "@/features/supplier/profile/profileApi";
 import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
 import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
 import EupagoCredentialsCard from "@/components/forms/PanelProfile/EupagoCredentialsCard";
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
 
 const EMPTY_SUPPLIER_PROFILE = {
   displayName: "",
@@ -53,6 +62,11 @@ export default function ProfilePage() {
     useChangeSupplierPasswordMutation();
   const [saveEupago, { isLoading: isSavingEupago }] =
     useSaveSupplierEupagoMutation();
+  const [uploadAvatar] = useUploadSupplierAvatarMutation();
+  const [removeAvatar] = useRemoveSupplierAvatarMutation();
+
+  const avatarFileRef = useRef(null);
+  const avatarFileInputId = useId();
 
   const [draft, setDraft] = useState(EMPTY_SUPPLIER_PROFILE);
   const [warehouseDraft, setWarehouseDraft] = useState([]);
@@ -218,6 +232,47 @@ export default function ProfilePage() {
     }
   };
 
+  const handleAvatarPick = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    event.target.value = "";
+
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t("panel.profile.avatarInvalidType", {
+          defaultValue: "Use a JPEG, PNG, or WEBP image",
+        }),
+      );
+      return;
+    }
+
+    try {
+      await uploadAvatar(file).unwrap();
+      toast.success(
+        t("panel.profile.avatarUpdated", { defaultValue: "Avatar updated" }),
+      );
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.message || "Failed to upload avatar",
+      );
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    if (!draft.avatarUrl) return;
+    try {
+      await removeAvatar().unwrap();
+      setDraft((current) => ({ ...current, avatarUrl: null }));
+      toast.success(
+        t("panel.profile.avatarRemoved", { defaultValue: "Avatar removed" }),
+      );
+    } catch (error) {
+      toast.error(
+        error?.data?.message || error?.message || "Failed to remove avatar",
+      );
+    }
+  };
+
   const renderStatus = () => {
     if (status.type === "idle") return null;
 
@@ -284,6 +339,25 @@ export default function ProfilePage() {
                     {t("panel.profile.edit")}
                   </button>
                 ) : null}
+              </div>
+
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <BuyerAvatar
+                  form={draft}
+                  fileRef={avatarFileRef}
+                  fileInputId={avatarFileInputId}
+                  onPick={handleAvatarPick}
+                  onRemove={handleRemoveAvatar}
+                  t={t}
+                />
+                <div className="min-w-0">
+                  <h3 className="truncate font-serif text-base font-semibold text-[var(--primary-text)] sm:text-lg">
+                    {draft.displayName || draft.name || accountLabel}
+                  </h3>
+                  <p className="truncate text-sm text-[var(--secondary-text)]">
+                    {draft.displayEmail || draft.email || "—"}
+                  </p>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

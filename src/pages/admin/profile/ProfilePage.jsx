@@ -7,12 +7,20 @@ import PanelProfile from '@/components/forms/PanelProfile'
 import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
 import {
   useChangeAdminProfilePasswordMutation,
+  useDeleteAdminProfileAvatarMutation,
   useGetAdminProfileQuery,
   useUpdateAdminProfileIbanMutation,
   useUpdateAdminProfileMutation,
+  useUploadAdminProfileAvatarMutation,
 } from '@/features/admin/adminProfileApi'
 import { mapAdminProfileToForm } from '@/features/admin/adminProfileMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+
+const ALLOWED_AVATAR_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+])
 
 export default function ProfilePage() {
   const { t } = useTranslation()
@@ -28,6 +36,8 @@ export default function ProfilePage() {
     useChangeAdminProfilePasswordMutation()
   const [updateEupago, { isLoading: isSavingEupago }] =
     useUpdateAdminProfileIbanMutation()
+  const [uploadAvatar] = useUploadAdminProfileAvatarMutation()
+  const [deleteAvatar] = useDeleteAdminProfileAvatarMutation()
 
   useEffect(() => {
     if (!data?.profile) return
@@ -107,6 +117,63 @@ export default function ProfilePage() {
     }
   }
 
+  const handleUploadAvatar = async (file) => {
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      toast.error(
+        t('panel.profile.avatarInvalidType', {
+          defaultValue: 'Use a JPEG, PNG, or WEBP image',
+        }),
+      )
+      return
+    }
+    try {
+      const result = await uploadAvatar(file).unwrap()
+      if (result?.profile) {
+        setForm(mapAdminProfileToForm(result.profile))
+      } else {
+        await refetch()
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
+      )
+    } catch (err) {
+      toast.error(
+        getAuthErrorMessage(
+          err,
+          t('panel.profile.avatarUploadFailed', {
+            defaultValue: 'Failed to upload avatar',
+          }),
+        ),
+      )
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    if (!form.avatarUrl) return
+    try {
+      const result = await deleteAvatar().unwrap()
+      if (result?.profile) {
+        setForm(mapAdminProfileToForm(result.profile))
+      } else {
+        setForm((prev) => ({ ...prev, avatarUrl: null }))
+      }
+      toast.success(
+        result?.message ||
+          t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
+      )
+    } catch (err) {
+      toast.error(
+        getAuthErrorMessage(
+          err,
+          t('panel.profile.avatarRemoveFailed', {
+            defaultValue: 'Failed to remove avatar',
+          }),
+        ),
+      )
+    }
+  }
+
   return (
     <>
       <Seo
@@ -137,6 +204,8 @@ export default function ProfilePage() {
           onUpdateProfile={handleUpdateProfile}
           onChangePassword={handleChangePassword}
           onSaveEupago={isModerator ? undefined : handleSaveEupago}
+          onUploadAvatar={handleUploadAvatar}
+          onRemoveAvatar={handleRemoveAvatar}
           showIban={false}
           showEupagoCredentials={!isModerator}
           isUpdatingProfile={isUpdatingProfile}
