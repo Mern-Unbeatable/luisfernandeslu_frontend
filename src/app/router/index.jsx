@@ -10,6 +10,9 @@ import AuthSkeleton from "../../components/common/Skeleton/AuthSkeleton";
 import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import PanelDashboardSkeleton from "../../components/common/Skeleton/PanelDashboardSkeleton";
+import AdminDashboardSkeleton from "../../components/common/Skeleton/AdminDashboardSkeleton";
+import FinancePaymentsSkeleton from "../../components/common/Skeleton/FinancePaymentsSkeleton";
+import PromotionPlansSkeleton from "../../components/common/Skeleton/PromotionPlansSkeleton";
 import PanelProfileSkeleton from "../../components/common/Skeleton/PanelProfileSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
@@ -479,7 +482,7 @@ const AffiliateSettings = Loadable(
 
 const AdminDashboard = Loadable(
   lazy(() => import("../../pages/admin/dashboard/DashboardPage")),
-  <PanelDashboardSkeleton />,
+  <AdminDashboardSkeleton />,
 );
 const AdminUserManagement = Loadable(
   lazy(() => import("../../pages/admin/user-management/UserManagementPage")),
@@ -529,9 +532,13 @@ const AdminMarketingManagement = Loadable(
   ),
   null,
 );
+const AdminPromotionPlans = Loadable(
+  lazy(() => import("../../pages/admin/promotion-plans/PromotionPlansPage")),
+  <PromotionPlansSkeleton />,
+);
 const AdminFinancePayments = Loadable(
   lazy(() => import("../../pages/admin/finance-payments/FinancePaymentsPage")),
-  null,
+  <FinancePaymentsSkeleton />,
 );
 const AdminDisputes = Loadable(
   lazy(() => import("../../pages/admin/disputes/DisputesPage")),
@@ -1439,6 +1446,11 @@ export const router = createBrowserRouter([
                     handle: panelSeo("panel.nav.marketingManagement"),
                   },
                   {
+                    path: "promotion-plans",
+                    element: <AdminPromotionPlans />,
+                    handle: panelSeo("panel.nav.promotionPlans"),
+                  },
+                  {
                     path: "finance-payments",
                     element: <AdminFinancePayments />,
                     handle: panelSeo("panel.nav.financePayments"),
@@ -1574,6 +1586,11 @@ export const router = createBrowserRouter([
                     path: "marketing-management",
                     element: <AdminMarketingManagement />,
                     handle: panelSeo("panel.nav.marketingManagement"),
+                  },
+                  {
+                    path: "promotion-plans",
+                    element: <AdminPromotionPlans />,
+                    handle: panelSeo("panel.nav.promotionPlans"),
                   },
                   {
                     path: "finance-payments",

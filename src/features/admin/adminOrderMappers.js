@@ -92,16 +92,18 @@ function mapAdminOrderTotals(totals) {
 function mapShipmentToTransporter(shipment) {
   if (!shipment) return null
 
+  const id = shipment.transporterId || shipment.transporter?.id || null
   const name =
     shipment.transporterName ||
     shipment.name ||
     shipment.driverName ||
     null
 
-  if (!name) return null
+  if (!name && !id) return null
 
   return {
-    name,
+    id,
+    name: name || 'Transporter',
     email: shipment.email || '',
     phone: shipment.phone || shipment.driverPhone || '',
     vehicle: shipment.vehicle || shipment.vehicleLabel || '',
@@ -185,6 +187,7 @@ export function mapAdminOrderDetail(apiOrder) {
     customer: isCompany ? null : customer,
     company: isCompany ? { ...customer, project: apiOrder.project } : null,
     supplier: {
+      id: seller.id || null,
       name: seller.name,
       email: seller.email,
       phone: seller.phone,
@@ -206,11 +209,28 @@ export function mapAdminOrderDetail(apiOrder) {
   if (tab === 'factory') {
     const factorySeller =
       String(seller.role || '').toUpperCase() === 'FACTORY' ? seller : null
+    const buyer = apiOrder.company || customer
 
     return {
       ...base,
-      supplier: apiOrder.company || customer,
-      factory: apiOrder.factory || factorySeller || seller,
+      supplier: buyer
+        ? {
+            id: buyer.id || null,
+            name: buyer.name,
+            email: buyer.email,
+            phone: buyer.phone,
+          }
+        : null,
+      factory: (() => {
+        const factoryParty = apiOrder.factory || factorySeller || seller
+        if (!factoryParty) return null
+        return {
+          id: factoryParty.id || null,
+          name: factoryParty.name,
+          email: factoryParty.email,
+          phone: factoryParty.phone,
+        }
+      })(),
       factoryDetailStatus: mapFactoryDetailStatus(status),
       payment: mapFactoryPayment(apiOrder, currency),
       installmentBreakdown: (apiOrder.installmentBreakdown || []).map(
