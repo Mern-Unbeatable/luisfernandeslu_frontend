@@ -47,6 +47,13 @@ const ROLE_AUTH = {
           type: 'password',
           autoComplete: 'new-password',
         },
+        {
+          name: 'referenceCode',
+          labelKey: 'auth.register.referenceCode',
+          placeholderKey: 'auth.register.referenceCodePh',
+          type: 'text',
+          required: false,
+        },
       ],
     },
   },

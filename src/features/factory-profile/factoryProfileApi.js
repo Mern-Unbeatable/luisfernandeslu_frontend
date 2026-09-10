@@ -40,6 +40,33 @@ export const factoryProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
     }),
+    updateFactoryEupago: builder.mutation({
+      query: (body) => ({
+        url: '/api/factory/profile/eupago',
+        method: 'PUT',
+        data: body,
+      }),
+      invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
+    }),
+    uploadFactoryAvatar: builder.mutation({
+      query: (file) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
+        return {
+          url: '/api/factory/profile/avatar',
+          method: 'POST',
+          data: formData,
+        }
+      },
+      invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
+    }),
+    removeFactoryAvatar: builder.mutation({
+      query: () => ({
+        url: '/api/factory/profile/avatar',
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'Factory', id: 'PROFILE' }],
+    }),
     resubmitFactoryDocuments: builder.mutation({
       query: (formData) => ({
         url: '/api/factory/profile/resubmit-documents',
@@ -57,5 +84,8 @@ export const {
   useUpdateFactoryWarehousesMutation,
   useChangeFactoryPasswordMutation,
   useUpdateFactoryIbanMutation,
+  useUpdateFactoryEupagoMutation,
+  useUploadFactoryAvatarMutation,
+  useRemoveFactoryAvatarMutation,
   useResubmitFactoryDocumentsMutation,
 } = factoryProfileApi
