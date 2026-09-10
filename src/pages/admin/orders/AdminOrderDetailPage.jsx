@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { FiArrowLeft } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
@@ -20,7 +20,11 @@ const I18N_KEY = 'adminOrders'
 export default function AdminOrderDetailPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
   const { orderId } = useParams()
+  const panelBase = location.pathname.startsWith('/moderator')
+    ? '/moderator'
+    : '/admin'
 
   const {
     data,
@@ -48,6 +52,18 @@ export default function AdminOrderDetailPage() {
 
     return mapped
   }, [data?.order, t])
+
+  const openSupportChat = useCallback(
+    (peer) => {
+      const userId = peer?.id || peer?.userId
+      if (!userId) {
+        toast.error(t(`${I18N_KEY}.detail.chatUnavailable`))
+        return
+      }
+      navigate(`${panelBase}/chat?type=ADMIN_SUPPORT&peerUserId=${userId}`)
+    },
+    [navigate, panelBase, t],
+  )
 
   const runStatusUpdate = useCallback(
     async (status, reason) => {
@@ -97,11 +113,11 @@ export default function AdminOrderDetailPage() {
         return
       }
       toast.success(result?.message || t(`${I18N_KEY}.deleteSuccess`))
-      navigate('/admin/orders')
+      navigate(`${panelBase}/orders`)
     } catch (err) {
       toast.error(getAuthErrorMessage(err, t(`${I18N_KEY}.actionFailed`)))
     }
-  }, [order, deleteOrder, navigate, t])
+  }, [order, deleteOrder, navigate, panelBase, t])
 
   if (isLoading) {
     return (
@@ -129,7 +145,7 @@ export default function AdminOrderDetailPage() {
           </button>
         </div>
         <Link
-          to="/admin/orders"
+          to={`${panelBase}/orders`}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--active)]"
         >
           <FiArrowLeft className="size-4" aria-hidden />
@@ -147,7 +163,7 @@ export default function AdminOrderDetailPage() {
           {t(`${I18N_KEY}.detail.notFound`)}
         </p>
         <Link
-          to="/admin/orders"
+          to={`${panelBase}/orders`}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--active)]"
         >
           <FiArrowLeft className="size-4" aria-hidden />
@@ -166,7 +182,7 @@ export default function AdminOrderDetailPage() {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Link
-          to="/admin/orders"
+          to={`${panelBase}/orders`}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--active)] hover:underline"
         >
           <FiArrowLeft className="size-4" aria-hidden />
@@ -191,7 +207,7 @@ export default function AdminOrderDetailPage() {
           producedLabel={t(`${I18N_KEY}.detail.produced`)}
           assignedLabel={t(`${I18N_KEY}.detail.assigned`)}
           onAccept={handleAccept}
-          onChat={() => {}}
+          onChat={openSupportChat}
         />
       ) : (
         <AdminOrderDetailView
@@ -199,6 +215,7 @@ export default function AdminOrderDetailPage() {
           supplierSectionTitle={t(`${I18N_KEY}.detail.supplierSection`)}
           onDownloadInvoice={() => {}}
           onAccept={handleAccept}
+          onChat={openSupportChat}
         />
       )}
     </div>

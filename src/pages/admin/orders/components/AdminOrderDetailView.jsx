@@ -1,4 +1,4 @@
-import { FiMapPin } from 'react-icons/fi'
+import { FiMapPin, FiMessageSquare } from 'react-icons/fi'
 import {
   AcceptButton,
   ContactLine,
@@ -13,15 +13,34 @@ import {
   normalizeStatus,
 } from '@/components/data-display/OrderDetails/shared'
 
-function SellerInformation({ supplier, title }) {
+function MessageButton({ onClick, disabled }) {
+  if (!onClick || disabled) return null
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
+    >
+      <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
+      Message
+    </button>
+  )
+}
+
+function SellerInformation({ supplier, title, onChat }) {
   if (!supplier?.name) return null
 
   return (
     <div>
       <SectionEyebrow>Seller</SectionEyebrow>
-      <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-        {title}
-      </h2>
+      <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+        <h2 className="text-lg font-bold text-[var(--primary-text)]">{title}</h2>
+        <MessageButton
+          disabled={!supplier.id}
+          onClick={() => onChat?.(supplier)}
+        />
+      </div>
       <p className="text-base font-bold text-[var(--primary-text)]">
         {supplier.name}
       </p>
@@ -32,13 +51,19 @@ function SellerInformation({ supplier, title }) {
   )
 }
 
-function TransporterInformation({ transporter, logistics }) {
+function TransporterInformation({ transporter, logistics, onChat }) {
   return (
     <div>
       <SectionEyebrow>Transporter</SectionEyebrow>
-      <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-        Transporter Information
-      </h2>
+      <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+        <h2 className="text-lg font-bold text-[var(--primary-text)]">
+          Transporter Information
+        </h2>
+        <MessageButton
+          disabled={!transporter?.id}
+          onClick={() => onChat?.(transporter)}
+        />
+      </div>
       <p className="text-base font-bold text-[var(--primary-text)]">
         {transporter.name}
       </p>
@@ -68,6 +93,7 @@ export default function AdminOrderDetailView({
   supplierSectionTitle = 'Supplier Information',
   onDownloadInvoice,
   onAccept,
+  onChat,
 }) {
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
@@ -119,9 +145,17 @@ export default function AdminOrderDetailView({
       <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div>
           <SectionEyebrow>Recipient</SectionEyebrow>
-          <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-            {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
-          </h2>
+          <div className="mt-1 mb-3 flex items-center justify-between gap-3">
+            <h2 className="text-lg font-bold text-[var(--primary-text)]">
+              {isCustomerRecipient
+                ? 'Customer Information'
+                : 'Company Information'}
+            </h2>
+            <MessageButton
+              disabled={!recipient.id}
+              onClick={() => onChat?.(recipient)}
+            />
+          </div>
           <p className="text-base font-bold text-[var(--primary-text)]">
             {recipient.name}
           </p>
@@ -157,11 +191,13 @@ export default function AdminOrderDetailView({
             <TransporterInformation
               transporter={transporter}
               logistics={logistics}
+              onChat={onChat}
             />
           ) : null}
           <SellerInformation
             supplier={supplier}
             title={supplierSectionTitle}
+            onChat={onChat}
           />
         </div>
       </div>
