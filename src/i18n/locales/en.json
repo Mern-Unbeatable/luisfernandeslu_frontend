@@ -809,7 +809,6 @@
     "filters": {
       "all": "All",
       "endingSoon": "Ending Soon",
-      "nearestFirst": "Nearest First",
       "ended": "Ended"
     }
     ,

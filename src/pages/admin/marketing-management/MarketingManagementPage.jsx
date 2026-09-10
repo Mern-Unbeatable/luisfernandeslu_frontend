@@ -25,7 +25,7 @@ import PromotionRejectModal from './components/PromotionRejectModal'
 import { MARKETING_STATS, MARKETING_TABS } from './data/marketingDemo'
 
 const I18N_KEY = 'adminMarketingManagement'
-const PAGE_SIZE = 12
+const PAGE_SIZE = 8
 
 function productCardStatus(rowStatus) {
   if (rowStatus === 'pending') return 'pending'

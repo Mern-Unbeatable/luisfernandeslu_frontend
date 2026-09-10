@@ -11,6 +11,8 @@ import BuyerSkeleton from "../../components/common/Skeleton/BuyerSkeleton";
 import PanelSkeleton from "../../components/common/Skeleton/PanelSkeleton";
 import PanelDashboardSkeleton from "../../components/common/Skeleton/PanelDashboardSkeleton";
 import AdminDashboardSkeleton from "../../components/common/Skeleton/AdminDashboardSkeleton";
+import FinancePaymentsSkeleton from "../../components/common/Skeleton/FinancePaymentsSkeleton";
+import PromotionPlansSkeleton from "../../components/common/Skeleton/PromotionPlansSkeleton";
 import PanelProfileSkeleton from "../../components/common/Skeleton/PanelProfileSkeleton";
 import HomeSkeleton from "../../components/common/Skeleton/HomeSkeleton";
 import ProductDetailPageSkeleton from "../../pages/public_page/products/components/ProductDetailPageSkeleton";
@@ -532,11 +534,11 @@ const AdminMarketingManagement = Loadable(
 );
 const AdminPromotionPlans = Loadable(
   lazy(() => import("../../pages/admin/promotion-plans/PromotionPlansPage")),
-  null,
+  <PromotionPlansSkeleton />,
 );
 const AdminFinancePayments = Loadable(
   lazy(() => import("../../pages/admin/finance-payments/FinancePaymentsPage")),
-  null,
+  <FinancePaymentsSkeleton />,
 );
 const AdminDisputes = Loadable(
   lazy(() => import("../../pages/admin/disputes/DisputesPage")),

@@ -194,11 +194,7 @@ export default function PromotionPlansSection({ asPage = false }) {
         </div>
       ) : null}
 
-      {showInitialLoading ? (
-        <p className="text-sm text-[var(--secondary-text)]">
-          {t(`${I18N_KEY}.loading`)}
-        </p>
-      ) : (
+      {showInitialLoading ? null : (
         <div
           className={`flex flex-col gap-4 xl:flex-row xl:flex-wrap ${
             isFetching && data ? 'opacity-60 transition-opacity' : ''

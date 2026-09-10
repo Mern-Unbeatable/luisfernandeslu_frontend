@@ -63,7 +63,6 @@ export function getAdminApiFilterParam(uiFilter) {
   const map = {
     all: 'all',
     ending_soon: 'ending_soon',
-    nearest: 'nearest',
     ended: 'ended',
   }
   return map[uiFilter] || 'all'
