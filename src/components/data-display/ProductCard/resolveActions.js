@@ -34,7 +34,10 @@ export function resolveActions({
       ]
     }
     if (status === 'rejected') {
-      return [{ id: 'delete', kind: 'pill', label: 'Delete', variant: 'danger' }]
+      return [
+        { id: 'delete', kind: 'pill', label: 'Delete', variant: 'danger' },
+        { id: 'details', kind: 'pill', label: 'Details', variant: 'neutral' },
+      ]
     }
     return []
   }

@@ -32,6 +32,25 @@ export const adminProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'User', id: 'ADMIN_PROFILE' }],
     }),
+    uploadAdminProfileAvatar: builder.mutation({
+      query: (file) => {
+        const formData = new FormData()
+        formData.append('avatar', file)
+        return {
+          url: '/api/admin/profile/avatar',
+          method: 'POST',
+          data: formData,
+        }
+      },
+      invalidatesTags: [{ type: 'User', id: 'ADMIN_PROFILE' }],
+    }),
+    deleteAdminProfileAvatar: builder.mutation({
+      query: () => ({
+        url: '/api/admin/profile/avatar',
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'User', id: 'ADMIN_PROFILE' }],
+    }),
   }),
 })
 
@@ -40,4 +59,6 @@ export const {
   useUpdateAdminProfileMutation,
   useChangeAdminProfilePasswordMutation,
   useUpdateAdminProfileIbanMutation,
+  useUploadAdminProfileAvatarMutation,
+  useDeleteAdminProfileAvatarMutation,
 } = adminProfileApi

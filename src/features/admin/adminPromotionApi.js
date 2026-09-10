@@ -4,7 +4,7 @@ export const adminPromotionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAdminPromotions: builder.query({
       query: ({
-        status = '',
+        status = 'all',
         featured = '',
         search = '',
         page = 1,
@@ -12,7 +12,13 @@ export const adminPromotionApi = baseApi.injectEndpoints({
       } = {}) => ({
         url: '/api/admin/promotions',
         method: 'GET',
-        params: { status, featured, search, page, limit },
+        params: {
+          status: status || 'all',
+          featured,
+          search,
+          page,
+          limit,
+        },
       }),
       providesTags: (result) =>
         result?.promotions?.length

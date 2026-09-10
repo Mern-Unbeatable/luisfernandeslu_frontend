@@ -6,6 +6,7 @@ import {
   FiPackage,
   FiMessageSquare,
   FiShoppingBag,
+  FiTag,
   FiDollarSign,
   FiAlertCircle,
   FiShoppingCart,
@@ -70,6 +71,12 @@ export const STAFF_NAV_ITEMS = [
     labelKey: 'panel.nav.marketingManagement',
     Icon: FiShoppingBag,
     permission: 'marketing-management',
+  },
+  {
+    path: 'promotion-plans',
+    labelKey: 'panel.nav.promotionPlans',
+    Icon: FiTag,
+    permission: 'promotion-plans',
   },
   {
     path: 'finance-payments',

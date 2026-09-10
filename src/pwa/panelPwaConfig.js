@@ -38,6 +38,13 @@ export function isPanelPwaPath(pathname = '') {
   )
 }
 
+/** Login / register entry points for PWA panel roles. */
+export function isPanelPwaAuthPath(pathname = '') {
+  return Boolean(
+    matchPanelRoleFromAuthPath(String(pathname || '/').split('?')[0]),
+  )
+}
+
 export function getPanelBasePath(pathname = '') {
   const path = String(pathname || '/').split('?')[0]
   const authRole = matchPanelRoleFromAuthPath(path)
