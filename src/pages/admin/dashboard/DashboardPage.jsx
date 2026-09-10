@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Seo from '@/components/common/Seo/Seo'
 import SegmentedTabs from '@/components/common/SegmentedTabs/SegmentedTabs'
+import AdminDashboardSkeleton from '@/components/common/Skeleton/AdminDashboardSkeleton'
 import { ADMIN_DASHBOARD_CHANNELS } from './data/dashboardDemo'
 import MetricsSection from './sections/MetricsSection'
 import QuickActionsSection from './sections/QuickActionsSection'
@@ -13,8 +14,21 @@ export default function DashboardPage() {
   const { t } = useTranslation()
   const [channel, setChannel] = useState('all')
 
-  const { data, isLoading } = useGetAdminDashboardOverviewQuery()
+  const { data, isLoading, isFetching } = useGetAdminDashboardOverviewQuery()
   const dashboardData = data?.metrics ? data : data?.data || data
+  const showSkeleton = isLoading || (isFetching && !dashboardData?.metrics)
+
+  if (showSkeleton) {
+    return (
+      <>
+        <Seo
+          title={t('adminDashboard.title')}
+          description={t('adminDashboard.subtitle')}
+        />
+        <AdminDashboardSkeleton />
+      </>
+    )
+  }
 
   return (
     <div className="space-y-8">
@@ -43,21 +57,12 @@ export default function DashboardPage() {
         ariaLabel={t('adminDashboard.channels.label')}
       />
 
-      <MetricsSection
-        channel={channel}
-        data={dashboardData?.metrics}
-        isLoading={isLoading}
-      />
+      <MetricsSection channel={channel} data={dashboardData?.metrics} />
       <QuickActionsSection />
-      <ChartsSection
-        channel={channel}
-        data={dashboardData?.charts}
-        isLoading={isLoading}
-      />
+      <ChartsSection channel={channel} data={dashboardData?.charts} />
       <PerformanceSection
         channel={channel}
         data={dashboardData?.performance}
-        isLoading={isLoading}
       />
     </div>
   )
