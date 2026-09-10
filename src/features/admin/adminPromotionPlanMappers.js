@@ -25,7 +25,7 @@ function formatPlanPrice(price, currency) {
 
 /** Map backend promotion plan → UI shape */
 export function mapAdminPromotionPlan(plan) {
-  const currency = plan.currency || 'USD'
+  const currency = 'EUR'
 
   return {
     id: plan.id,
