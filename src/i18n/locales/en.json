@@ -659,9 +659,11 @@
         "label": "Plan label",
         "labelPlaceholder": "7 days featured",
         "durationDays": "Duration (days)",
-        "price": "Price",
+        "price": "Price (€)",
         "currency": "Currency",
-        "sortOrder": "Sort order",
+        "sortOrder": "Display order",
+        "sortOrderShort": "Order",
+        "sortOrderHint": "Sets the order of plans in the supplier Promote modal. 1 appears first, then 2, then 3. It does not change prices or duration.",
         "isActive": "Active plan",
         "cancel": "Cancel",
         "save": "Save plan"
@@ -807,7 +809,6 @@
     "filters": {
       "all": "All",
       "endingSoon": "Ending Soon",
-      "nearestFirst": "Nearest First",
       "ended": "Ended"
     }
     ,
@@ -893,7 +894,8 @@
       "supplierSection": "Supplier Information",
       "factorySection": "Factory Information",
       "produced": "Produced",
-      "assigned": "Assigned"
+      "assigned": "Assigned",
+      "chatUnavailable": "Chat is not available for this contact."
     }
   },
   "adminDeliveryLogistics": {
@@ -1312,6 +1314,7 @@
       "transporterManagement": "Transporter Management",
       "productModeration": "Product Moderation",
       "marketingManagement": "Marketing Management",
+      "promotionPlans": "Promotion Plans",
       "financePayments": "Finance & Payments",
       "auction": "Auction",
       "affiliateDirectory": "Affiliate Directory",
@@ -1761,6 +1764,16 @@
       "ibanNumber": "IBAN Number",
       "ibanPlaceholder": "PT50 0000 0000 0000 0000 0000 0",
       "ibanPhoneEupago": "Phone number ( Eupago number )",
+      "eupagoCredentials": "Eupago credentials",
+      "eupagoApiKey": "API key",
+      "eupagoApiKeyPlaceholder": "Enter EuPago API key",
+      "eupagoApiKeyNote": "Enter your API key here and save. For security, it is not visible.",
+      "eupagoExternKey": "EuPago Extern Key",
+      "eupagoExternKeyPlaceholder": "Enter EuPago extern key",
+      "eupagoExternKeyNote": "Enter your extern key here and save. For security, it is not visible.",
+      "eupagoContactNote": "Contact EuPago to obtain your API key and extern key.",
+      "eupagoRequiredForProducts": "Add your EuPago API key and extern key in Profile before listing products on the website.",
+      "eupagoSaved": "EuPago credentials saved.",
       "ibanPhoneEpagar": "Phone number ( E-pago number )",
       "ibanPhoneBackup": "Phone number ( backup number )",
       "ibanPhonePlaceholder": "8+ characters",
