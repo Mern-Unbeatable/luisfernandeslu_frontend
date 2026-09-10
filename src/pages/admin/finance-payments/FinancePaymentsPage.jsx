@@ -4,6 +4,7 @@ import { FiCalendar, FiFileText } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
 import DataTable from '@/components/data-display/DataTable/DataTable'
 import StatusCard from '@/components/data-display/StatusCard'
+import FinancePaymentsSkeleton from '@/components/common/Skeleton/FinancePaymentsSkeleton'
 import SupplierRowActionMenu from '../supplier-management/components/SupplierRowActionMenu'
 import InvoiceRowActions from './components/InvoiceRowActions'
 import InvoiceUserTypeBadge from './components/InvoiceUserTypeBadge'
@@ -32,6 +33,9 @@ export default function FinancePaymentsPage() {
   const [invoiceUserTypeFilter, setInvoiceUserTypeFilter] = useState('all')
   const [invoiceSearch, setInvoiceSearch] = useState('')
   const [invoicePage, setInvoicePage] = useState(1)
+
+  // Swap to real query isLoading when finance API is wired.
+  const isLoading = false
 
   const payoutMenuActions = useMemo(
     () => [
@@ -263,6 +267,18 @@ export default function FinancePaymentsPage() {
       value: FINANCE_STATS.marketingRevenue,
     },
   ]
+
+  if (isLoading) {
+    return (
+      <>
+        <Seo
+          title={t(`${I18N_KEY}.title`)}
+          description={t(`${I18N_KEY}.subtitle`)}
+        />
+        <FinancePaymentsSkeleton />
+      </>
+    )
+  }
 
   return (
     <div className="space-y-6 sm:space-y-8">
