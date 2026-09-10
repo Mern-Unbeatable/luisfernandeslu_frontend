@@ -58,6 +58,7 @@ export function BuyerAccountSection({
   form,
   setField,
   onSave,
+  saving = false,
   fileRef,
   fileInputId,
   onPick,
@@ -98,8 +99,9 @@ export function BuyerAccountSection({
           <TextInput
             type="email"
             value={form.email}
-            onChange={setField('email')}
-            placeholder={t('panel.profile.emailPlaceholder')}
+            readOnly
+            aria-readonly="true"
+            className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
           />
         </Field>
         <Field label={t('panel.profile.phoneNumber')}>
@@ -140,7 +142,7 @@ export function BuyerAccountSection({
       </div>
 
       <div className="mt-6 flex justify-start">
-        <PrimaryButton size="lg" onClick={onSave}>
+        <PrimaryButton size="lg" onClick={onSave} loading={saving}>
           {t(cfg.updateProfileLabelKey)}
         </PrimaryButton>
       </div>
@@ -148,7 +150,14 @@ export function BuyerAccountSection({
   )
 }
 
-export function BuyerPasswordSection({ cfg, form, setField, onSave, t }) {
+export function BuyerPasswordSection({
+  cfg,
+  form,
+  setField,
+  onSave,
+  saving = false,
+  t,
+}) {
   return (
     <div className="mt-10 border-t border-gray-100 pt-10">
       <SectionTitle>{t(cfg.passwordTitleKey)}</SectionTitle>
@@ -179,7 +188,7 @@ export function BuyerPasswordSection({ cfg, form, setField, onSave, t }) {
         </Field>
       </div>
       <div className="mt-6 flex justify-start">
-        <PrimaryButton size="lg" onClick={onSave}>
+        <PrimaryButton size="lg" onClick={onSave} loading={saving}>
           {t(cfg.changePasswordLabelKey)}
         </PrimaryButton>
       </div>
@@ -187,7 +196,14 @@ export function BuyerPasswordSection({ cfg, form, setField, onSave, t }) {
   )
 }
 
-export function BuyerAddressCard({ titleKey, values, onChange, onSave, t }) {
+export function BuyerAddressCard({
+  titleKey,
+  values,
+  onChange,
+  onSave,
+  saving = false,
+  t,
+}) {
   const set = (key) => (value) => onChange({ ...values, [key]: value })
 
   return (
@@ -241,7 +257,9 @@ export function BuyerAddressCard({ titleKey, values, onChange, onSave, t }) {
             <TextInput
               type="email"
               value={values.email}
-              onChange={set('email')}
+              readOnly
+              aria-readonly="true"
+              className="cursor-default bg-gray-50 text-[var(--secondary-text)] focus:border-gray-200"
             />
           </Field>
           <Field label={t('panel.profile.phoneNumber')} className="sm:col-span-2">
@@ -253,7 +271,7 @@ export function BuyerAddressCard({ titleKey, values, onChange, onSave, t }) {
           </Field>
         </div>
         <div className="flex justify-start pt-2">
-          <PrimaryButton size="lg" onClick={onSave}>
+          <PrimaryButton size="lg" onClick={onSave} loading={saving}>
             {t('panel.profile.saveChanges')}
           </PrimaryButton>
         </div>

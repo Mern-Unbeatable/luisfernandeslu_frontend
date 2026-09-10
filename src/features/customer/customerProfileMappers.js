@@ -82,7 +82,6 @@ export function mapCustomerProfileToPayload(form) {
   return {
     firstName: String(form.firstName || '').trim(),
     lastName: String(form.lastName || '').trim(),
-    email: String(form.email || '').trim(),
     phone: String(form.phone || '').trim(),
     region: String(form.region || '').trim(),
     city: String(form.city || '').trim(),
