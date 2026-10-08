@@ -50,6 +50,19 @@ export const UNLOADING_TYPE_OPTIONS = [
   { value: 'manual', label: 'Manual Unloading' },
 ]
 
+export const DEFAULT_UNLOADING_TYPE = 'forklift'
+
+export function toUnloadingTypeId(value) {
+  const raw = String(value ?? '').trim().toLowerCase()
+  if (!raw) return ''
+  const match = UNLOADING_TYPE_OPTIONS.find(
+    (option) =>
+      option.value &&
+      (option.value === raw || option.label.toLowerCase() === raw),
+  )
+  return match ? match.value : ''
+}
+
 export const ACCESS_CONDITION_OPTIONS = [
   { value: '', label: 'Select...' },
   { value: 'easy', label: 'Easy Access' },

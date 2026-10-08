@@ -10,6 +10,7 @@ import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
 import { useGetCustomerProfileQuery } from '@/features/customer/customerProfileApi'
+import { DEFAULT_UNLOADING_TYPE, toUnloadingTypeId } from './data/checkoutDemo'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
 import toast from 'react-hot-toast'
@@ -107,7 +108,7 @@ export default function UserCheckoutPage() {
         zipCode: shipping.zipCode || '—',
         country: 'Portugal'
       },
-      unloadingType: shipping.unloadingType || 'Forklift',
+      unloadingType: toUnloadingTypeId(shipping.unloadingType) || DEFAULT_UNLOADING_TYPE,
       unloadingLocationDescription: shipping.unloadingLocationDescription,
       accessConditions: shipping.accessConditions,
       paymentMethod: 'multibanco',

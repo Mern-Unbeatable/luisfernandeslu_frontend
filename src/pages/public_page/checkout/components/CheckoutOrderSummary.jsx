@@ -9,6 +9,7 @@ import {
   useRemovePromoCodeMutation 
 } from '@/features/cart/cartApi'
 import { useQuoteShippingMutation } from '@/features/checkout/checkoutApi'
+import { DEFAULT_UNLOADING_TYPE, toUnloadingTypeId } from '../data/checkoutDemo'
 
 export default function CheckoutOrderSummary({ 
   backTo = '/products', 
@@ -37,7 +38,8 @@ export default function CheckoutOrderSummary({
       const timer = setTimeout(async () => {
         try {
           const payload = {
-            unloadingType: shippingForm.unloadingType || 'Forklift',
+            unloadingType:
+              toUnloadingTypeId(shippingForm.unloadingType) || DEFAULT_UNLOADING_TYPE,
             shippingAddress: {
               streetAddress: shippingForm.address || '',
               city: shippingForm.city || '',
