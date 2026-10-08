@@ -469,8 +469,10 @@ export default function PanelProfile({
 
   const handleSaveEupago = () => {
     onSaveEupago?.({
-      eupagoApiKey: form.eupagoApiKey,
-      eupagoExternKey: form.eupagoExternKey,
+      ...(cfg.eupagoShowApiKey ? { eupagoApiKey: form.eupagoApiKey } : {}),
+      ...(cfg.eupagoShowExternKey
+        ? { eupagoExternKey: form.eupagoExternKey }
+        : {}),
     })
   }
 
@@ -645,6 +647,8 @@ export default function PanelProfile({
             setField={setField}
             onSave={handleSaveEupago}
             saving={isSavingEupago}
+            showApiKey={Boolean(cfg.eupagoShowApiKey)}
+            showExternKey={cfg.eupagoShowExternKey !== false}
             t={t}
           />
         ) : null}

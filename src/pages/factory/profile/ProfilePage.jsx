@@ -32,7 +32,6 @@ function emptyForm() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    eupagoApiKey: '',
     eupagoExternKey: '',
     hasEupagoCredentials: false,
     avatarUrl: null,
@@ -58,7 +57,6 @@ function mapFactoryProfileToForm(profile) {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    eupagoApiKey: '',
     eupagoExternKey: '',
     hasEupagoCredentials: Boolean(profile?.hasEupagoCredentials),
     avatarUrl: profile?.avatarUrl || null,
@@ -193,17 +191,26 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
+  const handleSaveEupago = async ({ eupagoExternKey }) => {
+    const externKey = String(eupagoExternKey || '').trim()
+    if (!externKey) {
+      toast.error(
+        t('panel.profile.eupagoExternKeyRequired', {
+          defaultValue: 'Enter your EuPago extern key',
+        }),
+      )
+      return
+    }
     try {
-      const result = await updateEupago({
-        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
-        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
-      }).unwrap()
+      const result = await updateEupago({ eupagoExternKey: externKey }).unwrap()
       setForm((prev) => ({
         ...prev,
-        eupagoApiKey: '',
         eupagoExternKey: '',
-        hasEupagoCredentials: true,
+        hasEupagoCredentials: Boolean(
+          result?.profile?.hasEupagoCredentials ??
+            result?.hasEupagoCredentials ??
+            true,
+        ),
       }))
       toast.success(
         result?.message ||

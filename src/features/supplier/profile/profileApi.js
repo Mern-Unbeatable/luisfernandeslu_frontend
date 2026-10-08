@@ -20,7 +20,6 @@ function normalizeSupplierProfile(payload = {}) {
     warehouses,
     iban: String(profile.iban ?? ""),
     ibanPhone: String(profile.ibanPhone ?? ""),
-    eupagoApiKey: "",
     eupagoExternKey: "",
     hasEupagoCredentials: Boolean(profile.hasEupagoCredentials),
     rejectionReason: profile.rejectionReason || null,
@@ -86,11 +85,10 @@ export const supplierProfileApi = baseApi.injectEndpoints({
       invalidatesTags: [{ type: "Profile", id: "supplier" }],
     }),
     saveSupplierEupago: builder.mutation({
-      query: ({ eupagoApiKey, eupagoExternKey }) => ({
+      query: ({ eupagoExternKey }) => ({
         url: "/api/supplier/profile/eupago",
         method: "PUT",
         data: {
-          eupagoApiKey,
           eupagoExternKey,
         },
       }),
