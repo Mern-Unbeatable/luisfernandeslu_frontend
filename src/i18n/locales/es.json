@@ -25,6 +25,7 @@
     "beLiberator": "Sea un libertador"
   },
   "productsPage": {
+    "unavailableForPurchase": "Actualmente no disponible para compra",
     "filters": "Filtros",
     "priceRange": "Rango de precio",
     "minPrice": "Precio mínimo",

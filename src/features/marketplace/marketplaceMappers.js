@@ -117,6 +117,7 @@ export function mapMarketplaceDetailProduct(product, viewer) {
     isSponsored: Boolean(product.isSponsored),
     isFeatured: Boolean(product.isFeatured),
     pricingView: product.pricingView || (isCompany ? 'company' : 'retail'),
+    purchasable: product.purchasable !== false,
     actions: product.actions ?? null,
     defaultQuantity:
       isCompany && minQty != null && Number(minQty) > 0
@@ -162,6 +163,7 @@ export function mapMarketplaceCatalogProduct(product) {
       ? 'Bulk options available'
       : undefined,
     isSponsored: Boolean(product.isSponsored),
+    purchasable: product.purchasable !== false,
   }
 }
 

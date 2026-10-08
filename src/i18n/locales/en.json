@@ -25,6 +25,7 @@
     "beLiberator": "Be a deliverer"
   },
   "productsPage": {
+    "unavailableForPurchase": "Currently unavailable for purchase",
     "filters": "Filters",
     "priceRange": "Price Range",
     "minPrice": "Min price",

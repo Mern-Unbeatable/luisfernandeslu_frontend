@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import Swal from 'sweetalert2'
 import ProductDetails from '@/components/data-display/ProductDetails/ProductDetails'
 import ProductDetailPageSkeleton from './components/ProductDetailPageSkeleton'
@@ -39,6 +40,7 @@ function filterDetailActions(role, apiActions) {
 }
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation()
   const { slug = '' } = useParams()
   const navigate = useNavigate()
   const user = useSelector((state) => state.auth.user)
@@ -167,6 +169,13 @@ export default function ProductDetailPage() {
         description={product.descriptionParagraphs?.[0]}
       />
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
+        {product.purchasable === false ? (
+          <p className="mb-4 rounded-lg border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {t('productsPage.unavailableForPurchase', {
+              defaultValue: 'Currently unavailable for purchase',
+            })}
+          </p>
+        ) : null}
         <ProductDetails
           role={listingRole}
           product={product}
