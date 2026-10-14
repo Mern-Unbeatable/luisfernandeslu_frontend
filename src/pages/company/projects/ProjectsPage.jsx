@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import CompanyProjectCard from '@/components/data-display/CompanyProjectCard/CompanyProjectCard'
 import Pagination from '@/components/common/Pagination/Pagination'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import { useGetCompanyProjectsQuery } from '@/features/company/companyProjectApi'
 import { mapCompanyProject } from '@/features/company/companyProjectMappers'
 
@@ -42,17 +43,17 @@ export default function ProjectsPage() {
 
   const showInitialLoading = isLoading && !data
 
+  if (showInitialLoading) {
+    return <BuyerSkeleton variant="projects" />
+  }
+
   return (
     <div>
       <h2 className="mb-6 text-lg font-bold text-[var(--primary-text)] sm:text-xl">
         {t('buyer.projects')}
       </h2>
 
-      {showInitialLoading ? (
-        <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-          {t('companyProjects.loading')}
-        </p>
-      ) : isError ? (
+      {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
           <p className="text-sm text-red-700">
             {error?.data?.message || t('companyProjects.loadFailed')}

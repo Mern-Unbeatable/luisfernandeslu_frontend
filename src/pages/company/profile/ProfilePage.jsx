@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
+import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
 import PanelProfile from '@/components/forms/PanelProfile'
 import {
   useChangeCompanyProfilePasswordMutation,
@@ -233,9 +234,7 @@ export default function ProfilePage() {
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-[var(--secondary-text)]">
-          {t('panel.profile.loading')}
-        </p>
+        <PanelProfileSkeleton />
       ) : (
         <PanelProfile
           role="company"

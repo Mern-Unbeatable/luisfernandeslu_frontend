@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import BuyerOrderInformation from '@/components/data-display/BuyerOrderInformation/BuyerOrderInformation'
 import {
   useDownloadCustomerOrderInvoiceMutation,
@@ -82,11 +83,7 @@ export default function OrderDetailPage() {
   }, [order, downloadInvoice, fetchInvoice, t])
 
   if (isLoading && !data) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('buyerOrders.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="orderDetail" />
   }
 
   if (isError) {

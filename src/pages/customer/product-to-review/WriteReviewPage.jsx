@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import MaterialQualityFeedback from '@/components/forms/MaterialQualityFeedback/MaterialQualityFeedback'
 import {
   useGetCustomerPendingReviewByIdQuery,
@@ -72,11 +73,7 @@ export default function WriteReviewPage() {
   )
 
   if (isLoading && !data) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('productToReview.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="reviewForm" />
   }
 
   if (isError) {

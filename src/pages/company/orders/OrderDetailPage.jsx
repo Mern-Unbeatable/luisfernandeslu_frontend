@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import CompanyOrderDetail from '@/components/data-display/CompanyOrderDetail/CompanyOrderDetail'
 import NotFoundPage from '@/pages/public_page/NotFoundPage'
 import { useGetCompanyOrderByIdQuery } from '@/features/company/companyOrderApi'
@@ -24,11 +25,7 @@ export default function OrderDetailPage() {
   const order = useMemo(() => mapCompanyOrderDetail(data), [data])
 
   if (isLoading && !data) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('companyOrders.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="orderDetail" />
   }
 
   if (isError) {

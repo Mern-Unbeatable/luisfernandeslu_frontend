@@ -153,25 +153,25 @@ const CustomerDashboard = Loadable(
 );
 const CustomerOrders = Loadable(
   lazy(() => import("../../pages/customer/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orders" />,
 );
 const CustomerOrderDetail = Loadable(
   lazy(() => import("../../pages/customer/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CustomerProductToReview = Loadable(
   lazy(
     () => import("../../pages/customer/product-to-review/ProductToReviewPage"),
   ),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="reviews" />,
 );
 const CustomerWriteReview = Loadable(
   lazy(() => import("../../pages/customer/product-to-review/WriteReviewPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="reviewForm" />,
 );
 const CustomerProfile = Loadable(
   lazy(() => import("../../pages/customer/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <PanelProfileSkeleton />,
 );
 const CustomerAffiliates = Loadable(
   lazy(() => import("../../pages/customer/affiliates/AffiliatesPage")),
@@ -186,27 +186,27 @@ const CompanyDashboard = Loadable(
 );
 const CompanyOrders = Loadable(
   lazy(() => import("../../pages/company/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="table" />,
 );
 const CompanyOrderDetail = Loadable(
   lazy(() => import("../../pages/company/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CompanyProjects = Loadable(
   lazy(() => import("../../pages/company/projects/ProjectsPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="projects" />,
 );
 const CompanyProjectDetail = Loadable(
   lazy(() => import("../../pages/company/projects/ProjectDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="projectDetail" />,
 );
 const CompanyMaterialDetail = Loadable(
   lazy(() => import("../../pages/company/projects/MaterialDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CompanyProfile = Loadable(
   lazy(() => import("../../pages/company/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <PanelProfileSkeleton />,
 );
 const CompanyAffiliates = Loadable(
   lazy(() => import("../../pages/company/affiliates/AffiliatesPage")),
