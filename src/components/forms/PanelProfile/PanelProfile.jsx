@@ -288,24 +288,26 @@ function IbanCard({ cfg, form, setField, onSave, saving = false, t }) {
             </p>
           ) : null}
         </Field>
-        <Field label={t(cfg.ibanPhoneLabelKey)}>
-          <SecondaryInput
-            value={form.ibanPhone}
-            onChange={setField('ibanPhone')}
-            placeholder={t(cfg.ibanPhonePlaceholderKey)}
-            {...(cfg.ibanSecondaryAsSecret || secondaryWriteOnly
-              ? {
-                  revealable: !secondaryWriteOnly,
-                  autoComplete: 'new-password',
-                }
-              : null)}
-          />
-          {cfg.ibanSecondaryNoteKey ? (
-            <p className="mt-1.5 text-xs text-[var(--secondary-text)]">
-              {t(cfg.ibanSecondaryNoteKey)}
-            </p>
-          ) : null}
-        </Field>
+        {cfg.ibanPhoneLabelKey ? (
+          <Field label={t(cfg.ibanPhoneLabelKey)}>
+            <SecondaryInput
+              value={form.ibanPhone}
+              onChange={setField('ibanPhone')}
+              placeholder={t(cfg.ibanPhonePlaceholderKey)}
+              {...(cfg.ibanSecondaryAsSecret || secondaryWriteOnly
+                ? {
+                    revealable: !secondaryWriteOnly,
+                    autoComplete: 'new-password',
+                  }
+                : null)}
+            />
+            {cfg.ibanSecondaryNoteKey ? (
+              <p className="mt-1.5 text-xs text-[var(--secondary-text)]">
+                {t(cfg.ibanSecondaryNoteKey)}
+              </p>
+            ) : null}
+          </Field>
+        ) : null}
         <div className={`flex pt-2 ${alignClass(ibanAlign)}`}>
           <PrimaryButton onClick={onSave} loading={saving}>
             {t('panel.profile.saveIban')}
@@ -469,8 +471,10 @@ export default function PanelProfile({
 
   const handleSaveEupago = () => {
     onSaveEupago?.({
-      eupagoApiKey: form.eupagoApiKey,
-      eupagoExternKey: form.eupagoExternKey,
+      ...(cfg.eupagoShowApiKey ? { eupagoApiKey: form.eupagoApiKey } : {}),
+      ...(cfg.eupagoShowExternKey
+        ? { eupagoExternKey: form.eupagoExternKey }
+        : {}),
     })
   }
 
@@ -645,6 +649,8 @@ export default function PanelProfile({
             setField={setField}
             onSave={handleSaveEupago}
             saving={isSavingEupago}
+            showApiKey={Boolean(cfg.eupagoShowApiKey)}
+            showExternKey={cfg.eupagoShowExternKey !== false}
             t={t}
           />
         ) : null}

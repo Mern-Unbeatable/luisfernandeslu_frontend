@@ -22,6 +22,7 @@ import {
 import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
 import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
 import EupagoCredentialsCard from "@/components/forms/PanelProfile/EupagoCredentialsCard";
+import { isValidEupagoExternKey } from "@/components/forms/PanelProfile/eupagoExternKey";
 
 const ALLOWED_AVATAR_TYPES = new Set([
   "image/jpeg",
@@ -72,7 +73,6 @@ export default function ProfilePage() {
   const [warehouseDraft, setWarehouseDraft] = useState([]);
   const [passwordDraft, setPasswordDraft] = useState(EMPTY_PASSWORD);
   const [eupagoDraft, setEupagoDraft] = useState({
-    eupagoApiKey: "",
     eupagoExternKey: "",
   });
 
@@ -211,13 +211,22 @@ export default function ProfilePage() {
   };
 
   const handleEupagoSave = async () => {
+    const externKey = String(eupagoDraft.eupagoExternKey || "").trim();
+    if (!externKey) {
+      toast.error(
+        t("panel.profile.eupagoExternKeyRequired", {
+          defaultValue: "Enter your EuPago extern key",
+        }),
+      );
+      return;
+    }
+    if (!isValidEupagoExternKey(externKey)) {
+      toast.error(t("panel.profile.eupagoExternKeyInvalid"));
+      return;
+    }
     try {
-      await saveEupago({
-        eupagoApiKey: String(eupagoDraft.eupagoApiKey || "").trim() || undefined,
-        eupagoExternKey:
-          String(eupagoDraft.eupagoExternKey || "").trim() || undefined,
-      }).unwrap();
-      setEupagoDraft({ eupagoApiKey: "", eupagoExternKey: "" });
+      await saveEupago({ eupagoExternKey: externKey }).unwrap();
+      setEupagoDraft({ eupagoExternKey: "" });
       toast.success(
         t("panel.profile.eupagoSaved", {
           defaultValue: "EuPago credentials saved",
@@ -225,9 +234,11 @@ export default function ProfilePage() {
       );
     } catch (error) {
       const message =
-        error?.data?.message ||
-        error?.message ||
-        "Unable to save EuPago credentials.";
+        error?.data?.error === "EupagoExternKeyRejected"
+          ? t("panel.profile.eupagoExternKeyRejected")
+          : error?.data?.message ||
+            error?.message ||
+            "Unable to save EuPago credentials.";
       toast.error(message);
     }
   };
@@ -592,6 +603,8 @@ export default function ProfilePage() {
               }
               onSave={handleEupagoSave}
               saving={isSavingEupago}
+              showApiKey={false}
+              showExternKey
               t={t}
             />
           </>

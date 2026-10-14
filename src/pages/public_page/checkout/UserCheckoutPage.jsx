@@ -6,10 +6,12 @@ import BillingInformationForm, {
   emptyBillingValues,
 } from './components/BillingInformationForm'
 import CheckoutOrderSummary from './components/CheckoutOrderSummary'
+import PaymentMethodSelector from './components/PaymentMethodSelector'
 import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
 import { useGetCustomerProfileQuery } from '@/features/customer/customerProfileApi'
+import { DEFAULT_UNLOADING_TYPE, toUnloadingTypeId } from './data/checkoutDemo'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
 import { useGetCartQuery } from '@/features/cart/cartApi'
 import toast from 'react-hot-toast'
@@ -27,6 +29,8 @@ export default function UserCheckoutPage() {
   const [billing, setBilling] = useState(emptyBillingValues)
   const [shipping, setShipping] = useState(emptyShippingValues)
   const [useCustomBilling, setUseCustomBilling] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState('MULTIBANCO')
+  const [mbwayPhone, setMbwayPhone] = useState('')
   const [placeCheckout, { isLoading: isSubmitting }] = usePlaceCheckoutMutation()
   const { data: cartDataQuery } = useGetCartQuery(undefined, { skip: !!location.state?.directBuy })
   const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
@@ -69,6 +73,11 @@ export default function UserCheckoutPage() {
       return
     }
 
+    if (paymentMethod === 'MBWAY' && !mbwayPhone.trim()) {
+      toast.error(t('checkoutPage.mbwayPhoneRequired'))
+      return
+    }
+
     const cartItemIds = directBuy ? undefined : cartItems.map(item => item.id)
 
     let finalBillingAddress = null
@@ -107,10 +116,11 @@ export default function UserCheckoutPage() {
         zipCode: shipping.zipCode || '—',
         country: 'Portugal'
       },
-      unloadingType: shipping.unloadingType || 'Forklift',
+      unloadingType: toUnloadingTypeId(shipping.unloadingType) || DEFAULT_UNLOADING_TYPE,
       unloadingLocationDescription: shipping.unloadingLocationDescription,
       accessConditions: shipping.accessConditions,
-      paymentMethod: 'multibanco',
+      paymentMethod: paymentMethod.toLowerCase(),
+      mbwayPhone: paymentMethod === 'MBWAY' ? mbwayPhone.trim() : undefined,
       directBuy: directBuy || undefined,
       promos: directBuy ? directPromos : undefined,
     }
@@ -185,6 +195,14 @@ export default function UserCheckoutPage() {
             )}
 
             <ShippingUnloadingForm values={shipping} onChange={setShipping} />
+
+            <PaymentMethodSelector
+              value={paymentMethod}
+              onChange={setPaymentMethod}
+              mbwayPhone={mbwayPhone}
+              onMbwayPhoneChange={setMbwayPhone}
+              allowedMethods={['MULTIBANCO', 'MBWAY']}
+            />
           </form>
 
           <CheckoutOrderSummary 

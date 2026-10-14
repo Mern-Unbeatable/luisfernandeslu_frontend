@@ -11,6 +11,7 @@ import ShippingUnloadingForm, {
   emptyShippingValues,
 } from './components/ShippingUnloadingForm'
 import PaymentMethodSelector from './components/PaymentMethodSelector'
+import { DEFAULT_UNLOADING_TYPE, toUnloadingTypeId } from './data/checkoutDemo'
 import { useGetCompanyProfileQuery } from '@/features/company/companyProfileApi'
 import { useGetSupplierProfileQuery } from '@/features/supplier/profile/profileApi'
 import { usePlaceCheckoutMutation, useQuoteDirectBuyMutation } from '@/features/checkout/checkoutApi'
@@ -38,18 +39,6 @@ export default function CompanyCheckoutPage() {
   const isOfferBuy = Boolean(directBuy?.offerId)
   const offerData = directBuy?.offer
 
-  const mapUnloading = (label) => {
-    if (!label) return ''
-    const map = {
-      'Crane (12m)': 'crane-12',
-      'Crane (24m)': 'crane-24',
-      'Tipper Truck': 'tipper',
-      'Forklift': 'forklift',
-      'Manual Unloading': 'manual'
-    }
-    return map[label] || label
-  }
-
   const mapAccess = (label) => {
     if (!label) return ''
     const map = {
@@ -71,7 +60,7 @@ export default function CompanyCheckoutPage() {
   const [shipping, setShipping] = useState({
     ...emptyShippingValues,
     address: offerData?.deliveryLocation || '',
-    unloadingType: mapUnloading(offerData?.unloadingType),
+    unloadingType: toUnloadingTypeId(offerData?.unloadingType),
     accessConditions: mapAccess(offerData?.accessConditions),
   })
   
@@ -196,7 +185,7 @@ export default function CompanyCheckoutPage() {
       },
       projectName: billing.projectName,
       projectLocation: billing.projectLocation,
-      unloadingType: shipping.unloadingType || 'Forklift',
+      unloadingType: toUnloadingTypeId(shipping.unloadingType) || DEFAULT_UNLOADING_TYPE,
       unloadingLocationDescription: shipping.unloadingLocationDescription,
       accessConditions: shipping.accessConditions,
       paymentMethod: paymentMethod.toLowerCase(),

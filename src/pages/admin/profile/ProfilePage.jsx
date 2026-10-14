@@ -86,13 +86,19 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
+  const handleSaveEupago = async ({ eupagoApiKey }) => {
     if (isModerator) return
+    const apiKey = String(eupagoApiKey || '').trim()
+    if (!apiKey) {
+      toast.error(
+        t('panel.profile.eupagoApiKeyRequired', {
+          defaultValue: 'Enter the EuPago API key',
+        }),
+      )
+      return
+    }
     try {
-      const result = await updateEupago({
-        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
-        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
-      }).unwrap()
+      const result = await updateEupago({ eupagoApiKey: apiKey }).unwrap()
 
       if (result?.success === false) {
         toast.error(
@@ -104,7 +110,6 @@ export default function ProfilePage() {
       setForm((prev) => ({
         ...prev,
         eupagoApiKey: '',
-        eupagoExternKey: '',
       }))
       toast.success(
         result?.message ||

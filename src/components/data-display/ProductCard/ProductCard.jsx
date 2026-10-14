@@ -150,6 +150,12 @@ export default function ProductCard({
           </div>
         ) : null}
 
+        {product.unavailableLabel ? (
+          <p className="mt-auto pt-2 text-xs font-semibold text-[var(--secondary-text)]">
+            {product.unavailableLabel}
+          </p>
+        ) : null}
+
         {(showQuantity || product.showQuantity) && !isFeatured ? (
           <div className="mt-auto flex items-center gap-3 pt-2">
             <QuantityControl

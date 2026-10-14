@@ -2,11 +2,11 @@
  * Exact section map from the My Profile mockups (per role).
  * Label fields are i18n keys under `panel.profile.*`.
  *
- * 1 admin       — name+email, full password, Eupago credentials
+ * 1 admin       — name+email, full password, Eupago API key
  * 2 affiliate   — name+email+phone, simple password, IBAN
  * 3 transporter — split cards, avatar upload, personal info, IBAN
- * 4 factory     — phone + warehouses, simple password, Eupago credentials
- * 5 supplier    — phone + warehouses, full password, Eupago credentials
+ * 4 factory     — phone + warehouses, simple password, Eupago extern key
+ * 5 supplier    — phone + warehouses, full password, Eupago extern key
  * 6 customer    — buyer account: avatar, address fields, password, IBAN, billing/shipping
  * 7 company     — same buyer account layout as customer
  */
@@ -64,6 +64,8 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     passwordMode: 'full',
     showIban: false,
     showEupagoCredentials: true,
+    eupagoShowApiKey: true,
+    eupagoShowExternKey: false,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',
@@ -92,8 +94,6 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.changePassword',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneEpagar',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
   transporter: {
     layout: 'split',
@@ -112,8 +112,6 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.saveChanges',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneBackup',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
   factory: {
     layout: 'combined',
@@ -123,6 +121,8 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     passwordMode: 'simple',
     showIban: false,
     showEupagoCredentials: true,
+    eupagoShowApiKey: false,
+    eupagoShowExternKey: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',
@@ -142,6 +142,8 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     passwordMode: 'full',
     showIban: false,
     showEupagoCredentials: true,
+    eupagoShowApiKey: false,
+    eupagoShowExternKey: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     warehouseTitleKey: 'panel.profile.warehouseLocationSupplier',

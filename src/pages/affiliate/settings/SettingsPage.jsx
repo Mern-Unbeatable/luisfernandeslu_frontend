@@ -31,7 +31,6 @@ function emptyForm() {
     newPassword: '',
     confirmPassword: '',
     iban: '',
-    ibanPhone: '',
     businessName: '',
     avatarUrl: null,
     warehouses: [],
@@ -49,7 +48,6 @@ function mapToForm(profile, iban) {
     newPassword: '',
     confirmPassword: '',
     iban: iban?.ibanNumber ?? profile?.ibanNumber ?? '',
-    ibanPhone: iban?.linkedPhoneNumber ?? profile?.phoneNumber ?? '',
     businessName:
       iban?.businessName ?? profile?.companyName ?? profile?.name ?? '',
     avatarUrl: profile?.avatarUrl ?? null,
@@ -114,11 +112,10 @@ export default function SettingsPage() {
     }
   }
 
-  const handleSaveIban = async ({ iban: ibanNumber, ibanPhone }) => {
+  const handleSaveIban = async ({ iban: ibanNumber }) => {
     try {
       const result = await updateIban({
         ibanNumber: String(ibanNumber || '').trim(),
-        linkedPhoneNumber: String(ibanPhone || '').trim(),
         businessName: String(form.businessName || '').trim(),
       }).unwrap()
       toast.success(result?.message || 'IBAN updated')

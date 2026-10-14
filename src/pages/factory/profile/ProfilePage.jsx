@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import RejectionBanner from '@/components/common/RejectionBanner'
 import PanelProfile from '@/components/forms/PanelProfile'
+import { isValidEupagoExternKey } from '@/components/forms/PanelProfile/eupagoExternKey'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeFactoryPasswordMutation,
@@ -32,7 +33,6 @@ function emptyForm() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    eupagoApiKey: '',
     eupagoExternKey: '',
     hasEupagoCredentials: false,
     avatarUrl: null,
@@ -58,7 +58,6 @@ function mapFactoryProfileToForm(profile) {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    eupagoApiKey: '',
     eupagoExternKey: '',
     hasEupagoCredentials: Boolean(profile?.hasEupagoCredentials),
     avatarUrl: profile?.avatarUrl || null,
@@ -193,17 +192,30 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
+  const handleSaveEupago = async ({ eupagoExternKey }) => {
+    const externKey = String(eupagoExternKey || '').trim()
+    if (!externKey) {
+      toast.error(
+        t('panel.profile.eupagoExternKeyRequired', {
+          defaultValue: 'Enter your EuPago extern key',
+        }),
+      )
+      return
+    }
+    if (!isValidEupagoExternKey(externKey)) {
+      toast.error(t('panel.profile.eupagoExternKeyInvalid'))
+      return
+    }
     try {
-      const result = await updateEupago({
-        eupagoApiKey: String(eupagoApiKey || '').trim() || undefined,
-        eupagoExternKey: String(eupagoExternKey || '').trim() || undefined,
-      }).unwrap()
+      const result = await updateEupago({ eupagoExternKey: externKey }).unwrap()
       setForm((prev) => ({
         ...prev,
-        eupagoApiKey: '',
         eupagoExternKey: '',
-        hasEupagoCredentials: true,
+        hasEupagoCredentials: Boolean(
+          result?.profile?.hasEupagoCredentials ??
+            result?.hasEupagoCredentials ??
+            true,
+        ),
       }))
       toast.success(
         result?.message ||
@@ -212,7 +224,11 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save EuPago credentials'))
+      toast.error(
+        err?.data?.error === 'EupagoExternKeyRejected'
+          ? t('panel.profile.eupagoExternKeyRejected')
+          : getAuthErrorMessage(err, 'Failed to save EuPago credentials'),
+      )
     }
   }
 

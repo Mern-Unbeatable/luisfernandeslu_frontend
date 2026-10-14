@@ -27,7 +27,6 @@ function emptyForm() {
     newPassword: '',
     confirmPassword: '',
     iban: '',
-    ibanPhone: '',
     avatarUrl: null,
   }
 }
@@ -58,7 +57,6 @@ function mapTransporterProfileToForm(profile) {
     newPassword: '',
     confirmPassword: '',
     iban: profile?.iban || '',
-    ibanPhone: profile?.ibanPhone || '',
     avatarUrl: resolveAvatarUrl(profile?.avatarUrl),
   }
 }
@@ -153,11 +151,10 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveIban = async ({ iban, ibanPhone }) => {
+  const handleSaveIban = async ({ iban }) => {
     try {
       const result = await updateIban({
         iban: String(iban || '').trim(),
-        ibanPhone: String(ibanPhone || '').trim(),
       }).unwrap()
 
       if (result?.profile) {
