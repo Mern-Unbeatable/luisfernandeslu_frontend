@@ -94,8 +94,6 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.changePassword',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneEpagar',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
   transporter: {
     layout: 'split',
@@ -114,8 +112,6 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     changePasswordLabelKey: 'panel.profile.saveChanges',
     profileActionsAlign: 'end',
     passwordActionsAlign: 'end',
-    ibanPhoneLabelKey: 'panel.profile.ibanPhoneBackup',
-    ibanPhonePlaceholderKey: 'panel.profile.ibanPhonePlaceholder',
   },
   factory: {
     layout: 'combined',

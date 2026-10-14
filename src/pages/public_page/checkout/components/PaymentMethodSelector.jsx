@@ -2,10 +2,16 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaCheckCircle } from 'react-icons/fa'
 
-export default function PaymentMethodSelector({ value, onChange, mbwayPhone, onMbwayPhoneChange }) {
+export default function PaymentMethodSelector({
+  value,
+  onChange,
+  mbwayPhone,
+  onMbwayPhoneChange,
+  allowedMethods,
+}) {
   const { t } = useTranslation()
 
-  const methods = [
+  const allMethods = [
     {
       id: 'MULTIBANCO',
       title: 'Multibanco',
@@ -31,6 +37,9 @@ export default function PaymentMethodSelector({ value, onChange, mbwayPhone, onM
       icon: '🏪'
     }
   ]
+  const methods = allowedMethods
+    ? allMethods.filter((method) => allowedMethods.includes(method.id))
+    : allMethods
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 lg:p-8 mt-6">

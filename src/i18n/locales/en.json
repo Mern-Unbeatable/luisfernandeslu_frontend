@@ -64,6 +64,7 @@
     "shippingTitle": "Shipping & Unloading Details",
     "shippingIntro": "Please provide accurate information to ensure a smooth delivery process.",
     "unloadingRequirements": "Unloading Requirements",
+    "mbwayPhoneRequired": "Enter the phone number linked to your MB WAY account",
     "siteConditions": "Site Conditions",
     "firstName": "First name",
     "lastName": "Last name",
