@@ -20,7 +20,7 @@ import {
 } from '../../features/auth/roleAuthConfig'
 import AuthField, { AuthSubmitButton } from '../../components/auth/AuthField'
 import AuthModeToggle from '../../components/auth/AuthModeToggle'
-import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
+// import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
 import AuthDemoAccounts from '../../components/auth/AuthDemoAccounts'
 import AuthLegalNote from '../../components/auth/AuthLegalNote'
 
@@ -303,13 +303,13 @@ export default function LoginPage() {
         </p>
       ) : null}
 
-      {!isMarketing && loginCfg.showSocial ? (
+      {/* {!isMarketing && loginCfg.showSocial ? (
         <AuthSocialButtons
           googleLabel={t('auth.google')}
           facebookLabel={t('auth.facebook')}
           orLabel={t('auth.or')}
         />
-      ) : null}
+      ) : null} */}
 
       {/* {role ? (
         <AuthDemoAccounts
