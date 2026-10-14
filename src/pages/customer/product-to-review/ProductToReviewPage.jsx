@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Pagination from '@/components/common/Pagination/Pagination'
-import { BuyerReviewRowsSkeleton } from '@/components/common/Skeleton/BuyerSkeleton'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import ProductReviewRow from '@/components/data-display/ProductReviewRow/ProductReviewRow'
 import { useGetCustomerPendingReviewsQuery } from '@/features/customer/customerReviewApi'
 import { mapCustomerPendingReview } from '@/features/customer/customerReviewMappers'
@@ -47,6 +47,10 @@ export default function ProductToReviewPage() {
     navigate(`/customer/product-to-review/${product.id}`)
   }
 
+  if (showInitialLoading) {
+    return <BuyerSkeleton variant="reviews" />
+  }
+
   return (
     <div className="w-full space-y-5">
       <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
@@ -56,9 +60,7 @@ export default function ProductToReviewPage() {
           <span className="text-right">{t('productToReview.columnAction')}</span>
         </div>
 
-        {showInitialLoading ? (
-          <BuyerReviewRowsSkeleton />
-        ) : isError ? (
+        {isError ? (
           <div className="px-6 py-8 text-center">
             <p className="text-sm text-red-700">
               {error?.data?.message || t('productToReview.loadFailed')}

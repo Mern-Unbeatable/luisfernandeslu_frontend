@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import BuyerOrderCard from '@/components/data-display/BuyerOrderCard/BuyerOrderCard'
 import Pagination from '@/components/common/Pagination/Pagination'
-import { BuyerOrderCardsSkeleton } from '@/components/common/Skeleton/BuyerSkeleton'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import {
   useDownloadCustomerOrderInvoiceMutation,
   useGetCustomerOrdersQuery,
@@ -113,6 +113,10 @@ export default function OrdersPage() {
     }
   }
 
+  if (showInitialLoading) {
+    return <BuyerSkeleton variant="orders" />
+  }
+
   return (
     <div className="w-full space-y-5">
       <div className="flex flex-wrap gap-2">
@@ -136,9 +140,7 @@ export default function OrdersPage() {
         })}
       </div>
 
-      {showInitialLoading ? (
-        <BuyerOrderCardsSkeleton />
-      ) : isError ? (
+      {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
           <p className="text-sm text-red-700">
             {error?.data?.message || t('buyerOrders.loadFailed')}
