@@ -153,25 +153,25 @@ const CustomerDashboard = Loadable(
 );
 const CustomerOrders = Loadable(
   lazy(() => import("../../pages/customer/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orders" />,
 );
 const CustomerOrderDetail = Loadable(
   lazy(() => import("../../pages/customer/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CustomerProductToReview = Loadable(
   lazy(
     () => import("../../pages/customer/product-to-review/ProductToReviewPage"),
   ),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="reviews" />,
 );
 const CustomerWriteReview = Loadable(
   lazy(() => import("../../pages/customer/product-to-review/WriteReviewPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="reviewForm" />,
 );
 const CustomerProfile = Loadable(
   lazy(() => import("../../pages/customer/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <PanelProfileSkeleton />,
 );
 const CustomerAffiliates = Loadable(
   lazy(() => import("../../pages/customer/affiliates/AffiliatesPage")),

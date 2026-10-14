@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Pagination from '@/components/common/Pagination/Pagination'
+import { BuyerReviewRowsSkeleton } from '@/components/common/Skeleton/BuyerSkeleton'
 import ProductReviewRow from '@/components/data-display/ProductReviewRow/ProductReviewRow'
 import { useGetCustomerPendingReviewsQuery } from '@/features/customer/customerReviewApi'
 import { mapCustomerPendingReview } from '@/features/customer/customerReviewMappers'
@@ -56,9 +57,7 @@ export default function ProductToReviewPage() {
         </div>
 
         {showInitialLoading ? (
-          <p className="px-6 py-12 text-center text-sm text-[var(--secondary-text)]">
-            {t('productToReview.loading')}
-          </p>
+          <BuyerReviewRowsSkeleton />
         ) : isError ? (
           <div className="px-6 py-8 text-center">
             <p className="text-sm text-red-700">

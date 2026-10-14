@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import BuyerOrderCard from '@/components/data-display/BuyerOrderCard/BuyerOrderCard'
 import Pagination from '@/components/common/Pagination/Pagination'
+import { BuyerOrderCardsSkeleton } from '@/components/common/Skeleton/BuyerSkeleton'
 import {
   useDownloadCustomerOrderInvoiceMutation,
   useGetCustomerOrdersQuery,
@@ -136,9 +137,7 @@ export default function OrdersPage() {
       </div>
 
       {showInitialLoading ? (
-        <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-          {t('buyerOrders.loading')}
-        </p>
+        <BuyerOrderCardsSkeleton />
       ) : isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
           <p className="text-sm text-red-700">
