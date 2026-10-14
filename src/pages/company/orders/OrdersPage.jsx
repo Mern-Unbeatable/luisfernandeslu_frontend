@@ -6,7 +6,7 @@ import CompanyOrdersTable from '@/components/data-display/CompanyOrdersTable/Com
 import { useGetCompanyOrdersQuery } from '@/features/company/companyOrderApi'
 import { mapCompanyOrder } from '@/features/company/companyOrderMappers'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 export default function OrdersPage() {
   const navigate = useNavigate()
