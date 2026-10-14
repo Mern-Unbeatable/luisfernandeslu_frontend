@@ -34,10 +34,6 @@ import {
 import { DEMO_FACTORY_PRODUCT } from '@/data/demoData'
 import dummyProductImage from '@/assets/images/dummy-post-square.png'
 import UploadXlsxModal from './UploadXlsxModal'
-import { useGetFactoryProfileQuery } from '@/features/factory-profile/factoryProfileApi'
-import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
-
 const PAGE_SIZE = 8
 const DUMMY_PRODUCT_IMAGE = dummyProductImage
 
@@ -142,20 +138,6 @@ function toProductDetailItem(product) {
 
 export default function ProductsPage() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { data: factoryProfileResponse } = useGetFactoryProfileQuery()
-  const hasEupagoCredentials = Boolean(
-    factoryProfileResponse?.profile?.hasEupagoCredentials ??
-      factoryProfileResponse?.hasEupagoCredentials,
-  )
-
-  const requireEupago = () => {
-    if (hasEupagoCredentials) return true
-    toast.error(t('panel.profile.eupagoRequiredForProducts'))
-    navigate('/factory/profile')
-    return false
-  }
-
   const [activeTab, setActiveTab] = useState('all')
   const [category, setCategory] = useState('all')
   const [search, setSearch] = useState('')
@@ -327,7 +309,6 @@ export default function ProductsPage() {
   }
 
   const openAddForm = () => {
-    if (!requireEupago()) return
     setEditingProduct(null)
     setFormValue(DEMO_FACTORY_PRODUCT)
     setFormError('')
@@ -609,10 +590,7 @@ export default function ProductsPage() {
           </button>
           <button
             type="button"
-            onClick={() => {
-              if (!requireEupago()) return
-              setUploadOpen(true)
-            }}
+            onClick={() => setUploadOpen(true)}
             className="rounded-full border border-[var(--active)] bg-white px-5 py-2.5 text-sm font-semibold text-[var(--active)] transition hover:bg-[#FFFBF5]"
           >
             {t('factoryProducts.uploadCsv')}
