@@ -1546,6 +1546,7 @@
       "eupagoAdminNote": "Apenas é necessária a API key EuPago da Construpreço. Os vendedores adicionam as suas próprias chaves externas nos respetivos perfis.",
       "eupagoApiKeyRequired": "Introduza a API key EuPago.",
       "eupagoExternKeyRequired": "Introduza a sua chave externa EuPago.",
+      "eupagoExternKeyInvalid": "Formato da chave externa EuPago inválido. Deve ser semelhante a 095c-09ad-5b40-605a-5859.",
       "eupagoRequiredForProducts": "Adicione a sua chave externa EuPago no Perfil antes de listar produtos no site.",
       "eupagoSaved": "Credenciais EuPago guardadas.",
       "ibanPhoneEpagar": "Número de telefone ( número E-pago )",

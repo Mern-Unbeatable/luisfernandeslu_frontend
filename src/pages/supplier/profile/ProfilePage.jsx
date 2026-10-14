@@ -22,6 +22,7 @@ import {
 import AddressAutocomplete from "@/pages/public_page/checkout/components/AddressAutocomplete";
 import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
 import EupagoCredentialsCard from "@/components/forms/PanelProfile/EupagoCredentialsCard";
+import { isValidEupagoExternKey } from "@/components/forms/PanelProfile/eupagoExternKey";
 
 const ALLOWED_AVATAR_TYPES = new Set([
   "image/jpeg",
@@ -217,6 +218,10 @@ export default function ProfilePage() {
           defaultValue: "Enter your EuPago extern key",
         }),
       );
+      return;
+    }
+    if (!isValidEupagoExternKey(externKey)) {
+      toast.error(t("panel.profile.eupagoExternKeyInvalid"));
       return;
     }
     try {

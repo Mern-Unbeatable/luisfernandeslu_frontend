@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import Seo from '@/components/common/Seo/Seo'
 import RejectionBanner from '@/components/common/RejectionBanner'
 import PanelProfile from '@/components/forms/PanelProfile'
+import { isValidEupagoExternKey } from '@/components/forms/PanelProfile/eupagoExternKey'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import {
   useChangeFactoryPasswordMutation,
@@ -199,6 +200,10 @@ export default function ProfilePage() {
           defaultValue: 'Enter your EuPago extern key',
         }),
       )
+      return
+    }
+    if (!isValidEupagoExternKey(externKey)) {
+      toast.error(t('panel.profile.eupagoExternKeyInvalid'))
       return
     }
     try {
