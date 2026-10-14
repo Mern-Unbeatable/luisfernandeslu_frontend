@@ -234,9 +234,11 @@ export default function ProfilePage() {
       );
     } catch (error) {
       const message =
-        error?.data?.message ||
-        error?.message ||
-        "Unable to save EuPago credentials.";
+        error?.data?.error === "EupagoExternKeyRejected"
+          ? t("panel.profile.eupagoExternKeyRejected")
+          : error?.data?.message ||
+            error?.message ||
+            "Unable to save EuPago credentials.";
       toast.error(message);
     }
   };

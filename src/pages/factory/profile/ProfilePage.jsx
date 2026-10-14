@@ -224,7 +224,11 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save EuPago credentials'))
+      toast.error(
+        err?.data?.error === 'EupagoExternKeyRejected'
+          ? t('panel.profile.eupagoExternKeyRejected')
+          : getAuthErrorMessage(err, 'Failed to save EuPago credentials'),
+      )
     }
   }
 

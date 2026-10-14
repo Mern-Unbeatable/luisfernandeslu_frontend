@@ -1779,6 +1779,7 @@
       "eupagoApiKeyRequired": "Enter the EuPago API key.",
       "eupagoExternKeyRequired": "Enter your EuPago extern key.",
       "eupagoExternKeyInvalid": "Invalid EuPago extern key format. It should look like 095c-09ad-5b40-605a-5859.",
+      "eupagoExternKeyRejected": "EuPago did not accept this extern key. Copy it again from your EuPago backoffice.",
       "eupagoRequiredForProducts": "Add your EuPago extern key in Profile before listing products on the website.",
       "eupagoSaved": "EuPago credentials saved.",
       "ibanPhoneEpagar": "Phone number ( E-pago number )",

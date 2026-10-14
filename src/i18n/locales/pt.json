@@ -1547,6 +1547,7 @@
       "eupagoApiKeyRequired": "Introduza a API key EuPago.",
       "eupagoExternKeyRequired": "Introduza a sua chave externa EuPago.",
       "eupagoExternKeyInvalid": "Formato da chave externa EuPago inválido. Deve ser semelhante a 095c-09ad-5b40-605a-5859.",
+      "eupagoExternKeyRejected": "A EuPago não aceitou esta chave externa. Copie-a novamente do seu backoffice EuPago.",
       "eupagoRequiredForProducts": "Adicione a sua chave externa EuPago no Perfil antes de listar produtos no site.",
       "eupagoSaved": "Credenciais EuPago guardadas.",
       "ibanPhoneEpagar": "Número de telefone ( número E-pago )",
