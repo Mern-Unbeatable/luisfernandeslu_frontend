@@ -1,4 +1,5 @@
 import Skeleton from './Skeleton'
+import TableSkeleton from './TableSkeleton'
 
 function LoadingStatus({ className = '', children }) {
   return (
@@ -62,6 +63,61 @@ export function BuyerReviewRowsSkeleton({ count = 3 }) {
         </div>
       ))}
     </LoadingStatus>
+  )
+}
+
+/** Project cards only — shaped like `CompanyProjectCard`. */
+export function BuyerProjectCardsSkeleton({ count = 4 }) {
+  return (
+    <LoadingStatus className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {Array.from({ length: count }).map((_, index) => (
+        <div
+          key={index}
+          className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
+        >
+          <div className="space-y-3 p-5 sm:p-6">
+            <Skeleton className="h-5 w-2/3" />
+            <Skeleton className="h-4 w-full max-w-xs" />
+          </div>
+          <div className="border-t border-gray-100 bg-[#F9FAFB] px-5 py-3 sm:px-6">
+            <Skeleton className="h-4 w-28" />
+          </div>
+        </div>
+      ))}
+    </LoadingStatus>
+  )
+}
+
+function ProjectsSkeleton() {
+  return (
+    <div>
+      <Skeleton className="mb-6 h-7 w-32" />
+      <BuyerProjectCardsSkeleton />
+    </div>
+  )
+}
+
+function ProjectDetailSkeleton() {
+  return (
+    <div className="w-full space-y-5">
+      <div className="space-y-2">
+        <Skeleton className="h-7 w-56 max-w-full" />
+        <Skeleton className="h-4 w-72 max-w-full" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div
+            key={index}
+            className="space-y-3 rounded-xl border border-gray-200 bg-white p-5"
+          >
+            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-20" />
+          </div>
+        ))}
+      </div>
+      <TableSkeleton />
+    </div>
   )
 }
 
@@ -154,6 +210,9 @@ export default function BuyerSkeleton({ variant = 'dashboard' }) {
   if (variant === 'orderDetail') return <OrderDetailSkeleton />
   if (variant === 'reviews') return <ReviewsSkeleton />
   if (variant === 'reviewForm') return <ReviewFormSkeleton />
+  if (variant === 'table') return <TableSkeleton />
+  if (variant === 'projects') return <ProjectsSkeleton />
+  if (variant === 'projectDetail') return <ProjectDetailSkeleton />
 
   if (variant === 'placeholder') {
     return (

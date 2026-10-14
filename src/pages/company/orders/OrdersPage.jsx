@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import CompanyOrdersTable from '@/components/data-display/CompanyOrdersTable/CompanyOrdersTable'
 import { useGetCompanyOrdersQuery } from '@/features/company/companyOrderApi'
 import { mapCompanyOrder } from '@/features/company/companyOrderMappers'
@@ -49,11 +50,7 @@ export default function OrdersPage() {
   const showInitialLoading = isLoading && !data
 
   if (showInitialLoading) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('companyOrders.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="table" />
   }
 
   if (isError) {

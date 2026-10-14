@@ -186,27 +186,27 @@ const CompanyDashboard = Loadable(
 );
 const CompanyOrders = Loadable(
   lazy(() => import("../../pages/company/orders/OrdersPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="table" />,
 );
 const CompanyOrderDetail = Loadable(
   lazy(() => import("../../pages/company/orders/OrderDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CompanyProjects = Loadable(
   lazy(() => import("../../pages/company/projects/ProjectsPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="projects" />,
 );
 const CompanyProjectDetail = Loadable(
   lazy(() => import("../../pages/company/projects/ProjectDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="projectDetail" />,
 );
 const CompanyMaterialDetail = Loadable(
   lazy(() => import("../../pages/company/projects/MaterialDetailPage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <BuyerSkeleton variant="orderDetail" />,
 );
 const CompanyProfile = Loadable(
   lazy(() => import("../../pages/company/profile/ProfilePage")),
-  <BuyerSkeleton variant="placeholder" />,
+  <PanelProfileSkeleton />,
 );
 const CompanyAffiliates = Loadable(
   lazy(() => import("../../pages/company/affiliates/AffiliatesPage")),

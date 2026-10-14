@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import CompanyProjectDetail from '@/components/data-display/CompanyProjectDetail/CompanyProjectDetail'
 import NotFoundPage from '@/pages/public_page/NotFoundPage'
 import { useGetCompanyProjectByIdQuery } from '@/features/company/companyProjectApi'
@@ -44,11 +45,7 @@ export default function ProjectDetailPage() {
   }, [page, totalPages])
 
   if (isLoading && !data) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('companyProjects.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="projectDetail" />
   }
 
   if (isError) {

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import CompanyMaterialDetail from '@/components/data-display/CompanyMaterialDetail/CompanyMaterialDetail'
 import NotFoundPage from '@/pages/public_page/NotFoundPage'
 import { useGetCompanyProjectOrderByIdQuery } from '@/features/company/companyProjectApi'
@@ -28,11 +29,7 @@ export default function MaterialDetailPage() {
   const material = useMemo(() => mapCompanyProjectOrderDetail(data), [data])
 
   if (isLoading && !data) {
-    return (
-      <p className="py-12 text-center text-sm text-[var(--secondary-text)]">
-        {t('companyProjects.loading')}
-      </p>
-    )
+    return <BuyerSkeleton variant="orderDetail" />
   }
 
   if (isError) {
