@@ -7,7 +7,7 @@ import NotFoundPage from '@/pages/public_page/NotFoundPage'
 import { useGetCompanyProjectByIdQuery } from '@/features/company/companyProjectApi'
 import { mapCompanyProjectDetail } from '@/features/company/companyProjectMappers'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 7
 
 export default function ProjectDetailPage() {
   const { projectId } = useParams()
