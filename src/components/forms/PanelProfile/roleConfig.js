@@ -65,7 +65,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     showIban: false,
     showEupagoCredentials: true,
     eupagoShowApiKey: true,
-    eupagoShowExternKey: false,
+    eupagoShowExternKey: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',

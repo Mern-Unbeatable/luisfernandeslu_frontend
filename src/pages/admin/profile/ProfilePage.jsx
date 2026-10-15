@@ -15,6 +15,7 @@ import {
 } from '@/features/admin/adminProfileApi'
 import { mapAdminProfileToForm } from '@/features/admin/adminProfileMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { isValidEupagoExternKey } from '@/components/forms/PanelProfile/eupagoExternKey'
 
 const ALLOWED_AVATAR_TYPES = new Set([
   'image/jpeg',
@@ -86,19 +87,23 @@ export default function ProfilePage() {
     }
   }
 
-  const handleSaveEupago = async ({ eupagoApiKey }) => {
+  const handleSaveEupago = async ({ eupagoApiKey, eupagoExternKey }) => {
     if (isModerator) return
     const apiKey = String(eupagoApiKey || '').trim()
-    if (!apiKey) {
-      toast.error(
-        t('panel.profile.eupagoApiKeyRequired', {
-          defaultValue: 'Enter the EuPago API key',
-        }),
-      )
+    const externKey = String(eupagoExternKey || '').trim()
+    if (!apiKey && !externKey) {
+      toast.error(t('panel.profile.eupagoAdminKeysRequired'))
+      return
+    }
+    if (externKey && !isValidEupagoExternKey(externKey)) {
+      toast.error(t('panel.profile.eupagoExternKeyInvalid'))
       return
     }
     try {
-      const result = await updateEupago({ eupagoApiKey: apiKey }).unwrap()
+      const result = await updateEupago({
+        ...(apiKey ? { eupagoApiKey: apiKey } : {}),
+        ...(externKey ? { eupagoExternKey: externKey } : {}),
+      }).unwrap()
 
       if (result?.success === false) {
         toast.error(
@@ -110,6 +115,7 @@ export default function ProfilePage() {
       setForm((prev) => ({
         ...prev,
         eupagoApiKey: '',
+        eupagoExternKey: '',
       }))
       toast.success(
         result?.message ||
@@ -118,7 +124,11 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, t('panel.profile.ibanUpdateFailed')))
+      toast.error(
+        err?.data?.error === 'EupagoExternKeyRejected'
+          ? t('panel.profile.eupagoExternKeyRejected')
+          : getAuthErrorMessage(err, t('panel.profile.ibanUpdateFailed')),
+      )
     }
   }
 
