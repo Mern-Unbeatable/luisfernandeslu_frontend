@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -11,7 +12,10 @@ import {
 } from 'react-icons/fi'
 import Seo from '@/components/common/Seo/Seo'
 import OrderConfirmationSummary from './components/OrderConfirmationSummary'
-import { useGetCheckoutQuery } from '@/features/checkout/checkoutApi'
+import {
+  useConfirmMockPaymentMutation,
+  useGetCheckoutQuery,
+} from '@/features/checkout/checkoutApi'
 import dayjs from 'dayjs'
 
 export default function OrderConfirmationPage() {
@@ -24,6 +28,16 @@ export default function OrderConfirmationPage() {
   })
 
   const checkout = data?.checkout
+  const [confirmMockPayment] = useConfirmMockPaymentMutation()
+  const mockConfirmRequested = useRef(false)
+
+  // `confirmPath` is only sent while PAYMENT_PROVIDER=mock and the checkout is unpaid.
+  const mockConfirmPath = checkout?.payment?.confirmPath
+  useEffect(() => {
+    if (!mockConfirmPath || !checkoutId || mockConfirmRequested.current) return
+    mockConfirmRequested.current = true
+    confirmMockPayment(checkoutId)
+  }, [mockConfirmPath, checkoutId, confirmMockPayment])
 
   if (isLoading) {
     return (
