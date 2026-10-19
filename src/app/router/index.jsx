@@ -25,6 +25,7 @@ import FactoryDeliveryPageSkeleton from "../../pages/factory/components/FactoryD
 import FactoryInvoicesPageSkeleton from "../../pages/factory/components/FactoryInvoicesPageSkeleton";
 import ProductDetailsSkeleton from "../../components/data-display/ProductDetails/ProductDetailsSkeleton";
 import ScrollToTop from "../../components/common/ScrollToTop/ScrollToTop";
+import RouteErrorPage from "../../components/common/RouteErrorPage/RouteErrorPage";
 import PanelPwaManager from "../../pwa/PanelPwaManager";
 import ProtectedRoute from "./ProtectedRoute";
 import StaffAreaGuard from "./StaffAreaGuard";
@@ -664,6 +665,7 @@ function panelSeo(titleKey) {
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <RouteErrorPage />,
     children: [
       /* Public site */
       {

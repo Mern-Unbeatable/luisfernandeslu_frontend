@@ -3417,5 +3417,10 @@
         "requirement": "São necessários 500+ clientes ativos"
       }
     }
+  },
+  "errorPage": {
+    "title": "Ocorreu um erro",
+    "description": "Algo correu mal ao carregar esta página. Recarregue a página para tentar novamente.",
+    "reload": "Recarregar página"
   }
 }
