@@ -3825,5 +3825,10 @@
         "requirement": "500+ Active Clients Required"
       }
     }
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "Something went wrong while loading this page. Reload the page to try again.",
+    "reload": "Reload page"
   }
 }
