@@ -15,7 +15,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'es', labelKey: 'languages.es' },
 ]
 
-export const DEFAULT_LANGUAGE = 'en'
+export const DEFAULT_LANGUAGE = 'pt'
 
 void i18n
   .use(LanguageDetector)
@@ -26,7 +26,10 @@ void i18n
       pt: { translation: { ...pt, catalog: catalogPt } },
       es: { translation: { ...es, catalog: catalogEs } },
     },
-    fallbackLng: DEFAULT_LANGUAGE,
+    // Language switcher is hidden, so ignore a previously stored/browser language.
+    // Remove `lng` when the switcher comes back.
+    lng: DEFAULT_LANGUAGE,
+    fallbackLng: [DEFAULT_LANGUAGE, 'en'],
     supportedLngs: SUPPORTED_LANGUAGES.map((lang) => lang.code),
     interpolation: {
       escapeValue: false,
