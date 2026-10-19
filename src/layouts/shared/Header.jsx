@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Logo from "../../components/common/Logo/Logo";
-import LanguageSwitcher from "../../components/common/LanguageSwitcher/LanguageSwitcher";
+// import LanguageSwitcher from "../../components/common/LanguageSwitcher/LanguageSwitcher";
 import CategoryBar from "./CategoryBar";
 import { getHomePathForRole } from "../../features/auth/demoUsers";
 import { useAuthLogout } from "../../features/auth/useAuthLogout";
@@ -396,7 +396,7 @@ export default function Header() {
                   : "translate-x-0 opacity-100"
               }`}
             >
-              <LanguageSwitcher compact className="shrink-0" />
+              {/* <LanguageSwitcher compact className="shrink-0" /> */}
 
               <button
                 type="button"
@@ -569,7 +569,7 @@ export default function Header() {
 
 
             <div className="flex shrink-0 items-center gap-5 lg:gap-6">
-              <LanguageSwitcher />
+              {/* <LanguageSwitcher /> */}
 
               {utilityIcons.map(({ Icon, key, to }) =>
                 to ? (

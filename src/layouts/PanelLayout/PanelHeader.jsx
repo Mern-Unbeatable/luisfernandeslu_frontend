@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiMenu } from 'react-icons/fi'
-import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
+// import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
 
 /** Full-width panel top bar: logo left, language + user right. */
 export default function PanelHeader({
@@ -37,8 +37,8 @@ export default function PanelHeader({
       </div>
 
       <div className="flex shrink-0 items-center gap-2.5 sm:gap-4">
-        <LanguageSwitcher compact className="sm:hidden" />
-        <LanguageSwitcher className="hidden sm:block" />
+        {/* <LanguageSwitcher compact className="sm:hidden" />
+        <LanguageSwitcher className="hidden sm:block" /> */}
 
         <div className="hidden text-right sm:block">
           <p className="text-sm font-semibold text-[var(--primary-text)]">
