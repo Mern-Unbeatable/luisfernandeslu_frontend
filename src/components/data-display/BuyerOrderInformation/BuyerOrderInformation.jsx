@@ -36,15 +36,27 @@ export default function BuyerOrderInformation({
                 <StatusBadge status={order.status} label={statusLabel} />
               </div>
             </div>
-            {onDownloadInvoice ? (
-              <button
-                type="button"
-                onClick={onDownloadInvoice}
-                className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--active)] px-5 py-2 text-sm font-semibold text-white hover:brightness-95"
-              >
-                {t('buyerOrders.downloadInvoice')}
-              </button>
-            ) : null}
+            <div className="flex flex-wrap items-center gap-2">
+              {order.taxInvoice?.url ? (
+                <a
+                  href={order.taxInvoice.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--active)] px-5 py-2 text-sm font-semibold text-[var(--active)] hover:bg-gray-50"
+                >
+                  {t('buyerOrders.certifiedInvoice', { number: order.taxInvoice.number })}
+                </a>
+              ) : null}
+              {onDownloadInvoice ? (
+                <button
+                  type="button"
+                  onClick={onDownloadInvoice}
+                  className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--active)] px-5 py-2 text-sm font-semibold text-white hover:brightness-95"
+                >
+                  {t('buyerOrders.downloadInvoice')}
+                </button>
+              ) : null}
+            </div>
           </div>
           {order.deliveryOtp ? (
             <p className="mt-3 text-sm text-[var(--secondary-text)]">

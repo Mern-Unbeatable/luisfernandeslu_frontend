@@ -203,19 +203,28 @@
       "slides": {
         "hero-1": {
           "badge": "Fast Delivery",
-          "titleLines": ["Save More on Bulk", "Orders"],
+          "titleLines": [
+            "Save More on Bulk",
+            "Orders"
+          ],
           "description": "Special pricing for large quantity orders. Perfect for contractors & builders.",
           "ctaLabel": "Get Bulk Quote"
         },
         "hero-2": {
           "badge": "Fast Delivery",
-          "titleLines": ["Quality Materials for", "Every Project"],
+          "titleLines": [
+            "Quality Materials for",
+            "Every Project"
+          ],
           "description": "Source cement, steel, and tools from verified suppliers across the region.",
           "ctaLabel": "Shop Now"
         },
         "hero-3": {
           "badge": "Fast Delivery",
-          "titleLines": ["Built for Contractors", "& Builders"],
+          "titleLines": [
+            "Built for Contractors",
+            "& Builders"
+          ],
           "description": "Streamlined ordering, bulk pricing, and reliable delivery to your job site.",
           "ctaLabel": "Get Bulk Quote"
         }
@@ -812,8 +821,7 @@
       "all": "All",
       "endingSoon": "Ending Soon",
       "ended": "Ended"
-    }
-    ,
+    },
     "noCompetingBids": "No competing transporter bids"
   },
   "adminOrders": {
@@ -898,6 +906,27 @@
       "produced": "Produced",
       "assigned": "Assigned",
       "chatUnavailable": "Chat is not available for this contact."
+    },
+    "taxInvoice": {
+      "title": "Certified invoice (InvoiceXpress)",
+      "status": {
+        "NONE": "Not issued",
+        "PENDING": "Pending",
+        "DRAFT": "Draft",
+        "FINALIZED": "Sent to Tax Authority",
+        "FAILED": "Failed"
+      },
+      "issue": "Issue invoice",
+      "finalize": "Finalize invoice",
+      "retry": "Retry",
+      "working": "Working…",
+      "done": "Invoice updated",
+      "failed": "Could not issue the invoice",
+      "number": "Number",
+      "vatRate": "VAT rate",
+      "notPaid": "The invoice is issued automatically once the order is paid.",
+      "draftHint": "Draft only — not reported to the Tax Authority. Enable INVOICEXPRESS_FINALIZE to certify invoices.",
+      "open": "Open invoice"
     }
   },
   "adminDeliveryLogistics": {
@@ -1775,7 +1804,8 @@
       "eupagoExternKeyNote": "Enter your extern key here and save. For security, it is not visible.",
       "eupagoContactNote": "Register with EuPago using the Construpreço link below. Once your account is approved (about 5 business days), EuPago will send you your extern key. Enter it here once and save.",
       "eupagoRegisterLink": "Register on EuPago",
-      "eupagoAdminNote": "Only the Construpreço EuPago API key is required. Sellers add their own extern keys in their profiles.",
+      "eupagoAdminNote": "Construpreço needs its EuPago API key and its own extern key (to receive the commission). Sellers add their own extern keys in their profiles.",
+      "eupagoAdminKeysRequired": "Enter the EuPago API key or extern key.",
       "eupagoApiKeyRequired": "Enter the EuPago API key.",
       "eupagoExternKeyRequired": "Enter your EuPago extern key.",
       "eupagoExternKeyInvalid": "Invalid EuPago extern key format. It should look like 095c-09ad-5b40-605a-5859.",
@@ -2122,7 +2152,8 @@
       "processing": "Processing",
       "delivered": "Delivered",
       "cancelled": "Cancelled"
-    }
+    },
+    "certifiedInvoice": "Certified invoice {{number}}"
   },
   "buyerOrderDetail": {
     "title": "Order Information #{{number}}",

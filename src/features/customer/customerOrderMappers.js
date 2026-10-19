@@ -154,6 +154,7 @@ export function mapCustomerOrderDetail(data) {
     progressSteps: mapTimeline(order.timeline),
     hasInvoice: Boolean(order.hasInvoice),
     invoice: order.invoice,
+    taxInvoice: order.taxInvoice ?? null,
     cancellationReason: order.cancellationReason,
     deliveryOtp: order.deliveryOtp,
     actions: order.actions,

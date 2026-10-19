@@ -14,6 +14,7 @@ import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { confirmDelete } from '@/utils/confirmDialog'
 import AdminFactoryOrderDetailView from './components/AdminFactoryOrderDetailView'
 import AdminOrderDetailView from './components/AdminOrderDetailView'
+import AdminTaxInvoiceCard from './components/AdminTaxInvoiceCard'
 
 const I18N_KEY = 'adminOrders'
 
@@ -198,6 +199,12 @@ export default function AdminOrderDetailPage() {
           {t(`${I18N_KEY}.detail.delete`)}
         </button>
       </div>
+
+      <AdminTaxInvoiceCard
+        orderId={orderId}
+        taxInvoice={data?.order?.taxInvoice}
+        isPaid={data?.order?.paymentStatus === 'PAID'}
+      />
 
       {order.hasInstallment ? (
         <AdminFactoryOrderDetailView

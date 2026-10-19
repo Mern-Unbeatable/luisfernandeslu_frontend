@@ -52,6 +52,13 @@ export const adminOrderApi = baseApi.injectEndpoints({
         { type: 'Order', id: 'ADMIN_LIST' },
       ],
     }),
+    issueAdminTaxInvoice: builder.mutation({
+      query: (orderId) => ({
+        url: `/api/admin/orders/${orderId}/tax-invoice`,
+        method: 'POST',
+      }),
+      invalidatesTags: (_result, _error, orderId) => [{ type: 'Order', id: orderId }],
+    }),
     deleteAdminOrder: builder.mutation({
       query: (orderId) => ({
         url: `/api/admin/orders/${orderId}`,
@@ -69,5 +76,6 @@ export const {
   useGetAdminOrdersQuery,
   useGetAdminOrderByIdQuery,
   useUpdateAdminOrderStatusMutation,
+  useIssueAdminTaxInvoiceMutation,
   useDeleteAdminOrderMutation,
 } = adminOrderApi

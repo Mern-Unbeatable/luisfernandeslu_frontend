@@ -101,6 +101,7 @@ export function mapCompanyOrderDetail(data) {
     accessConditions: order.accessConditions,
     driver: mapDriver(order.driver),
     progressSteps: mapProgressSteps(order.progressSteps),
+    taxInvoice: order.taxInvoice ?? null,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   }
