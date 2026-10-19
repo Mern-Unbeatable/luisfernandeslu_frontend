@@ -58,6 +58,16 @@ export default function CompanyOrderDetail({
             {t('companyOrders.quantityLabel', { value: order.quantityLabel })}
           </p>
         ) : null}
+        {order.taxInvoice?.url ? (
+          <a
+            href={order.taxInvoice.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-block text-sm font-semibold text-[var(--active)] underline"
+          >
+            {t('buyerOrders.certifiedInvoice', { number: order.taxInvoice.number })}
+          </a>
+        ) : null}
       </header>
 
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">

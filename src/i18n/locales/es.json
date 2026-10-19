@@ -203,19 +203,28 @@
       "slides": {
         "hero-1": {
           "badge": "Entrega rápida",
-          "titleLines": ["Ahorre más en", "pedidos al por mayor"],
+          "titleLines": [
+            "Ahorre más en",
+            "pedidos al por mayor"
+          ],
           "description": "Precios especiales para grandes cantidades. Perfecto para contratistas y constructores.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         },
         "hero-2": {
           "badge": "Entrega rápida",
-          "titleLines": ["Materiales de calidad para", "cada proyecto"],
+          "titleLines": [
+            "Materiales de calidad para",
+            "cada proyecto"
+          ],
           "description": "Cemento, acero y herramientas de proveedores verificados en la región.",
           "ctaLabel": "Comprar ahora"
         },
         "hero-3": {
           "badge": "Entrega rápida",
-          "titleLines": ["Hecho para contratistas", "y constructores"],
+          "titleLines": [
+            "Hecho para contratistas",
+            "y constructores"
+          ],
           "description": "Pedidos simplificados, precios al por mayor y entrega fiable en la obra.",
           "ctaLabel": "Solicitar presupuesto mayorista"
         }
@@ -736,6 +745,27 @@
       "produced": "Producido",
       "assigned": "Asignado",
       "chatUnavailable": "El chat no está disponible para este contacto."
+    },
+    "taxInvoice": {
+      "title": "Factura certificada (InvoiceXpress)",
+      "status": {
+        "NONE": "No emitida",
+        "PENDING": "Pendiente",
+        "DRAFT": "Borrador",
+        "FINALIZED": "Comunicada a la AT",
+        "FAILED": "Fallida"
+      },
+      "issue": "Emitir factura",
+      "finalize": "Finalizar factura",
+      "retry": "Reintentar",
+      "working": "Procesando…",
+      "done": "Factura actualizada",
+      "failed": "No se pudo emitir la factura",
+      "number": "Número",
+      "vatRate": "Tipo de IVA",
+      "notPaid": "La factura se emite automáticamente cuando el pedido se paga.",
+      "draftHint": "Solo borrador — no comunicada a la AT. Active INVOICEXPRESS_FINALIZE para certificar las facturas.",
+      "open": "Abrir factura"
     }
   },
   "adminDeliveryLogistics": {
@@ -834,7 +864,9 @@
       "pageSubtitle": "Audite saldos pendientes, autorice pagos bancarios y revise historiales de cumplimiento.",
       "requestsTitle": "Solicitudes de pago",
       "searchPlaceholder": "Buscar afiliado, cuenta, estado...",
-      "filters": { "allRequests": "Todas las solicitudes" },
+      "filters": {
+        "allRequests": "Todas las solicitudes"
+      },
       "actions": {
         "paid": "Pagado",
         "rejected": "Rechazado",
@@ -1785,7 +1817,8 @@
       "shipped": "Enviado",
       "processing": "En procesamiento",
       "delivered": "Entregado"
-    }
+    },
+    "certifiedInvoice": "Factura certificada {{number}}"
   },
   "buyerOrderDetail": {
     "title": "Información del pedido #{{number}}",
