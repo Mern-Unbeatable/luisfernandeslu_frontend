@@ -3830,5 +3830,16 @@
     "title": "Something went wrong",
     "description": "Something went wrong while loading this page. Reload the page to try again.",
     "reload": "Reload page"
-  }
+  },
+  "buyerAreaGate": {
+      "guestTitle": "Log in to continue",
+      "guestDescription": "To view or open disputes and returns, log in with your customer or company account.",
+      "sellerTitle": "Buyers only",
+      "sellerDescription": "Disputes and returns on this page are for customers and companies. You can manage your cases from your dashboard.",
+      "loginCustomer": "Log in as customer",
+      "loginCompany": "Log in as company",
+      "goToDashboard": "Go to dashboard",
+      "noAccount": "Don't have an account?",
+      "signup": "Sign up"
+    }
 }

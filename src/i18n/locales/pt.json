@@ -3422,5 +3422,16 @@
     "title": "Ocorreu um erro",
     "description": "Algo correu mal ao carregar esta página. Recarregue a página para tentar novamente.",
     "reload": "Recarregar página"
-  }
+  },
+  "buyerAreaGate": {
+      "guestTitle": "Inicie sessão para continuar",
+      "guestDescription": "Para ver ou abrir disputas e devoluções, inicie sessão com a sua conta de cliente ou empresa.",
+      "sellerTitle": "Área exclusiva para compradores",
+      "sellerDescription": "Disputas e devoluções desta página são para clientes e empresas. Pode gerir os seus casos no seu painel.",
+      "loginCustomer": "Entrar como cliente",
+      "loginCompany": "Entrar como empresa",
+      "goToDashboard": "Ir para o painel",
+      "noAccount": "Ainda não tem conta?",
+      "signup": "Criar conta"
+    }
 }
