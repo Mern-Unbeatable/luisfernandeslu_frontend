@@ -33,7 +33,7 @@ function formatPromotionUnit(unitOfMeasure, weightKg) {
 
 /** Map backend promotion → marketing card row */
 export function mapAdminPromotion(promotion) {
-  const currency = promotion.currency || 'USD'
+  const currency = promotion.currency || 'EUR'
   const unit = formatPromotionUnit(
     promotion.unitOfMeasure,
     promotion.weightKg,
