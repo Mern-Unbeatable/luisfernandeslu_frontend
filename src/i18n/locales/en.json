@@ -4672,5 +4672,18 @@
     "curlFetchList": "cURL Fetch Inventory List",
     "curlDelete": "cURL Delete Product",
     "disputeChat": "Dispute Resolution Chat"
+  },
+  "sellerVerification": {
+    "pendingTitle": "Account pending verification",
+    "rejectedTitle": "Documents rejected",
+    "unverifiedDescription": "Submit your documents so our team can verify your account. You can already add products and explore the dashboard, but your products will only be visible and available for purchase after approval.",
+    "underReviewDescription": "Your documents are under review. Your products will become visible and available for purchase once your account is approved.",
+    "rejectedDescription": "Some of your documents were rejected. Please upload them again so we can review your account.",
+    "submitDocuments": "Submit documents",
+    "updateDocuments": "Update documents",
+    "transporterUnverifiedDescription": "Submit your documents and insurance so our team can verify your account. You can already explore the auction board, but you can only bid on deliveries after approval.",
+    "transporterUnderReviewDescription": "Your documents are under review. You will be able to bid on deliveries once your account is approved.",
+    "bidBlocked": "Your account must be verified before you can bid on deliveries. Submit your documents from the dashboard.",
+    "goToDashboard": "Go to dashboard"
   }
 }

@@ -206,36 +206,10 @@ const ROLE_AUTH = {
           type: 'tel',
         },
         {
-          name: 'companyCertificate',
-          labelKey: 'auth.register.uploadCompanyCert',
-          type: 'file',
-        },
-        {
-          name: 'rcbe',
-          labelKey: 'auth.register.uploadRcbe',
-          type: 'file',
-        },
-        {
           name: 'iban',
           labelKey: 'auth.register.iban',
           placeholderKey: 'auth.register.ibanPh',
           type: 'text',
-        },
-        {
-          name: 'ibanProof',
-          labelKey: 'auth.register.uploadIbanProof',
-          type: 'file',
-          hideLabel: true,
-        },
-        {
-          name: 'idDocuments',
-          labelKey: 'auth.register.uploadIdDocs',
-          type: 'file',
-        },
-        {
-          name: 'addressProof',
-          labelKey: 'auth.register.uploadAddress',
-          type: 'file',
         },
         {
           name: 'password',
@@ -326,36 +300,10 @@ const ROLE_AUTH = {
           type: 'tel',
         },
         {
-          name: 'factoryCertificate',
-          labelKey: 'auth.register.uploadFactoryCert',
-          type: 'file',
-        },
-        {
-          name: 'rcbe',
-          labelKey: 'auth.register.uploadRcbe',
-          type: 'file',
-        },
-        {
           name: 'iban',
           labelKey: 'auth.register.iban',
           placeholderKey: 'auth.register.ibanPhFactory',
           type: 'text',
-        },
-        {
-          name: 'ibanProof',
-          labelKey: 'auth.register.uploadIbanProof',
-          type: 'file',
-          hideLabel: true,
-        },
-        {
-          name: 'idDocuments',
-          labelKey: 'auth.register.uploadIdDocs',
-          type: 'file',
-        },
-        {
-          name: 'addressProof',
-          labelKey: 'auth.register.uploadAddressFactory',
-          type: 'file',
         },
         {
           name: 'password',
@@ -463,22 +411,6 @@ const ROLE_AUTH = {
           labelKey: 'auth.register.iban',
           placeholderKey: 'auth.register.ibanPhFactory',
           type: 'text',
-        },
-        {
-          name: 'ibanProof',
-          labelKey: 'auth.register.uploadIbanProof',
-          type: 'file',
-          hideLabel: true,
-        },
-        {
-          name: 'civilLiability',
-          labelKey: 'auth.register.uploadCivilLiability',
-          type: 'file',
-        },
-        {
-          name: 'transporterCivilLiability',
-          labelKey: 'auth.register.uploadTransporterInsurance',
-          type: 'file',
         },
       ],
     },

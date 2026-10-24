@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useOutletContext } from 'react-router-dom'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import Pagination from '../../../components/common/Pagination/Pagination'
@@ -23,6 +24,8 @@ const PAGE_SIZE = 9
 
 export default function AuctionBoardPage() {
   const { t } = useTranslation()
+  const { verificationStatus } = useOutletContext() || {}
+  const isVerified = !verificationStatus || verificationStatus === 'APPROVED'
   const [filter, setFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [selectedAuction, setSelectedAuction] = useState(null)
@@ -77,6 +80,13 @@ export default function AuctionBoardPage() {
   const handlePlaceBid = async (bidAmount, auction) => {
     const auctionId = resolveAuctionApiId(auction)
     if (!auction?.canBid || !auctionId || isBidding) return false
+
+    if (!isVerified) {
+      const message = t('sellerVerification.bidBlocked')
+      setBidError(message)
+      setToast({ open: true, message, variant: 'error' })
+      return false
+    }
 
     const amount = Number(bidAmount)
     if (!Number.isFinite(amount) || amount <= 0) {
@@ -175,6 +185,15 @@ export default function AuctionBoardPage() {
           </select>
         </div>
       </div>
+
+      {!isVerified ? (
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 sm:flex-row sm:items-center sm:justify-between">
+          <p>{t('sellerVerification.bidBlocked')}</p>
+          <Link to="/transporter" className="shrink-0 font-semibold underline">
+            {t('sellerVerification.goToDashboard')}
+          </Link>
+        </div>
+      ) : null}
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">

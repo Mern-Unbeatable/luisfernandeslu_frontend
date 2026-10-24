@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useOutletContext } from 'react-router-dom'
 import { getAuthErrorMessage } from '../../../features/auth/authUtils'
 import SuspendedAccessGate from '../../../components/common/account-lock/SuspendedAccessGate'
+import SellerVerificationPanel from '../../../components/common/account-lock/SellerVerificationPanel'
 import { useGetTransporterDashboardQuery } from '../../../features/transporter/transporterApi'
 import { mapTransporterDashboard } from '../../../features/transporter/dashboardMappers'
 import StatsSection from './sections/StatsSection'
@@ -12,7 +13,7 @@ import PanelDashboardSkeleton from '../../../components/common/Skeleton/PanelDas
 
 export default function DashboardPage() {
   const { t } = useTranslation()
-  const { isSuspended, rejectionReason } = useOutletContext()
+  const { isSuspended, rejectionReason, verificationStatus } = useOutletContext()
   const [period, setPeriod] = useState('thisYear')
 
   const { data, isLoading, isError, error, refetch } =
@@ -47,6 +48,13 @@ export default function DashboardPage() {
           {t('transporterDashboard.welcome', { name: welcomeName })}
         </p>
       </div>
+
+      <SellerVerificationPanel
+        role="transporter"
+        verificationStatus={verificationStatus}
+        rejectionReason={rejectionReason}
+        className=""
+      />
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">

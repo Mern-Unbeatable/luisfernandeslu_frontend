@@ -4674,5 +4674,18 @@
     "curlFetchList": "cURL – Obtener lista de inventario",
     "curlDelete": "cURL – Eliminar producto",
     "disputeChat": "Chat de resolución de disputas"
+  },
+  "sellerVerification": {
+    "pendingTitle": "Cuenta pendiente de verificación",
+    "rejectedTitle": "Documentos rechazados",
+    "unverifiedDescription": "Envía tus documentos para que nuestro equipo pueda verificar tu cuenta. Ya puedes añadir productos y explorar el panel, pero tus productos solo serán visibles y estarán disponibles para la compra tras la aprobación.",
+    "underReviewDescription": "Tus documentos están en revisión. Tus productos serán visibles y estarán disponibles para la compra en cuanto tu cuenta sea aprobada.",
+    "rejectedDescription": "Algunos de tus documentos fueron rechazados. Vuelve a subirlos para que podamos revisar tu cuenta.",
+    "submitDocuments": "Enviar documentos",
+    "updateDocuments": "Actualizar documentos",
+    "transporterUnverifiedDescription": "Envía tus documentos y seguros para que nuestro equipo pueda verificar tu cuenta. Ya puedes explorar el tablero de subastas, pero solo podrás pujar por entregas tras la aprobación.",
+    "transporterUnderReviewDescription": "Tus documentos están en revisión. Podrás pujar por entregas en cuanto tu cuenta sea aprobada.",
+    "bidBlocked": "Tu cuenta debe estar verificada antes de poder pujar por entregas. Envía tus documentos desde el panel.",
+    "goToDashboard": "Ir al panel"
   }
 }

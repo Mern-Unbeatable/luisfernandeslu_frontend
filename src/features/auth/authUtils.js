@@ -57,22 +57,6 @@ export function clearEmailVerificationSession() {
   sessionStorage.removeItem(EMAIL_VERIFICATION_KEY)
 }
 
-const SUPPLIER_FILE_FIELDS = [
-  'companyCertificate',
-  'rcbe',
-  'ibanProof',
-  'idDocuments',
-  'addressProof',
-]
-
-const FACTORY_FILE_FIELDS = [
-  'factoryCertificate',
-  'rcbe',
-  'ibanProof',
-  'idDocuments',
-  'addressProof',
-]
-
 function appendRegisterFiles(formData, fieldName, files) {
   if (!Array.isArray(files)) return
   for (const file of files) {
@@ -82,7 +66,7 @@ function appendRegisterFiles(formData, fieldName, files) {
   }
 }
 
-function buildRoleMultipartFormData(values, { entityField, entityKey, fileFields }) {
+function buildRoleMultipartFormData(values, { entityField, entityKey }) {
   const formData = new FormData()
   formData.append(entityKey, values[entityField]?.trim() ?? '')
   formData.append('email', values.email?.trim() ?? '')
@@ -94,10 +78,6 @@ function buildRoleMultipartFormData(values, { entityField, entityKey, fileFields
     values.confirmPassword?.trim() || values.password || '',
   )
 
-  for (const fieldName of fileFields) {
-    appendRegisterFiles(formData, fieldName, values[fieldName])
-  }
-
   return formData
 }
 
@@ -105,7 +85,6 @@ function buildSupplierRegisterFormData(values) {
   return buildRoleMultipartFormData(values, {
     entityField: 'companyName',
     entityKey: 'companyName',
-    fileFields: SUPPLIER_FILE_FIELDS,
   })
 }
 
@@ -113,7 +92,6 @@ function buildFactoryRegisterFormData(values) {
   return buildRoleMultipartFormData(values, {
     entityField: 'factoryName',
     entityKey: 'factoryName',
-    fileFields: FACTORY_FILE_FIELDS,
   })
 }
 
@@ -128,10 +106,6 @@ function buildTransporterRegisterFormData(values) {
     'confirmPassword',
     values.confirmPassword?.trim() || values.password || '',
   )
-
-  appendRegisterFiles(formData, 'ibanProof', values.ibanProof)
-  appendRegisterFiles(formData, 'civilLiability', values.civilLiability)
-  appendRegisterFiles(formData, 'transporterCivilLiability', values.transporterCivilLiability)
 
   return formData
 }

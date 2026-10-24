@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useOutletContext } from 'react-router-dom'
 import StatusCard from '@/components/data-display/StatusCard'
 import SuspendedAccessGate from '@/components/common/account-lock/SuspendedAccessGate'
+import SellerVerificationPanel from '@/components/common/account-lock/SellerVerificationPanel'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { useGetFactoryDashboardQuery } from '@/features/factory-dashboard/factoryDashboardApi'
 import { mapFactoryDashboard } from '@/features/factory-dashboard/dashboardMappers'
@@ -27,7 +28,7 @@ const MONTH_KEYS = [
 
 export default function DashboardPage() {
   const { t } = useTranslation()
-  const { isSuspended, rejectionReason } = useOutletContext()
+  const { isSuspended, rejectionReason, verificationStatus } = useOutletContext()
   const { data, isLoading, isError, error, refetch } =
     useGetFactoryDashboardQuery(undefined, { skip: isSuspended })
 
@@ -65,6 +66,13 @@ export default function DashboardPage() {
           {t('factoryDashboard.subtitle')}
         </p>
       </div>
+
+      <SellerVerificationPanel
+        role="factory"
+        verificationStatus={verificationStatus}
+        rejectionReason={rejectionReason}
+        className=""
+      />
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">

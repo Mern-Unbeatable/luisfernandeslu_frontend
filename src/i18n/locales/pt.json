@@ -4674,5 +4674,18 @@
     "curlFetchList": "cURL – Obter lista de inventário",
     "curlDelete": "cURL – Eliminar produto",
     "disputeChat": "Conversa de resolução de disputa"
+  },
+  "sellerVerification": {
+    "pendingTitle": "Conta pendente de verificação",
+    "rejectedTitle": "Documentos rejeitados",
+    "unverifiedDescription": "Submeta os seus documentos para que a nossa equipa possa verificar a sua conta. Já pode adicionar produtos e explorar o painel, mas os seus produtos só ficarão visíveis e disponíveis para compra após a aprovação.",
+    "underReviewDescription": "Os seus documentos estão em análise. Os seus produtos ficarão visíveis e disponíveis para compra assim que a sua conta for aprovada.",
+    "rejectedDescription": "Alguns dos seus documentos foram rejeitados. Volte a carregá-los para que possamos analisar a sua conta.",
+    "submitDocuments": "Submeter documentos",
+    "updateDocuments": "Atualizar documentos",
+    "transporterUnverifiedDescription": "Submeta os seus documentos e seguros para que a nossa equipa possa verificar a sua conta. Já pode explorar o quadro de leilões, mas só poderá licitar entregas após a aprovação.",
+    "transporterUnderReviewDescription": "Os seus documentos estão em análise. Poderá licitar entregas assim que a sua conta for aprovada.",
+    "bidBlocked": "A sua conta tem de ser verificada antes de poder licitar entregas. Submeta os seus documentos no painel.",
+    "goToDashboard": "Ir para o painel"
   }
 }
