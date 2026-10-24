@@ -350,14 +350,26 @@
       "seeDetails": "Ver detalles",
       "suspend": "Suspender",
       "delete": "Eliminar",
-      "message": "Mensaje"
+      "message": "Mensaje",
+      "activate": "Activar"
     },
     "modal": {
       "title": "Detalles del usuario",
       "close": "Cerrar",
       "registeredOn": "Registrado el {{date}}",
       "address": "Dirección"
-    }
+    },
+    "empty": "No se encontraron usuarios",
+    "detailsFailed": "No se pudieron cargar los detalles del usuario.",
+    "pagination": {
+      "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "deleteConfirm": "¿Eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "deleteSuccess": "Usuario eliminado correctamente.",
+    "statusUpdated": "Estado del usuario actualizado.",
+    "actionFailed": "La acción ha fallado. Inténtalo de nuevo."
   },
   "adminSupplierManagement": {
     "title": "Gestión de proveedores",
@@ -408,8 +420,20 @@
       "title": "Detalles del proveedor",
       "close": "Cerrar",
       "registeredOn": "Registrado el {{date}}",
-      "documentsTitle": "Certificado y prueba de identidad"
-    }
+      "documentsTitle": "Certificado y prueba de identidad",
+      "address": "Dirección",
+      "rejectionReason": "Motivo del rechazo",
+      "noDocuments": "No hay documentos subidos"
+    },
+    "rejectConfirm": "¿Rechazar a {{name}}? Este proveedor no será aprobado.",
+    "deleteConfirm": "¿Eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "approveSuccess": "Proveedor aprobado correctamente.",
+    "rejectSuccess": "Proveedor rechazado correctamente.",
+    "deleteSuccess": "Proveedor eliminado correctamente.",
+    "statusUpdated": "Estado del proveedor actualizado.",
+    "commissionUpdated": "Comisión actualizada correctamente.",
+    "actionFailed": "La acción ha fallado. Inténtalo de nuevo.",
+    "detailsFailed": "No se pudieron cargar los detalles del proveedor."
   },
   "adminFactoryManagement": {
     "title": "Gestión de fábricas",
@@ -460,7 +484,30 @@
       "title": "Detalles de la fábrica",
       "close": "Cerrar",
       "registeredOn": "Registrado el {{date}}",
-      "documentsTitle": "Certificado y prueba de identidad"
+      "documentsTitle": "Certificado y prueba de identidad",
+      "address": "Dirección",
+      "rejectionReason": "Motivo del rechazo",
+      "noDocuments": "No hay documentos subidos"
+    },
+    "approveSuccess": "Fábrica aprobada correctamente.",
+    "rejectSuccess": "Fábrica rechazada correctamente.",
+    "renewSuccess": "Fábrica renovada correctamente.",
+    "statusUpdated": "Estado de la fábrica actualizado.",
+    "commissionUpdated": "Comisión actualizada correctamente.",
+    "deleteConfirm": "¿Eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "deleteSuccess": "Fábrica eliminada correctamente.",
+    "actionFailed": "La acción ha fallado. Inténtalo de nuevo.",
+    "detailsFailed": "No se pudieron cargar los detalles de la fábrica.",
+    "rejectModal": {
+      "title": "Rechazar a {{name}}",
+      "subtitle": "Indica un motivo y selecciona los documentos que deben corregirse.",
+      "reasonLabel": "Motivo del rechazo",
+      "reasonPlaceholder": "Explica por qué se rechaza esta fábrica...",
+      "reasonRequired": "Introduce un motivo de rechazo.",
+      "documentsLabel": "Documentos no válidos",
+      "documentsRequired": "Selecciona al menos un documento no válido.",
+      "cancel": "Cancelar",
+      "submit": "Rechazar fábrica"
     }
   },
   "adminTransporterManagement": {
@@ -485,7 +532,8 @@
       "phone": "Teléfono",
       "registered": "Fecha de registro",
       "status": "Estado",
-      "action": "Acción"
+      "action": "Acción",
+      "commission": "Comisión"
     },
     "actions": {
       "seeDetails": "Ver detalles",
@@ -505,7 +553,36 @@
       "title": "Detalles del transportista",
       "close": "Cerrar",
       "registeredOn": "Registrado el {{date}}",
-      "documentsTitle": "Certificado y prueba de identidad"
+      "documentsTitle": "Certificado y prueba de identidad",
+      "address": "Dirección",
+      "rejectionReason": "Motivo del rechazo",
+      "noDocuments": "No hay documentos subidos"
+    },
+    "commission": {
+      "title": "Añadir comisión",
+      "custom": "Personalizada",
+      "placeholder": "Porcentaje %",
+      "set": "Fijar"
+    },
+    "approveSuccess": "Transportista aprobado correctamente.",
+    "rejectSuccess": "Transportista rechazado correctamente.",
+    "renewSuccess": "Transportista renovado correctamente.",
+    "statusUpdated": "Estado del transportista actualizado.",
+    "commissionUpdated": "Comisión actualizada correctamente.",
+    "deleteConfirm": "¿Eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "deleteSuccess": "Transportista eliminado correctamente.",
+    "actionFailed": "La acción ha fallado. Inténtalo de nuevo.",
+    "detailsFailed": "No se pudieron cargar los detalles del transportista.",
+    "rejectModal": {
+      "title": "Rechazar a {{name}}",
+      "subtitle": "Indica un motivo y selecciona los documentos que deben corregirse.",
+      "reasonLabel": "Motivo del rechazo",
+      "reasonPlaceholder": "Explica por qué se rechaza este transportista...",
+      "reasonRequired": "Introduce un motivo de rechazo.",
+      "documentsLabel": "Documentos no válidos",
+      "documentsRequired": "Selecciona al menos un documento no válido.",
+      "cancel": "Cancelar",
+      "submit": "Rechazar transportista"
     }
   },
   "adminProductModeration": {
@@ -560,6 +637,51 @@
       "accept": "Aceptar",
       "reject": "Rechazar",
       "removeSponsored": "Quitar patrocinio"
+    },
+    "emptyFeatured": "No hay productos destacados en este momento.",
+    "loading": "Cargando promociones…",
+    "loadFailed": "No se pudieron cargar las promociones.",
+    "approveSuccess": "Promoción aprobada.",
+    "rejectSuccess": "Promoción rechazada.",
+    "removeSponsoredSuccess": "Producto patrocinado eliminado.",
+    "actionFailed": "No se pudo actualizar la promoción.",
+    "rejectModal": {
+      "title": "Rechazar {{name}}",
+      "subtitle": "Indica un motivo para rechazar esta solicitud de destacado.",
+      "reasonLabel": "Motivo del rechazo",
+      "reasonPlaceholder": "Explica por qué se rechaza esta promoción...",
+      "reasonRequired": "Introduce un motivo de rechazo.",
+      "cancel": "Cancelar",
+      "submit": "Rechazar promoción"
+    },
+    "retry": "Reintentar",
+    "promotionPlans": {
+      "sectionTitle": "Planes de promoción",
+      "sectionSubtitle": "Configura los paquetes de visibilidad destacada que pueden comprar los proveedores.",
+      "loading": "Cargando planes de promoción…",
+      "loadFailed": "No se pudieron cargar los planes de promoción.",
+      "empty": "Todavía no hay planes de promoción.",
+      "activeBadge": "Activo",
+      "durationDays": "Duración (días)",
+      "edit": "Editar",
+      "createTitle": "Crear plan de promoción",
+      "editTitle": "Editar plan de promoción",
+      "createSuccess": "Plan de promoción creado.",
+      "updateSuccess": "Plan de promoción actualizado.",
+      "saveFailed": "No se pudo guardar el plan de promoción.",
+      "form": {
+        "label": "Nombre del plan",
+        "labelPlaceholder": "7 días destacado",
+        "durationDays": "Duración (días)",
+        "price": "Precio (€)",
+        "currency": "Moneda",
+        "sortOrder": "Orden de visualización",
+        "sortOrderShort": "Orden",
+        "sortOrderHint": "Define el orden de los planes en la ventana Promocionar del proveedor. El 1 aparece primero, luego el 2 y luego el 3. No cambia precios ni duración.",
+        "isActive": "Plan activo",
+        "cancel": "Cancelar",
+        "save": "Guardar plan"
+      }
     }
   },
   "adminFinancePayments": {
@@ -677,8 +799,14 @@
     "detail": {
       "back": "Volver a resolución de disputas",
       "title": "{{id}} · Disputa",
-      "notFound": "Disputa no encontrada."
-    }
+      "notFound": "Disputa no encontrada.",
+      "loading": "Cargando detalles de la disputa…"
+    },
+    "loading": "Cargando disputas…",
+    "loadFailed": "No se pudieron cargar las disputas.",
+    "retry": "Reintentar",
+    "statusUpdated": "Estado de la disputa actualizado.",
+    "statusUpdateFailed": "No se pudo actualizar el estado de la disputa."
   },
   "adminAuction": {
     "title": "Tablero de subastas",
@@ -691,7 +819,14 @@
       "endingSoon": "Finalizan pronto",
       "nearestFirst": "Más cercanas",
       "ended": "Finalizadas"
-    }
+    },
+    "loading": "Cargando subastas…",
+    "loadFailed": "No se pudieron cargar las subastas.",
+    "retry": "Reintentar",
+    "pagination": {
+      "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+    },
+    "noCompetingBids": "No hay pujas de otros transportistas"
   },
   "adminOrders": {
     "title": "Pedidos",
@@ -728,11 +863,17 @@
       "processing": "En proceso",
       "assigned": "Asignado",
       "completed": "Completado",
-      "cancel": "Cancelado"
+      "cancel": "Cancelado",
+      "in_production": "En producción",
+      "produced": "Producido",
+      "ready": "Listo",
+      "cancelByAdmin": "Cancelado por el administrador"
     },
     "actions": {
       "seeDetails": "Ver detalles",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "accept": "Aceptar",
+      "statusSection": "Cambiar estado"
     },
     "pagination": {
       "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
@@ -747,7 +888,10 @@
       "factorySection": "Información de la fábrica",
       "produced": "Producido",
       "assigned": "Asignado",
-      "chatUnavailable": "El chat no está disponible para este contacto."
+      "chatUnavailable": "El chat no está disponible para este contacto.",
+      "loading": "Cargando detalles del pedido…",
+      "loadFailed": "No se pudieron cargar los detalles del pedido.",
+      "delete": "Eliminar pedido"
     },
     "taxInvoice": {
       "title": "Factura certificada (InvoiceXpress)",
@@ -769,6 +913,24 @@
       "notPaid": "La factura se emite automáticamente cuando el pedido se paga.",
       "draftHint": "Solo borrador — no comunicada a la AT. Active INVOICEXPRESS_FINALIZE para certificar las facturas.",
       "open": "Abrir factura"
+    },
+    "loading": "Cargando pedidos…",
+    "loadFailed": "No se pudieron cargar los pedidos.",
+    "retry": "Reintentar",
+    "statusUpdated": "Estado del pedido actualizado.",
+    "actionFailed": "No se pudo actualizar el estado del pedido.",
+    "deleteConfirm": "El pedido {{id}} se eliminará de forma permanente. Esta acción no se puede deshacer.",
+    "deleteConfirmTitle": "¿Eliminar pedido?",
+    "deleteConfirmButton": "Eliminar",
+    "deleteCancelButton": "Cancelar",
+    "deleteSuccess": "Pedido eliminado.",
+    "cancelModal": {
+      "title": "¿Cancelar el pedido {{id}}?",
+      "subtitle": "Puedes añadir una nota (opcional). El pedido aparecerá como Cancelado por el administrador.",
+      "reasonLabel": "Motivo (opcional)",
+      "reasonPlaceholder": "Añade una nota sobre esta cancelación…",
+      "close": "Cerrar",
+      "submit": "Cancelar pedido"
     }
   },
   "adminDeliveryLogistics": {
@@ -783,7 +945,21 @@
     "detail": {
       "back": "Volver a entrega y logística",
       "title": "{{id}} · Entrega",
-      "notFound": "Entrega no encontrada."
+      "notFound": "Entrega no encontrada.",
+      "loading": "Cargando detalles de la entrega…",
+      "loadFailed": "No se pudieron cargar los detalles de la entrega."
+    },
+    "filterLabel": "Filtro:",
+    "searchPlaceholder": "Buscar subasta, pedido, producto, transportista…",
+    "empty": "Ninguna entrega coincide con los filtros.",
+    "loading": "Cargando entregas…",
+    "loadFailed": "No se pudieron cargar las entregas.",
+    "retry": "Reintentar",
+    "filters": {
+      "allStatus": "Todos los estados"
+    },
+    "pagination": {
+      "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados"
     }
   },
   "adminAffiliateDirectory": {
@@ -840,7 +1016,8 @@
       "suspended": "Suspendido"
     },
     "commissionStatus": {
-      "approved": "Aprobado"
+      "approved": "Aprobado",
+      "pending": "Pendiente"
     },
     "payoutStatus": {
       "pending": "Pendiente",
@@ -855,7 +1032,8 @@
     "actions": {
       "seeDetails": "Ver detalles",
       "suspend": "Suspender",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "activate": "Activar"
     },
     "pagination": {
       "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
@@ -883,7 +1061,10 @@
         "accountNumber": "Número de cuenta",
         "requestDate": "Fecha de solicitud",
         "status": "ESTADO"
-      }
+      },
+      "loadFailed": "No se pudieron cargar las solicitudes de pago.",
+      "statusUpdated": "Estado del pago actualizado.",
+      "actionFailed": "No se pudo actualizar el estado del pago."
     },
     "levelControl": {
       "pageTitle": "Sistema de hitos de niveles de comisión",
@@ -909,8 +1090,22 @@
         "membersRequired": "Miembros requeridos",
         "description": "Descripción",
         "cancel": "Cancelar",
-        "save": "Guardar nivel"
-      }
+        "save": "Guardar nivel",
+        "isActive": "Nivel activo"
+      },
+      "loading": "Cargando niveles de comisión…",
+      "loadFailed": "No se pudieron cargar los niveles de comisión.",
+      "saveFailed": "No se pudo guardar el nivel de comisión.",
+      "createSuccess": "Nivel de comisión creado.",
+      "updateSuccess": "Nivel de comisión actualizado.",
+      "editTitle": "Editar nivel de comisión",
+      "deleteConfirmTitle": "¿Eliminar nivel de comisión?",
+      "deleteConfirm": "{{name}} se eliminará de forma permanente. Esta acción no se puede deshacer.",
+      "deleteConfirmButton": "Eliminar",
+      "deleteSuccess": "Nivel de comisión eliminado.",
+      "deleteFailed": "No se pudo eliminar el nivel de comisión.",
+      "reorderSuccess": "Niveles de comisión reordenados.",
+      "reorderFailed": "No se pudieron reordenar los niveles de comisión."
     },
     "detail": {
       "back": "Volver",
@@ -942,7 +1137,8 @@
           "expiryDate": "Fecha de vencimiento",
           "status": "ESTADO",
           "action": "ACCIÓN"
-        }
+        },
+        "loadFailed": "No se pudieron cargar los clientes referidos."
       },
       "commissions": {
         "sectionTitle": "Registro de comisiones",
@@ -954,7 +1150,8 @@
           "rate": "Porcentaje",
           "earned": "Comisión ganada",
           "status": "Estado"
-        }
+        },
+        "loadFailed": "No se pudo cargar el historial de comisiones."
       },
       "payouts": {
         "sectionTitle": "Registro de comisiones",
@@ -965,7 +1162,8 @@
           "accountNumber": "Número de cuenta",
           "amount": "Importe del pago",
           "status": "Estado del procesamiento"
-        }
+        },
+        "loadFailed": "No se pudo cargar el historial de pagos."
       },
       "chart": {
         "eyebrow": "Ganancias históricas",
@@ -974,9 +1172,24 @@
         "timeframe": "Periodo",
         "thisYear": "Este año",
         "marketplaceRev": "Ingresos marketplace",
-        "affiliateCommission": "Comisión del afiliado"
-      }
-    }
+        "affiliateCommission": "Comisión del afiliado",
+        "loading": "Cargando estadísticas…",
+        "loadFailed": "No se pudieron cargar las estadísticas de ingresos."
+      },
+      "loading": "Cargando detalles del afiliado…",
+      "loadFailed": "No se pudieron cargar los detalles del afiliado.",
+      "delete": "Eliminar afiliado"
+    },
+    "loading": "Cargando afiliados…",
+    "loadFailed": "No se pudieron cargar los afiliados.",
+    "retry": "Reintentar",
+    "statusUpdated": "Estado del afiliado actualizado.",
+    "actionFailed": "No se pudo actualizar el estado del afiliado.",
+    "deleteConfirmTitle": "¿Eliminar afiliado?",
+    "deleteConfirm": "{{name}} se eliminará de forma permanente. Esta acción no se puede deshacer.",
+    "deleteConfirmButton": "Eliminar",
+    "deleteCancelButton": "Cancelar",
+    "deleteSuccess": "Afiliado eliminado."
   },
   "adminRolesPermissions": {
     "title": "Estrategia de roles y permisos",
@@ -1028,7 +1241,14 @@
       "classesCourses": "Clases y cursos",
       "memberDatabase": "Base de miembros",
       "instructorDirectory": "Directorio de instructores"
-    }
+    },
+    "loading": "Cargando permisos…",
+    "loadFailed": "No se pudieron cargar los permisos de los roles.",
+    "retry": "Reintentar",
+    "permissionsUpdated": "Permisos actualizados.",
+    "permissionsUpdateFailed": "No se pudieron actualizar los permisos.",
+    "inviteSuccess": "Moderador creado correctamente.",
+    "inviteFailed": "No se pudo crear el moderador."
   },
   "adminSettings": {
     "title": "Ajustes",
@@ -1046,7 +1266,9 @@
       "distanceLabel": "Distancia",
       "currentRateLabel": "Tarifa actual",
       "resultTitle": "Coste de envío",
-      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}"
+      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}",
+      "vehicleRatesTitle": "Tarifas por vehículo",
+      "vehicleLabel": "Tarifa del vehículo"
     },
     "vat": {
       "title": "IVA e impuestos",
@@ -1066,7 +1288,14 @@
       "durationTitle": "Duración de la subasta",
       "hoursLabel": "Horas",
       "minutesLabel": "Minutos"
-    }
+    },
+    "loading": "Cargando configuración…",
+    "loadFailed": "No se pudo cargar la configuración.",
+    "retry": "Reintentar",
+    "saveSuccess": "Configuración guardada.",
+    "saveFailed": "No se pudo guardar la configuración.",
+    "resetSuccess": "Configuración restablecida.",
+    "resetFailed": "No se pudo restablecer la configuración."
   },
   "panel": {
     "mainMenu": "Menú principal",
@@ -1079,7 +1308,8 @@
       "factory": "Fábrica",
       "transporter": "Transportista",
       "affiliate": "Afiliado",
-      "admin": "Admin"
+      "admin": "Administrador",
+      "moderator": "Moderador"
     },
     "nav": {
       "dashboard": "Panel",
@@ -1168,7 +1398,7 @@
       "tabAll": "Todos",
       "tabPending": "Pendiente",
       "tabRejected": "Rechazado",
-      "tabRegular": "Regular",
+      "tabRegular": "Normal",
       "tabBulkOrder": "Pedido masivo",
       "tabFeatured": "Destacado",
       "filters": "Filtros:",
@@ -1212,7 +1442,7 @@
         "selected": "Seleccionado: {{name}}",
         "browseAria": "Buscar archivo CSV",
         "downloadExample": "Descargar ejemplo",
-        "queueImport": "Queue Import",
+        "queueImport": "Importar",
         "uploading": "Subiendo…",
         "fileRequired": "Elige primero un archivo CSV.",
         "invalidFormat": "El formato del archivo no es CSV. Sube un archivo .csv.",
@@ -1528,7 +1758,7 @@
       "fieldFactoryName": "Nombre de fábrica",
       "fieldFactoryNamePlaceholder": "Escriba el nombre de la fábrica",
       "fieldAddQuantity": "Añadir cantidad",
-      "fieldAddQuantityPlaceholder": "20 pices"
+      "fieldAddQuantityPlaceholder": "20 unidades"
     },
     "profile": {
       "title": "Mi perfil",
@@ -1607,7 +1837,22 @@
       "billingAddress": "Dirección de facturación",
       "shippingAddress": "Dirección de envío",
       "companyOptional": "Nombre de la empresa (opcional)",
-      "changePasswordUpper": "CAMBIAR CONTRASEÑA"
+      "changePasswordUpper": "CAMBIAR CONTRASEÑA",
+      "phoneInvalid": "Introduce un número de teléfono válido (de 8 a 15 dígitos, solo números).",
+      "loading": "Cargando perfil…",
+      "loadFailed": "No se pudo cargar el perfil.",
+      "retry": "Reintentar",
+      "updateSuccess": "Perfil actualizado.",
+      "updateFailed": "No se pudo actualizar el perfil.",
+      "passwordUpdateSuccess": "Contraseña actualizada.",
+      "passwordUpdateFailed": "No se pudo actualizar la contraseña.",
+      "ibanUpdateSuccess": "IBAN actualizado.",
+      "ibanUpdateFailed": "No se pudo actualizar el IBAN.",
+      "avatarInvalidType": "Sube una imagen JPEG, PNG o WEBP.",
+      "avatarUploadSuccess": "Foto de perfil actualizada.",
+      "avatarUploadFailed": "No se pudo subir la foto de perfil.",
+      "avatarRemoveSuccess": "Foto de perfil eliminada.",
+      "avatarRemoveFailed": "No se pudo eliminar la foto de perfil."
     }
   },
   "auth": {
@@ -1619,9 +1864,9 @@
     "password": "Contraseña",
     "passwordPlaceholder": "Introduce tu contraseña aquí...",
     "forgotPassword": "¿Olvidaste la contraseña?",
-    "loginTab": "Login",
-    "signUpTab": "Sign Up",
-    "signUpTabUpper": "Sign UP",
+    "loginTab": "Entrar",
+    "signUpTab": "Registrarse",
+    "signUpTabUpper": "REGISTRARSE",
     "emailPlaceholderMarketing": "introduce tu email...",
     "passwordPlaceholderMarketing": "introduce tu contraseña...",
     "noAccountAny": "¿No tienes ninguna cuenta?",
@@ -1629,7 +1874,7 @@
     "noAccount": "¿No tienes una cuenta?",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "alreadyHaveAccountAny": "Ya tienes una cuenta",
-    "signInTabUpper": "Sign IN",
+    "signInTabUpper": "ENTRAR",
     "or": "O",
     "google": "Registrarse con Google",
     "facebook": "Registrarse con Facebook",
@@ -1645,7 +1890,8 @@
       "factory": "Fábrica",
       "transporter": "Transportista",
       "affiliate": "Afiliado",
-      "admin": "Admin"
+      "admin": "Administrador",
+      "moderator": "Moderador"
     },
     "register": {
       "submit": "Registrarse",
@@ -1689,7 +1935,16 @@
       "dropHere": "Arrastra y suelta fotos aquí",
       "browse": "O haz clic para elegir en el ordenador",
       "maxPhotos": "Máx. 20 fotos",
-      "filesSelected": "{{count}} archivo(s) seleccionado(s)"
+      "filesSelected": "{{count}} archivo(s) seleccionado(s)",
+      "name": "Nombre",
+      "namePh": "introduce tu nombre...",
+      "phoneNumber": "Número de teléfono",
+      "affiliateCode": "Código de afiliado",
+      "affiliateCodePh": "Introduce el código de afiliado (opcional)",
+      "ibanPhFactory": "PT50 0002 0123 1234 5678 9015 4",
+      "uploadAddressFactory": "Justificante de domicilio (emitido en los últimos 3 meses)",
+      "uploadCivilLiability": "Seguro de responsabilidad civil",
+      "uploadTransporterInsurance": "Seguro de responsabilidad civil del transportista"
     },
     "marketing": {
       "supplier": {
@@ -1757,6 +2012,23 @@
         "rf2Desc": "Mantén documentos del vehículo y cumplimiento organizados.",
         "rf3Title": "Ganancias transparentes",
         "rf3Desc": "Sigue pagos y facturas con total visibilidad."
+      },
+      "affiliate": {
+        "brand": "AffiliatePro",
+        "loginTitle": "Bienvenido de nuevo",
+        "loginSubtitle": "Introduce tus credenciales para acceder a tu panel de afiliado.",
+        "loginSubmit": "Entrar como afiliado →",
+        "loginSidebarTitle": "Convierte tu influencia en ingresos pasivos",
+        "loginSidebarSubtitle": "Únete a miles de socios que ganan altas comisiones promocionando productos líderes del comercio electrónico.",
+        "f1Title": "Gana altas comisiones",
+        "f1Desc": "Obtén hasta un 15% de comisión por cada compra referida con éxito.",
+        "f2Title": "Comparte y haz seguimiento",
+        "f2Desc": "Crea enlaces personalizados y sigue tu rendimiento en tiempo real con nuestro panel avanzado.",
+        "f3Title": "Pagos rápidos",
+        "f3Desc": "Cobra cada semana con el método de pago que prefieras. Sin comisiones ocultas.",
+        "registerTitle": "Hazte afiliado",
+        "registerSubtitle": "Únete a nuestra red y empieza hoy a ganar comisiones.",
+        "registerSubmit": "Hacerme afiliado →"
       }
     },
     "roles": {
@@ -1779,7 +2051,56 @@
       "transporter": {
         "title": "Soy Transportista",
         "desc": "Colabora con otros para mejorar ofertas y visibilidad"
+      },
+      "affiliate": {
+        "title": "Soy afiliado",
+        "desc": "Gana comisiones recomendando clientes y socios"
       }
+    },
+    "forgot": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Introduce el correo electrónico asociado a tu cuenta.",
+      "emailLabel": "Correo electrónico",
+      "emailRequired": "Introduce tu correo electrónico.",
+      "requestFailed": "No se pudo enviar el código. Inténtalo de nuevo.",
+      "verifyFailed": "Código de verificación no válido o caducado.",
+      "resetFailed": "No se pudo restablecer la contraseña. Inténtalo de nuevo.",
+      "resetSuccess": "Contraseña restablecida. Ya puedes iniciar sesión.",
+      "sendCode": "ENVIAR CÓDIGO",
+      "newTo": "¿Nuevo en CONSTRUPRECO?",
+      "createAccount": "Crear una cuenta",
+      "needHelp": "¿Necesitas ayuda?",
+      "contactSupport": "Contacta con atención al cliente",
+      "assist": "y te ayudaremos.",
+      "otpTitle": "Verificación del código",
+      "otpSubtitle": "Introduce el código de verificación que acabamos de enviar a tu correo",
+      "otpDigit": "Dígito {{n}}",
+      "otpIncomplete": "Introduce el código de verificación completo.",
+      "otpResent": "Se ha enviado un nuevo código a tu correo.",
+      "verify": "Verificar",
+      "noCode": "¿No has recibido el código?",
+      "resend": "Reenviar",
+      "changeEmail": "Usar otro correo",
+      "resetTitle": "Restablecer contraseña",
+      "resetSubtitle": "Crea una nueva contraseña de al menos 8 caracteres.",
+      "passwordPh": "8+ caracteres",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "resetSubmit": "RESTABLECER CONTRASEÑA"
+    },
+    "rememberMe": "Recordarme durante 30 días",
+    "admin": {
+      "loginTitle": "Acceso de administrador",
+      "loginSubtitle": "Inicia sesión en el panel de administración de CONSTRUPRECO."
+    },
+    "moderator": {
+      "loginTitle": "Acceso de moderador",
+      "loginSubtitle": "Inicia sesión en el panel de moderación de CONSTRUPRECO."
+    },
+    "legal": {
+      "prefix": "Al continuar, aceptas nuestros",
+      "terms": "Términos del servicio",
+      "and": "y la",
+      "privacy": "Política de privacidad"
     }
   },
   "buyer": {
@@ -1819,9 +2140,25 @@
     "status": {
       "shipped": "Enviado",
       "processing": "En procesamiento",
-      "delivered": "Entregado"
+      "delivered": "Entregado",
+      "cancelled": "Cancelado"
     },
-    "certifiedInvoice": "Factura certificada {{number}}"
+    "certifiedInvoice": "Factura certificada {{number}}",
+    "downloadInvoice": "Descargar factura",
+    "loading": "Cargando pedidos…",
+    "loadFailed": "No se pudieron cargar los pedidos.",
+    "retry": "Reintentar",
+    "cancelSuccess": "Pedido cancelado.",
+    "cancelFailed": "No se pudo cancelar el pedido.",
+    "invoiceDownloadSuccess": "Descarga de la factura iniciada.",
+    "invoiceDownloadFailed": "No se pudo descargar la factura.",
+    "filters": {
+      "all": "Todos",
+      "processing": "En proceso",
+      "shipped": "Enviados",
+      "delivered": "Entregados",
+      "cancelled": "Cancelados"
+    }
   },
   "buyerOrderDetail": {
     "title": "Información del pedido #{{number}}",
@@ -1831,14 +2168,16 @@
     "quantity": "Cantidad",
     "price": "Precio",
     "total": "Total",
-    "chat": "Chat"
+    "chat": "Chat",
+    "deliveryOtp": "Código de entrega: {{otp}}"
   },
   "cancelReasonModal": {
     "title": "Motivo de cancelación",
     "label": "Escriba el motivo de cancelación",
     "placeholder": "",
     "submit": "Enviar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "reasonRequired": "Introduce un motivo de cancelación."
   },
   "productToReview": {
     "columnProducts": "Productos",
@@ -1848,7 +2187,14 @@
     "empty": "No hay productos pendientes de reseña.",
     "shippingStatus": {
       "delivered": "Entregado"
-    }
+    },
+    "loading": "Cargando productos para valorar…",
+    "loadFailed": "No se pudieron cargar los productos para valorar.",
+    "retry": "Reintentar",
+    "submitSuccess": "Valoración enviada.",
+    "submitFailed": "No se pudo enviar la valoración.",
+    "ratingRequired": "Selecciona una puntuación.",
+    "reviewRequired": "Escribe una valoración."
   },
   "materialQualityFeedback": {
     "title": "¿Cómo fue la calidad del material?",
@@ -1892,7 +2238,10 @@
       "assign": "Asignar",
       "completed": "Completado",
       "delivered": "Entregado"
-    }
+    },
+    "loading": "Cargando pedidos…",
+    "loadFailed": "No se pudieron cargar los pedidos.",
+    "retry": "Reintentar"
   },
   "companyProjects": {
     "backToProjects": "← Volver a proyectos",
@@ -1919,7 +2268,12 @@
     "progress": "Progreso",
     "nextInstallment": "Próximo plazo",
     "monthlyPayment": "Pago mensual",
-    "installmentTimeline": "Cronología de plazos"
+    "installmentTimeline": "Cronología de plazos",
+    "loading": "Cargando proyectos…",
+    "loadFailed": "No se pudieron cargar los proyectos.",
+    "retry": "Reintentar",
+    "empty": "No se encontraron proyectos.",
+    "deliveryProgress": "Progreso de la entrega"
   },
   "disputesCenter": {
     "backToList": "Volver a disputas",
@@ -1962,8 +2316,19 @@
       "uploadTypes": "PNG, JPG, MP4 hasta 10MB",
       "cancel": "CANCELAR",
       "submit": "ENVIAR DISPUTA",
-      "close": "Cerrar"
-    }
+      "close": "Cerrar",
+      "selectItems": "Seleccionar artículos (opcional)",
+      "selectItemsHint": "Déjalo sin marcar para abrir una disputa sobre todos los artículos del pedido.",
+      "evidenceRequired": "Sube al menos un archivo como prueba.",
+      "evidenceInvalidType": "Solo se permiten archivos JPEG, PNG y WEBP.",
+      "removeEvidence": "Eliminar archivo",
+      "submitting": "Enviando…"
+    },
+    "loading": "Cargando disputas…",
+    "loadFailed": "No se pudieron cargar las disputas.",
+    "retry": "Reintentar",
+    "submitSuccess": "Disputa enviada.",
+    "submitFailed": "No se pudo enviar la disputa."
   },
   "returnsCenter": {
     "tabOrders": "Mis pedidos",
@@ -2012,11 +2377,20 @@
       "evidence": "Subir pruebas",
       "uploadHint": "Clic para subir o arrastrar",
       "uploadTypes": "PNG, JPG, MP4 hasta 10MB",
-      "submit": "ENVIAR DEVOLUCIÓN"
+      "submit": "ENVIAR DEVOLUCIÓN",
+      "removeFile": "Eliminar",
+      "evidenceRequired": "Sube al menos un archivo como prueba.",
+      "evidenceInvalidType": "Solo se permiten archivos JPEG, PNG, WEBP, PDF, DOC y DOCX."
     },
     "status": {
       "delivered": "ENTREGADO"
-    }
+    },
+    "ordersEmpty": "No hay pedidos disponibles para devolución.",
+    "loading": "Cargando devoluciones…",
+    "loadFailed": "No se pudieron cargar las devoluciones.",
+    "retry": "Reintentar",
+    "submitSuccess": "Solicitud de devolución enviada.",
+    "submitFailed": "No se pudo enviar la solicitud de devolución."
   },
   "helpCenterPage": {
     "seoTitle": "Centro de Ayuda",
@@ -2511,7 +2885,9 @@
     "signupTitle": "Registrarse",
     "signupDescription": "Crea tu cuenta de CONSTRUPRECO.",
     "notFoundTitle": "Página no encontrada",
-    "notFoundDescription": "La página que buscas no existe."
+    "notFoundDescription": "La página que buscas no existe.",
+    "forgotPasswordTitle": "Recuperar contraseña",
+    "forgotPasswordDescription": "Restablece la contraseña de tu cuenta de CONSTRUPRECO."
   },
   "common": {
     "backHome": "Volver al Inicio",
@@ -2611,7 +2987,9 @@
       "additionalNotesPlaceholder": "Cualquier información adicional",
       "submit": "Enviar subasta",
       "nav": "Crear subasta"
-    }
+    },
+    "noCompetingBids": "No hay pujas de otros transportistas",
+    "scrollForMoreBids": "Desliza para ver más pujas"
   },
   "order": {
     "details": {
@@ -2822,8 +3200,15 @@
       "noteLabel": "Nota:",
       "noteBody": "Nuestro equipo revisará tu documento en 24-48 horas. Te avisaremos cuando la verificación esté completa.",
       "cancel": "Cancelar",
-      "submit": "Enviar para verificación"
-    }
+      "submit": "Enviar para verificación",
+      "submitting": "Enviando…",
+      "success": "Seguro subido correctamente",
+      "renewTitle": "Renovar póliza de seguro"
+    },
+    "expired": "Caducado",
+    "documentUnavailable": "Documento no disponible",
+    "alertPendingTitle": "Requisitos de seguro pendientes",
+    "alertPendingBody": "Sube y verifica las pólizas de responsabilidad civil y de mercancías para participar en subastas y aceptar entregas."
   },
   "transporterInvoices": {
     "title": "Facturas de comisión",
@@ -2844,7 +3229,14 @@
     "downloadInvoice": "Descargar factura",
     "previous": "Anterior",
     "next": "Siguiente",
-    "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados"
+    "showingResults": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+    "searchPlaceholder": "Buscar facturas…",
+    "empty": "No se encontraron facturas.",
+    "detailTitle": "Detalles de la factura",
+    "close": "Cerrar",
+    "orderTotal": "Total del pedido",
+    "commissionPercent": "Comisión",
+    "partyPayout": "Importe a cobrar"
   },
   "transporterMap": {
     "mapTitle": "Mapa de Google",
@@ -2930,7 +3322,7 @@
       "selected": "Seleccionado: {{name}}",
       "downloadExample": "Descargar plantilla",
       "downloadCategoryGuide": "Guía de categorías",
-      "queueImport": "Queue Import",
+      "queueImport": "Importar",
       "uploading": "Subiendo…",
       "downloading": "Descargando…",
       "uploadFailed": "Error al subir. Inténtalo de nuevo.",
@@ -3016,7 +3408,8 @@
     "assignedDeliveries": {
       "title": "Entregas asignadas",
       "subtitle": "Sigue los pedidos ya aceptados por transportistas"
-    }
+    },
+    "auctionCreated": "Subasta creada correctamente"
   },
   "supplierPaymentsFinance": {
     "title": "Ganancias y pagos",
@@ -3045,6 +3438,17 @@
     },
     "invoiceActions": {
       "download": "Descargar PDF"
+    },
+    "withdraw": {
+      "title": "Retirar fondos",
+      "amount": "Importe",
+      "businessName": "Nombre de la empresa/organización",
+      "routingNumber": "Código del banco",
+      "accountNumber": "Número de cuenta",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "closeOverlay": "Cerrar ventana",
+      "close": "Cerrar"
     }
   },
   "supplierAnalytics": {
@@ -3097,7 +3501,7 @@
     "positiveReviewsDesc": "Valoraciones de 4-5 estrellas",
     "orderLabel": "Pedido",
     "customerType": {
-      "regular": "Regular",
+      "regular": "Normal",
       "company": "Empresa"
     }
   },
@@ -3255,7 +3659,13 @@
       "customer": "Cliente",
       "amount": "Importe",
       "date": "Fecha"
-    }
+    },
+    "empty": "No se encontraron facturas.",
+    "detailTitle": "Detalles de la factura",
+    "close": "Cerrar",
+    "orderTotal": "Total del pedido",
+    "commissionPercent": "Comisión",
+    "partyPayout": "Importe a cobrar"
   },
   "affiliateOverview": {
     "title": "Panel de ganancias de afiliados",
@@ -3427,14 +3837,32 @@
     "reload": "Recargar página"
   },
   "buyerAreaGate": {
-      "guestTitle": "Inicia sesión para continuar",
-      "guestDescription": "Para ver o abrir disputas y devoluciones, inicia sesión con tu cuenta de cliente o empresa.",
-      "sellerTitle": "Área exclusiva para compradores",
-      "sellerDescription": "Las disputas y devoluciones de esta página son para clientes y empresas. Puedes gestionar tus casos desde tu panel.",
-      "loginCustomer": "Entrar como cliente",
-      "loginCompany": "Entrar como empresa",
-      "goToDashboard": "Ir al panel",
-      "noAccount": "¿Aún no tienes cuenta?",
-      "signup": "Crear cuenta"
-    }
+    "guestTitle": "Inicia sesión para continuar",
+    "guestDescription": "Para ver o abrir disputas y devoluciones, inicia sesión con tu cuenta de cliente o empresa.",
+    "sellerTitle": "Área exclusiva para compradores",
+    "sellerDescription": "Las disputas y devoluciones de esta página son para clientes y empresas. Puedes gestionar tus casos desde tu panel.",
+    "loginCustomer": "Entrar como cliente",
+    "loginCompany": "Entrar como empresa",
+    "goToDashboard": "Ir al panel",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "signup": "Crear cuenta"
+  },
+  "disputeResolution": {
+    "dashboardTitle": "Centro de disputas y devoluciones",
+    "dashboardSubtitle": "Gestiona las disputas, devoluciones y casos de resolución de los clientes",
+    "infoTitle": "Información de la disputa",
+    "infoSubtitle": "Detalles del problema reportado",
+    "orderId": "N.º de pedido: {{id}}",
+    "description": "Descripción",
+    "evidence": "Pruebas ({{count}})",
+    "evidenceAlt": "Prueba {{n}}",
+    "status": "Estado",
+    "created": "Creada el",
+    "thread": "Conversación",
+    "statusResolved": "Resuelta",
+    "statusUnderReview": "En revisión",
+    "attachFile": "Adjuntar archivo",
+    "messagePlaceholder": "Escribe tu mensaje...",
+    "sendMessage": "Enviar mensaje"
+  }
 }

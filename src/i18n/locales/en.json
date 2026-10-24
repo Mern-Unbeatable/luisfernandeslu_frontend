@@ -1756,7 +1756,7 @@
       "fieldFactoryName": "Factory Name",
       "fieldFactoryNamePlaceholder": "Write factory name",
       "fieldAddQuantity": "Add Quantity",
-      "fieldAddQuantityPlaceholder": "20 pices"
+      "fieldAddQuantityPlaceholder": "20 pieces"
     },
     "profile": {
       "title": "My Profile",
@@ -3835,14 +3835,32 @@
     "reload": "Reload page"
   },
   "buyerAreaGate": {
-      "guestTitle": "Log in to continue",
-      "guestDescription": "To view or open disputes and returns, log in with your customer or company account.",
-      "sellerTitle": "Buyers only",
-      "sellerDescription": "Disputes and returns on this page are for customers and companies. You can manage your cases from your dashboard.",
-      "loginCustomer": "Log in as customer",
-      "loginCompany": "Log in as company",
-      "goToDashboard": "Go to dashboard",
-      "noAccount": "Don't have an account?",
-      "signup": "Sign up"
-    }
+    "guestTitle": "Log in to continue",
+    "guestDescription": "To view or open disputes and returns, log in with your customer or company account.",
+    "sellerTitle": "Buyers only",
+    "sellerDescription": "Disputes and returns on this page are for customers and companies. You can manage your cases from your dashboard.",
+    "loginCustomer": "Log in as customer",
+    "loginCompany": "Log in as company",
+    "goToDashboard": "Go to dashboard",
+    "noAccount": "Don't have an account?",
+    "signup": "Sign up"
+  },
+  "disputeResolution": {
+    "dashboardTitle": "Disputes & Returns Center",
+    "dashboardSubtitle": "Manage customer disputes, returns, and resolution cases",
+    "infoTitle": "Dispute Information",
+    "infoSubtitle": "Details about the raised issue",
+    "orderId": "Order ID: {{id}}",
+    "description": "Description",
+    "evidence": "Evidence ({{count}})",
+    "evidenceAlt": "Evidence {{n}}",
+    "status": "Status",
+    "created": "Created",
+    "thread": "Communication Thread",
+    "statusResolved": "Resolved",
+    "statusUnderReview": "Under Review",
+    "attachFile": "Attach file",
+    "messagePlaceholder": "Type your message...",
+    "sendMessage": "Send message"
+  }
 }
