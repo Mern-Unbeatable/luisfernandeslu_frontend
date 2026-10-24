@@ -313,7 +313,7 @@ export default function Header() {
                                   {item.category?.name && (
                                     <span className="truncate text-gray-500">{item.category.name}</span>
                                   )}
-                                  <span className="font-bold text-[var(--active)]">${item.basePrice.toFixed(2)}</span>
+                                  <span className="font-bold text-[var(--active)]">€{item.basePrice.toFixed(2)}</span>
                                 </div>
                               </div>
                             </button>
@@ -505,7 +505,7 @@ export default function Header() {
                                       </span>
                                     )}
                                     <span className="font-semibold text-[var(--active)]">
-                                      ${item.basePrice.toFixed(2)}
+                                      €{item.basePrice.toFixed(2)}
                                       <span className="text-[10px] font-normal text-gray-400">
                                         /{item.unitOfMeasure}
                                       </span>

@@ -284,7 +284,7 @@ export function csvRowsToCatalogItems(rows) {
     const isBulk = tag === 'bulk_order'
     const isRegular = tag === 'regular'
     const price = parsePrice(row.basePrice)
-    const priceLabel = price != null ? `$${price.toFixed(2)}` : row.basePrice
+    const priceLabel = price != null ? `€${price.toFixed(2)}` : row.basePrice
 
     return {
       id: `csv-${Date.now()}-${index + 1}`,

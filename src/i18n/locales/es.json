@@ -35,12 +35,12 @@
     "emptyTitle": "Ningún producto coincide con los filtros",
     "emptyHint": "Pruebe a ajustar el precio o las categorías.",
     "priceAll": "Todos los precios",
-    "priceUnder20": "Menos de £20",
-    "price25to100": "£25 a £100",
-    "price100to300": "£100 a £300",
-    "price300to500": "£300 a £500",
-    "price500to1000": "£500 a £1.000",
-    "price1000to10000": "£1.000 a £10.000",
+    "priceUnder20": "Menos de €20",
+    "price25to100": "€25 a €100",
+    "price100to300": "€100 a €300",
+    "price300to500": "€300 a €500",
+    "price500to1000": "€500 a €1.000",
+    "price1000to10000": "€1.000 a €10.000",
     "closeFilters": "Cerrar filtros",
     "clearFilters": "Borrar todo",
     "showResults": "Mostrar {{count}} productos"
@@ -140,6 +140,9 @@
   },
   "constructionAssistant": {
     "title": "Asistente de Construcción",
+    "subtitle": "Experto IA en materiales de construcción",
+    "checkingCatalog": "Consultando el catálogo...",
+    "recommendedProducts": "Productos recomendados",
     "open": "Abrir chat del asistente de construcción",
     "close": "Cerrar chat del asistente de construcción",
     "send": "Enviar mensaje",
@@ -3422,5 +3425,16 @@
     "title": "Se ha producido un error",
     "description": "Algo salió mal al cargar esta página. Recargue la página para intentarlo de nuevo.",
     "reload": "Recargar página"
-  }
+  },
+  "buyerAreaGate": {
+      "guestTitle": "Inicia sesión para continuar",
+      "guestDescription": "Para ver o abrir disputas y devoluciones, inicia sesión con tu cuenta de cliente o empresa.",
+      "sellerTitle": "Área exclusiva para compradores",
+      "sellerDescription": "Las disputas y devoluciones de esta página son para clientes y empresas. Puedes gestionar tus casos desde tu panel.",
+      "loginCustomer": "Entrar como cliente",
+      "loginCompany": "Entrar como empresa",
+      "goToDashboard": "Ir al panel",
+      "noAccount": "¿Aún no tienes cuenta?",
+      "signup": "Crear cuenta"
+    }
 }

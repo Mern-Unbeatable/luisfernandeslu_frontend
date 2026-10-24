@@ -30,6 +30,7 @@ import PanelPwaManager from "../../pwa/PanelPwaManager";
 import ProtectedRoute from "./ProtectedRoute";
 import StaffAreaGuard from "./StaffAreaGuard";
 import PublicRoute from "./PublicRoute";
+import BuyerAreaGate from "./BuyerAreaGate";
 import { routeSeo } from "../../config/seo";
 import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from "../../roles";
 import { useAuthLogout } from "../../features/auth/useAuthLogout";
@@ -729,29 +730,34 @@ export const router = createBrowserRouter([
             handle: { seo: routeSeo.returnPolicy },
           },
           {
-            path: "/dispute-resolution",
-            element: <DisputeResolutionList />,
-            handle: { seo: routeSeo.disputeResolution },
-          },
-          {
-            path: "/dispute-resolution/:disputeId",
-            element: <DisputeResolutionDetail />,
-            handle: { seo: routeSeo.disputeResolution },
-          },
-          {
-            path: "/returns",
-            element: <ReturnsOrders />,
-            handle: { seo: routeSeo.returnsCenter },
-          },
-          {
-            path: "/returns/request/:returnId",
-            element: <ReturnRequestDetail />,
-            handle: { seo: routeSeo.returnsCenter },
-          },
-          {
-            path: "/returns/:orderId",
-            element: <ReturnOrderDetail />,
-            handle: { seo: routeSeo.returnsCenter },
+            element: <BuyerAreaGate />,
+            children: [
+              {
+                path: "/dispute-resolution",
+                element: <DisputeResolutionList />,
+                handle: { seo: routeSeo.disputeResolution },
+              },
+              {
+                path: "/dispute-resolution/:disputeId",
+                element: <DisputeResolutionDetail />,
+                handle: { seo: routeSeo.disputeResolution },
+              },
+              {
+                path: "/returns",
+                element: <ReturnsOrders />,
+                handle: { seo: routeSeo.returnsCenter },
+              },
+              {
+                path: "/returns/request/:returnId",
+                element: <ReturnRequestDetail />,
+                handle: { seo: routeSeo.returnsCenter },
+              },
+              {
+                path: "/returns/:orderId",
+                element: <ReturnOrderDetail />,
+                handle: { seo: routeSeo.returnsCenter },
+              },
+            ],
           },
         ],
       },

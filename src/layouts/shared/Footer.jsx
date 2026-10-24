@@ -32,7 +32,11 @@ const footerColumnDefs = [
       { labelKey: 'footer.helpCenter', href: '/help-center' },
       { labelKey: 'footer.dispute', href: '/dispute-resolution' },
       { labelKey: 'footer.returns', href: '/returns' },
-      { labelKey: 'footer.complaintBook', href: '#' },
+      {
+        labelKey: 'footer.complaintBook',
+        href: 'https://www.livroreclamacoes.pt',
+        external: true,
+      },
     ],
   },
   {
@@ -90,6 +94,9 @@ export default function Footer() {
   )
 }
 
+const FOOTER_LINK_CLASS =
+  'text-sm text-neutral-800 transition-colors hover:text-amber-600 md:text-base'
+
 function FooterColumn({ titleKey, links }) {
   const { t } = useTranslation()
 
@@ -101,12 +108,20 @@ function FooterColumn({ titleKey, links }) {
       <ul className="flex flex-col items-start gap-2.5 md:gap-3">
         {links.map((link) => (
           <li key={link.labelKey}>
-            <Link
-              to={link.href}
-              className="text-sm text-neutral-800 transition-colors hover:text-amber-600 md:text-base"
-            >
-              {t(link.labelKey)}
-            </Link>
+            {link.external ? (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={FOOTER_LINK_CLASS}
+              >
+                {t(link.labelKey)}
+              </a>
+            ) : (
+              <Link to={link.href} className={FOOTER_LINK_CLASS}>
+                {t(link.labelKey)}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

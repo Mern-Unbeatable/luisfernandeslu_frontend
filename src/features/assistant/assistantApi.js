@@ -19,6 +19,7 @@ export const assistantApi = baseApi.injectEndpoints({
       transformResponse: (response) => ({
         reply: response?.data?.reply || response?.reply || '',
         products: response?.data?.products || response?.products || [],
+        language: response?.data?.language || response?.language || null,
       }),
       invalidatesTags: ['AssistantChat'],
     }),

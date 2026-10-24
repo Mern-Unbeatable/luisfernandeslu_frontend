@@ -24,6 +24,9 @@ import AuthModeToggle from '../../components/auth/AuthModeToggle'
 import AuthDemoAccounts from '../../components/auth/AuthDemoAccounts'
 import AuthLegalNote from '../../components/auth/AuthLegalNote'
 
+/** Buyers sent here from a buyer-only page (disputes, returns) go back to it after login. */
+const BUYER_RETURN_ROLES = new Set(['customer', 'company'])
+
 export default function LoginPage() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -123,7 +126,19 @@ export default function LoginPage() {
         return
       }
 
-      navigate(getHomePathForRole(loggedInUser?.role || role), { replace: true })
+      const loggedInRole = loggedInUser?.role || role
+      const returnTo = location.state?.from
+      if (
+        BUYER_RETURN_ROLES.has(loggedInRole)
+        && typeof returnTo === 'string'
+        && returnTo.startsWith('/')
+        && !returnTo.startsWith('//')
+      ) {
+        navigate(returnTo, { replace: true })
+        return
+      }
+
+      navigate(getHomePathForRole(loggedInRole), { replace: true })
     } catch (err) {
       const status = err?.status
       if (status === 'FETCH_ERROR' || !status) {

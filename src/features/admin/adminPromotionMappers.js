@@ -1,23 +1,9 @@
-function formatPromotionCurrency(amount, currency) {
+function formatPromotionCurrency(amount) {
   if (amount == null || amount === '') return '—'
   const num = Number(amount)
   if (Number.isNaN(num)) return String(amount)
 
-  if (currency === 'EUR') {
-    return `€${num.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    })}`
-  }
-
-  if (currency === 'USD') {
-    return `$${num.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    })}`
-  }
-
-  return `${currency} ${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`
@@ -33,22 +19,18 @@ function formatPromotionUnit(unitOfMeasure, weightKg) {
 
 /** Map backend promotion → marketing card row */
 export function mapAdminPromotion(promotion) {
-  const currency = promotion.currency || 'USD'
   const unit = formatPromotionUnit(
     promotion.unitOfMeasure,
     promotion.weightKg,
   )
-  const priceFormatted = formatPromotionCurrency(
-    promotion.basePrice,
-    currency,
-  )
+  const priceFormatted = formatPromotionCurrency(promotion.basePrice)
 
   return {
     id: promotion.id,
     status: String(promotion.status || '')
       .trim()
       .toLowerCase(),
-    boostTier: formatPromotionCurrency(promotion.boostTier, currency),
+    boostTier: formatPromotionCurrency(promotion.boostTier),
     duration:
       promotion.durationDays != null
         ? `${promotion.durationDays} Days`

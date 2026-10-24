@@ -2,7 +2,7 @@ import {
   CHECKOUT_LINE_ITEMS,
 } from '../../checkout/data/checkoutDemo'
 
-/** Confirmation totals match Figma mock (shipping $100). */
+/** Confirmation totals match Figma mock (shipping €100). */
 export const ORDER_CONFIRMATION_TOTALS = {
   subtotal: 320,
   shipping: 100,
