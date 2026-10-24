@@ -36,12 +36,11 @@ const STATUS_PATCH = {
   produced: 'PRODUCED',
   ready: 'READY',
 }
-function formatMoney(value, currency = 'EUR') {
+function formatMoney(value) {
   if (value == null || value === '') return '—'
   const amount = Number(value)
   if (Number.isNaN(amount)) return String(value)
-  const symbol = currency === 'EUR' ? '€' : currency === 'USD' ? '$' : `${currency} `
-  return `${symbol}${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`
@@ -74,18 +73,17 @@ function getStatusLabel(statusValue, t) {
 }
 
 function mapOrderRow(order) {
-  const currency = order.currency || 'EUR'
   return {
     id: order.id,
     orderId: order.orderNumber,
     supplierName: order.companyName || order.supplier?.name || '—',
     companyId: order.companyId,
-    total: formatMoney(order.total, currency),
+    total: formatMoney(order.total),
     totalRaw: Number(order.total) || 0,
     installmentAmount:
       order.installmentAmount == null
         ? '—'
-        : formatMoney(order.installmentAmount, currency),
+        : formatMoney(order.installmentAmount),
     status: order.status,
     orderStatus: order.orderStatus,
     badgeStatus: toBadgeStatus(order.status, order.orderStatus),
@@ -98,7 +96,6 @@ function mapOrderRow(order) {
 function mapDetailOrder(apiOrder) {
   if (!apiOrder) return null
 
-  const currency = apiOrder.payment?.currency || 'EUR'
   const hasInstallment =
     (apiOrder.installments?.length || 0) > 0
     || (apiOrder.installmentBreakdown?.length || 0) > 0
@@ -133,9 +130,9 @@ function mapDetailOrder(apiOrder) {
         .join(', '),
     },
     payment: {
-      totalPrice: formatMoney(apiOrder.payment?.totalOrderAmount, currency),
-      paidAmount: formatMoney(paidAmount, currency),
-      remainingBalance: formatMoney(apiOrder.payment?.remainingAmount, currency),
+      totalPrice: formatMoney(apiOrder.payment?.totalOrderAmount),
+      paidAmount: formatMoney(paidAmount),
+      remainingBalance: formatMoney(apiOrder.payment?.remainingAmount),
       paidNote: apiOrder.payment?.paymentStatus || '',
       duration: '—',
     },
@@ -146,8 +143,8 @@ function mapDetailOrder(apiOrder) {
       material: item.material || '—',
       weightSize: item.uom || item.weightSize || '—',
       qty: item.quantity == null ? '—' : String(item.quantity),
-      unit: formatMoney(item.unitPrice, currency),
-      total: formatMoney(item.total, currency),
+      unit: formatMoney(item.unitPrice),
+      total: formatMoney(item.total),
     })),
     installmentBreakdown: apiOrder.installmentBreakdown || [],
     installments: apiOrder.installments || [],
