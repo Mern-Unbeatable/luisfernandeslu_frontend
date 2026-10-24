@@ -9,6 +9,8 @@ import {
   Tooltip,
   Filler,
 } from 'chart.js'
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
   CategoryScale,
@@ -30,9 +32,9 @@ function getFilterLabel(option) {
 }
 
 export default function RevenueOverview({
-  title = 'Revenue Overview',
-  subtitle = 'Monthly revenue for the last 6 months',
-  filterAriaLabel = 'Revenue period filter',
+  title = i18n.t('fallback.revenueOverview'),
+  subtitle = i18n.t('fallback.revenueLast6Months'),
+  filterAriaLabel = i18n.t('fallback.revenuePeriodFilter'),
   labels = [],
   values = [],
   maxValue,
@@ -100,7 +102,7 @@ export default function RevenueOverview({
         callbacks: {
           title: (context) =>
             year ? `${context[0].label}, ${year}` : context[0].label,
-          label: (context) => `€${Number(context.raw).toLocaleString()}`,
+          label: (context) => `€${Number(context.raw).toLocaleString(appLocale())}`,
         },
       },
     },

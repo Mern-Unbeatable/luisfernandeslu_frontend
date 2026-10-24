@@ -1,3 +1,6 @@
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
+
 /** UI tab → API approvalStatus filter */
 export function toAdminProductStatusParam(tabId) {
   if (tabId === 'pending') return 'PENDING_REVIEW'
@@ -30,7 +33,7 @@ function formatUnit(unitOfMeasure, weightKg) {
 export function mapAdminModerationCard(product) {
   const price = Number(product.basePrice)
   const priceLabel = Number.isFinite(price)
-    ? `€${price.toLocaleString('en-US', {
+    ? `€${price.toLocaleString(appLocale(), {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       })}`
@@ -47,7 +50,9 @@ export function mapAdminModerationCard(product) {
       title: product.name || product.title || '—',
       description: product.description || '',
       price: priceLabel,
-      priceText: unit ? `Price: ${priceLabel} per ${unit}` : `Price: ${priceLabel}`,
+      priceText: unit
+        ? i18n.t('fallback.pricePerUnitValue', { price: priceLabel, unit })
+        : i18n.t('fallback.priceValue', { price: priceLabel }),
       unit,
     },
   }

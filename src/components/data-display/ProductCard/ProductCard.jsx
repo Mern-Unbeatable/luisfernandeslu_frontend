@@ -198,6 +198,7 @@ export default function ProductCard({
 }
 
 function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
+  const { t } = useTranslation()
   const [loadState, setLoadState] = useState(image ? 'loading' : 'empty')
 
   useEffect(() => {
@@ -219,7 +220,7 @@ function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
       {showImage ? (
         <img
           src={image}
-          alt={title || 'Product'}
+          alt={title || t('productDetails.productAlt')}
           loading="lazy"
           decoding="async"
           onLoad={() => setLoadState('loaded')}
@@ -231,7 +232,7 @@ function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
         />
       ) : (
         <div className="flex size-full items-center justify-center px-3 text-center text-xs text-gray-400">
-          {title || 'No image'}
+          {title || t('productDetails.noImage')}
         </div>
       )}
       {badge ? (
@@ -241,7 +242,9 @@ function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
           } ${badge.className}`}
         >
           {BadgeIcon ? <BadgeIcon className="size-3" aria-hidden /> : null}
-          {badge.label}
+          {badge.key
+            ? t(`productCard.badges.${badge.key}`, { defaultValue: badge.label })
+            : badge.label}
         </span>
       ) : null}
       {timeLeft ? (
@@ -280,7 +283,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
         {showCompanyPrice ? (
           <p className="text-xs font-semibold text-[var(--active)]">
             {product.companyPriceText
-              || `Company: ${product.companyPrice}${product.unit ? ` /${product.unit}` : ''}`}
+              || t('fallback.companyPriceSlash', { price: product.companyPrice, unit: product.unit ? ` /${product.unit}` : '' })}
           </p>
         ) : null}
       </div>
@@ -292,7 +295,9 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
       <p className="text-sm font-bold text-[var(--primary-text)]">
         {product.priceText
           || (product.price != null
-            ? `Price: ${product.price}${product.unit ? ` per ${product.unit}` : ''}`
+            ? (product.unit
+              ? t('fallback.pricePerUnitValue', { price: product.price, unit: product.unit })
+              : t('fallback.priceValue', { price: product.price }))
             : null)
           || '—'}
       </p>
@@ -301,7 +306,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
         ? (
             <p className="text-sm font-semibold text-[var(--active)]">
               {product.companyPriceText
-                || `Company: ${product.companyPrice}${product.unit ? ` per ${product.unit}` : ''}`}
+                || t('fallback.companyPriceSlash', { price: product.companyPrice, unit: product.unit ? t('fallback.perUnitSuffix', { unit: product.unit }) : '' })}
             </p>
           )
         : null}
@@ -404,6 +409,8 @@ function ActionFooter({ actions, onAction, loadingAction }) {
 }
 
 function ActionButton({ action, onClick, className = '', isLoading }) {
+  const { t } = useTranslation()
+  const label = t(`productCard.actions.${action.id}`, { defaultValue: action.label || '' })
   const Icon = action.icon ? ICON_MAP[action.icon] : null
 
   if (action.kind === 'icon') {
@@ -415,7 +422,7 @@ function ActionButton({ action, onClick, className = '', isLoading }) {
           event.stopPropagation()
           onClick?.()
         }}
-        aria-label={action.label || action.id}
+        aria-label={label || action.id}
         className={`inline-flex size-8 items-center justify-center rounded-md border border-gray-300 text-[var(--primary-text)] transition-colors hover:bg-gray-50 disabled:opacity-50 ${className}`}
       >
         {isLoading ? (
@@ -450,7 +457,7 @@ function ActionButton({ action, onClick, className = '', isLoading }) {
       ) : Icon ? (
         <Icon className="size-4" />
       ) : null}
-      {action.label}
+      {label}
     </button>
   )
 }

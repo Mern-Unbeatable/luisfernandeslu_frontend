@@ -274,7 +274,7 @@ export default function GenerateDocumentModal({
               className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {submitting
-                ? "Generating..."
+                ? t('fallback.generating')
                 : t("panel.supplierFiscalDocuments.modalSubmit")}
             </button>
           </div>

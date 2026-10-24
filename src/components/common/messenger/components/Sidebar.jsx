@@ -1,16 +1,19 @@
 import Skeleton from '../../Skeleton/Skeleton'
 import { FiEdit2 } from 'react-icons/fi'
 import UserAvatar from './UserAvatar'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
 export default function Sidebar({
   chats = [],
   activeChatId,
   onSelectChat,
   isLoading = false,
-  title = 'Recent Messages',
+  title = i18n.t('ui.recentMessages'),
   showEditButton = false,
   onEditClick,
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex h-full flex-col border-r border-gray-200 bg-[#F5F5F5]">
       <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-4 py-5">
@@ -22,7 +25,7 @@ export default function Sidebar({
             type="button"
             onClick={onEditClick}
             className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-white/70 hover:text-[var(--primary-text)]"
-            aria-label="Edit conversations"
+            aria-label={t('ui.editConversations')}
           >
             <FiEdit2 className="size-4" strokeWidth={1.75} aria-hidden />
           </button>
@@ -34,7 +37,7 @@ export default function Sidebar({
           <SidebarSkeleton />
         ) : chats.length === 0 ? (
           <p className="px-2 py-8 text-center text-sm text-[var(--secondary-text)]">
-            No conversations found.
+            {t('ui.noConversations')}
           </p>
         ) : (
           <ul className="space-y-1">

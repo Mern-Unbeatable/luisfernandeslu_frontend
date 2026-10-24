@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ChatArea from './components/ChatArea'
 import CreateOfferModal from './components/CreateOfferModal'
 import Sidebar from './components/Sidebar'
+import i18n from '@/i18n'
 
 /**
  * Common messenger shell — inbox + conversation.
@@ -26,7 +27,7 @@ export default function Messenger({
   isLoading = false,
   actionMessageId = null,
   sharedInbox = false,
-  sidebarTitle = 'Recent Messages',
+  sidebarTitle = i18n.t('ui.recentMessages'),
   showSidebarEdit = false,
   className = '',
 }) {

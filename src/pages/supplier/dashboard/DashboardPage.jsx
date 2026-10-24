@@ -16,6 +16,7 @@ import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { useGetSupplierOverviewQuery } from "@/features/supplier/overview/overviewApi";
 import OrderStatusSelect from "./OrderStatusSelect";
 import RevenueChart from "./RevenueChart";
+import { appLocale } from "@/i18n/locale";
 
 const STATUS_LABEL_KEYS = {
   assign: "panel.supplierDashboard.statusAssign",
@@ -77,7 +78,7 @@ function formatStatValue(value, format) {
   const numericValue = Number(value ?? 0);
 
   if (format === "currency") {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(appLocale(), {
       style: "currency",
       currency: "EUR",
       minimumFractionDigits: 2,

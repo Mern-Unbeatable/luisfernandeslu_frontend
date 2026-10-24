@@ -15,25 +15,25 @@ export default function PaymentMethodSelector({
     {
       id: 'MULTIBANCO',
       title: 'Multibanco',
-      description: 'Pay via ATM or Home Banking',
+      description: t('ui.payMultibanco'),
       icon: '🏧'
     },
     {
       id: 'MBWAY',
       title: 'MB WAY',
-      description: 'Pay directly from your phone',
+      description: t('ui.payMbway'),
       icon: '📱'
     },
     {
       id: 'CREDITCARD',
-      title: 'Credit Card',
+      title: t('ui.creditCard'),
       description: 'Visa, Mastercard',
       icon: '💳'
     },
     {
       id: 'PAYSHOP',
       title: 'Payshop',
-      description: 'Pay at any Payshop agent',
+      description: t('ui.payPayshop'),
       icon: '🏪'
     }
   ]

@@ -5,6 +5,7 @@ import {
   TextInput,
   Toggle,
 } from './FormControls'
+import { useTranslation } from 'react-i18next'
 
 export default function BulkOptionSection({
   enabled,
@@ -13,6 +14,7 @@ export default function BulkOptionSection({
   onTierChange,
   onAddTier,
 }) {
+  const { t } = useTranslation()
   const updateTier = (id, key, value) => {
     onTierChange?.(
       tiers.map((tier) => (tier.id === id ? { ...tier, [key]: value } : tier)),
@@ -21,7 +23,7 @@ export default function BulkOptionSection({
 
   return (
     <div className="flex w-full flex-col gap-5">
-      <Toggle label="Bulk Option" checked={enabled} onChange={onToggle} />
+      <Toggle label={t('ui.bulkOption')} checked={enabled} onChange={onToggle} />
 
       {enabled ? (
         <div className="flex w-full flex-col gap-4">
@@ -31,7 +33,7 @@ export default function BulkOptionSection({
                 key={tier.id}
                 className="grid grid-cols-1 gap-2 sm:grid-cols-2"
               >
-                <Field label="Quantity">
+                <Field label={t('ui.quantity')}>
                   <TextInput
                     value={tier.quantity}
                     onChange={(value) => updateTier(tier.id, 'quantity', value)}
@@ -39,7 +41,7 @@ export default function BulkOptionSection({
                     className="h-9 rounded-lg text-xs"
                   />
                 </Field>
-                <Field label="Price (€)">
+                <Field label={t('ui.priceEur')}>
                   <TextInput
                     value={tier.price}
                     onChange={(value) => updateTier(tier.id, 'price', value)}
@@ -56,7 +58,7 @@ export default function BulkOptionSection({
             onClick={onAddTier}
             className="self-start text-sm font-normal text-[var(--active)] hover:underline"
           >
-            Add Another condition
+            {t('ui.addCondition')}
           </button>
         </div>
       ) : null}

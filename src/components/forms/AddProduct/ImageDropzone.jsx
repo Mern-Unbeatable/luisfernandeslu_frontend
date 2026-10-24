@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FiUploadCloud, FiX } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n'
 
 function formatMeta(meta = []) {
   return meta.map((item) => (
@@ -45,9 +47,10 @@ export default function ImageDropzone({
   files = [],
   maxFiles = 1,
   accept = 'image/jpeg,image/png',
-  meta = ['JPEG, PNG', '1920x1080px recommended'],
+  meta = ['JPEG, PNG', i18n.t('fallback.resolutionRecommended')],
   onChange,
 }) {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [previews, setPreviews] = useState([]);
@@ -141,12 +144,12 @@ export default function ImageDropzone({
                 >
                   <img
                     src={url}
-                    alt={`Upload ${index + 1}`}
+                    alt={t('fallback.uploadN', { n: index + 1 })}
                     className='size-full object-cover'
                   />
                   <button
                     type='button'
-                    aria-label={`Remove image ${index + 1}`}
+                    aria-label={t('fallback.removeImageN', { n: index + 1 })}
                     onClick={(event) => removeAt(event, index)}
                     className='absolute top-1.5 right-1.5 inline-flex size-7 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80'
                   >
@@ -163,7 +166,7 @@ export default function ImageDropzone({
                 className='flex aspect-square flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-sky-950/30 text-sm text-slate-500 hover:border-[var(--active)] hover:text-[var(--active)]'
               >
                 <FiUploadCloud className='size-6' />
-                Add more
+                {t('ui.addMore')}
               </button>
             ) : null}
           </div>
@@ -177,15 +180,15 @@ export default function ImageDropzone({
               <FiUploadCloud className='size-7 text-sky-950' />
             </span>
             <p className='text-lg font-bold leading-7 text-slate-900'>
-              Drag and drop photos here
+              {t('ui.dropPhotos')}
             </p>
             <p className='text-sm leading-5 text-slate-500'>
-              Or click to browse from your computer
+              {t('ui.browsePhotos')}
             </p>
             <div className='mt-2 flex flex-wrap items-center justify-center gap-4'>
               {formatMeta([
                 ...meta.slice(0, 1),
-                maxFiles === 1 ? 'Max 1 photos' : `Max ${maxFiles} photos`,
+                maxFiles === 1 ? t('fallback.maxOnePhoto') : t('fallback.maxPhotos', { count: maxFiles }),
                 ...meta.slice(1),
               ])}
             </div>

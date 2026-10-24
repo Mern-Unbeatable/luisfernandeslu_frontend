@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
 
 const SOCKET_URL =
   import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080'
@@ -131,11 +133,11 @@ export default function useDisputeChat({
           id: `local-${Date.now()}`,
           disputeId,
           senderId: user?.id || 'me',
-          author: user?.name || (isBuyerRole ? 'Buyer' : isSupplierRole ? 'Seller' : 'Admin'),
-          roleLabel: isBuyerRole ? 'Buyer' : isSupplierRole ? 'Seller' : 'Admin',
+          author: user?.name || (isBuyerRole ? i18n.t('fallback.buyer') : isSupplierRole ? i18n.t('ui.seller') : i18n.t('fallback.admin')),
+          roleLabel: isBuyerRole ? i18n.t('fallback.buyer') : isSupplierRole ? i18n.t('ui.seller') : i18n.t('fallback.admin'),
           role: isBuyerRole ? 'buyer' : isSupplierRole ? 'supplier' : 'admin',
           align: isBuyerRole ? 'right' : 'left',
-          at: new Intl.DateTimeFormat('en-US', {
+          at: new Intl.DateTimeFormat(appLocale(), {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,

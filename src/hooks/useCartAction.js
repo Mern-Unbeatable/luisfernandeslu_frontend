@@ -1,10 +1,12 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { useAddCartItemMutation } from '@/features/cart/cartApi'
 
 export default function useCartAction() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isAuthenticated } = useSelector((state) => state.auth)
   const [addCartItem] = useAddCartItemMutation()
@@ -17,8 +19,8 @@ export default function useCartAction() {
           return result.id || true
         } catch (err) {
           Swal.fire({
-            title: 'Error',
-            text: err?.data?.message || 'Failed to add item to cart',
+            title: t('ui.error'),
+            text: err?.data?.message || t('ui.addToCartFailed'),
             icon: 'error',
           })
           return false
@@ -29,14 +31,14 @@ export default function useCartAction() {
     }
 
     Swal.fire({
-      title: 'Login Required',
-      text: 'Please login to add items to your cart.',
+      title: t('ui.loginRequired'),
+      text: t('ui.loginToAddToCart'),
       icon: 'info',
       showCloseButton: true,
       showCancelButton: false,
       showDenyButton: true,
-      confirmButtonText: 'Login as Customer',
-      denyButtonText: 'Login as Company',
+      confirmButtonText: t('ui.loginAsCustomer'),
+      denyButtonText: t('ui.loginAsCompany'),
       buttonsStyling: false,
       customClass: {
         popup: 'rounded-2xl pb-6',
@@ -56,7 +58,7 @@ export default function useCartAction() {
     })
 
     return false
-  }, [isAuthenticated, navigate, addCartItem])
+  }, [isAuthenticated, navigate, addCartItem, t])
 
   return { handleAddToCart }
 }

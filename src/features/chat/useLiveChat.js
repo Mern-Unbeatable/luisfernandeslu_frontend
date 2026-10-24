@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 import { io } from 'socket.io-client'
 import { useGetChatThreadsQuery, useGetChatMessagesQuery, chatApi, useCreateFactoryOfferMutation, usePayFactoryOfferMutation } from './chatApi'
 import { useDispatch } from 'react-redux'
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
 
 // The backend server URL for socket connection
 const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080'
@@ -152,7 +154,7 @@ export default function useLiveChat(initialThreadId = null) {
           const threadIndex = draft.chats.findIndex(c => c.id === String(threadId))
           if (threadIndex > -1) {
             const thread = draft.chats[threadIndex]
-            thread.lastMessage = chatMessage.text || chatMessage.messageText || chatMessage.message || 'New message'
+            thread.lastMessage = chatMessage.text || chatMessage.messageText || chatMessage.message || i18n.t('fallback.newMessage')
             thread.time = new Date(chatMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             if (activeThreadIdRef.current !== String(threadId)) {
               thread.unreadCount = (thread.unreadCount || 0) + 1
@@ -199,7 +201,7 @@ export default function useLiveChat(initialThreadId = null) {
           if (!draft?.chats) return
           const thread = draft.chats.find(c => c.id === String(threadId))
           if (thread) {
-            thread.lastMessage = chatMessage.messageText || 'New message'
+            thread.lastMessage = chatMessage.messageText || i18n.t('fallback.newMessage')
           }
         })
       )
@@ -218,7 +220,7 @@ export default function useLiveChat(initialThreadId = null) {
           if (idx !== -1) {
             draft[idx] = {
               ...draft[idx],
-              text: 'This message was deleted',
+              text: i18n.t('ui.messageDeleted'),
               isDeleted: true,
             }
           }
@@ -232,7 +234,7 @@ export default function useLiveChat(initialThreadId = null) {
           const thread = draft.chats.find(c => c.id === String(threadId))
           if (thread) {
             // We assume it might be the last message.
-            thread.lastMessage = 'This message was deleted'
+            thread.lastMessage = i18n.t('ui.messageDeleted')
           }
         })
       )
@@ -333,11 +335,11 @@ export default function useLiveChat(initialThreadId = null) {
                   }
                   const mappedThread = {
                     id: String(response.thread.id),
-                    name: response.thread.title || response.thread.name || partnerRow?.name || 'Conversation',
+                    name: response.thread.title || response.thread.name || partnerRow?.name || i18n.t('fallback.conversation'),
                     avatar: partnerRow?.avatar || partnerRow?.image || null,
                     partner: partnerRow || null,
-                    lastMessage: 'New conversation',
-                    time: new Intl.DateTimeFormat('en-US', {
+                    lastMessage: i18n.t('fallback.newConversation'),
+                    time: new Intl.DateTimeFormat(appLocale(), {
                       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
                     }).format(new Date()),
                     unreadCount: 0,
@@ -410,7 +412,7 @@ export default function useLiveChat(initialThreadId = null) {
         chatApi.util.updateQueryData('getChatMessages', { threadId, userId: userIdRef.current }, (draft) => {
           const idx = draft.findIndex((m) => String(m.id) === String(messageId))
           if (idx !== -1) {
-            draft[idx] = { ...draft[idx], text: 'This message was deleted', isDeleted: true }
+            draft[idx] = { ...draft[idx], text: i18n.t('ui.messageDeleted'), isDeleted: true }
           }
         })
       )

@@ -1,16 +1,18 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import ProductCardSkeleton from '@/components/data-display/ProductCard/ProductCardSkeleton'
+import { useTranslation } from 'react-i18next'
 
 /** Matches factory products list: header + CTAs + toolbar + product card grid. */
 export default function FactoryProductsPageSkeleton({ cards = 8 } = {}) {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">

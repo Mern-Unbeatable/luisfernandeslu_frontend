@@ -17,6 +17,7 @@ import {
   useGetAssignedFactoryAuctionsQuery,
   useLazyGetFactoryAuctionCreateInfoQuery,
 } from '@/features/factory-auctions/factoryAuctionApi'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 4
 const DEFAULT_VEHICLE_TYPE = 'HEAVY_TRUCK'
@@ -43,7 +44,7 @@ function formatMoney(value) {
   if (value == null || value === '') return '—'
   const amount = Number(value)
   if (Number.isNaN(amount)) return String(value)
-  return `€${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`
@@ -53,7 +54,7 @@ function formatDateTime(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleString()
+  return date.toLocaleString(appLocale())
 }
 
 function mapActiveCard(auction) {
@@ -175,6 +176,7 @@ function mapCreateInfoToForm(order) {
 }
 
 function AuctionDetailsView({ auctionId, listKind, onBack }) {
+  const { t } = useTranslation()
   const isAssigned = listKind === 'assigned'
 
   const activeQuery = useGetActiveFactoryAuctionByIdQuery(auctionId, {
@@ -188,7 +190,7 @@ function AuctionDetailsView({ auctionId, listKind, onBack }) {
   const detail = mapDetailAuction(query.data?.auction)
 
   if (query.isLoading) {
-    return <p className="text-sm text-[var(--secondary-text)]">Loading…</p>
+    return <p className="text-sm text-[var(--secondary-text)]">{t('ui.loadingEllipsis')}</p>
   }
 
   if (query.isError || !detail) {
@@ -199,9 +201,9 @@ function AuctionDetailsView({ auctionId, listKind, onBack }) {
           onClick={onBack}
           className="text-sm font-medium text-[var(--active)]"
         >
-          Back
+          {t('ui.back')}
         </button>
-        <p className="text-sm text-red-600">Failed to load auction details.</p>
+        <p className="text-sm text-red-600">{t('ui.auctionLoadFailed')}</p>
       </div>
     )
   }
@@ -384,7 +386,7 @@ export default function DeliveryLogisticsPage() {
         />
 
         {isCreating ? (
-          <p className="text-sm text-[var(--secondary-text)]">Saving…</p>
+          <p className="text-sm text-[var(--secondary-text)]">{t('ui.saving')}</p>
         ) : null}
       </div>
     )

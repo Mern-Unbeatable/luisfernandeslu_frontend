@@ -1,16 +1,18 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import TableSkeleton from '@/components/common/Skeleton/TableSkeleton'
+import { useTranslation } from 'react-i18next'
 
 /** Matches factory orders list: header + metric cards + data table. */
 export default function FactoryOrdersPageSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <div className="space-y-2">
         <Skeleton className="h-8 w-48 max-w-full" />

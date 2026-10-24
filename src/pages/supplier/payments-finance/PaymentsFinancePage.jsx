@@ -18,12 +18,13 @@ import {
   useGetSupplierCommissionInvoicesQuery,
   useLazyGetSupplierCommissionInvoicePdfQuery,
 } from "@/features/supplier/commission-invoices/commissionInvoicesApi";
+import { appLocale } from "@/i18n/locale";
 
 function formatCurrency(value) {
   const parsed = Number(value ?? 0);
   if (!Number.isFinite(parsed)) return String(value ?? "€0");
 
-  return `€${parsed.toLocaleString("en-US", {
+  return `€${parsed.toLocaleString(appLocale(), {
     minimumFractionDigits: parsed % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`;
@@ -153,9 +154,7 @@ export default function PaymentsFinancePage() {
             description={t("supplierPaymentsFinance.cards.withdrawNote")}
             icon={FiDollarSign}
             iconTone="brand"
-            actionLabel={t('supplierPaymentsFinance.cards.withdrawFunds')}
-            onAction={openWithdraw}
-          /> 
+          />
           {/*<StatusCard
             label={t('supplierPaymentsFinance.cards.pendingAmount')}
             value={DEMO_SUPPLIER_PAYMENTS_STATS.pendingAmount}

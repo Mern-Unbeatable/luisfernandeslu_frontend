@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { FiMoreVertical } from 'react-icons/fi'
 import OfferCard from './OfferCard'
 import UserAvatar from './UserAvatar'
+import { useTranslation } from 'react-i18next'
 
 export default function MessageBubble({
   message,
@@ -15,10 +16,11 @@ export default function MessageBubble({
   isBeingEdited,
   showPartnerAvatar = true,
 }) {
+  const { t } = useTranslation()
   const isOutgoing = message.sender === 'me'
   const isBusy = actionMessageId === message.id
   const displayText = message.isDeleted
-    ? 'This message was deleted'
+    ? t('ui.messageDeleted')
     : message.text
 
   if (message.type === 'offer' && message.offer && !message.isDeleted) {
@@ -55,21 +57,21 @@ export default function MessageBubble({
         <div className="my-2 flex w-full justify-center">
           <div className="w-full max-w-[340px] overflow-hidden rounded-xl border border-indigo-200 bg-indigo-50/50 shadow-sm sm:max-w-md">
             <div className="border-b border-indigo-100 bg-indigo-100/50 px-4 py-3">
-              <p className="text-sm font-bold text-indigo-900">New Quote Request</p>
-              <p className="text-xs text-indigo-700">Awaiting supplier response</p>
+              <p className="text-sm font-bold text-indigo-900">{t('ui.newQuoteRequest')}</p>
+              <p className="text-xs text-indigo-700">{t('ui.awaitingSupplier')}</p>
             </div>
             <div className="p-4">
               <div className="mb-3 rounded-lg bg-white p-3 shadow-sm">
-                <p className="text-[11px] uppercase tracking-wider text-gray-500">Product</p>
+                <p className="text-[11px] uppercase tracking-wider text-gray-500">{t('ui.product')}</p>
                 <p className="mt-0.5 text-sm font-bold text-gray-900">{product}</p>
               </div>
               <div className="flex gap-3">
                 <div className="flex-1 rounded-lg bg-white p-3 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-wider text-gray-500">Budget</p>
+                  <p className="text-[11px] uppercase tracking-wider text-gray-500">{t('ui.budget')}</p>
                   <p className="mt-0.5 text-sm font-bold text-[var(--active)]">{budget}</p>
                 </div>
                 <div className="flex-1 rounded-lg bg-white p-3 shadow-sm">
-                  <p className="text-[11px] uppercase tracking-wider text-gray-500">Quantity</p>
+                  <p className="text-[11px] uppercase tracking-wider text-gray-500">{t('ui.quantity')}</p>
                   <p className="mt-0.5 text-sm font-semibold text-gray-800">
                     {restText.replace(/Quantity:|^\s+|\s+$/g, '').trim()}
                   </p>
@@ -155,6 +157,7 @@ export default function MessageBubble({
 }
 
 function Meta({ time, editedAt, status, align = 'left' }) {
+  const { t } = useTranslation()
   return (
     <div
       className={`flex flex-wrap items-center gap-1.5 text-[10px] text-[var(--secondary-text)] ${
@@ -162,13 +165,14 @@ function Meta({ time, editedAt, status, align = 'left' }) {
       }`}
     >
       {time ? <span>{time}</span> : null}
-      {editedAt ? <span>· Edited</span> : null}
+      {editedAt ? <span>{t('ui.edited')}</span> : null}
       {status ? <span>· {status}</span> : null}
     </div>
   )
 }
 
 function MessageActions({ onEdit, onDelete, disabled }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [coords, setCoords] = useState(null)
   const rootRef = useRef(null)
@@ -257,7 +261,7 @@ function MessageActions({ onEdit, onDelete, disabled }) {
                   onEdit?.()
                 }}
               >
-                Edit
+                {t('ui.edit')}
               </button>
               <button
                 type="button"
@@ -268,7 +272,7 @@ function MessageActions({ onEdit, onDelete, disabled }) {
                   onDelete?.()
                 }}
               >
-                Delete
+                {t('ui.delete')}
               </button>
             </div>,
             document.body,

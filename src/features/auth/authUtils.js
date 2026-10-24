@@ -1,3 +1,4 @@
+import i18n from '@/i18n'
 export function parseAuthPayload(payload) {
   const root = payload?.data ?? payload ?? {}
   const user = root.user ?? null
@@ -177,7 +178,7 @@ export function buildRegisterPayload(role, values) {
   }
 }
 
-export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
+export function getAuthErrorMessage(error, fallback = i18n.t('fallback.somethingWentWrong')) {
   if (!error) return fallback
 
   const payload =
@@ -203,7 +204,7 @@ export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
       msg.includes('prisma.user.delete') ||
       msg.includes('HasRelatedRecords')
     ) {
-      return 'This user cannot be deleted because they have associated orders or records in the system. Please suspend the user instead.'
+      return i18n.t('fallback.userHasRecords')
     }
     return msg
   }

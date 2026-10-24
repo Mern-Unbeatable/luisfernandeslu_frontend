@@ -61,7 +61,7 @@ export default function AuthFileUpload({
 
         <span className="mt-4 text-[11px] leading-relaxed text-[#9AA1AC]">
           JPEG, PNG &nbsp;|&nbsp; {t('auth.register.maxPhotos')} &nbsp;|&nbsp;
-          1920×1080px recommended
+          {t('ui.recommendedSize')}
         </span>
 
         {files.length > 0 ? (

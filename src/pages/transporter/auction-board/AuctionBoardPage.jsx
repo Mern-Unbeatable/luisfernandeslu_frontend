@@ -17,6 +17,7 @@ import {
   mapTransporterAuction,
   resolveAuctionApiId,
 } from '../../../features/transporter/auctionMappers'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 9
 
@@ -79,13 +80,13 @@ export default function AuctionBoardPage() {
 
     const amount = Number(bidAmount)
     if (!Number.isFinite(amount) || amount <= 0) {
-      setBidError('Enter a valid bid amount')
+      setBidError(i18n.t('fallback.invalidBid'))
       return false
     }
 
     const startFrom = Number(auction.bidStartFrom)
     if (Number.isFinite(startFrom) && amount > startFrom) {
-      const message = `Bid must be at most €${startFrom}`
+      const message = i18n.t('fallback.bidTooHigh', { amount: startFrom })
       setBidError(message)
       setToast({ open: true, message, variant: 'error' })
       return false
@@ -107,7 +108,7 @@ export default function AuctionBoardPage() {
       })
       return true
     } catch (err) {
-      const message = getAuthErrorMessage(err, 'Failed to place bid')
+      const message = getAuthErrorMessage(err, i18n.t('fallback.placeBid'))
       setBidError(message)
       setToast({
         open: true,
@@ -185,13 +186,13 @@ export default function AuctionBoardPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load auctions')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadAuctions'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}

@@ -70,7 +70,7 @@ function PaymentSummary({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm text-[var(--secondary-text)]">
-            {showDownPayment ? 'Pay Now (Down Payment)' : 'Paid Amount'}
+            {showDownPayment ? t('ui.payNowDownPayment') : t('orderDetails.paidAmount')}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {payment.paidAmount}
@@ -203,10 +203,10 @@ export default function InstallmentOrderDetails({
         <SectionEyebrow>{t('orderDetails.recipient')}</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
           {isFactory
-            ? 'Supplier Information'
+            ? t('ui.supplierInformation')
             : isCustomerRecipient
-              ? 'Customer Information'
-              : 'Company Information'}
+              ? t('ui.customerInformation')
+              : t('ui.companyInformation')}
         </h2>
         <p className="text-base font-bold text-[var(--primary-text)]">
           {recipient.name}
@@ -311,8 +311,8 @@ export default function InstallmentOrderDetails({
           <StackLabel
             label={
               isCompanyRecipient
-                ? 'Types of unloading Needed'
-                : 'Types of unloading / vehicles'
+                ? t('orderDetails.unloadingType')
+                : t('ui.unloadingVehicles')
             }
             value={logistics.unloadingType}
           />

@@ -14,7 +14,7 @@ function DocumentDropzone({ fieldKey, files, onChange }) {
   const { t } = useTranslation()
   const inputRef = useRef(null)
   const meta = DOCUMENT_FIELD_META[fieldKey] || {}
-  const label = getDocumentLabel(fieldKey)
+  const label = t(`accountLock.documents.${fieldKey}.label`, { defaultValue: getDocumentLabel(fieldKey) })
 
   return (
     <div>
@@ -40,7 +40,9 @@ function DocumentDropzone({ fieldKey, files, onChange }) {
         ) : null}
       </button>
       {meta.description ? (
-        <p className="mt-2 text-xs text-[var(--secondary-text)]">{meta.description}</p>
+        <p className="mt-2 text-xs text-[var(--secondary-text)]">
+          {t(`accountLock.documents.${fieldKey}.description`, { defaultValue: meta.description })}
+        </p>
       ) : null}
       <input
         ref={inputRef}
@@ -70,10 +72,12 @@ function InsuranceCard({ fieldKey, files, onChange }) {
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-[var(--primary-text)]">
-            {getDocumentLabel(fieldKey)}
+            {t(`accountLock.documents.${fieldKey}.label`, { defaultValue: getDocumentLabel(fieldKey) })}
           </h3>
           {meta.description ? (
-            <p className="mt-1 text-xs text-[var(--secondary-text)]">{meta.description}</p>
+            <p className="mt-1 text-xs text-[var(--secondary-text)]">
+              {t(`accountLock.documents.${fieldKey}.description`, { defaultValue: meta.description })}
+            </p>
           ) : null}
           <button
             type="button"

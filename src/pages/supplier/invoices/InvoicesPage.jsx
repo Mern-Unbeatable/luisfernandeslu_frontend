@@ -108,7 +108,7 @@ function InvoiceDetailModal({ invoice, open, loading, error, onClose, t }) {
                 onClick={onClose}
                 className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-[var(--primary-text)] hover:bg-gray-50"
               >
-                Close
+                {t("ui.close")}
               </button>
             </div>
           </>

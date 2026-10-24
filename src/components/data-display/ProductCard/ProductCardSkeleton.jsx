@@ -1,6 +1,8 @@
 import Skeleton from "@/components/common/Skeleton/Skeleton";
+import { useTranslation } from "react-i18next";
 
 export default function ProductCardSkeleton({ className = "" }) {
+  const { t } = useTranslation();
   return (
     <article
       className={[
@@ -9,9 +11,9 @@ export default function ProductCardSkeleton({ className = "" }) {
       ].join(" ")}
       role="status"
       aria-busy="true"
-      aria-label="Loading product card"
+      aria-label={t("ui.loadingProductCard")}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t("ui.loading")}</span>
 
       <div className="relative aspect-4/3 w-full overflow-hidden bg-gray-100">
         <Skeleton className="size-full rounded-none" />

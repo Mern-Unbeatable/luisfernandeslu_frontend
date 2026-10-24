@@ -1,5 +1,7 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
+import i18n from '@/i18n'
 
 const FACTORY_ORDER_STATUS_MAP = {
   NEW: "new",
@@ -40,7 +42,7 @@ function formatCurrencyValue(value) {
   const amount = parseNumberValue(value);
   if (!Number.isFinite(amount)) return "€0";
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(appLocale(), {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 2,
@@ -52,7 +54,7 @@ function formatDateValue(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",
@@ -150,7 +152,7 @@ export function mapSupplierFactoryOrderFactories(payload) {
         factory.name ??
         factory.label ??
         factory.factoryName ??
-        "Unnamed factory",
+        i18n.t('fallback.unnamedFactory'),
     }))
     .filter((item) => item.value);
 }
@@ -186,15 +188,15 @@ function mapFactoryOrderDetail(payload) {
           parseNumberValue(order.paidAmount ?? order.amountPaid ?? 0),
     ),
     paidNote: order.paidNote ?? "",
-    duration: order.duration ?? `${installmentCount} months`,
+    duration: order.duration ?? i18n.t('fallback.monthsCount', { count: installmentCount }),
   };
 
   const transporter =
     status === "assigned" || status === "in-production" || status === "ready"
       ? {
-          name: order.transporter?.name ?? "John Smith",
-          phone: order.transporter?.phone ?? "+1 (555) 123-4567",
-          vehicle: order.transporter?.vehicle ?? "Truck #TR-4523",
+          name: order.transporter?.name ?? "—",
+          phone: order.transporter?.phone ?? "—",
+          vehicle: order.transporter?.vehicle ?? "—",
         }
       : null;
 
@@ -216,7 +218,7 @@ function mapFactoryOrderDetail(payload) {
     context: "factory",
     recipientType: order.recipientType ?? "supplier",
     company: {
-      name: company.name ?? factory.name ?? "Factory",
+      name: company.name ?? factory.name ?? i18n.t('ui.factory'),
       email: company.email ?? factory.email ?? "",
       phone: company.phone ?? factory.phone ?? "",
     },

@@ -99,7 +99,7 @@ export default function HistorySection({
       </h2>
 
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-500">No transactions found.</p>
+        <p className="text-sm text-gray-500">{t('ui.noTransactions')}</p>
       ) : (
         <DataTable showCard={false} columns={columns} data={rows} />
       )}

@@ -1,8 +1,11 @@
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
+
 function formatEuro(amount) {
   if (amount == null || amount === '') return null
   const num = Number(amount)
   if (Number.isNaN(num)) return String(amount)
-  return `€${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString(appLocale(), {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`
@@ -53,7 +56,7 @@ function mapBulkPricing(product) {
 function mapReviews(reviews = []) {
   return reviews.map((review) => ({
     id: review.id,
-    author: review.author?.name || 'Customer',
+    author: review.author?.name || i18n.t('ui.customer'),
     rating: review.rating,
     text: review.comment || '',
   }))
@@ -73,9 +76,9 @@ export function mapMarketplaceDetailProduct(product, viewer) {
   const price = isCompany && companyPrice ? companyPrice : retailPrice
   const priceText = isCompany
     ? product.companyPriceText
-      || (companyPrice ? `${companyPrice} Per ${unit}` : product.priceLabel)
+      || (companyPrice ? i18n.t('fallback.pricePer', { price: companyPrice, unit }) : product.priceLabel)
     : product.priceLabel
-      || (retailPrice ? `${retailPrice} Per ${unit}` : null)
+      || (retailPrice ? i18n.t('fallback.pricePer', { price: retailPrice, unit }) : null)
 
   const descriptionParagraphs = [product.description, product.additionalInfo]
     .filter(Boolean)
@@ -109,7 +112,7 @@ export function mapMarketplaceDetailProduct(product, viewer) {
     features: product.features ?? [],
     reviews: mapReviews(product.reviews),
     seller: {
-      name: product.seller?.name || product.store?.name || 'Store',
+      name: product.seller?.name || product.store?.name || i18n.t('fallback.store'),
       rating: Number(product.seller?.rating ?? product.store?.rating ?? 0),
       reviewCount: Number(
         product.seller?.reviewCount ?? product.store?.reviewCount ?? 0,
@@ -146,11 +149,13 @@ export function mapMarketplaceCatalogProduct(product) {
     description: product.description,
     price: priceText ?? '—',
     priceText: priceText
-      ? `Price: ${priceText}${unit ? ` per ${unit}` : ''}`
+      ? (unit
+        ? i18n.t('fallback.pricePerUnitValue', { price: priceText, unit })
+        : i18n.t('fallback.priceValue', { price: priceText }))
       : '—',
     unit,
     minOrder,
-    minOrderLabel: minOrder != null ? `Min: ${minOrder}` : undefined,
+    minOrderLabel: minOrder != null ? i18n.t('productCard.minOrder', { value: minOrder }) : undefined,
     company: product.company || '—',
     rating:
       product.rating != null && Number(product.rating) > 0
@@ -158,10 +163,10 @@ export function mapMarketplaceCatalogProduct(product) {
         : null,
     companyPrice: companyPriceText,
     companyPriceText: companyPriceText
-      ? `Company: ${companyPriceText}${unit ? ` /${unit}` : ''}`
+      ? i18n.t('fallback.companyPriceSlash', { price: companyPriceText, unit: unit ? ` /${unit}` : '' })
       : undefined,
     bulkOptionLabel: product.hasBulkOption
-      ? 'Bulk options available'
+      ? i18n.t('fallback.bulkOptions')
       : undefined,
     isSponsored: Boolean(product.isSponsored),
     purchasable: product.purchasable !== false,

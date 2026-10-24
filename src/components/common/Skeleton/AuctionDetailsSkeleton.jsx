@@ -1,17 +1,19 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Skeleton loader for AuctionDetails / DeliveryDetails page view.
  */
 export default function AuctionDetailsSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="mx-auto w-full space-y-5"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       {/* Back button skeleton */}
       <Skeleton className="mb-5 h-5 w-20" />

@@ -1,6 +1,7 @@
 import { FiDownload, FiMapPin, FiPhone } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import DataTable from "../DataTable/DataTable";
+import { appLocale } from "@/i18n/locale";
 
 export function normalizeStatus(status = "") {
   const s = String(status).toLowerCase().trim();
@@ -32,20 +33,28 @@ const BADGE = {
   completed: "bg-emerald-100 text-emerald-700",
 };
 
-const BADGE_LABELS = {
-  cancel: "Cancel",
-  "in-production": "In Production",
-  produced: "Produced",
-  ready: "Ready",
-  completed: "Completed",
+const BADGE_LABEL_KEYS = {
+  cancel: "fallback.statusCancel",
+  "in-production": "fallback.statusInProduction",
+  produced: "fallback.statusProduced",
+  ready: "fallback.statusReady",
+  completed: "fallback.statusCompleted",
+  assigned: "fallback.statusAssigned",
+  delivered: "fallback.statusDelivered",
+  pending: "fallback.statusPending",
+  new: "fallback.statusNew",
+  processing: "fallback.statusProcessing",
+  paid: "fallback.statusPaid",
 };
 
 export function StatusBadge({ status, label }) {
+  const { t } = useTranslation();
   const key = normalizeStatus(status);
   const resolvedLabel =
     label ||
-    BADGE_LABELS[key] ||
-    (key === "cancel" ? "Cancel" : key.charAt(0).toUpperCase() + key.slice(1));
+    (BADGE_LABEL_KEYS[key]
+      ? t(BADGE_LABEL_KEYS[key])
+      : key.charAt(0).toUpperCase() + key.slice(1));
   return (
     <span
       className={`inline-flex rounded-md px-2.5 py-1 text-xs font-semibold ${BADGE[key] || BADGE.pending}`}
@@ -55,7 +64,8 @@ export function StatusBadge({ status, label }) {
   );
 }
 
-export function DownloadInvoiceButton({ onClick, label = "DOWNLOAD INVOICE" }) {
+export function DownloadInvoiceButton({ onClick, label }) {
+  const { t } = useTranslation();
   return (
     <button
       type="button"
@@ -63,19 +73,20 @@ export function DownloadInvoiceButton({ onClick, label = "DOWNLOAD INVOICE" }) {
       className="inline-flex h-11 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
     >
       <FiDownload className="size-4" strokeWidth={2.25} aria-hidden />
-      {label}
+      {label || t("buyerOrders.downloadInvoice")}
     </button>
   );
 }
 
-export function AcceptButton({ onClick, label = "ACCEPT" }) {
+export function AcceptButton({ onClick, label }) {
+  const { t } = useTranslation();
   return (
     <button
       type="button"
       onClick={onClick}
       className="inline-flex h-11 min-w-[120px] items-center justify-center rounded-lg bg-[var(--active)] px-6 text-sm font-semibold tracking-wide text-white uppercase transition-opacity hover:opacity-90"
     >
-      {label}
+      {label || t("productCard.actions.accept")}
     </button>
   );
 }
@@ -261,9 +272,19 @@ const DEFAULT_PRODUCT_COLS = [
   },
 ];
 
+function translateColumns(columns, t) {
+  return columns.map((col) => ({
+    ...col,
+    header: t(`orderDetails.columns.${col.key}`, { defaultValue: col.header }),
+  }));
+}
+
 export function ProductsTable({ products = [], variant = "default" }) {
-  const columns =
-    variant === "factory" ? FACTORY_PRODUCT_COLS : DEFAULT_PRODUCT_COLS;
+  const { t } = useTranslation();
+  const columns = translateColumns(
+    variant === "factory" ? FACTORY_PRODUCT_COLS : DEFAULT_PRODUCT_COLS,
+    t,
+  );
 
   return (
     <DataTable
@@ -271,7 +292,7 @@ export function ProductsTable({ products = [], variant = "default" }) {
       bgClassName="bg-white"
       columns={columns}
       data={products}
-      emptyMessage="No products"
+      emptyMessage={t("orderDetails.noProducts")}
       showTabs={false}
       showSearch={false}
       showFilters={false}
@@ -282,15 +303,18 @@ export function ProductsTable({ products = [], variant = "default" }) {
 }
 
 export function InstallmentBreakdownTable({ rows = [], variant = "default" }) {
-  const columns =
-    variant === "factory" ? FACTORY_BREAKDOWN_COLS : BREAKDOWN_COLS;
+  const { t } = useTranslation();
+  const columns = translateColumns(
+    variant === "factory" ? FACTORY_BREAKDOWN_COLS : BREAKDOWN_COLS,
+    t,
+  );
   return (
     <DataTable
       showCard
       bgClassName="bg-white"
       columns={columns}
       data={rows}
-      emptyMessage="No installments"
+      emptyMessage={t("orderDetails.noInstallments")}
       showTabs={false}
       showSearch={false}
       showFilters={false}
@@ -305,7 +329,7 @@ function formatMoney(value) {
   if (typeof value === "string") return value;
   const amount = Number(value);
   if (Number.isNaN(amount)) return String(value);
-  return `€${amount.toLocaleString("en-US", {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;

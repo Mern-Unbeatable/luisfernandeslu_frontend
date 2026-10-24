@@ -1,5 +1,6 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import AuctionCardSkeleton from '@/components/common/Skeleton/AuctionCardSkeleton'
+import { useTranslation } from 'react-i18next'
 
 function AuctionSectionSkeleton({ cards = 4 }) {
   return (
@@ -24,14 +25,15 @@ function AuctionSectionSkeleton({ cards = 4 }) {
 
 /** Matches factory delivery logistics list: header + two auction grids. */
 export default function FactoryDeliveryPageSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-8"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">

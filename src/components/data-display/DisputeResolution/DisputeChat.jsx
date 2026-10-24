@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import Messenger from '@/components/common/messenger/Messenger'
 import useLiveChat from '@/features/chat/useLiveChat'
 
@@ -11,6 +12,7 @@ import useLiveChat from '@/features/chat/useLiveChat'
  * Full-width chat panel — no sidebar on md+ screens.
  */
 export default function DisputeChat({ disputeId }) {
+  const { t } = useTranslation()
   const { user } = useSelector((state) => state.auth)
   const state = useLiveChat()
   const openedRef = useRef(false)
@@ -46,7 +48,7 @@ export default function DisputeChat({ disputeId }) {
         isLoading={state.isLoading}
         actionMessageId={state.actionMessageId}
         sharedInbox={state.sharedInbox}
-        sidebarTitle="Dispute Resolution Chat"
+        sidebarTitle={t('fallback.disputeChat')}
       />
     </div>
   )

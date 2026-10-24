@@ -14,6 +14,7 @@ import {
 } from '../../../features/transporter/invoiceMappers'
 import InvoicesTableSection from './sections/InvoicesTableSection'
 import InvoiceDetailModal from './sections/InvoiceDetailModal'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 7
 
@@ -89,7 +90,7 @@ export default function InvoicesPage() {
     } catch (err) {
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to download invoice'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.downloadInvoice')),
         variant: 'error',
       })
     }
@@ -118,13 +119,13 @@ export default function InvoicesPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load invoices')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadInvoices'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}
@@ -160,7 +161,7 @@ export default function InvoicesPage() {
         invoice={selectedInvoice}
         isLoading={isDetailLoading}
         isError={isDetailError}
-        errorMessage={getAuthErrorMessage(detailError, 'Failed to load invoice')}
+        errorMessage={getAuthErrorMessage(detailError, t('fallback.loadInvoice'))}
         onDownload={() => handleDownload({ invoiceId: selectedInvoiceId })}
         isDownloading={isDownloading}
       />

@@ -47,7 +47,7 @@ export default function InvoiceDetailModal({
 
         <div className="px-5 py-4">
           {isLoading ? (
-            <p className="text-sm text-[var(--secondary-text)]">Loading invoice…</p>
+            <p className="text-sm text-[var(--secondary-text)]">{t('ui.loadingInvoice')}</p>
           ) : null}
 
           {isError ? (

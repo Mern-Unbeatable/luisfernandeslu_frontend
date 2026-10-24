@@ -1,12 +1,13 @@
 import { formatEuro, parseNumber, pickList, pickPage, pickTotal } from '../apiError'
+import i18n from '@/i18n'
 
 export function deriveInventoryStatus(stock) {
   const value = Number(stock)
   if (!Number.isFinite(value) || value <= 0) {
-    return { status: 'out-of-stock', statusLabel: 'Out of stock' }
+    return { status: 'out-of-stock', statusLabel: i18n.t('fallback.outOfStock') }
   }
-  if (value <= 200) return { status: 'low', statusLabel: 'Low' }
-  return { status: 'good', statusLabel: 'Good' }
+  if (value <= 200) return { status: 'low', statusLabel: i18n.t('fallback.low') }
+  return { status: 'good', statusLabel: i18n.t('fallback.good') }
 }
 
 function slugify(value) {
@@ -59,10 +60,10 @@ export function mapInventoryProduct(item) {
     status,
     statusLabel:
       status === 'out-of-stock'
-        ? 'Out of stock'
+        ? i18n.t('fallback.outOfStock')
         : status === 'low'
-          ? 'Low'
-          : 'Good',
+          ? i18n.t('fallback.low')
+          : i18n.t('fallback.good'),
     approved: item.approved !== false && rawStatus !== 'pending',
   }
 }

@@ -1,17 +1,19 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Skeleton loader for DeliveryTimeline cards in delivery logistics pages.
  */
 export default function DeliveryTimelineSkeleton({ count = 3 }) {
+  const { t } = useTranslation()
   return (
     <div
       className="flex w-full flex-col gap-4"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
       {Array.from({ length: count }).map((_, idx) => (
         <article
           key={`delivery-card-skeleton-${idx}`}

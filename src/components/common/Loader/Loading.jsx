@@ -1,5 +1,6 @@
+import i18n from '@/i18n'
 export default function Loading({
-  text = "Loading",
+  text = i18n.t('ui.loading'),
   size = "md",
   centered = false,
   className = "",

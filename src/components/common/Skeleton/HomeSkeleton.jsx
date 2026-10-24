@@ -1,15 +1,17 @@
 import Skeleton from './Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /** Public home page content fallback. */
 export default function HomeSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="container mx-auto w-full space-y-10 px-4 py-10"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <div className="space-y-3">
         <Skeleton className="h-10 w-64 max-w-full" />

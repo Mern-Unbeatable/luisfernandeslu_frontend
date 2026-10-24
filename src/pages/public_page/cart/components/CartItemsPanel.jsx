@@ -27,8 +27,8 @@ export default function CartItemsPanel({
       await updateCartItem({ id, quantity }).unwrap()
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to update quantity',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.updateQuantityFailed'),
         icon: 'error',
       })
     } finally {
@@ -46,8 +46,8 @@ export default function CartItemsPanel({
       await removeCartItem(id).unwrap()
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to remove item',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.removeItemFailed'),
         icon: 'error',
       })
       setWorkingItemIds((prev) => {

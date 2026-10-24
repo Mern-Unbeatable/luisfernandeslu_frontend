@@ -34,6 +34,7 @@ import BuyerAreaGate from "./BuyerAreaGate";
 import { routeSeo } from "../../config/seo";
 import { PANEL_ROLE_IDS, BUYER_ROLE_IDS } from "../../roles";
 import { useAuthLogout } from "../../features/auth/useAuthLogout";
+import i18n from '@/i18n'
 
 /* ─── Loadable (lazy + Suspense) ─────────────────────────────────── */
 
@@ -623,7 +624,7 @@ function BuyerShell() {
   return (
     <BuyerLayout
       role={role}
-      userName={user?.name?.split(" ")[0] || "User"}
+      userName={user?.name?.split(" ")[0] || i18n.t('fallback.user')}
       onLogout={onLogout}
       isLoggingOut={isLoggingOut}
     />
@@ -640,7 +641,7 @@ function PanelShell() {
     : PANEL_ROLE_IDS.includes(user?.role)
       ? user.role
       : "supplier";
-  const displayName = user?.name || (isModeratorArea ? "Moderator" : "User");
+  const displayName = user?.name || (isModeratorArea ? i18n.t('fallback.moderator') : i18n.t('fallback.user'));
 
   return (
     <PanelLayout
@@ -828,7 +829,7 @@ export const router = createBrowserRouter([
               {
                 path: "/account-suspended",
                 element: <AccountSuspended />,
-                handle: { seo: { title: 'Account Suspended' } },
+                handle: { seo: { titleKey: 'accountSuspended.title' } },
               },
             ],
           },

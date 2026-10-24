@@ -1,3 +1,4 @@
+import { appLocale } from '@/i18n/locale'
 function getRemainingSeconds(expiresAt) {
   if (!expiresAt) return 0
   return Math.max(0, Math.floor((new Date(expiresAt).getTime() - Date.now()) / 1000))
@@ -15,13 +16,13 @@ function formatRemainingLabel(seconds, isEnded) {
 function formatDateLabel(isoDate) {
   if (!isoDate) return ''
   const [y, m, d] = isoDate.split('T')[0].split('-').map(Number)
-  if (!y || !m || !d) return new Date(isoDate).toLocaleDateString()
+  if (!y || !m || !d) return new Date(isoDate).toLocaleDateString(appLocale())
   return `${m}/${d}/${y}`
 }
 
 function formatBidAt(createdAt) {
   if (!createdAt) return '—'
-  return new Date(createdAt).toLocaleString()
+  return new Date(createdAt).toLocaleString(appLocale())
 }
 
 function mapAdminBid(bid) {

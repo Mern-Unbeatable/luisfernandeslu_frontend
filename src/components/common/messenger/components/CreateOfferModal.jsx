@@ -15,6 +15,7 @@ import { useGetFactoryProductsQuery } from '@/features/factory-products/factoryP
 import { useGetFactoryProfileQuery } from '@/features/factory-profile/factoryProfileApi';
 import { useGetSupplierProfileQuery } from '@/features/supplier/profile/profileApi';
 import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete';
+import { useTranslation } from 'react-i18next';
 
 const UNLOADING_TYPES = [
   'Crane (12m)',
@@ -30,6 +31,17 @@ const ACCESS_CONDITIONS = [
   'Difficult Terrain',
   'Manual Unloading',
 ];
+const OPTION_LABEL_KEYS = {
+  'Crane (12m)': 'crane-12m',
+  'Crane (24m)': 'crane-24m',
+  'Tipper Truck': 'tipper-truck',
+  Forklift: 'forklift',
+  'Manual Unloading': 'manual',
+  'Easy Access': 'easy-access',
+  'Narrow Road': 'narrow-road',
+  'Restricted Area': 'restricted-area',
+  'Difficult Terrain': 'difficult-terrain',
+};
 
 const INPUT_BG = 'bg-[#FFF8F0]';
 
@@ -48,6 +60,7 @@ const emptyForm = () => ({
 });
 
 export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }) {
+  const { t } = useTranslation();
   const [form, setForm] = useState(emptyForm);
 
   const quoteId = activeChat?.raw?.quoteRequestId || activeChat?.id;
@@ -219,7 +232,7 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
     <div className='fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4'>
       <button
         type='button'
-        aria-label='Close overlay'
+        aria-label={t('ui.closeOverlay')}
         className='absolute inset-0 bg-black/45'
         onClick={onClose}
       />
@@ -240,16 +253,16 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
               id='create-offer-title'
               className='text-base font-bold text-[var(--primary-text)]'
             >
-              Offer Card
+              {t('ui.offerCard')}
             </h2>
             <p className='text-xs text-[var(--secondary-text)]'>
-              Create an offer card to send to the customer.
+              {t('ui.offerCardHint')}
             </p>
           </div>
           <button
             type='button'
             onClick={onClose}
-            aria-label='Close'
+            aria-label={t('ui.close')}
             className='rounded-md p-1 text-[var(--secondary-text)] hover:bg-gray-100'
           >
             <FiX className='size-5' />
@@ -260,32 +273,32 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
         <form onSubmit={handleSubmit} className='flex min-h-0 flex-1 flex-col'>
           <div className='flex-1 space-y-3 overflow-y-auto px-5 py-4'>
             <ComboboxField
-              label='Warehouse location'
+              label={t('ui.warehouseLocation')}
               icon={<FiPackage className='size-3.5' />}
               value={form.warehouse}
-              placeholder='Select or type warehouse'
+              placeholder={t('ui.selectWarehouse')}
               options={warehouseOptions}
               onChange={(value) => setField('warehouse', value)}
             />
             <ComboboxField
-              label='Product'
+              label={t('ui.product')}
               icon={<FiPackage className='size-3.5' />}
               value={form.productName}
-              placeholder='Select or type Product Name'
+              placeholder={t('ui.selectProduct')}
               options={productOptions}
               onChange={(value) => setField('productName', value)}
             />
             <TextField
-              label='Total Quantity'
+              label={t('ui.totalQuantity')}
               value={form.totalQuantity}
-              placeholder='.bags'
+              placeholder={t('ui.bagsPlaceholder')}
               onChange={(value) => setField('totalQuantity', value)}
             />
             {!isPartnerSupplier && (
               <ComboboxField
-                label='Project Name'
+                label={t('ui.projectName')}
                 value={form.projectName}
-                placeholder='Select or type Project Name'
+                placeholder={t('ui.selectProject')}
                 options={projectOptions}
                 onChange={(value) => setField('projectName', value)}
               />
@@ -293,61 +306,61 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
             <div className='relative block'>
               <span className='mb-1.5 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--primary-text)]'>
                 <span className='text-[var(--secondary-text)]'><FiMapPin className='size-3.5' /></span>
-                Delivery Location
+                {t('ui.deliveryLocation')}
               </span>
               <div className={`relative flex items-center rounded-md focus-within:ring-2 focus-within:ring-[var(--active)]/30 ${INPUT_BG}`}>
                 <AddressAutocomplete
                   value={form.deliveryLocation}
                   onChange={(value) => setField('deliveryLocation', value)}
                   onLocationSelect={(loc) => setField('deliveryLocation', loc.address)}
-                  placeholder='Select or type delivery location'
+                  placeholder={t('ui.selectDeliveryLocation')}
                   inputClassName='w-full bg-transparent border-0 px-3 py-2.5 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)]'
                 />
               </div>
             </div>
             <SelectField
-              label='Types of unloading Needed'
+              label={t('ui.unloadingType')}
               value={form.unloadingType}
-              placeholder='Add Type'
+              placeholder={t('ui.addType')}
               options={UNLOADING_TYPES}
               onChange={(value) => setField('unloadingType', value)}
             />
             <SelectField
-              label='Access Conditions'
+              label={t('ui.accessConditions')}
               value={form.accessConditions}
-              placeholder='Add Unloading System'
+              placeholder={t('ui.addUnloadingSystem')}
               options={ACCESS_CONDITIONS}
               onChange={(value) => setField('accessConditions', value)}
             />
 
             <div className='grid grid-cols-2 gap-3 pt-1'>
               <TextField
-                label='Total Price'
+                label={t('ui.totalPrice')}
                 icon={<span className='text-[15px] font-medium leading-none'>€</span>}
                 value={form.totalPrice}
                 placeholder='€'
                 onChange={(value) => setField('totalPrice', value)}
               />
               <TextField
-                label='Installment'
+                label={t('ui.installment')}
                 icon={<FiCalendar className='size-3.5' />}
                 value={form.installmentMonths}
-                placeholder='months'
+                placeholder={t('ui.months')}
                 onChange={(value) => setField('installmentMonths', value)}
               />
 
               {form.installments.map((row, index) => (
                 <div key={`inst-${index}`} className='contents'>
                   <TextField
-                    label={`${ordinal(index + 1)} Installment`}
+                    label={t('fallback.installmentN', { n: index + 1 })}
                     value={row.price}
-                    placeholder='Price'
+                    placeholder={t('ui.price')}
                     onChange={(value) => setInstallment(index, 'price', value)}
                   />
                   <TextField
-                    label='Product Quantity'
+                    label={t('ui.productQuantity')}
                     value={row.quantity}
-                    placeholder='quantity'
+                    placeholder={t('ui.quantityPlaceholder')}
                     onChange={(value) =>
                       setInstallment(index, 'quantity', value)
                     }
@@ -361,7 +374,7 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
               onClick={addInstallment}
               className='text-sm font-semibold text-[var(--active)] hover:underline'
             >
-              + Add New Installment
+              {t('ui.addInstallment')}
             </button>
           </div>
 
@@ -372,14 +385,14 @@ export default function CreateOfferModal({ open, activeChat, onClose, onSubmit }
               onClick={onClose}
               className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-[var(--secondary-text)] hover:bg-gray-50'
             >
-              Cancel
+              {t('ui.cancel')}
             </button>
             <button
               type='submit'
               disabled={isSubmitting}
               className='rounded-md bg-[var(--active)] px-4 py-2 text-sm font-semibold text-white hover:brightness-95 disabled:opacity-70 disabled:cursor-not-allowed'
             >
-              {isSubmitting ? 'Sending...' : 'Send Offer'}
+              {isSubmitting ? t('ui.sending') : t('ui.sendOffer')}
             </button>
           </div>
         </form>
@@ -488,6 +501,11 @@ function ComboboxField({ label, value, onChange, placeholder, options, icon }) {
 }
 
 function SelectField({ label, value, onChange, placeholder, options, icon }) {
+  const { t } = useTranslation();
+  const optionLabel = (option) =>
+    OPTION_LABEL_KEYS[option]
+      ? t(`ui.unloadingOptions.${OPTION_LABEL_KEYS[option]}`, { defaultValue: option })
+      : option;
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
   const listId = useId();
@@ -519,7 +537,7 @@ function SelectField({ label, value, onChange, placeholder, options, icon }) {
           value ? 'text-[var(--primary-text)]' : 'text-[var(--secondary-text)]'
         }`}
       >
-        <span className='truncate'>{value || placeholder}</span>
+        <span className='truncate'>{value ? optionLabel(value) : placeholder}</span>
         <FiChevronDown
           className={`size-4 shrink-0 text-[var(--secondary-text)] transition-transform ${
             open ? 'rotate-180' : ''
@@ -549,7 +567,7 @@ function SelectField({ label, value, onChange, placeholder, options, icon }) {
                       : 'border-b border-gray-100 text-[var(--primary-text)] last:border-b-0 hover:bg-[color-mix(in_srgb,var(--active)_10%,white)]'
                   }`}
                 >
-                  {option}
+                  {optionLabel(option)}
                 </button>
               </li>
             );
@@ -558,10 +576,4 @@ function SelectField({ label, value, onChange, placeholder, options, icon }) {
       ) : null}
     </div>
   );
-}
-
-function ordinal(n) {
-  const suffixes = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return `${n}${suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]}`;
 }

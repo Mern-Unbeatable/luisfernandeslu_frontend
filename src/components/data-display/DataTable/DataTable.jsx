@@ -1,9 +1,11 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 import { FiChevronDown, FiMoreVertical } from 'react-icons/fi'
 import SegmentedTabs from '../../common/SegmentedTabs/SegmentedTabs'
 import Skeleton from '../../common/Skeleton/Skeleton'
 import StatusBadge from './StatusBadge'
+import i18n from '@/i18n'
 
 /**
  * Fully prop-driven data table toolkit.
@@ -20,16 +22,16 @@ export default function DataTable({
   showSearch = false,
   searchValue = '',
   onSearchChange,
-  searchPlaceholder = 'Search...',
+  searchPlaceholder = i18n.t('fallback.search'),
 
   showFilters = false,
-  filterLabel = 'Sort By:',
+  filterLabel = i18n.t('fallback.sortBy'),
   filters = [],
 
   showTable = true,
   columns = [],
   data = [],
-  emptyMessage = 'No data found',
+  emptyMessage = i18n.t('fallback.noDataFound'),
   getRowKey = (row, index) => row?.id ?? index,
   loading = false,
   skeletonRows = 7,
@@ -38,7 +40,7 @@ export default function DataTable({
   actions = [],
   getActions,
   actionType = 'menu',
-  actionHeader = 'Action',
+  actionHeader = i18n.t('ui.action'),
 
   showPagination = false,
   pagination = null,
@@ -444,6 +446,7 @@ function ActionMenu({ row, actions }) {
 }
 
 function PaginationBar({ pagination }) {
+  const { t } = useTranslation()
   const page = Number(pagination.page) || 1
   const pageSize = Number(pagination.pageSize) || 10
   const total = Number(pagination.total) || 0
@@ -478,7 +481,7 @@ function PaginationBar({ pagination }) {
     <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
       <p className="min-w-0 text-sm font-medium text-[var(--active)]">
         {pagination.summaryLabel
-          || `Showing ${from} to ${to} of ${total} results`}
+          || t('fallback.showingResults', { from, to, total })}
       </p>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -488,7 +491,7 @@ function PaginationBar({ pagination }) {
           disabled={!hasPrevious}
           className="rounded-md border border-[var(--active)] bg-white px-4 py-2 text-sm font-medium text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_10%,transparent)] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-[var(--secondary-text)] disabled:hover:bg-white"
         >
-          {pagination.previousLabel || 'Previous'}
+          {pagination.previousLabel || t('ui.previous')}
         </button>
         <button
           type="button"
@@ -496,7 +499,7 @@ function PaginationBar({ pagination }) {
           disabled={!hasNext}
           className="rounded-md border border-[var(--active)] bg-white px-4 py-2 text-sm font-medium text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_10%,transparent)] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-[var(--secondary-text)] disabled:hover:bg-white"
         >
-          {pagination.nextLabel || 'Next'}
+          {pagination.nextLabel || t('ui.next')}
         </button>
       </div>
     </div>

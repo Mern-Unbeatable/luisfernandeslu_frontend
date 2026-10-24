@@ -1,6 +1,7 @@
 import { Link, useOutletContext, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { getBuyerRoleConfig } from '../../roles'
+import i18n from '@/i18n'
 
 export default function BuyerAccountDashboard() {
   const { t } = useTranslation()
@@ -8,7 +9,7 @@ export default function BuyerAccountDashboard() {
   const qs = params.toString()
   const withQs = (to) => (qs ? `${to}?${qs}` : to)
   const {
-    userName = 'John',
+    userName = i18n.t('fallback.user'),
     onLogout,
     roleConfig: configFromLayout,
     role,

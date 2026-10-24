@@ -1,17 +1,19 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Skeleton loader matching AdminAuctionCard grid layout.
  */
 export default function AuctionCardSkeleton() {
+  const { t } = useTranslation()
   return (
     <article
       className="flex h-full w-full flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       {/* Header: Title & status */}
       <div className="flex flex-wrap items-start justify-between gap-3">

@@ -15,6 +15,7 @@ import {
   FINANCE_COMMISSION_SERIES,
   FINANCE_MARKETING_SERIES,
 } from '../data/financeDemo'
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
   CategoryScale,
@@ -29,7 +30,7 @@ const COMMISSION_COLOR = '#F59E0B'
 const MARKETING_COLOR = '#10B981'
 
 function formatTooltipAmount(value) {
-  return `€${Number(value).toLocaleString('en-US', {
+  return `€${Number(value).toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`

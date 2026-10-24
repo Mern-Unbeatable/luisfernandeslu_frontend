@@ -24,12 +24,13 @@ import {
   ADMIN_SUPPLIER_TABS,
   formatSupplierRegisteredDate,
 } from './data/suppliersDemo'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 7
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
-  return typeof value === 'number' ? value.toLocaleString() : value
+  return typeof value === 'number' ? value.toLocaleString(appLocale()) : value
 }
 
 function formatCommissionPercent(value) {

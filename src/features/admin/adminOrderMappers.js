@@ -1,3 +1,6 @@
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
+
 export const SUPPLIER_ORDER_STATUSES = [
   'new',
   'pending',
@@ -48,7 +51,7 @@ function formatDetailMoney(amount, currency = 'EUR') {
       maximumFractionDigits: 2,
     }).format(num)
   } catch {
-    return `€${num.toLocaleString('en-US', {
+    return `€${num.toLocaleString(appLocale(), {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`
@@ -103,7 +106,7 @@ function mapShipmentToTransporter(shipment) {
 
   return {
     id,
-    name: name || 'Transporter',
+    name: name || i18n.t('ui.transporter'),
     email: shipment.email || '',
     phone: shipment.phone || shipment.driverPhone || '',
     vehicle: shipment.vehicle || shipment.vehicleLabel || '',

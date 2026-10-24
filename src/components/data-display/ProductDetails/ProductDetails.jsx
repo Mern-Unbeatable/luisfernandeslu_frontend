@@ -7,6 +7,7 @@ import ProductActions from './ProductActions'
 import ProductTabs from './ProductTabs'
 import SellerCard from './SellerCard'
 import { resolveDetailsView } from './resolveDetailsView'
+import { appLocale } from '@/i18n/locale'
 
 /**
  * Common product details — layout driven by `role`.
@@ -77,7 +78,7 @@ export default function ProductDetails({
                 {product.feedbackCount != null ? (
                   <span className="text-[var(--secondary-text)]">
                     {t('productDetails.userFeedback', {
-                      total: Number(product.feedbackCount).toLocaleString(),
+                      total: Number(product.feedbackCount).toLocaleString(appLocale()),
                     })}
                   </span>
                 ) : null}

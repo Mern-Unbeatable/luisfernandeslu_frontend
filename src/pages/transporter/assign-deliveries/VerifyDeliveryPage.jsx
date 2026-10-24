@@ -15,6 +15,7 @@ import {
 } from '../../../features/transporter/deliveryMappers'
 import VerifyDeliverySection from './sections/VerifyDeliverySection'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
+import i18n from '@/i18n'
 
 export default function VerifyDeliveryPage() {
   const { deliveryId } = useParams()
@@ -66,8 +67,8 @@ export default function VerifyDeliveryPage() {
         orderId: detail.orderId,
         title: detail.product?.name || '—',
         orderLabel: detail.orderId
-          ? `Order ID: ${detail.orderId}`
-          : `Auction ID: ${detail.auctionId || '—'}`,
+          ? i18n.t('fallback.orderIdValue', { id: detail.orderId })
+          : i18n.t('fallback.auctionIdValue', { id: detail.auctionId || '—' }),
         price: detail.deliveryCharge || '—',
         quantity: detail.quantity || detail.product?.quantity || '—',
         customerName: detail.customer?.name || '—',
@@ -116,7 +117,7 @@ export default function VerifyDeliveryPage() {
         otpSendAttempted.current = false
         setToast({
           open: true,
-          message: getAuthErrorMessage(err, 'Failed to send delivery OTP'),
+          message: getAuthErrorMessage(err, i18n.t('fallback.sendDeliveryOtp')),
           variant: 'error',
         })
       })
@@ -155,13 +156,13 @@ export default function VerifyDeliveryPage() {
   if (isDetailError && !listDelivery) {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        <p>{getAuthErrorMessage(detailError, 'Failed to load delivery')}</p>
+        <p>{getAuthErrorMessage(detailError, t('fallback.loadDelivery'))}</p>
         <button
           type="button"
           onClick={() => refetchDetail()}
           className="mt-2 font-semibold underline"
         >
-          Retry
+          {t('ui.retry')}
         </button>
       </div>
     )
@@ -210,7 +211,7 @@ export default function VerifyDeliveryPage() {
     } catch (err) {
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to verify delivery'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.verifyDelivery')),
         variant: 'error',
       })
       return false
@@ -236,7 +237,7 @@ export default function VerifyDeliveryPage() {
       </button>
 
       {isSendingOtp && !otpSent ? (
-        <p className="mb-4 text-sm text-gray-500">Sending OTP to customer…</p>
+        <p className="mb-4 text-sm text-gray-500">{t('ui.sendingOtp')}</p>
       ) : null}
 
       <VerifyDeliverySection

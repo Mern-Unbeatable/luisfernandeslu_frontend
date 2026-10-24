@@ -1,4 +1,7 @@
-export function getApiErrorMessage(error, fallback = 'Request failed') {
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
+
+export function getApiErrorMessage(error, fallback = i18n.t('common.requestFailed')) {
   const data = error?.data
 
   if (typeof data === 'string' && data.trim()) return data
@@ -80,7 +83,7 @@ export function parseNumber(value) {
 export function formatEuro(value) {
   const amount = parseNumber(value)
   if (amount == null) return value ? String(value) : '—'
-  return `€${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

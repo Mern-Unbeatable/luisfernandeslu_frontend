@@ -1,3 +1,6 @@
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
+
 function formatEuro(amount) {
   if (amount == null || amount === '') return '—'
   const value = Number(amount)
@@ -10,7 +13,7 @@ function formatEuro(amount) {
   if (abs >= 10_000) {
     return `€${(value / 1_000).toFixed(abs % 1_000 === 0 ? 0 : 1)}K`
   }
-  return `€${value.toLocaleString('en-IE', {
+  return `€${value.toLocaleString(appLocale(), {
     minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
     maximumFractionDigits: 2,
   })}`
@@ -20,7 +23,7 @@ function formatHistoryDate(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(appLocale())
 }
 
 function maskAccount(accountNumber) {
@@ -113,10 +116,10 @@ export function mapPaymentHistoryItem(item, index) {
 
   const accountLabel = item.accountType
     ? String(item.accountType).replace(/_/g, ' ')
-    : 'Bank Transfer'
+    : i18n.t('affiliateCommissions.accountType.bankTransfer')
   const title = isWithdrawal
     ? `${accountLabel} to ${maskAccount(item.accountNumber)}`
-    : item.title || item.productName || item.orderId || 'Delivery earning'
+    : item.title || item.productName || item.orderId || i18n.t('fallback.deliveryEarning')
 
   return {
     id: item.id || `${item.date || 'row'}-${index}`,

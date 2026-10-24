@@ -1,8 +1,10 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatDate(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(appLocale())
 }
 
 function formatMoney(amount) {
@@ -12,7 +14,7 @@ function formatMoney(amount) {
   }
   const value = Number(amount)
   if (!Number.isFinite(value)) return String(amount)
-  return `€${value.toLocaleString('en-IE', {
+  return `€${value.toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`

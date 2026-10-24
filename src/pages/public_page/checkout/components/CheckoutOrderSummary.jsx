@@ -117,16 +117,16 @@ export default function CheckoutOrderSummary({
       }
       setCoupon('')
       Swal.fire({
-        title: 'Success',
-        text: 'Promo code applied',
+        title: t('ui.success'),
+        text: t('ui.promoApplied'),
         icon: 'success',
         timer: 2000,
         showConfirmButton: false
       })
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to apply promo code',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.promoApplyFailed'),
         icon: 'error'
       })
     }
@@ -141,8 +141,8 @@ export default function CheckoutOrderSummary({
       }
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to remove promo code',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.promoRemoveFailed'),
         icon: 'error'
       })
     }

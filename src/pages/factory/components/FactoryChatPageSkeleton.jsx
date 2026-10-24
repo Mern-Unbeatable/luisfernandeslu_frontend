@@ -1,24 +1,26 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Suspense fallback matching Messenger's own loading UI
  * (Recent Messages sidebar skeletons + empty conversation pane).
  */
 export default function FactoryChatPageSkeleton() {
+  const { t } = useTranslation()
   return (
     <div className="h-[calc(100vh-7rem)] min-h-[520px]">
       <div
         className="flex h-full w-full overflow-hidden rounded-xl border border-gray-200 bg-white"
         role="status"
         aria-busy="true"
-        aria-label="Loading"
+        aria-label={t('ui.loading')}
       >
-        <span className="sr-only">Loading</span>
+        <span className="sr-only">{t('ui.loading')}</span>
 
         <aside className="flex h-full w-full shrink-0 flex-col border-r border-gray-200 bg-[#F5F5F5] md:w-80 lg:w-96">
           <div className="flex items-center justify-between gap-2 border-b border-gray-200 px-4 py-5">
             <h2 className="text-base font-bold text-[var(--primary-text)]">
-              Recent Messages
+              {t('ui.recentMessages')}
             </h2>
           </div>
           <div className="flex-1 overflow-hidden px-3 py-3">
@@ -39,10 +41,10 @@ export default function FactoryChatPageSkeleton() {
         <div className="hidden min-w-0 flex-1 md:flex md:items-center md:justify-center">
           <div className="px-6 text-center">
             <p className="text-lg font-semibold text-[var(--primary-text)]">
-              Your Messages
+              {t('ui.yourMessages')}
             </p>
             <p className="mt-2 text-sm text-[var(--secondary-text)]">
-              Select a conversation from the sidebar to start chatting.
+              {t('ui.selectConversation')}
             </p>
           </div>
         </div>

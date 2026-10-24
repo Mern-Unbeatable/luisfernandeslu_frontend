@@ -34,6 +34,7 @@ const TAB_IDS = {
 };
 
 function InventoryStatusBadge({ status, label }) {
+  const { t } = useTranslation();
   const key = String(status || label || '').trim().toLowerCase();
 
   if (key === 'low') {
@@ -42,7 +43,7 @@ function InventoryStatusBadge({ status, label }) {
         className="inline-flex items-center gap-1 rounded-md bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 whitespace-nowrap"
       >
         <FiAlertTriangle className="size-3.5 shrink-0" aria-hidden />
-        {label || 'Low'}
+        {label || t('fallback.low')}
       </span>
     );
   }
@@ -53,7 +54,7 @@ function InventoryStatusBadge({ status, label }) {
         className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 whitespace-nowrap"
       >
         <FiAlertCircle className="size-3.5 shrink-0" aria-hidden />
-        {label || 'Out of stock'}
+        {label || t('productDetails.availabilityStatus.OUT_OF_STOCK')}
       </span>
     );
   }

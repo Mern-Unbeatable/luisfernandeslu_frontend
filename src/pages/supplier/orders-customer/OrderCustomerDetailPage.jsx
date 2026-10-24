@@ -93,7 +93,7 @@ export default function OrderCustomerDetailPage() {
     return (
       <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
         <p className="text-base font-semibold text-[var(--primary-text)]">
-          Loading order details…
+          {t("ui.loadingOrderDetails")}
         </p>
       </div>
     );

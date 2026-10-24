@@ -1,5 +1,6 @@
 import Skeleton from './Skeleton'
 import { ADMIN_DASHBOARD_METRICS } from '@/pages/admin/dashboard/data/dashboardDemo'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Single skeleton for admin/moderator dashboard — matches the real page layout
@@ -7,14 +8,15 @@ import { ADMIN_DASHBOARD_METRICS } from '@/pages/admin/dashboard/data/dashboardD
  * Used for both route Suspense and API loading to avoid two different loaders.
  */
 export default function AdminDashboardSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-8"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <header className="space-y-2">
         <Skeleton className="h-8 w-56 max-w-full" />

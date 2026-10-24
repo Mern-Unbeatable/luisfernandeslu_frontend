@@ -83,7 +83,7 @@ export default function StandardOrderDetails({
         <div>
           <SectionEyebrow>{t('orderDetails.recipient')}</SectionEyebrow>
           <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
-            {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
+            {isCustomerRecipient ? t('ui.customerInformation') : t('ui.companyInformation')}
           </h2>
           <p className="text-base font-bold text-[var(--primary-text)]">
             {recipient.name}

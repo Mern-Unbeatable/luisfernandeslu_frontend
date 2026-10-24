@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
-export default function ImageGallery({ images = [], alt = 'Product' }) {
+export default function ImageGallery({ images = [], alt = i18n.t('ui.product') }) {
   const { t } = useTranslation()
   const list = images.length ? images : []
   const [active, setActive] = useState(0)

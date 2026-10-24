@@ -69,7 +69,7 @@ export default function MessagesPage() {
               }}
               onNegotiate={() => {
                 void state.sendMessage(
-                  "I'd like to negotiate the terms of this offer.",
+                  t('fallback.negotiateOffer'),
                 )
               }}
               isPartnerTyping={state.isPartnerTyping}

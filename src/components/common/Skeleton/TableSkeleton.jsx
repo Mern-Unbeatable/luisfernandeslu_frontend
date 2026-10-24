@@ -1,15 +1,17 @@
 import Skeleton from './Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /** Suspense fallback for DataTable-heavy screens. */
 export default function TableSkeleton() {
+  const { t } = useTranslation()
   return (
     <section
       className="w-full px-0 py-0"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
       <div className="w-full rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
         <div className="mb-5 flex flex-col gap-3">
           <div className="flex gap-2">

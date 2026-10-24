@@ -1,5 +1,7 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
+import i18n from '@/i18n'
 
 function parseNumberValue(value) {
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -12,11 +14,11 @@ function parseNumberValue(value) {
 }
 
 function formatChatTime(value) {
-  if (!value) return "Just now";
+  if (!value) return i18n.t('fallback.justNow');
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "short",
     day: "numeric",
     hour: "numeric",
@@ -75,7 +77,7 @@ function resolveMessageOffer(item = {}) {
   const source = offerSource ?? {};
   const pricing = Array.isArray(source.pricing)
     ? source.pricing.map((row) => ({
-        label: row.label ?? "Price",
+        label: row.label ?? i18n.t('ui.price'),
         value: row.value ?? row.amount ?? "—",
         icon: row.icon ?? "dollar",
       }))
@@ -91,10 +93,10 @@ function resolveMessageOffer(item = {}) {
   const summary = source.summary ?? {};
 
   return {
-    title: source.title ?? "Offer Card",
+    title: source.title ?? i18n.t('fallback.offerCard'),
     statusLabel:
       source.statusLabel ??
-      (item.action === "accepted" ? "Accepted" : "Pending Response"),
+      (item.action === "accepted" ? i18n.t('fallback.accepted') : i18n.t('fallback.pendingResponse')),
     product:
       source.productName ??
       source.product ??
@@ -149,7 +151,7 @@ function mapQuoteChatItem(item) {
       participant.name ??
       item.productName ??
       "Quote",
-    lastMessage: String(lastText || "New quote request"),
+    lastMessage: String(lastText || i18n.t('ui.newQuoteRequest')),
     time: formatChatTime(
       item.updatedAt ??
         item.lastMessageAt ??
@@ -206,7 +208,7 @@ export function mapSupplierQuoteThread(payload) {
       quote.latestMessage ??
       quote.message ??
       quote.preview ??
-      "New quote request",
+      i18n.t('ui.newQuoteRequest'),
     time: formatChatTime(
       quote.updatedAt ??
         quote.lastMessageAt ??
@@ -250,7 +252,7 @@ export function mapSupplierQuoteMessages(payload) {
           message?.timestamp ??
           new Date(),
       ),
-      status: isMine ? (message?.status ?? "Sent") : undefined,
+      status: isMine ? (message?.status ?? i18n.t('fallback.sent')) : undefined,
       type: offer ? "offer" : (message?.type ?? undefined),
       offer,
       partner: resolveQuoteParticipant(message),

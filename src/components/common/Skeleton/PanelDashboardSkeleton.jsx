@@ -1,18 +1,20 @@
 import Skeleton from './Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Modern dashboard skeleton loader for panel dashboards (Supplier, Factory, Transporter, Affiliate, Admin).
  * Displays metric card skeletons, chart skeletons, and content grid skeletons.
  */
 export default function PanelDashboardSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       {/* Header title & subtitle skeleton */}
       <div className="space-y-2">

@@ -45,11 +45,11 @@ export default function UserCheckoutPage() {
         .unwrap()
         .catch((err) => {
           console.error("Direct buy quote error:", err)
-          toast.error("Failed to fetch product price.")
+          toast.error(t('ui.priceFetchFailed'))
         })
       setInitialDirectQuoteDone(true)
     }
-  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos])
+  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos, t])
 
   const cartData = directBuy ? directDataResponse?.cart : cartDataQuery?.cart
   

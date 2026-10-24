@@ -1,15 +1,17 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatDate(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(appLocale())
 }
 
 function formatCoverage(amount) {
   if (amount == null || amount === '') return '—'
   const value = Number(amount)
   if (!Number.isFinite(value)) return String(amount)
-  return `€${value.toLocaleString('en-IE')}`
+  return `€${value.toLocaleString(appLocale())}`
 }
 
 export function mapInsurancePolicy(policy, t) {

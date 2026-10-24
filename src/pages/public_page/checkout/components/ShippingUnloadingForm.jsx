@@ -32,7 +32,7 @@ export default function ShippingUnloadingForm({ values, onChange }) {
       label:
         option.value === ''
           ? t('checkoutPage.selectPlaceholder')
-          : option.label,
+          : t(`ui.unloadingOptions.${option.value}`, { defaultValue: option.label }),
     }))
 
   return (

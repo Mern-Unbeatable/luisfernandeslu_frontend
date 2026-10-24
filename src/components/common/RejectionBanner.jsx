@@ -37,7 +37,7 @@ export default function RejectionBanner({ rejectionReason, onReSubmit }) {
               <ul className="mt-1 list-inside list-disc space-y-1">
                 {invalidDocuments.map((doc) => (
                   <li key={doc} className="text-sm text-red-700">
-                    {getDocumentLabel(doc)}
+                    {t(`accountLock.documents.${doc}.label`, { defaultValue: getDocumentLabel(doc) })}
                   </li>
                 ))}
               </ul>

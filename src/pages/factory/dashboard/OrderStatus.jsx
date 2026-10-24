@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import { Doughnut } from 'react-chartjs-2'
 import { ArcElement, Chart as ChartJS, Tooltip } from 'chart.js'
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(ArcElement, Tooltip)
 
@@ -14,10 +16,13 @@ function getFilterLabel(option) {
 }
 
 export default function OrderStatus({
-  title = 'Order Status',
-  filterAriaLabel = 'Order status period filter',
+  title = i18n.t('fallback.orderStatus'),
+  filterAriaLabel = i18n.t('fallback.orderStatusPeriodFilter'),
   series = {},
-  filterOptions = ['This month', 'This week'],
+  filterOptions = [
+    { value: 'This month', label: i18n.t('fallback.thisMonth') },
+    { value: 'This week', label: i18n.t('fallback.thisWeek') },
+  ],
   defaultFilter,
 }) {
   const [filter, setFilter] = useState(
@@ -105,7 +110,7 @@ export default function OrderStatus({
               {item.label}
             </span>
             <span className="font-semibold text-[var(--primary-text)]">
-              {Number(item.value).toLocaleString()}
+              {Number(item.value).toLocaleString(appLocale())}
             </span>
           </li>
         ))}

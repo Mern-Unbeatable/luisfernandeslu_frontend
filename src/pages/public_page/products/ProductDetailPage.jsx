@@ -80,14 +80,14 @@ export default function ProductDetailPage() {
     if (actionId === 'buy_now') {
       if (!isAuthenticated) {
         Swal.fire({
-          title: 'Login Required',
-          text: 'Please login to checkout.',
+          title: t('ui.loginRequired'),
+          text: t('ui.loginToCheckout'),
           icon: 'info',
           showCloseButton: true,
           showCancelButton: false,
           showDenyButton: true,
-          confirmButtonText: 'Login as Customer',
-          denyButtonText: 'Login as Company',
+          confirmButtonText: t('ui.loginAsCustomer'),
+          denyButtonText: t('ui.loginAsCompany'),
           buttonsStyling: false,
           customClass: {
             popup: 'rounded-2xl pb-6',
@@ -143,7 +143,7 @@ export default function ProductDetailPage() {
         <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
             <p className="text-sm text-red-700">
-              {error?.data?.message || 'Could not load product details.'}
+              {error?.data?.message || t('common.error')}
             </p>
             <button
               type="button"
@@ -208,8 +208,8 @@ export default function ProductDetailPage() {
             console.error('Failed to send quote:', err)
             Swal.fire({
               icon: 'error',
-              title: 'Failed to send quote',
-              text: err?.data?.message || err?.message || 'Something went wrong. Please try again.',
+              title: t('ui.sendQuoteFailed'),
+              text: err?.data?.message || err?.message || t('ui.somethingWentWrong'),
               confirmButtonText: 'OK',
               buttonsStyling: false,
               customClass: {

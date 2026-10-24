@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 function buildPageList(currentPage, totalPages) {
   if (totalPages <= 5) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
@@ -55,6 +56,7 @@ export default function Pagination({
   onPageChange,
   className = '',
 }) {
+  const { t } = useTranslation()
   if (totalPages <= 1) return null
  
   const currentPage = Math.min(Math.max(page, 1), totalPages)
@@ -68,17 +70,17 @@ export default function Pagination({
   return (
     <nav
       className={`flex flex-wrap items-center justify-center gap-2 ${className}`}
-      aria-label="Pagination"
+      aria-label={t('ui.pagination')}
     >
       <PaginationButton
-        ariaLabel="First page"
+        ariaLabel={t('fallback.firstPage')}
         disabled={currentPage === 1}
         onClick={() => goTo(1)}
       >
         «
       </PaginationButton>
       <PaginationButton
-        ariaLabel="Previous page"
+        ariaLabel={t('fallback.previousPage')}
         disabled={currentPage === 1}
         onClick={() => goTo(currentPage - 1)}
       >
@@ -89,7 +91,7 @@ export default function Pagination({
         item === 'ellipsis' ? (
           <PaginationButton
             key={`ellipsis-${index}`}
-            ariaLabel="More pages"
+            ariaLabel={t('fallback.morePages')}
             disabled
           >
             …
@@ -97,7 +99,7 @@ export default function Pagination({
         ) : (
           <PaginationButton
             key={item}
-            ariaLabel={`Page ${item}`}
+            ariaLabel={t('fallback.pageN', { n: item })}
             active={item === currentPage}
             onClick={() => goTo(item)}
           >
@@ -107,14 +109,14 @@ export default function Pagination({
       )}
  
       <PaginationButton
-        ariaLabel="Next page"
+        ariaLabel={t('fallback.nextPage')}
         disabled={currentPage === totalPages}
         onClick={() => goTo(currentPage + 1)}
       >
         ›
       </PaginationButton>
       <PaginationButton
-        ariaLabel="Last page"
+        ariaLabel={t('fallback.lastPage')}
         disabled={currentPage === totalPages}
         onClick={() => goTo(totalPages)}
       >

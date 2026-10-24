@@ -95,24 +95,31 @@ export default function OverviewDashboardPage() {
         tierName={currentTier?.name || '—'}
         headline={
           currentTier?.commissionPercent != null
-            ? `You receive a ${currentTier.commissionPercent}% commission rate!`
+            ? t('fallback.commissionRateHeadline', { percent: currentTier.commissionPercent })
             : '—'
         }
         description={t('affiliateOverview.tier.description')}
         progressLabel={
           nextTier
-            ? `Progress to ${nextTier.name} (${nextTier.commissionPercent}%)`
+            ? t('fallback.progressToLevelPercent', { level: nextTier.name, percent: nextTier.commissionPercent })
             : t('affiliateOverview.tier.progressLabel')
         }
         clientsLabel={
           tier
-            ? `${tier.progressCurrent}/${tier.progressTarget} Clients`
+            ? t('fallback.clientsProgress', { current: tier.progressCurrent, target: tier.progressTarget })
             : undefined
         }
         currentClients={tier?.progressCurrent ?? 0}
         targetClients={tier?.progressTarget ?? 0}
         progressPercent={tier?.progressPercent}
-        helpText={tier?.helperText}
+        helpText={
+          nextTier && tier
+            ? t('fallback.clientsNeeded', {
+                count: Math.max((tier.progressTarget ?? 0) - (tier.progressCurrent ?? 0), 0),
+                level: nextTier.name,
+              })
+            : tier?.helperText
+        }
       />
 
       <EarningAnalytics

@@ -1,7 +1,8 @@
 import { FiStar } from 'react-icons/fi'
+import i18n from '@/i18n'
 
 export default function SellerCard({ seller = {}, variant = 'store' }) {
-  const name = seller.name || 'Store'
+  const name = seller.name || i18n.t('fallback.store')
   const avatar = seller.avatar
   const initials = name
     .split(' ')

@@ -11,12 +11,13 @@ import ResubmitDocumentsForm from './ResubmitDocumentsForm'
 import { parseRejectionReason } from './documentFields'
 
 function BlurredDashboardShell({ title }) {
+  const { t } = useTranslation()
   return (
     <div className="pointer-events-none select-none blur-[2px]" aria-hidden>
       <h1 className="text-2xl font-bold text-[var(--primary-text)]">{title}</h1>
-      <p className="mt-1 text-sm text-[var(--secondary-text)]">Business metrics overview</p>
+      <p className="mt-1 text-sm text-[var(--secondary-text)]">{t('ui.businessMetricsOverview')}</p>
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {['€125,430', '45', '89%', '2.4 Days'].map((value) => (
+        {['€125,430', '45', '89%', t('fallback.daysCount', { count: 2.4 })].map((value) => (
           <div
             key={value}
             className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"

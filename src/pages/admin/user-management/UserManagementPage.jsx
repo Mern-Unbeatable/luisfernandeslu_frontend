@@ -17,12 +17,13 @@ import UserDetailsModal from './components/UserDetailsModal'
 import TypeBadge from './components/TypeBadge'
 import AccountStatusBadge from './components/AccountStatusBadge'
 import { ADMIN_USER_TABS } from './data/usersDemo'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 7
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
-  return typeof value === 'number' ? value.toLocaleString() : value
+  return typeof value === 'number' ? value.toLocaleString(appLocale()) : value
 }
 
 function isUserSuspended(row) {

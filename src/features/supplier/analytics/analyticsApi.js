@@ -1,4 +1,5 @@
 import { baseApi } from "../../../services/api/baseApi";
+import i18n from '@/i18n'
 
 function normalizeSeries(series) {
   return Array.isArray(series) ? series.map((value) => Number(value ?? 0)) : [];
@@ -27,7 +28,7 @@ export const supplierAnalyticsApi = baseApi.injectEndpoints({
           stats: {
             totalRevenue: String(source?.stats?.totalRevenue ?? "€0"),
             totalRevenueGrowth: String(
-              source?.stats?.totalRevenueGrowth ?? "0% vs last month",
+              source?.stats?.totalRevenueGrowth ?? i18n.t('fallback.vsLastMonthZero'),
             ),
             procurementExpenses: String(
               source?.stats?.procurementExpenses ?? "€0",

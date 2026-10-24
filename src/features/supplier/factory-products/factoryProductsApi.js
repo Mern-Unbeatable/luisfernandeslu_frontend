@@ -1,5 +1,7 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { parseNumber, pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
+import i18n from '@/i18n'
 
 function resolveImageValue(value) {
   if (!value) return "";
@@ -47,13 +49,16 @@ function formatPriceText(item = {}) {
     item.product?.salePrice;
 
   const price = parseNumber(baseValue);
-  const unit = item.unit ?? item.product?.unit ?? item.unitLabel ?? "unit";
+  const unit = item.unit ?? item.product?.unit ?? item.unitLabel ?? i18n.t('fallback.unitWord');
 
   if (price == null) {
-    return item.priceText ?? item.product?.priceText ?? "Price on request";
+    return item.priceText ?? item.product?.priceText ?? i18n.t('fallback.priceOnRequest');
   }
 
-  return `Price: €${price.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })} per ${unit}`;
+  return i18n.t('fallback.pricePerUnitValue', {
+    price: `€${price.toLocaleString(appLocale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`,
+    unit,
+  });
 }
 
 function mapSupplierFactoryProductItem(item) {
@@ -160,8 +165,8 @@ function mapSupplierFactoryProductDetail(payload) {
     item.priceText ??
     productRef.priceText ??
     (parsedPrice == null
-      ? "Price on request"
-      : `€${parsedPrice.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`);
+      ? i18n.t('fallback.priceOnRequest')
+      : `€${parsedPrice.toLocaleString(appLocale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`);
 
   return {
     id: String(item.id ?? productRef.id ?? item._id ?? ""),
@@ -188,14 +193,14 @@ function mapSupplierFactoryProductDetail(payload) {
     price:
       parsedPrice == null
         ? null
-        : `€${parsedPrice.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`,
+        : `€${parsedPrice.toLocaleString(appLocale(), { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`,
     unit:
       item.unit ??
       productRef.unit ??
       item.unitLabel ??
       productRef.unitLabel ??
       "unit",
-    availability: item.availability ?? item.stockStatus ?? "In stock",
+    availability: item.availability ?? item.stockStatus ?? i18n.t('fallback.inStock'),
     rating: Number(item.rating ?? productRef.rating ?? 0) || 0,
     feedbackCount:
       Number(item.feedbackCount ?? productRef.feedbackCount ?? 0) || 0,
@@ -211,7 +216,7 @@ function mapSupplierFactoryProductDetail(payload) {
     seller: item.factory
       ? {
           id: item.factory.id ?? "",
-          name: item.factory.name ?? item.factory.businessName ?? "Factory",
+          name: item.factory.name ?? item.factory.businessName ?? i18n.t('ui.factory'),
           location: item.factory.location ?? item.factory.city ?? "",
         }
       : null,

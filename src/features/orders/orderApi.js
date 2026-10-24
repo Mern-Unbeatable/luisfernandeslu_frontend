@@ -4,6 +4,7 @@ import {
   CUSTOMER_ORDER_STATUS_ALL,
   normalizeCustomerOrderStatus,
 } from "./customerOrderStatus";
+import { appLocale } from "@/i18n/locale";
 
 function toApiCustomerOrderStatus(status) {
   return normalizeCustomerOrderStatus(status);
@@ -16,7 +17,7 @@ function formatCurrencyValue(value) {
     return value ? String(value) : "€0";
   }
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(appLocale(), {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 2,
@@ -29,7 +30,7 @@ function formatDateValue(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",

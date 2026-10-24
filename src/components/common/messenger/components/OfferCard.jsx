@@ -6,6 +6,7 @@ import {
   FiMessageSquare,
   FiPackage,
 } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 
 const PRICING_ICONS = {
   dollar: FiDollarSign,
@@ -22,6 +23,7 @@ export default function OfferCard({
   onPayNow,
   onNegotiate,
 }) {
+  const { t } = useTranslation()
   if (!offer) return null
 
   const pricing = offer.pricing || []
@@ -38,11 +40,11 @@ export default function OfferCard({
         </span>
         <div className="min-w-0">
           <p className="text-sm font-bold text-[var(--primary-text)]">
-            {offer.title || 'Offer Card'}
+            {offer.title === 'Offer Card' || !offer.title ? t('ui.offerCard') : offer.title}
           </p>
           <p className="text-xs text-[var(--secondary-text)]">
             {offer.statusLabel ||
-              (showActions ? 'Pending Response' : 'Awaiting their response')}
+              (showActions ? t('fallback.pendingResponse') : t('fallback.awaitingTheirResponse'))}
           </p>
         </div>
       </div>
@@ -51,20 +53,20 @@ export default function OfferCard({
         <Section>
           <p className="inline-flex items-center gap-1.5 text-[11px] text-[var(--secondary-text)]">
             <FiPackage className="size-3.5 shrink-0" strokeWidth={1.75} />
-            Product
+            {t('ui.product')}
           </p>
           <p className="mt-1 text-sm font-bold text-[var(--primary-text)]">
             {offer.product || '—'}
           </p>
           {offer.quantity ? (
             <p className="mt-0.5 text-xs text-[var(--secondary-text)]">
-              Quantity: {offer.quantity}
+              {t('ui.quantityColon')} {offer.quantity}
             </p>
           ) : null}
         </Section>
 
         <Section>
-          <p className="text-[11px] text-[var(--secondary-text)]">Project Name</p>
+          <p className="text-[11px] text-[var(--secondary-text)]">{t('ui.projectName')}</p>
           <p className="mt-1 text-sm font-bold text-[var(--primary-text)]">
             {offer.projectName || '—'}
           </p>
@@ -81,12 +83,12 @@ export default function OfferCard({
 
         <Section>
           <Field
-            label="Types of unloading Needed"
+            label={t('ui.unloadingType')}
             value={offer.unloadingType || offer.unloading}
           />
           {offer.accessConditions ? (
             <Field
-              label="Access Conditions"
+              label={t('ui.accessConditions')}
               value={offer.accessConditions}
               className="mt-3"
             />
@@ -122,7 +124,7 @@ export default function OfferCard({
               {summary.firstInstallment ? (
                 <div>
                   <p className="text-[11px] text-[var(--secondary-text)]">
-                    1st Installment
+                    {t('ui.firstInstallment')}
                   </p>
                   <p className="mt-0.5 text-base font-bold text-emerald-600">
                     {summary.firstInstallment}
@@ -132,7 +134,7 @@ export default function OfferCard({
               {summary.remainingBalance ? (
                 <div>
                   <p className="text-[11px] text-[var(--secondary-text)]">
-                    Remaining Balance
+                    {t('ui.remainingBalance')}
                   </p>
                   <p className="mt-0.5 text-base font-bold text-[var(--active)]">
                     {summary.remainingBalance}
@@ -161,7 +163,7 @@ export default function OfferCard({
               className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-2.5 text-sm font-semibold text-white opacity-80 cursor-not-allowed"
             >
               <FiCheck className="size-4" strokeWidth={2.25} />
-              Paid
+              {t('ui.paid')}
             </button>
           ) : (
             <>
@@ -171,7 +173,7 @@ export default function OfferCard({
                 className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[var(--active)] px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-95"
               >
                 <FiCheck className="size-4" strokeWidth={2.25} />
-                Pay Now
+                {t('ui.payNow')}
               </button>
               {onNegotiate ? (
                 <button
@@ -180,7 +182,7 @@ export default function OfferCard({
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#1E293B] px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:opacity-90"
                 >
                   <FiMessageSquare className="size-4" strokeWidth={1.75} />
-                  Negotiate
+                  {t('ui.negotiate')}
                 </button>
               ) : null}
             </>

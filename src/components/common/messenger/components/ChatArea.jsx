@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fi'
 import MessageBubble from './MessageBubble'
 import UserAvatar from '../components/UserAvatar'
+import { useTranslation } from 'react-i18next'
 
 export default function ChatArea({
   activeChat,
@@ -25,6 +26,7 @@ export default function ChatArea({
   isLoading = false,
   actionMessageId = null,
 }) {
+  const { t } = useTranslation()
   const [inputText, setInputText] = useState('')
   const [editingMessageId, setEditingMessageId] = useState(null)
   const [isEditPending, setIsEditPending] = useState(false)
@@ -82,10 +84,10 @@ export default function ChatArea({
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 bg-[#F8F8F8] px-6 text-center">
         <h3 className="text-lg font-semibold text-[var(--primary-text)]">
-          Your Messages
+          {t('ui.yourMessages')}
         </h3>
         <p className="max-w-sm text-sm text-[var(--secondary-text)]">
-          Select a conversation from the sidebar to start chatting.
+          {t('ui.selectConversation')}
         </p>
       </div>
     )
@@ -98,7 +100,7 @@ export default function ChatArea({
           type="button"
           onClick={onBack}
           className="rounded-md p-1.5 text-[var(--primary-text)] hover:bg-white/70 md:hidden"
-          aria-label="Back to inbox"
+          aria-label={t('ui.backToInbox')}
         >
           <FiArrowLeft className="size-5" />
         </button>
@@ -110,7 +112,7 @@ export default function ChatArea({
           <p className="text-xs">
             {isPartnerTyping
               ? (
-                  <span className="text-[var(--secondary-text)]">Typing...</span>
+                  <span className="text-[var(--secondary-text)]">{t('ui.typing')}</span>
                 )
               : activeChat.online
                 ? (
@@ -119,11 +121,11 @@ export default function ChatArea({
                         className="size-2 rounded-full bg-emerald-500"
                         aria-hidden
                       />
-                      Active
+                      {t('ui.active')}
                     </span>
                   )
                 : (
-                  <span className="text-[var(--secondary-text)]">Offline</span>
+                  <span className="text-[var(--secondary-text)]">{t('ui.offline')}</span>
                 )}
           </p>
         </div>
@@ -133,13 +135,9 @@ export default function ChatArea({
         ref={messagesContainerRef}
         className="flex-1 space-y-3 overflow-y-auto bg-white px-3 py-4 sm:px-5"
       >
-        <p className="text-center text-xs text-[var(--secondary-text)]">
-          Thursday, Jan 4 • 6:21 PM
-        </p>
-
         {isLoading && messages.length === 0 ? (
           <p className="text-center text-sm text-[var(--secondary-text)]">
-            Loading messages...
+            {t('ui.loadingMessages')}
           </p>
         ) : (
           messages.map((message, index) => {
@@ -192,14 +190,14 @@ export default function ChatArea({
       <div className="border-t border-gray-200 bg-white px-3 py-3 sm:px-4">
         {editingMessageId ? (
           <div className="mb-2 flex items-center justify-between rounded-md bg-[color-mix(in_srgb,var(--active)_10%,white)] px-3 py-1.5 text-xs text-[var(--primary-text)]">
-            <span>Editing message</span>
+            <span>{t('ui.editingMessage')}</span>
             <button
               type="button"
               onClick={cancelEdit}
               className="inline-flex items-center gap-1 font-medium text-[var(--secondary-text)] hover:text-[var(--primary-text)]"
             >
               <FiX className="size-3.5" />
-              Cancel
+              {t('ui.cancel')}
             </button>
           </div>
         ) : null}
@@ -211,7 +209,7 @@ export default function ChatArea({
               onClick={onCreateOffer}
               className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-[var(--active)] px-3 py-2.5 text-xs font-semibold whitespace-nowrap text-white hover:brightness-95"
             >
-              Create Offer
+              {t('ui.createOffer')}
             </button>
           ) : null}
 
@@ -232,8 +230,8 @@ export default function ChatArea({
               }}
               placeholder={
                 editingMessageId
-                  ? 'Edit your message...'
-                  : 'Type your message here...'
+                  ? t('ui.editMessagePlaceholder')
+                  : t('ui.typeMessagePlaceholder')
               }
               className="w-full bg-transparent text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)]"
             />
@@ -243,7 +241,7 @@ export default function ChatArea({
             type="button"
             onClick={handleSubmit}
             disabled={isSending || !inputText.trim()}
-            aria-label={editingMessageId ? 'Save message' : 'Send message'}
+            aria-label={editingMessageId ? t('ui.saveMessage') : t('ui.sendMessage')}
             className="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-[var(--active)] text-white transition-opacity hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {editingMessageId ? (

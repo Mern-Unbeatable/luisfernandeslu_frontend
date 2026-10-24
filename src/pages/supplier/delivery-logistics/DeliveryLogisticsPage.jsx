@@ -18,6 +18,7 @@ import {
 } from "@/features/supplier/auctions/auctionsApi";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { toast } from "react-hot-toast";
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 4;
 
@@ -122,7 +123,7 @@ function buildDetailsAuction(auction) {
       vehicleType: toDisplayText(auction.transporter?.vehicleType),
       bidAmount:
         auction.bidPrice != null
-          ? `€${Number(auction.bidPrice).toLocaleString()}`
+          ? `€${Number(auction.bidPrice).toLocaleString(appLocale())}`
           : "",
       assignedAt: toDisplayText(auction.transporter?.assignedAt),
     },

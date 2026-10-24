@@ -1,12 +1,13 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { formatEuro, pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
 
 function formatDateValue(value) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",

@@ -1,14 +1,16 @@
 import Skeleton from "@/components/common/Skeleton/Skeleton";
+import { useTranslation } from "react-i18next";
 
 export default function ProductDetailsSkeleton() {
+  const { t } = useTranslation();
   return (
     <div
       className="w-full space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t("ui.loading")}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t("ui.loading")}</span>
 
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-3">
