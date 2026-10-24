@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
 import BulkPricingTable from './BulkPricingTable'
 import ImageGallery from './ImageGallery'
@@ -22,6 +23,7 @@ export default function ProductDetails({
   className = '',
   loadingAction,
 }) {
+  const { t } = useTranslation()
   const view = resolveDetailsView(role, context)
   const actions = actionsOverride ?? view.actions
   const [quantity, setQuantity] = useState(quantityProp ?? 1)
@@ -42,12 +44,17 @@ export default function ProductDetails({
 
   const rating = product.rating ?? 0
   const fullStars = Math.round(rating)
+  const availabilityText = product.availabilityCode
+    ? t(`productDetails.availabilityStatus.${product.availabilityCode}`, {
+        defaultValue: product.availability,
+      })
+    : product.availability
 
   return (
     <div className={`w-full space-y-6 ${className}`}>
       <div className="">
         <div className="grid gap-8 lg:grid-cols-2">
-          <ImageGallery images={images} alt={product.title || 'Product'} />
+          <ImageGallery images={images} alt={product.title || t('productDetails.productAlt')} />
 
           <div className="flex min-w-0 flex-col gap-4">
             {view.showRating ? (
@@ -65,12 +72,13 @@ export default function ProductDetails({
                   ))}
                 </div>
                 <span className="font-medium text-[var(--primary-text)]">
-                  {rating} Star Rating
+                  {t('productDetails.starRating', { rating })}
                 </span>
                 {product.feedbackCount != null ? (
                   <span className="text-[var(--secondary-text)]">
-                    ({Number(product.feedbackCount).toLocaleString()} User
-                    feedback)
+                    {t('productDetails.userFeedback', {
+                      total: Number(product.feedbackCount).toLocaleString(),
+                    })}
                   </span>
                 ) : null}
               </div>
@@ -84,24 +92,24 @@ export default function ProductDetails({
               <div className="space-y-1 text-sm text-[var(--secondary-text)]">
                 {product.sku ? (
                   <p>
-                    <span className="text-[var(--secondary-text)]">Sku: </span>
+                    <span className="text-[var(--secondary-text)]">{t('productDetails.sku')} </span>
                     <span className="text-[var(--primary-text)]">{product.sku}</span>
                   </p>
                 ) : null}
                 {product.availability ? (
                   <p>
                     <span className="text-[var(--secondary-text)]">
-                      Availability:{' '}
+                      {t('productDetails.availability')}{' '}
                     </span>
                     <span className="font-medium text-emerald-600">
-                      {product.availability}
+                      {availabilityText}
                     </span>
                   </p>
                 ) : null}
                 {product.category ? (
                   <p>
                     <span className="text-[var(--secondary-text)]">
-                      Category:{' '}
+                      {t('productDetails.category')}{' '}
                     </span>
                     <span className="text-[var(--primary-text)]">
                       {product.category}
@@ -111,7 +119,7 @@ export default function ProductDetails({
                 {product.warehouse ? (
                   <p>
                     <span className="text-[var(--secondary-text)]">
-                      Warehouse location:{' '}
+                      {t('productDetails.warehouse')}{' '}
                     </span>
                     <span className="text-[var(--primary-text)]">
                       {product.warehouse}
@@ -124,7 +132,7 @@ export default function ProductDetails({
                 <div className="min-w-0 space-y-1 text-[var(--secondary-text)]">
                   {product.sku ? (
                     <p>
-                      <span className="text-[var(--secondary-text)]">Sku: </span>
+                      <span className="text-[var(--secondary-text)]">{t('productDetails.sku')} </span>
                       <span className="text-[var(--primary-text)]">
                         {product.sku}
                       </span>
@@ -133,7 +141,7 @@ export default function ProductDetails({
                   {product.category ? (
                     <p>
                       <span className="text-[var(--secondary-text)]">
-                        Category:{' '}
+                        {t('productDetails.category')}{' '}
                       </span>
                       <span className="text-[var(--primary-text)]">
                         {product.category}
@@ -144,10 +152,10 @@ export default function ProductDetails({
                 {product.availability ? (
                   <p className="shrink-0 text-right">
                     <span className="text-[var(--secondary-text)]">
-                      Availability:{' '}
+                      {t('productDetails.availability')}{' '}
                     </span>
                     <span className="font-medium text-emerald-600">
-                      {product.availability}
+                      {availabilityText}
                     </span>
                   </p>
                 ) : null}
@@ -162,7 +170,7 @@ export default function ProductDetails({
                 {product.unit ? (
                   <span className="font-bold text-[var(--primary-text)]">
                     {' '}
-                    Per {product.unit}
+                    {t('productDetails.perUnit', { unit: product.unit })}
                   </span>
                 ) : null}
               </p>
@@ -173,7 +181,9 @@ export default function ProductDetails({
             ) : product.price ? (
               <p className="text-xl font-bold text-[var(--active)] sm:text-2xl">
                 {product.price}
-                {product.unit ? ` Per ${product.unit}` : ''}
+                {product.unit
+                  ? ` ${t('productDetails.perUnit', { unit: product.unit })}`
+                  : ''}
               </p>
             ) : null}
 
@@ -183,7 +193,7 @@ export default function ProductDetails({
               <div className="space-y-5">
                 <div>
                   <h2 className="mb-2 text-base font-bold text-[var(--primary-text)]">
-                    Description
+                    {t('productDetails.description')}
                   </h2>
                   <div className="space-y-3 text-sm leading-relaxed text-[var(--secondary-text)]">
                     {(product.descriptionParagraphs || [product.description])
@@ -196,7 +206,7 @@ export default function ProductDetails({
                 {product.features?.length ? (
                   <div>
                     <h2 className="mb-2 text-base font-bold text-[var(--primary-text)]">
-                      Feature
+                      {t('productDetails.feature')}
                     </h2>
                     <ul className="space-y-2 text-sm text-[var(--secondary-text)]">
                       {product.features.map((feature) => (
@@ -216,7 +226,7 @@ export default function ProductDetails({
 
             {view.showMinOrder && product.minOrder ? (
               <p className="text-sm font-bold text-red-500">
-                Minimum Order {product.minOrder}
+                {t('productDetails.minimumOrder', { value: product.minOrder })}
               </p>
             ) : null}
 

@@ -53,13 +53,13 @@ export default function StandardOrderDetails({
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
-              Order Details
+              {t('orderDetails.title')}
             </h1>
             <StatusBadge status={status} />
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <MetaCard label="Order ID" value={order.orderId} />
-            <MetaCard label="Order Date" value={order.orderDate} />
+            <MetaCard label={t('orderDetails.orderId')} value={order.orderId} />
+            <MetaCard label={t('orderDetails.orderDate')} value={order.orderDate} />
           </div>
         </div>
         {isNew ? (
@@ -81,7 +81,7 @@ export default function StandardOrderDetails({
         }`}
       >
         <div>
-          <SectionEyebrow>Recipient</SectionEyebrow>
+          <SectionEyebrow>{t('orderDetails.recipient')}</SectionEyebrow>
           <h2 className="mt-1 mb-3 text-lg font-bold text-[var(--primary-text)]">
             {isCustomerRecipient ? 'Customer Information' : 'Company Information'}
           </h2>
@@ -94,20 +94,20 @@ export default function StandardOrderDetails({
           <div className="mt-4 flex flex-col gap-3">
             {isCustomerRecipient ? (
               <>
-                <StackLabel label="Region" value={recipient.region} />
-                <StackLabel label="City" value={recipient.city} />
-                <StackLabel label="Zip Code" value={recipient.zipCode} />
-                <StackLabel label="Address" value={recipient.address} />
+                <StackLabel label={t('orderDetails.region')} value={recipient.region} />
+                <StackLabel label={t('orderDetails.city')} value={recipient.city} />
+                <StackLabel label={t('orderDetails.zipCode')} value={recipient.zipCode} />
+                <StackLabel label={t('orderDetails.address')} value={recipient.address} />
               </>
             ) : (
               <>
                 <IconLabel
                   icon={FiMapPin}
-                  label="Project"
+                  label={t('orderDetails.project')}
                   value={recipient.project}
                 />
                 <StackLabel
-                  label="Types of unloading Needed"
+                  label={t('orderDetails.unloadingType')}
                   value={logistics.unloadingType}
                 />
               </>
@@ -117,10 +117,10 @@ export default function StandardOrderDetails({
 
         {showTransporter ? (
           <div>
-            <SectionEyebrow>Transporter</SectionEyebrow>
+            <SectionEyebrow>{t('orderDetails.transporter')}</SectionEyebrow>
             <div className="mt-1 mb-3 flex items-center justify-between gap-3">
               <h2 className="text-lg font-bold text-[var(--primary-text)]">
-                Transporter Information
+                {t('orderDetails.transporterInfo')}
               </h2>
               {showTransporterMessage ? (
                 <button
@@ -146,11 +146,11 @@ export default function StandardOrderDetails({
               <div className="mt-4 flex flex-col gap-3">
                 <IconLabel
                   icon={FiMapPin}
-                  label="Delivery Location"
+                  label={t('orderDetails.deliveryLocation')}
                   value={logistics.deliveryLocation}
                 />
                 <StackLabel
-                  label="Access Conditions"
+                  label={t('orderDetails.accessConditions')}
                   value={logistics.accessCondition}
                 />
               </div>
@@ -160,11 +160,11 @@ export default function StandardOrderDetails({
           <div className="flex flex-col gap-3">
             <IconLabel
               icon={FiMapPin}
-              label="Delivery Location"
+              label={t('orderDetails.deliveryLocation')}
               value={logistics.deliveryLocation}
             />
             <StackLabel
-              label="Access Conditions"
+              label={t('orderDetails.accessConditions')}
               value={logistics.accessCondition}
             />
           </div>
@@ -172,9 +172,9 @@ export default function StandardOrderDetails({
       </div>
 
       <div>
-        <SectionEyebrow>Materials</SectionEyebrow>
+        <SectionEyebrow>{t('orderDetails.materials')}</SectionEyebrow>
         <h2 className="mt-1 mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Product Details
+          {t('orderDetails.productDetails')}
         </h2>
         <ProductsTable products={order.products} />
         <div className="mt-6">

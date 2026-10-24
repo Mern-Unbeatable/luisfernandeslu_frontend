@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FiCheck, FiClock } from 'react-icons/fi'
 
 const STATUS = {
@@ -6,14 +7,14 @@ const STATUS = {
     iconWrap: 'border-green-200 bg-green-50 text-green-600',
     badge: 'border-green-200 bg-green-50 text-green-700',
     Icon: FiCheck,
-    label: 'Completed',
+    labelKey: 'installmentTimeline.completed',
   },
   pending: {
     card: 'border-orange-200 bg-orange-50',
     iconWrap: 'border-orange-200 bg-orange-50 text-orange-600',
     badge: 'border-orange-200 bg-orange-50 text-orange-700',
     Icon: FiClock,
-    label: 'Pending',
+    labelKey: 'installmentTimeline.pending',
   },
 }
 
@@ -56,6 +57,7 @@ function InstallmentCard({
   onCancel,
   showPay = false,
 }) {
+  const { t } = useTranslation()
   const status = STATUS[item.status] || STATUS.pending
   const Icon = status.Icon
   const isCompleted = item.status === 'completed'
@@ -86,15 +88,15 @@ function InstallmentCard({
               <span
                 className={`inline-flex rounded-full border px-3 py-1 text-sm ${status.badge}`}
               >
-                {item.statusLabel || status.label}
+                {item.statusLabel || t(status.labelKey)}
               </span>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
-              <Meta label="Due Date" value={item.dueDate} />
-              <Meta label="Amount" value={item.amount} />
+              <Meta label={t('installmentTimeline.dueDate')} value={item.dueDate} />
+              <Meta label={t('installmentTimeline.amount')} value={item.amount} />
               {item.quantity ? (
-                <Meta label="Quantity" value={item.quantity} />
+                <Meta label={t('installmentTimeline.quantity')} value={item.quantity} />
               ) : null}
             </div>
           </div>
@@ -103,7 +105,7 @@ function InstallmentCard({
         <div className="flex shrink-0 flex-wrap items-center gap-2 self-end sm:self-center">
           {isCompleted ? (
             <span className="inline-flex h-11 min-w-20 items-center justify-center rounded-2xl bg-gray-100 px-4 text-base font-medium text-gray-400">
-              Paid
+              {t('installmentTimeline.paid')}
             </span>
           ) : showPay && canPayNow ? (
             <>
@@ -112,19 +114,19 @@ function InstallmentCard({
                 onClick={() => onPayNow?.(item)}
                 className="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--active)] px-4 text-sm font-semibold text-white hover:brightness-95"
               >
-                Pay Now
+                {t('installmentTimeline.payNow')}
               </button>
               <button
                 type="button"
                 onClick={() => onCancel?.(item)}
                 className="inline-flex h-11 items-center justify-center rounded-xl border border-red-400 bg-white px-4 text-sm font-semibold text-red-500 hover:bg-red-50"
               >
-                Cancel
+                {t('installmentTimeline.cancel')}
               </button>
             </>
           ) : showPay ? (
             <span className="inline-flex h-11 min-w-24 items-center justify-center rounded-2xl bg-gray-100 px-4 text-sm font-medium text-gray-500">
-              Not Due
+              {t('installmentTimeline.notDue')}
             </span>
           ) : null}
         </div>
@@ -139,21 +141,22 @@ function InstallmentCard({
  * items: { id, title, status, dueDate, amount, quantity?, statusLabel? }[]
  */
 export default function InstallmentTimeline({
-  title = 'Installment Timeline',
+  title,
   items = [],
   showPay = false,
   onPayNow,
   onCancel,
   className = '',
 }) {
+  const { t } = useTranslation()
   return (
     <section
       className={`flex w-full flex-col gap-6 ${className}`}
     >
-      <h2 className="text-xl font-medium text-neutral-950">{title}</h2>
+      <h2 className="text-xl font-medium text-neutral-950">{title || t('installmentTimeline.title')}</h2>
 
       {items.length === 0 ? (
-        <p className="text-sm text-gray-500">No installments yet.</p>
+        <p className="text-sm text-gray-500">{t('installmentTimeline.empty')}</p>
       ) : (
         <ul className="flex flex-col gap-4">
           {items.map((item, index) => (

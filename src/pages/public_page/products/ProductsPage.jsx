@@ -357,7 +357,7 @@ export default function ProductsPage() {
             {search ? (
               <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50/70 px-4 py-2.5 text-sm text-[var(--primary-text)]">
                 <p>
-                  <span>Search results for: </span>
+                  <span>{t('productsPage.searchResultsFor')}</span>
                   <span className="font-semibold text-[var(--active)]">"{search}"</span>
                 </p>
                 <button
@@ -370,7 +370,7 @@ export default function ProductsPage() {
                   }}
                   className="text-xs font-semibold text-[var(--secondary-text)] hover:text-red-600 underline"
                 >
-                  Clear search
+                  {t('productsPage.clearSearch')}
                 </button>
               </div>
             ) : null}

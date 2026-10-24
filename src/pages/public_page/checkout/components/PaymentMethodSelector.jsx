@@ -44,7 +44,7 @@ export default function PaymentMethodSelector({
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-5 sm:p-6 lg:p-8 mt-6">
       <h2 className="mb-4 text-xl font-bold text-[var(--primary-text)]">
-        Payment Method
+        {t('checkoutPage.paymentMethod')}
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {methods.map((method) => {
@@ -84,9 +84,9 @@ export default function PaymentMethodSelector({
       {value === 'MBWAY' && (
         <div className="mt-4 p-4 rounded bg-gray-50 border border-gray-200 animate-fade-in-down">
           <label htmlFor="mbwayPhone" className="block text-sm font-medium text-gray-700">
-            MB WAY Phone Number <span className="text-red-500">*</span>
+            {t('checkoutPage.mbwayPhone')} <span className="text-red-500">*</span>
           </label>
-          <p className="text-xs text-gray-500 mb-2">Enter the mobile number associated with your MB WAY account.</p>
+          <p className="text-xs text-gray-500 mb-2">{t('checkoutPage.mbwayHint')}</p>
           <input
             type="tel"
             id="mbwayPhone"

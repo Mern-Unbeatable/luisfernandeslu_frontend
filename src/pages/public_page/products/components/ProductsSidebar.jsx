@@ -86,6 +86,8 @@ function RangeTrack({
   valueMax,
   onChangeMin,
   onChangeMax,
+  minLabel,
+  maxLabel,
 }) {
   const left = `${(valueMin / max) * 100}%`;
   const right = `${100 - (valueMax / max) * 100}%`;
@@ -106,7 +108,7 @@ function RangeTrack({
           onChangeMin(Math.min(Number(event.target.value), valueMax));
         }}
         className="absolute inset-0 z-10 h-7 w-full cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--active)] [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--active)]"
-        aria-label="Minimum price"
+        aria-label={minLabel}
       />
       <input
         type="range"
@@ -117,7 +119,7 @@ function RangeTrack({
           onChangeMax(Math.max(Number(event.target.value), valueMin));
         }}
         className="absolute inset-0 z-20 h-7 w-full cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[var(--active)] [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[var(--active)]"
-        aria-label="Maximum price"
+        aria-label={maxLabel}
       />
     </div>
   );
@@ -196,6 +198,8 @@ export default function ProductsSidebar({
         <div className="mt-5 space-y-5">
           <RangeTrack
             max={PRODUCTS_PRICE_MAX}
+            minLabel={t('productsPage.minPrice')}
+            maxLabel={t('productsPage.maxPrice')}
             valueMin={minPrice}
             valueMax={maxPrice}
             onChangeMin={(value) => {

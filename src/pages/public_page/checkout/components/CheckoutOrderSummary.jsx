@@ -252,7 +252,7 @@ export default function CheckoutOrderSummary({
                 onClick={() => handleRemovePromo(promo.code)}
                 disabled={isRemoving}
                 className="text-green-600 hover:text-green-800"
-                aria-label="Remove promo code"
+                aria-label={t('checkoutPage.removePromoCode')}
               >
                 <FiX className="size-4" />
               </button>

@@ -14,7 +14,18 @@
     "signUp": "Sign Up",
     "logIn": "Log In",
     "search": "Search",
-    "closeSearch": "Close search"
+    "closeSearch": "Close search",
+    "searchBox": {
+      "loading": "Loading...",
+      "loadingSuggestions": "Loading suggestions...",
+      "products": "Products",
+      "categories": "Categories",
+      "seeAll": "See all results",
+      "seeAllFor": "See all results for “{{query}}”",
+      "noResults": "No results found",
+      "noResultsFor": "No results found for “{{query}}”",
+      "viewCategory": "View category →"
+    }
   },
   "categoryBar": {
     "navLabel": "Categories",
@@ -43,7 +54,9 @@
     "price1000to10000": "€1,000 to €10,000",
     "closeFilters": "Close filters",
     "clearFilters": "Clear all",
-    "showResults": "Show {{count}} products"
+    "showResults": "Show {{count}} products",
+    "searchResultsFor": "Search results for: ",
+    "clearSearch": "Clear search"
   },
   "sendQuoteModal": {
     "title": "Send Quote",
@@ -92,7 +105,13 @@
     "promoPlaceholder": "Promo code",
     "apply": "Apply",
     "placeOrder": "PLACE ORDER",
-    "back": "BACK"
+    "back": "BACK",
+    "paymentMethod": "Payment Method",
+    "mbwayPhone": "MB WAY Phone Number",
+    "mbwayHint": "Enter the mobile number associated with your MB WAY account.",
+    "useDifferentAddress": "Use different address",
+    "cancelUseSavedAddress": "Cancel and use saved address",
+    "removePromoCode": "Remove promo code"
   },
   "orderConfirmationPage": {
     "seoTitle": "Order confirmed",
@@ -131,7 +150,8 @@
     "couponPlaceholder": "Enter your coupon number",
     "totalLabel": "Total",
     "proceedCheckout": "PROCEED TO CHECKOUT",
-    "continueShopping": "Continue shopping"
+    "continueShopping": "Continue shopping",
+    "removePromoCode": "Remove promo code"
   },
   "languages": {
     "en": "English",
@@ -3862,5 +3882,95 @@
     "attachFile": "Attach file",
     "messagePlaceholder": "Type your message...",
     "sendMessage": "Send message"
+  },
+  "productDetails": {
+    "starRating": "{{rating}} Star Rating",
+    "userFeedback": "({{total}} User feedback)",
+    "sku": "Sku:",
+    "availability": "Availability:",
+    "category": "Category:",
+    "warehouse": "Warehouse location:",
+    "perUnit": "Per {{unit}}",
+    "description": "Description",
+    "feature": "Feature",
+    "minimumOrder": "Minimum Order {{value}}",
+    "overview": "Overview",
+    "noInformation": "No information available.",
+    "noReviews": "No reviews yet.",
+    "supplier": "Supplier",
+    "businessInfo": "Business Info",
+    "buy": "Buy",
+    "price": "Price",
+    "noImage": "No image",
+    "productAlt": "Product",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "tabs": {
+      "description": "Description",
+      "additional": "Additional information",
+      "specification": "Specification",
+      "review": "Review",
+      "supplier": "Supplier details"
+    },
+    "actions": {
+      "add_to_cart": "ADD TO CART",
+      "buy_now": "BUY NOW",
+      "send_quote": "SEND QUOTE",
+      "send_message": "SEND MESSAGE",
+      "accept": "Accept",
+      "reject": "Reject"
+    },
+    "availabilityStatus": {
+      "IN_STOCK": "In Stock",
+      "LOW_STOCK": "Low Stock",
+      "OUT_OF_STOCK": "Out of Stock"
+    }
+  },
+  "productCard": {
+    "expiryDate": "Expiry Date",
+    "minOrder": "Min: {{value}}",
+    "addToCart": "Add To Cart"
+  },
+  "orderDetails": {
+    "title": "Order Details",
+    "orderId": "Order ID",
+    "orderDate": "Order Date",
+    "recipient": "Recipient",
+    "region": "Region",
+    "city": "City",
+    "zipCode": "Zip Code",
+    "address": "Address",
+    "project": "Project",
+    "unloadingType": "Types of unloading Needed",
+    "transporter": "Transporter",
+    "transporterInfo": "Transporter Information",
+    "deliveryLocation": "Delivery Location",
+    "accessConditions": "Access Conditions",
+    "materials": "Materials",
+    "productDetails": "Product Details",
+    "paidAmount": "Paid Amount",
+    "remainingBalance": "Remaining Balance",
+    "chat": "Chat",
+    "totalPrice": "Total Price",
+    "installment": "Installment",
+    "installmentBreakdown": "Installment Breakdown",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "grandTotal": "Grand total",
+    "shipping": "Shipping",
+    "total": "Total"
+  },
+  "installmentTimeline": {
+    "title": "Installment Timeline",
+    "empty": "No installments yet.",
+    "dueDate": "Due Date",
+    "amount": "Amount",
+    "quantity": "Quantity",
+    "paid": "Paid",
+    "payNow": "Pay Now",
+    "cancel": "Cancel",
+    "notDue": "Not Due",
+    "completed": "Completed",
+    "pending": "Pending"
   }
 }

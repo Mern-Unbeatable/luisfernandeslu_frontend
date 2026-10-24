@@ -87,6 +87,7 @@ export function mapMarketplaceDetailProduct(product, viewer) {
     title: product.title,
     category: categoryLabel(product),
     availability: product.availabilityLabel || product.availability || null,
+    availabilityCode: product.availability || null,
     rating: Number(product.averageRating ?? 0),
     feedbackCount: Number(product.reviewCount ?? 0),
     price,

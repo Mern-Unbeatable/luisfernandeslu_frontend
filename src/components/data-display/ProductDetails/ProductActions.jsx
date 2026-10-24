@@ -3,6 +3,7 @@ import {
   FiShoppingCart,
   FiSlash,
 } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 import QuantitySelector from './QuantitySelector'
 
 const ICON_MAP = {
@@ -12,6 +13,7 @@ const ICON_MAP = {
 }
 
 function ActionButton({ action, onClick, className = '', isLoading }) {
+  const { t } = useTranslation()
   const Icon = action.icon ? ICON_MAP[action.icon] : null
   const base =
     'inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-5 disabled:opacity-50'
@@ -35,7 +37,9 @@ function ActionButton({ action, onClick, className = '', isLoading }) {
       ) : Icon ? (
         <Icon className="size-4 shrink-0" aria-hidden />
       ) : null}
-      <span>{action.label}</span>
+      <span>
+        {t(`productDetails.actions.${action.id}`, { defaultValue: action.label })}
+      </span>
     </button>
   )
 }

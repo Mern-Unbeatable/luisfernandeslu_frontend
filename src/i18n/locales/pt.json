@@ -14,7 +14,18 @@
     "signUp": "Registar",
     "logIn": "Entrar",
     "search": "Pesquisar",
-    "closeSearch": "Fechar pesquisa"
+    "closeSearch": "Fechar pesquisa",
+    "searchBox": {
+      "loading": "A carregar...",
+      "loadingSuggestions": "A carregar sugestões...",
+      "products": "Produtos",
+      "categories": "Categorias",
+      "seeAll": "Ver todos os resultados",
+      "seeAllFor": "Ver todos os resultados para “{{query}}”",
+      "noResults": "Nenhum resultado encontrado",
+      "noResultsFor": "Nenhum resultado encontrado para “{{query}}”",
+      "viewCategory": "Ver categoria →"
+    }
   },
   "categoryBar": {
     "navLabel": "Categorias",
@@ -43,7 +54,9 @@
     "price1000to10000": "€1.000 a €10.000",
     "closeFilters": "Fechar filtros",
     "clearFilters": "Limpar tudo",
-    "showResults": "Mostrar {{count}} produtos"
+    "showResults": "Mostrar {{count}} produtos",
+    "searchResultsFor": "Resultados da pesquisa para: ",
+    "clearSearch": "Limpar pesquisa"
   },
   "sendQuoteModal": {
     "title": "Enviar cotação",
@@ -92,7 +105,13 @@
     "promoPlaceholder": "Código promocional",
     "apply": "Aplicar",
     "placeOrder": "FINALIZAR ENCOMENDA",
-    "back": "VOLTAR"
+    "back": "VOLTAR",
+    "paymentMethod": "Método de pagamento",
+    "mbwayPhone": "Número de telemóvel MB WAY",
+    "mbwayHint": "Introduza o número de telemóvel associado à sua conta MB WAY.",
+    "useDifferentAddress": "Usar outra morada",
+    "cancelUseSavedAddress": "Cancelar e usar a morada guardada",
+    "removePromoCode": "Remover código promocional"
   },
   "orderConfirmationPage": {
     "seoTitle": "Encomenda confirmada",
@@ -131,7 +150,8 @@
     "couponPlaceholder": "Introduza o código de cupão",
     "totalLabel": "Total",
     "proceedCheckout": "FINALIZAR COMPRA",
-    "continueShopping": "Continuar a comprar"
+    "continueShopping": "Continuar a comprar",
+    "removePromoCode": "Remover código promocional"
   },
   "languages": {
     "en": "Inglês",
@@ -3864,5 +3884,95 @@
     "attachFile": "Anexar ficheiro",
     "messagePlaceholder": "Escreva a sua mensagem...",
     "sendMessage": "Enviar mensagem"
+  },
+  "productDetails": {
+    "starRating": "Avaliação de {{rating}} estrelas",
+    "userFeedback": "({{total}} opiniões de utilizadores)",
+    "sku": "SKU:",
+    "availability": "Disponibilidade:",
+    "category": "Categoria:",
+    "warehouse": "Localização do armazém:",
+    "perUnit": "por {{unit}}",
+    "description": "Descrição",
+    "feature": "Características",
+    "minimumOrder": "Encomenda mínima {{value}}",
+    "overview": "Visão geral",
+    "noInformation": "Sem informação disponível.",
+    "noReviews": "Ainda não há avaliações.",
+    "supplier": "Fornecedor",
+    "businessInfo": "Informação comercial",
+    "buy": "Comprar",
+    "price": "Preço",
+    "noImage": "Sem imagem",
+    "productAlt": "Produto",
+    "decreaseQuantity": "Diminuir quantidade",
+    "increaseQuantity": "Aumentar quantidade",
+    "tabs": {
+      "description": "Descrição",
+      "additional": "Informação adicional",
+      "specification": "Especificações",
+      "review": "Avaliações",
+      "supplier": "Dados do fornecedor"
+    },
+    "actions": {
+      "add_to_cart": "ADICIONAR AO CARRINHO",
+      "buy_now": "COMPRAR AGORA",
+      "send_quote": "PEDIR ORÇAMENTO",
+      "send_message": "ENVIAR MENSAGEM",
+      "accept": "Aceitar",
+      "reject": "Rejeitar"
+    },
+    "availabilityStatus": {
+      "IN_STOCK": "Em stock",
+      "LOW_STOCK": "Stock reduzido",
+      "OUT_OF_STOCK": "Esgotado"
+    }
+  },
+  "productCard": {
+    "expiryDate": "Data de validade",
+    "minOrder": "Mín.: {{value}}",
+    "addToCart": "Adicionar ao carrinho"
+  },
+  "orderDetails": {
+    "title": "Detalhes da encomenda",
+    "orderId": "N.º da encomenda",
+    "orderDate": "Data da encomenda",
+    "recipient": "Destinatário",
+    "region": "Região",
+    "city": "Cidade",
+    "zipCode": "Código postal",
+    "address": "Morada",
+    "project": "Projeto",
+    "unloadingType": "Tipo de descarga necessária",
+    "transporter": "Transportador",
+    "transporterInfo": "Informação do transportador",
+    "deliveryLocation": "Local de entrega",
+    "accessConditions": "Condições de acesso",
+    "materials": "Materiais",
+    "productDetails": "Detalhes do produto",
+    "paidAmount": "Montante pago",
+    "remainingBalance": "Saldo em falta",
+    "chat": "Conversar",
+    "totalPrice": "Preço total",
+    "installment": "Prestação",
+    "installmentBreakdown": "Detalhe das prestações",
+    "subtotal": "Subtotal",
+    "discount": "Desconto",
+    "grandTotal": "Total geral",
+    "shipping": "Envio",
+    "total": "Total"
+  },
+  "installmentTimeline": {
+    "title": "Calendário de prestações",
+    "empty": "Ainda não há prestações.",
+    "dueDate": "Data de vencimento",
+    "amount": "Montante",
+    "quantity": "Quantidade",
+    "paid": "Pago",
+    "payNow": "Pagar agora",
+    "cancel": "Cancelar",
+    "notDue": "Por vencer",
+    "completed": "Concluída",
+    "pending": "Pendente"
   }
 }

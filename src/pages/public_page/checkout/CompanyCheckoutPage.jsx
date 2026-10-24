@@ -233,7 +233,7 @@ export default function CompanyCheckoutPage() {
                         onClick={() => setUseCustomBilling(true)}
                         className="text-sm font-semibold text-[var(--active)] hover:underline"
                       >
-                        Use different address
+                        {t('checkoutPage.useDifferentAddress')}
                       </button>
                     </div>
                     <div className="text-sm text-[var(--secondary-text)]">
@@ -266,7 +266,7 @@ export default function CompanyCheckoutPage() {
                       onClick={() => setUseCustomBilling(false)}
                       className="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
                     >
-                      Cancel and use saved address
+                      {t('checkoutPage.cancelUseSavedAddress')}
                     </button>
                   </div>
                 )}

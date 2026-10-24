@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next'
+
 export default function BulkPricingTable({ tiers = [] }) {
+  const { t } = useTranslation()
   if (!tiers.length) return null
 
   return (
@@ -7,10 +10,10 @@ export default function BulkPricingTable({ tiers = [] }) {
         <thead>
           <tr className="border-b border-gray-200 bg-gray-50 text-left">
             <th className="px-4 py-2.5 font-semibold text-[var(--primary-text)]">
-              Buy
+              {t('productDetails.buy')}
             </th>
             <th className="px-4 py-2.5 font-semibold text-[var(--primary-text)]">
-              Price
+              {t('productDetails.price')}
             </th>
           </tr>
         </thead>

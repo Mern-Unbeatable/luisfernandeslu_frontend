@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   FiBox,
   FiCalendar,
@@ -27,6 +28,7 @@ function PaymentSummary({
   downPayment = false,
   remainingBalanceTone = 'active',
 }) {
+  const { t } = useTranslation()
   const showDownPayment = isNew || downPayment
   const remainingBalanceClassName =
     remainingBalanceTone === 'danger'
@@ -39,7 +41,7 @@ function PaymentSummary({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <p className="text-sm text-[var(--secondary-text)]">
-              Paid Amount
+              {t('orderDetails.paidAmount')}
             </p>
             <p className="mt-1 text-2xl font-bold text-emerald-600">
               {payment.paidAmount}
@@ -52,7 +54,7 @@ function PaymentSummary({
           </div>
           <div className="sm:text-right">
             <p className="text-sm text-[var(--secondary-text)]">
-              Remaining Balance
+              {t('orderDetails.remainingBalance')}
             </p>
             <p className="mt-1 text-2xl font-bold text-red-500">
               {payment.remainingBalance}
@@ -81,7 +83,7 @@ function PaymentSummary({
         </div>
         <div className="text-right">
           <p className="text-sm text-[var(--secondary-text)]">
-            Remaining Balance
+            {t('orderDetails.remainingBalance')}
           </p>
           <p className={`mt-1 ${remainingBalanceClassName}`}>
             {payment.remainingBalance}
@@ -93,6 +95,7 @@ function PaymentSummary({
 }
 
 function TransporterBanner({ transporter = {}, onChat }) {
+  const { t } = useTranslation()
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-sky-100 bg-sky-50 px-4 py-4 sm:px-5">
       <div className="flex min-w-0 items-center gap-3">
@@ -125,7 +128,7 @@ function TransporterBanner({ transporter = {}, onChat }) {
         className="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
       >
         <FiMessageSquare className="size-4" aria-hidden />
-        Chat
+        {t('orderDetails.chat')}
       </button>
     </div>
   )
@@ -145,6 +148,7 @@ export default function InstallmentOrderDetails({
   onCancelInstallment,
   context = 'default',
 }) {
+  const { t } = useTranslation()
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
   const isFactory = context === 'factory' || order.context === 'factory'
@@ -196,7 +200,7 @@ export default function InstallmentOrderDetails({
       ) : null}
 
       <section className="mb-6">
-        <SectionEyebrow>Recipient</SectionEyebrow>
+        <SectionEyebrow>{t('orderDetails.recipient')}</SectionEyebrow>
         <h2 className="mb-3 text-lg font-bold text-[var(--primary-text)]">
           {isFactory
             ? 'Supplier Information'
@@ -216,20 +220,20 @@ export default function InstallmentOrderDetails({
             <div className="mt-5">
               <IconLabel
                 icon={FiMapPin}
-                label="Delivery Location"
+                label={t('orderDetails.deliveryLocation')}
                 value={logistics.deliveryLocation}
               />
             </div>
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
               <IconLabel
                 icon={FiDollarSign}
-                label="Total Price"
+                label={t('orderDetails.totalPrice')}
                 value={payment.totalPrice}
                 valueClassName="text-2xl font-bold text-[var(--primary-text)]"
               />
               <IconLabel
                 icon={FiCalendar}
-                label="Installment"
+                label={t('orderDetails.installment')}
                 value={payment.duration}
                 valueClassName="text-sm font-bold text-[var(--primary-text)]"
               />
@@ -239,23 +243,23 @@ export default function InstallmentOrderDetails({
           <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <IconLabel
               icon={FiBox}
-              label="Project"
+              label={t('orderDetails.project')}
               value={recipient.project || logistics.pickupLocation}
             />
             <IconLabel
               icon={FiMapPin}
-              label="Delivery Location"
+              label={t('orderDetails.deliveryLocation')}
               value={logistics.deliveryLocation}
             />
             <IconLabel
               icon={FiDollarSign}
-              label="Total Price"
+              label={t('orderDetails.totalPrice')}
               value={payment.totalPrice}
               valueClassName="text-2xl font-bold text-[var(--primary-text)]"
             />
             <IconLabel
               icon={FiCalendar}
-              label="Installment"
+              label={t('orderDetails.installment')}
               value={payment.duration}
               valueClassName="text-sm font-bold text-[var(--primary-text)]"
             />
@@ -265,22 +269,22 @@ export default function InstallmentOrderDetails({
             <div className="flex flex-col gap-4">
               <IconLabel
                 icon={FiMapPin}
-                label="Address"
+                label={t('orderDetails.address')}
                 value={recipient.address || logistics.pickupLocation}
               />
               <IconLabel
                 icon={FiDollarSign}
-                label="Total Price"
+                label={t('orderDetails.totalPrice')}
                 value={payment.totalPrice}
               />
             </div>
             <div className="flex flex-col gap-4">
               <IconLabel
                 icon={FiMapPin}
-                label="Delivery Location"
+                label={t('orderDetails.deliveryLocation')}
                 value={logistics.deliveryLocation}
               />
-              <IconLabel icon={FiBox} label="Installment" value={payment.duration} />
+              <IconLabel icon={FiBox} label={t('orderDetails.installment')} value={payment.duration} />
             </div>
           </div>
         )}
@@ -313,23 +317,23 @@ export default function InstallmentOrderDetails({
             value={logistics.unloadingType}
           />
           <StackLabel
-            label="Access Conditions"
+            label={t('orderDetails.accessConditions')}
             value={logistics.accessCondition}
           />
         </div>
       ) : null}
 
       <section className="mb-8">
-        {isFactory ? <SectionEyebrow>Materials</SectionEyebrow> : null}
+        {isFactory ? <SectionEyebrow>{t('orderDetails.materials')}</SectionEyebrow> : null}
         <h2 className="mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Product Details
+          {t('orderDetails.productDetails')}
         </h2>
         <ProductsTable products={order.products} variant={tableVariant} />
       </section>
 
       <section className="mb-8">
         <h2 className="mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Installment Breakdown
+          {t('orderDetails.installmentBreakdown')}
         </h2>
         <InstallmentBreakdownTable
           rows={order.installmentBreakdown}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   FiCheckCircle,
   FiEdit2,
@@ -39,6 +40,7 @@ export default function ProductCard({
   onCardClick,
   className = '',
 }) {
+  const { t } = useTranslation()
   const [qty, setQty] = useState(quantityProp ?? 1)
   const [loadingAction, setLoadingAction] = useState(null)
 
@@ -129,7 +131,7 @@ export default function ProductCard({
 
         {isFeatured && product.expiryDate && !product.timeLeft ? (
           <div className="mt-1">
-            <p className="text-xs text-[var(--secondary-text)]">Expiry Date</p>
+            <p className="text-xs text-[var(--secondary-text)]">{t('productCard.expiryDate')}</p>
             <p className="text-sm font-medium text-[var(--primary-text)]">
               {product.expiryDate}
             </p>
@@ -167,7 +169,7 @@ export default function ProductCard({
               action={{
                 id: 'add_to_cart',
                 kind: 'pill',
-                label: 'Add To Cart',
+                label: t('productCard.addToCart'),
                 variant: 'primary',
               }}
               className="flex-1"
@@ -252,6 +254,7 @@ function Media({ image, title, badge, badgePosition = 'left', timeLeft }) {
 }
 
 function PriceBlock({ role, type, product, marketplaceMeta }) {
+  const { t } = useTranslation()
   const showCompanyPrice =
     role === 'company'
     && (product.companyPriceText || product.companyPrice)
@@ -270,7 +273,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
           </p>
           {product.minOrder ? (
             <p className="text-xs font-bold text-[var(--secondary-text)]">
-              Min: {product.minOrder}
+              {t('productCard.minOrder', { value: product.minOrder })}
             </p>
           ) : null}
         </div>
@@ -307,6 +310,7 @@ function PriceBlock({ role, type, product, marketplaceMeta }) {
 }
 
 function QuantityControl({ value, onDecrease, onIncrease }) {
+  const { t } = useTranslation()
   return (
     <div className="inline-flex overflow-hidden rounded-md border border-gray-200">
       <button
@@ -316,7 +320,7 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
           onDecrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Decrease quantity"
+        aria-label={t('productDetails.decreaseQuantity')}
       >
         −
       </button>
@@ -330,7 +334,7 @@ function QuantityControl({ value, onDecrease, onIncrease }) {
           onIncrease()
         }}
         className="flex size-8 items-center justify-center bg-[color-mix(in_srgb,var(--active)_12%,white)] text-base font-medium text-[var(--primary-text)]"
-        aria-label="Increase quantity"
+        aria-label={t('productDetails.increaseQuantity')}
       >
         +
       </button>

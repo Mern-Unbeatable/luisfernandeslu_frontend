@@ -150,7 +150,7 @@ export default function ProductDetailPage() {
               onClick={() => refetch()}
               className="mt-3 text-sm font-semibold text-[var(--active)] hover:underline"
             >
-              Try again
+              {t('productsPage.retry', { defaultValue: 'Try again' })}
             </button>
           </div>
         </div>

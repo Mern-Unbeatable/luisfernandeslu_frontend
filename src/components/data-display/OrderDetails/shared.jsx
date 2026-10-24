@@ -1,4 +1,5 @@
 import { FiDownload, FiMapPin, FiPhone } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import DataTable from "../DataTable/DataTable";
 
 export function normalizeStatus(status = "") {
@@ -311,6 +312,7 @@ function formatMoney(value) {
 }
 
 export function PriceSummary({ totals = {}, variant = "full" }) {
+  const { t } = useTranslation();
   const isSupplier = variant === "supplier";
 
   return (
@@ -318,13 +320,13 @@ export function PriceSummary({ totals = {}, variant = "full" }) {
       {isSupplier ? (
         <>
           <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--secondary-text)]">Subtotal</span>
+            <span className="text-[var(--secondary-text)]">{t("orderDetails.subtotal")}</span>
             <span className="font-semibold text-[var(--active)]">
               {formatMoney(totals.subtotal)}
             </span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--secondary-text)]">Discount</span>
+            <span className="text-[var(--secondary-text)]">{t("orderDetails.discount")}</span>
             <span className="font-semibold text-[var(--active)]">
               {formatMoney(totals.discount ?? 0)}
             </span>
@@ -333,13 +335,13 @@ export function PriceSummary({ totals = {}, variant = "full" }) {
       ) : (
         <>
           <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--secondary-text)]">Grand total</span>
+            <span className="text-[var(--secondary-text)]">{t("orderDetails.grandTotal")}</span>
             <span className="font-semibold text-[var(--active)]">
               {formatMoney(totals.grandTotal)}
             </span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--secondary-text)]">Shipping</span>
+            <span className="text-[var(--secondary-text)]">{t("orderDetails.shipping")}</span>
             <span className="font-semibold text-[var(--active)]">
               {formatMoney(totals.shipping)}
             </span>
@@ -349,7 +351,7 @@ export function PriceSummary({ totals = {}, variant = "full" }) {
       <div className="mt-1 border-t border-gray-200 pt-2">
         <div className="flex items-center justify-between gap-4">
           <span className="font-medium text-[var(--secondary-text)]">
-            Total
+            {t("orderDetails.total")}
           </span>
           <span className="text-lg font-bold text-[var(--active)]">
             {formatMoney(totals.total)}
