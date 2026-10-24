@@ -14,7 +14,19 @@
     "signUp": "Registar",
     "logIn": "Entrar",
     "search": "Pesquisar",
-    "closeSearch": "Fechar pesquisa"
+    "closeSearch": "Fechar pesquisa",
+    "searchBox": {
+      "loading": "A carregar...",
+      "loadingSuggestions": "A carregar sugestões...",
+      "products": "Produtos",
+      "categories": "Categorias",
+      "seeAll": "Ver todos os resultados",
+      "seeAllFor": "Ver todos os resultados para “{{query}}”",
+      "noResults": "Nenhum resultado encontrado",
+      "noResultsFor": "Nenhum resultado encontrado para “{{query}}”",
+      "viewCategory": "Ver categoria →"
+    },
+    "loginRequiredMessages": "Inicie sessão para ver as mensagens"
   },
   "categoryBar": {
     "navLabel": "Categorias",
@@ -43,7 +55,12 @@
     "price1000to10000": "€1.000 a €10.000",
     "closeFilters": "Fechar filtros",
     "clearFilters": "Limpar tudo",
-    "showResults": "Mostrar {{count}} produtos"
+    "showResults": "Mostrar {{count}} produtos",
+    "searchResultsFor": "Resultados da pesquisa para: ",
+    "clearSearch": "Limpar pesquisa",
+    "retry": "Tentar novamente",
+    "companyPricing": "Preços para empresas",
+    "loadFailed": "Não foi possível carregar os produtos."
   },
   "sendQuoteModal": {
     "title": "Enviar cotação",
@@ -92,7 +109,19 @@
     "promoPlaceholder": "Código promocional",
     "apply": "Aplicar",
     "placeOrder": "FINALIZAR ENCOMENDA",
-    "back": "VOLTAR"
+    "back": "VOLTAR",
+    "paymentMethod": "Método de pagamento",
+    "mbwayPhone": "Número de telemóvel MB WAY",
+    "mbwayHint": "Introduza o número de telemóvel associado à sua conta MB WAY.",
+    "useDifferentAddress": "Usar outra morada",
+    "cancelUseSavedAddress": "Cancelar e usar a morada guardada",
+    "removePromoCode": "Remover código promocional",
+    "discount": "Desconto",
+    "emptyCart": "O seu carrinho está vazio.",
+    "placeOrderFailed": "Não foi possível concluir a encomenda. Tente novamente.",
+    "addressPlaceholder": "Comece a escrever uma morada...",
+    "placingOrder": "A concluir a encomenda...",
+    "deliveryAddress": "Morada de entrega"
   },
   "orderConfirmationPage": {
     "seoTitle": "Encomenda confirmada",
@@ -107,7 +136,9 @@
     "estimatedDelivery": "Data estimada de entrega",
     "shippingMethod": "Método de envio",
     "paymentMethod": "Método de pagamento : {{method}}",
-    "continueShopping": "Continuar a comprar"
+    "continueShopping": "Continuar a comprar",
+    "notFound": "Encomenda não encontrada",
+    "goHome": "Voltar à página inicial"
   },
   "messagesPage": {
     "seoTitle": "Mensagens",
@@ -131,7 +162,9 @@
     "couponPlaceholder": "Introduza o código de cupão",
     "totalLabel": "Total",
     "proceedCheckout": "FINALIZAR COMPRA",
-    "continueShopping": "Continuar a comprar"
+    "continueShopping": "Continuar a comprar",
+    "removePromoCode": "Remover código promocional",
+    "calculatedAtCheckout": "Calculado no checkout"
   },
   "languages": {
     "en": "Inglês",
@@ -249,14 +282,20 @@
           "title": "APOIO 24/7",
           "subtitle": "Contacto e mensagens em tempo real"
         }
-      }
+      },
+      "carouselLabel": "Ofertas em destaque"
     },
     "stats": {
       "professionals": "Profissionais registados",
       "products": "Produtos disponíveis",
       "carriers": "Transportadores ativos",
       "delivery": "Tempo médio de entrega"
-    }
+    },
+    "sponsoredProductsCompanyPricing": "Preços para empresas",
+    "topSellingCompanyPricing": "Preços para empresas",
+    "topSellingLoadFailed": "Não foi possível carregar os produtos mais vendidos.",
+    "topSellingRetry": "Tentar novamente",
+    "topSellingEmpty": "De momento não há produtos mais vendidos."
   },
   "adminDashboard": {
     "title": "Visão geral do painel",
@@ -350,14 +389,26 @@
       "seeDetails": "Ver detalhes",
       "suspend": "Suspender",
       "delete": "Eliminar",
-      "message": "Mensagem"
+      "message": "Mensagem",
+      "activate": "Ativar"
     },
     "modal": {
       "title": "Detalhes do utilizador",
       "close": "Fechar",
       "registeredOn": "Registado em {{date}}",
       "address": "Morada"
-    }
+    },
+    "empty": "Nenhum utilizador encontrado",
+    "detailsFailed": "Não foi possível carregar os detalhes do utilizador.",
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+      "previous": "Anterior",
+      "next": "Seguinte"
+    },
+    "deleteConfirm": "Eliminar {{name}}? Esta ação não pode ser anulada.",
+    "deleteSuccess": "Utilizador eliminado com sucesso.",
+    "statusUpdated": "Estado do utilizador atualizado.",
+    "actionFailed": "A ação falhou. Tente novamente."
   },
   "adminSupplierManagement": {
     "title": "Gestão de fornecedores",
@@ -408,8 +459,20 @@
       "title": "Detalhes do fornecedor",
       "close": "Fechar",
       "registeredOn": "Registado em {{date}}",
-      "documentsTitle": "Certificado e comprovativo de ID"
-    }
+      "documentsTitle": "Certificado e comprovativo de ID",
+      "address": "Morada",
+      "rejectionReason": "Motivo da rejeição",
+      "noDocuments": "Nenhum documento carregado"
+    },
+    "rejectConfirm": "Rejeitar {{name}}? Este fornecedor não será aprovado.",
+    "deleteConfirm": "Eliminar {{name}}? Esta ação não pode ser anulada.",
+    "approveSuccess": "Fornecedor aprovado com sucesso.",
+    "rejectSuccess": "Fornecedor rejeitado com sucesso.",
+    "deleteSuccess": "Fornecedor eliminado com sucesso.",
+    "statusUpdated": "Estado do fornecedor atualizado.",
+    "commissionUpdated": "Comissão atualizada com sucesso.",
+    "actionFailed": "A ação falhou. Tente novamente.",
+    "detailsFailed": "Não foi possível carregar os detalhes do fornecedor."
   },
   "adminFactoryManagement": {
     "title": "Gestão de fábricas",
@@ -460,7 +523,30 @@
       "title": "Detalhes da fábrica",
       "close": "Fechar",
       "registeredOn": "Registado em {{date}}",
-      "documentsTitle": "Certificado e comprovativo de ID"
+      "documentsTitle": "Certificado e comprovativo de ID",
+      "address": "Morada",
+      "rejectionReason": "Motivo da rejeição",
+      "noDocuments": "Nenhum documento carregado"
+    },
+    "approveSuccess": "Fábrica aprovada com sucesso.",
+    "rejectSuccess": "Fábrica rejeitada com sucesso.",
+    "renewSuccess": "Fábrica renovada com sucesso.",
+    "statusUpdated": "Estado da fábrica atualizado.",
+    "commissionUpdated": "Comissão atualizada com sucesso.",
+    "deleteConfirm": "Eliminar {{name}}? Esta ação não pode ser anulada.",
+    "deleteSuccess": "Fábrica eliminada com sucesso.",
+    "actionFailed": "A ação falhou. Tente novamente.",
+    "detailsFailed": "Não foi possível carregar os detalhes da fábrica.",
+    "rejectModal": {
+      "title": "Rejeitar {{name}}",
+      "subtitle": "Indique um motivo e selecione os documentos que precisam de correção.",
+      "reasonLabel": "Motivo da rejeição",
+      "reasonPlaceholder": "Explique por que motivo esta fábrica está a ser rejeitada...",
+      "reasonRequired": "Introduza um motivo de rejeição.",
+      "documentsLabel": "Documentos inválidos",
+      "documentsRequired": "Selecione pelo menos um documento inválido.",
+      "cancel": "Cancelar",
+      "submit": "Rejeitar fábrica"
     }
   },
   "adminTransporterManagement": {
@@ -485,7 +571,8 @@
       "phone": "Telefone",
       "registered": "Data de registo",
       "status": "Estado",
-      "action": "Ação"
+      "action": "Ação",
+      "commission": "Comissão"
     },
     "actions": {
       "seeDetails": "Ver detalhes",
@@ -505,7 +592,36 @@
       "title": "Detalhes do transportador",
       "close": "Fechar",
       "registeredOn": "Registado em {{date}}",
-      "documentsTitle": "Certificado e comprovativo de ID"
+      "documentsTitle": "Certificado e comprovativo de ID",
+      "address": "Morada",
+      "rejectionReason": "Motivo da rejeição",
+      "noDocuments": "Nenhum documento carregado"
+    },
+    "commission": {
+      "title": "Adicionar comissão",
+      "custom": "Personalizada",
+      "placeholder": "Percentagem %",
+      "set": "Definir"
+    },
+    "approveSuccess": "Transportador aprovado com sucesso.",
+    "rejectSuccess": "Transportador rejeitado com sucesso.",
+    "renewSuccess": "Transportador renovado com sucesso.",
+    "statusUpdated": "Estado do transportador atualizado.",
+    "commissionUpdated": "Comissão atualizada com sucesso.",
+    "deleteConfirm": "Eliminar {{name}}? Esta ação não pode ser anulada.",
+    "deleteSuccess": "Transportador eliminado com sucesso.",
+    "actionFailed": "A ação falhou. Tente novamente.",
+    "detailsFailed": "Não foi possível carregar os detalhes do transportador.",
+    "rejectModal": {
+      "title": "Rejeitar {{name}}",
+      "subtitle": "Indique um motivo e selecione os documentos que precisam de correção.",
+      "reasonLabel": "Motivo da rejeição",
+      "reasonPlaceholder": "Explique por que motivo este transportador está a ser rejeitado...",
+      "reasonRequired": "Introduza um motivo de rejeição.",
+      "documentsLabel": "Documentos inválidos",
+      "documentsRequired": "Selecione pelo menos um documento inválido.",
+      "cancel": "Cancelar",
+      "submit": "Rejeitar transportador"
     }
   },
   "adminProductModeration": {
@@ -560,6 +676,51 @@
       "accept": "Aceitar",
       "reject": "Rejeitar",
       "removeSponsored": "Remover patrocínio"
+    },
+    "emptyFeatured": "Não há produtos em destaque de momento.",
+    "loading": "A carregar promoções…",
+    "loadFailed": "Não foi possível carregar as promoções.",
+    "approveSuccess": "Promoção aprovada.",
+    "rejectSuccess": "Promoção rejeitada.",
+    "removeSponsoredSuccess": "Produto patrocinado removido.",
+    "actionFailed": "Não foi possível atualizar a promoção.",
+    "rejectModal": {
+      "title": "Rejeitar {{name}}",
+      "subtitle": "Indique um motivo para rejeitar este pedido de destaque.",
+      "reasonLabel": "Motivo da rejeição",
+      "reasonPlaceholder": "Explique por que motivo esta promoção está a ser rejeitada...",
+      "reasonRequired": "Introduza um motivo de rejeição.",
+      "cancel": "Cancelar",
+      "submit": "Rejeitar promoção"
+    },
+    "retry": "Tentar novamente",
+    "promotionPlans": {
+      "sectionTitle": "Planos de promoção",
+      "sectionSubtitle": "Configure os pacotes de destaque que os fornecedores podem comprar.",
+      "loading": "A carregar planos de promoção…",
+      "loadFailed": "Não foi possível carregar os planos de promoção.",
+      "empty": "Ainda não existem planos de promoção.",
+      "activeBadge": "Ativo",
+      "durationDays": "Duração (dias)",
+      "edit": "Editar",
+      "createTitle": "Criar plano de promoção",
+      "editTitle": "Editar plano de promoção",
+      "createSuccess": "Plano de promoção criado.",
+      "updateSuccess": "Plano de promoção atualizado.",
+      "saveFailed": "Não foi possível guardar o plano de promoção.",
+      "form": {
+        "label": "Nome do plano",
+        "labelPlaceholder": "7 dias em destaque",
+        "durationDays": "Duração (dias)",
+        "price": "Preço (€)",
+        "currency": "Moeda",
+        "sortOrder": "Ordem de apresentação",
+        "sortOrderShort": "Ordem",
+        "sortOrderHint": "Define a ordem dos planos na janela Promover do fornecedor. O 1 aparece primeiro, depois o 2 e depois o 3. Não altera preços nem duração.",
+        "isActive": "Plano ativo",
+        "cancel": "Cancelar",
+        "save": "Guardar plano"
+      }
     }
   },
   "adminFinancePayments": {
@@ -677,8 +838,14 @@
     "detail": {
       "back": "Voltar à resolução de disputas",
       "title": "{{id}} · Disputa",
-      "notFound": "Disputa não encontrada."
-    }
+      "notFound": "Disputa não encontrada.",
+      "loading": "A carregar detalhes da disputa…"
+    },
+    "loading": "A carregar disputas…",
+    "loadFailed": "Não foi possível carregar as disputas.",
+    "retry": "Tentar novamente",
+    "statusUpdated": "Estado da disputa atualizado.",
+    "statusUpdateFailed": "Não foi possível atualizar o estado da disputa."
   },
   "adminAuction": {
     "title": "Painel de leilões",
@@ -691,7 +858,14 @@
       "endingSoon": "A terminar em breve",
       "nearestFirst": "Mais próximos",
       "ended": "Terminados"
-    }
+    },
+    "loading": "A carregar leilões…",
+    "loadFailed": "Não foi possível carregar os leilões.",
+    "retry": "Tentar novamente",
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados"
+    },
+    "noCompetingBids": "Sem licitações de outros transportadores"
   },
   "adminOrders": {
     "title": "Encomendas",
@@ -728,11 +902,17 @@
       "processing": "Em processamento",
       "assigned": "Atribuída",
       "completed": "Concluída",
-      "cancel": "Cancelada"
+      "cancel": "Cancelada",
+      "in_production": "Em produção",
+      "produced": "Produzido",
+      "ready": "Pronto",
+      "cancelByAdmin": "Cancelado pelo administrador"
     },
     "actions": {
       "seeDetails": "Ver detalhes",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "accept": "Aceitar",
+      "statusSection": "Alterar estado"
     },
     "pagination": {
       "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
@@ -747,7 +927,10 @@
       "factorySection": "Informações da fábrica",
       "produced": "Produzido",
       "assigned": "Atribuído",
-      "chatUnavailable": "O chat não está disponível para este contacto."
+      "chatUnavailable": "O chat não está disponível para este contacto.",
+      "loading": "A carregar detalhes da encomenda…",
+      "loadFailed": "Não foi possível carregar os detalhes da encomenda.",
+      "delete": "Eliminar encomenda"
     },
     "taxInvoice": {
       "title": "Fatura certificada (InvoiceXpress)",
@@ -769,6 +952,24 @@
       "notPaid": "A fatura é emitida automaticamente quando a encomenda for paga.",
       "draftHint": "Apenas rascunho — não comunicada à AT. Ative INVOICEXPRESS_FINALIZE para certificar as faturas.",
       "open": "Abrir fatura"
+    },
+    "loading": "A carregar encomendas…",
+    "loadFailed": "Não foi possível carregar as encomendas.",
+    "retry": "Tentar novamente",
+    "statusUpdated": "Estado da encomenda atualizado.",
+    "actionFailed": "Não foi possível atualizar o estado da encomenda.",
+    "deleteConfirm": "A encomenda {{id}} será eliminada permanentemente. Esta ação não pode ser anulada.",
+    "deleteConfirmTitle": "Eliminar encomenda?",
+    "deleteConfirmButton": "Eliminar",
+    "deleteCancelButton": "Cancelar",
+    "deleteSuccess": "Encomenda eliminada.",
+    "cancelModal": {
+      "title": "Cancelar a encomenda {{id}}?",
+      "subtitle": "Pode adicionar uma nota (opcional). A encomenda ficará como Cancelada pelo administrador.",
+      "reasonLabel": "Motivo (opcional)",
+      "reasonPlaceholder": "Adicione uma nota sobre este cancelamento…",
+      "close": "Fechar",
+      "submit": "Cancelar encomenda"
     }
   },
   "adminDeliveryLogistics": {
@@ -783,7 +984,21 @@
     "detail": {
       "back": "Voltar a entrega e logística",
       "title": "{{id}} · Entrega",
-      "notFound": "Entrega não encontrada."
+      "notFound": "Entrega não encontrada.",
+      "loading": "A carregar detalhes da entrega…",
+      "loadFailed": "Não foi possível carregar os detalhes da entrega."
+    },
+    "filterLabel": "Filtro:",
+    "searchPlaceholder": "Pesquisar leilão, encomenda, produto, transportador…",
+    "empty": "Nenhuma entrega corresponde aos filtros.",
+    "loading": "A carregar entregas…",
+    "loadFailed": "Não foi possível carregar as entregas.",
+    "retry": "Tentar novamente",
+    "filters": {
+      "allStatus": "Todos os estados"
+    },
+    "pagination": {
+      "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados"
     }
   },
   "adminAffiliateDirectory": {
@@ -840,7 +1055,8 @@
       "suspended": "Suspenso"
     },
     "commissionStatus": {
-      "approved": "Aprovado"
+      "approved": "Aprovado",
+      "pending": "Pendente"
     },
     "payoutStatus": {
       "pending": "Pendente",
@@ -855,7 +1071,8 @@
     "actions": {
       "seeDetails": "Ver detalhes",
       "suspend": "Suspender",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "activate": "Ativar"
     },
     "pagination": {
       "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
@@ -883,7 +1100,10 @@
         "accountNumber": "Número de conta",
         "requestDate": "Data do pedido",
         "status": "ESTADO"
-      }
+      },
+      "loadFailed": "Não foi possível carregar os pedidos de pagamento.",
+      "statusUpdated": "Estado do pagamento atualizado.",
+      "actionFailed": "Não foi possível atualizar o estado do pagamento."
     },
     "levelControl": {
       "pageTitle": "Sistema de marcos de níveis de comissão",
@@ -909,8 +1129,22 @@
         "membersRequired": "Membros necessários",
         "description": "Descrição",
         "cancel": "Cancelar",
-        "save": "Guardar nível"
-      }
+        "save": "Guardar nível",
+        "isActive": "Nível ativo"
+      },
+      "loading": "A carregar níveis de comissão…",
+      "loadFailed": "Não foi possível carregar os níveis de comissão.",
+      "saveFailed": "Não foi possível guardar o nível de comissão.",
+      "createSuccess": "Nível de comissão criado.",
+      "updateSuccess": "Nível de comissão atualizado.",
+      "editTitle": "Editar nível de comissão",
+      "deleteConfirmTitle": "Eliminar nível de comissão?",
+      "deleteConfirm": "{{name}} será removido permanentemente. Esta ação não pode ser anulada.",
+      "deleteConfirmButton": "Eliminar",
+      "deleteSuccess": "Nível de comissão eliminado.",
+      "deleteFailed": "Não foi possível eliminar o nível de comissão.",
+      "reorderSuccess": "Níveis de comissão reordenados.",
+      "reorderFailed": "Não foi possível reordenar os níveis de comissão."
     },
     "detail": {
       "back": "Voltar",
@@ -942,7 +1176,8 @@
           "expiryDate": "Data de expiração",
           "status": "ESTADO",
           "action": "AÇÃO"
-        }
+        },
+        "loadFailed": "Não foi possível carregar os clientes referenciados."
       },
       "commissions": {
         "sectionTitle": "Registo de comissões",
@@ -954,7 +1189,8 @@
           "rate": "Taxa percentual",
           "earned": "Comissão ganha",
           "status": "Estado"
-        }
+        },
+        "loadFailed": "Não foi possível carregar o histórico de comissões."
       },
       "payouts": {
         "sectionTitle": "Registo de comissões",
@@ -965,7 +1201,8 @@
           "accountNumber": "Número de conta",
           "amount": "Valor do pagamento",
           "status": "Estado do processamento"
-        }
+        },
+        "loadFailed": "Não foi possível carregar o histórico de pagamentos."
       },
       "chart": {
         "eyebrow": "Ganhos históricos",
@@ -974,9 +1211,24 @@
         "timeframe": "Intervalo",
         "thisYear": "Este ano",
         "marketplaceRev": "Receita marketplace",
-        "affiliateCommission": "Comissão do afiliado"
-      }
-    }
+        "affiliateCommission": "Comissão do afiliado",
+        "loading": "A carregar estatísticas…",
+        "loadFailed": "Não foi possível carregar as estatísticas de receita."
+      },
+      "loading": "A carregar detalhes do afiliado…",
+      "loadFailed": "Não foi possível carregar os detalhes do afiliado.",
+      "delete": "Eliminar afiliado"
+    },
+    "loading": "A carregar afiliados…",
+    "loadFailed": "Não foi possível carregar os afiliados.",
+    "retry": "Tentar novamente",
+    "statusUpdated": "Estado do afiliado atualizado.",
+    "actionFailed": "Não foi possível atualizar o estado do afiliado.",
+    "deleteConfirmTitle": "Eliminar afiliado?",
+    "deleteConfirm": "{{name}} será removido permanentemente. Esta ação não pode ser anulada.",
+    "deleteConfirmButton": "Eliminar",
+    "deleteCancelButton": "Cancelar",
+    "deleteSuccess": "Afiliado eliminado."
   },
   "adminRolesPermissions": {
     "title": "Estratégia de funções e permissões",
@@ -1028,7 +1280,14 @@
       "classesCourses": "Turmas e cursos",
       "memberDatabase": "Base de membros",
       "instructorDirectory": "Diretório de instrutores"
-    }
+    },
+    "loading": "A carregar permissões…",
+    "loadFailed": "Não foi possível carregar as permissões das funções.",
+    "retry": "Tentar novamente",
+    "permissionsUpdated": "Permissões atualizadas.",
+    "permissionsUpdateFailed": "Não foi possível atualizar as permissões.",
+    "inviteSuccess": "Moderador criado com sucesso.",
+    "inviteFailed": "Não foi possível criar o moderador."
   },
   "adminSettings": {
     "title": "Definições",
@@ -1046,7 +1305,9 @@
       "distanceLabel": "Distância",
       "currentRateLabel": "Taxa atual",
       "resultTitle": "Custo de envio",
-      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}"
+      "resultFormula": "{{distance}} KM × {{rate}} = {{total}}",
+      "vehicleRatesTitle": "Tarifas por veículo",
+      "vehicleLabel": "Tarifa do veículo"
     },
     "vat": {
       "title": "IVA e impostos",
@@ -1066,7 +1327,14 @@
       "durationTitle": "Duração do leilão",
       "hoursLabel": "Horas",
       "minutesLabel": "Minutos"
-    }
+    },
+    "loading": "A carregar definições…",
+    "loadFailed": "Não foi possível carregar as definições.",
+    "retry": "Tentar novamente",
+    "saveSuccess": "Definições guardadas.",
+    "saveFailed": "Não foi possível guardar as definições.",
+    "resetSuccess": "Definições repostas.",
+    "resetFailed": "Não foi possível repor as definições."
   },
   "panel": {
     "mainMenu": "Menu Principal",
@@ -1079,7 +1347,8 @@
       "factory": "Fábrica",
       "transporter": "Transportador",
       "affiliate": "Afiliado",
-      "admin": "Admin"
+      "admin": "Administrador",
+      "moderator": "Moderador"
     },
     "nav": {
       "dashboard": "Painel",
@@ -1168,7 +1437,7 @@
       "tabAll": "Todos",
       "tabPending": "Pendente",
       "tabRejected": "Rejeitado",
-      "tabRegular": "Regular",
+      "tabRegular": "Normal",
       "tabBulkOrder": "Pedido em massa",
       "tabFeatured": "Destaque",
       "filters": "Filtros:",
@@ -1186,7 +1455,10 @@
         "title": "Adicionar produto",
         "breadcrumb": "Produto > Adicionar produto",
         "submit": "SUBMETER",
-        "selectWarehouse": "Selecionar armazém"
+        "selectWarehouse": "Selecionar armazém",
+        "selectCategory": "Selecione a categoria",
+        "selectSubCategory": "Selecione a subcategoria",
+        "selectProductType": "Selecione o tipo de produto"
       },
       "edit": {
         "title": "Editar produto",
@@ -1212,7 +1484,7 @@
         "selected": "Selecionado: {{name}}",
         "browseAria": "Escolher ficheiro CSV",
         "downloadExample": "Descarregar exemplo",
-        "queueImport": "Queue Import",
+        "queueImport": "Importar",
         "uploading": "A carregar…",
         "fileRequired": "Escolha primeiro um ficheiro CSV.",
         "invalidFormat": "O formato do ficheiro não é CSV. Carregue um ficheiro .csv.",
@@ -1222,8 +1494,31 @@
         "rowMissingField": "Linha {{row}}: falta o valor obrigatório de {{column}}.",
         "rowInvalidPrice": "Linha {{row}}: {{column}} deve ser um número válido.",
         "rowInvalidTag": "Linha {{row}}: a etiqueta deve ser regular, bulk_order, featured ou pending.",
-        "uploadFailed": "Falha no carregamento. Verifique o ficheiro e tente novamente."
-      }
+        "uploadFailed": "Falha no carregamento. Verifique o ficheiro e tente novamente.",
+        "downloadGuide": "Guia de categorias"
+      },
+      "resubmit": {
+        "title": "Reenviar produto",
+        "breadcrumb": "Produto > Reenviar produto",
+        "submit": "REENVIAR"
+      },
+      "aiFailed": "Não foi possível gerar o texto com IA.",
+      "saveFailed": "Não foi possível guardar este produto.",
+      "saving": "A guardar…",
+      "promote": {
+        "closeOverlay": "Fechar",
+        "title": "Promover produto",
+        "message": "Escolha um plano para \"{{name}}\".",
+        "close": "Fechar",
+        "loading": "A carregar planos…",
+        "empty": "Não há planos de promoção disponíveis.",
+        "paying": "A processar…",
+        "confirm": "Promover",
+        "failed": "Não foi possível promover este produto."
+      },
+      "loadFailed": "Não foi possível carregar os produtos.",
+      "cancelFailed": "Não foi possível cancelar este anúncio.",
+      "deleteFailed": "Não foi possível eliminar este produto."
     },
     "supplierPromoCodes": {
       "title": "Gestão de códigos promocionais",
@@ -1291,7 +1586,19 @@
         "applicableProduct": "Produto aplicável",
         "selectProduct": "Selecionar produto",
         "removeProduct": "Remover produto"
-      }
+      },
+      "delete": {
+        "closeOverlay": "Fechar",
+        "title": "Eliminar código promocional",
+        "message": "Tem a certeza de que pretende eliminar o código promocional \"{{code}}\"? Esta ação não pode ser anulada.",
+        "close": "Fechar",
+        "cancel": "Cancelar",
+        "deleting": "A eliminar...",
+        "confirm": "Eliminar"
+      },
+      "detailsLoadFailed": "Não foi possível carregar os detalhes do código promocional.",
+      "actionFailed": "Não foi possível guardar o código promocional.",
+      "deleteFailed": "Não foi possível eliminar o código promocional."
     },
     "supplierCustomerOrders": {
       "title": "Pedidos de clientes regulares",
@@ -1528,7 +1835,29 @@
       "fieldFactoryName": "Nome da fábrica",
       "fieldFactoryNamePlaceholder": "Escreva o nome da fábrica",
       "fieldAddQuantity": "Adicionar quantidade",
-      "fieldAddQuantityPlaceholder": "20 pices"
+      "fieldAddQuantityPlaceholder": "20 unidades",
+      "fieldSubCategory": "Subcategoria",
+      "fieldSubCategoryPlaceholder": "Selecione a subcategoria",
+      "fieldProductType": "Tipo de produto",
+      "fieldProductTypePlaceholder": "Selecione o tipo de produto",
+      "modalSaving": "A guardar…",
+      "erpKeyCreated": "Chave de API gerada com sucesso!",
+      "erpKeyCreateFailed": "Não foi possível gerar a chave de API. Tente novamente.",
+      "confirmRevokeKey": "Tem a certeza de que pretende revogar esta chave de API? Qualquer sincronização ERP que a utilize deixará de funcionar de imediato.",
+      "erpKeyRevoked": "Chave de API revogada com sucesso.",
+      "erpKeyRevokeFailed": "Não foi possível revogar a chave de API.",
+      "erpIntegrationTitle": "Integração ERP (Enterprise Resource Planning)",
+      "erpIntegrationSubtitle": "Ligue o SAP, Odoo, Oracle, Microsoft Dynamics ou o seu software de inventário diretamente a este marketplace através de chaves de API REST.",
+      "apiKeysTitle": "Chaves de API e autenticação",
+      "apiKeysSubtitle": "Gere chaves de API privadas para autenticar os pedidos do seu ERP. Inclua a chave no cabeçalho HTTP x-erp-api-key.",
+      "keyNamePlaceholder": "Nome da chave (ex.: SAP Produção, Odoo Sync)",
+      "generateKeyBtn": "Gerar nova chave de API",
+      "deleteFailed": "Não foi possível eliminar o produto do inventário.",
+      "updateUnsupported": "Os detalhes do inventário não podem ser editados. Use o reabastecimento para adicionar quantidade.",
+      "saveFailed": "Não foi possível guardar o produto do inventário.",
+      "invalidQuantity": "Introduza uma quantidade válida.",
+      "restockFailed": "Não foi possível reabastecer este produto.",
+      "loadFailed": "Não foi possível carregar o inventário."
     },
     "profile": {
       "title": "O meu perfil",
@@ -1607,7 +1936,33 @@
       "billingAddress": "Morada de faturação",
       "shippingAddress": "Morada de envio",
       "companyOptional": "Nome da empresa (opcional)",
-      "changePasswordUpper": "ALTERAR PALAVRA-PASSE"
+      "changePasswordUpper": "ALTERAR PALAVRA-PASSE",
+      "phoneInvalid": "Introduza um número de telefone válido (8 a 15 dígitos, apenas números).",
+      "loading": "A carregar perfil…",
+      "loadFailed": "Não foi possível carregar o perfil.",
+      "retry": "Tentar novamente",
+      "updateSuccess": "Perfil atualizado.",
+      "updateFailed": "Não foi possível atualizar o perfil.",
+      "passwordUpdateSuccess": "Palavra-passe atualizada.",
+      "passwordUpdateFailed": "Não foi possível atualizar a palavra-passe.",
+      "ibanUpdateSuccess": "IBAN atualizado.",
+      "ibanUpdateFailed": "Não foi possível atualizar o IBAN.",
+      "avatarInvalidType": "Carregue uma imagem JPEG, PNG ou WEBP.",
+      "avatarUploadSuccess": "Foto de perfil atualizada.",
+      "avatarUploadFailed": "Não foi possível carregar a foto de perfil.",
+      "avatarRemoveSuccess": "Foto de perfil removida.",
+      "avatarRemoveFailed": "Não foi possível remover a foto de perfil.",
+      "avatarUpdated": "Fotografia atualizada",
+      "avatarRemoved": "Fotografia removida",
+      "warehouseRequired": "Adicione pelo menos uma morada de armazém",
+      "warehousesSaved": "Armazéns guardados",
+      "currentPasswordRequired": "A palavra-passe atual é obrigatória",
+      "newPasswordRequired": "A nova palavra-passe é obrigatória",
+      "passwordMismatch": "A nova palavra-passe e a confirmação não coincidem",
+      "passwordChanged": "Palavra-passe alterada com sucesso",
+      "noWarehouses": "Ainda não adicionou armazéns.",
+      "nameRequired": "O nome é obrigatório",
+      "ibanSaved": "IBAN guardado"
     }
   },
   "auth": {
@@ -1619,9 +1974,9 @@
     "password": "Palavra-passe",
     "passwordPlaceholder": "Introduza a sua palavra-passe aqui...",
     "forgotPassword": "Esqueceu a palavra-passe?",
-    "loginTab": "Login",
-    "signUpTab": "Sign Up",
-    "signUpTabUpper": "Sign UP",
+    "loginTab": "Entrar",
+    "signUpTab": "Registar",
+    "signUpTabUpper": "REGISTAR",
     "emailPlaceholderMarketing": "introduza o seu email...",
     "passwordPlaceholderMarketing": "introduza a palavra-passe...",
     "noAccountAny": "Não tem nenhuma conta?",
@@ -1629,7 +1984,7 @@
     "noAccount": "Não tem uma conta?",
     "alreadyHaveAccount": "Já tem uma conta?",
     "alreadyHaveAccountAny": "Já tem uma conta",
-    "signInTabUpper": "Sign IN",
+    "signInTabUpper": "ENTRAR",
     "or": "Ou",
     "google": "Registar com Google",
     "facebook": "Registar com Facebook",
@@ -1645,7 +2000,8 @@
       "factory": "Fábrica",
       "transporter": "Transportador",
       "affiliate": "Afiliado",
-      "admin": "Admin"
+      "admin": "Administrador",
+      "moderator": "Moderador"
     },
     "register": {
       "submit": "Registar",
@@ -1689,7 +2045,16 @@
       "dropHere": "Arraste e largue fotos aqui",
       "browse": "Ou clique para escolher no computador",
       "maxPhotos": "Máx. 20 fotos",
-      "filesSelected": "{{count}} ficheiro(s) selecionado(s)"
+      "filesSelected": "{{count}} ficheiro(s) selecionado(s)",
+      "name": "Nome",
+      "namePh": "introduza o seu nome...",
+      "phoneNumber": "Número de telefone",
+      "affiliateCode": "Código de afiliado",
+      "affiliateCodePh": "Introduza o código de afiliado (opcional)",
+      "ibanPhFactory": "PT50 0002 0123 1234 5678 9015 4",
+      "uploadAddressFactory": "Comprovativo de morada (emitido nos últimos 3 meses)",
+      "uploadCivilLiability": "Seguro de responsabilidade civil",
+      "uploadTransporterInsurance": "Seguro de responsabilidade civil do transportador"
     },
     "marketing": {
       "supplier": {
@@ -1757,6 +2122,23 @@
         "rf2Desc": "Mantenha documentos do veículo e conformidade organizados.",
         "rf3Title": "Ganhos transparentes",
         "rf3Desc": "Acompanhe pagamentos e faturas com total visibilidade."
+      },
+      "affiliate": {
+        "brand": "AffiliatePro",
+        "loginTitle": "Bem-vindo de volta",
+        "loginSubtitle": "Introduza as suas credenciais para aceder ao painel de afiliado.",
+        "loginSubmit": "Entrar como afiliado →",
+        "loginSidebarTitle": "Transforme a sua influência em rendimento passivo",
+        "loginSidebarSubtitle": "Junte-se a milhares de parceiros que ganham comissões elevadas ao promover produtos líderes no comércio eletrónico.",
+        "f1Title": "Ganhe comissões elevadas",
+        "f1Desc": "Receba até 15% de comissão em cada compra referenciada com sucesso.",
+        "f2Title": "Partilhe e acompanhe",
+        "f2Desc": "Crie links personalizados e acompanhe o seu desempenho em tempo real no nosso painel avançado.",
+        "f3Title": "Pagamentos rápidos",
+        "f3Desc": "Receba semanalmente pelo método de pagamento que preferir. Sem custos ocultos.",
+        "registerTitle": "Torne-se afiliado",
+        "registerSubtitle": "Junte-se à nossa rede e comece hoje a ganhar comissões.",
+        "registerSubmit": "Tornar-me afiliado →"
       }
     },
     "roles": {
@@ -1779,8 +2161,59 @@
       "transporter": {
         "title": "Sou Transportador",
         "desc": "Colabore com outros para melhorar ofertas e visibilidade"
+      },
+      "affiliate": {
+        "title": "Sou afiliado",
+        "desc": "Ganhe comissões ao referenciar clientes e parceiros"
       }
-    }
+    },
+    "forgot": {
+      "title": "Esqueceu-se da palavra-passe",
+      "subtitle": "Introduza o endereço de email associado à sua conta.",
+      "emailLabel": "Endereço de email",
+      "emailRequired": "Introduza o seu endereço de email.",
+      "requestFailed": "Não foi possível enviar o código. Tente novamente.",
+      "verifyFailed": "Código de verificação inválido ou expirado.",
+      "resetFailed": "Não foi possível redefinir a palavra-passe. Tente novamente.",
+      "resetSuccess": "Palavra-passe redefinida com sucesso. Já pode iniciar sessão.",
+      "sendCode": "ENVIAR CÓDIGO",
+      "newTo": "Novo na CONSTRUPRECO?",
+      "createAccount": "Criar uma conta",
+      "needHelp": "Precisa de ajuda?",
+      "contactSupport": "Contacte o apoio ao cliente",
+      "assist": "e nós ajudamos.",
+      "otpTitle": "Verificação do código",
+      "otpSubtitle": "Introduza o código de verificação que acabámos de enviar para o seu email",
+      "otpDigit": "Dígito {{n}}",
+      "otpIncomplete": "Introduza o código de verificação completo.",
+      "otpResent": "Foi enviado um novo código para o seu email.",
+      "verify": "Verificar",
+      "noCode": "Não recebeu o código?",
+      "resend": "Reenviar",
+      "changeEmail": "Usar outro email",
+      "resetTitle": "Redefinir palavra-passe",
+      "resetSubtitle": "Crie uma nova palavra-passe com pelo menos 8 caracteres.",
+      "passwordPh": "8+ caracteres",
+      "passwordTooShort": "A palavra-passe deve ter pelo menos 8 caracteres.",
+      "resetSubmit": "REDEFINIR PALAVRA-PASSE"
+    },
+    "rememberMe": "Lembrar-me durante 30 dias",
+    "admin": {
+      "loginTitle": "Acesso de administrador",
+      "loginSubtitle": "Inicie sessão no painel de administração da CONSTRUPRECO."
+    },
+    "moderator": {
+      "loginTitle": "Acesso de moderador",
+      "loginSubtitle": "Inicie sessão no painel de moderação da CONSTRUPRECO."
+    },
+    "legal": {
+      "prefix": "Ao continuar, aceita os nossos",
+      "terms": "Termos de Serviço",
+      "and": "e a",
+      "privacy": "Política de Privacidade"
+    },
+    "moderatorOnlyAccount": "Este acesso é apenas para moderadores. Use o acesso de administrador para contas de administrador.",
+    "networkError": "Não foi possível contactar o servidor. Verifique a sua ligação."
   },
   "buyer": {
     "myAccount": "A Minha Conta",
@@ -1819,9 +2252,25 @@
     "status": {
       "shipped": "Enviada",
       "processing": "Em processamento",
-      "delivered": "Entregue"
+      "delivered": "Entregue",
+      "cancelled": "Cancelada"
     },
-    "certifiedInvoice": "Fatura certificada {{number}}"
+    "certifiedInvoice": "Fatura certificada {{number}}",
+    "downloadInvoice": "Descarregar fatura",
+    "loading": "A carregar encomendas…",
+    "loadFailed": "Não foi possível carregar as encomendas.",
+    "retry": "Tentar novamente",
+    "cancelSuccess": "Encomenda cancelada.",
+    "cancelFailed": "Não foi possível cancelar a encomenda.",
+    "invoiceDownloadSuccess": "Transferência da fatura iniciada.",
+    "invoiceDownloadFailed": "Não foi possível descarregar a fatura.",
+    "filters": {
+      "all": "Todas",
+      "processing": "Em processamento",
+      "shipped": "Enviadas",
+      "delivered": "Entregues",
+      "cancelled": "Canceladas"
+    }
   },
   "buyerOrderDetail": {
     "title": "Informação da encomenda #{{number}}",
@@ -1831,14 +2280,16 @@
     "quantity": "Quantidade",
     "price": "Preço",
     "total": "Total",
-    "chat": "Chat"
+    "chat": "Chat",
+    "deliveryOtp": "Código de entrega: {{otp}}"
   },
   "cancelReasonModal": {
     "title": "Motivo do cancelamento",
     "label": "Escreva o motivo do cancelamento",
     "placeholder": "",
     "submit": "Enviar",
-    "close": "Fechar"
+    "close": "Fechar",
+    "reasonRequired": "Introduza um motivo de cancelamento."
   },
   "productToReview": {
     "columnProducts": "Produtos",
@@ -1848,7 +2299,14 @@
     "empty": "Não há produtos à espera de avaliação.",
     "shippingStatus": {
       "delivered": "Entregue"
-    }
+    },
+    "loading": "A carregar produtos para avaliar…",
+    "loadFailed": "Não foi possível carregar os produtos para avaliar.",
+    "retry": "Tentar novamente",
+    "submitSuccess": "Avaliação enviada.",
+    "submitFailed": "Não foi possível enviar a avaliação.",
+    "ratingRequired": "Selecione uma classificação.",
+    "reviewRequired": "Escreva uma avaliação."
   },
   "materialQualityFeedback": {
     "title": "Como foi a qualidade do material?",
@@ -1892,7 +2350,10 @@
       "assign": "Atribuir",
       "completed": "Concluído",
       "delivered": "Entregue"
-    }
+    },
+    "loading": "A carregar encomendas…",
+    "loadFailed": "Não foi possível carregar as encomendas.",
+    "retry": "Tentar novamente"
   },
   "companyProjects": {
     "backToProjects": "← Voltar aos projetos",
@@ -1919,7 +2380,12 @@
     "progress": "Progresso",
     "nextInstallment": "Próxima prestação",
     "monthlyPayment": "Pagamento mensal",
-    "installmentTimeline": "Cronologia de prestações"
+    "installmentTimeline": "Cronologia de prestações",
+    "loading": "A carregar projetos…",
+    "loadFailed": "Não foi possível carregar os projetos.",
+    "retry": "Tentar novamente",
+    "empty": "Nenhum projeto encontrado.",
+    "deliveryProgress": "Progresso da entrega"
   },
   "disputesCenter": {
     "backToList": "Voltar às disputas",
@@ -1962,8 +2428,19 @@
       "uploadTypes": "PNG, JPG, MP4 até 10MB",
       "cancel": "CANCELAR",
       "submit": "SUBMETER DISPUTA",
-      "close": "Fechar"
-    }
+      "close": "Fechar",
+      "selectItems": "Selecionar artigos (opcional)",
+      "selectItemsHint": "Deixe por selecionar para abrir disputa sobre todos os artigos desta encomenda.",
+      "evidenceRequired": "Carregue pelo menos um ficheiro de prova.",
+      "evidenceInvalidType": "Apenas são permitidos ficheiros JPEG, PNG e WEBP.",
+      "removeEvidence": "Remover ficheiro",
+      "submitting": "A enviar…"
+    },
+    "loading": "A carregar disputas…",
+    "loadFailed": "Não foi possível carregar as disputas.",
+    "retry": "Tentar novamente",
+    "submitSuccess": "Disputa enviada.",
+    "submitFailed": "Não foi possível enviar a disputa."
   },
   "returnsCenter": {
     "tabOrders": "As minhas encomendas",
@@ -2012,11 +2489,20 @@
       "evidence": "Carregar provas",
       "uploadHint": "Clique para carregar ou arraste ficheiros",
       "uploadTypes": "PNG, JPG, MP4 até 10MB",
-      "submit": "SUBMETER DEVOLUÇÃO"
+      "submit": "SUBMETER DEVOLUÇÃO",
+      "removeFile": "Remover",
+      "evidenceRequired": "Carregue pelo menos um ficheiro de prova.",
+      "evidenceInvalidType": "Apenas são permitidos ficheiros JPEG, PNG, WEBP, PDF, DOC e DOCX."
     },
     "status": {
       "delivered": "ENTREGUE"
-    }
+    },
+    "ordersEmpty": "Não há encomendas disponíveis para devolução.",
+    "loading": "A carregar devoluções…",
+    "loadFailed": "Não foi possível carregar as devoluções.",
+    "retry": "Tentar novamente",
+    "submitSuccess": "Pedido de devolução enviado.",
+    "submitFailed": "Não foi possível enviar o pedido de devolução."
   },
   "helpCenterPage": {
     "seoTitle": "Centro de Ajuda",
@@ -2511,11 +2997,29 @@
     "signupTitle": "Registar",
     "signupDescription": "Crie a sua conta CONSTRUPRECO.",
     "notFoundTitle": "Página não encontrada",
-    "notFoundDescription": "A página que procura não existe."
+    "notFoundDescription": "A página que procura não existe.",
+    "forgotPasswordTitle": "Recuperar palavra-passe",
+    "forgotPasswordDescription": "Redefina a palavra-passe da sua conta CONSTRUPRECO.",
+    "defaultDescription": "CONSTRUPRECO — o marketplace de materiais de construção mais completo. Entrega rápida e fornecedores de confiança.",
+    "defaultKeywords": "construpreco, materiais de construção, loja online, construção, marketplace"
   },
   "common": {
     "backHome": "Voltar ao Início",
-    "loading": "A carregar"
+    "loading": "A carregar",
+    "back": "Voltar",
+    "accountSuspended": "Conta suspensa",
+    "rejectionReason": "Motivo",
+    "invalidDocuments": "Documentos inválidos",
+    "resubmitNotice": "Corrija os problemas e volte a enviar os seus documentos para análise.",
+    "resubmitDocuments": "Reenviar documentos",
+    "cancel": "Cancelar",
+    "noData": "Nenhuma encomenda encontrada.",
+    "error": "Não foi possível carregar os detalhes do produto.",
+    "logout": "Terminar sessão",
+    "goHome": "Ir para a página inicial",
+    "requestFailed": "O pedido falhou. Tente novamente.",
+    "close": "Fechar",
+    "refresh": "Atualizar"
   },
   "auction": {
     "boardTitle": "Leilão",
@@ -2611,7 +3115,9 @@
       "additionalNotesPlaceholder": "Qualquer informação adicional",
       "submit": "Submeter leilão",
       "nav": "Criar leilão"
-    }
+    },
+    "noCompetingBids": "Sem licitações de outros transportadores",
+    "scrollForMoreBids": "Deslize para ver mais licitações"
   },
   "order": {
     "details": {
@@ -2660,7 +3166,8 @@
       "oct": "Out",
       "nov": "Nov",
       "dec": "Dez"
-    }
+    },
+    "defaultName": "Transportador"
   },
   "transporterAuctionBoard": {
     "title": "Quadro de leilões",
@@ -2690,7 +3197,13 @@
       "pickedUp": "Recolhidas",
       "inTransit": "Em trânsito",
       "delivered": "Entregues"
-    }
+    },
+    "tripStarted": "Viagem iniciada",
+    "markedPickedUp": "Marcado como recolhido",
+    "navigatingToDelivery": "A navegar até à entrega",
+    "otpSent": "Código de entrega enviado ao cliente",
+    "invalidOtp": "Introduza o PIN de 4 dígitos do cliente",
+    "deliveryVerified": "Entrega verificada"
   },
   "transporterPaymentsPayouts": {
     "title": "Ganhos e carteira",
@@ -2703,7 +3216,8 @@
       "availableBalance": "Saldo disponível",
       "requestPayout": "Pedir pagamento",
       "pendingEarnings": "Ganhos pendentes",
-      "monthlyAverage": "Média mensal"
+      "monthlyAverage": "Média mensal",
+      "adminCommissionDescDynamic": "{{percent}}% por encomenda"
     },
     "revenueOverview": {
       "title": "Visão geral da receita",
@@ -2822,8 +3336,23 @@
       "noteLabel": "Nota:",
       "noteBody": "O seu documento será analisado pela nossa equipa em 24-48 horas. Será notificado quando a verificação estiver concluída.",
       "cancel": "Cancelar",
-      "submit": "Enviar para verificação"
-    }
+      "submit": "Enviar para verificação",
+      "submitting": "A enviar…",
+      "success": "Seguro carregado com sucesso",
+      "renewTitle": "Renovar apólice de seguro",
+      "errors": {
+        "type": "Selecione um tipo de seguro",
+        "provider": "Introduza a seguradora",
+        "policyNumber": "Introduza o número da apólice",
+        "coverage": "Introduza um valor de cobertura válido",
+        "expiryDate": "Introduza a data de validade",
+        "document": "Carregue um documento do seguro"
+      }
+    },
+    "expired": "Expirado",
+    "documentUnavailable": "Documento não disponível",
+    "alertPendingTitle": "Requisitos de seguro em falta",
+    "alertPendingBody": "Carregue e valide as apólices de seguro de responsabilidade civil e de mercadorias para participar em leilões e aceitar entregas."
   },
   "transporterInvoices": {
     "title": "Faturas de comissão",
@@ -2844,7 +3373,14 @@
     "downloadInvoice": "Transferir fatura",
     "previous": "Anterior",
     "next": "Seguinte",
-    "showingResults": "A mostrar {{from}} a {{to}} de {{total}} resultados"
+    "showingResults": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+    "searchPlaceholder": "Pesquisar faturas…",
+    "empty": "Nenhuma fatura encontrada.",
+    "detailTitle": "Detalhes da fatura",
+    "close": "Fechar",
+    "orderTotal": "Total da encomenda",
+    "commissionPercent": "Comissão",
+    "partyPayout": "Valor a receber"
   },
   "transporterMap": {
     "mapTitle": "Mapa Google",
@@ -2917,7 +3453,16 @@
       "addBreadcrumb": "Produto > Adicionar produto",
       "editBreadcrumb": "Produto > Editar produto",
       "submit": "Submeter",
-      "update": "Atualizar"
+      "update": "Atualizar",
+      "selectCategory": "Selecione a categoria",
+      "selectSubCategory": "Selecione a subcategoria",
+      "selectProductType": "Selecione o tipo de produto",
+      "submitError": "Não foi possível guardar o produto. Tente novamente.",
+      "titleRequired": "Introduza um título antes de usar a IA.",
+      "aiError": "Não foi possível gerar o conteúdo. Tente novamente.",
+      "resubmitTitle": "Reenviar produto",
+      "resubmitBreadcrumb": "Produto > Reenviar produto",
+      "resubmitSubmit": "Reenviar"
     },
     "priceText": "Preço: {{price}} por saco (50 kg)",
     "priceFallback": "Preço: —",
@@ -2930,7 +3475,7 @@
       "selected": "Selecionado: {{name}}",
       "downloadExample": "Descarregar modelo",
       "downloadCategoryGuide": "Guia de categorias",
-      "queueImport": "Queue Import",
+      "queueImport": "Importar",
       "uploading": "A carregar…",
       "downloading": "A descarregar…",
       "uploadFailed": "Falha no carregamento. Tente novamente.",
@@ -2939,7 +3484,8 @@
       "closeOverlay": "Fechar sobreposição",
       "close": "Fechar",
       "browseAria": "Procurar ficheiro CSV"
-    }
+    },
+    "deleteError": "Não foi possível eliminar o produto."
   },
   "factoryOrders": {
     "title": "Encomendas de fornecedores",
@@ -2995,11 +3541,22 @@
     "requestDelivery": "+ Solicitar entrega",
     "activeAuctions": {
       "title": "Leilões ativos",
-      "subtitle": "Propostas pendentes e itens em leilão"
+      "subtitle": "Propostas pendentes e itens em leilão",
+      "emptyTitle": "Sem leilões ativos",
+      "emptySubtitle": "Não tem leilões de entrega abertos. Peça uma entrega para criar um novo leilão."
     },
     "assignedDeliveries": {
       "title": "Entregas atribuídas",
-      "subtitle": "Acompanhe encomendas já aceites por transportadores"
+      "subtitle": "Acompanhe encomendas já aceites por transportadores",
+      "emptyTitle": "Sem entregas atribuídas",
+      "emptySubtitle": "As entregas atribuídas aparecem aqui quando um transportador ganhar um leilão."
+    },
+    "create": {
+      "orderLoaded": "Detalhes da encomenda carregados.",
+      "orderNotFound": "Encomenda não encontrada. Verifique o número da encomenda.",
+      "orderRequired": "O número da encomenda é obrigatório.",
+      "submitSuccess": "Leilão criado com sucesso.",
+      "submitFailed": "Não foi possível criar o leilão. Tente novamente."
     }
   },
   "supplierDeliveryLogistics": {
@@ -3011,12 +3568,17 @@
     "assignedDetailTitle": "Detalhes das entregas atribuídas",
     "activeAuctions": {
       "title": "Leilões ativos",
-      "subtitle": "Propostas pendentes e itens em leilão"
+      "subtitle": "Propostas pendentes e itens em leilão",
+      "emptyTitle": "Sem leilões ativos",
+      "emptySubtitle": "Não tem leilões de entrega abertos. Inicie um leilão para encontrar um transportador."
     },
     "assignedDeliveries": {
       "title": "Entregas atribuídas",
-      "subtitle": "Acompanhe encomendas já aceites por transportadores"
-    }
+      "subtitle": "Acompanhe encomendas já aceites por transportadores",
+      "emptyTitle": "Sem entregas atribuídas",
+      "emptySubtitle": "As entregas atribuídas aparecem aqui quando um transportador ganhar um leilão."
+    },
+    "auctionCreated": "Leilão criado com sucesso"
   },
   "supplierPaymentsFinance": {
     "title": "Ganhos e pagamentos",
@@ -3045,6 +3607,17 @@
     },
     "invoiceActions": {
       "download": "Descarregar PDF"
+    },
+    "withdraw": {
+      "title": "Levantar fundos",
+      "amount": "Montante",
+      "businessName": "Nome da empresa/organização",
+      "routingNumber": "Código do banco",
+      "accountNumber": "Número de conta",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "closeOverlay": "Fechar janela",
+      "close": "Fechar"
     }
   },
   "supplierAnalytics": {
@@ -3097,7 +3670,7 @@
     "positiveReviewsDesc": "Classificações de 4-5 estrelas",
     "orderLabel": "Encomenda",
     "customerType": {
-      "regular": "Regular",
+      "regular": "Normal",
       "company": "Empresa"
     }
   },
@@ -3230,7 +3803,8 @@
       "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
       "previous": "Anterior",
       "next": "Próximo"
-    }
+    },
+    "closeOverlay": "Fechar"
   },
   "factoryInvoices": {
     "title": "Faturas de comissão",
@@ -3255,7 +3829,13 @@
       "customer": "Cliente",
       "amount": "Montante",
       "date": "Data"
-    }
+    },
+    "empty": "Nenhuma fatura encontrada.",
+    "detailTitle": "Detalhes da fatura",
+    "close": "Fechar",
+    "orderTotal": "Total da encomenda",
+    "commissionPercent": "Comissão",
+    "partyPayout": "Valor a receber"
   },
   "affiliateOverview": {
     "title": "Painel de ganhos de afiliados",
@@ -3427,14 +4007,685 @@
     "reload": "Recarregar página"
   },
   "buyerAreaGate": {
-      "guestTitle": "Inicie sessão para continuar",
-      "guestDescription": "Para ver ou abrir disputas e devoluções, inicie sessão com a sua conta de cliente ou empresa.",
-      "sellerTitle": "Área exclusiva para compradores",
-      "sellerDescription": "Disputas e devoluções desta página são para clientes e empresas. Pode gerir os seus casos no seu painel.",
-      "loginCustomer": "Entrar como cliente",
-      "loginCompany": "Entrar como empresa",
-      "goToDashboard": "Ir para o painel",
-      "noAccount": "Ainda não tem conta?",
-      "signup": "Criar conta"
+    "guestTitle": "Inicie sessão para continuar",
+    "guestDescription": "Para ver ou abrir disputas e devoluções, inicie sessão com a sua conta de cliente ou empresa.",
+    "sellerTitle": "Área exclusiva para compradores",
+    "sellerDescription": "Disputas e devoluções desta página são para clientes e empresas. Pode gerir os seus casos no seu painel.",
+    "loginCustomer": "Entrar como cliente",
+    "loginCompany": "Entrar como empresa",
+    "goToDashboard": "Ir para o painel",
+    "noAccount": "Ainda não tem conta?",
+    "signup": "Criar conta"
+  },
+  "disputeResolution": {
+    "dashboardTitle": "Centro de disputas e devoluções",
+    "dashboardSubtitle": "Gira as disputas, devoluções e casos de resolução dos clientes",
+    "infoTitle": "Informação da disputa",
+    "infoSubtitle": "Detalhes do problema reportado",
+    "orderId": "N.º da encomenda: {{id}}",
+    "description": "Descrição",
+    "evidence": "Provas ({{count}})",
+    "evidenceAlt": "Prova {{n}}",
+    "status": "Estado",
+    "created": "Criada em",
+    "thread": "Conversa",
+    "statusResolved": "Resolvida",
+    "statusUnderReview": "Em análise",
+    "attachFile": "Anexar ficheiro",
+    "messagePlaceholder": "Escreva a sua mensagem...",
+    "sendMessage": "Enviar mensagem"
+  },
+  "productDetails": {
+    "starRating": "Avaliação de {{rating}} estrelas",
+    "userFeedback": "({{total}} opiniões de utilizadores)",
+    "sku": "SKU:",
+    "availability": "Disponibilidade:",
+    "category": "Categoria:",
+    "warehouse": "Localização do armazém:",
+    "perUnit": "por {{unit}}",
+    "description": "Descrição",
+    "feature": "Características",
+    "minimumOrder": "Encomenda mínima {{value}}",
+    "overview": "Visão geral",
+    "noInformation": "Sem informação disponível.",
+    "noReviews": "Ainda não há avaliações.",
+    "supplier": "Fornecedor",
+    "businessInfo": "Informação comercial",
+    "buy": "Comprar",
+    "price": "Preço",
+    "noImage": "Sem imagem",
+    "productAlt": "Produto",
+    "decreaseQuantity": "Diminuir quantidade",
+    "increaseQuantity": "Aumentar quantidade",
+    "tabs": {
+      "description": "Descrição",
+      "additional": "Informação adicional",
+      "specification": "Especificações",
+      "review": "Avaliações",
+      "supplier": "Dados do fornecedor"
+    },
+    "actions": {
+      "add_to_cart": "ADICIONAR AO CARRINHO",
+      "buy_now": "COMPRAR AGORA",
+      "send_quote": "PEDIR ORÇAMENTO",
+      "send_message": "ENVIAR MENSAGEM",
+      "accept": "Aceitar",
+      "reject": "Rejeitar"
+    },
+    "availabilityStatus": {
+      "IN_STOCK": "Em stock",
+      "LOW_STOCK": "Stock reduzido",
+      "OUT_OF_STOCK": "Esgotado"
     }
+  },
+  "productCard": {
+    "expiryDate": "Data de validade",
+    "minOrder": "Mín.: {{value}}",
+    "addToCart": "Adicionar ao carrinho",
+    "badges": {
+      "sponsored": "PATROCINADO",
+      "regular": "Normal",
+      "bulk_order": "Encomenda em quantidade",
+      "featured": "DESTAQUE",
+      "pending": "Pendente",
+      "active": "Ativo",
+      "rejected": "Rejeitado",
+      "completed": "Concluído"
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "accept": "Aceitar",
+      "reject": "Rejeitar",
+      "details": "Detalhes",
+      "deactivate": "Desativar",
+      "cancel": "Cancelar",
+      "resubmit": "Reenviar",
+      "promote": "Promover",
+      "send_message": "Enviar mensagem",
+      "view_details": "Ver detalhes"
+    }
+  },
+  "orderDetails": {
+    "title": "Detalhes da encomenda",
+    "orderId": "N.º da encomenda",
+    "orderDate": "Data da encomenda",
+    "recipient": "Destinatário",
+    "region": "Região",
+    "city": "Cidade",
+    "zipCode": "Código postal",
+    "address": "Morada",
+    "project": "Projeto",
+    "unloadingType": "Tipo de descarga necessária",
+    "transporter": "Transportador",
+    "transporterInfo": "Informação do transportador",
+    "deliveryLocation": "Local de entrega",
+    "accessConditions": "Condições de acesso",
+    "materials": "Materiais",
+    "productDetails": "Detalhes do produto",
+    "paidAmount": "Montante pago",
+    "remainingBalance": "Saldo em falta",
+    "chat": "Conversar",
+    "totalPrice": "Preço total",
+    "installment": "Prestação",
+    "installmentBreakdown": "Detalhe das prestações",
+    "subtotal": "Subtotal",
+    "discount": "Desconto",
+    "grandTotal": "Total geral",
+    "shipping": "Envio",
+    "total": "Total",
+    "noProducts": "Sem produtos",
+    "noInstallments": "Sem prestações",
+    "columns": {
+      "product": "PRODUTO",
+      "category": "CATEGORIA",
+      "material": "MATERIAL",
+      "weightSize": "PESO / TAMANHO",
+      "qty": "QTD.",
+      "unit": "UNIDADE",
+      "total": "TOTAL",
+      "warehouse": "LOCALIZAÇÃO DO ARMAZÉM",
+      "installmentNumber": "N.º DA PRESTAÇÃO",
+      "amount": "MONTANTE"
+    }
+  },
+  "installmentTimeline": {
+    "title": "Calendário de prestações",
+    "empty": "Ainda não há prestações.",
+    "dueDate": "Data de vencimento",
+    "amount": "Montante",
+    "quantity": "Quantidade",
+    "paid": "Pago",
+    "payNow": "Pagar agora",
+    "cancel": "Cancelar",
+    "notDue": "Por vencer",
+    "completed": "Concluída",
+    "pending": "Pendente"
+  },
+  "ui": {
+    "businessMetricsOverview": "Visão geral das métricas do negócio",
+    "language": "Idioma",
+    "yourMessages": "As suas mensagens",
+    "selectConversation": "Selecione uma conversa na barra lateral para começar.",
+    "backToInbox": "Voltar às mensagens",
+    "typing": "A escrever...",
+    "active": "Ativo",
+    "offline": "Offline",
+    "loadingMessages": "A carregar mensagens...",
+    "editingMessage": "A editar mensagem",
+    "cancel": "Cancelar",
+    "createOffer": "Criar oferta",
+    "closeOverlay": "Fechar",
+    "offerCard": "Cartão de oferta",
+    "offerCardHint": "Crie um cartão de oferta para enviar ao cliente.",
+    "close": "Fechar",
+    "warehouseLocation": "Localização do armazém",
+    "selectWarehouse": "Selecione ou escreva o armazém",
+    "product": "Produto",
+    "selectProduct": "Selecione ou escreva o nome do produto",
+    "totalQuantity": "Quantidade total",
+    "bagsPlaceholder": "sacos",
+    "projectName": "Nome do projeto",
+    "selectProject": "Selecione ou escreva o nome do projeto",
+    "deliveryLocation": "Local de entrega",
+    "selectDeliveryLocation": "Selecione ou escreva o local de entrega",
+    "unloadingType": "Tipo de descarga necessária",
+    "addType": "Adicionar tipo",
+    "accessConditions": "Condições de acesso",
+    "addUnloadingSystem": "Adicionar sistema de descarga",
+    "totalPrice": "Preço total",
+    "installment": "Prestação",
+    "months": "meses",
+    "price": "Preço",
+    "productQuantity": "Quantidade do produto",
+    "quantityPlaceholder": "quantidade",
+    "addInstallment": "+ Adicionar prestação",
+    "newQuoteRequest": "Novo pedido de orçamento",
+    "awaitingSupplier": "A aguardar resposta do fornecedor",
+    "budget": "Orçamento",
+    "quantity": "Quantidade",
+    "edited": "· Editada",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "quantityColon": "Quantidade:",
+    "firstInstallment": "1.ª prestação",
+    "remainingBalance": "Saldo em falta",
+    "paid": "Pago",
+    "payNow": "Pagar agora",
+    "negotiate": "Negociar",
+    "editConversations": "Editar conversas",
+    "noConversations": "Nenhuma conversa encontrada.",
+    "pagination": "Paginação",
+    "loading": "A carregar",
+    "pickupLocationUpper": "LOCAL DE RECOLHA",
+    "deliveryLocationUpper": "LOCAL DE ENTREGA",
+    "seeDetails": "Ver detalhes",
+    "markPicked": "Marcar como recolhido",
+    "startTrip": "Iniciar viagem",
+    "navigateToDelivery": "Navegar até à entrega",
+    "verifyDelivery": "Verificar entrega",
+    "loadingProductCard": "A carregar produto",
+    "back": "Voltar",
+    "enterWarehouseLocation": "Introduza a localização do armazém",
+    "category": "Categoria",
+    "subCategory": "Subcategoria",
+    "productType": "Tipo de produto",
+    "title": "Título",
+    "titlePlaceholder": "Cimento Portland de presa rápida",
+    "skuNumber": "Número SKU",
+    "skuPlaceholder": "escreva o número SKU do produto",
+    "skuNumberLower": "Número SKU",
+    "weightKg": "Peso (kg)",
+    "quantityExample": "800 sacos",
+    "basePrice": "Preço base",
+    "b2bDiscount": "Desconto B2B",
+    "minB2bQuantity": "Quantidade mínima B2B",
+    "minQuantityExample": "10 unidades",
+    "weight": "Peso",
+    "weightExample": "900 kg",
+    "description": "Descrição",
+    "descriptionPlaceholder": "Escreva a descrição do produto...",
+    "feature": "Características",
+    "additionalInformation": "Informação adicional",
+    "additionalPlaceholder": "Escreva informação adicional...",
+    "specifications": "Especificações",
+    "specificationsPlaceholder": "Escreva as especificações do produto...",
+    "bannerImage": "Imagem principal do produto",
+    "otherImages": "Outras imagens",
+    "bulkOption": "Opção por quantidade",
+    "priceEur": "Preço (€)",
+    "addCondition": "Adicionar outra condição",
+    "addMore": "Adicionar mais",
+    "dropPhotos": "Arraste e largue as fotografias aqui",
+    "browsePhotos": "Ou clique para escolher do seu computador",
+    "rating": "Avaliação",
+    "breadcrumb": "Navegação estrutural",
+    "lastYear": "Ano passado",
+    "message": "Mensagem",
+    "recipient": "Destinatário",
+    "factory": "Fábrica",
+    "materials": "Materiais",
+    "productDetails": "Detalhes do produto",
+    "installmentBreakdown": "Detalhe das prestações",
+    "seller": "Vendedor",
+    "transporter": "Transportador",
+    "transporterInfo": "Informação do transportador",
+    "orderDetails": "Detalhes da encomenda",
+    "orderId": "N.º da encomenda",
+    "orderDate": "Data da encomenda",
+    "region": "Região",
+    "city": "Cidade",
+    "zipCode": "Código postal",
+    "address": "Morada",
+    "project": "Projeto",
+    "recentMessages": "Mensagens recentes",
+    "retry": "Tentar novamente",
+    "loadingEllipsis": "A carregar…",
+    "auctionLoadFailed": "Não foi possível carregar os detalhes do leilão.",
+    "saving": "A guardar…",
+    "loadingInvoice": "A carregar fatura…",
+    "orderLoadFailed": "Não foi possível carregar os detalhes da encomenda.",
+    "deleteProduct": "Eliminar produto",
+    "cancelSubmission": "Cancelar submissão",
+    "loadingFactoryProduct": "A carregar produto da fábrica…",
+    "loadingOrderDetails": "A carregar detalhes da encomenda…",
+    "closeDocumentPreview": "Fechar pré-visualização",
+    "documentPreview": "Pré-visualização do documento",
+    "documentId": "N.º do documento",
+    "customer": "Cliente",
+    "amount": "Montante",
+    "date": "Data",
+    "type": "Tipo",
+    "downloadSupplierPdf": "Descarregar PDF do fornecedor",
+    "downloadBuyerPdf": "Descarregar PDF do comprador",
+    "loadingFactoryOrder": "A carregar encomenda da fábrica…",
+    "copyCode": "Copiar código",
+    "copied": "Copiado",
+    "copy": "Copiar",
+    "restApiReady": "API REST disponível",
+    "newApiKey": "Nova chave de API gerada - guarde-a em segurança",
+    "copyKeyNow": "Copie esta chave agora. Por segurança, poderá não voltar a ser mostrada por completo.",
+    "dismiss": "Fechar",
+    "activeApiKeys": "Chaves de API ativas (",
+    "noApiKeys": "Ainda não foram geradas chaves de API",
+    "generateApiKeyHint": "Gere uma chave de API acima para começar a sincronizar produtos e stock a partir do seu ERP.",
+    "nameLabel": "Nome / etiqueta",
+    "apiKeyPrefix": "Prefixo da chave",
+    "createdDate": "Data de criação",
+    "status": "Estado",
+    "action": "Ação",
+    "revokeKey": "Revogar chave",
+    "revoke": "Revogar",
+    "apiDocsTitle": "Documentação da API: adicionar e manter produtos",
+    "apiDocsSubtitle": "Use estes endpoints REST para automatizar a criação de produtos, atualizações de stock e consultas ao catálogo.",
+    "apiAddProduct": "Adiciona um novo produto ao seu catálogo. Depois de adicionado via ERP, aparece de imediato na sua lista de inventário e no saldo de stock.",
+    "field": "Campo",
+    "required": "Obrigatório",
+    "yes": "Sim",
+    "optional": "Opcional",
+    "apiFieldName": "Nome comercial completo ou título do produto.",
+    "apiFieldSku": "Identificador único SKU (Stock Keeping Unit).",
+    "apiFieldQuantity": "Quantidade inicial disponível em stock.",
+    "apiFieldPrice": "Preço de venda unitário em euros (€).",
+    "apiFieldWarehouse": "Nome do armazém ou morada física.",
+    "apiFieldFactory": "Nome da fábrica ou da filial do fornecedor.",
+    "apiRestock": "Aumente ou ajuste os níveis de stock em tempo real quando chegam novas remessas ou o stock é reconciliado no seu ERP.",
+    "parameter": "Parâmetro",
+    "apiParamId": "O ID ou SKU do produto no sistema.",
+    "apiParamQuantity": "Quantidade a adicionar ao stock existente.",
+    "apiList": "Consulte os níveis de stock, SKUs ativos e preços registados no marketplace para comparar com o seu ERP.",
+    "apiDelete": "Remova um produto descontinuado do seu catálogo através do ERP.",
+    "loadingPromoCode": "A carregar código promocional…",
+    "noDeliveries": "Nenhuma entrega encontrada.",
+    "verifyDeliveryHint": "Introduza o PIN do cliente para confirmar a entrega",
+    "orderSummary": "Resumo da encomenda",
+    "earnings": "Ganhos",
+    "customerPin": "PIN do cliente",
+    "customerPinHint": "Peça ao cliente o PIN de entrega de 4 dígitos",
+    "deliveryProof": "Comprovativo de entrega (opcional)",
+    "deliveryProofHint": "Carregue uma fotografia da mercadoria entregue ou do documento assinado",
+    "sendingOtp": "A enviar código ao cliente…",
+    "noInsurance": "Nenhuma apólice de seguro encontrada.",
+    "noCompletedDeliveries": "Nenhuma entrega concluída encontrada.",
+    "noTransactions": "Nenhuma transação encontrada.",
+    "recommendedSize": "1920×1080px recomendado",
+    "hidePassword": "Ocultar palavra-passe",
+    "showPassword": "Mostrar palavra-passe",
+    "editMessagePlaceholder": "Edite a sua mensagem...",
+    "typeMessagePlaceholder": "Escreva a sua mensagem aqui...",
+    "saveMessage": "Guardar mensagem",
+    "sendMessage": "Enviar mensagem",
+    "sending": "A enviar...",
+    "sendOffer": "Enviar oferta",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "assigned": "Atribuída",
+    "payNowDownPayment": "Pagar agora (entrada)",
+    "supplierInformation": "Informação do fornecedor",
+    "customerInformation": "Informação do cliente",
+    "companyInformation": "Informação da empresa",
+    "unloadingVehicles": "Tipos de descarga / veículos",
+    "featurePlaceholder": "Alta resistência e durabilidade\nFácil aplicação",
+    "standard": "Normal",
+    "loginRequired": "Sessão necessária",
+    "loginToCheckout": "Inicie sessão para finalizar a compra.",
+    "loginToAddToCart": "Inicie sessão para adicionar artigos ao carrinho.",
+    "sendQuoteFailed": "Não foi possível enviar o pedido de orçamento",
+    "somethingWentWrong": "Ocorreu um erro. Tente novamente.",
+    "loadingDocument": "A carregar detalhes do documento...",
+    "copiedToClipboard": "Copiado para a área de transferência!",
+    "copyFailed": "Não foi possível copiar",
+    "keyCopied": "Chave copiada para a área de transferência!",
+    "profileLoadFailed": "Não foi possível carregar o perfil do fornecedor.",
+    "updatingAccount": "A atualizar dados da conta...",
+    "accountUpdated": "Dados da conta atualizados com sucesso.",
+    "updatingWarehouses": "A atualizar armazéns...",
+    "warehousesUpdated": "Armazéns atualizados com sucesso.",
+    "changingPassword": "A alterar palavra-passe...",
+    "clickToUploadPhoto": "Clique para carregar uma fotografia",
+    "verifying": "A verificar…",
+    "verifyAndComplete": "Verificar e concluir",
+    "enterValidAmount": "Introduza um montante válido",
+    "payoutDetailsRequired": "O nome da empresa e o número de conta são obrigatórios",
+    "priceFetchFailed": "Não foi possível obter o preço do produto.",
+    "error": "Erro",
+    "success": "Sucesso",
+    "addToCartFailed": "Não foi possível adicionar ao carrinho",
+    "updateQuantityFailed": "Não foi possível atualizar a quantidade",
+    "removeItemFailed": "Não foi possível remover o artigo",
+    "promoApplied": "Código promocional aplicado",
+    "promoApplyFailed": "Não foi possível aplicar o código promocional",
+    "promoRemoveFailed": "Não foi possível remover o código promocional",
+    "payMultibanco": "Pague no Multibanco ou no homebanking",
+    "payMbway": "Pague diretamente no telemóvel",
+    "creditCard": "Cartão de crédito",
+    "payPayshop": "Pague em qualquer agente Payshop",
+    "loginAsCustomer": "Entrar como cliente",
+    "loginAsCompany": "Entrar como empresa",
+    "messageDeleted": "Esta mensagem foi eliminada",
+    "unloadingOptions": {
+      "crane-12": "Grua (12 m)",
+      "crane-12m": "Grua (12 m)",
+      "crane-24": "Grua (24 m)",
+      "crane-24m": "Grua (24 m)",
+      "tipper": "Camião basculante",
+      "tipper-truck": "Camião basculante",
+      "forklift": "Empilhador",
+      "manual": "Descarga manual",
+      "easy": "Acesso fácil",
+      "easy-access": "Acesso fácil",
+      "narrow": "Estrada estreita",
+      "narrow-road": "Estrada estreita",
+      "restricted": "Zona restrita",
+      "restricted-area": "Zona restrita",
+      "terrain": "Terreno difícil",
+      "difficult-terrain": "Terreno difícil"
+    }
+  },
+  "accountLock": {
+    "getFullAccess": "Obter acesso total",
+    "update": "ATUALIZAR",
+    "clickToUpload": "Clique para carregar imagens",
+    "uploadHint": "Carregar imagens (JPG, PNG, PDF, WEBP)",
+    "uploadInsurance": "Carregar seguro",
+    "allDocumentsRequired": "Carregue todos os documentos obrigatórios.",
+    "submitFailed": "Não foi possível enviar os documentos",
+    "uploadTitle": "Carregue os seus documentos para verificação",
+    "uploadSubtitle": "Obtenha acesso total.",
+    "requiredInsurance": "Tipos de seguro obrigatórios",
+    "requiredInsuranceHint": "Ambos os tipos de seguro são obrigatórios antes de aceitar entregas.",
+    "submitting": "A enviar…",
+    "submit": "ENVIAR",
+    "submitSuccess": "Documentos enviados para análise",
+    "pendingReviewDescription": "Os seus documentos estão em análise. O acesso total ao painel será desbloqueado após aprovação do administrador.",
+    "rejectedDescription": "Aceda ao painel completo e carregue produtos. Carregue os seus documentos.",
+    "businessOverview": "Visão geral do negócio",
+    "underReview": "Em análise",
+    "navLocked": "Carregue os documentos para desbloquear",
+    "documents": {
+      "companyCertificateUrl": {
+        "label": "Certidão da empresa",
+        "description": "Certidão oficial de registo da empresa."
+      },
+      "factoryCertificateUrl": {
+        "label": "Certidão da fábrica",
+        "description": "Certidão oficial de registo da fábrica."
+      },
+      "commercialRegistrationUrl": {
+        "label": "RCBE (Registo Comercial)",
+        "description": "Documento de registo comercial."
+      },
+      "nifDocumentUrl": {
+        "label": "Documento NIF",
+        "description": "Documento de identificação fiscal."
+      },
+      "idDocumentUrl": {
+        "label": "Documento de identificação",
+        "description": "Documento de identificação oficial."
+      },
+      "addressProofUrl": {
+        "label": "Comprovativo de morada (emitido há menos de 3 meses)",
+        "description": "Comprovativo da morada da empresa emitido há menos de 3 meses."
+      },
+      "ibanProofUrl": {
+        "label": "Comprovativo de IBAN",
+        "description": "Documento bancário com o seu IBAN."
+      },
+      "insuranceDocumentUrl": {
+        "label": "Seguro de responsabilidade civil",
+        "description": "Cobre danos a terceiros durante as operações de transporte."
+      },
+      "transporterInsuranceUrl": {
+        "label": "Seguro de responsabilidade civil do transportador",
+        "description": "Cobre danos ou perda da carga durante o transporte."
+      }
+    }
+  },
+  "accountSuspended": {
+    "title": "Conta suspensa",
+    "message": "A sua conta foi suspensa. Contacte o apoio ao cliente para mais informações.",
+    "contactSupport": "Pode contactar a nossa equipa de apoio para resolver esta situação."
+  },
+  "pwa": {
+    "installTitle": "Instalar a aplicação CONSTRUPRECO",
+    "installBody": "Adicione este painel ao ecrã inicial para um acesso mais rápido.",
+    "install": "Instalar",
+    "notNow": "Agora não"
+  },
+  "fallback": {
+    "loadDashboard": "Não foi possível carregar o painel",
+    "downloadInvoice": "Não foi possível descarregar a fatura",
+    "loadInvoices": "Não foi possível carregar as faturas",
+    "loadInvoice": "Não foi possível carregar a fatura",
+    "cancelSubmission": "Não foi possível cancelar a submissão.",
+    "updateProfile": "Não foi possível atualizar o perfil",
+    "saveWarehouses": "Não foi possível guardar os armazéns",
+    "changePassword": "Não foi possível alterar a palavra-passe",
+    "saveEupago": "Não foi possível guardar as credenciais EuPago",
+    "uploadAvatar": "Não foi possível carregar a foto de perfil",
+    "removeAvatar": "Não foi possível remover a foto de perfil",
+    "loadProfile": "Não foi possível carregar o perfil",
+    "processPayment": "Não foi possível processar o pagamento",
+    "updateAccountInfo": "Não foi possível atualizar as informações da conta.",
+    "updateWarehouseLocations": "Não foi possível atualizar os armazéns.",
+    "startTrip": "Não foi possível iniciar a viagem",
+    "markPickedUp": "Não foi possível marcar como recolhida",
+    "navigateDelivery": "Não foi possível abrir a navegação para a entrega",
+    "loadDeliveryDetails": "Não foi possível carregar os detalhes da entrega",
+    "loadDeliveries": "Não foi possível carregar as entregas",
+    "enterPin": "Introduza o PIN de 4 dígitos do cliente",
+    "sendDeliveryOtp": "Não foi possível enviar o código de entrega",
+    "loadDelivery": "Não foi possível carregar a entrega",
+    "verifyDelivery": "Não foi possível verificar a entrega",
+    "invalidBid": "Introduza um valor de licitação válido",
+    "bidTooHigh": "A licitação não pode exceder €{{amount}}",
+    "placeBid": "Não foi possível fazer a licitação",
+    "loadAuctions": "Não foi possível carregar os leilões",
+    "uploadInsurance": "Não foi possível carregar o seguro",
+    "downloadPdf": "Não foi possível descarregar o PDF",
+    "loadInsurance": "Não foi possível carregar o seguro",
+    "loadDeliveryHistory": "Não foi possível carregar o histórico de entregas",
+    "submitWithdrawal": "Não foi possível submeter o levantamento",
+    "loadPayments": "Não foi possível carregar os pagamentos",
+    "saveIban": "Não foi possível guardar o IBAN",
+    "withdrawalSubmitted": "Pedido de levantamento enviado",
+    "withdrawalFailed": "Não foi possível efetuar o levantamento",
+    "profileUpdated": "Perfil atualizado",
+    "passwordUpdated": "Palavra-passe atualizada",
+    "somethingWentWrong": "Ocorreu um erro",
+    "userHasRecords": "Este utilizador não pode ser eliminado porque tem encomendas ou registos associados no sistema. Suspenda o utilizador em vez disso.",
+    "loadApiKeys": "Não foi possível carregar as chaves de API. Se for a primeira vez, gere uma nova chave acima.",
+    "erpKey": "Chave ERP",
+    "erpTabCreate": "1. Adicionar / criar produto (POST)",
+    "erpTabRestock": "2. Repor / atualizar stock (PATCH)",
+    "erpTabList": "3. Listar inventário (GET)",
+    "erpTabDelete": "4. Eliminar / remover (DELETE)",
+    "generating": "A gerar...",
+    "specialOffer": "Oferta especial",
+    "user": "Utilizador",
+    "moderator": "Moderador",
+    "search": "Pesquisar...",
+    "sortBy": "Ordenar por:",
+    "noDataFound": "Nenhum dado encontrado",
+    "store": "Loja",
+    "buyer": "Comprador",
+    "admin": "Administrador",
+    "you": "Você",
+    "supplier": "Fornecedor",
+    "addProductBreadcrumb": "Produto > Adicionar produto",
+    "addProduct": "Adicionar produto",
+    "submit": "Submeter",
+    "resolutionRecommended": "1920x1080px recomendado",
+    "selectOption": "Selecione uma opção",
+    "unnamedFactory": "Fábrica sem nome",
+    "conversation": "Conversa",
+    "chat": "Conversa",
+    "newConversation": "Nova conversa",
+    "newMessage": "Nova mensagem",
+    "produced": "Produzido",
+    "assigned": "Atribuído",
+    "document": "Documento",
+    "priceOnRequest": "Preço sob consulta",
+    "inStock": "Em stock",
+    "outOfStock": "Esgotado",
+    "low": "Baixo",
+    "good": "Bom",
+    "featured": "Destaque",
+    "unlimited": "Ilimitado",
+    "justNow": "Agora mesmo",
+    "minutesAgo": "há {{count}} min",
+    "hoursAgo": "há {{count}} h",
+    "accepted": "Aceite",
+    "pendingResponse": "A aguardar resposta",
+    "awaitingTheirResponse": "A aguardar a resposta da outra parte",
+    "sent": "Enviada",
+    "offerCard": "Proposta",
+    "deliveryEarning": "Ganho de entrega",
+    "quoteRequest": "Pedido de orçamento",
+    "orderTransport": "Transporte de encomenda",
+    "factorySupplier": "Fornecedor de fábrica",
+    "adminSupport": "Suporte da administração",
+    "newChat": "Nova conversa",
+    "chatOpened": "Conversa iniciada...",
+    "payoutSplit": "Divisão de pagamentos recorrente vitalícia",
+    "negotiateOffer": "Gostaria de negociar os termos desta proposta.",
+    "vsLastMonthZero": "0% vs mês anterior",
+    "confirm": "Confirmar",
+    "panel": "Painel",
+    "affiliate": "Afiliado",
+    "activeTierStatus": "Nível ativo",
+    "starterLevel": "Nível inicial",
+    "commissionRateHeadline": "Recebe uma comissão de {{percent}}%!",
+    "keepInviting": "Continue a convidar clientes para desbloquear níveis superiores com comissões ainda maiores.",
+    "progressToLevel": "Progresso para {{level}}",
+    "progressToLevelPercent": "Progresso para {{level}} ({{percent}}%)",
+    "bronzeLevel": "Nível Bronze",
+    "clientsNeeded": "Precisa de mais {{count}} clientes ativos para atingir o {{level}}.",
+    "activeClientsRequired": "{{count}}+ clientes ativos necessários",
+    "earningAnalytics": "Análise de ganhos",
+    "trackEarning": "Acompanhe os seus ganhos",
+    "earningPeriodFilter": "Filtro de período da análise de ganhos",
+    "thisYear": "Este ano",
+    "lastYear": "Ano passado",
+    "thisMonth": "Este mês",
+    "thisWeek": "Esta semana",
+    "orderStatus": "Estado das encomendas",
+    "orderStatusPeriodFilter": "Filtro de período do estado das encomendas",
+    "revenueOverview": "Resumo de receitas",
+    "revenueLast6Months": "Receita mensal dos últimos 6 meses",
+    "revenuePeriodFilter": "Filtro de período das receitas",
+    "warehouseN": "Armazém {{n}}",
+    "confirmDeleteProduct": "Tem a certeza de que pretende eliminar \"{{title}}\"? Esta ação não pode ser anulada.",
+    "confirmCancelSubmission": "Tem a certeza de que pretende cancelar a submissão de \"{{title}}\"?",
+    "orderIdValue": "N.º da encomenda: {{id}}",
+    "auctionIdValue": "N.º do leilão: {{id}}",
+    "deliveryIdValue": "N.º da entrega: {{id}}",
+    "priceValue": "Preço: {{price}}",
+    "pricePerUnitValue": "Preço: {{price}} por {{unit}}",
+    "pricePerUnitGeneric": "Preço: {{price}} por unidade",
+    "pricePerUnitBulk": "Preço: {{price}} por unidade (grosso)",
+    "perUnitGeneric": "{{price}} por unidade",
+    "pricePer": "{{price}} por {{unit}}",
+    "companyPriceSlash": "Empresa: {{price}}{{unit}}",
+    "perUnitSuffix": " por {{unit}}",
+    "minValue": "Mín.: {{value}}",
+    "bulkOptions": "Opções de grandes quantidades disponíveis",
+    "daysCount": "{{count}} dias",
+    "percentCompleted": "{{percent}}% concluído",
+    "installmentN": "{{n}}.ª prestação",
+    "bagsCount": "{{count}} sacos",
+    "payMonthly": "Pague €{{amount}}/mês durante {{count}} meses",
+    "payMonthlyOne": "Pague €{{amount}}/mês durante 1 mês",
+    "offerFor": "Proposta: {{product}}",
+    "pageN": "Página {{n}}",
+    "showingResults": "A mostrar {{from}} a {{to}} de {{total}} resultados",
+    "uploadN": "Imagem {{n}}",
+    "removeImageN": "Remover imagem {{n}}",
+    "maxPhotos": "Máx. {{count}} fotos",
+    "maxOnePhoto": "Máx. 1 foto",
+    "statusAssigned": "Atribuída",
+    "statusPickedUp": "Recolhida",
+    "statusInTransit": "Em trânsito",
+    "statusDelivered": "Entregue",
+    "statusCancel": "Cancelada",
+    "statusInProduction": "Em produção",
+    "statusProduced": "Produzida",
+    "statusReady": "Pronta",
+    "statusCompleted": "Concluída",
+    "monthsCount": "{{count}} meses",
+    "unitWord": "unidade",
+    "statusPending": "Pendente",
+    "statusNew": "Nova",
+    "statusProcessing": "Em processamento",
+    "statusPaid": "Paga",
+    "entryLevelTier": "NÍVEL DE ENTRADA",
+    "clientsProgress": "{{current}}/{{target}} clientes",
+    "firstPage": "Primeira página",
+    "previousPage": "Página anterior",
+    "morePages": "Mais páginas",
+    "nextPage": "Página seguinte",
+    "lastPage": "Última página",
+    "useAiDescription": "Usar descrição com IA",
+    "useAiFeature": "Usar características com IA",
+    "useAiInformation": "Usar informação com IA",
+    "useAiSpecification": "Usar especificação com IA",
+    "curlCommand": "Comando cURL",
+    "curlRestock": "cURL – Repor stock",
+    "curlFetchList": "cURL – Obter lista de inventário",
+    "curlDelete": "cURL – Eliminar produto",
+    "disputeChat": "Conversa de resolução de disputa"
+  },
+  "sellerVerification": {
+    "pendingTitle": "Conta pendente de verificação",
+    "rejectedTitle": "Documentos rejeitados",
+    "unverifiedDescription": "Submeta os seus documentos para que a nossa equipa possa verificar a sua conta. Já pode adicionar produtos e explorar o painel, mas os seus produtos só ficarão visíveis e disponíveis para compra após a aprovação.",
+    "underReviewDescription": "Os seus documentos estão em análise. Os seus produtos ficarão visíveis e disponíveis para compra assim que a sua conta for aprovada.",
+    "rejectedDescription": "Alguns dos seus documentos foram rejeitados. Volte a carregá-los para que possamos analisar a sua conta.",
+    "submitDocuments": "Submeter documentos",
+    "updateDocuments": "Atualizar documentos",
+    "transporterUnverifiedDescription": "Submeta os seus documentos e seguros para que a nossa equipa possa verificar a sua conta. Já pode explorar o quadro de leilões, mas só poderá licitar entregas após a aprovação.",
+    "transporterUnderReviewDescription": "Os seus documentos estão em análise. Poderá licitar entregas assim que a sua conta for aprovada.",
+    "bidBlocked": "A sua conta tem de ser verificada antes de poder licitar entregas. Submeta os seus documentos no painel.",
+    "goToDashboard": "Ir para o painel"
+  }
 }

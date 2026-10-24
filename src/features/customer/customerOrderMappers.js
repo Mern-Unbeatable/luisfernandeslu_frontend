@@ -1,9 +1,11 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatOrderPrice(price) {
   if (price == null || price === '') return '—'
   const num = Number(price)
   if (Number.isNaN(num)) return String(price)
 
-  return `€${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString(appLocale(), {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`
@@ -15,7 +17,7 @@ function formatTimelineDate(value) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return undefined
 
-  return date.toLocaleString('en-US', {
+  return date.toLocaleString(appLocale(), {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',

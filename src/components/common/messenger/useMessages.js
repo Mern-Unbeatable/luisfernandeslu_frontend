@@ -5,6 +5,7 @@ import {
   DEMO_SUPPLIER_MESSENGER_CHATS,
   DEMO_SUPPLIER_MESSENGER_MESSAGES,
 } from '@/data/demoData'
+import i18n from '@/i18n'
 
 /**
  * Frontend-only chat state (mock). Swap internals later for API.
@@ -52,19 +53,19 @@ export default function useMessages({ variant = 'default' } = {}) {
     setChats((prev) => {
       if (prev.find(c => c.id === threadId)) return prev
       
-      let name = 'New Chat'
-      if (params.type === 'QUOTE') name = `Quote Request`
-      else if (params.type === 'ORDER_TRANSPORT') name = `Order Transport`
-      else if (params.type === 'FACTORY_SUPPLIER') name = `Factory Supplier`
-      else if (params.type === 'ADMIN_SUPPORT') name = `Admin Support`
+      let name = i18n.t('fallback.newChat')
+      if (params.type === 'QUOTE') name = i18n.t('fallback.quoteRequest')
+      else if (params.type === 'ORDER_TRANSPORT') name = i18n.t('fallback.orderTransport')
+      else if (params.type === 'FACTORY_SUPPLIER') name = i18n.t('fallback.factorySupplier')
+      else if (params.type === 'ADMIN_SUPPORT') name = i18n.t('fallback.adminSupport')
 
       return [
         {
           id: threadId,
           name,
           avatar: '/images/avatar-placeholder.png',
-          lastMessage: 'Chat opened...',
-          time: 'Just now',
+          lastMessage: i18n.t('fallback.chatOpened'),
+          time: i18n.t('fallback.justNow'),
           unreadCount: 0,
           status: 'online',
           type: params.type,
@@ -98,7 +99,7 @@ export default function useMessages({ variant = 'default' } = {}) {
       setChats((prev) =>
         prev.map((chat) =>
           chat.id === activePartnerId
-            ? { ...chat, lastMessage: value, time: 'Just now' }
+            ? { ...chat, lastMessage: value, time: i18n.t('fallback.justNow') }
             : chat,
         ),
       )
@@ -157,29 +158,26 @@ export default function useMessages({ variant = 'default' } = {}) {
       await new Promise((r) => setTimeout(r, 200))
 
       const pricing = (form.installments || []).flatMap((row, index) => {
-        const n = index + 1
-        const ord =
-          n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : `${n}th`
         return [
           {
-            label: `${ord} Installment`,
+            label: i18n.t('fallback.installmentN', { n: index + 1 }),
             value: row.price ? `€${row.price}` : '—',
             icon: 'dollar',
           },
           {
-            label: 'Quantity',
-            value: row.quantity ? `${row.quantity} Bags` : '—',
+            label: i18n.t('ui.quantity'),
+            value: row.quantity ? i18n.t('fallback.bagsCount', { count: row.quantity }) : '—',
           },
         ]
       })
 
       if (form.totalPrice) {
         pricing.unshift(
-          { label: 'Total Price', value: `€${form.totalPrice}`, icon: 'dollar' },
+          { label: i18n.t('ui.totalPrice'), value: `€${form.totalPrice}`, icon: 'dollar' },
           {
-            label: 'Installment',
+            label: i18n.t('ui.installment'),
             value: form.installmentMonths
-              ? `${form.installmentMonths} months`
+              ? i18n.t('fallback.monthsCount', { count: form.installmentMonths })
               : '—',
             icon: 'calendar',
           },
@@ -195,10 +193,10 @@ export default function useMessages({ variant = 'default' } = {}) {
       const monthly = remainingMonths > 0 ? (remaining / remainingMonths).toFixed(2) : null
 
       const offer = {
-        title: 'Offer Card',
-        statusLabel: 'Awaiting their response',
+        title: i18n.t('fallback.offerCard'),
+        statusLabel: i18n.t('fallback.awaitingTheirResponse'),
         product: form.product || '—',
-        quantity: form.totalQuantity ? `${form.totalQuantity} Bags` : '—',
+        quantity: form.totalQuantity ? i18n.t('fallback.bagsCount', { count: form.totalQuantity }) : '—',
         projectName: form.projectName || '—',
         address: form.deliveryLocation || '—',
         unloadingType: form.unloadingType || '—',
@@ -211,7 +209,7 @@ export default function useMessages({ variant = 'default' } = {}) {
                 ? `€${remaining.toFixed(2)}`
                 : '—',
               note: monthly
-                ? `Pay €${monthly}/month for ${remainingMonths} month${remainingMonths === 1 ? '' : 's'}`
+                ? i18n.t(remainingMonths === 1 ? 'fallback.payMonthlyOne' : 'fallback.payMonthly', { amount: monthly, count: remainingMonths })
                 : '',
             }
           : undefined,
@@ -235,8 +233,8 @@ export default function useMessages({ variant = 'default' } = {}) {
           chat.id === activePartnerId
             ? {
                 ...chat,
-                lastMessage: `Offer: ${form.product || 'Product'}`,
-                time: 'Just now',
+                lastMessage: i18n.t('fallback.offerFor', { product: form.product || i18n.t('ui.product') }),
+                time: i18n.t('fallback.justNow'),
               }
             : chat,
         ),

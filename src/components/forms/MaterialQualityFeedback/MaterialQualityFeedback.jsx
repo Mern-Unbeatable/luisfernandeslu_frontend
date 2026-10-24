@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FiStar } from 'react-icons/fi'
 
 function StarRatingInput({ value = 0, onChange, max = 5, className = '' }) {
+  const { t } = useTranslation()
   const [hover, setHover] = useState(0)
   const display = hover || value
 
@@ -10,7 +11,7 @@ function StarRatingInput({ value = 0, onChange, max = 5, className = '' }) {
     <div
       className={`flex items-center gap-1 ${className}`}
       role="group"
-      aria-label="Rating"
+      aria-label={t('ui.rating')}
     >
       {Array.from({ length: max }, (_, index) => {
         const star = index + 1

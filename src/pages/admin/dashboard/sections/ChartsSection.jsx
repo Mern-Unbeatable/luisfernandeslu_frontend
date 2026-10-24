@@ -18,6 +18,7 @@ import {
   ADMIN_REVENUE_B2C,
   ADMIN_REVENUE_CHART_LABELS,
 } from '../data/dashboardDemo'
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
   CategoryScale,
@@ -44,6 +45,7 @@ const baseTooltip = {
 }
 
 function ChartCard({ title, children, timeframe, onTimeframeChange, timeLabel }) {
+  const { t } = useTranslation()
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -55,7 +57,7 @@ function ChartCard({ title, children, timeframe, onTimeframeChange, timeLabel })
           aria-label={timeLabel}
         >
           <option value="thisYear">{timeLabel}</option>
-          <option value="lastYear">Last year</option>
+          <option value="lastYear">{t('ui.lastYear')}</option>
         </select>
       </div>
       <div className="mt-6 h-72 w-full sm:h-80">{children}</div>
@@ -136,7 +138,7 @@ export default function ChartsSection({ channel = 'all', data, isLoading }) {
           ...baseTooltip,
           callbacks: {
             label(ctx) {
-              return `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString('en-US')}`
+              return `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString(appLocale())}`
             },
           },
         },

@@ -45,11 +45,11 @@ export default function UserCheckoutPage() {
         .unwrap()
         .catch((err) => {
           console.error("Direct buy quote error:", err)
-          toast.error("Failed to fetch product price.")
+          toast.error(t('ui.priceFetchFailed'))
         })
       setInitialDirectQuoteDone(true)
     }
-  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos])
+  }, [directBuy, initialDirectQuoteDone, quoteDirect, directPromos, t])
 
   const cartData = directBuy ? directDataResponse?.cart : cartDataQuery?.cart
   
@@ -158,7 +158,7 @@ export default function UserCheckoutPage() {
                     onClick={() => setUseCustomBilling(true)}
                     className="text-sm font-semibold text-[var(--active)] hover:underline"
                   >
-                    Use different address
+                    {t('checkoutPage.useDifferentAddress')}
                   </button>
                 </div>
                 <div className="text-sm text-[var(--secondary-text)]">
@@ -189,7 +189,7 @@ export default function UserCheckoutPage() {
                   onClick={() => setUseCustomBilling(false)}
                   className="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
                 >
-                  Cancel and use saved address
+                  {t('checkoutPage.cancelUseSavedAddress')}
                 </button>
               </div>
             )}

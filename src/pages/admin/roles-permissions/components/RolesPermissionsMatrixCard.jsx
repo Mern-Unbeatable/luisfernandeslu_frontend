@@ -1,4 +1,5 @@
 import DataTable from '@/components/data-display/DataTable/DataTable'
+import i18n from '@/i18n'
 
 export default function RolesPermissionsMatrixCard({
   title,
@@ -9,7 +10,7 @@ export default function RolesPermissionsMatrixCard({
   loading = false,
   showActions = false,
   actions = [],
-  actionHeader = 'Action',
+  actionHeader = i18n.t('ui.action'),
   actionType = 'menu',
   getRowKey,
 }) {

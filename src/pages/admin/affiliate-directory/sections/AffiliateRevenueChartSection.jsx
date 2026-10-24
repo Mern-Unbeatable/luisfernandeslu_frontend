@@ -14,6 +14,7 @@ import {
 import { useGetAdminAffiliateAnalyticsQuery } from '@/features/admin/adminAffiliateApi'
 import { mapAdminAffiliateAnalytics } from '@/features/admin/adminAffiliateMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
   CategoryScale,
@@ -118,7 +119,7 @@ export default function AffiliateRevenueChartSection({ affiliateId }) {
           callbacks: {
             label(context) {
               const value = context.parsed.y ?? 0
-              return `${context.dataset.label}: €${Number(value).toLocaleString('en-US', {
+              return `${context.dataset.label}: €${Number(value).toLocaleString(appLocale(), {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}`
@@ -138,7 +139,7 @@ export default function AffiliateRevenueChartSection({ affiliateId }) {
             color: '#6B7280',
             font: { size: 11 },
             callback: (value) =>
-              `€${Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              `€${Number(value).toLocaleString(appLocale(), { maximumFractionDigits: 0 })}`,
           },
           grid: { color: 'rgba(0,0,0,0.06)' },
         },

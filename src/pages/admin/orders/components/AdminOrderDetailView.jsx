@@ -12,8 +12,11 @@ import {
   StatusBadge,
   normalizeStatus,
 } from '@/components/data-display/OrderDetails/shared'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
 function MessageButton({ onClick, disabled }) {
+  const { t } = useTranslation()
   if (!onClick || disabled) return null
 
   return (
@@ -23,17 +26,18 @@ function MessageButton({ onClick, disabled }) {
       className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
     >
       <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
-      Message
+      {t('ui.message')}
     </button>
   )
 }
 
 function SellerInformation({ supplier, title, onChat }) {
+  const { t } = useTranslation()
   if (!supplier?.name) return null
 
   return (
     <div>
-      <SectionEyebrow>Seller</SectionEyebrow>
+      <SectionEyebrow>{t('ui.seller')}</SectionEyebrow>
       <div className="mt-1 mb-3 flex items-center justify-between gap-3">
         <h2 className="text-lg font-bold text-[var(--primary-text)]">{title}</h2>
         <MessageButton
@@ -52,12 +56,13 @@ function SellerInformation({ supplier, title, onChat }) {
 }
 
 function TransporterInformation({ transporter, logistics, onChat }) {
+  const { t } = useTranslation()
   return (
     <div>
-      <SectionEyebrow>Transporter</SectionEyebrow>
+      <SectionEyebrow>{t('ui.transporter')}</SectionEyebrow>
       <div className="mt-1 mb-3 flex items-center justify-between gap-3">
         <h2 className="text-lg font-bold text-[var(--primary-text)]">
-          Transporter Information
+          {t('ui.transporterInfo')}
         </h2>
         <MessageButton
           disabled={!transporter?.id}
@@ -73,11 +78,11 @@ function TransporterInformation({ transporter, logistics, onChat }) {
       <div className="mt-4 flex flex-col gap-3">
         <IconLabel
           icon={FiMapPin}
-          label="Delivery Location"
+          label={t('ui.deliveryLocation')}
           value={logistics.deliveryLocation}
         />
         <StackLabel
-          label="Access Conditions"
+          label={t('ui.accessConditions')}
           value={logistics.accessCondition}
         />
       </div>
@@ -90,11 +95,12 @@ function TransporterInformation({ transporter, logistics, onChat }) {
  */
 export default function AdminOrderDetailView({
   order = {},
-  supplierSectionTitle = 'Supplier Information',
+  supplierSectionTitle = i18n.t('ui.supplierInformation'),
   onDownloadInvoice,
   onAccept,
   onChat,
 }) {
+  const { t } = useTranslation()
   const status = normalizeStatus(order.status)
   const isNew = status === 'new'
   const isCancel = status === 'cancel'
@@ -120,13 +126,13 @@ export default function AdminOrderDetailView({
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold text-[var(--primary-text)] sm:text-3xl">
-              Order Details
+              {t('ui.orderDetails')}
             </h1>
             <StatusBadge status={status} label={order.statusLabel} />
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <MetaCard label="Order ID" value={order.orderId} />
-            <MetaCard label="Order Date" value={order.orderDate} />
+            <MetaCard label={t('ui.orderId')} value={order.orderId} />
+            <MetaCard label={t('ui.orderDate')} value={order.orderDate} />
           </div>
         </div>
         {isNew ? (
@@ -144,12 +150,12 @@ export default function AdminOrderDetailView({
 
       <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div>
-          <SectionEyebrow>Recipient</SectionEyebrow>
+          <SectionEyebrow>{t('ui.recipient')}</SectionEyebrow>
           <div className="mt-1 mb-3 flex items-center justify-between gap-3">
             <h2 className="text-lg font-bold text-[var(--primary-text)]">
               {isCustomerRecipient
-                ? 'Customer Information'
-                : 'Company Information'}
+                ? t('ui.customerInformation')
+                : t('ui.companyInformation')}
             </h2>
             <MessageButton
               disabled={!recipient.id}
@@ -165,20 +171,20 @@ export default function AdminOrderDetailView({
           <div className="mt-4 flex flex-col gap-3">
             {isCustomerRecipient ? (
               <>
-                <StackLabel label="Region" value={recipient.region} />
-                <StackLabel label="City" value={recipient.city} />
-                <StackLabel label="Zip Code" value={recipient.zipCode} />
-                <StackLabel label="Address" value={recipient.address} />
+                <StackLabel label={t('ui.region')} value={recipient.region} />
+                <StackLabel label={t('ui.city')} value={recipient.city} />
+                <StackLabel label={t('ui.zipCode')} value={recipient.zipCode} />
+                <StackLabel label={t('ui.address')} value={recipient.address} />
               </>
             ) : (
               <>
                 <IconLabel
                   icon={FiMapPin}
-                  label="Project"
+                  label={t('ui.project')}
                   value={recipient.project}
                 />
                 <StackLabel
-                  label="Types of unloading Needed"
+                  label={t('ui.unloadingType')}
                   value={logistics.unloadingType}
                 />
               </>
@@ -203,9 +209,9 @@ export default function AdminOrderDetailView({
       </div>
 
       <div>
-        <SectionEyebrow>Materials</SectionEyebrow>
+        <SectionEyebrow>{t('ui.materials')}</SectionEyebrow>
         <h2 className="mt-1 mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Product Details
+          {t('ui.productDetails')}
         </h2>
         <ProductsTable products={order.products} />
         <div className="mt-6">

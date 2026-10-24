@@ -18,6 +18,7 @@ import {
 } from "@/features/supplier/documents/documentsApi";
 import GenerateDocumentModal from "./GenerateDocumentModal";
 import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
+import { appLocale } from "@/i18n/locale";
 
 const SUPPLIER_FISCAL_DOCUMENTS_PAGE_SIZE = 7;
 
@@ -53,7 +54,7 @@ function normalizeCurrencyValue(value) {
   if (value == null || value === "") return "€0";
   if (typeof value === "string") return value;
   if (typeof value === "number" && Number.isFinite(value)) {
-    return `€${value.toLocaleString("en-US", {
+    return `€${value.toLocaleString(appLocale(), {
       minimumFractionDigits: value % 1 === 0 ? 0 : 2,
       maximumFractionDigits: 2,
     })}`;
@@ -427,13 +428,14 @@ function DocumentPreviewModal({
   onDownloadSupplier,
   onDownloadCustomer,
 }) {
+  const { t } = useTranslation();
   if (!document && !loading) return null;
 
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4 sm:p-6">
       <button
         type="button"
-        aria-label="Close document preview"
+        aria-label={t("ui.closeDocumentPreview")}
         className="absolute inset-0 bg-black/45"
         onClick={onClose}
       />
@@ -448,18 +450,18 @@ function DocumentPreviewModal({
           </span>
           <div className="min-w-0 flex-1">
             <h2 className="text-base font-bold text-[var(--primary-text)]">
-              Document Preview
+              {t("ui.documentPreview")}
             </h2>
             <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
               {loading
-                ? "Loading document details..."
+                ? t("ui.loadingDocument")
                 : formatDocumentPreviewValue(document)}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("ui.close")}
             className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--secondary-text)] transition-colors hover:bg-gray-100"
           >
             <FiX className="size-5" strokeWidth={1.75} aria-hidden />
@@ -467,12 +469,12 @@ function DocumentPreviewModal({
         </div>
 
         <div className="grid grid-cols-1 gap-3 px-5 py-5 sm:grid-cols-2">
-          <PreviewField label="Document ID" value={document?.documentId} />
-          <PreviewField label="Order ID" value={document?.orderId} />
-          <PreviewField label="Customer" value={document?.customer} />
-          <PreviewField label="Amount" value={document?.amount} />
-          <PreviewField label="Date" value={document?.date} />
-          <PreviewField label="Type" value={document?.type} />
+          <PreviewField label={t("ui.documentId")} value={document?.documentId} />
+          <PreviewField label={t("ui.orderId")} value={document?.orderId} />
+          <PreviewField label={t("ui.customer")} value={document?.customer} />
+          <PreviewField label={t("ui.amount")} value={document?.amount} />
+          <PreviewField label={t("ui.date")} value={document?.date} />
+          <PreviewField label={t("ui.type")} value={document?.type} />
         </div>
 
         <div className="flex flex-col gap-2 border-t border-gray-200 px-5 py-4 sm:flex-row sm:justify-end">
@@ -481,14 +483,14 @@ function DocumentPreviewModal({
             onClick={onDownloadSupplier}
             className="inline-flex h-11 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
           >
-            Download Supplier PDF
+            {t("ui.downloadSupplierPdf")}
           </button>
           <button
             type="button"
             onClick={onDownloadCustomer}
             className="inline-flex h-11 items-center justify-center rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-colors hover:brightness-95"
           >
-            Download Buyer PDF
+            {t("ui.downloadBuyerPdf")}
           </button>
         </div>
       </div>

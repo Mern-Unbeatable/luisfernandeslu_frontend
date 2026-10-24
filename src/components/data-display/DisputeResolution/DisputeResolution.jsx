@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FiPaperclip, FiSend } from 'react-icons/fi'
 
 /**
@@ -17,6 +18,7 @@ export default function DisputeResolution({
   onStatusChange,
   className = '',
 }) {
+  const { t } = useTranslation()
   const isDashboard = variant === 'dashboard'
   const items = dispute.items || []
   const messages = dispute.messages || []
@@ -28,10 +30,10 @@ export default function DisputeResolution({
       {isDashboard ? (
         <header className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
-            Disputes &amp; Returns Center
+            {t('disputeResolution.dashboardTitle')}
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Manage customer disputes, returns, and resolution cases
+            {t('disputeResolution.dashboardSubtitle')}
           </p>
         </header>
       ) : null}
@@ -74,11 +76,12 @@ function Card({ children, className = '' }) {
 }
 
 function DisputeInfoCard({ items }) {
+  const { t } = useTranslation()
   return (
     <Card className="h-full">
-      <h2 className="text-lg font-bold text-zinc-950">Dispute Information</h2>
+      <h2 className="text-lg font-bold text-zinc-950">{t('disputeResolution.infoTitle')}</h2>
       <p className="mt-1 text-sm text-neutral-500">
-        Details about the raised issue
+        {t('disputeResolution.infoSubtitle')}
       </p>
 
       <ul className="mt-6 flex flex-col gap-5">
@@ -94,7 +97,7 @@ function DisputeInfoCard({ items }) {
                 {item.productName}
               </p>
               <p className="mt-1 text-xs text-neutral-500">
-                Order ID: {item.orderId}
+                {t('disputeResolution.orderId', { id: item.orderId })}
               </p>
               <p className="mt-1.5 text-sm font-medium text-[var(--active)]">
                 {item.reason}
@@ -114,23 +117,24 @@ function DescriptionCard({
   createdAt,
   showMeta,
 }) {
+  const { t } = useTranslation()
   return (
     <Card className="flex h-full flex-col">
-      <h2 className="text-lg font-bold text-zinc-950">Description</h2>
+      <h2 className="text-lg font-bold text-zinc-950">{t('disputeResolution.description')}</h2>
       <p className="mt-3 text-sm leading-relaxed text-neutral-600">
         {description}
       </p>
 
       <div className="mt-5">
         <h3 className="text-sm font-semibold text-zinc-900">
-          Evidence ({evidence.length})
+          {t('disputeResolution.evidence', { count: evidence.length })}
         </h3>
         <div className="mt-3 flex flex-wrap gap-3">
           {evidence.map((src, index) => (
             <img
               key={`${src}-${index}`}
               src={src}
-              alt={`Evidence ${index + 1}`}
+              alt={t('disputeResolution.evidenceAlt', { n: index + 1 })}
               className="h-[88px] w-[120px] rounded-lg object-cover"
             />
           ))}
@@ -140,13 +144,13 @@ function DescriptionCard({
       {showMeta ? (
         <div className="mt-auto flex flex-col gap-3 pt-6">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="text-sm font-medium text-neutral-500">Status</span>
+            <span className="text-sm font-medium text-neutral-500">{t('disputeResolution.status')}</span>
             <span className="inline-flex rounded-md bg-[color-mix(in_srgb,var(--active)_16%,white)] px-2.5 py-1 text-[11px] font-semibold tracking-wide text-[var(--active)] uppercase">
-              {formatStatusLabel(status)}
+              {formatStatusLabel(status, t)}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="text-sm font-medium text-neutral-500">Created</span>
+            <span className="text-sm font-medium text-neutral-500">{t('disputeResolution.created')}</span>
             <span className="text-sm font-medium text-zinc-800">{createdAt}</span>
           </div>
         </div>
@@ -166,6 +170,7 @@ function CommunicationThread({
   onAttach,
   className = '',
 }) {
+  const { t } = useTranslation()
   const [draft, setDraft] = useState('')
   const fileRef = useRef(null)
   const messagesEndRef = useRef(null)
@@ -195,7 +200,7 @@ function CommunicationThread({
     <Card className={`flex flex-col overflow-hidden !p-0 ${className}`}>
       <div className="border-b border-[#E5E5E5] px-5 py-4 sm:px-6">
         <h2 className="text-lg font-bold text-zinc-950">
-          Communication Thread
+          {t('disputeResolution.thread')}
         </h2>
       </div>
 
@@ -254,13 +259,13 @@ function CommunicationThread({
         {showStatusPills ? (
           <div className="flex flex-wrap items-center gap-2">
             <StatusPill
-              label="Resolved"
+              label={t('disputeResolution.statusResolved')}
               active={status === 'resolved'}
               tone="success"
               onClick={() => onStatusChange?.('resolved')}
             />
             <StatusPill
-              label="Under Review"
+              label={t('disputeResolution.statusUnderReview')}
               active={status === 'under_review'}
               tone="review"
               onClick={() => onStatusChange?.('under_review')}
@@ -285,7 +290,7 @@ function CommunicationThread({
             type="button"
             onClick={() => fileRef.current?.click()}
             className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-white hover:text-zinc-800"
-            aria-label="Attach file"
+            aria-label={t('disputeResolution.attachFile')}
           >
             <FiPaperclip className="size-5" strokeWidth={1.75} />
           </button>
@@ -293,14 +298,14 @@ function CommunicationThread({
             type="text"
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
-            placeholder="Type your message..."
+            placeholder={t('disputeResolution.messagePlaceholder')}
             className="h-11 min-w-0 flex-1 rounded-xl border border-[#E5E5E5] bg-white px-4 text-sm text-zinc-900 outline-none placeholder:text-neutral-400 focus:border-[var(--active)]"
           />
           <button
             type="submit"
             disabled={!draft.trim()}
             className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#2D3036] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-            aria-label="Send message"
+            aria-label={t('disputeResolution.sendMessage')}
           >
             <FiSend className="size-4" strokeWidth={2} />
           </button>
@@ -331,9 +336,9 @@ function StatusPill({ label, active, tone, onClick }) {
   )
 }
 
-function formatStatusLabel(status) {
-  if (status === 'resolved') return 'Resolved'
-  if (status === 'under_review') return 'Under Review'
+function formatStatusLabel(status, t) {
+  if (status === 'resolved') return t('disputeResolution.statusResolved')
+  if (status === 'under_review') return t('disputeResolution.statusUnderReview')
   return String(status || '')
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase())

@@ -30,7 +30,7 @@ export default function PromoCodeDetailsModal({
 
         <div className="space-y-4 px-5 py-5">
           {isLoading ? (
-            <p className="text-sm text-(--secondary-text)">Loading...</p>
+            <p className="text-sm text-(--secondary-text)">{t("ui.loadingEllipsis")}</p>
           ) : null}
 
           {!isLoading && isError ? (

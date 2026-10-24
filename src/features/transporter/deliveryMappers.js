@@ -1,3 +1,6 @@
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
+
 function splitLocation(location) {
   const value = String(location || '').trim()
   if (!value) return { title: '—', subtitle: '' }
@@ -67,8 +70,8 @@ export function mapTransporterDelivery(delivery) {
     orderId: delivery.orderId,
     title: delivery.productName || '—',
     orderLabel: delivery.orderId
-      ? `Order ID: ${delivery.orderId}`
-      : `Auction ID: ${delivery.auctionId || '—'}`,
+      ? i18n.t('fallback.orderIdValue', { id: delivery.orderId })
+      : i18n.t('fallback.auctionIdValue', { id: delivery.auctionId || '—' }),
     price:
       delivery.bidAmount == null ? '—' : `€${Number(delivery.bidAmount)}`,
     distance:
@@ -101,7 +104,7 @@ function formatAuctionDate(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(appLocale())
 }
 
 function formatMoney(amount) {

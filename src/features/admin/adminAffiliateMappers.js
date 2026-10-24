@@ -1,8 +1,10 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatMoney(amount) {
   if (amount == null || amount === '') return '—'
   const num = Number(amount)
   if (Number.isNaN(num)) return String(amount)
-  return `€${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`
@@ -12,7 +14,7 @@ function formatCount(value) {
   if (value == null || value === '') return '—'
   const num = Number(value)
   if (Number.isNaN(num)) return String(value)
-  return num.toLocaleString()
+  return num.toLocaleString(appLocale())
 }
 
 /** Map backend stats → stat card values */

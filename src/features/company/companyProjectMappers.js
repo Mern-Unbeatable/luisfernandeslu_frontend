@@ -1,9 +1,12 @@
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
+
 function formatOrderPrice(price) {
   if (price == null || price === '') return '—'
   const num = Number(price)
   if (Number.isNaN(num)) return String(price)
 
-  return `€${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString(appLocale(), {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`
@@ -15,7 +18,7 @@ function formatDisplayDate(value) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return '—'
 
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(appLocale(), {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -46,7 +49,7 @@ function mapInstallment(item, index) {
 
   return {
     id: item.id ?? String(index + 1),
-    title: item.title ?? `${index + 1}${getOrdinalSuffix(index + 1)} Installment`,
+    title: item.title ?? i18n.t('fallback.installmentN', { n: index + 1 }),
     installmentNumber: item.installmentNumber ?? index + 1,
     status: String(item.status || 'pending').trim().toLowerCase(),
     dueDate: rawDueDate ? formatDisplayDate(rawDueDate) : '—',
@@ -75,16 +78,6 @@ function mapProgressSteps(steps = []) {
     date: step.at ? formatDisplayDate(step.at) : undefined,
     completed: Boolean(step.completed),
   }))
-}
-
-function getOrdinalSuffix(value) {
-  const remainder = value % 10
-  const remainder100 = value % 100
-  if (remainder100 >= 11 && remainder100 <= 13) return 'th'
-  if (remainder === 1) return 'st'
-  if (remainder === 2) return 'nd'
-  if (remainder === 3) return 'rd'
-  return 'th'
 }
 
 /** Map backend company project list row */
@@ -150,7 +143,7 @@ export function mapCompanyProjectOrderDetail(data) {
       paidAmount: formatOrderPrice(paymentSummary.paidAmount),
       remainingBalance: formatOrderPrice(paymentSummary.remainingBalance),
       progressPercent,
-      progressLabel: `${progressPercent}% Completed`,
+      progressLabel: i18n.t('fallback.percentCompleted', { percent: progressPercent }),
       nextInstallmentDate: formatDisplayDate(
         paymentSummary.nextInstallmentDate,
       ),

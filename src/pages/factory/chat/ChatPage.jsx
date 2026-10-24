@@ -32,7 +32,7 @@ export default function ChatPage() {
         isSending={state.isSending}
         isLoading={state.isLoading}
         actionMessageId={state.actionMessageId}
-        sidebarTitle="Recent Messages"
+        sidebarTitle={t('ui.recentMessages')}
       />
     </div>
   )

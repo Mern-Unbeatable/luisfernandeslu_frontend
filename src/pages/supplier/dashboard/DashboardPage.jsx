@@ -10,12 +10,14 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import SuspendedAccessGate from "@/components/common/account-lock/SuspendedAccessGate";
+import SellerVerificationPanel from "@/components/common/account-lock/SellerVerificationPanel";
 import DataTable from "@/components/data-display/DataTable/DataTable";
 import StatusCard from "@/components/data-display/StatusCard";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { useGetSupplierOverviewQuery } from "@/features/supplier/overview/overviewApi";
 import OrderStatusSelect from "./OrderStatusSelect";
 import RevenueChart from "./RevenueChart";
+import { appLocale } from "@/i18n/locale";
 
 const STATUS_LABEL_KEYS = {
   assign: "panel.supplierDashboard.statusAssign",
@@ -77,7 +79,7 @@ function formatStatValue(value, format) {
   const numericValue = Number(value ?? 0);
 
   if (format === "currency") {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(appLocale(), {
       style: "currency",
       currency: "EUR",
       minimumFractionDigits: 2,
@@ -91,7 +93,7 @@ function formatStatValue(value, format) {
 export default function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isSuspended, rejectionReason } = useOutletContext();
+  const { isSuspended, rejectionReason, verificationStatus } = useOutletContext();
   const currentYear = new Date().getFullYear();
   const [period, setPeriod] = useState(String(currentYear));
   const [page, setPage] = useState(1);
@@ -278,6 +280,12 @@ export default function DashboardPage() {
           {t("panel.supplierDashboard.subtitle")}
         </p>
       </header>
+
+      <SellerVerificationPanel
+        role="supplier"
+        verificationStatus={verificationStatus}
+        rejectionReason={rejectionReason}
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {STAT_CARD_CONFIG.map((card) => (

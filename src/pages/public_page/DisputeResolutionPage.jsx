@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import DisputeResolution from '../../components/data-display/DisputeResolution'
 import { DEMO_DISPUTE_PUBLIC } from '@/data/demoData'
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
 
 export default function DisputeResolutionPage() {
   const [dispute, setDispute] = useState(DEMO_DISPUTE_PUBLIC)
@@ -18,11 +20,11 @@ export default function DisputeResolutionPage() {
               ...prev.messages,
               {
                 id: `local-${Date.now()}`,
-                author: 'You',
-                roleLabel: 'Buyer',
+                author: i18n.t('fallback.you'),
+                roleLabel: i18n.t('fallback.buyer'),
                 role: 'buyer',
                 align: 'right',
-                at: new Date().toLocaleString(),
+                at: new Date().toLocaleString(appLocale()),
                 text,
               },
             ],

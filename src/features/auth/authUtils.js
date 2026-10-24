@@ -1,3 +1,4 @@
+import i18n from '@/i18n'
 export function parseAuthPayload(payload) {
   const root = payload?.data ?? payload ?? {}
   const user = root.user ?? null
@@ -56,22 +57,6 @@ export function clearEmailVerificationSession() {
   sessionStorage.removeItem(EMAIL_VERIFICATION_KEY)
 }
 
-const SUPPLIER_FILE_FIELDS = [
-  'companyCertificate',
-  'rcbe',
-  'ibanProof',
-  'idDocuments',
-  'addressProof',
-]
-
-const FACTORY_FILE_FIELDS = [
-  'factoryCertificate',
-  'rcbe',
-  'ibanProof',
-  'idDocuments',
-  'addressProof',
-]
-
 function appendRegisterFiles(formData, fieldName, files) {
   if (!Array.isArray(files)) return
   for (const file of files) {
@@ -81,7 +66,7 @@ function appendRegisterFiles(formData, fieldName, files) {
   }
 }
 
-function buildRoleMultipartFormData(values, { entityField, entityKey, fileFields }) {
+function buildRoleMultipartFormData(values, { entityField, entityKey }) {
   const formData = new FormData()
   formData.append(entityKey, values[entityField]?.trim() ?? '')
   formData.append('email', values.email?.trim() ?? '')
@@ -93,10 +78,6 @@ function buildRoleMultipartFormData(values, { entityField, entityKey, fileFields
     values.confirmPassword?.trim() || values.password || '',
   )
 
-  for (const fieldName of fileFields) {
-    appendRegisterFiles(formData, fieldName, values[fieldName])
-  }
-
   return formData
 }
 
@@ -104,7 +85,6 @@ function buildSupplierRegisterFormData(values) {
   return buildRoleMultipartFormData(values, {
     entityField: 'companyName',
     entityKey: 'companyName',
-    fileFields: SUPPLIER_FILE_FIELDS,
   })
 }
 
@@ -112,7 +92,6 @@ function buildFactoryRegisterFormData(values) {
   return buildRoleMultipartFormData(values, {
     entityField: 'factoryName',
     entityKey: 'factoryName',
-    fileFields: FACTORY_FILE_FIELDS,
   })
 }
 
@@ -127,10 +106,6 @@ function buildTransporterRegisterFormData(values) {
     'confirmPassword',
     values.confirmPassword?.trim() || values.password || '',
   )
-
-  appendRegisterFiles(formData, 'ibanProof', values.ibanProof)
-  appendRegisterFiles(formData, 'civilLiability', values.civilLiability)
-  appendRegisterFiles(formData, 'transporterCivilLiability', values.transporterCivilLiability)
 
   return formData
 }
@@ -177,7 +152,7 @@ export function buildRegisterPayload(role, values) {
   }
 }
 
-export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
+export function getAuthErrorMessage(error, fallback = i18n.t('fallback.somethingWentWrong')) {
   if (!error) return fallback
 
   const payload =
@@ -203,7 +178,7 @@ export function getAuthErrorMessage(error, fallback = 'Something went wrong') {
       msg.includes('prisma.user.delete') ||
       msg.includes('HasRelatedRecords')
     ) {
-      return 'This user cannot be deleted because they have associated orders or records in the system. Please suspend the user instead.'
+      return i18n.t('fallback.userHasRecords')
     }
     return msg
   }

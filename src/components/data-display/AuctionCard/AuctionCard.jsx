@@ -227,7 +227,7 @@ function TransporterAuctionCard({
                         </span>
                       </span>
                       <span className="shrink-0 text-xs font-bold uppercase tracking-wide text-[#3B82F6]">
-                        YOU
+                        {t('fallback.you')}
                       </span>
                     </>
                   ) : (

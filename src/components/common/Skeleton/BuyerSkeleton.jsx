@@ -1,15 +1,17 @@
 import Skeleton from './Skeleton'
 import TableSkeleton from './TableSkeleton'
+import { useTranslation } from 'react-i18next'
 
 function LoadingStatus({ className = '', children }) {
+  const { t } = useTranslation()
   return (
     <div
       className={className}
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
       {children}
     </div>
   )

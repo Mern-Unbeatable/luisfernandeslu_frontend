@@ -7,6 +7,7 @@ import Footer from '../shared/Footer'
 import Seo from '../../components/common/Seo/Seo'
 import BuyerSidebar from './BuyerSidebar'
 import { getBuyerRoleConfig } from '../../roles'
+import i18n from '@/i18n'
 
 function resolveBuyerBreadcrumbs(pathname, roleConfig) {
   const base = roleConfig.basePath
@@ -98,7 +99,7 @@ function resolveBuyerBreadcrumbs(pathname, roleConfig) {
  */
 export default function BuyerLayout({
   role = 'company',
-  userName = 'John',
+  userName = i18n.t('fallback.user'),
   onLogout,
   isLoggingOut = false,
 }) {
@@ -139,7 +140,7 @@ export default function BuyerLayout({
       <main className="mx-auto w-full max-w-full flex-1 px-[4%] py-6 sm:container sm:px-4 sm:py-8">
         <div className="mb-5 flex w-full items-center justify-between gap-3 border-b border-gray-200 pb-4 lg:mb-8">
           <nav
-            aria-label="Breadcrumb"
+            aria-label={t('ui.breadcrumb')}
             className="min-w-0 flex-1 text-sm text-[var(--secondary-text)]"
           >
             <ol className="flex flex-wrap items-center gap-1.5">

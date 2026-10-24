@@ -1,18 +1,20 @@
 import Skeleton from './Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Matches /admin/promotion-plans layout:
  * header → plan cards row → create/edit form card.
  */
 export default function PromotionPlansSkeleton({ asPage = true } = {}) {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <div className="space-y-2">
         {asPage ? (

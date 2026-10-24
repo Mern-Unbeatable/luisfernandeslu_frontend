@@ -18,6 +18,7 @@ import {
   useUpdateFactoryOrderStatusMutation,
 } from '@/features/factory-orders/factoryOrderApi'
 import FactoryOrdersPageSkeleton from '../components/FactoryOrdersPageSkeleton'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 6
 
@@ -40,7 +41,7 @@ function formatMoney(value) {
   if (value == null || value === '') return '—'
   const amount = Number(value)
   if (Number.isNaN(amount)) return String(value)
-  return `€${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`
@@ -179,6 +180,7 @@ function getColumns(t) {
 }
 
 function OrderDetailsView({ orderId, onBack }) {
+  const { t } = useTranslation()
   const { data, isLoading, isError } = useGetFactoryOrderByIdQuery(orderId, {
     skip: !orderId,
   })
@@ -187,7 +189,7 @@ function OrderDetailsView({ orderId, onBack }) {
 
   if (isLoading) {
     return (
-      <p className="text-sm text-[var(--secondary-text)]">Loading…</p>
+      <p className="text-sm text-[var(--secondary-text)]">{t('ui.loadingEllipsis')}</p>
     )
   }
 
@@ -199,9 +201,9 @@ function OrderDetailsView({ orderId, onBack }) {
           onClick={onBack}
           className="text-sm font-medium text-[var(--active)]"
         >
-          Back
+          {t('ui.back')}
         </button>
-        <p className="text-sm text-red-600">Failed to load order details.</p>
+        <p className="text-sm text-red-600">{t('ui.orderLoadFailed')}</p>
       </div>
     )
   }

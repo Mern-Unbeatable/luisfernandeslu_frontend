@@ -5,6 +5,7 @@ import {
   DEMO_ORDER_NEW,
   DEMO_ORDER_PENDING,
 } from '@/data/demoData'
+import { appLocale } from '@/i18n/locale'
 
 const ADMIN_INSTALLMENT_PRODUCTS = [
   {
@@ -263,7 +264,7 @@ export const ADMIN_ORDERS = [
 export function formatOrderMoney(value) {
   const n = Number(value)
   if (Number.isNaN(n)) return String(value)
-  return `€${n.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+  return `€${n.toLocaleString(appLocale(), { maximumFractionDigits: 0 })}`
 }
 
 export function filterOrdersByTab(rows, tab) {

@@ -180,7 +180,7 @@ export default function OrderConfirmationPage() {
                           {t('orderConfirmationPage.shippingMethod')}
                         </p>
                         <p className="mt-1 text-sm text-[var(--secondary-text)] flex flex-col capitalize">
-                          {checkout.unloadingType || 'Standard'}
+                          {checkout.unloadingType || t('ui.standard')}
                         </p>
                       </div>
                     </div>

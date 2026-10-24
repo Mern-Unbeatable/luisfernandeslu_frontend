@@ -341,14 +341,15 @@ export default function AddProductPage() {
 }
 
 function EditorSkeleton() {
+  const { t } = useTranslation();
   return (
     <div
       className="space-y-8"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t("ui.loading")}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t("ui.loading")}</span>
 
       <div className="space-y-3">
         <Skeleton className="h-4 w-40" />

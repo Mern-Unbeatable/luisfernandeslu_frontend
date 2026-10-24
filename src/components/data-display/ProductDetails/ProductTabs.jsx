@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function DescriptionPanel({ product }) {
+  const { t } = useTranslation()
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
       <div>
         <h3 className="mb-3 text-base font-bold text-[var(--primary-text)]">
-          Description
+          {t('productDetails.description')}
         </h3>
         <div className="space-y-3 text-sm leading-relaxed text-[var(--secondary-text)]">
           {(product.descriptionParagraphs || [product.description])
@@ -17,7 +19,7 @@ function DescriptionPanel({ product }) {
       </div>
       <div>
         <h3 className="mb-3 text-base font-bold text-[var(--primary-text)]">
-          Feature
+          {t('productDetails.feature')}
         </h3>
         <ul className="space-y-2.5 text-sm text-[var(--secondary-text)]">
           {(product.features || []).map((feature) => (
@@ -33,12 +35,13 @@ function DescriptionPanel({ product }) {
 }
 
 function AdditionalInfoPanel({ product }) {
+  const { t } = useTranslation()
   if (product.overviewItems?.length) {
     return (
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
         <div className="lg:pr-6">
           <h3 className="mb-4 text-base font-bold text-[var(--primary-text)]">
-            Overview
+            {t('productDetails.overview')}
           </h3>
           <div className="space-y-3 text-sm">
             {product.overviewItems.map((item) => (
@@ -84,6 +87,7 @@ function AdditionalInfoPanel({ product }) {
 }
 
 function PlainTextPanel({ text, paragraphs }) {
+  const { t } = useTranslation()
   const lines = paragraphs?.length
     ? paragraphs
     : text
@@ -93,7 +97,7 @@ function PlainTextPanel({ text, paragraphs }) {
   if (!lines.length) {
     return (
       <p className="text-sm text-[var(--secondary-text)]">
-        No information available.
+        {t('productDetails.noInformation')}
       </p>
     )
   }
@@ -108,9 +112,10 @@ function PlainTextPanel({ text, paragraphs }) {
 }
 
 function KeyValueGrid({ items = [], columns = 2 }) {
+  const { t } = useTranslation()
   if (!items.length) {
     return (
-      <p className="text-sm text-[var(--secondary-text)]">No information available.</p>
+      <p className="text-sm text-[var(--secondary-text)]">{t('productDetails.noInformation')}</p>
     )
   }
 
@@ -133,9 +138,10 @@ function KeyValueGrid({ items = [], columns = 2 }) {
 }
 
 function ReviewPanel({ reviews = [] }) {
+  const { t } = useTranslation()
   if (!reviews.length) {
     return (
-      <p className="text-sm text-[var(--secondary-text)]">No reviews yet.</p>
+      <p className="text-sm text-[var(--secondary-text)]">{t('productDetails.noReviews')}</p>
     )
   }
 
@@ -164,6 +170,7 @@ function ReviewPanel({ reviews = [] }) {
 }
 
 export default function ProductTabs({ tabs = [], product = {}, defaultTab }) {
+  const { t } = useTranslation()
   const [active, setActive] = useState(defaultTab || tabs[0]?.id)
 
   const renderContent = () => {
@@ -186,7 +193,7 @@ export default function ProductTabs({ tabs = [], product = {}, defaultTab }) {
           <div className="grid gap-8 lg:grid-cols-2">
             <div>
               <h3 className="mb-4 text-base font-bold text-[var(--primary-text)]">
-                Supplier
+                {t('productDetails.supplier')}
               </h3>
               <KeyValueGrid
                 items={product.supplierDetails || []}
@@ -195,7 +202,7 @@ export default function ProductTabs({ tabs = [], product = {}, defaultTab }) {
             </div>
             <div>
               <h3 className="mb-4 text-base font-bold text-[var(--primary-text)]">
-                Business Info
+                {t('productDetails.businessInfo')}
               </h3>
               <KeyValueGrid
                 items={product.supplierBusiness || []}
@@ -226,7 +233,7 @@ export default function ProductTabs({ tabs = [], product = {}, defaultTab }) {
                     : 'border-transparent text-[var(--secondary-text)] hover:text-[var(--primary-text)]'
                 }`}
               >
-                {tab.label}
+                {t(`productDetails.tabs.${tab.id}`, { defaultValue: tab.label })}
               </button>
             )
           })}

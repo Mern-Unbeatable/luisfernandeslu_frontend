@@ -1,3 +1,4 @@
+import i18n from '@/i18n'
 /** Roles / path prefixes that use the Progressive Web App experience. */
 export const PWA_PANEL_ROLES = [
   'supplier',
@@ -58,12 +59,12 @@ export function getPanelBasePath(pathname = '') {
 
 export function getPanelRoleLabel(basePath) {
   const map = {
-    '/supplier': 'Supplier',
-    '/factory': 'Factory',
-    '/transporter': 'Transporter',
-    '/affiliate': 'Affiliate',
-    '/admin': 'Admin',
-    '/moderator': 'Moderator',
+    '/supplier': i18n.t('fallback.supplier'),
+    '/factory': i18n.t('ui.factory'),
+    '/transporter': i18n.t('ui.transporter'),
+    '/affiliate': i18n.t('fallback.affiliate'),
+    '/admin': i18n.t('fallback.admin'),
+    '/moderator': i18n.t('fallback.moderator'),
   }
-  return map[basePath] || 'Panel'
+  return map[basePath] || i18n.t('fallback.panel')
 }

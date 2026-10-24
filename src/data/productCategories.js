@@ -1,3 +1,4 @@
+import i18n from '../i18n'
 import { getProductTypeImage } from '../utils/productTypeImages'
 
 /**
@@ -982,27 +983,27 @@ export function getSubCategoryById(categoryId, subCategoryId) {
 
 /** Select options: Category → SubCategory → Product Type (cascading). */
 export function getCategorySelectOptions(
-  placeholder = 'Select category',
+  placeholder = i18n.t('panel.supplierProducts.add.selectCategory'),
 ) {
   return [
     { value: '', label: placeholder },
     ...PRODUCT_CATEGORIES.map((category) => ({
       value: category.id,
-      label: category.name,
+      label: i18n.t(`catalog.categories.${category.id}`, { defaultValue: category.name }),
     })),
   ]
 }
 
 export function getSubCategorySelectOptions(
   categoryId,
-  placeholder = 'Select sub category',
+  placeholder = i18n.t('panel.supplierProducts.add.selectSubCategory'),
 ) {
   const category = getCategoryById(categoryId)
   return [
     { value: '', label: placeholder },
     ...(category?.subcategories ?? []).map((sub) => ({
       value: sub.id,
-      label: sub.name,
+      label: i18n.t(`catalog.subcategories.${sub.id}`, { defaultValue: sub.name }),
     })),
   ]
 }
@@ -1010,14 +1011,14 @@ export function getSubCategorySelectOptions(
 export function getProductTypeSelectOptions(
   categoryId,
   subCategoryId,
-  placeholder = 'Select product type',
+  placeholder = i18n.t('panel.supplierProducts.add.selectProductType'),
 ) {
   const sub = getSubCategoryById(categoryId, subCategoryId)
   return [
     { value: '', label: placeholder },
     ...(sub?.productTypes ?? []).map((type) => ({
       value: type.id,
-      label: type.name,
+      label: i18n.t(`catalog.types.${type.id}`, { defaultValue: type.name }),
     })),
   ]
 }

@@ -1,13 +1,15 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatCount(value) {
   const number = Number(value)
   if (!Number.isFinite(number)) return '—'
-  return number.toLocaleString('en-IE')
+  return number.toLocaleString(appLocale())
 }
 
 function formatMoney(value) {
   const number = Number(value)
   if (!Number.isFinite(number)) return '—'
-  return `€${number.toLocaleString('en-IE', {
+  return `€${number.toLocaleString(appLocale(), {
     minimumFractionDigits: number % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

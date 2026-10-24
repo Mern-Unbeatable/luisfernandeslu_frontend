@@ -4,10 +4,10 @@ import StatusCard from '@/components/data-display/StatusCard'
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { useGetAffiliateLevelsQuery } from '@/features/affiliate/affiliateLevelsApi'
 
-function tierRequirement(tier) {
+function tierRequirement(tier, t) {
   if (tier.minActiveClients == null) return ''
-  if (Number(tier.minActiveClients) === 0) return 'ENTRY LEVEL TIER'
-  return `${tier.minActiveClients}+ Active Clients Required`
+  if (Number(tier.minActiveClients) === 0) return t('fallback.entryLevelTier')
+  return t('fallback.activeClientsRequired', { count: tier.minActiveClients })
 }
 
 export default function AffiliateLevelsPage() {
@@ -63,7 +63,7 @@ export default function AffiliateLevelsPage() {
 
             <p className="mt-3 text-sm text-[var(--secondary-text)]">
               {nextTier?.name
-                ? `Progress to ${nextTier.name}`
+                ? t('fallback.progressToLevel', { level: nextTier.name })
                 : t('affiliateLevels.progressToBronze')}
             </p>
             <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
@@ -118,7 +118,7 @@ export default function AffiliateLevelsPage() {
                   {tier.name}
                 </p>
                 <p className="mt-0.5 px-1 text-xs text-[var(--secondary-text)]">
-                  {tierRequirement(tier)}
+                  {tierRequirement(tier, t)}
                 </p>
 
                 <div className="mt-3">

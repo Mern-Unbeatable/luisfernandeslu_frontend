@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
+import i18n from '@/i18n'
 
 /**
  * Auction dropdown — orange selected header + white option list (image 3).
@@ -9,7 +10,7 @@ export default function AuctionSelect({
   value,
   onChange,
   options = [],
-  placeholder = 'Select an option',
+  placeholder = i18n.t('fallback.selectOption'),
   className = '',
 }) {
   const listId = useId()

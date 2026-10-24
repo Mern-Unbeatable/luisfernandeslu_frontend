@@ -1,3 +1,5 @@
+import { appLocale } from '@/i18n/locale'
+
 export const FINANCE_STATS = {
   totalRevenue: '€479,100',
   commissionRevenue: '€38,328',
@@ -211,7 +213,7 @@ export const FINANCE_COMMISSION_INVOICES = [
 export function formatFinanceCurrency(value) {
   const n = Number(value)
   if (Number.isNaN(n)) return String(value)
-  return `€${n.toLocaleString('en-US', {
+  return `€${n.toLocaleString(appLocale(), {
     minimumFractionDigits: n % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

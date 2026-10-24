@@ -1,8 +1,9 @@
 const TAG_BADGES = {
-  sponsored: { label: 'SPONSORED', className: 'bg-[var(--active)] text-white' },
-  regular: { label: 'Regular', className: 'bg-green-500 text-white' },
-  bulk_order: { label: 'Bulk Order', className: 'bg-violet-600 text-white' },
+  sponsored: { key: 'sponsored', label: 'SPONSORED', className: 'bg-[var(--active)] text-white' },
+  regular: { key: 'regular', label: 'Regular', className: 'bg-green-500 text-white' },
+  bulk_order: { key: 'bulk_order', label: 'Bulk Order', className: 'bg-violet-600 text-white' },
   featured: {
+    key: 'featured',
     label: 'FEATURED',
     className: 'rounded-full bg-violet-100 text-violet-700',
     icon: 'star',
@@ -10,15 +11,16 @@ const TAG_BADGES = {
 }
 
 const STATUS_BADGES = {
-  pending: { label: 'Pending', className: 'bg-[var(--active)] text-white' },
-  active: { label: 'Active', className: 'bg-green-500 text-white' },
+  pending: { key: 'pending', label: 'Pending', className: 'bg-[var(--active)] text-white' },
+  active: { key: 'active', label: 'Active', className: 'bg-green-500 text-white' },
   featured: {
+    key: 'featured',
     label: 'FEATURED',
     className: 'rounded-full bg-violet-100 text-violet-700',
     icon: 'star',
   },
-  rejected: { label: 'Rejected', className: 'bg-red-500 text-white' },
-  completed: { label: 'Completed', className: 'bg-gray-500 text-white' },
+  rejected: { key: 'rejected', label: 'Rejected', className: 'bg-red-500 text-white' },
+  completed: { key: 'completed', label: 'Completed', className: 'bg-gray-500 text-white' },
 }
 
 /**

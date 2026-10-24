@@ -1,3 +1,6 @@
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
+
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -53,12 +56,12 @@ function formatBidLabel(createdAt) {
   if (!createdAt) return '—'
   const diffMs = Date.now() - new Date(createdAt).getTime()
   const diffSec = Math.max(0, Math.floor(diffMs / 1000))
-  if (diffSec < 60) return 'Just now'
+  if (diffSec < 60) return i18n.t('fallback.justNow')
   const diffMin = Math.floor(diffSec / 60)
-  if (diffMin < 60) return `${diffMin} min ago`
+  if (diffMin < 60) return i18n.t('fallback.minutesAgo', { count: diffMin })
   const diffHour = Math.floor(diffMin / 60)
-  if (diffHour < 24) return `${diffHour}h ago`
-  return new Date(createdAt).toLocaleDateString()
+  if (diffHour < 24) return i18n.t('fallback.hoursAgo', { count: diffHour })
+  return new Date(createdAt).toLocaleDateString(appLocale())
 }
 
 function mapBid(bid) {

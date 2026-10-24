@@ -12,6 +12,7 @@ import {
 import { mapAdminAffiliateLevel } from '@/features/admin/adminAffiliateMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import { confirmDelete } from '@/utils/confirmDialog'
+import i18n from '@/i18n'
 
 function reorderItems(items, fromIndex, toIndex) {
   if (fromIndex === toIndex) return items
@@ -116,7 +117,7 @@ const EMPTY_FORM = {
   levelName: '',
   commissionPercent: '',
   membersRequired: '',
-  description: 'Recurring Lifetime payout split',
+  description: i18n.t('fallback.payoutSplit'),
   isActive: false,
 }
 

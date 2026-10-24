@@ -1,3 +1,5 @@
+import { appLocale } from '@/i18n/locale'
+
 export const ADMIN_SETTINGS_DEFAULTS = {
   shipping: {
     perKmCharge: '100',
@@ -29,7 +31,7 @@ export function parseMoneyInput(value) {
 }
 
 export function formatUsd(amount) {
-  return `€${amount.toLocaleString('en-US', {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`

@@ -53,6 +53,11 @@ export default function CreateAuction({
   className = '',
 }) {
   const { t } = useTranslation()
+  const translateOptions = (options) =>
+    options.map((option) => ({
+      ...option,
+      label: t(`ui.unloadingOptions.${option.value}`, { defaultValue: option.label }),
+    }))
   const isSupplier = role === 'supplier'
   const isControlled = value !== undefined
   const [internal, setInternal] = useState(
@@ -235,7 +240,7 @@ export default function CreateAuction({
                 id="auction-unloading"
                 value={form.unloadingNeeds}
                 onChange={setField('unloadingNeeds')}
-                options={unloadingOptions}
+                options={translateOptions(unloadingOptions)}
                 placeholder={ph('unloadingNeeds', 'unloadingPlaceholder')}
               />
             </Field>
@@ -259,7 +264,7 @@ export default function CreateAuction({
                 id="auction-access"
                 value={form.accessCondition}
                 onChange={setField('accessCondition')}
-                options={accessOptions}
+                options={translateOptions(accessOptions)}
                 placeholder={ph('accessCondition', 'accessPlaceholder')}
               />
             </Field>

@@ -6,6 +6,7 @@ import { useGetAdminSupplierByIdQuery } from '@/features/admin/adminSupplierApi'
 import { useGetAdminTransporterByIdQuery } from '@/features/admin/adminTransporterApi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import SupplierStatusBadge from './SupplierStatusBadge'
+import i18n from '@/i18n'
 
 function DetailField({ label, value, className = '' }) {
   return (
@@ -23,7 +24,7 @@ function isImageUrl(url) {
 function DocumentThumb({ doc }) {
   if (doc.urls?.length) {
     const url = doc.urls[0]
-    const label = doc.label || doc.key || 'Document'
+    const label = doc.label || doc.key || i18n.t('fallback.document')
     const image = isImageUrl(url)
 
     return (

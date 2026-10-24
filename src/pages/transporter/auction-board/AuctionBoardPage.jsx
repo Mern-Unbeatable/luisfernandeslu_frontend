@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useOutletContext } from 'react-router-dom'
 import AuctionCard from '../../../components/data-display/AuctionCard'
 import AuctionDetails from '../../../components/data-display/AuctionDetails'
 import Pagination from '../../../components/common/Pagination/Pagination'
@@ -17,11 +18,14 @@ import {
   mapTransporterAuction,
   resolveAuctionApiId,
 } from '../../../features/transporter/auctionMappers'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 9
 
 export default function AuctionBoardPage() {
   const { t } = useTranslation()
+  const { verificationStatus } = useOutletContext() || {}
+  const isVerified = !verificationStatus || verificationStatus === 'APPROVED'
   const [filter, setFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [selectedAuction, setSelectedAuction] = useState(null)
@@ -77,15 +81,22 @@ export default function AuctionBoardPage() {
     const auctionId = resolveAuctionApiId(auction)
     if (!auction?.canBid || !auctionId || isBidding) return false
 
+    if (!isVerified) {
+      const message = t('sellerVerification.bidBlocked')
+      setBidError(message)
+      setToast({ open: true, message, variant: 'error' })
+      return false
+    }
+
     const amount = Number(bidAmount)
     if (!Number.isFinite(amount) || amount <= 0) {
-      setBidError('Enter a valid bid amount')
+      setBidError(i18n.t('fallback.invalidBid'))
       return false
     }
 
     const startFrom = Number(auction.bidStartFrom)
     if (Number.isFinite(startFrom) && amount > startFrom) {
-      const message = `Bid must be at most €${startFrom}`
+      const message = i18n.t('fallback.bidTooHigh', { amount: startFrom })
       setBidError(message)
       setToast({ open: true, message, variant: 'error' })
       return false
@@ -107,7 +118,7 @@ export default function AuctionBoardPage() {
       })
       return true
     } catch (err) {
-      const message = getAuthErrorMessage(err, 'Failed to place bid')
+      const message = getAuthErrorMessage(err, i18n.t('fallback.placeBid'))
       setBidError(message)
       setToast({
         open: true,
@@ -175,6 +186,15 @@ export default function AuctionBoardPage() {
         </div>
       </div>
 
+      {!isVerified ? (
+        <div className="flex flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 sm:flex-row sm:items-center sm:justify-between">
+          <p>{t('sellerVerification.bidBlocked')}</p>
+          <Link to="/transporter" className="shrink-0 font-semibold underline">
+            {t('sellerVerification.goToDashboard')}
+          </Link>
+        </div>
+      ) : null}
+
       {isLoading ? (
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, idx) => (
@@ -185,13 +205,13 @@ export default function AuctionBoardPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load auctions')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadAuctions'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}

@@ -37,6 +37,7 @@ import UploadXlsxModal from './UploadXlsxModal'
 import { useGetFactoryProfileQuery } from '@/features/factory-profile/factoryProfileApi'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 8
 const DUMMY_PRODUCT_IMAGE = dummyProductImage
@@ -360,7 +361,7 @@ export default function ProductsPage() {
       setProductToCancel(null)
       setFormError('')
     } catch (err) {
-      setFormError(err?.data?.message || 'Failed to cancel submission.')
+      setFormError(err?.data?.message || i18n.t('fallback.cancelSubmission'))
     }
   }
 
@@ -690,10 +691,10 @@ export default function ProductsPage() {
 
       <ConfirmModal
         open={Boolean(productToDelete)}
-        title="Delete Product"
-        message={`Are you sure you want to delete "${productToDelete?.title || ''}"? This action cannot be undone.`}
+        title={t('ui.deleteProduct')}
+        message={t('fallback.confirmDeleteProduct', { title: productToDelete?.title || '' })}
         error={formError}
-        confirmText="Delete"
+        confirmText={t('ui.delete')}
         confirmVariant="danger"
         loading={isDeleting}
         onClose={() => {
@@ -705,10 +706,10 @@ export default function ProductsPage() {
 
       <ConfirmModal
         open={Boolean(productToCancel)}
-        title="Cancel Submission"
-        message={`Are you sure you want to cancel the submission for "${productToCancel?.title || ''}"?`}
+        title={t('ui.cancelSubmission')}
+        message={t('fallback.confirmCancelSubmission', { title: productToCancel?.title || '' })}
         error={formError}
-        confirmText="Cancel Submission"
+        confirmText={t('ui.cancelSubmission')}
         confirmVariant="primary"
         loading={isCancelling}
         onClose={() => {
@@ -766,7 +767,7 @@ function ConfirmModal({
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
       <button
         type="button"
-        aria-label="Close overlay"
+        aria-label={t('ui.closeOverlay')}
         className="absolute inset-0 bg-black/45"
         onClick={() => {
           if (!loading) onClose?.()

@@ -11,6 +11,7 @@ import StatsSection from './sections/StatsSection'
 import RevenueSection from './sections/RevenueSection'
 import HistorySection from './sections/HistorySection'
 import Skeleton from '../../../components/common/Skeleton/Skeleton'
+import i18n from '@/i18n'
 
 const HISTORY_PAGE_SIZE = 7
 
@@ -62,7 +63,7 @@ export default function PaymentsPayoutsPage() {
     } catch (err) {
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to submit withdrawal'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.submitWithdrawal')),
         variant: 'error',
       })
       return false
@@ -88,8 +89,8 @@ export default function PaymentsPayoutsPage() {
       </div>
 
       {isLoading ? (
-        <div className="space-y-8" role="status" aria-busy="true" aria-label="Loading">
-          <span className="sr-only">Loading</span>
+        <div className="space-y-8" role="status" aria-busy="true" aria-label={t('ui.loading')}>
+          <span className="sr-only">{t('ui.loading')}</span>
           {/* Stat Cards Skeleton */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -133,13 +134,13 @@ export default function PaymentsPayoutsPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load payments')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadPayments'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}

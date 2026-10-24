@@ -15,6 +15,7 @@ import {
   useUpdateTransporterProfileMutation,
   useUploadTransporterAvatarMutation,
 } from '@/features/transporter-profile/transporterProfileApi'
+import i18n from '@/i18n'
 
 function emptyForm() {
   return {
@@ -110,7 +111,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to update profile'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.updateProfile')))
     }
   }
 
@@ -147,7 +148,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to change password'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.changePassword')))
     }
   }
 
@@ -168,7 +169,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save IBAN'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.saveIban')))
     }
   }
 
@@ -188,7 +189,7 @@ export default function ProfilePage() {
       if (data?.profile) {
         setForm(mapTransporterProfileToForm(data.profile))
       }
-      toast.error(getAuthErrorMessage(err, 'Failed to upload avatar'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.uploadAvatar')))
     }
   }
 
@@ -216,7 +217,7 @@ export default function ProfilePage() {
       if (data?.profile) {
         setForm(mapTransporterProfileToForm(data.profile))
       }
-      toast.error(getAuthErrorMessage(err, 'Failed to remove avatar'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.removeAvatar')))
     }
   }
 
@@ -234,13 +235,13 @@ export default function ProfilePage() {
       <>
         <Seo title={t('panel.profile.title')} />
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load profile')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadProfile'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       </>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 
 /** Cream (photo) vs bordered (marketing) text input */
 export default function AuthField({
@@ -15,6 +16,7 @@ export default function AuthField({
   icon: Icon,
   labelRight = null,
 }) {
+  const { t } = useTranslation()
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
 
@@ -63,7 +65,7 @@ export default function AuthField({
             type="button"
             onClick={() => setShowPassword((visible) => !visible)}
             className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-[var(--primary-text)]"
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-label={showPassword ? t('ui.hidePassword') : t('ui.showPassword')}
           >
             {showPassword ? (
               <FiEyeOff className="size-5" strokeWidth={1.75} />

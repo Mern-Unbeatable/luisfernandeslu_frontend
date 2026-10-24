@@ -21,18 +21,20 @@ import {
 } from '@/features/supplier/inventory/inventoryApi';
 import { getApiErrorMessage } from '@/features/supplier/apiError';
 import { env } from '@/config/env';
+import { appLocale } from '@/i18n/locale'
 
 function CodeSnippet({ code, language = 'bash', label }) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      toast.success('Copied to clipboard!');
+      toast.success(t('ui.copiedToClipboard'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error('Failed to copy');
+      toast.error(t('ui.copyFailed'));
     }
   };
 
@@ -49,17 +51,17 @@ function CodeSnippet({ code, language = 'bash', label }) {
           type="button"
           onClick={handleCopy}
           className="inline-flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-200 transition hover:bg-slate-700 active:scale-95"
-          title="Copy code"
+          title={t('ui.copyCode')}
         >
           {copied ? (
             <>
               <FiCheck className="size-3.5 text-emerald-400" />
-              <span className="text-emerald-400">Copied</span>
+              <span className="text-emerald-400">{t('ui.copied')}</span>
             </>
           ) : (
             <>
               <FiCopy className="size-3.5 text-slate-400" />
-              <span>Copy</span>
+              <span>{t('ui.copy')}</span>
             </>
           )}
         </button>
@@ -219,7 +221,7 @@ export default function ErpIntegrationSection() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
               <span className="size-2 animate-ping rounded-full bg-emerald-500" />
-              REST API Ready
+              {t('ui.restApiReady')}
             </span>
           </div>
         </div>
@@ -291,11 +293,11 @@ export default function ErpIntegrationSection() {
                 <div className="flex items-center gap-2">
                   <FiShield className="size-4 text-emerald-600" />
                   <span className="text-xs font-bold text-emerald-900">
-                    New API Key Generated - Save It Securely
+                    {t('ui.newApiKey')}
                   </span>
                 </div>
                 <p className="text-xs text-emerald-700">
-                  Please copy this key now. For your security, this key may not be fully displayed again.
+                  {t('ui.copyKeyNow')}
                 </p>
                 <div className="mt-2 flex items-center gap-2">
                   <code className="rounded-lg border border-emerald-200 bg-white px-3 py-1.5 font-mono text-xs font-bold text-emerald-800 select-all">
@@ -305,12 +307,12 @@ export default function ErpIntegrationSection() {
                     type="button"
                     onClick={async () => {
                       await navigator.clipboard.writeText(newlyCreatedKey);
-                      toast.success('Key copied to clipboard!');
+                      toast.success(t('ui.keyCopied'));
                     }}
                     className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
                   >
                     <FiCopy className="size-3.5" />
-                    Copy
+                    {t('ui.copy')}
                   </button>
                 </div>
               </div>
@@ -319,7 +321,7 @@ export default function ErpIntegrationSection() {
                 onClick={() => setNewlyCreatedKey(null)}
                 className="text-xs font-semibold text-emerald-700 hover:text-emerald-900"
               >
-                Dismiss
+                {t('ui.dismiss')}
               </button>
             </div>
           </div>
@@ -328,7 +330,7 @@ export default function ErpIntegrationSection() {
         {/* Active Keys Table */}
         <div className="mt-6">
           <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-[var(--secondary-text)]">
-            Active API Keys ({apiKeys.length})
+            {t('ui.activeApiKeys')}{apiKeys.length})
           </h4>
 
           {isKeysLoading ? (
@@ -340,17 +342,17 @@ export default function ErpIntegrationSection() {
             <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-xs text-red-700">
               {getApiErrorMessage(
                 keysError,
-                'Could not load API keys. If this is the first time, generate a new key above.',
+                t('fallback.loadApiKeys'),
               )}
             </div>
           ) : apiKeys.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/70 px-4 py-8 text-center">
               <FiKey className="size-8 text-gray-400" />
               <p className="mt-2 text-sm font-semibold text-[var(--primary-text)]">
-                No API keys generated yet
+                {t('ui.noApiKeys')}
               </p>
               <p className="mt-1 text-xs text-[var(--secondary-text)] max-w-sm">
-                Generate an API key above to start syncing products and stock from your ERP application.
+                {t('ui.generateApiKeyHint')}
               </p>
             </div>
           ) : (
@@ -358,11 +360,11 @@ export default function ErpIntegrationSection() {
               <table className="w-full text-left text-xs">
                 <thead className="border-b border-gray-200 bg-gray-50 text-[var(--secondary-text)] font-semibold uppercase tracking-wider">
                   <tr>
-                    <th className="px-4 py-3">Name / Label</th>
-                    <th className="px-4 py-3">API Key Prefix</th>
-                    <th className="px-4 py-3">Created Date</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-3">{t('ui.nameLabel')}</th>
+                    <th className="px-4 py-3">{t('ui.apiKeyPrefix')}</th>
+                    <th className="px-4 py-3">{t('ui.createdDate')}</th>
+                    <th className="px-4 py-3">{t('ui.status')}</th>
+                    <th className="px-4 py-3 text-right">{t('ui.action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -377,7 +379,7 @@ export default function ErpIntegrationSection() {
                     return (
                       <tr key={keyItem.id || keyItem._id} className="hover:bg-gray-50/80">
                         <td className="px-4 py-3.5 font-semibold text-[var(--primary-text)]">
-                          {keyItem.name || keyItem.label || 'ERP Key'}
+                          {keyItem.name || keyItem.label || t('fallback.erpKey')}
                         </td>
                         <td className="px-4 py-3.5">
                           <code className="rounded bg-gray-100 px-2 py-0.5 font-mono text-[11px] text-gray-700">
@@ -386,12 +388,12 @@ export default function ErpIntegrationSection() {
                         </td>
                         <td className="px-4 py-3.5 text-[var(--secondary-text)]">
                           {keyItem.createdAt
-                            ? new Date(keyItem.createdAt).toLocaleDateString()
-                            : 'Active'}
+                            ? new Date(keyItem.createdAt).toLocaleDateString(appLocale())
+                            : t('ui.active')}
                         </td>
                         <td className="px-4 py-3.5">
                           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700">
-                            Active
+                            {t('ui.active')}
                           </span>
                         </td>
                         <td className="px-4 py-3.5 text-right">
@@ -400,10 +402,10 @@ export default function ErpIntegrationSection() {
                             onClick={() => handleRevoke(keyItem.id || keyItem._id)}
                             disabled={isRevokingKey}
                             className="inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition"
-                            title="Revoke Key"
+                            title={t('ui.revokeKey')}
                           >
                             <FiTrash2 className="size-3.5" />
-                            Revoke
+                            {t('ui.revoke')}
                           </button>
                         </td>
                       </tr>
@@ -424,10 +426,10 @@ export default function ErpIntegrationSection() {
           </span>
           <div>
             <h3 className="text-base font-bold text-[var(--primary-text)]">
-              API Documentation: Adding & Maintaining Products
+              {t('ui.apiDocsTitle')}
             </h3>
             <p className="text-xs text-[var(--secondary-text)]">
-              Follow these simple REST endpoints to automate product creation, stock updates, and catalog queries.
+              {t('ui.apiDocsSubtitle')}
             </p>
           </div>
         </div>
@@ -435,10 +437,10 @@ export default function ErpIntegrationSection() {
         {/* Documentation Tab Nav */}
         <div className="mt-6 flex flex-wrap gap-2 border-b border-gray-200 pb-3">
           {[
-            { id: 'create', label: '1. Add / Create Product (POST)', icon: FiPlus },
-            { id: 'restock', label: '2. Restock / Update Stock (PATCH)', icon: FiRefreshCw },
-            { id: 'list', label: '3. List Inventory (GET)', icon: FiDatabase },
-            { id: 'delete', label: '4. Delete / Remove (DELETE)', icon: FiTrash2 },
+            { id: 'create', label: t('fallback.erpTabCreate'), icon: FiPlus },
+            { id: 'restock', label: t('fallback.erpTabRestock'), icon: FiRefreshCw },
+            { id: 'list', label: t('fallback.erpTabList'), icon: FiDatabase },
+            { id: 'delete', label: t('fallback.erpTabDelete'), icon: FiTrash2 },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeDocTab === tab.id;
@@ -474,7 +476,7 @@ export default function ErpIntegrationSection() {
               </div>
 
               <p className="text-sm text-[var(--secondary-text)]">
-                Adds a new product to your inventory catalog. Once added via ERP, it will immediately appear in your marketplace inventory list and stock balance.
+                {t('ui.apiAddProduct')}
               </p>
 
               {/* Request Parameters Table */}
@@ -482,48 +484,48 @@ export default function ErpIntegrationSection() {
                 <table className="w-full text-left text-xs">
                   <thead className="border-b border-gray-200 bg-gray-50 text-[var(--secondary-text)] font-bold">
                     <tr>
-                      <th className="px-4 py-2.5">Field</th>
-                      <th className="px-4 py-2.5">Type</th>
-                      <th className="px-4 py-2.5">Required</th>
-                      <th className="px-4 py-2.5">Description</th>
+                      <th className="px-4 py-2.5">{t('ui.field')}</th>
+                      <th className="px-4 py-2.5">{t('ui.type')}</th>
+                      <th className="px-4 py-2.5">{t('ui.required')}</th>
+                      <th className="px-4 py-2.5">{t('ui.description')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-[var(--primary-text)]">
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">name</td>
                       <td className="px-4 py-2 font-mono text-gray-500">String</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">Full commercial name or title of the product.</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldName')}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">sku</td>
                       <td className="px-4 py-2 font-mono text-gray-500">String</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">Unique Stock Keeping Unit (SKU) identifier.</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldSku')}</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-mono font-semibold text-amber-700">quantity</td>
+                      <td className="px-4 py-2 font-mono font-semibold text-amber-700">{t('ui.quantityPlaceholder')}</td>
                       <td className="px-4 py-2 font-mono text-gray-500">Number</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">Initial quantity available in stock.</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldQuantity')}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">price</td>
                       <td className="px-4 py-2 font-mono text-gray-500">Number</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">Unit sale price in Euros (€).</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldPrice')}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">warehouseLocation</td>
                       <td className="px-4 py-2 font-mono text-gray-500">String</td>
-                      <td className="px-4 py-2 text-gray-500">Optional</td>
-                      <td className="px-4 py-2">Warehouse name or physical address location.</td>
+                      <td className="px-4 py-2 text-gray-500">{t('ui.optional')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldWarehouse')}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">factoryName</td>
                       <td className="px-4 py-2 font-mono text-gray-500">String</td>
-                      <td className="px-4 py-2 text-gray-500">Optional</td>
-                      <td className="px-4 py-2">Manufacturing plant or supplier branch name.</td>
+                      <td className="px-4 py-2 text-gray-500">{t('ui.optional')}</td>
+                      <td className="px-4 py-2">{t('ui.apiFieldFactory')}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -537,7 +539,7 @@ export default function ErpIntegrationSection() {
                     cURL Command
                   </span>
                 </div>
-                <CodeSnippet code={curlCreateProduct} language="bash" label="cURL Command" />
+                <CodeSnippet code={curlCreateProduct} language="bash" label={t('fallback.curlCommand')} />
               </div>
             </div>
           )}
@@ -554,37 +556,37 @@ export default function ErpIntegrationSection() {
               </div>
 
               <p className="text-sm text-[var(--secondary-text)]">
-                Increment or adjust stock levels in real-time when new shipments arrive or stock is reconciled in your ERP.
+                {t('ui.apiRestock')}
               </p>
 
               <div className="overflow-x-auto rounded-xl border border-gray-200">
                 <table className="w-full text-left text-xs">
                   <thead className="border-b border-gray-200 bg-gray-50 text-[var(--secondary-text)] font-bold">
                     <tr>
-                      <th className="px-4 py-2.5">Parameter</th>
-                      <th className="px-4 py-2.5">Type</th>
-                      <th className="px-4 py-2.5">Required</th>
-                      <th className="px-4 py-2.5">Description</th>
+                      <th className="px-4 py-2.5">{t('ui.parameter')}</th>
+                      <th className="px-4 py-2.5">{t('ui.type')}</th>
+                      <th className="px-4 py-2.5">{t('ui.required')}</th>
+                      <th className="px-4 py-2.5">{t('ui.description')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-[var(--primary-text)]">
                     <tr>
                       <td className="px-4 py-2 font-mono font-semibold text-amber-700">:id</td>
                       <td className="px-4 py-2 font-mono text-gray-500">Path / String</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">The product ID or SKU in the system.</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiParamId')}</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2 font-mono font-semibold text-amber-700">quantity</td>
+                      <td className="px-4 py-2 font-mono font-semibold text-amber-700">{t('ui.quantityPlaceholder')}</td>
                       <td className="px-4 py-2 font-mono text-gray-500">Number</td>
-                      <td className="px-4 py-2 font-bold text-emerald-600">Yes</td>
-                      <td className="px-4 py-2">Quantity to add to the existing stock balance.</td>
+                      <td className="px-4 py-2 font-bold text-emerald-600">{t('ui.yes')}</td>
+                      <td className="px-4 py-2">{t('ui.apiParamQuantity')}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <CodeSnippet code={curlRestock} language="bash" label="cURL Restock" />
+              <CodeSnippet code={curlRestock} language="bash" label={t('fallback.curlRestock')} />
             </div>
           )}
 
@@ -600,10 +602,10 @@ export default function ErpIntegrationSection() {
               </div>
 
               <p className="text-sm text-[var(--secondary-text)]">
-                Query current stock levels, active SKUs, and pricing recorded in the marketplace for cross-checking with your ERP system.
+                {t('ui.apiList')}
               </p>
 
-              <CodeSnippet code={curlFetchList} language="bash" label="cURL Fetch Inventory List" />
+              <CodeSnippet code={curlFetchList} language="bash" label={t('fallback.curlFetchList')} />
             </div>
           )}
 
@@ -619,10 +621,10 @@ export default function ErpIntegrationSection() {
               </div>
 
               <p className="text-sm text-[var(--secondary-text)]">
-                Remove a discontinued product from your marketplace inventory catalog via ERP.
+                {t('ui.apiDelete')}
               </p>
 
-              <CodeSnippet code={curlDelete} language="bash" label="cURL Delete Product" />
+              <CodeSnippet code={curlDelete} language="bash" label={t('fallback.curlDelete')} />
             </div>
           )}
         </div>

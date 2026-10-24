@@ -8,6 +8,7 @@ import {
   useGetAssistantHistoryQuery,
   useSendAssistantMessageMutation,
 } from '../../../features/assistant/assistantApi'
+import i18n from '@/i18n'
 
 function formatTime(date = new Date()) {
   return date.toLocaleTimeString(undefined, {
@@ -275,7 +276,7 @@ function ChatMessage({ message, t, onSelect }) {
         <div className="max-w-full rounded-2xl rounded-bl-md bg-white p-2 shadow-sm ring-1 ring-black/5">
           <ul className="flex gap-2.5 overflow-x-auto pb-1 max-w-[340px]">
             {message.products.map((product) => {
-              const displayTitle = product.title || (product.titleKey ? t(product.titleKey) : 'Product')
+              const displayTitle = product.title || (product.titleKey ? t(product.titleKey) : i18n.t('ui.product'))
               const displayPrice = product.basePrice != null
                 ? `€${Number(product.basePrice).toFixed(2)}${product.unitOfMeasure ? ` / ${product.unitOfMeasure}` : ''}`
                 : (product.priceKey ? t(product.priceKey) : '')

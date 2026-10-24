@@ -13,6 +13,7 @@ import {
 } from '../../../features/transporter/transporterApi'
 import { mapTransporterDeliveryDetails } from '../../../features/transporter/deliveryMappers'
 import { useAssignDeliveries } from './AssignDeliveriesContext'
+import i18n from '@/i18n'
 
 export default function AssignDeliveriesPage() {
   const { t } = useTranslation()
@@ -77,7 +78,7 @@ export default function AssignDeliveriesPage() {
       updateDelivery(auctionId, { tripStarted: false })
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to start trip'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.startTrip')),
         variant: 'error',
       })
     }
@@ -109,7 +110,7 @@ export default function AssignDeliveriesPage() {
       updateDelivery(auctionId, previous)
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to mark picked up'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.markPickedUp')),
         variant: 'error',
       })
     }
@@ -138,7 +139,7 @@ export default function AssignDeliveriesPage() {
       updateDelivery(auctionId, previous)
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to navigate to delivery'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.navigateDelivery')),
         variant: 'error',
       })
     }
@@ -179,18 +180,18 @@ export default function AssignDeliveriesPage() {
             onClick={handleBackFromDetails}
             className="text-sm font-semibold text-[var(--active)] underline"
           >
-            Back
+            {t('ui.back')}
           </button>
           <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             <p>
-              {getAuthErrorMessage(detailError, 'Failed to load delivery details')}
+              {getAuthErrorMessage(detailError, t('fallback.loadDeliveryDetails'))}
             </p>
             <button
               type="button"
               onClick={() => refetchDetail()}
               className="mt-2 font-semibold underline"
             >
-              Retry
+              {t('ui.retry')}
             </button>
           </div>
         </div>
@@ -262,19 +263,19 @@ export default function AssignDeliveriesPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load deliveries')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadDeliveries'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}
 
       {!isLoading && !isError && filteredDeliveries.length === 0 ? (
-        <p className="text-sm text-gray-500">No deliveries found.</p>
+        <p className="text-sm text-gray-500">{t('ui.noDeliveries')}</p>
       ) : null}
 
       {!isLoading && !isError && filteredDeliveries.length > 0 ? (

@@ -8,6 +8,8 @@ import {
   ProductsTable,
   SectionEyebrow,
 } from '@/components/data-display/OrderDetails/shared'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
 function FactoryOrderStatusBadge({ status, label }) {
   const key = String(status || '').toLowerCase()
@@ -28,12 +30,13 @@ function FactoryOrderStatusBadge({ status, label }) {
 }
 
 function PaymentSummaryBox({ payment = {} }) {
+  const { t } = useTranslation()
   return (
     <div className="rounded-xl border border-[var(--active)] px-5 py-4">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-sm text-[var(--secondary-text)]">
-            {payment.payNowLabel || 'Pay Now (Down Payment)'}
+            {payment.payNowLabel || t('ui.payNowDownPayment')}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {payment.paidAmount}
@@ -46,7 +49,7 @@ function PaymentSummaryBox({ payment = {} }) {
         </div>
         <div className="text-right">
           <p className="text-sm text-[var(--secondary-text)]">
-            Remaining Balance
+            {t('ui.remainingBalance')}
           </p>
           <p className="mt-1 text-2xl font-bold text-[var(--active)]">
             {payment.remainingBalance}
@@ -58,6 +61,7 @@ function PaymentSummaryBox({ payment = {} }) {
 }
 
 function TransporterBanner({ transporter = {}, onChat }) {
+  const { t } = useTranslation()
   const initials =
     transporter.initials ||
     (transporter.name || 'T')
@@ -97,7 +101,7 @@ function TransporterBanner({ transporter = {}, onChat }) {
             className="inline-flex h-10 items-center gap-2 rounded-lg bg-[var(--active)] px-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             <FiMessageSquare className="size-4" aria-hidden />
-            Message
+            {t('ui.message')}
           </button>
         ) : null}
       </div>
@@ -107,13 +111,14 @@ function TransporterBanner({ transporter = {}, onChat }) {
 
 export default function AdminFactoryOrderDetailView({
   order = {},
-  supplierSectionTitle = 'Supplier Information',
-  factorySectionTitle = 'Factory Information',
-  producedLabel = 'Produced',
-  assignedLabel = 'Assigned',
+  supplierSectionTitle = i18n.t('ui.supplierInformation'),
+  factorySectionTitle = i18n.t('adminOrders.detail.factorySection'),
+  producedLabel = i18n.t('fallback.produced'),
+  assignedLabel = i18n.t('fallback.assigned'),
   onAccept,
   onChat,
 }) {
+  const { t } = useTranslation()
   const factoryStatus = order.factoryDetailStatus || 'produced'
   const showTransporter =
     factoryStatus === 'assigned' && Boolean(order.transporter)
@@ -140,7 +145,7 @@ export default function AdminFactoryOrderDetailView({
 
       <div className="mb-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div>
-          <SectionEyebrow>Recipient</SectionEyebrow>
+          <SectionEyebrow>{t('ui.recipient')}</SectionEyebrow>
           <div className="mt-1 mb-3 flex items-center justify-between gap-3">
             <h2 className="text-lg font-bold text-[var(--primary-text)]">
               {supplierSectionTitle}
@@ -152,7 +157,7 @@ export default function AdminFactoryOrderDetailView({
                 className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
               >
                 <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
-                Message
+                {t('ui.message')}
               </button>
             ) : null}
           </div>
@@ -165,15 +170,15 @@ export default function AdminFactoryOrderDetailView({
           <div className="mt-5 flex flex-col gap-4">
             <IconLabel
               icon={FiMapPin}
-              label="Delivery Location"
+              label={t('ui.deliveryLocation')}
               value={logistics.deliveryLocation}
             />
-            <IconLabel icon={FiTag} label="Total Price" value={payment.totalPrice} />
+            <IconLabel icon={FiTag} label={t('ui.totalPrice')} value={payment.totalPrice} />
           </div>
         </div>
 
         <div>
-          <SectionEyebrow>Factory</SectionEyebrow>
+          <SectionEyebrow>{t('ui.factory')}</SectionEyebrow>
           <div className="mt-1 mb-3 flex items-center justify-between gap-3">
             <h2 className="text-lg font-bold text-[var(--primary-text)]">
               {factorySectionTitle}
@@ -185,7 +190,7 @@ export default function AdminFactoryOrderDetailView({
                 className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-[var(--active)] transition-colors hover:bg-[color-mix(in_srgb,var(--active)_12%,transparent)]"
               >
                 <FiMessageSquare className="size-4" strokeWidth={2} aria-hidden />
-                Message
+                {t('ui.message')}
               </button>
             ) : null}
           </div>
@@ -198,7 +203,7 @@ export default function AdminFactoryOrderDetailView({
           <div className="mt-5">
             <IconLabel
               icon={FiCalendar}
-              label="Installment"
+              label={t('ui.installment')}
               value={payment.duration}
             />
           </div>
@@ -218,7 +223,7 @@ export default function AdminFactoryOrderDetailView({
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <p className="text-xs text-[var(--secondary-text)]">
-            Types of unloading Needed
+            {t('ui.unloadingType')}
           </p>
           <p className="mt-0.5 text-sm font-medium text-[var(--primary-text)]">
             {logistics.unloadingType || '—'}
@@ -226,7 +231,7 @@ export default function AdminFactoryOrderDetailView({
         </div>
         <div>
           <p className="text-xs text-[var(--secondary-text)]">
-            Access Conditions
+            {t('ui.accessConditions')}
           </p>
           <p className="mt-0.5 text-sm font-medium text-[var(--primary-text)]">
             {logistics.accessCondition || '—'}
@@ -235,16 +240,16 @@ export default function AdminFactoryOrderDetailView({
       </div>
 
       <section className="mb-8">
-        <SectionEyebrow>Materials</SectionEyebrow>
+        <SectionEyebrow>{t('ui.materials')}</SectionEyebrow>
         <h2 className="mt-1 mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Product Details
+          {t('ui.productDetails')}
         </h2>
         <ProductsTable products={order.products} />
       </section>
 
       <section className="mb-8">
         <h2 className="mb-4 text-lg font-bold text-[var(--primary-text)]">
-          Installment Breakdown
+          {t('ui.installmentBreakdown')}
         </h2>
         <InstallmentBreakdownTable rows={order.installmentBreakdown} />
       </section>

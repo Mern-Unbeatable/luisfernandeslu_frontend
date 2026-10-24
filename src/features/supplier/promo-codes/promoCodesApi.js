@@ -1,5 +1,7 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
+import i18n from '@/i18n'
 
 const NORMALIZED_STATUS_MAP = {
   active: "active",
@@ -36,7 +38,7 @@ function formatCurrencyValue(value) {
   if (value == null || value === "") return "€0";
   const amount = parseNumberValue(value);
   if (amount == null) return String(value);
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(appLocale(), {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 0,
@@ -47,7 +49,7 @@ function formatDateValue(value) {
   if (!value) return "";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -106,7 +108,7 @@ function mapPromoCodeItem(item) {
           : `${parsedDiscount}%`
         : String(discountValue ?? ""),
     minOrder: formatCurrencyValue(minOrderAmount),
-    usageLimit: usageUnlimited ? "Unlimited" : String(usageLimit ?? ""),
+    usageLimit: usageUnlimited ? i18n.t('fallback.unlimited') : String(usageLimit ?? ""),
     usageLimitUnlimited: usageUnlimited,
     usedCount:
       Number(item.usedCount ?? item.used ?? item.redemptions ?? 0) || 0,

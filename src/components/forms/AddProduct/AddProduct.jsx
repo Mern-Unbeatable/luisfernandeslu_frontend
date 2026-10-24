@@ -9,6 +9,8 @@ import BulkOptionSection, { AiTextSection } from './BulkOptionSection'
 import { DEFAULT_ADD_PRODUCT } from './defaults'
 import { Field, SelectInput, TextInput } from './FormControls'
 import ImageDropzone from './ImageDropzone'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
 /**
  * Common Add Product form.
@@ -25,9 +27,9 @@ export default function AddProduct({
   onSubmit,
   onBack,
   onAiAssist,
-  breadcrumb = 'Product > Add Product',
-  title = 'Add Product',
-  submitLabel = 'Submit',
+  breadcrumb = i18n.t('fallback.addProductBreadcrumb'),
+  title = i18n.t('fallback.addProduct'),
+  submitLabel = i18n.t('fallback.submit'),
   submitting = false,
   categoryOptions,
   subCategoryOptions,
@@ -35,6 +37,7 @@ export default function AddProduct({
   warehouseOptions,
   className = '',
 }) {
+  const { t } = useTranslation()
   const isFactory = role === 'factory'
   const isControlled = value !== undefined
   const [internal, setInternal] = useState(
@@ -117,7 +120,7 @@ export default function AddProduct({
             className="inline-flex w-fit items-center gap-[5px] text-sm text-black hover:text-[var(--active)]"
           >
             <FiArrowLeft className="size-6" strokeWidth={1.5} />
-            Back
+            {t('ui.back')}
           </button>
         ) : null}
         <h1 className="text-4xl font-semibold text-zinc-950">{title}</h1>
@@ -126,22 +129,22 @@ export default function AddProduct({
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {isFactory ? (
           <>
-            <Field label="Warehouse Location">
+            <Field label={t('ui.warehouseLocation')}>
               <TextInput
                 value={form.warehouseLocation}
                 onChange={setField('warehouseLocation')}
-                placeholder="Enter warehouse location"
+                placeholder={t('ui.enterWarehouseLocation')}
               />
             </Field>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-              <Field label="Category">
+              <Field label={t('ui.category')}>
                 <SelectInput
                   value={form.categoryId}
                   onChange={handleCategoryChange}
                   options={resolvedCategoryOptions}
                 />
               </Field>
-              <Field label="Sub Category">
+              <Field label={t('ui.subCategory')}>
                 <SelectInput
                   value={form.subCategoryId}
                   onChange={handleSubCategoryChange}
@@ -149,7 +152,7 @@ export default function AddProduct({
                   disabled={!form.categoryId && !subCategoryOptions}
                 />
               </Field>
-              <Field label="Product Type">
+              <Field label={t('ui.productType')}>
                 <SelectInput
                   value={form.productTypeId}
                   onChange={setField('productTypeId')}
@@ -159,28 +162,28 @@ export default function AddProduct({
               </Field>
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <Field label="Title">
+              <Field label={t('ui.title')}>
                 <TextInput
                   value={form.title}
                   onChange={setField('title')}
-                  placeholder="Portland Cement Quick Set"
+                  placeholder={t('ui.titlePlaceholder')}
                 />
               </Field>
-              <Field label="Price">
+              <Field label={t('ui.price')}>
                 <TextInput
                   value={form.basePrice}
                   onChange={setField('basePrice')}
                   placeholder="€00.00"
                 />
               </Field>
-              <Field label="SKU Number">
+              <Field label={t('ui.skuNumber')}>
                 <TextInput
                   value={form.sku}
                   onChange={setField('sku')}
-                  placeholder="write product sku number"
+                  placeholder={t('ui.skuPlaceholder')}
                 />
               </Field>
-              <Field label="Weight (kg)">
+              <Field label={t('ui.weightKg')}>
                 <TextInput
                   value={form.weight}
                   onChange={setField('weight')}
@@ -195,12 +198,12 @@ export default function AddProduct({
               <TextInput
                 value={form.sku}
                 onChange={setField('sku')}
-                placeholder="SKU number"
+                placeholder={t('ui.skuNumberLower')}
               />
             </Field>
 
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <Field label="Warehouse Location">
+              <Field label={t('ui.warehouseLocation')}>
                 {warehouseOptions ? (
                   <SelectInput
                     value={form.warehouseLocation}
@@ -211,18 +214,18 @@ export default function AddProduct({
                   <TextInput
                     value={form.warehouseLocation}
                     onChange={setField('warehouseLocation')}
-                    placeholder="Enter warehouse location"
+                    placeholder={t('ui.enterWarehouseLocation')}
                   />
                 )}
               </Field>
-              <Field label="Category">
+              <Field label={t('ui.category')}>
                 <SelectInput
                   value={form.categoryId}
                   onChange={handleCategoryChange}
                   options={resolvedCategoryOptions}
                 />
               </Field>
-              <Field label="Sub Category">
+              <Field label={t('ui.subCategory')}>
                 <SelectInput
                   value={form.subCategoryId}
                   onChange={handleSubCategoryChange}
@@ -230,7 +233,7 @@ export default function AddProduct({
                   disabled={!form.categoryId && !subCategoryOptions}
                 />
               </Field>
-              <Field label="Product Type">
+              <Field label={t('ui.productType')}>
                 <SelectInput
                   value={form.productTypeId}
                   onChange={setField('productTypeId')}
@@ -240,48 +243,48 @@ export default function AddProduct({
               </Field>
             </div>
 
-            <Field label="Title">
+            <Field label={t('ui.title')}>
               <TextInput
                 value={form.title}
                 onChange={setField('title')}
-                placeholder="Portland Cement Quick Set"
+                placeholder={t('ui.titlePlaceholder')}
               />
             </Field>
 
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              <Field label="Quantity">
+              <Field label={t('ui.quantity')}>
                 <TextInput
                   value={form.quantity}
                   onChange={setField('quantity')}
-                  placeholder="800 Bags"
+                  placeholder={t('ui.quantityExample')}
                 />
               </Field>
-              <Field label="Base Price">
+              <Field label={t('ui.basePrice')}>
                 <TextInput
                   value={form.basePrice}
                   onChange={setField('basePrice')}
                   placeholder="€120.00"
                 />
               </Field>
-              <Field label="B2B Discount">
+              <Field label={t('ui.b2bDiscount')}>
                 <TextInput
                   value={form.b2bDiscount}
                   onChange={setField('b2bDiscount')}
                   placeholder="20%"
                 />
               </Field>
-              <Field label="Minimum B2B Quantity">
+              <Field label={t('ui.minB2bQuantity')}>
                 <TextInput
                   value={form.minB2bQuantity}
                   onChange={setField('minB2bQuantity')}
-                  placeholder="10 pcs"
+                  placeholder={t('ui.minQuantityExample')}
                 />
               </Field>
-              <Field label="Weight">
+              <Field label={t('ui.weight')}>
                 <TextInput
                   value={form.weight}
                   onChange={setField('weight')}
-                  placeholder="900 kg"
+                  placeholder={t('ui.weightExample')}
                 />
               </Field>
             </div>
@@ -289,41 +292,41 @@ export default function AddProduct({
         )}
 
         <AiTextSection
-          label="Description"
+          label={t('ui.description')}
           value={form.description}
           onChange={setField('description')}
-          placeholder="Write product description..."
-          aiLabel="Use AI Description"
+          placeholder={t('ui.descriptionPlaceholder')}
+          aiLabel={t('fallback.useAiDescription')}
           onAiClick={() => handleAi('description')}
           aiLoading={aiLoading === 'description'}
         />
 
         <AiTextSection
-          label="Feature"
+          label={t('ui.feature')}
           value={form.feature}
           onChange={setField('feature')}
-          placeholder={'High Strength & Durability\nSmooth Workability'}
-          aiLabel="Use AI Feature"
+          placeholder={t('ui.featurePlaceholder')}
+          aiLabel={t('fallback.useAiFeature')}
           onAiClick={() => handleAi('feature')}
           aiLoading={aiLoading === 'feature'}
         />
 
         <AiTextSection
-          label="Additional Information"
+          label={t('ui.additionalInformation')}
           value={form.additionalInformation}
           onChange={setField('additionalInformation')}
-          placeholder="Write additional information..."
-          aiLabel="Use AI Information"
+          placeholder={t('ui.additionalPlaceholder')}
+          aiLabel={t('fallback.useAiInformation')}
           onAiClick={() => handleAi('additionalInformation')}
           aiLoading={aiLoading === 'additionalInformation'}
         />
 
         <AiTextSection
-          label="Specifications"
+          label={t('ui.specifications')}
           value={form.specifications}
           onChange={setField('specifications')}
-          placeholder="Write product specifications..."
-          aiLabel="Use AI Specification"
+          placeholder={t('ui.specificationsPlaceholder')}
+          aiLabel={t('fallback.useAiSpecification')}
           onAiClick={() => handleAi('specifications')}
           aiLoading={aiLoading === 'specifications'}
         />
@@ -350,17 +353,17 @@ export default function AddProduct({
         ) : null}
 
         <ImageDropzone
-          label="Product Banner Image"
+          label={t('ui.bannerImage')}
           files={form.bannerImage}
           maxFiles={1}
           onChange={(bannerImage) => patch({ bannerImage })}
         />
 
         <ImageDropzone
-          label="Others Images"
+          label={t('ui.otherImages')}
           files={form.otherImages}
           maxFiles={8}
-          meta={['JPEG, PNG', '1920x1080px recommended']}
+          meta={['JPEG, PNG', t('fallback.resolutionRecommended')]}
           onChange={(otherImages) => patch({ otherImages })}
         />
 
@@ -370,7 +373,7 @@ export default function AddProduct({
             disabled={submitting}
             className="inline-flex h-14 items-center justify-center rounded-full bg-[var(--active)] px-8 text-base font-bold tracking-tight text-white uppercase hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? 'Saving…' : submitLabel}
+            {submitting ? t('ui.saving') : submitLabel}
           </button>
         </div>
       </form>

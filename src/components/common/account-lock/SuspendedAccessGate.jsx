@@ -1,22 +1,18 @@
 import { useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import toast from 'react-hot-toast'
-import { patchAuthUser } from '@/features/auth/authSlice'
-import { useResubmitSupplierDocumentsMutation } from '@/features/supplier/profile/profileApi'
-import { useResubmitFactoryDocumentsMutation } from '@/features/factory-profile/factoryProfileApi'
-import { useResubmitTransporterDocumentsMutation } from '@/features/transporter-profile/transporterProfileApi'
 import GetFullAccessModal from './GetFullAccessModal'
 import ResubmitDocumentsForm from './ResubmitDocumentsForm'
 import { parseRejectionReason } from './documentFields'
+import useSubmitVerificationDocuments from './useSubmitVerificationDocuments'
 
 function BlurredDashboardShell({ title }) {
+  const { t } = useTranslation()
   return (
     <div className="pointer-events-none select-none blur-[2px]" aria-hidden>
       <h1 className="text-2xl font-bold text-[var(--primary-text)]">{title}</h1>
-      <p className="mt-1 text-sm text-[var(--secondary-text)]">Business metrics overview</p>
+      <p className="mt-1 text-sm text-[var(--secondary-text)]">{t('ui.businessMetricsOverview')}</p>
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {['€125,430', '45', '89%', '2.4 Days'].map((value) => (
+        {['€125,430', '45', '89%', t('fallback.daysCount', { count: 2.4 })].map((value) => (
           <div
             key={value}
             className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
@@ -51,25 +47,8 @@ export default function SuspendedAccessGate({
   dashboardTitle,
 }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const [view, setView] = useState('gate')
-  const [resubmitSupplier, supplierState] = useResubmitSupplierDocumentsMutation()
-  const [resubmitFactory, factoryState] = useResubmitFactoryDocumentsMutation()
-  const [resubmitTransporter, transporterState] =
-    useResubmitTransporterDocumentsMutation()
-
-  const resubmit =
-    role === 'factory'
-      ? resubmitFactory
-      : role === 'transporter'
-        ? resubmitTransporter
-        : resubmitSupplier
-  const isLoading =
-    role === 'factory'
-      ? factoryState.isLoading
-      : role === 'transporter'
-        ? transporterState.isLoading
-        : supplierState.isLoading
+  const { submit, isLoading } = useSubmitVerificationDocuments(role)
 
   const { invalidDocuments } = useMemo(
     () => parseRejectionReason(rejectionReason),
@@ -80,21 +59,7 @@ export default function SuspendedAccessGate({
   const isPendingReview = !needsUpload
 
   const handleSubmit = async (formData) => {
-    const result = await resubmit(formData).unwrap()
-    dispatch(
-      patchAuthUser({
-        profile: {
-          verificationStatus:
-            result?.verificationStatus || result?.data?.verificationStatus || 'PENDING_REVIEW',
-          rejectionReason: null,
-        },
-      }),
-    )
-    toast.success(
-      result?.message ||
-        result?.data?.message ||
-        t('accountLock.submitSuccess', 'Documents submitted for review'),
-    )
+    await submit(formData)
     setView('gate')
   }
 

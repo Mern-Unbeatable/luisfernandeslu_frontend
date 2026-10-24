@@ -23,6 +23,7 @@ import AddressAutocomplete from "@/pages/public_page/checkout/components/Address
 import PanelProfileSkeleton from "@/components/common/Skeleton/PanelProfileSkeleton";
 import EupagoCredentialsCard from "@/components/forms/PanelProfile/EupagoCredentialsCard";
 import { isValidEupagoExternKey } from "@/components/forms/PanelProfile/eupagoExternKey";
+import i18n from '@/i18n'
 
 const ALLOWED_AVATAR_TYPES = new Set([
   "image/jpeg",
@@ -97,7 +98,7 @@ export default function ProfilePage() {
   }, [profile]);
 
   const accountLabel = useMemo(
-    () => profile?.name || profile?.displayName || draft.name || "Supplier",
+    () => profile?.name || profile?.displayName || draft.name || i18n.t('fallback.supplier'),
     [draft.name, profile],
   );
 
@@ -111,22 +112,22 @@ export default function ProfilePage() {
       phone: draft.phone,
     };
 
-    setStatus({ type: "loading", message: "Updating account information..." });
+    setStatus({ type: "loading", message: t("ui.updatingAccount") });
 
     try {
       await updateProfile(payload).unwrap();
       setStatus({
         type: "success",
-        message: "Account information updated successfully.",
+        message: t("ui.accountUpdated"),
       });
-      toast.success("Account information updated successfully.");
+      toast.success(t("ui.accountUpdated"));
       setEditingAccount(false);
     } catch (error) {
       console.error("Supplier profile update failed:", error);
       const message =
         error?.data?.message ||
         error?.message ||
-        "Unable to update account information.";
+        i18n.t('fallback.updateAccountInfo');
       setStatus({ type: "error", message });
       toast.error(message);
     }
@@ -149,22 +150,22 @@ export default function ProfilePage() {
       address: item?.address ?? "",
     }));
 
-    setStatus({ type: "loading", message: "Updating warehouse locations..." });
+    setStatus({ type: "loading", message: t("ui.updatingWarehouses") });
 
     try {
       await saveWarehouses(payload).unwrap();
       setStatus({
         type: "success",
-        message: "Warehouse locations updated successfully.",
+        message: t("ui.warehousesUpdated"),
       });
-      toast.success("Warehouse locations updated successfully.");
+      toast.success(t("ui.warehousesUpdated"));
       setEditingWarehouses(false);
     } catch (error) {
       console.error("Supplier warehouses update failed:", error);
       const message =
         error?.data?.message ||
         error?.message ||
-        "Unable to update warehouse locations.";
+        i18n.t('fallback.updateWarehouseLocations');
       setStatus({ type: "error", message });
       toast.error(message);
     }
@@ -181,25 +182,25 @@ export default function ProfilePage() {
       ...current,
       {
         id: `temp-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-        label: `Warehouse ${current.length + 1}`,
+        label: i18n.t('fallback.warehouseN', { n: current.length + 1 }),
         address: "",
       },
     ]);
   };
 
   const handlePasswordUpdate = async () => {
-    setStatus({ type: "loading", message: "Changing password..." });
+    setStatus({ type: "loading", message: t("ui.changingPassword") });
 
     try {
       await changePassword(passwordDraft).unwrap();
-      setStatus({ type: "success", message: "Password changed successfully." });
-      toast.success("Password changed successfully.");
+      setStatus({ type: "success", message: t("panel.profile.passwordChanged") });
+      toast.success(t("panel.profile.passwordChanged"));
       setEditingPassword(false);
       setPasswordDraft(EMPTY_PASSWORD);
     } catch (error) {
       console.error("Supplier password change failed:", error);
       const message =
-        error?.data?.message || error?.message || "Unable to change password.";
+        error?.data?.message || error?.message || i18n.t('fallback.changePassword');
       setStatus({ type: "error", message });
       toast.error(message);
     }
@@ -238,7 +239,7 @@ export default function ProfilePage() {
           ? t("panel.profile.eupagoExternKeyRejected")
           : error?.data?.message ||
             error?.message ||
-            "Unable to save EuPago credentials.";
+            i18n.t('fallback.saveEupago');
       toast.error(message);
     }
   };
@@ -264,7 +265,7 @@ export default function ProfilePage() {
       );
     } catch (error) {
       toast.error(
-        error?.data?.message || error?.message || "Failed to upload avatar",
+        error?.data?.message || error?.message || i18n.t('fallback.uploadAvatar'),
       );
     }
   };
@@ -279,7 +280,7 @@ export default function ProfilePage() {
       );
     } catch (error) {
       toast.error(
-        error?.data?.message || error?.message || "Failed to remove avatar",
+        error?.data?.message || error?.message || i18n.t('fallback.removeAvatar'),
       );
     }
   };
@@ -328,7 +329,7 @@ export default function ProfilePage() {
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error?.data?.message ||
               error?.message ||
-              "Unable to load supplier profile."}
+              t("ui.profileLoadFailed")}
           </div>
         ) : null}
 

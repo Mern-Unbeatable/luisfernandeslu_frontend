@@ -1,5 +1,6 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
 
 const COMPANY_ORDER_STATUS_MAP = {
   NEW: "new",
@@ -40,7 +41,7 @@ function formatCurrencyValue(value) {
   const amount = parseNumberValue(value);
   if (!Number.isFinite(amount)) return "€0";
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(appLocale(), {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 2,
@@ -52,7 +53,7 @@ function formatDateValue(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",

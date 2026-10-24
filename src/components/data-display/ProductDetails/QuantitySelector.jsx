@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next'
+
 export default function QuantitySelector({
   value = 1,
   min = 1,
   onChange,
   className = '',
 }) {
+  const { t } = useTranslation()
   const setValue = (next) => {
     onChange?.(Math.max(min, next))
   }
@@ -14,7 +17,7 @@ export default function QuantitySelector({
     >
       <button
         type="button"
-        aria-label="Decrease quantity"
+        aria-label={t('productDetails.decreaseQuantity')}
         onClick={() => setValue(value - 1)}
         className="flex w-10 items-center justify-center text-lg leading-none text-[var(--secondary-text)] hover:bg-gray-50"
       >
@@ -25,7 +28,7 @@ export default function QuantitySelector({
       </span>
       <button
         type="button"
-        aria-label="Increase quantity"
+        aria-label={t('productDetails.increaseQuantity')}
         onClick={() => setValue(value + 1)}
         className="flex w-10 items-center justify-center text-lg leading-none text-[var(--secondary-text)] hover:bg-gray-50"
       >

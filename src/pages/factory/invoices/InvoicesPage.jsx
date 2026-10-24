@@ -16,6 +16,7 @@ import {
 } from '@/features/factory-invoices/invoiceMappers'
 import InvoiceDetailModal from './InvoiceDetailModal'
 import FactoryInvoicesPageSkeleton from '../components/FactoryInvoicesPageSkeleton'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 9
 
@@ -79,7 +80,7 @@ export default function InvoicesPage() {
         const blob = await downloadPdf(invoiceId).unwrap()
         downloadBlobFile(blob, `${invoiceId}.pdf`)
       } catch (err) {
-        toast.error(getAuthErrorMessage(err, 'Failed to download invoice'))
+        toast.error(getAuthErrorMessage(err, i18n.t('fallback.downloadInvoice')))
       }
     },
     [downloadPdf, isDownloading],
@@ -171,13 +172,13 @@ export default function InvoicesPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load invoices')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadInvoices'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}
@@ -208,7 +209,7 @@ export default function InvoicesPage() {
         invoice={selectedInvoice}
         isLoading={isDetailLoading}
         isError={isDetailError}
-        errorMessage={getAuthErrorMessage(detailError, 'Failed to load invoice')}
+        errorMessage={getAuthErrorMessage(detailError, t('fallback.loadInvoice'))}
         onDownload={() => handleDownload(selectedInvoiceId)}
         isDownloading={isDownloading}
       />

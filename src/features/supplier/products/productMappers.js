@@ -8,6 +8,7 @@ import {
   pickTotal,
   splitLines,
 } from "../apiError";
+import i18n from '@/i18n'
 
 const TAB_ALIASES = {
   all: "all",
@@ -92,9 +93,9 @@ function resolveImage(item) {
 function formatPriceText(item) {
   const price = formatEuro(item.basePrice ?? item.price ?? item.unitPrice);
   if (item.bulkEnabled || item.tab === "bulk_order") {
-    return `Price: ${price} per unit (bulk)`;
+    return i18n.t('fallback.pricePerUnitBulk', { price });
   }
-  return `Price: ${price} per unit`;
+  return i18n.t('fallback.pricePerUnitGeneric', { price });
 }
 
 export function mapSupplierCatalogItem(item) {
@@ -130,7 +131,7 @@ export function mapSupplierCatalogItem(item) {
     status,
     badge:
       tab === "featured"
-        ? { label: "Featured", className: "bg-sky-100 text-sky-700" }
+        ? { label: i18n.t('fallback.featured'), className: "bg-sky-100 text-sky-700" }
         : null,
     product: {
       image: resolveImage(item),
@@ -398,7 +399,7 @@ export function mapProductDetail(payload) {
 
   const reviews = (item.reviews || []).map((review, index) => ({
     id: review.id || `review-${index + 1}`,
-    author: review.author || review.userName || review.name || "Customer",
+    author: review.author || review.userName || review.name || i18n.t('ui.customer'),
     rating: review.rating ?? 0,
     text: review.text || review.comment || "",
   }));
@@ -409,13 +410,13 @@ export function mapProductDetail(payload) {
     sku: item.sku || "",
     category: categoryName,
     availability:
-      Number(stock) > 0 ? "In Stock" : item.availability || "Out of stock",
+      Number(stock) > 0 ? i18n.t('fallback.inStock') : item.availability || i18n.t('fallback.outOfStock'),
     warehouse: item.warehouseLocation || item.warehouse || "",
     rating: item.rating ?? item.averageRating ?? 0,
     feedbackCount: item.feedbackCount ?? item.reviewCount ?? reviews.length,
     price: formatEuro(item.basePrice ?? item.price),
     priceText:
-      item.priceText || `${formatEuro(item.basePrice ?? item.price)} per unit`,
+      item.priceText || i18n.t('fallback.perUnitGeneric', { price: formatEuro(item.basePrice ?? item.price) }),
     unit: item.unit || "",
     minOrder: item.minB2bQuantity != null ? `${item.minB2bQuantity} PCS` : "",
     images,

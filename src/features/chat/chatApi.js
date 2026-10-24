@@ -1,4 +1,6 @@
 import { baseApi } from '../../services/api/baseApi'
+import { appLocale } from '@/i18n/locale'
+import i18n from '@/i18n'
 
 function parseDate(value) {
   if (!value) return new Date()
@@ -7,7 +9,7 @@ function parseDate(value) {
 }
 
 function formatChatTime(dateObj) {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -21,7 +23,7 @@ function resolveParticipant(thread) {
   // or `title` / `name` properly if it's a group or contextual thread.
   return {
     id: thread.id,
-    name: thread.title || thread.name || 'Chat',
+    name: thread.title || thread.name || i18n.t('fallback.chat'),
     avatar: thread.avatar || null,
   }
 }
@@ -55,16 +57,16 @@ export const chatApi = baseApi.injectEndpoints({
             }
           }
           
-          const partnerName = partnerUser?.name || 'Conversation'
+          const partnerName = partnerUser?.name || i18n.t('fallback.conversation')
           const partnerAvatar = partnerUser?.avatar || partnerUser?.image || null
           const isOnline = partnerUser?.online || false
 
           // Handle last message logic properly
-          let lastMessageText = 'New conversation'
+          let lastMessageText = i18n.t('fallback.newConversation')
           if (typeof lastMsg === 'string') {
             lastMessageText = lastMsg
           } else if (lastMsg.isDeleted) {
-            lastMessageText = 'This message was deleted'
+            lastMessageText = i18n.t('ui.messageDeleted')
           } else if (lastMsg.text || lastMsg.messageText || lastMsg.message) {
             lastMessageText = lastMsg.text || lastMsg.messageText || lastMsg.message
           }
@@ -98,7 +100,7 @@ export const chatApi = baseApi.injectEndpoints({
         const msgs = response?.data?.messages || []
         return msgs.map((msg) => ({
           id: String(msg.id),
-          text: msg.isDeleted ? 'This message was deleted' : (msg.text || msg.messageText || msg.message || ''),
+          text: msg.isDeleted ? i18n.t('ui.messageDeleted') : (msg.text || msg.messageText || msg.message || ''),
           sender: msg.senderId === arg?.userId ? 'me' : (msg.senderId || 'system'),
           senderId: msg.senderId,
           time: formatChatTime(parseDate(msg.createdAt)),

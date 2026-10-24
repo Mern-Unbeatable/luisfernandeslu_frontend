@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiMenu } from 'react-icons/fi'
+import i18n from '@/i18n'
 // import LanguageSwitcher from '../../components/common/LanguageSwitcher/LanguageSwitcher'
 
 /** Full-width panel top bar: logo left, language + user right. */
 export default function PanelHeader({
-  userName = 'Atik Adnan',
+  userName = i18n.t('fallback.user'),
   roleLabel,
   homeTo = '/',
   onMenuOpen,

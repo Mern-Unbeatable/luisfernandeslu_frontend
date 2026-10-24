@@ -1,4 +1,5 @@
 import { getPartnerInitials } from '../messageUtils'
+import i18n from '@/i18n'
 
 export default function UserAvatar({
   partner,
@@ -15,7 +16,7 @@ export default function UserAvatar({
       {image ? (
         <img
           src={image}
-          alt={partner?.name || 'User'}
+          alt={partner?.name || i18n.t('fallback.user')}
           className="size-full object-cover"
         />
       ) : (

@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { DEMO_SUPPLIER_ANALYTICS } from "@/data/demoData";
+import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
   CategoryScale,
@@ -135,7 +136,7 @@ export function RevenueExpensesProfitChart({
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString(appLocale())}`,
           },
         },
       },
@@ -309,7 +310,7 @@ export function SalesByCustomerTypeChart({
           ...baseTooltip,
           callbacks: {
             label: (ctx) =>
-              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString()}`,
+              `${ctx.dataset.label}: €${Number(ctx.raw).toLocaleString(appLocale())}`,
           },
         },
       },

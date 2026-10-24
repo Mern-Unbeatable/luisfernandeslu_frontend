@@ -1,4 +1,6 @@
 import { normalizeDeliveryStatus } from '../transporter/deliveryMappers'
+import i18n from '@/i18n'
+import { appLocale } from '@/i18n/locale'
 
 function splitLocation(location) {
   const value = String(location || '').trim()
@@ -19,13 +21,13 @@ function buildOrderLabel(delivery) {
   const parts = []
 
   if (delivery.auctionId) {
-    parts.push(`Auction ID: ${delivery.auctionId}`)
+    parts.push(i18n.t('fallback.auctionIdValue', { id: delivery.auctionId }))
   }
 
   const referenceId = delivery.deliveryId || delivery.orderId
   if (referenceId) {
     parts.push(
-      `${delivery.deliveryId ? 'Delivery' : 'Order'} ID: ${referenceId}`,
+      i18n.t(delivery.deliveryId ? 'fallback.deliveryIdValue' : 'fallback.orderIdValue', { id: referenceId }),
     )
   }
 
@@ -81,7 +83,7 @@ function formatDetailMoney(amount, currency = 'EUR') {
       maximumFractionDigits: 2,
     }).format(num)
   } catch {
-    return `€${num.toLocaleString('en-US', {
+    return `€${num.toLocaleString(appLocale(), {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`
@@ -92,7 +94,7 @@ function formatAuctionDate(value) {
   if (!value) return '—'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(appLocale())
 }
 
 function formatWeight(weightKg) {

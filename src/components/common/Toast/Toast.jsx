@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { FiCheckCircle, FiX } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Lightweight success/error toast. No external toast library in the project.
@@ -11,6 +12,7 @@ export default function Toast({
   onClose,
   duration = 3000,
 }) {
+  const { t } = useTranslation()
   useEffect(() => {
     if (!open || !onClose) return undefined
     const timer = window.setTimeout(onClose, duration)
@@ -44,7 +46,7 @@ export default function Toast({
             type="button"
             onClick={onClose}
             className="rounded-md p-0.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-            aria-label="Close"
+            aria-label={t('ui.close')}
           >
             <FiX className="size-4" />
           </button>

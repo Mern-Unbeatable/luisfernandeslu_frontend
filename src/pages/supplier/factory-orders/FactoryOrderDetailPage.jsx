@@ -37,7 +37,7 @@ export default function FactoryOrderDetailPage() {
         <Seo title={t("panel.supplierFactoryOrders.title")} />
         <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
           <p className="text-sm text-[var(--secondary-text)]">
-            Loading factory order…
+            {t("ui.loadingFactoryOrder")}
           </p>
         </div>
       </>

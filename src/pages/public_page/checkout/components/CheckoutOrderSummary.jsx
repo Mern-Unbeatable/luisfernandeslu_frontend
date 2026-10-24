@@ -117,16 +117,16 @@ export default function CheckoutOrderSummary({
       }
       setCoupon('')
       Swal.fire({
-        title: 'Success',
-        text: 'Promo code applied',
+        title: t('ui.success'),
+        text: t('ui.promoApplied'),
         icon: 'success',
         timer: 2000,
         showConfirmButton: false
       })
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to apply promo code',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.promoApplyFailed'),
         icon: 'error'
       })
     }
@@ -141,8 +141,8 @@ export default function CheckoutOrderSummary({
       }
     } catch (err) {
       Swal.fire({
-        title: 'Error',
-        text: err?.data?.message || 'Failed to remove promo code',
+        title: t('ui.error'),
+        text: err?.data?.message || t('ui.promoRemoveFailed'),
         icon: 'error'
       })
     }
@@ -252,7 +252,7 @@ export default function CheckoutOrderSummary({
                 onClick={() => handleRemovePromo(promo.code)}
                 disabled={isRemoving}
                 className="text-green-600 hover:text-green-800"
-                aria-label="Remove promo code"
+                aria-label={t('checkoutPage.removePromoCode')}
               >
                 <FiX className="size-4" />
               </button>

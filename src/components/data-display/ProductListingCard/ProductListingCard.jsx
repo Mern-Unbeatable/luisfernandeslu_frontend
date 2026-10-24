@@ -24,7 +24,7 @@ export default function ProductListingCard({
         ...product,
         bulkOptionLabel:
           product.minOrderLabel
-          || (product.minOrder != null ? `Min: ${product.minOrder}` : undefined),
+          || (product.minOrder != null ? t('productCard.minOrder', { value: product.minOrder }) : undefined),
       }
     : product
   const cardProduct = isPurchasable

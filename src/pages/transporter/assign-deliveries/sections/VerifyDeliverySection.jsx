@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
 import { FiCheck, FiUpload } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 
 const PROOF_ACCEPT = 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp'
 
@@ -9,6 +11,7 @@ export default function VerifyDeliverySection({
   onComplete,
   isSubmitting = false,
 }) {
+  const { t } = useTranslation()
   const fileInputRef = useRef(null)
   const [pin, setPin] = useState(['', '', '', ''])
   const [proofFile, setProofFile] = useState(null)
@@ -37,7 +40,7 @@ export default function VerifyDeliverySection({
     if (isSubmitting) return
     const otp = pin.join('')
     if (!/^\d{4}$/.test(otp)) {
-      setLocalError('Enter the 4-digit customer PIN')
+      setLocalError(i18n.t('fallback.enterPin'))
       return
     }
     setLocalError('')
@@ -50,17 +53,17 @@ export default function VerifyDeliverySection({
         <div className="flex size-14 items-center justify-center rounded-full border border-amber-200 bg-amber-50 text-amber-500">
           <FiCheck className="size-7" strokeWidth={3} />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-slate-800">Verify Delivery</h1>
+        <h1 className="mt-4 text-2xl font-bold text-slate-800">{t('ui.verifyDelivery')}</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Enter the customer&apos;s PIN to confirm delivery completion
+          {t('ui.verifyDeliveryHint')}
         </p>
       </div>
 
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-base font-bold text-gray-800">Order Summary</h2>
+        <h2 className="text-base font-bold text-gray-800">{t('ui.orderSummary')}</h2>
         <div className="mt-4 space-y-3 text-sm">
           <div className="flex justify-between gap-4">
-            <span className="text-slate-400">Order ID</span>
+            <span className="text-slate-400">{t('ui.orderId')}</span>
             <span className="text-right font-semibold text-slate-700">
               {delivery.orderId ||
                 delivery.orderLabel?.replace(/^Order ID:\s*/i, '') ||
@@ -69,25 +72,25 @@ export default function VerifyDeliverySection({
             </span>
           </div>
           <div className="flex justify-between gap-4">
-            <span className="text-slate-400">Product</span>
+            <span className="text-slate-400">{t('ui.product')}</span>
             <span className="text-right font-semibold text-slate-700">
               {delivery.title || '—'}
             </span>
           </div>
           <div className="flex justify-between gap-4">
-            <span className="text-slate-400">Quantity</span>
+            <span className="text-slate-400">{t('ui.quantity')}</span>
             <span className="text-right font-semibold text-slate-700">
               {delivery.quantity || '—'}
             </span>
           </div>
           <div className="flex justify-between gap-4">
-            <span className="text-slate-400">Customer</span>
+            <span className="text-slate-400">{t('ui.customer')}</span>
             <span className="text-right font-semibold text-slate-700">
               {delivery.customerName || '—'}
             </span>
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-3">
-            <span className="text-slate-400">Earnings</span>
+            <span className="text-slate-400">{t('ui.earnings')}</span>
             <span className="text-base font-bold text-amber-500">
               {delivery.price || '—'}
             </span>
@@ -96,9 +99,9 @@ export default function VerifyDeliverySection({
       </div>
 
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-base font-bold text-gray-800">Customer PIN</h2>
+        <h2 className="text-base font-bold text-gray-800">{t('ui.customerPin')}</h2>
         <p className="mt-1 text-xs text-gray-400">
-          Ask the customer for their 4-digit delivery PIN
+          {t('ui.customerPinHint')}
         </p>
         <div className="mt-5 grid grid-cols-4 gap-4">
           {pin.map((val, idx) => (
@@ -123,10 +126,10 @@ export default function VerifyDeliverySection({
 
       <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
         <h2 className="text-base font-bold text-gray-800">
-          Delivery Proof (Optional)
+          {t('ui.deliveryProof')}
         </h2>
         <p className="mt-1 text-xs text-gray-400">
-          Upload a photo of the delivered goods or signed document
+          {t('ui.deliveryProofHint')}
         </p>
         <input
           ref={fileInputRef}
@@ -142,7 +145,7 @@ export default function VerifyDeliverySection({
         >
           <FiUpload className="size-6 text-gray-400" />
           <span className="mt-2 text-xs font-semibold text-gray-500">
-            {proofFile ? proofFile.name : 'Click to upload photo'}
+            {proofFile ? proofFile.name : t('ui.clickToUploadPhoto')}
           </span>
         </button>
       </div>
@@ -154,7 +157,7 @@ export default function VerifyDeliverySection({
           disabled={isSubmitting}
           className="flex h-12 items-center justify-center rounded-xl border border-amber-100 bg-amber-50 text-sm font-bold text-amber-600 hover:brightness-95 disabled:opacity-60"
         >
-          Cancel
+          {t('ui.cancel')}
         </button>
         <button
           type="button"
@@ -163,7 +166,7 @@ export default function VerifyDeliverySection({
           className="flex h-12 items-center justify-center gap-1.5 rounded-xl bg-[color-mix(in_srgb,var(--active)_85%,black)] text-sm font-bold text-white shadow-sm hover:brightness-95 disabled:opacity-60"
         >
           <FiCheck className="size-4" strokeWidth={3} />
-          {isSubmitting ? 'Verifying…' : 'Verify & Complete'}
+          {isSubmitting ? t('ui.verifying') : t('ui.verifyAndComplete')}
         </button>
       </div>
     </div>

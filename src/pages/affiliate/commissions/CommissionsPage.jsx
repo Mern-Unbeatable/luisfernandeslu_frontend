@@ -15,6 +15,7 @@ import {
   useCreateAffiliateWithdrawalMutation,
   useGetAffiliateEarningsQuery,
 } from '@/features/affiliate/affiliateEarningsApi'
+import i18n from '@/i18n'
 
 const PAGE_SIZE = 20
 
@@ -324,14 +325,14 @@ export default function CommissionsPage() {
   const submitWithdraw = async (form) => {
     const amount = parseAmount(form.amount)
     if (!Number.isFinite(amount) || amount <= 0) {
-      toast.error('Enter a valid amount')
+      toast.error(t('ui.enterValidAmount'))
       return
     }
 
     const businessName = String(form.businessName || '').trim()
     const accountNumber = String(form.accountNumber || '').trim()
     if (!businessName || !accountNumber) {
-      toast.error('Business name and account number are required')
+      toast.error(t('ui.payoutDetailsRequired'))
       return
     }
 
@@ -341,12 +342,12 @@ export default function CommissionsPage() {
         businessName,
         accountNumber,
       }).unwrap()
-      toast.success(result?.message || 'Withdrawal submitted')
+      toast.success(result?.message || i18n.t('fallback.withdrawalSubmitted'))
       setPage(1)
       setWithdrawOpen(false)
     } catch (error) {
       toast.error(
-        error?.data?.message || error?.error || 'Withdrawal failed',
+        error?.data?.message || error?.error || i18n.t('fallback.withdrawalFailed'),
       )
     }
   }

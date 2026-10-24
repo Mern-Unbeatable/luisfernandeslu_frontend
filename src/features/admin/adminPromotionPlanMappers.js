@@ -1,9 +1,11 @@
+import { appLocale } from '@/i18n/locale'
+
 function formatPlanPrice(price) {
   if (price == null || price === '') return '—'
   const num = Number(price)
   if (Number.isNaN(num)) return String(price)
 
-  return `€${num.toLocaleString('en-US', {
+  return `€${num.toLocaleString(appLocale(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`

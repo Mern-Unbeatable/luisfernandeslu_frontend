@@ -9,6 +9,7 @@ import { getPanelRoleConfig } from '../../roles'
 import { filterAdminNav } from '../../roles/admin'
 import { filterModeratorNav } from '../../roles/moderator'
 import { useGetMeQuery } from '../../features/auth/authApi'
+import i18n from '@/i18n'
 
 /**
  * PanelLayout — full-width header + sidebar below (separate).
@@ -17,7 +18,7 @@ import { useGetMeQuery } from '../../features/auth/authApi'
  */
 export default function PanelLayout({
   role = 'supplier',
-  userName = 'Atik Adnan',
+  userName = i18n.t('fallback.user'),
   onLogout,
   isLoggingOut = false,
 }) {

@@ -23,7 +23,7 @@ export default function BuyFromFactoryDetailPage() {
         <Seo title={t("panel.supplierBuyFromFactory.title")} />
         <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
           <p className="text-sm text-[var(--secondary-text)]">
-            Loading factory product…
+            {t("ui.loadingFactoryProduct")}
           </p>
         </div>
       </>

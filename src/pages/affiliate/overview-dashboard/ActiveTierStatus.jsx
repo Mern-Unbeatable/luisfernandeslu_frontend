@@ -1,11 +1,12 @@
 import { FiAward } from 'react-icons/fi'
+import i18n from '@/i18n'
 
 export default function ActiveTierStatus({
-  label = 'Active Tier Status',
-  tierName = 'Starter Level',
-  headline = 'You receive a 5% commission rate!',
-  description = 'Keep inviting customers to unlock higher tiers with even higher commission rates.',
-  progressLabel = 'Progress to Bronze Level (10%)',
+  label = i18n.t('fallback.activeTierStatus'),
+  tierName = i18n.t('fallback.starterLevel'),
+  headline = i18n.t('fallback.commissionRateHeadline', { percent: 5 }),
+  description = i18n.t('fallback.keepInviting'),
+  progressLabel = i18n.t('fallback.progressToLevelPercent', { level: i18n.t('fallback.bronzeLevel'), percent: 10 }),
   clientsLabel,
   currentClients = 0,
   targetClients = 100,
@@ -22,9 +23,9 @@ export default function ActiveTierStatus({
   const clientsNeeded = Math.max(targetClients - currentClients, 0)
   const resolvedHelpText =
     helpText ||
-    `You need ${clientsNeeded} more active clients to reach Bronze Level.`
+    i18n.t('fallback.clientsNeeded', { count: clientsNeeded, level: i18n.t('fallback.bronzeLevel') })
   const resolvedClientsLabel =
-    clientsLabel || `${currentClients}/${targetClients} Clients`
+    clientsLabel || i18n.t('fallback.clientsProgress', { current: currentClients, target: targetClients })
 
   return (
     <div className="rounded-2xl border border-[#00000026] bg-[#F8FAFC] p-5 sm:p-6">

@@ -16,6 +16,7 @@ import {
 import PolicyListSection from './sections/PolicyListSection'
 import UploadInsuranceModal from './sections/UploadInsuranceModal'
 import Skeleton from '../../../components/common/Skeleton/Skeleton'
+import i18n from '@/i18n'
 
 export default function InsurancePage() {
   const { t } = useTranslation()
@@ -68,7 +69,7 @@ export default function InsurancePage() {
     } catch (err) {
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to upload insurance'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.uploadInsurance')),
         variant: 'error',
       })
       return false
@@ -82,7 +83,7 @@ export default function InsurancePage() {
     } catch (err) {
       setToast({
         open: true,
-        message: getAuthErrorMessage(err, 'Failed to download PDF'),
+        message: getAuthErrorMessage(err, i18n.t('fallback.downloadPdf')),
         variant: 'error',
       })
     }
@@ -131,8 +132,8 @@ export default function InsurancePage() {
       </div>
 
       {isLoading ? (
-        <div className="space-y-6" role="status" aria-busy="true" aria-label="Loading">
-          <span className="sr-only">Loading</span>
+        <div className="space-y-6" role="status" aria-busy="true" aria-label={t('ui.loading')}>
+          <span className="sr-only">{t('ui.loading')}</span>
           {/* Status banner skeleton */}
           <div className="h-16 w-full rounded-lg bg-gray-100 animate-pulse" />
 
@@ -183,13 +184,13 @@ export default function InsurancePage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load insurance')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadInsurance'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}
@@ -263,7 +264,7 @@ export default function InsurancePage() {
           </div>
 
           {policies.length === 0 ? (
-            <p className="text-sm text-gray-500">No insurance policies found.</p>
+            <p className="text-sm text-gray-500">{t('ui.noInsurance')}</p>
           ) : (
             <PolicyListSection
               policies={policies}

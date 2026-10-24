@@ -16,6 +16,7 @@ import {
   useUploadFactoryAvatarMutation,
 } from '@/features/factory-profile/factoryProfileApi'
 import PanelProfileSkeleton from '@/components/common/Skeleton/PanelProfileSkeleton'
+import i18n from '@/i18n'
 
 const ALLOWED_AVATAR_TYPES = new Set([
   'image/jpeg',
@@ -44,7 +45,7 @@ function mapFactoryProfileToForm(profile) {
   const warehouses = Array.isArray(profile?.warehouses)
     ? profile.warehouses.map((item, index) => ({
         id: item.id || `wh-${index + 1}`,
-        label: item.label || `Warehouse ${index + 1}`,
+        label: item.label || i18n.t('fallback.warehouseN', { n: index + 1 }),
         address: item.address || '',
       }))
     : []
@@ -76,7 +77,7 @@ function toWarehousePayload(warehouses) {
 
       return {
         ...(isLocalId ? {} : { id }),
-        label: String(item.label || '').trim() || `Warehouse ${index + 1}`,
+        label: String(item.label || '').trim() || i18n.t('fallback.warehouseN', { n: index + 1 }),
         address,
       }
     })
@@ -117,7 +118,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to update profile'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.updateProfile')))
     }
   }
 
@@ -141,7 +142,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to save warehouses'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.saveWarehouses')))
     }
   }
 
@@ -188,7 +189,7 @@ export default function ProfilePage() {
           }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to change password'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.changePassword')))
     }
   }
 
@@ -227,7 +228,7 @@ export default function ProfilePage() {
       toast.error(
         err?.data?.error === 'EupagoExternKeyRejected'
           ? t('panel.profile.eupagoExternKeyRejected')
-          : getAuthErrorMessage(err, 'Failed to save EuPago credentials'),
+          : getAuthErrorMessage(err, i18n.t('fallback.saveEupago')),
       )
     }
   }
@@ -253,7 +254,7 @@ export default function ProfilePage() {
           t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to upload avatar'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.uploadAvatar')))
     }
   }
 
@@ -271,7 +272,7 @@ export default function ProfilePage() {
           t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
       )
     } catch (err) {
-      toast.error(getAuthErrorMessage(err, 'Failed to remove avatar'))
+      toast.error(getAuthErrorMessage(err, i18n.t('fallback.removeAvatar')))
     }
   }
 
@@ -289,13 +290,13 @@ export default function ProfilePage() {
       <>
         <Seo title={t('panel.profile.title')} />
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load profile')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadProfile'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       </>

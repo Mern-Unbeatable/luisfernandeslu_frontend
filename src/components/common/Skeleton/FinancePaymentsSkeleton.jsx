@@ -1,5 +1,6 @@
 import Skeleton from './Skeleton'
 import TableSkeleton from './TableSkeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Matches /admin/finance-payments layout:
@@ -7,14 +8,15 @@ import TableSkeleton from './TableSkeleton'
  * Used for route Suspense and future API loading.
  */
 export default function FinancePaymentsSkeleton() {
+  const { t } = useTranslation()
   return (
     <div
       className="space-y-6 sm:space-y-8"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       <header className="space-y-2">
         <Skeleton className="h-8 w-56 max-w-full" />

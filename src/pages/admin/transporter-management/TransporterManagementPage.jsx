@@ -23,13 +23,14 @@ import {
   ADMIN_TRANSPORTER_TABS,
   formatTransporterRegisteredDate,
 } from './data/transportersDemo'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 20
 const I18N_KEY = 'adminTransporterManagement'
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
-  return typeof value === 'number' ? value.toLocaleString() : value
+  return typeof value === 'number' ? value.toLocaleString(appLocale()) : value
 }
 
 function formatCommissionPercent(value) {

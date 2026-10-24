@@ -4,6 +4,7 @@ import {
   FiNavigation,
   FiTruck,
 } from 'react-icons/fi'
+import { useTranslation } from 'react-i18next'
 
 const STEPS = ['assigned', 'picked_up', 'in_transit', 'delivered']
 
@@ -14,18 +15,11 @@ const STATUS_BADGE = {
   delivered: 'bg-emerald-100 text-emerald-700',
 }
 
-const STATUS_LABEL = {
-  assigned: 'Assigned',
-  picked_up: 'Picked Up',
-  in_transit: 'In Transit',
-  delivered: 'Delivered',
-}
-
-const STEP_LABEL = {
-  assigned: 'Assigned',
-  picked_up: 'Picked Up',
-  in_transit: 'In Transit',
-  delivered: 'Delivered',
+const STATUS_LABEL_KEY = {
+  assigned: 'fallback.statusAssigned',
+  picked_up: 'fallback.statusPickedUp',
+  in_transit: 'fallback.statusInTransit',
+  delivered: 'fallback.statusDelivered',
 }
 
 export default function DeliveryTimeline({
@@ -74,6 +68,7 @@ function DeliveryCard({
   onVerifyDelivery,
   onSeeDetails,
 }) {
+  const { t } = useTranslation()
   const currentIndex = Math.max(STEPS.indexOf(normalizeStatus(item.status)), 0)
   const progressScale = getProgressScale(item)
 
@@ -91,7 +86,7 @@ function DeliveryCard({
         <span
           className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${statusTone(item.status)}`}
         >
-          {STATUS_LABEL[normalizeStatus(item.status)] || 'Assigned'}
+          {t(STATUS_LABEL_KEY[normalizeStatus(item.status)] || 'ui.assigned')}
         </span>
       </header>
 
@@ -99,13 +94,13 @@ function DeliveryCard({
 
       <div className="mt-4 grid grid-cols-1 gap-3 border-b border-neutral-100 pb-4 sm:grid-cols-2">
         <AddressBlock
-          label="PICKUP LOCATION"
+          label={t('ui.pickupLocationUpper')}
           title={item.pickup.title}
           subtitle={item.pickup.subtitle}
           right={false}
         />
         <AddressBlock
-          label="DELIVERY LOCATION"
+          label={t('ui.deliveryLocationUpper')}
           title={item.delivery.title}
           subtitle={item.delivery.subtitle}
           right
@@ -118,13 +113,13 @@ function DeliveryCard({
           onMarkPickedUp,
           onNavigateToDelivery,
           onVerifyDelivery,
-        })}
+        }, t)}
         <button
           type="button"
           onClick={() => onSeeDetails?.(item)}
           className="inline-flex h-8 shrink-0 items-center whitespace-nowrap rounded-md border border-[var(--active)] px-3 text-xs font-medium text-[var(--active)] hover:bg-amber-50"
         >
-          See Details
+          {t('ui.seeDetails')}
         </button>
       </footer>
     </article>
@@ -132,6 +127,7 @@ function DeliveryCard({
 }
 
 function ProgressLine({ currentIndex, progressScale }) {
+  const { t } = useTranslation()
   const max = STEPS.length - 1
   const safeIndex = Math.min(Math.max(currentIndex, 0), max)
   const scaleX = Math.min(Math.max(progressScale, 0), 1)
@@ -166,7 +162,7 @@ function ProgressLine({ currentIndex, progressScale }) {
                   active ? 'text-[var(--active)]' : 'text-neutral-400'
                 }`}
               >
-                {STEP_LABEL[step]}
+                {t(STATUS_LABEL_KEY[step])}
               </span>
             </div>
           )
@@ -189,7 +185,7 @@ function AddressBlock({ label, title, subtitle, right = false }) {
   )
 }
 
-function renderPrimaryAction(item, actions) {
+function renderPrimaryAction(item, actions, t) {
   const normalized = normalizeStatus(item.status)
 
   if (normalized === 'assigned') {
@@ -202,7 +198,7 @@ function renderPrimaryAction(item, actions) {
           className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
         >
           <FiCheckCircle className="size-3" />
-          Mark Picked
+          {t('ui.markPicked')}
         </button>
       )
     }
@@ -215,7 +211,7 @@ function renderPrimaryAction(item, actions) {
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiNavigation className="size-3" />
-        Start Trip
+        {t('ui.startTrip')}
       </button>
     )
   }
@@ -229,7 +225,7 @@ function renderPrimaryAction(item, actions) {
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiTruck className="size-3" />
-        Navigate to Delivery
+        {t('ui.navigateToDelivery')}
       </button>
     )
   }
@@ -243,7 +239,7 @@ function renderPrimaryAction(item, actions) {
         className="inline-flex h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-[var(--active)] px-3 text-xs font-semibold text-white hover:brightness-95"
       >
         <FiCheckCircle className="size-3" />
-        Verify Delivery
+        {t('ui.verifyDelivery')}
       </button>
     )
   }

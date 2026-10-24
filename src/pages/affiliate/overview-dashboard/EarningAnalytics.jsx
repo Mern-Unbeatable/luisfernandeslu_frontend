@@ -10,6 +10,7 @@ import {
   Tooltip,
   Filler,
 } from 'chart.js'
+import i18n from '@/i18n'
 
 ChartJS.register(
   CategoryScale,
@@ -37,13 +38,16 @@ function buildYTicks(maxValue) {
 }
 
 export default function EarningAnalytics({
-  title = 'Earning Analytics',
-  subtitle = 'Track earning',
-  filterAriaLabel = 'Earning analytics period filter',
+  title = i18n.t('fallback.earningAnalytics'),
+  subtitle = i18n.t('fallback.trackEarning'),
+  filterAriaLabel = i18n.t('fallback.earningPeriodFilter'),
   labels = [],
   values = [],
   series = {},
-  filterOptions = ['This year', 'Last year'],
+  filterOptions = [
+    { value: 'This year', label: i18n.t('fallback.thisYear') },
+    { value: 'Last year', label: i18n.t('fallback.lastYear') },
+  ],
   defaultFilter,
   filter: controlledFilter,
   onFilterChange,

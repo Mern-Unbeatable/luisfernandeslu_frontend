@@ -23,13 +23,14 @@ import {
   ADMIN_FACTORY_TABS,
   formatFactoryRegisteredDate,
 } from './data/factoriesDemo'
+import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 20
 const I18N_KEY = 'adminFactoryManagement'
 
 function formatStatValue(value) {
   if (value == null || value === '') return '—'
-  return typeof value === 'number' ? value.toLocaleString() : value
+  return typeof value === 'number' ? value.toLocaleString(appLocale()) : value
 }
 
 function formatCommissionPercent(value) {

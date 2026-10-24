@@ -167,7 +167,7 @@ export default function SendQuoteModal({
             disabled={isSubmitting}
             className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold tracking-wide text-white transition-opacity hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Sending...' : t('sendQuoteModal.submit')}
+            {isSubmitting ? t('ui.sending') : t('sendQuoteModal.submit')}
           </button>
         </form>
       </div>

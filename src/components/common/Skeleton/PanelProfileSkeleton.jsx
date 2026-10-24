@@ -1,17 +1,19 @@
 import Skeleton from '@/components/common/Skeleton/Skeleton'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Skeleton loader for PanelProfile screens (Admin, Transporter, Factory, Supplier, etc.)
  */
 export default function PanelProfileSkeleton({ showWarehouses = false, showIban = true }) {
+  const { t } = useTranslation()
   return (
     <div
       className="w-full space-y-6"
       role="status"
       aria-busy="true"
-      aria-label="Loading"
+      aria-label={t('ui.loading')}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{t('ui.loading')}</span>
 
       {/* Header Skeleton */}
       <header className="mb-6 space-y-2 sm:mb-8">

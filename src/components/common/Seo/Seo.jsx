@@ -62,10 +62,10 @@ export default function Seo({
     ?? (routeSeo?.descriptionKey
       ? t(routeSeo.descriptionKey)
       : routeSeo?.description)
-    ?? appConfig.defaultDescription
+    ?? t('seo.defaultDescription', appConfig.defaultDescription)
 
   const pageKeywords =
-    keywords ?? routeSeo?.keywords ?? appConfig.defaultKeywords
+    keywords ?? routeSeo?.keywords ?? t('seo.defaultKeywords', appConfig.defaultKeywords)
   const pageImage = image ?? routeSeo?.image
   const pageType = type ?? routeSeo?.type ?? 'website'
   const shouldNoIndex = noIndex || routeSeo?.noIndex

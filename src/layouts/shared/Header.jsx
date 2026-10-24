@@ -281,14 +281,14 @@ export default function Header() {
                   {isSuggestionsFetching ? (
                     <div className="flex items-center justify-center gap-2 py-4 text-xs text-gray-500">
                       <div className="size-3.5 animate-spin rounded-full border-2 border-[var(--active)] border-t-transparent" />
-                      <span>Loading...</span>
+                      <span>{t('header.searchBox.loading')}</span>
                     </div>
                   ) : hasSuggestions ? (
                     <div className="divide-y divide-gray-100">
                       {suggestions?.products?.length > 0 && (
                         <div className="pb-1.5">
                           <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                            Products
+                            {t('header.searchBox.products')}
                           </div>
                           {suggestions.products.map((item) => (
                             <button
@@ -324,7 +324,7 @@ export default function Header() {
                       {suggestions?.categories?.length > 0 && (
                         <div className="py-1.5">
                           <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                            Categories
+                            {t('header.searchBox.categories')}
                           </div>
                           {suggestions.categories.map((cat) => (
                             <button
@@ -355,14 +355,14 @@ export default function Header() {
                           }}
                           className="flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-center text-xs font-semibold text-[var(--active)] hover:bg-gray-50"
                         >
-                          <span>See all results</span>
+                          <span>{t('header.searchBox.seeAll')}</span>
                           <FiArrowRight className="size-3" />
                         </button>
                       </div>
                     </div>
                   ) : (
                     <div className="p-3 text-center text-xs text-gray-500">
-                      No results found
+                      {t('header.searchBox.noResults')}
                     </div>
                   )}
                 </div>
@@ -465,7 +465,7 @@ export default function Header() {
                   {isSuggestionsFetching ? (
                     <div className="flex items-center justify-center gap-2 px-4 py-6 text-xs text-gray-500">
                       <div className="size-4 animate-spin rounded-full border-2 border-[var(--active)] border-t-transparent" />
-                      <span>Loading suggestions...</span>
+                      <span>{t('header.searchBox.loadingSuggestions')}</span>
                     </div>
                   ) : hasSuggestions ? (
                     <div className="max-h-[420px] overflow-y-auto divide-y divide-gray-100">
@@ -473,7 +473,7 @@ export default function Header() {
                       {suggestions?.products?.length > 0 && (
                         <div className="p-2">
                           <div className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-                            Products
+                            {t('header.searchBox.products')}
                           </div>
                           <div className="mt-1 space-y-0.5">
                             {suggestions.products.map((item) => (
@@ -523,7 +523,7 @@ export default function Header() {
                       {suggestions?.categories?.length > 0 && (
                         <div className="p-2 bg-gray-50/50">
                           <div className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-                            Categories
+                            {t('header.searchBox.categories')}
                           </div>
                           <div className="mt-1 space-y-0.5">
                             {suggestions.categories.map((cat) => (
@@ -538,7 +538,7 @@ export default function Header() {
                                   <span className="truncate font-medium">{cat.name}</span>
                                 </div>
                                 <span className="text-xs text-gray-400 group-hover:text-[var(--active)]">
-                                  View category &rarr;
+                                  {t('header.searchBox.viewCategory')}
                                 </span>
                               </button>
                             ))}
@@ -553,14 +553,14 @@ export default function Header() {
                           onClick={(e) => handleSearchSubmit(e)}
                           className="flex w-full items-center justify-center gap-2 rounded-lg py-2 text-center text-xs font-semibold text-[var(--active)] transition-colors hover:bg-gray-100"
                         >
-                          <span>See all results for &ldquo;{searchQuery.trim()}&rdquo;</span>
+                          <span>{t('header.searchBox.seeAllFor', { query: searchQuery.trim() })}</span>
                           <FiArrowRight className="size-3.5" />
                         </button>
                       </div>
                     </div>
                   ) : (
                     <div className="p-4 text-center text-xs text-gray-500">
-                      No results found for &ldquo;{searchQuery.trim()}&rdquo;
+                      {t('header.searchBox.noResultsFor', { query: searchQuery.trim() })}
                     </div>
                   )}
                 </div>

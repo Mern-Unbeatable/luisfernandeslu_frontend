@@ -78,18 +78,18 @@ export default function OrderHistoryPage() {
             onClick={handleBackFromDetails}
             className="text-sm font-semibold text-[var(--active)] underline"
           >
-            Back
+            {t('ui.back')}
           </button>
           <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             <p>
-              {getAuthErrorMessage(detailError, 'Failed to load delivery details')}
+              {getAuthErrorMessage(detailError, t('fallback.loadDeliveryDetails'))}
             </p>
             <button
               type="button"
               onClick={() => refetchDetail()}
               className="mt-2 font-semibold underline"
             >
-              Retry
+              {t('ui.retry')}
             </button>
           </div>
         </div>
@@ -142,19 +142,19 @@ export default function OrderHistoryPage() {
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          <p>{getAuthErrorMessage(error, 'Failed to load delivery history')}</p>
+          <p>{getAuthErrorMessage(error, t('fallback.loadDeliveryHistory'))}</p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-2 font-semibold underline"
           >
-            Retry
+            {t('ui.retry')}
           </button>
         </div>
       ) : null}
 
       {!isLoading && !isError && completedDeliveries.length === 0 ? (
-        <p className="text-sm text-gray-500">No completed deliveries found.</p>
+        <p className="text-sm text-gray-500">{t('ui.noCompletedDeliveries')}</p>
       ) : null}
 
       {!isLoading && !isError && completedDeliveries.length > 0 ? (

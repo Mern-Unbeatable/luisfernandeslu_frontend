@@ -1,5 +1,6 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
 
 function normalizeOverviewStatus(value) {
   const raw = String(value ?? "")
@@ -21,7 +22,7 @@ function formatCurrencyValue(value) {
   const parsed = Number(value ?? 0);
   if (!Number.isFinite(parsed)) return "€0.00";
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(appLocale(), {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 2,

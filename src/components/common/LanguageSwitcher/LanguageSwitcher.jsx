@@ -74,7 +74,7 @@ export default function LanguageSwitcher({
             : 'pointer-events-none -translate-y-1 scale-95 opacity-0'
         }`}
         role="listbox"
-        aria-label="Language"
+        aria-label={t('ui.language')}
       >
         {SUPPORTED_LANGUAGES.map((lang) => {
           const active = lang.code === current.code

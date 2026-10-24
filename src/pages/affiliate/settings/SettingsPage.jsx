@@ -13,6 +13,7 @@ import {
   useUpdateAffiliateProfileMutation,
   useUploadAffiliateAvatarMutation,
 } from '@/features/affiliate/affiliateProfileApi'
+import i18n from '@/i18n'
 
 const ALLOWED_AVATAR_TYPES = new Set([
   'image/jpeg',
@@ -87,9 +88,9 @@ export default function SettingsPage() {
         name: String(name || '').trim(),
         phoneNumber: String(phone || '').trim(),
       }).unwrap()
-      toast.success(result?.message || 'Profile updated')
+      toast.success(result?.message || i18n.t('fallback.profileUpdated'))
     } catch (error) {
-      toast.error(error?.data?.message || error?.error || 'Profile update failed')
+      toast.error(error?.data?.message || error?.error || i18n.t('fallback.updateProfile'))
     }
   }
 
@@ -104,10 +105,10 @@ export default function SettingsPage() {
         newPassword,
         confirmNewPassword: confirmPassword,
       }).unwrap()
-      toast.success(result?.message || 'Password updated')
+      toast.success(result?.message || i18n.t('fallback.passwordUpdated'))
     } catch (error) {
       toast.error(
-        error?.data?.message || error?.error || 'Password update failed',
+        error?.data?.message || error?.error || i18n.t('fallback.changePassword'),
       )
     }
   }
@@ -120,7 +121,7 @@ export default function SettingsPage() {
       }).unwrap()
       toast.success(result?.message || 'IBAN updated')
     } catch (error) {
-      toast.error(error?.data?.message || error?.error || 'IBAN update failed')
+      toast.error(error?.data?.message || error?.error || i18n.t('fallback.saveIban'))
     }
   }
 
@@ -145,7 +146,7 @@ export default function SettingsPage() {
           t('panel.profile.avatarUpdated', { defaultValue: 'Avatar updated' }),
       )
     } catch (error) {
-      toast.error(error?.data?.message || error?.error || 'Failed to upload avatar')
+      toast.error(error?.data?.message || error?.error || i18n.t('fallback.uploadAvatar'))
     }
   }
 
@@ -163,7 +164,7 @@ export default function SettingsPage() {
           t('panel.profile.avatarRemoved', { defaultValue: 'Avatar removed' }),
       )
     } catch (error) {
-      toast.error(error?.data?.message || error?.error || 'Failed to remove avatar')
+      toast.error(error?.data?.message || error?.error || i18n.t('fallback.removeAvatar'))
     }
   }
 

@@ -23,6 +23,7 @@ function PasswordField({
   show,
   onToggle,
 }) {
+  const { t } = useTranslation()
   return (
     <label className="block">
       <span className="text-sm font-semibold text-[var(--primary-text)]">
@@ -43,7 +44,7 @@ function PasswordField({
           type="button"
           onClick={onToggle}
           className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-[var(--primary-text)]"
-          aria-label={show ? 'Hide password' : 'Show password'}
+          aria-label={show ? t('ui.hidePassword') : t('ui.showPassword')}
         >
           {show ? (
             <FiEyeOff className="size-5" strokeWidth={1.75} />

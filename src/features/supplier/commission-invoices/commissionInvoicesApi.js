@@ -1,5 +1,6 @@
 import { baseApi } from "../../../services/api/baseApi";
 import { pickList, pickPage, pickTotal } from "../apiError";
+import { appLocale } from "@/i18n/locale";
 
 function parseNumberValue(value) {
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -13,7 +14,7 @@ function parseNumberValue(value) {
 
 function formatCurrencyValue(value) {
   const amount = parseNumberValue(value);
-  return `€${amount.toLocaleString("en-US", {
+  return `€${amount.toLocaleString(appLocale(), {
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
     maximumFractionDigits: 2,
   })}`;
@@ -24,7 +25,7 @@ function formatDateValue(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return String(value);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(appLocale(), {
     month: "short",
     day: "numeric",
     year: "numeric",

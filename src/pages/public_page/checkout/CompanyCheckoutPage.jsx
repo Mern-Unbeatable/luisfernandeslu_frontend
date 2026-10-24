@@ -20,6 +20,7 @@ import { usePaySupplierQuoteOfferMutation } from '@/features/supplier/quotes/quo
 import { usePayFactoryOfferMutation } from '@/features/chat/chatApi'
 import toast from 'react-hot-toast'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import i18n from '@/i18n'
 
 export default function CompanyCheckoutPage() {
   const { t } = useTranslation()
@@ -100,7 +101,7 @@ export default function CompanyCheckoutPage() {
     const price = firstInstallment ? Number(firstInstallment.amount) || 0 : (Number(offerData.totalPrice) || 0)
     cartItems = [{
       id: offerData.id,
-      title: offerData.productName || offerData.title || 'Special Offer',
+      title: offerData.productName || offerData.title || i18n.t('fallback.specialOffer'),
       image: 'https://placehold.co/100?text=Offer',
       quantity: qty,
       unitPriceText: `€${(price / qty).toFixed(2)}`,
@@ -135,7 +136,7 @@ export default function CompanyCheckoutPage() {
           navigate(`/order/confirmation?id=${result.checkout.id}`)
         }
       } catch (err) {
-        toast.error(err?.data?.message || 'Failed to process payment')
+        toast.error(err?.data?.message || i18n.t('fallback.processPayment'))
       }
       return
     }
@@ -233,7 +234,7 @@ export default function CompanyCheckoutPage() {
                         onClick={() => setUseCustomBilling(true)}
                         className="text-sm font-semibold text-[var(--active)] hover:underline"
                       >
-                        Use different address
+                        {t('checkoutPage.useDifferentAddress')}
                       </button>
                     </div>
                     <div className="text-sm text-[var(--secondary-text)]">
@@ -266,7 +267,7 @@ export default function CompanyCheckoutPage() {
                       onClick={() => setUseCustomBilling(false)}
                       className="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
                     >
-                      Cancel and use saved address
+                      {t('checkoutPage.cancelUseSavedAddress')}
                     </button>
                   </div>
                 )}
