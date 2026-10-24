@@ -140,6 +140,9 @@
   },
   "constructionAssistant": {
     "title": "Assistente de Construção",
+    "subtitle": "Especialista IA em materiais de construção",
+    "checkingCatalog": "A consultar o catálogo...",
+    "recommendedProducts": "Produtos recomendados",
     "open": "Abrir chat do assistente de construção",
     "close": "Fechar chat do assistente de construção",
     "send": "Enviar mensagem",

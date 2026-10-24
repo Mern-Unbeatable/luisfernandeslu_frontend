@@ -130,6 +130,7 @@ export default function ConstructionAssistantWidget() {
           role: 'assistant',
           type: 'products',
           products: res.products,
+          language: res.language,
           time: replyTime,
         })
       }
@@ -167,7 +168,7 @@ export default function ConstructionAssistantWidget() {
                 {t('constructionAssistant.title')}
               </h2>
               <p className="truncate text-[11px] text-white/80">
-                AI Building Materials Expert
+                {t('constructionAssistant.subtitle')}
               </p>
             </div>
             <button
@@ -196,7 +197,7 @@ export default function ConstructionAssistantWidget() {
                     <span className="size-2 animate-bounce rounded-full bg-[var(--active)] [animation-delay:-0.15s]" />
                     <span className="size-2 animate-bounce rounded-full bg-[var(--active)]" />
                   </div>
-                  <span className="text-xs text-gray-500">Checking store catalog...</span>
+                  <span className="text-xs text-gray-500">{t('constructionAssistant.checkingCatalog')}</span>
                 </div>
               </div>
             )}
@@ -267,7 +268,9 @@ function ChatMessage({ message, t, onSelect }) {
     return (
       <div className="flex flex-col items-start gap-1">
         <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-1">
-          Recommended Products
+          {t('constructionAssistant.recommendedProducts', {
+            lng: message.language || undefined,
+          })}
         </div>
         <div className="max-w-full rounded-2xl rounded-bl-md bg-white p-2 shadow-sm ring-1 ring-black/5">
           <ul className="flex gap-2.5 overflow-x-auto pb-1 max-w-[340px]">
@@ -333,7 +336,7 @@ function ChatMessage({ message, t, onSelect }) {
             : 'rounded-bl-md bg-white text-[var(--primary-text)] shadow-sm ring-1 ring-black/5'
         }`}
       >
-        {message.text}
+        {isUser ? message.text : String(message.text || '').replace(/\*\*|__/g, '')}
       </div>
       <time className="text-[10px] text-[var(--secondary-text)] px-1">
         {message.time}

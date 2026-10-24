@@ -140,6 +140,9 @@
   },
   "constructionAssistant": {
     "title": "Construction Assistant",
+    "subtitle": "AI Building Materials Expert",
+    "checkingCatalog": "Checking store catalog...",
+    "recommendedProducts": "Recommended products",
     "open": "Open construction assistant chat",
     "close": "Close construction assistant chat",
     "send": "Send message",
