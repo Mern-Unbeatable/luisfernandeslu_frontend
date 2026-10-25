@@ -2015,7 +2015,6 @@
     "signInTabUpper": "Sign IN",
     "or": "Or",
     "google": "Sign Up With Google",
-    "facebook": "Sign Up With Facebook",
     "invalidCredentials": "Invalid email or password. Use a demo account below.",
     "wrongRole": "This account is not a {{role}} account. Pick the matching demo user.",
     "rememberMe": "Remember me for 30 days",
@@ -2211,7 +2210,16 @@
       }
     },
     "moderatorOnlyAccount": "This login is for moderators only. Use Admin Login for admin accounts.",
-    "networkError": "Cannot reach the server. Check your connection or API URL."
+    "networkError": "Cannot reach the server. Check your connection or API URL.",
+    "googleLogin": "Continue with Google",
+    "googleSigningIn": "Signing you in with Google…",
+    "googleBackToLogin": "Back to login",
+    "googleErrors": {
+      "generic": "Google sign-in failed. Please try again.",
+      "google_unavailable": "Google sign-in is not available right now.",
+      "role_not_allowed": "Google sign-in is only available for customer and company accounts. Please log in with your email and password.",
+      "account_disabled": "This account has been blocked. Please contact support."
+    }
   },
   "buyer": {
     "myAccount": "My Account",

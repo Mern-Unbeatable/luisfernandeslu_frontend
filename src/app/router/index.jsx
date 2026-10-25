@@ -127,6 +127,10 @@ const Register = Loadable(
   lazy(() => import("../../pages/auth/RegisterPage")),
   <AuthSkeleton />,
 );
+const GoogleCallback = Loadable(
+  lazy(() => import("../../pages/auth/GoogleCallbackPage")),
+  <AuthSkeleton />,
+);
 const ForgotPassword = Loadable(
   lazy(() => import("../../pages/auth/ForgotPasswordPage")),
   <AuthSkeleton />,
@@ -761,6 +765,12 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+
+      {
+        path: "/auth/google/callback",
+        element: <GoogleCallback />,
+        handle: { seo: routeSeo.login },
       },
 
       /* Auth (guest only) */

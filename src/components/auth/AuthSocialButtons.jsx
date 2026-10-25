@@ -1,3 +1,5 @@
+import { env } from '@/config/env'
+
 function GoogleIcon({ className = '' }) {
   return (
     <svg
@@ -27,30 +29,18 @@ function GoogleIcon({ className = '' }) {
   )
 }
 
-function FacebookIcon({ className = '' }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      aria-hidden
-    >
-      <circle cx="12" cy="12" r="12" fill="#1877F2" />
-      <path
-        fill="#fff"
-        d="M13.32 20.06v-6.5h2.18l.33-2.54h-2.51v-1.62c0-.74.2-1.24 1.26-1.24h1.35V5.9c-.23-.03-1.04-.1-1.97-.1-1.95 0-3.29 1.19-3.29 3.38v1.89H8.68v2.54h2.19v6.5h2.45Z"
-      />
-    </svg>
-  )
+/** Full-page redirect: the backend starts Google sign-in and returns to /auth/google/callback. */
+function googleSignInUrl(role, next) {
+  const params = new URLSearchParams({
+    role: role || 'customer',
+    redirect: window.location.origin,
+  })
+  if (next) params.set('next', next)
+  return `${env.apiUrl}/api/social/google?${params.toString()}`
 }
 
-/** Google / Facebook auth buttons */
-export default function AuthSocialButtons({
-  googleLabel,
-  facebookLabel,
-  orLabel = 'Or',
-}) {
+/** Google sign-in button (customer and company only). */
+export default function AuthSocialButtons({ googleLabel, orLabel = 'Or', role, next }) {
   return (
     <>
       <div className="my-6 flex items-center gap-3">
@@ -58,22 +48,13 @@ export default function AuthSocialButtons({
         <span className="text-sm text-[var(--secondary-text)]">{orLabel}</span>
         <span className="h-px flex-1 bg-gray-200" />
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <button
-          type="button"
-          className="inline-flex h-11 items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
-        >
-          <GoogleIcon className="size-5 shrink-0" />
-          {googleLabel}
-        </button>
-        <button
-          type="button"
-          className="inline-flex h-11 items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
-        >
-          <FacebookIcon className="size-5 shrink-0" />
-          {facebookLabel}
-        </button>
-      </div>
+      <a
+        href={googleSignInUrl(role, next)}
+        className="inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+      >
+        <GoogleIcon className="size-5 shrink-0" />
+        {googleLabel}
+      </a>
     </>
   )
 }

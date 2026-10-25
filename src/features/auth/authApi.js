@@ -54,6 +54,22 @@ export const authApi = baseApi.injectEndpoints({
         { type: 'Product', id: 'MARKETPLACE_DETAIL' },
       ],
     }),
+    googleExchange: builder.mutation({
+      query: (code) => ({
+        url: '/api/social/google/exchange',
+        method: 'POST',
+        data: { code },
+        skipAuthRefresh: true,
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled
+          if (!data?.success || !data?.accessToken || !data?.user) return
+          dispatch(setCredentials(parseAuthPayload(data)))
+        } catch {}
+      },
+      invalidatesTags: ['Auth'],
+    }),
     verifyOtp: builder.mutation({
       query: ({ email, otp, role }) => ({
         url: '/api/auth/verify-otp',
@@ -145,6 +161,7 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useGoogleExchangeMutation,
   useVerifyOtpMutation,
   useResendOtpMutation,
   useForgotPasswordMutation,
