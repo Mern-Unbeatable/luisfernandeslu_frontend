@@ -2,6 +2,18 @@ import ProductCardSkeleton from '@/components/data-display/ProductCard/ProductCa
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { MARKETPLACE_PRODUCTS_PAGE_SIZE } from '@/features/marketplace/marketplaceApi'
 
+export function ProductsGridSkeleton() {
+  return (
+    <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6">
+      {Array.from({ length: MARKETPLACE_PRODUCTS_PAGE_SIZE }, (_, i) => (
+        <li key={`products-skel-${i}`} className="flex h-full min-w-0">
+          <ProductCardSkeleton className="h-full w-full" />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export default function ProductsPageSkeleton() {
   return (
     <div className="w-full bg-white py-6 sm:py-8 lg:py-10">
@@ -27,13 +39,7 @@ export default function ProductsPageSkeleton() {
             <div className="mb-4 hidden lg:mb-6 lg:block">
               <Skeleton className="h-4 w-40" />
             </div>
-            <ul className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 xl:gap-6">
-              {Array.from({ length: MARKETPLACE_PRODUCTS_PAGE_SIZE }, (_, i) => (
-                <li key={`products-skel-${i}`} className="flex h-full min-w-0">
-                  <ProductCardSkeleton className="h-full w-full" />
-                </li>
-              ))}
-            </ul>
+            <ProductsGridSkeleton />
           </div>
         </div>
       </div>
