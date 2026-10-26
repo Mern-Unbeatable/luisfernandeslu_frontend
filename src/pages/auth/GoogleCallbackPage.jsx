@@ -8,6 +8,7 @@ import { getHomePathForRole } from '../../features/auth/demoUsers'
 const KNOWN_ERRORS = new Set([
   'google_unavailable',
   'role_not_allowed',
+  'email_in_use',
   'account_disabled',
 ])
 
