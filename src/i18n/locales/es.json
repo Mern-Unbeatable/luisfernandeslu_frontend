@@ -2214,14 +2214,13 @@
     "moderatorOnlyAccount": "Este acceso es solo para moderadores. Usa el acceso de administrador para cuentas de administrador.",
     "networkError": "No se puede conectar con el servidor. Comprueba tu conexión.",
     "googleLogin": "Continuar con Google",
-    "googleSigningIn": "Iniciando sesión con Google…",
     "googleRedirecting": "Abriendo Google…",
     "googleBackToLogin": "Volver al inicio de sesión",
     "googleErrors": {
       "generic": "No se pudo iniciar sesión con Google. Inténtalo de nuevo.",
       "google_unavailable": "El inicio de sesión con Google no está disponible en este momento.",
       "role_not_allowed": "El inicio de sesión con Google solo está disponible para cuentas de cliente y empresa. Inicia sesión con tu correo y contraseña.",
-      "email_in_use": "Este correo ya está registrado en una cuenta de vendedor, transportista o administrador. El inicio de sesión con Google es solo para cuentas de cliente y empresa, así que inicia sesión con tu correo y contraseña.",
+      "email_in_use": "El inicio de sesión con Google no está disponible para esta cuenta. Inicia sesión con tu correo y contraseña.",
       "account_disabled": "Esta cuenta ha sido bloqueada. Contacta con el soporte."
     }
   },
