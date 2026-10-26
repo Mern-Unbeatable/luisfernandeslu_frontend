@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../components/StorefrontProductListingCell'
-import ProductsPageSkeleton from './components/ProductsPageSkeleton'
+import ProductsPageSkeleton, { ProductsGridSkeleton } from './components/ProductsPageSkeleton'
 import Pagination from '@/components/common/Pagination/Pagination'
 import { resolveStorefrontBuyerRole } from '@/features/auth/resolveStorefrontBuyerRole'
 import {
@@ -25,6 +25,9 @@ import {
 import ProductsSidebar from './components/ProductsSidebar'
 import { PRODUCT_CATEGORIES } from '@/data/productCategories'
 import useCartAction from '@/hooks/useCartAction'
+
+/** Matches the sidebar's `lg:top-48`, i.e. the sticky header height. */
+const RESULTS_SCROLL_OFFSET = 192
 
 function resolveListingRole(viewer, user) {
   if (
@@ -232,6 +235,30 @@ export default function ProductsPage() {
     }
   }, [searchParams])
 
+  const resultsRef = useRef(null)
+  const filterKey = [
+    apiCategoryId,
+    [...categoryIds].join(','),
+    [...typeIds].join(','),
+    minPrice,
+    maxPrice,
+    search,
+  ].join('|')
+  const previousFilterKeyRef = useRef(filterKey)
+
+  // Filtering shrinks the list; without this the window stays scrolled past it.
+  useEffect(() => {
+    if (previousFilterKeyRef.current === filterKey) return
+    previousFilterKeyRef.current = filterKey
+
+    const results = resultsRef.current
+    if (!results) return
+    const top = results.getBoundingClientRect().top + window.scrollY - RESULTS_SCROLL_OFFSET
+    if (window.scrollY > top) {
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+    }
+  }, [filterKey])
+
   useEffect(() => {
     if (page > totalPages) {
       const params = new URLSearchParams(searchParams)
@@ -319,7 +346,9 @@ export default function ProductsPage() {
     resetPageParam()
   }, [resetPageParam])
 
-  if ((isLoading && !data) || isResolvingCategoryFilter) {
+  const showGridSkeleton = isResolvingCategoryFilter || (isLoading && !data)
+
+  if (isCategoriesLoading) {
     return <ProductsPageSkeleton />
   }
 
@@ -353,7 +382,7 @@ export default function ProductsPage() {
             onClearFilters={clearFilters}
           />
 
-          <div className="min-w-0 flex-1">
+          <div ref={resultsRef} className="min-w-0 flex-1">
             {search ? (
               <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50/70 px-4 py-2.5 text-sm text-[var(--primary-text)]">
                 <p>
@@ -388,7 +417,9 @@ export default function ProductsPage() {
               ) : null}
             </div>
 
-            {isError ? (
+            {showGridSkeleton ? (
+              <ProductsGridSkeleton />
+            ) : isError ? (
               <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-8 text-center">
                 <p className="text-sm text-red-700">
                   {error?.data?.message
@@ -432,7 +463,7 @@ export default function ProductsPage() {
               </div>
             )}
 
-            {!isLoading && !isError && products.length > 0 ? (
+            {!showGridSkeleton && !isError && products.length > 0 ? (
               <Pagination
                 className="mt-8 sm:mt-10"
                 page={safePage}

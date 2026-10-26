@@ -1987,7 +1987,6 @@
     "signInTabUpper": "ENTRAR",
     "or": "O",
     "google": "Registrarse con Google",
-    "facebook": "Registrarse con Facebook",
     "invalidCredentials": "Email o contraseña inválidos. Usa una cuenta demo abajo.",
     "wrongRole": "Esta cuenta no es de {{role}}. Elige el usuario demo correspondiente.",
     "demo": {
@@ -2213,7 +2212,16 @@
       "privacy": "Política de privacidad"
     },
     "moderatorOnlyAccount": "Este acceso es solo para moderadores. Usa el acceso de administrador para cuentas de administrador.",
-    "networkError": "No se puede conectar con el servidor. Comprueba tu conexión."
+    "networkError": "No se puede conectar con el servidor. Comprueba tu conexión.",
+    "googleLogin": "Continuar con Google",
+    "googleSigningIn": "Iniciando sesión con Google…",
+    "googleBackToLogin": "Volver al inicio de sesión",
+    "googleErrors": {
+      "generic": "No se pudo iniciar sesión con Google. Inténtalo de nuevo.",
+      "google_unavailable": "El inicio de sesión con Google no está disponible en este momento.",
+      "role_not_allowed": "El inicio de sesión con Google solo está disponible para cuentas de cliente y empresa. Inicia sesión con tu correo y contraseña.",
+      "account_disabled": "Esta cuenta ha sido bloqueada. Contacta con el soporte."
+    }
   },
   "buyer": {
     "myAccount": "Mi Cuenta",

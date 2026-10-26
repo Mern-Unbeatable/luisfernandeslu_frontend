@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiCheck, FiChevronDown, FiChevronRight, FiSliders, FiX } from "react-icons/fi";
 import { PRODUCT_CATEGORIES } from "@/data/productCategories";
@@ -7,12 +7,16 @@ import {
   PRODUCTS_PRICE_MAX,
 } from "../data/productsListing";
 
+/** Same thin, light scrollbar as the category mega menu. */
+const lightScroll =
+  "[scrollbar-width:thin] [scrollbar-color:#e5e7eb_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-200 hover:[&::-webkit-scrollbar-thumb]:bg-gray-300";
+
 const priceInputClass =
   "h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-sm text-[var(--primary-text)] outline-none placeholder:text-[var(--secondary-text)] focus:border-[var(--active)]";
 
 function FilterCheckbox({ checked, onChange, label, labelClassName = "" }) {
   return (
-    <label className="flex cursor-pointer items-start gap-2.5">
+    <label className="relative flex cursor-pointer items-start gap-2.5">
       <input
         type="checkbox"
         checked={checked}
@@ -36,7 +40,7 @@ function FilterCheckbox({ checked, onChange, label, labelClassName = "" }) {
 
 function FilterRadio({ checked, onChange, name, label }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3">
+    <label className="relative flex cursor-pointer items-center gap-3">
       <input
         type="radio"
         name={name}
@@ -65,18 +69,49 @@ function FilterRadio({ checked, onChange, name, label }) {
   );
 }
 
-function CategoryRow({ checked, onToggle, label }) {
+function revealInScrollArea(group) {
+  const container = group?.closest("[data-sidebar-scroll]");
+  if (!container) return;
+
+  const containerRect = container.getBoundingClientRect();
+  const groupRect = group.getBoundingClientRect();
+  const overflowBottom = groupRect.bottom - containerRect.bottom + 8;
+  if (overflowBottom <= 0) return;
+
+  const roomAbove = groupRect.top - containerRect.top - 8;
+  const delta = Math.min(overflowBottom, Math.max(roomAbove, 0));
+  if (delta > 0) {
+    container.scrollTo({ top: container.scrollTop + delta, behavior: "smooth" });
+  }
+}
+
+function CategoryRow({ checked, onToggle, label, open, onToggleOpen, toggleLabel }) {
   return (
-    <FilterCheckbox
-      checked={checked}
-      onChange={onToggle}
-      label={label}
-      labelClassName={`text-left text-sm leading-snug ${
-        checked
-          ? "font-semibold text-[var(--active)]"
-          : "font-normal text-[var(--primary-text)]"
-      }`}
-    />
+    <div className="flex items-start justify-between gap-2">
+      <FilterCheckbox
+        checked={checked}
+        onChange={onToggle}
+        label={label}
+        labelClassName={`text-left text-sm leading-snug ${
+          checked
+            ? "font-semibold text-[var(--active)]"
+            : "font-normal text-[var(--primary-text)]"
+        }`}
+      />
+      <button
+        type="button"
+        onClick={onToggleOpen}
+        aria-expanded={open}
+        aria-label={toggleLabel}
+        className="-mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded text-[var(--secondary-text)] hover:bg-gray-100"
+      >
+        {open ? (
+          <FiChevronDown className="size-4" aria-hidden />
+        ) : (
+          <FiChevronRight className="size-4" aria-hidden />
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -138,7 +173,6 @@ export default function ProductsSidebar({
   onToggleType,
   expandedSubcategoryIds,
   onToggleSubcategory,
-  activeCategoryId,
   onActivateCategory,
   resultCount = 0,
   onClearFilters,
@@ -146,6 +180,32 @@ export default function ProductsSidebar({
 }) {
   const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Checked categories open by default; the arrow overrides that per category.
+  const [openOverrides, setOpenOverrides] = useState(() => new Map());
+
+  const isCategoryOpen = (categoryId) =>
+    openOverrides.has(categoryId)
+      ? openOverrides.get(categoryId)
+      : categoryIds.has(categoryId);
+
+  const revealTargetRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const target = revealTargetRef.current;
+    if (!target) return;
+    revealTargetRef.current = null;
+    revealInScrollArea(target);
+  });
+
+  const revealAfterRender = (event, groupSelector) => {
+    revealTargetRef.current = event.currentTarget.closest(groupSelector);
+  };
+
+  const toggleCategoryOpen = (categoryId, event) => {
+    const nextOpen = !isCategoryOpen(categoryId);
+    if (nextOpen) revealAfterRender(event, "[data-category-group]");
+    setOpenOverrides((prev) => new Map(prev).set(categoryId, nextOpen));
+  };
 
   const closeMobile = () => setMobileOpen(false);
 
@@ -276,36 +336,48 @@ export default function ProductsSidebar({
 
         <ul className="mt-5 space-y-4">
           {PRODUCT_CATEGORIES.map((category) => {
-            const isActiveCategory = category.id === activeCategoryId;
             const checked = categoryIds.has(category.id);
+            const open = isCategoryOpen(category.id);
 
             return (
-              <li key={category.id}>
+              <li key={category.id} data-category-group>
                 <CategoryRow
                   checked={checked}
-                  onToggle={() => {
+                  onToggle={(event) => {
                     const willCheck = !categoryIds.has(category.id);
+                    if (willCheck) revealAfterRender(event, "[data-category-group]");
                     onToggleCategory(category.id);
                     if (willCheck) onActivateCategory(category.id);
+                    setOpenOverrides((prev) => {
+                      const next = new Map(prev);
+                      next.delete(category.id);
+                      return next;
+                    });
                   }}
                   label={categoryLabel(category)}
+                  open={open}
+                  onToggleOpen={(event) => toggleCategoryOpen(category.id, event)}
+                  toggleLabel={categoryLabel(category)}
                 />
 
-                {isActiveCategory ? (
-                  <div className="mt-2 border-y border-gray-200">
+                {open ? (
+                  <div className="mt-2 ml-1.5 border-l border-gray-200 pl-4">
                     {category.subcategories.map((subcategory) => {
                       const expanded = expandedSubcategoryIds.has(
                         subcategory.id,
                       );
                       return (
-                        <div
-                          key={subcategory.id}
-                          className="border-b border-gray-200 last:border-b-0"
-                        >
+                        <div key={subcategory.id} data-subcategory-group>
                           <button
                             type="button"
-                            onClick={() => onToggleSubcategory(subcategory.id)}
-                            className="flex w-full items-center justify-between gap-3 py-2.5 text-left text-sm font-medium text-[var(--primary-text)]"
+                            onClick={(event) => {
+                              if (!expanded) {
+                                revealAfterRender(event, "[data-subcategory-group]");
+                              }
+                              onToggleSubcategory(subcategory.id);
+                            }}
+                            aria-expanded={expanded}
+                            className="flex w-full items-center justify-between gap-3 py-1.5 text-left text-sm text-[var(--secondary-text)] hover:text-[var(--primary-text)]"
                           >
                             <span>{subcategoryLabel(subcategory)}</span>
                             {expanded ? (
@@ -322,7 +394,7 @@ export default function ProductsSidebar({
                           </button>
 
                           {expanded ? (
-                            <ul className="space-y-2.5 pb-3 pl-6">
+                            <ul className="space-y-2 pt-1 pb-2.5 pl-3">
                               {subcategory.productTypes.map((productType) => (
                                 <li key={productType.id}>
                                   <FilterCheckbox
@@ -362,7 +434,8 @@ export default function ProductsSidebar({
       </button>
 
       <aside
-        className="hidden lg:block lg:w-[292px] lg:shrink-0"
+        data-sidebar-scroll
+        className={`hidden lg:block lg:max-h-[calc(100vh-13rem)] lg:w-[292px] lg:shrink-0 lg:overflow-y-auto lg:overscroll-contain lg:pb-4 ${lightScroll}`}
         aria-label={t("productsPage.filters")}
       >
         {sidebarBody}
@@ -392,7 +465,7 @@ export default function ProductsSidebar({
               </button>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+            <div data-sidebar-scroll className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
               {sidebarBody}
             </div>
 

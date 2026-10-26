@@ -26,7 +26,7 @@ import {
 import AuthField, { AuthSubmitButton } from '../../components/auth/AuthField'
 import AuthFileUpload from '../../components/auth/AuthFileUpload'
 import AuthModeToggle from '../../components/auth/AuthModeToggle'
-// import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
+import AuthSocialButtons from '../../components/auth/AuthSocialButtons'
 import AuthLegalNote from '../../components/auth/AuthLegalNote'
 
 function emptyValues(fields) {
@@ -268,13 +268,13 @@ export default function RegisterPage() {
         </p>
       )}
 
-      {/* {registerCfg.showSocial && layout === 'photo' ? (
+      {registerCfg.showSocial && layout === 'photo' ? (
         <AuthSocialButtons
           googleLabel={t('auth.google')}
-          facebookLabel={t('auth.facebook')}
           orLabel={t('auth.or')}
+          role={role}
         />
-      ) : null} */}
+      ) : null}
     </div>
   )
 }
