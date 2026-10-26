@@ -15,11 +15,6 @@ const KNOWN_ERRORS = new Set([
   'registered_as_company',
 ])
 
-/** Where "back to login" goes, so a role mismatch lands on the right login page. */
-function loginPathForError(errorCode) {
-  return errorCode === 'registered_as_company' ? '/login/company' : '/login/customer'
-}
-
 function readHashParams() {
   const params = new URLSearchParams(window.location.hash.replace(/^#/, ''))
   return {
@@ -69,7 +64,7 @@ export default function GoogleCallbackPage() {
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
       <p className="max-w-md text-sm text-red-600">{error}</p>
       <Link
-        to={loginPathForError(errorCode)}
+        to="/login"
         className="mt-4 text-sm font-bold text-[var(--active)] hover:underline"
       >
         {t('auth.googleBackToLogin')}
