@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useGoogleExchangeMutation } from '../../features/auth/authApi'
 import { getAuthErrorMessage } from '../../features/auth/authUtils'
 import { getHomePathForRole } from '../../features/auth/demoUsers'
+import PageSkeleton from '../../components/common/Skeleton/PageSkeleton'
 
 const KNOWN_ERRORS = new Set([
   'google_unavailable',
@@ -55,21 +56,17 @@ export default function GoogleCallbackPage() {
       })
   }, [code, next, exchange, navigate, t])
 
+  if (!error) return <PageSkeleton />
+
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      {error ? (
-        <>
-          <p className="max-w-md text-sm text-red-600">{error}</p>
-          <Link
-            to="/login/customer"
-            className="mt-4 text-sm font-bold text-[var(--active)] hover:underline"
-          >
-            {t('auth.googleBackToLogin')}
-          </Link>
-        </>
-      ) : (
-        <p className="text-sm text-[var(--secondary-text)]">{t('auth.googleSigningIn')}</p>
-      )}
+      <p className="max-w-md text-sm text-red-600">{error}</p>
+      <Link
+        to="/login/customer"
+        className="mt-4 text-sm font-bold text-[var(--active)] hover:underline"
+      >
+        {t('auth.googleBackToLogin')}
+      </Link>
     </div>
   )
 }

@@ -2212,14 +2212,13 @@
     "moderatorOnlyAccount": "This login is for moderators only. Use Admin Login for admin accounts.",
     "networkError": "Cannot reach the server. Check your connection or API URL.",
     "googleLogin": "Continue with Google",
-    "googleSigningIn": "Signing you in with Google…",
     "googleRedirecting": "Opening Google…",
     "googleBackToLogin": "Back to login",
     "googleErrors": {
       "generic": "Google sign-in failed. Please try again.",
       "google_unavailable": "Google sign-in is not available right now.",
       "role_not_allowed": "Google sign-in is only available for customer and company accounts. Please log in with your email and password.",
-      "email_in_use": "This email is already registered with a seller, transporter or admin account. Google sign-in is only for customer and company accounts, so please log in with your email and password.",
+      "email_in_use": "Google sign-in isn't available for this account. Please log in with your email and password.",
       "account_disabled": "This account has been blocked. Please contact support."
     }
   },
