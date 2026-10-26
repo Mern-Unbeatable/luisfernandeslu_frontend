@@ -129,7 +129,6 @@ const Register = Loadable(
 );
 const GoogleCallback = Loadable(
   lazy(() => import("../../pages/auth/GoogleCallbackPage")),
-  <AuthSkeleton />,
 );
 const ForgotPassword = Loadable(
   lazy(() => import("../../pages/auth/ForgotPasswordPage")),
