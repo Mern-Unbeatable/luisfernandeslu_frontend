@@ -2221,6 +2221,8 @@
       "google_unavailable": "El inicio de sesión con Google no está disponible en este momento.",
       "role_not_allowed": "El inicio de sesión con Google solo está disponible para cuentas de cliente y empresa. Inicia sesión con tu correo y contraseña.",
       "email_in_use": "El inicio de sesión con Google no está disponible para esta cuenta. Inicia sesión con tu correo y contraseña.",
+      "registered_as_customer": "Esta cuenta de Google está registrada como cliente. Inicia sesión desde la página de cliente.",
+      "registered_as_company": "Esta cuenta de Google está registrada como empresa. Inicia sesión desde la página de empresa.",
       "account_disabled": "Esta cuenta ha sido bloqueada. Contacta con el soporte."
     }
   },
