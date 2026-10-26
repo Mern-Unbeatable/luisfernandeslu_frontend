@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { env } from '@/config/env'
 
 function GoogleIcon({ className = '' }) {
@@ -41,6 +43,18 @@ function googleSignInUrl(role, next) {
 
 /** Google sign-in button (customer and company only). */
 export default function AuthSocialButtons({ googleLabel, orLabel = 'Or', role, next }) {
+  const { t } = useTranslation()
+  const [redirecting, setRedirecting] = useState(false)
+
+  // Back button restores this page from the browser cache with the spinner still on
+  useEffect(() => {
+    const onPageShow = (event) => {
+      if (event.persisted) setRedirecting(false)
+    }
+    window.addEventListener('pageshow', onPageShow)
+    return () => window.removeEventListener('pageshow', onPageShow)
+  }, [])
+
   return (
     <>
       <div className="my-6 flex items-center gap-3">
@@ -50,10 +64,25 @@ export default function AuthSocialButtons({ googleLabel, orLabel = 'Or', role, n
       </div>
       <a
         href={googleSignInUrl(role, next)}
-        className="inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-[var(--primary-text)] transition-colors hover:bg-gray-50"
+        onClick={(event) => {
+          if (redirecting) event.preventDefault()
+          else setRedirecting(true)
+        }}
+        aria-busy={redirecting}
+        aria-disabled={redirecting}
+        className={`inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-[var(--primary-text)] transition-colors ${
+          redirecting ? 'cursor-wait opacity-80' : 'hover:bg-gray-50'
+        }`}
       >
-        <GoogleIcon className="size-5 shrink-0" />
-        {googleLabel}
+        {redirecting ? (
+          <span
+            className="size-5 shrink-0 animate-spin rounded-full border-2 border-gray-300 border-t-[var(--active)]"
+            aria-hidden
+          />
+        ) : (
+          <GoogleIcon className="size-5 shrink-0" />
+        )}
+        {redirecting ? t('auth.googleRedirecting') : googleLabel}
       </a>
     </>
   )
