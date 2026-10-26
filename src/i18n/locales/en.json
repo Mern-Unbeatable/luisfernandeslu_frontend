@@ -2219,6 +2219,8 @@
       "google_unavailable": "Google sign-in is not available right now.",
       "role_not_allowed": "Google sign-in is only available for customer and company accounts. Please log in with your email and password.",
       "email_in_use": "Google sign-in isn't available for this account. Please log in with your email and password.",
+      "registered_as_customer": "This Google account is registered as a customer. Please log in from the customer login.",
+      "registered_as_company": "This Google account is registered as a company. Please log in from the company login.",
       "account_disabled": "This account has been blocked. Please contact support."
     }
   },
