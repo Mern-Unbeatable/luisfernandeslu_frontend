@@ -354,6 +354,7 @@ export default function PanelProfile({
   isSavingBillingAddress = false,
   isSavingShippingAddress = false,
   className = '',
+  children,
 }) {
   const { t } = useTranslation()
   const cfg = resolveProfileConfig(role, {
@@ -631,6 +632,8 @@ export default function PanelProfile({
             />
           </Card>
         )}
+
+        {children}
 
         {!isBuyer && cfg.showIban ? (
           <IbanCard

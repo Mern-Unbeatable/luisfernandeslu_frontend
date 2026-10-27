@@ -1,16 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FiAlertTriangle, FiClock } from 'react-icons/fi'
-import ResubmitDocumentsForm from './ResubmitDocumentsForm'
-import { parseRejectionReason } from './documentFields'
-import useSubmitVerificationDocuments from './useSubmitVerificationDocuments'
+import { DOCUMENTS_SECTION_ID, parseRejectionReason } from './documentFields'
 
 const SUBMITTABLE_STATUSES = ['UNVERIFIED', 'PENDING_REVIEW', 'REJECTED']
 
 /**
  * Dashboard banner for accounts that are not yet approved. Sellers can add products
  * and transporters can browse auctions, but selling and bidding unlock only after
- * an admin approves their documents.
+ * an admin approves their documents. Documents are managed on the profile page.
  */
 export default function SellerVerificationPanel({
   role = 'supplier',
@@ -19,10 +18,8 @@ export default function SellerVerificationPanel({
   className = 'mb-6',
 }) {
   const { t } = useTranslation()
-  const [showForm, setShowForm] = useState(false)
-  const { submit, isLoading } = useSubmitVerificationDocuments(role)
 
-  const { reason, invalidDocuments } = useMemo(
+  const { reason } = useMemo(
     () => parseRejectionReason(rejectionReason),
     [rejectionReason],
   )
@@ -32,11 +29,6 @@ export default function SellerVerificationPanel({
   const isPendingReview = verificationStatus === 'PENDING_REVIEW'
   const isRejected = verificationStatus === 'REJECTED'
   const isTransporter = role === 'transporter'
-
-  const handleSubmit = async (formData) => {
-    await submit(formData)
-    setShowForm(false)
-  }
 
   const title = isRejected
     ? t('sellerVerification.rejectedTitle')
@@ -55,12 +47,12 @@ export default function SellerVerificationPanel({
             : 'sellerVerification.unverifiedDescription',
         )
   const actionLabel = isPendingReview
-    ? t('sellerVerification.updateDocuments')
+    ? t('sellerVerification.viewDocuments')
     : t('sellerVerification.submitDocuments')
   const Icon = isPendingReview ? FiClock : FiAlertTriangle
 
   return (
-    <section className={`space-y-4 ${className}`}>
+    <section className={className}>
       <div
         className={`flex flex-col gap-4 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between ${
           isRejected ? 'border-red-200 bg-red-50' : 'border-amber-200 bg-amber-50'
@@ -83,28 +75,13 @@ export default function SellerVerificationPanel({
             ) : null}
           </div>
         </div>
-        {!showForm ? (
-          <button
-            type="button"
-            onClick={() => setShowForm(true)}
-            className="shrink-0 rounded-lg bg-[var(--active)] px-4 py-2.5 text-sm font-bold text-white hover:brightness-95"
-          >
-            {actionLabel}
-          </button>
-        ) : null}
+        <Link
+          to={`/${role}/profile#${DOCUMENTS_SECTION_ID}`}
+          className="shrink-0 rounded-lg bg-[var(--active)] px-4 py-2.5 text-center text-sm font-bold text-white hover:brightness-95"
+        >
+          {actionLabel}
+        </Link>
       </div>
-
-      {showForm ? (
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-          <ResubmitDocumentsForm
-            role={role}
-            invalidDocuments={isRejected ? invalidDocuments : []}
-            isSubmitting={isLoading}
-            onSubmit={handleSubmit}
-            onBack={() => setShowForm(false)}
-          />
-        </div>
-      ) : null}
     </section>
   )
 }

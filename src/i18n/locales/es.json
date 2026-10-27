@@ -4696,7 +4696,44 @@
     "updateDocuments": "Actualizar documentos",
     "transporterUnverifiedDescription": "Envía tus documentos y seguros para que nuestro equipo pueda verificar tu cuenta. Ya puedes explorar el tablero de subastas, pero solo podrás pujar por entregas tras la aprobación.",
     "transporterUnderReviewDescription": "Tus documentos están en revisión. Podrás pujar por entregas en cuanto tu cuenta sea aprobada.",
-    "bidBlocked": "Tu cuenta debe estar verificada antes de poder pujar por entregas. Envía tus documentos desde el panel.",
-    "goToDashboard": "Ir al panel"
+    "bidBlocked": "Tu cuenta debe estar verificada antes de poder pujar por entregas. Envía tus documentos desde tu perfil.",
+    "goToDashboard": "Ir al panel",
+    "viewDocuments": "Ver documentos",
+    "goToDocuments": "Ir a mis documentos"
+  },
+  "verificationDocuments": {
+    "title": "Documentos de verificación",
+    "status": {
+      "UNVERIFIED": "No enviados",
+      "PENDING_REVIEW": "En revisión",
+      "APPROVED": "Aprobados",
+      "REJECTED": "Rechazados"
+    },
+    "hint": {
+      "UNVERIFIED": "Sube todos los documentos a continuación y envíalos para que nuestro equipo pueda verificar tu cuenta.",
+      "PENDING_REVIEW": "Tus documentos están en revisión. Aún puedes sustituir un archivo antes de que termine la revisión.",
+      "APPROVED": "Tus documentos fueron aprobados. Puedes previsualizarlos en cualquier momento.",
+      "REJECTED": "Algunos documentos fueron rechazados. Sube nuevos archivos para los documentos marcados y envíalos de nuevo."
+    },
+    "uploaded": "Subido",
+    "missing": "Pendiente",
+    "needsUpload": "Requiere un nuevo archivo",
+    "readyToSubmit": "Listo para enviar",
+    "preview": "Previsualizar",
+    "previewN": "Archivo {{n}}",
+    "upload": "Subir",
+    "replace": "Sustituir",
+    "removeFile": "Quitar",
+    "openNewTab": "Abrir en una pestaña nueva",
+    "close": "Cerrar",
+    "submit": "Enviar para revisión",
+    "confirm": "Sí, enviar",
+    "fileHint": "Formatos aceptados: JPG, PNG, WEBP o PDF. Hasta 5 archivos por documento.",
+    "noChanges": "Elige al menos un archivo para enviar.",
+    "allRequired": "Sube todos los documentos antes de enviar.",
+    "invalidRequired": "Sube nuevos archivos para todos los documentos rechazados.",
+    "approvedWarning": "Tu cuenta ya está aprobada. Sustituir documentos la devuelve a revisión del administrador y tus productos no estarán disponibles para la compra hasta que se apruebe de nuevo.",
+    "approvedWarningTransporter": "Tu cuenta ya está aprobada. Sustituir documentos la devuelve a revisión del administrador y no podrás pujar por entregas hasta que se apruebe de nuevo.",
+    "confirmReplace": "¿Enviar los nuevos documentos y devolver tu cuenta a revisión?"
   }
 }

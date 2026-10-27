@@ -4694,7 +4694,44 @@
     "updateDocuments": "Update documents",
     "transporterUnverifiedDescription": "Submit your documents and insurance so our team can verify your account. You can already explore the auction board, but you can only bid on deliveries after approval.",
     "transporterUnderReviewDescription": "Your documents are under review. You will be able to bid on deliveries once your account is approved.",
-    "bidBlocked": "Your account must be verified before you can bid on deliveries. Submit your documents from the dashboard.",
-    "goToDashboard": "Go to dashboard"
+    "bidBlocked": "Your account must be verified before you can bid on deliveries. Submit your documents from your profile.",
+    "goToDashboard": "Go to dashboard",
+    "viewDocuments": "View documents",
+    "goToDocuments": "Go to my documents"
+  },
+  "verificationDocuments": {
+    "title": "Verification documents",
+    "status": {
+      "UNVERIFIED": "Not submitted",
+      "PENDING_REVIEW": "Under review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "hint": {
+      "UNVERIFIED": "Upload all documents below and submit them so our team can verify your account.",
+      "PENDING_REVIEW": "Your documents are under review. You can still replace a file before the review is finished.",
+      "APPROVED": "Your documents were approved. You can preview them at any time.",
+      "REJECTED": "Some documents were rejected. Upload new files for the highlighted documents and submit them again."
+    },
+    "uploaded": "Uploaded",
+    "missing": "Missing",
+    "needsUpload": "Needs a new file",
+    "readyToSubmit": "Ready to submit",
+    "preview": "Preview",
+    "previewN": "File {{n}}",
+    "upload": "Upload",
+    "replace": "Replace",
+    "removeFile": "Remove",
+    "openNewTab": "Open in new tab",
+    "close": "Close",
+    "submit": "Submit for review",
+    "confirm": "Yes, submit",
+    "fileHint": "Accepted formats: JPG, PNG, WEBP or PDF. Up to 5 files per document.",
+    "noChanges": "Choose at least one file to submit.",
+    "allRequired": "Please upload every document before submitting.",
+    "invalidRequired": "Please upload new files for all rejected documents.",
+    "approvedWarning": "Your account is already approved. Replacing documents sends it back to admin review, and your products will not be available for purchase until it is approved again.",
+    "approvedWarningTransporter": "Your account is already approved. Replacing documents sends it back to admin review, and you will not be able to bid on deliveries until it is approved again.",
+    "confirmReplace": "Submit the new documents and send your account back to review?"
   }
 }

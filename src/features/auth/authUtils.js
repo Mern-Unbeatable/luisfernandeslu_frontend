@@ -57,21 +57,11 @@ export function clearEmailVerificationSession() {
   sessionStorage.removeItem(EMAIL_VERIFICATION_KEY)
 }
 
-function appendRegisterFiles(formData, fieldName, files) {
-  if (!Array.isArray(files)) return
-  for (const file of files) {
-    if (file instanceof File) {
-      formData.append(fieldName, file)
-    }
-  }
-}
-
 function buildRoleMultipartFormData(values, { entityField, entityKey }) {
   const formData = new FormData()
   formData.append(entityKey, values[entityField]?.trim() ?? '')
   formData.append('email', values.email?.trim() ?? '')
   formData.append('phone', values.phone?.trim() ?? '')
-  formData.append('iban', values.iban?.trim() ?? '')
   formData.append('password', values.password ?? '')
   formData.append(
     'confirmPassword',
@@ -100,7 +90,6 @@ function buildTransporterRegisterFormData(values) {
   formData.append('fullName', values.fullName?.trim() ?? '')
   formData.append('email', values.email?.trim() ?? '')
   formData.append('phone', values.phone?.trim() ?? '')
-  formData.append('iban', values.iban?.trim() ?? '')
   formData.append('password', values.password ?? '')
   formData.append(
     'confirmPassword',
@@ -115,10 +104,8 @@ function buildAffiliateRegisterFormData(values) {
   formData.append('fullName', values.fullName?.trim() ?? '')
   formData.append('email', values.email?.trim() ?? '')
   formData.append('phone', values.phone?.trim() ?? '')
-  formData.append('iban', values.iban?.trim() ?? '')
   formData.append('password', values.password ?? '')
   formData.append('affiliateCode', values.affiliateCode?.trim() ?? '')
-  appendRegisterFiles(formData, 'ibanProof', values.ibanProof)
   return formData
 }
 
