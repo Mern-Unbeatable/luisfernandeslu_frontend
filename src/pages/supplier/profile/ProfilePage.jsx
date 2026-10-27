@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
-import RejectionBanner from "@/components/common/RejectionBanner";
+import VerificationDocumentsCard from "@/components/common/account-lock/VerificationDocumentsCard";
 import {
   Field,
   PrimaryButton,
@@ -321,10 +321,6 @@ export default function ProfilePage() {
           </p>
         </header>
 
-        {!isError && profile?.rejectionReason && (
-          <RejectionBanner rejectionReason={profile.rejectionReason} />
-        )}
-
         {isError ? (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error?.data?.message ||
@@ -424,6 +420,13 @@ export default function ProfilePage() {
                 </div>
               ) : null}
             </section>
+
+            <VerificationDocumentsCard
+              role="supplier"
+              documents={profile?.documents}
+              verificationStatus={profile?.verificationStatus}
+              rejectionReason={profile?.rejectionReason}
+            />
 
             <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
               <div className="mb-5 flex items-center justify-between gap-3">

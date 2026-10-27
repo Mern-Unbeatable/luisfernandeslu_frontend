@@ -24,6 +24,7 @@ function normalizeSupplierProfile(payload = {}) {
     hasEupagoCredentials: Boolean(profile.hasEupagoCredentials),
     rejectionReason: profile.rejectionReason || null,
     verificationStatus: profile.verificationStatus || 'UNVERIFIED',
+    documents: Array.isArray(profile.documents) ? profile.documents : [],
   };
 }
 

@@ -189,8 +189,8 @@ export default function AuctionBoardPage() {
       {!isVerified ? (
         <div className="flex flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 sm:flex-row sm:items-center sm:justify-between">
           <p>{t('sellerVerification.bidBlocked')}</p>
-          <Link to="/transporter" className="shrink-0 font-semibold underline">
-            {t('sellerVerification.goToDashboard')}
+          <Link to="/transporter/profile#documents" className="shrink-0 font-semibold underline">
+            {t('sellerVerification.goToDocuments')}
           </Link>
         </div>
       ) : null}

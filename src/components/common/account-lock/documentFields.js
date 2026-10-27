@@ -1,3 +1,5 @@
+export const DOCUMENTS_SECTION_ID = 'documents'
+
 export const DOCUMENT_FIELD_META = {
   companyCertificateUrl: {
     label: 'Company Certificate',

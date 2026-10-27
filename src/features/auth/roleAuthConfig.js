@@ -206,12 +206,6 @@ const ROLE_AUTH = {
           type: 'tel',
         },
         {
-          name: 'iban',
-          labelKey: 'auth.register.iban',
-          placeholderKey: 'auth.register.ibanPh',
-          type: 'text',
-        },
-        {
           name: 'password',
           labelKey: 'auth.password',
           placeholderKey: 'auth.register.passwordPh2',
@@ -298,12 +292,6 @@ const ROLE_AUTH = {
           labelKey: 'auth.register.phone',
           placeholderKey: 'auth.register.phonePh',
           type: 'tel',
-        },
-        {
-          name: 'iban',
-          labelKey: 'auth.register.iban',
-          placeholderKey: 'auth.register.ibanPhFactory',
-          type: 'text',
         },
         {
           name: 'password',
@@ -406,12 +394,6 @@ const ROLE_AUTH = {
           placeholderKey: 'auth.register.passwordPh2',
           type: 'password',
         },
-        {
-          name: 'iban',
-          labelKey: 'auth.register.iban',
-          placeholderKey: 'auth.register.ibanPhFactory',
-          type: 'text',
-        },
       ],
     },
   },
@@ -513,18 +495,6 @@ const ROLE_AUTH = {
           labelKey: 'auth.password',
           placeholderKey: 'auth.register.passwordPh2',
           type: 'password',
-        },
-        {
-          name: 'iban',
-          labelKey: 'auth.register.iban',
-          placeholderKey: 'auth.register.ibanPhFactory',
-          type: 'text',
-        },
-        {
-          name: 'ibanProof',
-          labelKey: 'auth.register.uploadIbanProof',
-          type: 'file',
-          hideLabel: true,
         },
       ],
     },
