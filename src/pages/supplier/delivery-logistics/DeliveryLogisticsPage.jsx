@@ -13,6 +13,7 @@ import {
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { appLocale } from '@/i18n/locale'
 import SupplierDeliveryPanels from "./SupplierDeliveryPanels";
+import SupplierDeliveryEarnings from "./SupplierDeliveryEarnings";
 
 const PAGE_SIZE = 4;
 
@@ -194,6 +195,8 @@ export default function DeliveryLogisticsPage() {
         </div>
 
         <SupplierDeliveryPanels />
+
+        <SupplierDeliveryEarnings />
 
         <section className="space-y-4">
           <div>

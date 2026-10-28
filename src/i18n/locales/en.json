@@ -740,15 +740,17 @@
     },
     "payoutSection": {
       "title": "Payout Requests",
-      "subtitle": "Review transporter payout requests and payment status."
+      "subtitle": "Withdrawal requests from suppliers (self deliveries) and transporters. Transfer the amount to the given IBAN and mark it as paid."
     },
-    "payoutSearchPlaceholder": "Search transporter name or email...",
+    "payoutSearchPlaceholder": "Search name, email or IBAN...",
     "payoutEmpty": "No payout requests match your filters.",
     "payoutFilters": {
       "allRequests": "All Requests"
     },
     "payoutColumns": {
       "transporter": "Transporter",
+      "user": "User",
+      "account": "IBAN",
       "totalEarnings": "Total Earnings",
       "requested": "Requested",
       "pending": "Pending",
@@ -3616,6 +3618,25 @@
       "deliveredLate": "Delivered late",
       "markDelivered": "Mark as delivered",
       "markedDelivered": "Order marked as delivered"
+    },
+    "earnings": {
+      "title": "Delivery earnings",
+      "subtitle": "The delivery fee of orders you deliver yourself goes to your balance once you mark them as delivered. Request a withdrawal and Construpreço transfers it to your IBAN.",
+      "available": "Available balance",
+      "pending": "To receive (not delivered yet)",
+      "total": "Total earned",
+      "amount": "Amount",
+      "iban": "IBAN",
+      "withdraw": "Request withdrawal",
+      "requested": "Withdrawal requested",
+      "date": "Date",
+      "status": "Status",
+      "statuses": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "paid": "Paid",
+        "rejected": "Rejected"
+      }
     },
     "awaiting": {
       "title": "Waiting for a carrier",

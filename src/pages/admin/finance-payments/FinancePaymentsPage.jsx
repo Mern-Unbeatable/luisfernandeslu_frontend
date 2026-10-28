@@ -12,14 +12,17 @@ import PayoutStatusBadge from './components/PayoutStatusBadge'
 import RevenueTrendSection from './sections/RevenueTrendSection'
 import {
   FINANCE_COMMISSION_INVOICES,
-  FINANCE_PAYOUTS,
   FINANCE_STATS,
   filterInvoicesBySearch,
   filterInvoicesByUserType,
-  filterPayoutsBySearch,
-  filterPayoutsByStatus,
   formatFinanceCurrency,
 } from './data/financeDemo'
+import { toast } from 'react-hot-toast'
+import {
+  useGetAdminPayoutsQuery,
+  useUpdateAdminPayoutStatusMutation,
+} from '@/features/supplier/deliveries/deliveriesApi'
+import { getApiErrorMessage } from '@/features/supplier/apiError'
 
 const I18N_KEY = 'adminFinancePayments'
 const PAYOUT_PAGE_SIZE = 7
@@ -34,66 +37,53 @@ export default function FinancePaymentsPage() {
   const [invoiceSearch, setInvoiceSearch] = useState('')
   const [invoicePage, setInvoicePage] = useState(1)
 
-  // Swap to real query isLoading when finance API is wired.
-  const isLoading = false
+  const { data: payoutData, isLoading } = useGetAdminPayoutsQuery({
+    page: payoutPage,
+    limit: PAYOUT_PAGE_SIZE,
+    status: payoutStatusFilter,
+    ...(payoutSearch.trim() ? { search: payoutSearch.trim() } : {}),
+  })
+  const [updatePayoutStatus] = useUpdateAdminPayoutStatusMutation()
 
-  const payoutMenuActions = useMemo(
-    () => [
+  const payoutMenuActions = useMemo(() => {
+    const setStatus = async (row, status) => {
+      try {
+        await updatePayoutStatus({ id: row.id, status }).unwrap()
+        toast.success(t(`${I18N_KEY}.payoutStatus.${status}`))
+      } catch (err) {
+        toast.error(getApiErrorMessage(err, t('common.requestFailed')))
+      }
+    }
+    return [
       {
         id: 'approve',
         label: t(`${I18N_KEY}.payoutActions.approve`),
         visible: (row) => row.status === 'pending',
-        onClick: () => {},
+        onClick: (row) => setStatus(row, 'approved'),
+      },
+      {
+        id: 'markPaid',
+        label: t(`${I18N_KEY}.payoutActions.markPaid`),
+        visible: (row) => row.status === 'pending' || row.status === 'approved',
+        onClick: (row) => setStatus(row, 'paid'),
       },
       {
         id: 'reject',
         label: t(`${I18N_KEY}.payoutActions.reject`),
         variant: 'danger',
         visible: (row) => row.status === 'pending' || row.status === 'approved',
-        onClick: () => {},
+        onClick: (row) => setStatus(row, 'rejected'),
       },
-      {
-        id: 'markPaid',
-        label: t(`${I18N_KEY}.payoutActions.markPaid`),
-        visible: (row) => row.status === 'approved',
-        onClick: () => {},
-      },
-      {
-        id: 'view',
-        label: t(`${I18N_KEY}.payoutActions.viewDetails`),
-        onClick: () => {},
-      },
-    ],
-    [t],
-  )
+    ]
+  }, [t, updatePayoutStatus])
 
-  const filteredPayouts = useMemo(() => {
-    const byStatus = filterPayoutsByStatus(FINANCE_PAYOUTS, payoutStatusFilter)
-    return filterPayoutsBySearch(byStatus, payoutSearch)
-  }, [payoutStatusFilter, payoutSearch])
-
-  const payoutPageCount = Math.max(
-    1,
-    Math.ceil(filteredPayouts.length / PAYOUT_PAGE_SIZE),
-  )
+  const pagedPayouts = payoutData?.payouts || []
+  const payoutTotal = payoutData?.pagination?.total || 0
+  const payoutPageCount = Math.max(1, payoutData?.pagination?.totalPages || 1)
   const safePayoutPage = Math.min(payoutPage, payoutPageCount)
-  const pagedPayouts = useMemo(
-    () =>
-      filteredPayouts.slice(
-        (safePayoutPage - 1) * PAYOUT_PAGE_SIZE,
-        safePayoutPage * PAYOUT_PAGE_SIZE,
-      ),
-    [filteredPayouts, safePayoutPage],
-  )
-
   const payoutFrom =
-    filteredPayouts.length === 0
-      ? 0
-      : (safePayoutPage - 1) * PAYOUT_PAGE_SIZE + 1
-  const payoutTo = Math.min(
-    safePayoutPage * PAYOUT_PAGE_SIZE,
-    filteredPayouts.length,
-  )
+    payoutTotal === 0 ? 0 : (safePayoutPage - 1) * PAYOUT_PAGE_SIZE + 1
+  const payoutTo = Math.min(safePayoutPage * PAYOUT_PAGE_SIZE, payoutTotal)
 
   const filteredInvoices = useMemo(() => {
     const byType = filterInvoicesByUserType(
@@ -130,7 +120,7 @@ export default function FinancePaymentsPage() {
     () => [
       {
         key: 'name',
-        header: t(`${I18N_KEY}.payoutColumns.transporter`),
+        header: t(`${I18N_KEY}.payoutColumns.user`),
         render: (_, row) => (
           <div className="min-w-0">
             <p className="font-semibold text-[var(--primary-text)]">
@@ -141,23 +131,27 @@ export default function FinancePaymentsPage() {
         ),
       },
       {
-        key: 'totalEarnings',
-        header: t(`${I18N_KEY}.payoutColumns.totalEarnings`),
-        render: (value) => formatFinanceCurrency(value),
+        key: 'role',
+        header: t(`${I18N_KEY}.invoiceColumns.userType`),
+        render: (value) => (
+          <InvoiceUserTypeBadge
+            userType={value}
+            label={t(`${I18N_KEY}.userTypes.${value}`)}
+          />
+        ),
       },
       {
         key: 'requested',
         header: t(`${I18N_KEY}.payoutColumns.requested`),
-        render: (value) => formatFinanceCurrency(value),
-      },
-      {
-        key: 'pending',
-        header: t(`${I18N_KEY}.payoutColumns.pending`),
         render: (value) => (
           <span className="font-medium text-[var(--active)]">
             {formatFinanceCurrency(value)}
           </span>
         ),
+      },
+      {
+        key: 'accountNumber',
+        header: t(`${I18N_KEY}.payoutColumns.account`),
       },
       {
         key: 'requestDate',
@@ -260,7 +254,7 @@ export default function FinancePaymentsPage() {
     },
     {
       label: t(`${I18N_KEY}.stats.pendingPayouts`),
-      value: FINANCE_STATS.pendingPayouts,
+      value: formatFinanceCurrency(payoutData?.pendingTotal || 0),
     },
     {
       label: t(`${I18N_KEY}.stats.marketingRevenue`),
@@ -366,7 +360,7 @@ export default function FinancePaymentsPage() {
           pagination={{
             page: safePayoutPage,
             pageSize: PAYOUT_PAGE_SIZE,
-            total: filteredPayouts.length,
+            total: payoutTotal,
             from: payoutFrom,
             to: payoutTo,
             hasPrevious: safePayoutPage > 1,
@@ -375,7 +369,7 @@ export default function FinancePaymentsPage() {
             summaryLabel: t(`${I18N_KEY}.pagination.summary`, {
               from: payoutFrom,
               to: payoutTo,
-              total: filteredPayouts.length,
+              total: payoutTotal,
             }),
             previousLabel: t(`${I18N_KEY}.pagination.previous`),
             nextLabel: t(`${I18N_KEY}.pagination.next`),

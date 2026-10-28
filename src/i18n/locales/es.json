@@ -740,15 +740,17 @@
     },
     "payoutSection": {
       "title": "Solicitudes de pago",
-      "subtitle": "Revise las solicitudes de pago de transportistas y su estado."
+      "subtitle": "Solicitudes de retiro de proveedores (entregas propias) y transportistas. Transfiera el importe al IBAN indicado y márquelo como pagado."
     },
-    "payoutSearchPlaceholder": "Buscar nombre o correo del transportista...",
+    "payoutSearchPlaceholder": "Buscar nombre, correo o IBAN...",
     "payoutEmpty": "Ninguna solicitud coincide con los filtros.",
     "payoutFilters": {
       "allRequests": "Todas las solicitudes"
     },
     "payoutColumns": {
       "transporter": "Transportista",
+      "user": "Usuario",
+      "account": "IBAN",
       "totalEarnings": "Ganancias totales",
       "requested": "Solicitado",
       "pending": "Pendiente",
@@ -3617,6 +3619,25 @@
       "deliveredLate": "Entregado con retraso",
       "markDelivered": "Marcar como entregado",
       "markedDelivered": "Pedido marcado como entregado"
+    },
+    "earnings": {
+      "title": "Ganancias de entregas",
+      "subtitle": "El importe del transporte de los pedidos que entrega usted mismo pasa a su saldo al marcarlos como entregados. Solicite el retiro y Construpreço lo transfiere a su IBAN.",
+      "available": "Saldo disponible",
+      "pending": "Por cobrar (sin entregar)",
+      "total": "Total ganado",
+      "amount": "Importe",
+      "iban": "IBAN",
+      "withdraw": "Solicitar retiro",
+      "requested": "Retiro solicitado",
+      "date": "Fecha",
+      "status": "Estado",
+      "statuses": {
+        "pending": "Pendiente",
+        "approved": "Aprobado",
+        "paid": "Pagado",
+        "rejected": "Rechazado"
+      }
     },
     "awaiting": {
       "title": "Esperando transportista",
