@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import useOpenSupplierProductChat from '@/features/marketplace/useOpenSupplierProductChat'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Swal from 'sweetalert2'
@@ -46,7 +47,9 @@ export default function ProductDetailPage() {
   const user = useSelector((state) => state.auth.user)
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const [quoteOpen, setQuoteOpen] = useState(false)
+  const { openSupplierProductChat, isOpeningChat } = useOpenSupplierProductChat()
   const [isSubmittingQuote, setIsSubmittingQuote] = useState(false)
+  const [quoteError, setQuoteError] = useState('')
   const authRole = resolveStorefrontBuyerRole(user)
   const pricingView = authRole === 'company' ? 'company' : 'retail'
   const { handleAddToCart } = useCartAction()
@@ -68,15 +71,23 @@ export default function ProductDetailPage() {
     () => resolveDetailRole(data?.viewer, user),
     [data?.viewer, user],
   )
-  const actions = useMemo(
-    () => filterDetailActions(listingRole, product?.actions),
-    [listingRole, product?.actions],
-  )
+  const isSupplierViewer = user?.role === 'supplier'
+  const actions = useMemo(() => {
+    if (isSupplierViewer) {
+      return product?.actions?.sendQuote
+        ? [{ id: 'send_message', label: t('panel.supplierBuyFromFactory.sendMessage'), variant: 'primary' }]
+        : []
+    }
+    return filterDetailActions(listingRole, product?.actions)
+  }, [isSupplierViewer, listingRole, product?.actions, t])
 
   const [loadingAction, setLoadingAction] = useState(null)
 
   const handleAction = async (actionId) => {
     if (actionId === 'send_quote') setQuoteOpen(true)
+    if (actionId === 'send_message' && !isOpeningChat) {
+      await openSupplierProductChat(product.id)
+    }
     if (actionId === 'buy_now') {
       if (!isAuthenticated) {
         Swal.fire({
@@ -186,13 +197,19 @@ export default function ProductDetailPage() {
         />
       </div>
 
+      {quoteOpen ? (
       <SendQuoteModal
-        open={quoteOpen}
-        onClose={() => setQuoteOpen(false)}
+        open
+        onClose={() => {
+          setQuoteOpen(false)
+          setQuoteError('')
+        }}
         product={product}
         isSubmitting={isSubmittingQuote}
+        error={quoteError}
         onSubmit={async (data) => {
           setIsSubmittingQuote(true)
+          setQuoteError('')
           try {
             await createProductQuote({
               productId: product.id,
@@ -205,22 +222,15 @@ export default function ProductDetailPage() {
             setQuoteOpen(false)
             navigate('/messages')
           } catch (err) {
-            console.error('Failed to send quote:', err)
-            Swal.fire({
-              icon: 'error',
-              title: t('ui.sendQuoteFailed'),
-              text: err?.data?.message || err?.message || t('ui.somethingWentWrong'),
-              confirmButtonText: 'OK',
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: 'rounded-lg border-2 border-[var(--active)] bg-[var(--active)] px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90',
-              }
-            })
+            setQuoteError(
+              `${t('ui.sendQuoteFailed')}: ${err?.data?.message || err?.message || t('ui.somethingWentWrong')}`,
+            )
           } finally {
             setIsSubmittingQuote(false)
           }
         }}
       />
+      ) : null}
     </div>
   )
 }

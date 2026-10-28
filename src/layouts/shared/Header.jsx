@@ -110,9 +110,13 @@ export default function Header() {
     }
   };
 
-  const handleSelectProduct = (productSlug) => {
+  const handleSelectProduct = (item) => {
     setIsSuggestionsOpen(false);
-    navigate(`/products/${productSlug}`);
+    navigate(
+      item.isFactory
+        ? `/supplier/buy-from-factory/${item.id}`
+        : `/products/${item.slug}`,
+    );
   };
 
   const handleSelectCategory = (cat) => {
@@ -133,7 +137,7 @@ export default function Header() {
 
 
   const { data: cartData } = useGetCartQuery(undefined, {
-    skip: !isAuthenticated,
+    skip: !isAuthenticated || !['customer', 'company'].includes(user?.role),
   });
   const cartItemCount = cartData?.cart?.items?.length || 0;
 
@@ -295,7 +299,7 @@ export default function Header() {
                               key={item.id}
                               type="button"
                               onClick={() => {
-                                handleSelectProduct(item.slug);
+                                handleSelectProduct(item);
                                 closeSearch();
                               }}
                               className="flex w-full items-center gap-2.5 rounded-lg p-2 text-left hover:bg-gray-50 active:bg-gray-100"
@@ -480,7 +484,7 @@ export default function Header() {
                               <button
                                 key={item.id}
                                 type="button"
-                                onClick={() => handleSelectProduct(item.slug)}
+                                onClick={() => handleSelectProduct(item)}
                                 className="flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-gray-50 group"
                               >
                                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-gray-100 bg-gray-50">

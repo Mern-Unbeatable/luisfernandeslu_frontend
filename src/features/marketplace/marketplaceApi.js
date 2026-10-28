@@ -160,6 +160,13 @@ export const marketplaceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Product', 'Quote', 'ChatThread'],
     }),
+    openSupplierProductChat: builder.mutation({
+      query: (productId) => ({
+        url: `/api/marketplace/products/${productId}/message`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Quote', 'ChatThread'],
+    }),
     getSearchSuggestions: builder.query({
       query: (q) => ({
         url: '/api/marketplace/products/suggestions',
@@ -180,6 +187,7 @@ export const {
   useGetMarketplaceProductsQuery,
   useGetMarketplaceProductBySlugQuery,
   useCreateProductQuoteMutation,
+  useOpenSupplierProductChatMutation,
   useGetSearchSuggestionsQuery,
 } = marketplaceApi
 

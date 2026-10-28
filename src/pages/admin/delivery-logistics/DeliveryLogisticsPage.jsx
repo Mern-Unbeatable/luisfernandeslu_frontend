@@ -11,6 +11,7 @@ import {
 } from '@/features/admin/adminLogisticsMappers'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
 import DeliveryTimelineSkeleton from '@/components/common/Skeleton/DeliveryTimelineSkeleton'
+import AdminSelfDeliveriesSection from './AdminSelfDeliveriesSection'
 
 const I18N_KEY = 'adminDeliveryLogistics'
 const PAGE_SIZE = 10;
@@ -100,6 +101,8 @@ export default function DeliveryLogisticsPage() {
           </select>
         </label>
       </div>
+
+      <AdminSelfDeliveriesSection />
 
       {isError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
