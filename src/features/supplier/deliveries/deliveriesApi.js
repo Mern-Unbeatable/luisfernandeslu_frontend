@@ -1,6 +1,8 @@
 import { baseApi } from "../../../services/api/baseApi";
 
 const DELIVERY_TAG = { type: "Delivery", id: "SUPPLIER" };
+const EARNINGS_TAG = { type: "Delivery", id: "EARNINGS" };
+const PAYOUTS_TAG = { type: "Delivery", id: "PAYOUTS" };
 
 function listOf(value) {
   return Array.isArray(value) ? value : [];
@@ -39,7 +41,43 @@ export const supplierDeliveriesApi = baseApi.injectEndpoints({
         url: `/api/supplier/deliveries/${orderId}/delivered`,
         method: "POST",
       }),
-      invalidatesTags: [DELIVERY_TAG],
+      invalidatesTags: [DELIVERY_TAG, EARNINGS_TAG],
+    }),
+    getSupplierDeliveryEarnings: builder.query({
+      query: () => ({ url: "/api/supplier/deliveries/earnings", method: "GET" }),
+      transformResponse: (response) => ({
+        availableBalance: Number(response?.availableBalance) || 0,
+        pendingEarnings: Number(response?.pendingEarnings) || 0,
+        totalEarned: Number(response?.totalEarned) || 0,
+        defaultAccountNumber: response?.defaultAccountNumber || "",
+        withdrawals: listOf(response?.withdrawals),
+      }),
+      providesTags: [EARNINGS_TAG],
+    }),
+    requestDeliveryWithdrawal: builder.mutation({
+      query: (body) => ({
+        url: "/api/supplier/deliveries/withdrawals",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [EARNINGS_TAG],
+    }),
+    getAdminPayouts: builder.query({
+      query: (params = {}) => ({ url: "/api/admin/payouts", method: "GET", params }),
+      transformResponse: (response) => ({
+        payouts: listOf(response?.payouts),
+        pendingTotal: Number(response?.pendingTotal) || 0,
+        pagination: response?.pagination || { page: 1, limit: 7, total: 0, totalPages: 1 },
+      }),
+      providesTags: [PAYOUTS_TAG],
+    }),
+    updateAdminPayoutStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/admin/payouts/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: [PAYOUTS_TAG],
     }),
     getAdminSelfDeliveries: builder.query({
       query: ({ late = false } = {}) => ({
@@ -60,4 +98,8 @@ export const {
   useSendDeliveryToCarriersMutation,
   useMarkSelfDeliveryDeliveredMutation,
   useGetAdminSelfDeliveriesQuery,
+  useGetSupplierDeliveryEarningsQuery,
+  useRequestDeliveryWithdrawalMutation,
+  useGetAdminPayoutsQuery,
+  useUpdateAdminPayoutStatusMutation,
 } = supplierDeliveriesApi;

@@ -740,15 +740,17 @@
     },
     "payoutSection": {
       "title": "Pedidos de pagamento",
-      "subtitle": "Reveja pedidos de pagamento de transportadores e respetivo estado."
+      "subtitle": "Pedidos de levantamento de fornecedores (entregas próprias) e transportadores. Transfira o valor para o IBAN indicado e marque como pago."
     },
-    "payoutSearchPlaceholder": "Pesquisar nome ou e-mail do transportador...",
+    "payoutSearchPlaceholder": "Pesquisar nome, e-mail ou IBAN...",
     "payoutEmpty": "Nenhum pedido corresponde aos filtros.",
     "payoutFilters": {
       "allRequests": "Todos os pedidos"
     },
     "payoutColumns": {
       "transporter": "Transportador",
+      "user": "Utilizador",
+      "account": "IBAN",
       "totalEarnings": "Ganhos totais",
       "requested": "Solicitado",
       "pending": "Pendente",
@@ -3617,6 +3619,25 @@
       "deliveredLate": "Entregue com atraso",
       "markDelivered": "Marcar como entregue",
       "markedDelivered": "Encomenda marcada como entregue"
+    },
+    "earnings": {
+      "title": "Ganhos das entregas",
+      "subtitle": "O valor do transporte das encomendas que entrega fica no seu saldo depois de marcar como entregue. Peça o levantamento e a Construpreço transfere para o seu IBAN.",
+      "available": "Saldo disponível",
+      "pending": "A receber (por entregar)",
+      "total": "Total ganho",
+      "amount": "Valor",
+      "iban": "IBAN",
+      "withdraw": "Pedir levantamento",
+      "requested": "Pedido de levantamento enviado",
+      "date": "Data",
+      "status": "Estado",
+      "statuses": {
+        "pending": "Pendente",
+        "approved": "Aprovado",
+        "paid": "Pago",
+        "rejected": "Rejeitado"
+      }
     },
     "awaiting": {
       "title": "À espera de transportador",
