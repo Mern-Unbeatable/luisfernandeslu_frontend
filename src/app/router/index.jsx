@@ -1,5 +1,10 @@
 import { Suspense, lazy } from "react";
-import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 import PublicLayout from "../../layouts/PublicLayout/PublicLayout";
 import BuyerLayout from "../../layouts/BuyerLayout/BuyerLayout";
@@ -273,12 +278,6 @@ const SupplierDocuments = Loadable(
 const SupplierChat = Loadable(
   lazy(() => import("../../pages/supplier/chat/ChatPage")),
   <FactoryChatPageSkeleton />,
-);
-const SupplierBuyFromFactory = Loadable(
-  lazy(
-    () => import("../../pages/supplier/buy-from-factory/BuyFromFactoryPage"),
-  ),
-  <FactoryProductsPageSkeleton />,
 );
 const SupplierBuyFromFactoryDetail = Loadable(
   lazy(
@@ -1149,8 +1148,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "buy-from-factory",
-                element: <SupplierBuyFromFactory />,
-                handle: panelSeo("panel.nav.buyFromFactory"),
+                element: <Navigate to="/products" replace />,
               },
               {
                 path: "factory-orders/:orderId",
