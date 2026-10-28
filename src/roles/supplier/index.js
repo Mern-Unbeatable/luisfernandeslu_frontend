@@ -7,7 +7,6 @@ import {
   FiFileText,
   FiMessageSquare,
   FiShoppingCart,
-  FiTruck,
   FiLayers,
   FiMap,
   FiCreditCard,
@@ -62,14 +61,9 @@ const supplierRole = {
       Icon: FiMessageSquare,
     },
     {
-      to: '/supplier/buy-from-factory',
-      labelKey: 'panel.nav.buyFromFactory',
-      Icon: FiShoppingCart,
-    },
-    {
       to: '/supplier/factory-orders',
       labelKey: 'panel.nav.factoryOrder',
-      Icon: FiTruck,
+      Icon: FiShoppingCart,
     },
     {
       to: '/supplier/inventory',

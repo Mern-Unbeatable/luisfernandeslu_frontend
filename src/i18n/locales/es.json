@@ -1379,7 +1379,7 @@
       "document": "Documento",
       "chat": "Mensajes",
       "buyFromFactory": "Comprar de fábrica",
-      "factoryOrder": "Pedido de fábrica",
+      "factoryOrder": "Mis compras",
       "inventory": "Inventario",
       "deliveryLogistics": "Entrega y logística",
       "deliveryLogisticsAdmin": "Entrega y logística",
@@ -1747,8 +1747,8 @@
       "backToProducts": "Volver a Comprar de fábrica"
     },
     "supplierFactoryOrders": {
-      "title": "Comprar de fábrica",
-      "subtitle": "Crea y gestiona códigos promocionales para tu plataforma de e-commerce",
+      "title": "Mis compras",
+      "subtitle": "Productos que compraste a fábricas y a otros proveedores",
       "tabOrders": "Pedidos",
       "tabTransportRequest": "Solicitud de transporte",
       "sortBy": "Ordenar por:",

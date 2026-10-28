@@ -40,7 +40,7 @@ export default function BuyFromFactoryDetailPage() {
             {t("panel.supplierBuyFromFactory.notFound")}
           </p>
           <Link
-            to="/supplier/buy-from-factory"
+            to="/products"
             className="mt-4 inline-flex text-sm font-semibold text-[var(--active)] hover:underline"
           >
             {t("panel.supplierBuyFromFactory.backToProducts")}
