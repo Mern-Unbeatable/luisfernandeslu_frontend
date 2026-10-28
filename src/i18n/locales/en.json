@@ -1377,7 +1377,7 @@
       "document": "Document",
       "chat": "Chat",
       "buyFromFactory": "Buy From Factory",
-      "factoryOrder": "Factory Order",
+      "factoryOrder": "My Purchases",
       "inventory": "Inventory",
       "deliveryLogistics": "Delivery & Logistic",
       "deliveryLogisticsAdmin": "Delivery & Logistics",
@@ -1745,8 +1745,8 @@
       "backToProducts": "Back to Buy From Factory"
     },
     "supplierFactoryOrders": {
-      "title": "Buy From Factory",
-      "subtitle": "Create and manage promotional codes for your e-commerce platform",
+      "title": "My Purchases",
+      "subtitle": "Products you bought from factories and other suppliers",
       "tabOrders": "Orders",
       "tabTransportRequest": "Transport Request",
       "sortBy": "Sort By:",
