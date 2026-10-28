@@ -19,6 +19,7 @@ export function mapAdminSettings(settings) {
     auction: {
       hours: Number(settings.auction?.hours) || 0,
       minutes: Number(settings.auction?.minutes) || 0,
+      decisionMinutes: Number(settings.auction?.decisionMinutes) || 10,
     },
   }
 }

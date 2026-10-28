@@ -103,8 +103,16 @@ export default function SettingsPage() {
   )
   const [vatResult, setVatResult] = useState(null)
 
-  const [auctionSaved, setAuctionSaved] = useState({ hours: '0', minutes: '0' })
-  const [auctionDraft, setAuctionDraft] = useState({ hours: '0', minutes: '0' })
+  const [auctionSaved, setAuctionSaved] = useState({
+    hours: '0',
+    minutes: '0',
+    decisionMinutes: '10',
+  })
+  const [auctionDraft, setAuctionDraft] = useState({
+    hours: '0',
+    minutes: '0',
+    decisionMinutes: '10',
+  })
 
   useEffect(() => {
     if (!mappedSettings) return
@@ -125,6 +133,7 @@ export default function SettingsPage() {
     const auction = {
       hours: String(mappedSettings.auction.hours),
       minutes: String(mappedSettings.auction.minutes),
+      decisionMinutes: String(mappedSettings.auction.decisionMinutes),
     }
     setAuctionSaved(auction)
     setAuctionDraft({ ...auction })
@@ -143,7 +152,8 @@ export default function SettingsPage() {
   const auctionUnsaved = useMemo(
     () =>
       auctionDraft.hours !== auctionSaved.hours ||
-      auctionDraft.minutes !== auctionSaved.minutes,
+      auctionDraft.minutes !== auctionSaved.minutes ||
+      auctionDraft.decisionMinutes !== auctionSaved.decisionMinutes,
     [auctionDraft, auctionSaved],
   )
 
@@ -252,6 +262,10 @@ export default function SettingsPage() {
       const result = await updateAuction({
         hours: Number.parseInt(auctionDraft.hours, 10) || 0,
         minutes: Number.parseInt(auctionDraft.minutes, 10) || 0,
+        decisionMinutes: Math.min(
+          1440,
+          Math.max(1, Number.parseInt(auctionDraft.decisionMinutes, 10) || 10),
+        ),
       }).unwrap()
 
       if (result?.success === false) {
@@ -547,6 +561,25 @@ export default function SettingsPage() {
                 />
               </label>
             </div>
+            <label className="mt-4 block">
+              <FieldLabel>{t(`${I18N_KEY}.auction.decisionMinutesLabel`)}</FieldLabel>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={auctionDraft.decisionMinutes}
+                onChange={(e) =>
+                  setAuctionDraft((prev) => ({
+                    ...prev,
+                    decisionMinutes: e.target.value,
+                  }))
+                }
+                disabled={isAuctionBusy || showInitialLoading}
+                className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[var(--active)] disabled:cursor-not-allowed disabled:opacity-60"
+              />
+              <span className="mt-1 block text-xs text-[var(--secondary-text)]">
+                {t(`${I18N_KEY}.auction.decisionMinutesHint`)}
+              </span>
+            </label>
           </SettingsConfigCard>
         </SettingsSection>
       </div>

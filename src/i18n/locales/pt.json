@@ -37,8 +37,7 @@
     "beLiberator": "Seja um libertador"
   },
   "productsPage": {
-    "unavailableForPurchase": "De momento indisponível para compra",
-    "filters": "Filtros",
+    "unavailableForPurchase": "De momento indisponível para compra",    "filters": "Filtros",
     "priceRange": "Intervalo de preço",
     "minPrice": "Preço mínimo",
     "maxPrice": "Preço máximo",
@@ -975,6 +974,23 @@
   "adminDeliveryLogistics": {
     "title": "Entrega e logística",
     "subtitle": "Monitorize entregas ativas e detalhes de envio.",
+    "selfDeliveries": {
+      "title": "Entregas feitas pelo fornecedor",
+      "subtitle": "Encomendas que o fornecedor escolheu entregar. Prazo de 2 horas; depois disso aparecem como atrasadas.",
+      "lateOnly": "Só atrasadas",
+      "empty": "Sem entregas do fornecedor",
+      "order": "Encomenda",
+      "supplier": "Fornecedor",
+      "customer": "Cliente",
+      "deadline": "Prazo",
+      "deliveredAt": "Entregue em",
+      "payout": "A pagar ao fornecedor",
+      "status": "Estado",
+      "inProgress": "Em curso",
+      "late": "Atrasada",
+      "delivered": "Entregue",
+      "deliveredLate": "Entregue com atraso"
+    },
     "status": {
       "assigned": "Atribuído",
       "pickedUp": "Recolhido",
@@ -1326,7 +1342,9 @@
       "description": "Duração dos leilões para transportadores.",
       "durationTitle": "Duração do leilão",
       "hoursLabel": "Horas",
-      "minutesLabel": "Minutos"
+      "minutesLabel": "Minutos",
+      "decisionMinutesLabel": "Tempo de decisão do fornecedor (minutos)",
+      "decisionMinutesHint": "Tempo que o fornecedor tem após o pagamento para escolher entre fazer a entrega ou enviar para transportadores. Depois disso, a encomenda vai automaticamente para os transportadores."
     },
     "loading": "A carregar definições…",
     "loadFailed": "Não foi possível carregar as definições.",
@@ -3577,6 +3595,41 @@
     "startAuctionTitle": "Iniciar leilão",
     "activeDetailTitle": "Leilões ativos",
     "assignedDetailTitle": "Detalhes das entregas atribuídas",
+    "order": "Encomenda",
+    "payout": "Recebe pela entrega: {{amount}}",
+    "deliverMyself": "Eu faço a entrega",
+    "sendToCarriers": "Enviar para transportadores",
+    "tryCarriersAgain": "Tentar transportadores de novo",
+    "selfChosen": "Vai fazer esta entrega. Tem 2 horas para entregar.",
+    "carrierChosen": "Encomenda enviada para os transportadores",
+    "pending": {
+      "title": "Escolha como entregar",
+      "subtitle": "Decida antes do fim do tempo. Se não escolher, a encomenda vai automaticamente para os transportadores.",
+      "timeUp": "Tempo esgotado"
+    },
+    "self": {
+      "title": "As minhas entregas",
+      "subtitle": "Encomendas que vai entregar. Prazo de 2 horas após a escolha.",
+      "deadline": "Entregar até {{date}}",
+      "deliveredAt": "Entregue em {{date}}",
+      "late": "Atrasada",
+      "delivered": "Entregue",
+      "deliveredLate": "Entregue com atraso",
+      "markDelivered": "Marcar como entregue",
+      "markedDelivered": "Encomenda marcada como entregue"
+    },
+    "awaiting": {
+      "title": "À espera de transportador",
+      "subtitle": "Encomendas enviadas para os transportadores",
+      "searching": "A procurar transportador",
+      "noCarrier": "Nenhum transportador",
+      "endsAt": "O leilão termina em {{date}}"
+    },
+    "alert": {
+      "title": "Tem {{count}} encomenda(s) à espera da sua decisão de entrega",
+      "body": "Escolha se faz a entrega ou se envia para os transportadores antes do fim do tempo.",
+      "cta": "Escolher agora"
+    },
     "activeAuctions": {
       "title": "Leilões ativos",
       "subtitle": "Propostas pendentes e itens em leilão",

@@ -4,7 +4,10 @@ import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import Messenger from "@/components/common/messenger/Messenger";
 import useLiveChat from "@/features/chat/useLiveChat";
-import { useCreateSupplierQuoteOfferMutation } from "@/features/supplier/quotes/quotesApi";
+import {
+  useCreateSupplierQuoteOfferMutation,
+  useGetSupplierQuoteByIdQuery,
+} from "@/features/supplier/quotes/quotesApi";
 
 export default function ChatPage() {
   const { t } = useTranslation();
@@ -14,6 +17,15 @@ export default function ChatPage() {
 
   const [createOfferMutation, { isLoading: isCreatingOffer }] =
     useCreateSupplierQuoteOfferMutation();
+
+  const activeQuoteId =
+    state.activeChat?.raw?.type === "QUOTE"
+      ? state.activeChat?.raw?.quoteRequestId
+      : null;
+  const { data: activeQuote } = useGetSupplierQuoteByIdQuery(activeQuoteId, {
+    skip: !activeQuoteId,
+  });
+  const isQuoteSeller = activeQuote?.raw?.viewerRole === "seller";
 
   // Open thread from URL params (e.g. from buy-from-factory or quote notification)
   useEffect(() => {
@@ -67,7 +79,7 @@ export default function ChatPage() {
           onDeleteMessage={state.deleteMessage}
           onTyping={state.handleTyping}
           onStopTyping={state.stopTyping}
-          onCreateOffer={state.activeChat?.raw?.type === 'QUOTE' ? createOffer : undefined}
+          onCreateOffer={activeQuoteId && isQuoteSeller ? createOffer : undefined}
           onPayNow={(msg) => {
             const quoteId = state.activeChat?.raw?.quoteRequestId || state.activeChat?.id
             const chatType = state.activeChat?.raw?.type

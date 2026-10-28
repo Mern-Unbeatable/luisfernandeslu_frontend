@@ -5,20 +5,14 @@ import Seo from "@/components/common/Seo/Seo";
 import Pagination from "@/components/common/Pagination/Pagination";
 import AuctionCard from "@/components/data-display/AuctionCard";
 import AuctionDetails from "@/components/data-display/AuctionDetails";
-import CreateAuction from "@/components/forms/CreateAuction";
 import AuctionCardSkeleton from "@/components/common/Skeleton/AuctionCardSkeleton";
-import FactoryDeliveryPageSkeleton from "@/pages/factory/components/FactoryDeliveryPageSkeleton";
-import { DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS } from "@/data/demoData";
 import {
-  useCreateSupplierAuctionMutation,
-  useGetSupplierActiveAuctionByIdQuery,
-  useGetSupplierActiveAuctionsQuery,
   useGetSupplierAssignedAuctionByIdQuery,
   useGetSupplierAssignedAuctionsQuery,
 } from "@/features/supplier/auctions/auctionsApi";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
-import { toast } from "react-hot-toast";
 import { appLocale } from '@/i18n/locale'
+import SupplierDeliveryPanels from "./SupplierDeliveryPanels";
 
 const PAGE_SIZE = 4;
 
@@ -61,9 +55,6 @@ function toDisplayText(value) {
 function normalizeAuctionForCard(auction) {
   if (!auction) return null;
 
-  const status = String(auction.status || "open").toLowerCase();
-  const isAssigned = status === "assigned";
-
   return {
     id: auction.id ?? auction.auctionId ?? "",
     auctionId: auction.auctionId ?? auction.id ?? "",
@@ -79,20 +70,17 @@ function normalizeAuctionForCard(auction) {
       auction.assignedTransporter || auction.transporter,
     ),
     bidPrice: auction.bidPrice ?? auction.price ?? auction.amount ?? 0,
-    status: isAssigned ? "assigned" : "open",
+    status: "assigned",
   };
 }
 
 function buildDetailsAuction(auction) {
   if (!auction) return null;
 
-  const status = String(auction.status || "open").toLowerCase();
-  const isAssigned = status === "assigned";
-
   return {
     id: auction.id ?? auction.auctionId ?? "",
     orderId: auction.orderId ?? "",
-    status,
+    status: "assigned",
     pickupLocation:
       auction.pickupLocation || auction.shipping?.pickupLocation || "",
     deliveryLocation:
@@ -133,16 +121,9 @@ function buildDetailsAuction(auction) {
 
 export default function DeliveryLogisticsPage() {
   const { t } = useTranslation();
-  const [activePage, setActivePage] = useState(1);
   const [assignedPage, setAssignedPage] = useState(1);
-  const [view, setView] = useState("list");
   const [selectedAuction, setSelectedAuction] = useState(null);
 
-  const {
-    data: activeData,
-    isLoading: isActiveLoading,
-    error: activeError,
-  } = useGetSupplierActiveAuctionsQuery({ page: activePage, limit: PAGE_SIZE });
   const {
     data: assignedData,
     isLoading: isAssignedLoading,
@@ -151,14 +132,7 @@ export default function DeliveryLogisticsPage() {
     page: assignedPage,
     limit: PAGE_SIZE,
   });
-  const [createAuction, { isLoading: isCreating }] =
-    useCreateSupplierAuctionMutation();
 
-  const activeAuctions = useMemo(
-    () =>
-      (activeData?.auctions || []).map(normalizeAuctionForCard).filter(Boolean),
-    [activeData],
-  );
   const assignedDeliveries = useMemo(
     () =>
       (assignedData?.auctions || [])
@@ -167,107 +141,41 @@ export default function DeliveryLogisticsPage() {
     [assignedData],
   );
 
-  const activeTotalPages = Math.max(1, Number(activeData?.totalPages || 1));
   const assignedTotalPages = Math.max(1, Number(assignedData?.totalPages || 1));
-  const safeActivePage = Math.min(activePage, activeTotalPages);
   const safeAssignedPage = Math.min(assignedPage, assignedTotalPages);
 
   const openDetails = useCallback((auction) => {
     setSelectedAuction(auction);
-    setView("details");
   }, []);
 
-  const { data: selectedActiveDetails } = useGetSupplierActiveAuctionByIdQuery(
-    selectedAuction?.id || selectedAuction?.auctionId,
-    { skip: !selectedAuction || selectedAuction.status !== "open" },
-  );
   const { data: selectedAssignedDetails } =
     useGetSupplierAssignedAuctionByIdQuery(
       selectedAuction?.id || selectedAuction?.auctionId,
-      { skip: !selectedAuction || selectedAuction.status === "open" },
+      { skip: !selectedAuction },
     );
 
   const selectedDetailsAuction = useMemo(() => {
-    const payload =
-      selectedAuction?.status === "assigned"
-        ? selectedAssignedDetails
-        : selectedActiveDetails;
-    if (payload) return buildDetailsAuction({ ...selectedAuction, ...payload });
+    if (selectedAssignedDetails) {
+      return buildDetailsAuction({ ...selectedAuction, ...selectedAssignedDetails });
+    }
     if (selectedAuction) return buildDetailsAuction(selectedAuction);
     return null;
-  }, [selectedActiveDetails, selectedAssignedDetails, selectedAuction]);
+  }, [selectedAssignedDetails, selectedAuction]);
 
-  const activeErrorMessage = activeError
-    ? getApiErrorMessage(activeError, t("common.requestFailed"))
-    : "";
   const assignedErrorMessage = assignedError
     ? getApiErrorMessage(assignedError, t("common.requestFailed"))
     : "";
 
-  const closeView = () => {
-    setSelectedAuction(null);
-    setView("list");
-  };
-
-  const handleCreateSubmit = async (form) => {
-    try {
-      const payload = {
-        orderId: form.orderId,
-        requiredVehicleType: "HEAVY_TRUCK",
-      };
-
-      await createAuction(payload).unwrap();
-      setActivePage(1);
-      setView("list");
-      toast.success(t("supplierDeliveryLogistics.auctionCreated"));
-    } catch (error) {
-      toast.error(getApiErrorMessage(error, t("common.requestFailed")));
-    }
-  };
-
-  if (view === "create") {
+  if (selectedAuction) {
     return (
       <>
-        <Seo title={t("supplierDeliveryLogistics.startAuctionTitle")} />
-        <CreateAuction
-          role="supplier"
-          placeholders={DEMO_CREATE_AUCTION_SUPPLIER_PLACEHOLDERS}
-          onBack={closeView}
-          onSubmit={handleCreateSubmit}
-        />
-      </>
-    );
-  }
-
-  if (view === "details" && selectedAuction) {
-    const isAssigned = selectedAuction.status === "assigned";
-
-    return (
-      <>
-        <Seo
-          title={
-            isAssigned
-              ? t("supplierDeliveryLogistics.assignedDetailTitle")
-              : t("supplierDeliveryLogistics.activeDetailTitle")
-          }
-        />
+        <Seo title={t("supplierDeliveryLogistics.assignedDetailTitle")} />
         <AuctionDetails
           role="supplier"
-          status={isAssigned ? "assigned" : "active"}
-          auction={
-            selectedDetailsAuction || buildDetailsAuction(selectedAuction)
-          }
-          onBack={closeView}
+          status="assigned"
+          auction={selectedDetailsAuction}
+          onBack={() => setSelectedAuction(null)}
         />
-      </>
-    );
-  }
-
-  if (isActiveLoading && isAssignedLoading && !activeData && !assignedData) {
-    return (
-      <>
-        <Seo title={t("supplierDeliveryLogistics.title")} />
-        <FactoryDeliveryPageSkeleton />
       </>
     );
   }
@@ -276,83 +184,16 @@ export default function DeliveryLogisticsPage() {
     <>
       <Seo title={t("supplierDeliveryLogistics.title")} />
       <div className="space-y-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-[var(--primary-text)]">
-              {t("supplierDeliveryLogistics.title")}
-            </h1>
-            <p className="mt-1 text-sm text-[var(--secondary-text)]">
-              {t("supplierDeliveryLogistics.subtitle")}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setView("create")}
-            className="inline-flex items-center justify-center rounded-full bg-[var(--active)] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
-          >
-            {t("supplierDeliveryLogistics.startAuction")}
-          </button>
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--primary-text)]">
+            {t("supplierDeliveryLogistics.title")}
+          </h1>
+          <p className="mt-1 text-sm text-[var(--secondary-text)]">
+            {t("supplierDeliveryLogistics.subtitle")}
+          </p>
         </div>
 
-        <section className="space-y-4">
-          <div>
-            <h2 className="text-lg font-bold text-[var(--primary-text)]">
-              {t("supplierDeliveryLogistics.activeAuctions.title")}
-            </h2>
-            <p className="mt-0.5 text-sm text-[var(--secondary-text)]">
-              {t("supplierDeliveryLogistics.activeAuctions.subtitle")}
-            </p>
-          </div>
-
-          {activeErrorMessage ? (
-            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {activeErrorMessage}
-            </div>
-          ) : null}
-
-          {isActiveLoading ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <AuctionCardSkeleton key={`active-skel-${i}`} />
-              ))}
-            </div>
-          ) : activeAuctions.length === 0 ? (
-            <EmptyAuctionsBox
-              title={t("supplierDeliveryLogistics.activeAuctions.emptyTitle", {
-                defaultValue: "No active auctions",
-              })}
-              description={t(
-                "supplierDeliveryLogistics.activeAuctions.emptySubtitle",
-                {
-                  defaultValue:
-                    "You have no open delivery auctions right now. Start an auction to find a transporter.",
-                },
-              )}
-            />
-          ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {activeAuctions.map((auction) => (
-                <AuctionCard
-                  key={auction.id}
-                  role="supplier"
-                  status="open"
-                  auction={auction}
-                  onViewDetails={openDetails}
-                />
-              ))}
-            </div>
-          )}
-
-          {activeAuctions.length > 0 ? (
-            <Pagination
-              className="mt-2"
-              page={safeActivePage}
-              totalPages={activeTotalPages}
-              onPageChange={setActivePage}
-            />
-          ) : null}
-        </section>
+        <SupplierDeliveryPanels />
 
         <section className="space-y-4">
           <div>
@@ -378,18 +219,9 @@ export default function DeliveryLogisticsPage() {
             </div>
           ) : assignedDeliveries.length === 0 ? (
             <EmptyAuctionsBox
-              title={t(
-                "supplierDeliveryLogistics.assignedDeliveries.emptyTitle",
-                {
-                  defaultValue: "No assigned deliveries",
-                },
-              )}
+              title={t("supplierDeliveryLogistics.assignedDeliveries.emptyTitle")}
               description={t(
                 "supplierDeliveryLogistics.assignedDeliveries.emptySubtitle",
-                {
-                  defaultValue:
-                    "Assigned deliveries will appear here once a transporter wins an auction.",
-                },
               )}
             />
           ) : (

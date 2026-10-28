@@ -15,37 +15,38 @@ export default function SendQuoteModal({
   product = {},
   onSubmit,
   isSubmitting = false,
+  error = '',
 }) {
   const { t } = useTranslation()
   const titleId = useId()
   const [budget, setBudget] = useState(0)
   const [quantity, setQuantity] = useState('')
   const [message, setMessage] = useState('')
+  const minQuantity = product?.minOrder || null
 
   useEffect(() => {
     if (!open) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [open])
 
-    setBudget(0)
-    setQuantity('')
-    setMessage('')
-
+  useEffect(() => {
+    if (!open) return undefined
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose?.()
     }
     document.addEventListener('keydown', onKeyDown)
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = previousOverflow
-    }
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [open, onClose])
 
   if (!open) return null
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    if (budget <= 0) return
     onSubmit?.({
       productId: product.id,
       productTitle: product.title,
@@ -147,6 +148,11 @@ export default function SendQuoteModal({
                 placeholder={t('sendQuoteModal.quantityPlaceholder')}
                 className={fieldClass}
               />
+              {minQuantity ? (
+                <span className="mt-1 block text-xs text-[var(--secondary-text)]">
+                  {t('productDetails.minimumOrder', { value: minQuantity })}
+                </span>
+              ) : null}
             </label>
 
             <label className="block">
@@ -162,9 +168,15 @@ export default function SendQuoteModal({
             </label>
           </div>
 
+          {error ? (
+            <p className="mt-5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || budget <= 0}
             className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[var(--active)] text-sm font-bold tracking-wide text-white transition-opacity hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSubmitting ? t('ui.sending') : t('sendQuoteModal.submit')}

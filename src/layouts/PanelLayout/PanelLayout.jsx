@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import Seo from '../../components/common/Seo/Seo'
 import PanelSidebar from './PanelSidebar'
 import PanelHeader from './PanelHeader'
+import SupplierDeliveryAlert from './SupplierDeliveryAlert'
 import { getPanelRoleConfig } from '../../roles'
 import { filterAdminNav } from '../../roles/admin'
 import { filterModeratorNav } from '../../roles/moderator'
@@ -126,6 +127,7 @@ export default function PanelLayout({
         </div>
 
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          {role === 'supplier' && !isSuspended ? <SupplierDeliveryAlert /> : null}
           <Outlet context={outletContext} />
         </main>
       </div>

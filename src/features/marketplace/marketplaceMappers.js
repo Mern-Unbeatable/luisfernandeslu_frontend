@@ -170,6 +170,7 @@ export function mapMarketplaceCatalogProduct(product) {
       : undefined,
     isSponsored: Boolean(product.isSponsored),
     purchasable: product.purchasable !== false,
+    isFactory: Boolean(product.isFactory),
   }
 }
 

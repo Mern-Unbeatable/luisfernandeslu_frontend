@@ -37,8 +37,7 @@
     "beLiberator": "Sea un libertador"
   },
   "productsPage": {
-    "unavailableForPurchase": "Actualmente no disponible para compra",
-    "filters": "Filtros",
+    "unavailableForPurchase": "Actualmente no disponible para compra",    "filters": "Filtros",
     "priceRange": "Rango de precio",
     "minPrice": "Precio mínimo",
     "maxPrice": "Precio máximo",
@@ -975,6 +974,23 @@
   "adminDeliveryLogistics": {
     "title": "Entrega y logística",
     "subtitle": "Supervise entregas activas y detalles del envío.",
+    "selfDeliveries": {
+      "title": "Entregas hechas por el proveedor",
+      "subtitle": "Pedidos que el proveedor eligió entregar. Plazo de 2 horas; después aparecen como retrasados.",
+      "lateOnly": "Solo retrasadas",
+      "empty": "No hay entregas del proveedor",
+      "order": "Pedido",
+      "supplier": "Proveedor",
+      "customer": "Cliente",
+      "deadline": "Plazo",
+      "deliveredAt": "Entregado el",
+      "payout": "A pagar al proveedor",
+      "status": "Estado",
+      "inProgress": "En curso",
+      "late": "Retrasada",
+      "delivered": "Entregado",
+      "deliveredLate": "Entregado con retraso"
+    },
     "status": {
       "assigned": "Asignado",
       "pickedUp": "Recogido",
@@ -1326,7 +1342,9 @@
       "description": "Duración de las subastas para transportistas.",
       "durationTitle": "Duración de la subasta",
       "hoursLabel": "Horas",
-      "minutesLabel": "Minutos"
+      "minutesLabel": "Minutos",
+      "decisionMinutesLabel": "Tiempo de decisión del proveedor (minutos)",
+      "decisionMinutesHint": "Tiempo que tiene el proveedor tras el pago para elegir entre entregar él mismo o enviar a transportistas. Después, el pedido pasa automáticamente a los transportistas."
     },
     "loading": "Cargando configuración…",
     "loadFailed": "No se pudo cargar la configuración.",
@@ -3577,6 +3595,41 @@
     "startAuctionTitle": "Iniciar subasta",
     "activeDetailTitle": "Subastas activas",
     "assignedDetailTitle": "Detalles de entregas asignadas",
+    "order": "Pedido",
+    "payout": "Recibes por la entrega: {{amount}}",
+    "deliverMyself": "Yo hago la entrega",
+    "sendToCarriers": "Enviar a transportistas",
+    "tryCarriersAgain": "Intentar transportistas de nuevo",
+    "selfChosen": "Harás esta entrega. Tienes 2 horas para entregar.",
+    "carrierChosen": "Pedido enviado a los transportistas",
+    "pending": {
+      "title": "Elige cómo entregar",
+      "subtitle": "Decide antes de que acabe el tiempo. Si no eliges, el pedido pasa automáticamente a los transportistas.",
+      "timeUp": "Tiempo agotado"
+    },
+    "self": {
+      "title": "Mis entregas",
+      "subtitle": "Pedidos que vas a entregar. Plazo de 2 horas tras la elección.",
+      "deadline": "Entregar antes de {{date}}",
+      "deliveredAt": "Entregado el {{date}}",
+      "late": "Retrasada",
+      "delivered": "Entregado",
+      "deliveredLate": "Entregado con retraso",
+      "markDelivered": "Marcar como entregado",
+      "markedDelivered": "Pedido marcado como entregado"
+    },
+    "awaiting": {
+      "title": "Esperando transportista",
+      "subtitle": "Pedidos enviados a los transportistas",
+      "searching": "Buscando transportista",
+      "noCarrier": "Ningún transportista",
+      "endsAt": "La subasta termina el {{date}}"
+    },
+    "alert": {
+      "title": "Tienes {{count}} pedido(s) esperando tu decisión de entrega",
+      "body": "Elige si haces la entrega o la envías a los transportistas antes de que acabe el tiempo.",
+      "cta": "Elegir ahora"
+    },
     "activeAuctions": {
       "title": "Subastas activas",
       "subtitle": "Pujas pendientes y elementos en subasta",

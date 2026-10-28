@@ -37,8 +37,7 @@
     "beLiberator": "Be a deliverer"
   },
   "productsPage": {
-    "unavailableForPurchase": "Currently unavailable for purchase",
-    "filters": "Filters",
+    "unavailableForPurchase": "Currently unavailable for purchase",    "filters": "Filters",
     "priceRange": "Price Range",
     "minPrice": "Min price",
     "maxPrice": "Max price",
@@ -974,6 +973,23 @@
   "adminDeliveryLogistics": {
     "title": "Delivery & Logistics",
     "subtitle": "Monitor active deliveries and shipment details.",
+    "selfDeliveries": {
+      "title": "Supplier self-deliveries",
+      "subtitle": "Orders the supplier chose to deliver himself. 2-hour deadline; after that they show as late.",
+      "lateOnly": "Late only",
+      "empty": "No supplier self-deliveries",
+      "order": "Order",
+      "supplier": "Supplier",
+      "customer": "Customer",
+      "deadline": "Deadline",
+      "deliveredAt": "Delivered at",
+      "payout": "To pay the supplier",
+      "status": "Status",
+      "inProgress": "In progress",
+      "late": "Late",
+      "delivered": "Delivered",
+      "deliveredLate": "Delivered late"
+    },
     "filterLabel": "Filter:",
     "searchPlaceholder": "Search auction, order, product, transporter…",
     "empty": "No deliveries match your filters.",
@@ -1331,7 +1347,9 @@
       "description": "Control how long transporter auctions stay open.",
       "durationTitle": "Auction Duration",
       "hoursLabel": "Hours",
-      "minutesLabel": "Minutes"
+      "minutesLabel": "Minutes",
+      "decisionMinutesLabel": "Supplier decision time (minutes)",
+      "decisionMinutesHint": "Time the supplier has after payment to choose between delivering himself or sending to carriers. After that, the order goes to carriers automatically."
     }
   },
   "panel": {
@@ -3576,6 +3594,41 @@
     "activeDetailTitle": "Active Auctions",
     "assignedDetailTitle": "Assigned Delivers Details",
     "auctionCreated": "Auction created successfully",
+    "order": "Order",
+    "payout": "You receive for the delivery: {{amount}}",
+    "deliverMyself": "I'll deliver it",
+    "sendToCarriers": "Send to carriers",
+    "tryCarriersAgain": "Try carriers again",
+    "selfChosen": "You will deliver this order. You have 2 hours to deliver.",
+    "carrierChosen": "Order sent to carriers",
+    "pending": {
+      "title": "Choose how to deliver",
+      "subtitle": "Decide before the time runs out. If you don't choose, the order goes to carriers automatically.",
+      "timeUp": "Time is up"
+    },
+    "self": {
+      "title": "My deliveries",
+      "subtitle": "Orders you are delivering. 2-hour deadline after choosing.",
+      "deadline": "Deliver by {{date}}",
+      "deliveredAt": "Delivered on {{date}}",
+      "late": "Late",
+      "delivered": "Delivered",
+      "deliveredLate": "Delivered late",
+      "markDelivered": "Mark as delivered",
+      "markedDelivered": "Order marked as delivered"
+    },
+    "awaiting": {
+      "title": "Waiting for a carrier",
+      "subtitle": "Orders sent to carriers",
+      "searching": "Looking for a carrier",
+      "noCarrier": "No carrier found",
+      "endsAt": "Auction ends {{date}}"
+    },
+    "alert": {
+      "title": "{{count}} order(s) waiting for your delivery decision",
+      "body": "Choose whether you deliver it yourself or send it to carriers before the time runs out.",
+      "cta": "Choose now"
+    },
     "activeAuctions": {
       "title": "Active Auctions",
       "subtitle": "Pending bids and auction items",

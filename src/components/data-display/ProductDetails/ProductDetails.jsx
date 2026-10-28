@@ -233,7 +233,10 @@ export default function ProductDetails({
 
             <ProductActions
               actions={actions}
-              showQuantity={view.showQuantity}
+              showQuantity={
+                view.showQuantity &&
+                actions.some((a) => a.id === 'add_to_cart' || a.id === 'buy_now')
+              }
               quantity={quantity}
               onQuantityChange={changeQty}
               onAction={(actionId) => onAction?.(actionId, product, quantity)}

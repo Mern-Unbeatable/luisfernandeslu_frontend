@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import StorefrontProductListingCell from '../components/StorefrontProductListingCell'
@@ -55,6 +55,10 @@ export default function ProductsPage() {
     async (actionId, product) => {
       if (actionId === 'add_to_cart') {
         return handleAddToCart(product?.id, product?.defaultQuantity ?? 1)
+      }
+      if (actionId === 'send_message' && product?.id) {
+        navigate(`/supplier/chat?type=FACTORY_SUPPLIER&productId=${product.id}`)
+        return
       }
       if (actionId === 'view_details' && product?.slug) {
         navigate(`/products/${product.slug}`)
@@ -347,6 +351,10 @@ export default function ProductsPage() {
   }, [resetPageParam])
 
   const showGridSkeleton = isResolvingCategoryFilter || (isLoading && !data)
+
+  if (user?.role === 'factory') {
+    return <Navigate to="/factory" replace />
+  }
 
   if (isCategoriesLoading) {
     return <ProductsPageSkeleton />
