@@ -126,14 +126,15 @@ export const transporterApi = baseApi.injectEndpoints({
       providesTags: [{ type: 'Transporter', id: 'DASHBOARD' }],
     }),
     requestTransporterWithdrawal: builder.mutation({
-      query: ({ amount, businessName, routingNumber, accountNumber }) => ({
+      query: ({ amount, businessName, routingNumber = 'N/A', accountNumber, iban }) => ({
         url: '/api/transporter/payments-payouts/withdrawals',
         method: 'POST',
         data: {
           amount: Number(amount),
-          businessName,
-          routingNumber,
-          accountNumber,
+          businessName: businessName || undefined,
+          routingNumber: routingNumber || 'N/A',
+          accountNumber: accountNumber || iban,
+          iban: iban || accountNumber,
         },
       }),
       invalidatesTags: [{ type: 'Payment', id: 'LIST' }],

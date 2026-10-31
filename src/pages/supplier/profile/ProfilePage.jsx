@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
@@ -174,6 +175,12 @@ export default function ProfilePage() {
   const handleWarehouseCancel = () => {
     setEditingWarehouses(false);
     setWarehouseDraft(profile?.warehouses ?? []);
+  };
+
+  const removeWarehouse = (indexToRemove) => {
+    setWarehouseDraft((current) =>
+      current.filter((_, index) => index !== indexToRemove),
+    );
   };
 
   const addWarehouse = () => {
@@ -448,35 +455,49 @@ export default function ProfilePage() {
 
               <div className="space-y-4">
                 {(warehouseDraft || []).map((warehouse, index) => (
-                  <Field
-                    key={warehouse?.id || index}
-                    label={`${t("panel.profile.warehouseN", { n: index + 1 })}`}
-                  >
-                    <AddressAutocomplete
-                      value={warehouse?.address ?? ""}
-                      onChange={(value) => {
-                        setWarehouseDraft((current) =>
-                          current.map((item, itemIndex) =>
-                            itemIndex === index
-                              ? { ...item, address: value }
-                              : item,
-                          ),
-                        );
-                      }}
-                      onLocationSelect={(loc) => {
-                        setWarehouseDraft((current) =>
-                          current.map((item, itemIndex) =>
-                            itemIndex === index
-                              ? { ...item, address: loc.address }
-                              : item,
-                          ),
-                        );
-                      }}
-                      placeholder={t("panel.profile.warehousePlaceholder")}
-                      inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3 disabled:bg-gray-50 disabled:text-gray-500"
-                      disabled={!editingWarehouses}
-                    />
-                  </Field>
+                  <div key={warehouse?.id || index} className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <Field
+                        label={`${t("panel.profile.warehouseN", { n: index + 1 })}`}
+                      >
+                        <AddressAutocomplete
+                          value={warehouse?.address ?? ""}
+                          onChange={(value) => {
+                            setWarehouseDraft((current) =>
+                              current.map((item, itemIndex) =>
+                                itemIndex === index
+                                  ? { ...item, address: value }
+                                  : item,
+                              ),
+                            );
+                          }}
+                          onLocationSelect={(loc) => {
+                            setWarehouseDraft((current) =>
+                              current.map((item, itemIndex) =>
+                                itemIndex === index
+                                  ? { ...item, address: loc.address }
+                                  : item,
+                              ),
+                            );
+                          }}
+                          placeholder={t("panel.profile.warehousePlaceholder")}
+                          inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3 disabled:bg-gray-50 disabled:text-gray-500"
+                          disabled={!editingWarehouses}
+                        />
+                      </Field>
+                    </div>
+                    {editingWarehouses ? (
+                      <button
+                        type="button"
+                        onClick={() => removeWarehouse(index)}
+                        className="mt-7 inline-flex h-11 items-center justify-center rounded-md border border-red-200 px-3 text-red-600 hover:bg-red-50 transition-colors"
+                        title={t("common.delete", { defaultValue: "Remover" })}
+                        aria-label={t("common.delete", { defaultValue: "Remover" })}
+                      >
+                        <FiTrash2 className="size-4" />
+                      </button>
+                    ) : null}
+                  </div>
                 ))}
 
                 {editingWarehouses ? (
@@ -489,10 +510,9 @@ export default function ProfilePage() {
                   </button>
                 ) : null}
 
-                {editingWarehouses &&
-                (!warehouseDraft || warehouseDraft.length === 0) ? (
+                {(!warehouseDraft || warehouseDraft.length === 0) ? (
                   <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4 text-sm text-[var(--secondary-text)]">
-                    {t("panel.profile.noWarehouses")}
+                    {t("panel.profile.noWarehouses", { defaultValue: "Nenhum armazém configurado." })}
                   </div>
                 ) : null}
               </div>

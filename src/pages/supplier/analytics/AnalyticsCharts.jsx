@@ -12,7 +12,7 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import { DEMO_SUPPLIER_ANALYTICS } from "@/data/demoData";
+
 import { appLocale } from '@/i18n/locale'
 
 ChartJS.register(
@@ -69,13 +69,13 @@ function ChartShell({ title, children, className = "" }) {
 }
 
 export function RevenueExpensesProfitChart({
-  analytics = DEMO_SUPPLIER_ANALYTICS,
+  analytics = {},
 }) {
   const { t } = useTranslation();
   const labels = MONTH_KEYS.map((key) => t(`supplierAnalytics.months.${key}`));
   const series =
     analytics.revenueExpensesProfit ||
-    DEMO_SUPPLIER_ANALYTICS.revenueExpensesProfit;
+    {}.revenueExpensesProfit;
 
   const data = useMemo(
     () => ({
@@ -172,10 +172,10 @@ export function RevenueExpensesProfitChart({
   );
 }
 
-export function RevenueBreakdownChart({ analytics = DEMO_SUPPLIER_ANALYTICS }) {
+export function RevenueBreakdownChart({ analytics = {} }) {
   const { t } = useTranslation();
   const breakdown =
-    analytics.revenueBreakdown || DEMO_SUPPLIER_ANALYTICS.revenueBreakdown;
+    analytics.revenueBreakdown || {}.revenueBreakdown;
 
   const items = [
     {
@@ -259,13 +259,13 @@ export function RevenueBreakdownChart({ analytics = DEMO_SUPPLIER_ANALYTICS }) {
 }
 
 export function SalesByCustomerTypeChart({
-  analytics = DEMO_SUPPLIER_ANALYTICS,
+  analytics = {},
 }) {
   const { t } = useTranslation();
   const labels = MONTH_KEYS.map((key) => t(`supplierAnalytics.months.${key}`));
   const sales =
     analytics.salesByCustomerType ||
-    DEMO_SUPPLIER_ANALYTICS.salesByCustomerType;
+    {}.salesByCustomerType;
 
   const data = useMemo(
     () => ({

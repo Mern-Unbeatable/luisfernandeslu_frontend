@@ -1,9 +1,44 @@
 import { FiCamera, FiUser } from 'react-icons/fi'
-import {
-  CHECKOUT_CITY_OPTIONS,
-  CHECKOUT_REGION_OPTIONS,
-} from '@/pages/public_page/checkout/data/checkoutDemo'
-import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
+import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete'
+import { Field, PrimaryButton, SecretInput, TextInput, PhoneInput } from './FormControls'
+
+const controlInputClass =
+  'w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3'
+
+export const PORTUGAL_DISTRICTS = [
+  'Aveiro',
+  'Beja',
+  'Braga',
+  'Bragança',
+  'Castelo Branco',
+  'Coimbra',
+  'Évora',
+  'Faro',
+  'Guarda',
+  'Leiria',
+  'Lisboa',
+  'Portalegre',
+  'Porto',
+  'Santarém',
+  'Setúbal',
+  'Viana do Castelo',
+  'Vila Real',
+  'Viseu',
+  'Região Autónoma dos Açores',
+  'Região Autónoma da Madeira',
+]
+
+function PortugalDistrictsDatalist({ id = 'portugal-districts' }) {
+  return (
+    <datalist id={id}>
+      {PORTUGAL_DISTRICTS.map((district) => (
+        <option key={district} value={district}>
+          {district}
+        </option>
+      ))}
+    </datalist>
+  )
+}
 
 function SectionTitle({ children }) {
   return (
@@ -57,6 +92,7 @@ export function BuyerAvatar({ form, fileRef, fileInputId, onPick, onRemove, t })
 export function BuyerAccountSection({
   form,
   setField,
+  onPatch,
   onSave,
   saving = false,
   fileRef,
@@ -66,8 +102,18 @@ export function BuyerAccountSection({
   cfg,
   t,
 }) {
+  const handleLocationSelect = (loc) => {
+    onPatch?.({
+      address: loc.address || form.address,
+      city: loc.city || form.city,
+      region: loc.region || form.region,
+      zipCode: loc.zipCode || form.zipCode,
+    })
+  }
+
   return (
     <div>
+      <PortugalDistrictsDatalist id="portugal-districts-account" />
       <SectionTitle>{t(cfg.accountTitleKey)}</SectionTitle>
       <div className="mt-5">
         <BuyerAvatar
@@ -111,18 +157,28 @@ export function BuyerAccountSection({
             placeholder={t('panel.profile.phonePlaceholder')}
           />
         </Field>
+        <Field label={t('panel.profile.streetAddress')} className="sm:col-span-2">
+          <AddressAutocomplete
+            value={form.address}
+            onChange={setField('address')}
+            onLocationSelect={handleLocationSelect}
+            placeholder={t('panel.profile.streetAddress')}
+            inputClassName={controlInputClass}
+          />
+        </Field>
         <Field label={t('panel.profile.region')}>
-          <SelectInput
+          <TextInput
             value={form.region}
             onChange={setField('region')}
-            options={CHECKOUT_REGION_OPTIONS}
+            list="portugal-districts-account"
+            placeholder={t('checkoutPage.region', 'Região / Distrito')}
           />
         </Field>
         <Field label={t('panel.profile.city')}>
-          <SelectInput
+          <TextInput
             value={form.city}
             onChange={setField('city')}
-            options={CHECKOUT_CITY_OPTIONS}
+            placeholder={t('checkoutPage.city', 'Cidade')}
           />
         </Field>
         <Field label={t('panel.profile.zipCode')}>
@@ -130,13 +186,6 @@ export function BuyerAccountSection({
             value={form.zipCode}
             onChange={setField('zipCode')}
             placeholder={t('panel.profile.zipCode')}
-          />
-        </Field>
-        <Field label={t('panel.profile.streetAddress')} className="sm:col-span-2">
-          <TextInput
-            value={form.address}
-            onChange={setField('address')}
-            placeholder={t('panel.profile.streetAddress')}
           />
         </Field>
       </div>
@@ -206,8 +255,22 @@ export function BuyerAddressCard({
 }) {
   const set = (key) => (value) => onChange({ ...values, [key]: value })
 
+  const handleLocationSelect = (loc) => {
+    onChange({
+      ...values,
+      address: loc.address || values.address,
+      city: loc.city || values.city,
+      region: loc.region || values.region,
+      zipCode: loc.zipCode || values.zipCode,
+      country: loc.country || values.country,
+    })
+  }
+
+  const datalistId = `portugal-districts-${titleKey.replace(/[^a-zA-Z0-9]/g, '-')}`
+
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+      <PortugalDistrictsDatalist id={datalistId} />
       <div className="border-b border-gray-100 bg-gray-50 px-5 py-4 sm:px-6">
         <h3 className="text-sm font-bold tracking-wide text-[var(--primary-text)] uppercase">
           {t(titleKey)}
@@ -234,24 +297,35 @@ export function BuyerAddressCard({
             />
           </Field>
           <Field label={t('panel.profile.streetAddress')} className="sm:col-span-2">
-            <TextInput value={values.address} onChange={set('address')} />
+            <AddressAutocomplete
+              value={values.address}
+              onChange={set('address')}
+              onLocationSelect={handleLocationSelect}
+              placeholder={t('panel.profile.streetAddress')}
+              inputClassName={controlInputClass}
+            />
           </Field>
           <Field label={t('panel.profile.region')} className="sm:col-span-2">
-            <SelectInput
+            <TextInput
               value={values.region}
               onChange={set('region')}
-              options={CHECKOUT_REGION_OPTIONS}
+              list={datalistId}
+              placeholder={t('checkoutPage.region', 'Região / Distrito')}
             />
           </Field>
           <Field label={t('panel.profile.city')}>
-            <SelectInput
+            <TextInput
               value={values.city}
               onChange={set('city')}
-              options={CHECKOUT_CITY_OPTIONS}
+              placeholder={t('checkoutPage.city', 'Cidade')}
             />
           </Field>
           <Field label={t('panel.profile.zipCode')}>
-            <TextInput value={values.zipCode} onChange={set('zipCode')} />
+            <TextInput
+              value={values.zipCode}
+              onChange={set('zipCode')}
+              placeholder={t('panel.profile.zipCode')}
+            />
           </Field>
           <Field label={t('panel.profile.email')} className="sm:col-span-2">
             <TextInput

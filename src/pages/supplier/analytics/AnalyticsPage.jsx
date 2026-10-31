@@ -7,7 +7,22 @@ import {
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import StatusCard from "@/components/data-display/StatusCard";
-import { DEMO_SUPPLIER_ANALYTICS } from "@/data/demoData";
+const EMPTY_ANALYTICS = {
+  stats: {
+    totalRevenue: "€0.00",
+    totalRevenueGrowth: "+0%",
+    procurementExpenses: "€0.00",
+    netProfit: "€0.00",
+    outstandingDues: "€0.00",
+  },
+  revenueExpensesProfit: { revenue: [], expenses: [], profit: [] },
+  revenueBreakdown: {
+    regular: { percent: 0, amount: "€0.00", value: 0, color: "#14B8A6" },
+    company: { percent: 0, amount: "€0.00", value: 0, color: "#3B82F6" },
+  },
+  salesByCustomerType: { regular: [], company: [] },
+  insight: "",
+};
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { useGetSupplierAnalyticsQuery } from "@/features/supplier/analytics/analyticsApi";
 import {
@@ -19,7 +34,7 @@ import {
 export default function AnalyticsPage() {
   const { t } = useTranslation();
   const { data, isLoading, isFetching, error } = useGetSupplierAnalyticsQuery();
-  const analytics = data ?? DEMO_SUPPLIER_ANALYTICS;
+  const analytics = data ?? EMPTY_ANALYTICS;
   const stats = analytics.stats;
   const errorMessage = error
     ? getApiErrorMessage(error, t("common.requestFailed"))

@@ -93,7 +93,8 @@ function CreatedAuctionCard({ auction, onViewDetails, t }) {
 }
 
 /** Image 4 — after transporter assigned */
-function AssignedAuctionCard({ auction, onViewDetails, t }) {
+function AssignedAuctionCard({ auction, onViewDetails, t, role }) {
+  const isSeller = role === "factory" || role === "supplier";
   return (
     <CardShell>
       <div>
@@ -127,11 +128,13 @@ function AssignedAuctionCard({ auction, onViewDetails, t }) {
           label={t('auction.assignedTransporter')}
           value={auction.assignedTransporter}
         />
-        <AuctionDetailRow
-          icon={AuctionIcons.Dollar}
-          label={t('auction.bidPrice')}
-          value={formatMoney(auction.bidPrice)}
-        />
+        {!isSeller && auction.bidPrice != null ? (
+          <AuctionDetailRow
+            icon={AuctionIcons.Dollar}
+            label={t('auction.bidPrice')}
+            value={formatMoney(auction.bidPrice)}
+          />
+        ) : null}
       </div>
 
       <ViewDetailsButton
@@ -403,7 +406,7 @@ export default function AuctionCard({
   let body = null
   if (view === 'transporter') body = <TransporterAuctionCard {...props} />
   else if (view === 'admin') body = <AdminAuctionCard {...props} />
-  else if (view === 'assigned') body = <AssignedAuctionCard {...props} />
+  else if (view === 'assigned') body = <AssignedAuctionCard {...props} role={role} />
   else body = <CreatedAuctionCard {...props} />
 
   if (!className) return body

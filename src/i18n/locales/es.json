@@ -37,7 +37,8 @@
     "beLiberator": "Sea un libertador"
   },
   "productsPage": {
-    "unavailableForPurchase": "Actualmente no disponible para compra",    "filters": "Filtros",
+    "unavailableForPurchase": "Actualmente no disponible para compra",
+    "filters": "Filtros",
     "priceRange": "Rango de precio",
     "minPrice": "Precio mínimo",
     "maxPrice": "Precio máximo",
@@ -1391,7 +1392,7 @@
       "invoices": "Facturas",
       "profile": "Perfil",
       "orders": "Pedidos",
-      "auctionBoard": "Tablero de subastas",
+      "auctionBoard": "Tablón de propuestas",
       "assignDeliveries": "Asignar entregas",
       "paymentsPayouts": "Pagos y liquidaciones",
       "orderHistory": "Historial de pedidos",
@@ -2243,7 +2244,11 @@
       "email_in_use": "El inicio de sesión con Google no está disponible para esta cuenta. Inicia sesión con tu correo y contraseña.",
       "registered_as_customer": "Esta cuenta de Google está registrada como cliente. Inicia sesión desde la página de cliente.",
       "registered_as_company": "Esta cuenta de Google está registrada como empresa. Inicia sesión desde la página de empresa.",
-      "account_disabled": "Esta cuenta ha sido bloqueada. Contacta con el soporte."
+      "account_disabled": "Esta cuenta ha sido bloqueada. Contacta con el soporte.",
+      "registered_as_supplier": "Esta cuenta de Google está registrada como proveedor. Inicie sesión en la página de proveedor.",
+      "registered_as_factory": "Esta cuenta de Google está registrada como fábrica. Inicie sesión en la página de fábrica.",
+      "registered_as_transporter": "Esta cuenta de Google está registrada como transportista. Inicie sesión en la página de transportista.",
+      "registered_as_affiliate": "Esta cuenta de Google está registrada como afiliado. Inicie sesión en la página de afiliado."
     }
   },
   "buyer": {
@@ -3062,7 +3067,7 @@
     "assignedTransporter": "Transportista asignado",
     "bidPrice": "Precio de la oferta",
     "viewDetails": "Ver detalles",
-    "auctionId": "ID de la subasta",
+    "auctionId": "ID de entrega",
     "quantity": "Cantidad",
     "pickup": "Recogida",
     "delivery": "Entrega",
@@ -3075,8 +3080,8 @@
       "back": "Volver al panel",
       "orderSummary": "Resumen del pedido",
       "orderId": "ID del pedido",
-      "auctionId": "ID de la subasta",
-      "auctionDate": "Fecha de la subasta",
+      "auctionId": "ID de entrega",
+      "auctionDate": "Fecha del pedido",
       "pickupLocation": "Lugar de recogida",
       "deliveryCharge": "Cargo de entrega",
       "currentStatus": "Estado actual",
@@ -3105,11 +3110,11 @@
       "vehicleType": "Tipo de vehículo",
       "bidAmount": "Importe de la oferta",
       "assignedAt": "Fecha y hora de asignación",
-      "nav": "Detalles de la subasta"
+      "nav": "Detalles de entrega"
     },
     "create": {
       "title": "Información del envío",
-      "subtitle": "Completa los datos para iniciar una subasta",
+      "subtitle": "Complete los detalles para solicitar la entrega",
       "back": "Volver al panel",
       "orderInfo": "Información del pedido",
       "orderId": "ID del pedido",
@@ -3144,8 +3149,8 @@
       "accessPlaceholder": "ej.: Muelle de carga, Nivel del suelo",
       "additionalNotes": "Notas adicionales sobre la ubicación",
       "additionalNotesPlaceholder": "Cualquier información adicional",
-      "submit": "Enviar subasta",
-      "nav": "Crear subasta"
+      "submit": "Solicitar entrega",
+      "nav": "Solicitar entrega"
     },
     "noCompetingBids": "No hay pujas de otros transportistas",
     "scrollForMoreBids": "Desliza para ver más pujas"
@@ -3160,7 +3165,7 @@
     "title": "Resumen del panel",
     "welcome": "Bienvenido de nuevo, {{name}}",
     "cards": {
-      "activeAuctions": "Subastas activas",
+      "activeAuctions": "Propuestas activas",
       "wonDeliveries": "Entregas ganadas",
       "inTransit": "En tránsito",
       "completedToday": "Completadas hoy",
@@ -3168,8 +3173,8 @@
       "pendingEarnings": "Ganancias pendientes"
     },
     "actions": {
-      "viewAuctions": "Ver subastas",
-      "auctionsNearYou": "{{count}} subastas activas cerca de ti",
+      "viewAuctions": "Ver propuestas",
+      "auctionsNearYou": "{{count}} propuestas activas cerca de usted",
       "myDeliveries": "Mis entregas",
       "activeDeliveries": "{{count}} entregas activas",
       "requestPayout": "Solicitar pago",
@@ -3201,10 +3206,10 @@
     "defaultName": "Transportista"
   },
   "transporterAuctionBoard": {
-    "title": "Tablero de subastas",
-    "matchingCount": "{{count}} subastas coinciden con tu selección",
+    "title": "Tablón de propuestas",
+    "matchingCount": "{{count}} propuestas coinciden con su selección",
     "filter": "Filtro:",
-    "filterAria": "Filtrar subastas",
+    "filterAria": "Filtrar propuestas",
     "justNow": "Ahora mismo",
     "youTransporter": "Tú (Transportista)",
     "bidSuccess": "Oferta enviada correctamente",
@@ -3214,8 +3219,8 @@
       "nearestFirst": "Más cercanas primero",
       "ended": "Finalizadas"
     },
-    "emptyTitle": "No hay subastas disponibles",
-    "emptySubtitle": "Actualmente no hay subastas activas que coincidan con sus criterios. Vuelva pronto o restablezca el filtro.",
+    "emptyTitle": "No hay propuestas disponibles",
+    "emptySubtitle": "No hay propuestas activas que coincidan con sus criterios en este momento. Vuelva más tarde o restablezca el filtro.",
     "clearFilter": "Restablecer filtro"
   },
   "transporterAssignDeliveries": {
@@ -3295,7 +3300,7 @@
     "withdraw": {
       "title": "Retirar fondos",
       "amount": "Importe",
-      "businessName": "Nombre de la empresa/organización",
+      "businessName": "Titular de la cuenta / Empresa",
       "routingNumber": "Número de routing",
       "accountNumber": "Número de cuenta",
       "cancel": "Cancelar",
@@ -3307,7 +3312,12 @@
       "invalidBusinessName": "El nombre de la empresa debe tener al menos 2 caracteres",
       "invalidRouting": "El número de routing debe tener al menos 3 caracteres",
       "invalidAccount": "El número de cuenta debe tener al menos 5 caracteres",
-      "insufficientBalance": "El importe supera el saldo disponible"
+      "insufficientBalance": "El importe supera el saldo disponible",
+      "businessNamePlaceholder": "Nombre de la empresa o titular de la cuenta",
+      "iban": "IBAN",
+      "ibanPlaceholder": "PT50 0000 0000 0000 0000 0000 0",
+      "ibanHelp": "Indique el IBAN de su cuenta bancaria.",
+      "invalidIban": "Introduzca un IBAN válido (ej.: PT50...)"
     }
   },
   "transporterOrderHistory": {
@@ -3571,31 +3581,31 @@
     "subtitle": "Gestiona envíos y asigna transportistas",
     "requestDelivery": "+ Solicitar entrega",
     "activeAuctions": {
-      "title": "Subastas activas",
-      "subtitle": "Pujas pendientes y elementos en subasta",
-      "emptyTitle": "No hay subastas activas",
-      "emptySubtitle": "No tienes subastas de entrega abiertas. Solicita una entrega para crear una nueva subasta."
+      "title": "Entregas en curso",
+      "subtitle": "Entregas pendientes y en espera de transportista",
+      "emptyTitle": "Sin entregas en curso",
+      "emptySubtitle": "No tiene solicitudes de entrega abiertas. Solicite una entrega para iniciar un envío."
     },
     "assignedDeliveries": {
       "title": "Entregas asignadas",
       "subtitle": "Sigue los pedidos ya aceptados por transportistas",
       "emptyTitle": "No hay entregas asignadas",
-      "emptySubtitle": "Las entregas asignadas aparecerán aquí cuando un transportista gane una subasta."
+      "emptySubtitle": "Las entregas asignadas aparecerán aquí cuando un transportista acepte la entrega."
     },
     "create": {
       "orderLoaded": "Detalles del pedido cargados.",
       "orderNotFound": "Pedido no encontrado. Comprueba el número de pedido.",
       "orderRequired": "El número de pedido es obligatorio.",
-      "submitSuccess": "Subasta creada correctamente.",
-      "submitFailed": "No se pudo crear la subasta. Inténtalo de nuevo."
+      "submitSuccess": "Solicitud de entrega creada con éxito.",
+      "submitFailed": "No fue posible crear la solicitud de entrega. Inténtelo de nuevo."
     }
   },
   "supplierDeliveryLogistics": {
     "title": "Entrega y logística",
     "subtitle": "Gestiona envíos y asigna transportistas",
-    "startAuction": "+ Iniciar subasta",
-    "startAuctionTitle": "Iniciar subasta",
-    "activeDetailTitle": "Subastas activas",
+    "startAuction": "+ Solicitar entrega",
+    "startAuctionTitle": "Solicitar entrega",
+    "activeDetailTitle": "Entregas en curso",
     "assignedDetailTitle": "Detalles de entregas asignadas",
     "order": "Pedido",
     "payout": "Recibes por la entrega: {{amount}}",
@@ -3644,7 +3654,7 @@
       "subtitle": "Pedidos enviados a los transportistas",
       "searching": "Buscando transportista",
       "noCarrier": "Ningún transportista",
-      "endsAt": "La subasta termina el {{date}}"
+      "endsAt": "Asignación hasta {{date}}"
     },
     "alert": {
       "title": "Tienes {{count}} pedido(s) esperando tu decisión de entrega",
@@ -3652,18 +3662,18 @@
       "cta": "Elegir ahora"
     },
     "activeAuctions": {
-      "title": "Subastas activas",
-      "subtitle": "Pujas pendientes y elementos en subasta",
-      "emptyTitle": "No hay subastas activas",
-      "emptySubtitle": "No tienes subastas de entrega abiertas. Inicia una subasta para encontrar un transportista."
+      "title": "Entregas en curso",
+      "subtitle": "Entregas pendientes y en espera de transportista",
+      "emptyTitle": "Sin entregas en curso",
+      "emptySubtitle": "No tiene solicitudes de entrega abiertas. Solicite una entrega para encontrar un transportista."
     },
     "assignedDeliveries": {
       "title": "Entregas asignadas",
       "subtitle": "Sigue los pedidos ya aceptados por transportistas",
       "emptyTitle": "No hay entregas asignadas",
-      "emptySubtitle": "Las entregas asignadas aparecerán aquí cuando un transportista gane una subasta."
+      "emptySubtitle": "Las entregas asignadas aparecerán aquí cuando un transportista acepte la entrega."
     },
-    "auctionCreated": "Subasta creada correctamente"
+    "auctionCreated": "Solicitud de entrega creada con éxito"
   },
   "supplierPaymentsFinance": {
     "title": "Ganancias y pagos",
@@ -4366,7 +4376,7 @@
     "recentMessages": "Mensajes recientes",
     "retry": "Reintentar",
     "loadingEllipsis": "Cargando…",
-    "auctionLoadFailed": "No se pudieron cargar los detalles de la subasta.",
+    "auctionLoadFailed": "No fue posible cargar los detalles de la entrega.",
     "saving": "Guardando…",
     "loadingInvoice": "Cargando factura…",
     "orderLoadFailed": "No se pudieron cargar los detalles del pedido.",
@@ -4605,7 +4615,7 @@
     "invalidBid": "Introduzca un importe de puja válido",
     "bidTooHigh": "La puja no puede superar €{{amount}}",
     "placeBid": "No se pudo realizar la puja",
-    "loadAuctions": "No se pudieron cargar las subastas",
+    "loadAuctions": "No fue posible cargar las entregas",
     "uploadInsurance": "No se pudo subir el seguro",
     "downloadPdf": "No se pudo descargar el PDF",
     "loadInsurance": "No se pudo cargar el seguro",
@@ -4703,7 +4713,7 @@
     "confirmDeleteProduct": "¿Seguro que desea eliminar \"{{title}}\"? Esta acción no se puede deshacer.",
     "confirmCancelSubmission": "¿Seguro que desea cancelar el envío de \"{{title}}\"?",
     "orderIdValue": "N.º de pedido: {{id}}",
-    "auctionIdValue": "N.º de subasta: {{id}}",
+    "auctionIdValue": "N.º de entrega: {{id}}",
     "deliveryIdValue": "N.º de entrega: {{id}}",
     "priceValue": "Precio: {{price}}",
     "pricePerUnitValue": "Precio: {{price}} por {{unit}}",

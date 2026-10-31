@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import DataTable from "@/components/data-display/DataTable/DataTable";
-import {
-  DEMO_SUPPLIER_RETURN_REQUESTS,
-  SUPPLIER_RETURN_REQUESTS_PAGE_SIZE,
-} from "@/data/demoData";
+import { SUPPLIER_RETURN_REQUESTS_PAGE_SIZE } from "@/data/demoData";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import {
   useGetSupplierReturnRequestsQuery,
@@ -67,7 +64,7 @@ export default function ReturnRequestsPage() {
   const [updateReturnStatus] = useUpdateSupplierReturnRequestStatusMutation();
 
   const returns = data?.returns ?? [];
-  const stats = data?.stats ?? DEMO_SUPPLIER_RETURN_REQUESTS.stats;
+  const stats = data?.stats ?? { total: 0, pending: 0, approved: 0, rejected: 0 };
   const pageSize = SUPPLIER_RETURN_REQUESTS_PAGE_SIZE;
   const errorMessage = error
     ? getApiErrorMessage(error, t("common.requestFailed"))

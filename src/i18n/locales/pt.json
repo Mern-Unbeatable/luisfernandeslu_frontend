@@ -37,7 +37,8 @@
     "beLiberator": "Seja um libertador"
   },
   "productsPage": {
-    "unavailableForPurchase": "De momento indisponível para compra",    "filters": "Filtros",
+    "unavailableForPurchase": "De momento indisponível para compra",
+    "filters": "Filtros",
     "priceRange": "Intervalo de preço",
     "minPrice": "Preço mínimo",
     "maxPrice": "Preço máximo",
@@ -1391,7 +1392,7 @@
       "invoices": "Faturas",
       "profile": "Perfil",
       "orders": "Encomendas",
-      "auctionBoard": "Quadro de leilões",
+      "auctionBoard": "Quadro de propostas",
       "assignDeliveries": "Atribuir entregas",
       "paymentsPayouts": "Pagamentos e transferências",
       "orderHistory": "Histórico de encomendas",
@@ -2243,7 +2244,11 @@
       "email_in_use": "O início de sessão com Google não está disponível para esta conta. Inicie sessão com o seu email e palavra-passe.",
       "registered_as_customer": "Esta conta Google está registada como cliente. Inicie sessão na página de cliente.",
       "registered_as_company": "Esta conta Google está registada como empresa. Inicie sessão na página de empresa.",
-      "account_disabled": "Esta conta foi bloqueada. Contacte o suporte."
+      "account_disabled": "Esta conta foi bloqueada. Contacte o suporte.",
+      "registered_as_supplier": "Esta conta Google está registada como fornecedor. Inicie sessão na página de fornecedor.",
+      "registered_as_factory": "Esta conta Google está registada como fábrica. Inicie sessão na página de fábrica.",
+      "registered_as_transporter": "Esta conta Google está registada como transportador. Inicie sessão na página de transportador.",
+      "registered_as_affiliate": "Esta conta Google está registada como afiliado. Inicie sessão na página de afiliado."
     }
   },
   "buyer": {
@@ -3062,7 +3067,7 @@
     "assignedTransporter": "Transportador atribuído",
     "bidPrice": "Preço da proposta",
     "viewDetails": "Ver detalhes",
-    "auctionId": "ID do leilão",
+    "auctionId": "ID da entrega",
     "quantity": "Quantidade",
     "pickup": "Recolha",
     "delivery": "Entrega",
@@ -3075,8 +3080,8 @@
       "back": "Voltar ao painel",
       "orderSummary": "Resumo da encomenda",
       "orderId": "ID da encomenda",
-      "auctionId": "ID do leilão",
-      "auctionDate": "Data do leilão",
+      "auctionId": "ID da entrega",
+      "auctionDate": "Data do pedido",
       "pickupLocation": "Local de recolha",
       "deliveryCharge": "Taxa de entrega",
       "currentStatus": "Estado atual",
@@ -3105,11 +3110,11 @@
       "vehicleType": "Tipo de veículo",
       "bidAmount": "Valor da proposta",
       "assignedAt": "Data e hora de atribuição",
-      "nav": "Detalhes do leilão"
+      "nav": "Detalhes da entrega"
     },
     "create": {
       "title": "Informação do envio",
-      "subtitle": "Preencha os detalhes para iniciar um leilão",
+      "subtitle": "Preencha os detalhes para solicitar a entrega",
       "back": "Voltar ao painel",
       "orderInfo": "Informação da encomenda",
       "orderId": "ID da encomenda",
@@ -3144,8 +3149,8 @@
       "accessPlaceholder": "ex.: Cais de carga, Nível do solo",
       "additionalNotes": "Notas adicionais sobre o local",
       "additionalNotesPlaceholder": "Qualquer informação adicional",
-      "submit": "Submeter leilão",
-      "nav": "Criar leilão"
+      "submit": "Solicitar entrega",
+      "nav": "Solicitar entrega"
     },
     "noCompetingBids": "Sem licitações de outros transportadores",
     "scrollForMoreBids": "Deslize para ver mais licitações"
@@ -3160,7 +3165,7 @@
     "title": "Visão geral do painel",
     "welcome": "Bem-vindo de volta, {{name}}",
     "cards": {
-      "activeAuctions": "Leilões ativos",
+      "activeAuctions": "Propostas ativas",
       "wonDeliveries": "Entregas ganhas",
       "inTransit": "Em trânsito",
       "completedToday": "Concluídas hoje",
@@ -3168,8 +3173,8 @@
       "pendingEarnings": "Ganhos pendentes"
     },
     "actions": {
-      "viewAuctions": "Ver leilões",
-      "auctionsNearYou": "{{count}} leilões ativos perto de si",
+      "viewAuctions": "Ver propostas",
+      "auctionsNearYou": "{{count}} propostas ativas perto de si",
       "myDeliveries": "As minhas entregas",
       "activeDeliveries": "{{count}} entregas ativas",
       "requestPayout": "Pedir pagamento",
@@ -3201,10 +3206,10 @@
     "defaultName": "Transportador"
   },
   "transporterAuctionBoard": {
-    "title": "Quadro de leilões",
-    "matchingCount": "{{count}} leilões correspondem à sua seleção",
+    "title": "Quadro de propostas",
+    "matchingCount": "{{count}} propostas correspondem à sua seleção",
     "filter": "Filtro:",
-    "filterAria": "Filtrar leilões",
+    "filterAria": "Filtrar propostas",
     "justNow": "Agora mesmo",
     "youTransporter": "Si (Transportador)",
     "bidSuccess": "Proposta enviada com sucesso",
@@ -3214,8 +3219,8 @@
       "nearestFirst": "Mais próximos primeiro",
       "ended": "Terminados"
     },
-    "emptyTitle": "Nenhum leilão disponível",
-    "emptySubtitle": "Não há leilões ativos correspondentes aos seus critérios no momento. Volte mais tarde ou redefina o filtro.",
+    "emptyTitle": "Nenhuma proposta disponível",
+    "emptySubtitle": "Não há propostas ativas correspondentes aos seus critérios no momento. Volte mais tarde ou redefina o filtro.",
     "clearFilter": "Redefinir Filtro"
   },
   "transporterAssignDeliveries": {
@@ -3295,7 +3300,7 @@
     "withdraw": {
       "title": "Levantar fundos",
       "amount": "Montante",
-      "businessName": "Nome da empresa/organização",
+      "businessName": "Nome do titular / Empresa",
       "routingNumber": "Número de routing",
       "accountNumber": "Número de conta",
       "cancel": "Cancelar",
@@ -3307,7 +3312,12 @@
       "invalidBusinessName": "O nome da empresa deve ter pelo menos 2 caracteres",
       "invalidRouting": "O número de routing deve ter pelo menos 3 caracteres",
       "invalidAccount": "O número de conta deve ter pelo menos 5 caracteres",
-      "insufficientBalance": "O montante excede o saldo disponível"
+      "insufficientBalance": "O montante excede o saldo disponível",
+      "businessNamePlaceholder": "Nome da empresa ou titular da conta",
+      "iban": "IBAN",
+      "ibanPlaceholder": "PT50 0000 0000 0000 0000 0000 0",
+      "ibanHelp": "Indique o IBAN da sua conta bancária (25 caracteres, inicia com PT50).",
+      "invalidIban": "Introduza um IBAN válido (ex.: PT50...)"
     }
   },
   "transporterOrderHistory": {
@@ -3323,7 +3333,7 @@
     "subtitle": "Faça a gestão das suas apólices e documentos de seguro",
     "uploadInsurance": "Carregar seguro",
     "alertTitle": "Todos os requisitos de seguro cumpridos",
-    "alertBody": "Tem todas as apólices obrigatórias verificadas e ativas. Pode participar em leilões e aceitar trabalhos de entrega.",
+    "alertBody": "Tem todas as apólices obrigatórias verificadas e ativas. Pode submeter propostas e aceitar trabalhos de entrega.",
     "requiredTitle": "Tipos de seguro obrigatórios",
     "requiredSubtitle": "Ambos os tipos de seguro são obrigatórios antes de aceitar trabalhos de entrega",
     "types": {
@@ -3383,7 +3393,7 @@
     "expired": "Expirado",
     "documentUnavailable": "Documento não disponível",
     "alertPendingTitle": "Requisitos de seguro em falta",
-    "alertPendingBody": "Carregue e valide as apólices de seguro de responsabilidade civil e de mercadorias para participar em leilões e aceitar entregas."
+    "alertPendingBody": "Carregue e valide as apólices de seguro de responsabilidade civil e de mercadorias para submeter propostas e aceitar entregas."
   },
   "transporterInvoices": {
     "title": "Faturas de comissão",
@@ -3571,31 +3581,31 @@
     "subtitle": "Faça a gestão de envios e atribua transportadores",
     "requestDelivery": "+ Solicitar entrega",
     "activeAuctions": {
-      "title": "Leilões ativos",
-      "subtitle": "Propostas pendentes e itens em leilão",
-      "emptyTitle": "Sem leilões ativos",
-      "emptySubtitle": "Não tem leilões de entrega abertos. Peça uma entrega para criar um novo leilão."
+      "title": "Entregas em curso",
+      "subtitle": "Entregas pendentes e a aguardar transportador",
+      "emptyTitle": "Sem entregas em curso",
+      "emptySubtitle": "Não tem pedidos de entrega abertos. Peça uma entrega para iniciar um envio."
     },
     "assignedDeliveries": {
       "title": "Entregas atribuídas",
       "subtitle": "Acompanhe encomendas já aceites por transportadores",
       "emptyTitle": "Sem entregas atribuídas",
-      "emptySubtitle": "As entregas atribuídas aparecem aqui quando um transportador ganhar um leilão."
+      "emptySubtitle": "As entregas atribuídas aparecem aqui assim que um transportador aceitar a entrega."
     },
     "create": {
       "orderLoaded": "Detalhes da encomenda carregados.",
       "orderNotFound": "Encomenda não encontrada. Verifique o número da encomenda.",
       "orderRequired": "O número da encomenda é obrigatório.",
-      "submitSuccess": "Leilão criado com sucesso.",
-      "submitFailed": "Não foi possível criar o leilão. Tente novamente."
+      "submitSuccess": "Pedido de entrega criado com sucesso.",
+      "submitFailed": "Não foi possível criar o pedido de entrega. Tente novamente."
     }
   },
   "supplierDeliveryLogistics": {
     "title": "Entrega e logística",
     "subtitle": "Faça a gestão de envios e atribua transportadores",
-    "startAuction": "+ Iniciar leilão",
-    "startAuctionTitle": "Iniciar leilão",
-    "activeDetailTitle": "Leilões ativos",
+    "startAuction": "+ Solicitar entrega",
+    "startAuctionTitle": "Solicitar entrega",
+    "activeDetailTitle": "Entregas em curso",
     "assignedDetailTitle": "Detalhes das entregas atribuídas",
     "order": "Encomenda",
     "payout": "Recebe pela entrega: {{amount}}",
@@ -3644,7 +3654,7 @@
       "subtitle": "Encomendas enviadas para os transportadores",
       "searching": "A procurar transportador",
       "noCarrier": "Nenhum transportador",
-      "endsAt": "O leilão termina em {{date}}"
+      "endsAt": "Atribuição até {{date}}"
     },
     "alert": {
       "title": "Tem {{count}} encomenda(s) à espera da sua decisão de entrega",
@@ -3652,18 +3662,18 @@
       "cta": "Escolher agora"
     },
     "activeAuctions": {
-      "title": "Leilões ativos",
-      "subtitle": "Propostas pendentes e itens em leilão",
-      "emptyTitle": "Sem leilões ativos",
-      "emptySubtitle": "Não tem leilões de entrega abertos. Inicie um leilão para encontrar um transportador."
+      "title": "Entregas em curso",
+      "subtitle": "Entregas pendentes e a aguardar transportador",
+      "emptyTitle": "Sem entregas em curso",
+      "emptySubtitle": "Não tem pedidos de entrega abertos. Solicite uma entrega para encontrar um transportador."
     },
     "assignedDeliveries": {
       "title": "Entregas atribuídas",
       "subtitle": "Acompanhe encomendas já aceites por transportadores",
       "emptyTitle": "Sem entregas atribuídas",
-      "emptySubtitle": "As entregas atribuídas aparecem aqui quando um transportador ganhar um leilão."
+      "emptySubtitle": "As entregas atribuídas aparecem aqui assim que um transportador aceitar a entrega."
     },
-    "auctionCreated": "Leilão criado com sucesso"
+    "auctionCreated": "Pedido de entrega criado com sucesso"
   },
   "supplierPaymentsFinance": {
     "title": "Ganhos e pagamentos",
@@ -4366,7 +4376,7 @@
     "recentMessages": "Mensagens recentes",
     "retry": "Tentar novamente",
     "loadingEllipsis": "A carregar…",
-    "auctionLoadFailed": "Não foi possível carregar os detalhes do leilão.",
+    "auctionLoadFailed": "Não foi possível carregar os detalhes da entrega.",
     "saving": "A guardar…",
     "loadingInvoice": "A carregar fatura…",
     "orderLoadFailed": "Não foi possível carregar os detalhes da encomenda.",
@@ -4605,7 +4615,7 @@
     "invalidBid": "Introduza um valor de licitação válido",
     "bidTooHigh": "A licitação não pode exceder €{{amount}}",
     "placeBid": "Não foi possível fazer a licitação",
-    "loadAuctions": "Não foi possível carregar os leilões",
+    "loadAuctions": "Não foi possível carregar as entregas",
     "uploadInsurance": "Não foi possível carregar o seguro",
     "downloadPdf": "Não foi possível descarregar o PDF",
     "loadInsurance": "Não foi possível carregar o seguro",
@@ -4703,7 +4713,7 @@
     "confirmDeleteProduct": "Tem a certeza de que pretende eliminar \"{{title}}\"? Esta ação não pode ser anulada.",
     "confirmCancelSubmission": "Tem a certeza de que pretende cancelar a submissão de \"{{title}}\"?",
     "orderIdValue": "N.º da encomenda: {{id}}",
-    "auctionIdValue": "N.º do leilão: {{id}}",
+    "auctionIdValue": "N.º da entrega: {{id}}",
     "deliveryIdValue": "N.º da entrega: {{id}}",
     "priceValue": "Preço: {{price}}",
     "pricePerUnitValue": "Preço: {{price}} por {{unit}}",
@@ -4768,7 +4778,7 @@
     "rejectedDescription": "Alguns dos seus documentos foram rejeitados. Volte a carregá-los para que possamos analisar a sua conta.",
     "submitDocuments": "Submeter documentos",
     "updateDocuments": "Atualizar documentos",
-    "transporterUnverifiedDescription": "Submeta os seus documentos e seguros para que a nossa equipa possa verificar a sua conta. Já pode explorar o quadro de leilões, mas só poderá licitar entregas após a aprovação.",
+    "transporterUnverifiedDescription": "Submeta os seus documentos e seguros para que a nossa equipa possa verificar a sua conta. Já pode explorar o quadro de propostas, mas só poderá enviar propostas após a aprovação.",
     "transporterUnderReviewDescription": "Os seus documentos estão em análise. Poderá licitar entregas assim que a sua conta for aprovada.",
     "bidBlocked": "A sua conta tem de ser verificada antes de poder licitar entregas. Submeta os seus documentos no seu perfil.",
     "goToDashboard": "Ir para o painel",
