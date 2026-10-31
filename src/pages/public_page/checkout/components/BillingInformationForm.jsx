@@ -1,12 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import {
-  CHECKOUT_CITY_OPTIONS,
-  CHECKOUT_REGION_OPTIONS,
-} from '../data/checkoutDemo'
-import {
   CheckoutField,
-  CheckoutSelect,
-  CheckoutTextInput,
+    CheckoutTextInput,
 } from './checkoutFields'
 import AddressAutocomplete from './AddressAutocomplete'
 

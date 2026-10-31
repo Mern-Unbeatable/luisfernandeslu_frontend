@@ -96,7 +96,7 @@ function CompetingBids({ bids = [], t }) {
   )
 }
 
-function TransporterInfo({ transporter = {}, t }) {
+function TransporterInfo({ transporter = {}, t, hideBid = false }) {
   return (
     <Card
       title={t('auction.details.transporterInfo')}
@@ -116,10 +116,12 @@ function TransporterInfo({ transporter = {}, t }) {
             label={t('auction.details.vehicleType')}
             value={transporter.vehicleType}
           />
-          <StackField
-            label={t('auction.details.bidAmount')}
-            value={transporter.bidAmount}
-          />
+          {!hideBid ? (
+            <StackField
+              label={t('auction.details.bidAmount')}
+              value={transporter.bidAmount}
+            />
+          ) : null}
           <StackField
             label={t('auction.details.assignedAt')}
             value={transporter.assignedAt}
@@ -246,7 +248,7 @@ export default function AuctionDetails({
   const isAssigned = resolvedStatus === 'assigned'
   const isComplete = resolvedStatus === 'complete' || resolvedStatus === 'completed'
   const showTransporterPanel = (isSupplier || isFactory) && (isAssigned || isComplete)
-  const showBids = (isSupplier || isFactory) && !showTransporterPanel
+  const showBids = !isSupplier && !isFactory && isTransporter && !showTransporterPanel
   const showShipping = isSupplier || isTransporter
   const showCustomerMessage =
     isTransporter && POST_ASSIGN_STATUSES.has(resolvedStatus)
@@ -340,7 +342,7 @@ export default function AuctionDetails({
               ) : null}
 
               {showTransporterPanel ? (
-                <TransporterInfo transporter={auction.transporter} t={t} />
+                <TransporterInfo transporter={auction.transporter} t={t} hideBid={isSupplier || isFactory} />
               ) : null}
               {showBids ? <CompetingBids bids={auction.bids} t={t} /> : null}
             </div>

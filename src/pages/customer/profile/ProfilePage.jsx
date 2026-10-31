@@ -123,12 +123,25 @@ export default function ProfilePage() {
     }
   }
 
+  const ensureValidAddressPhone = (addressPhone) => {
+    const raw = String(addressPhone || '').trim()
+    const fallback = String(form?.phone || '').trim()
+    const phoneToUse = raw || fallback
+
+    if (raw && !isValidPhone(raw)) {
+      toast.error(t('panel.profile.phoneInvalid'))
+      return null
+    }
+    return phoneToUse
+  }
+
   const handleSaveBillingAddress = async (address) => {
-    if (!ensureValidPhone(address?.phone)) return
+    const phone = ensureValidAddressPhone(address?.phone)
+    if (address?.phone && phone === null) return
 
     try {
       const result = await updateBillingAddress(
-        mapCustomerAddressToPayload(address),
+        mapCustomerAddressToPayload(address, phone || ''),
       ).unwrap()
 
       if (result?.success === false) {
@@ -143,11 +156,12 @@ export default function ProfilePage() {
   }
 
   const handleSaveShippingAddress = async (address) => {
-    if (!ensureValidPhone(address?.phone)) return
+    const phone = ensureValidAddressPhone(address?.phone)
+    if (address?.phone && phone === null) return
 
     try {
       const result = await updateShippingAddress(
-        mapCustomerAddressToPayload(address),
+        mapCustomerAddressToPayload(address, phone || ''),
       ).unwrap()
 
       if (result?.success === false) {

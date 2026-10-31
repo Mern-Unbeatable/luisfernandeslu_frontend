@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
 import DataTable from "@/components/data-display/DataTable/DataTable";
-import {
-  DEMO_SUPPLIER_DISPUTES,
-  SUPPLIER_DISPUTES_PAGE_SIZE,
-} from "@/data/demoData";
+import { SUPPLIER_DISPUTES_PAGE_SIZE } from "@/data/demoData";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import {
   useGetSupplierDisputesQuery,
@@ -28,9 +25,9 @@ export default function DisputesPage() {
   const { data, isLoading, isFetching, error } = useGetSupplierDisputesQuery();
   const [updateDisputeStatus] = useUpdateSupplierDisputeStatusMutation();
 
-  const rows = data?.disputes ?? DEMO_SUPPLIER_DISPUTES;
+  const rows = data?.disputes ?? [];
   const stats = data?.stats ?? {
-    total: DEMO_SUPPLIER_DISPUTES.length,
+    total: 0,
     pendingReview: 0,
     approved: 0,
     rejected: 0,

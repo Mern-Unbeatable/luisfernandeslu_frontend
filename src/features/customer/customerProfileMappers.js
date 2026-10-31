@@ -90,7 +90,8 @@ export function mapCustomerProfileToPayload(form) {
   }
 }
 
-export function mapCustomerAddressToPayload(address = {}) {
+export function mapCustomerAddressToPayload(address = {}, fallbackPhone = '') {
+  const phone = String(address.phone || fallbackPhone || '').trim()
   return {
     firstName: String(address.firstName || '').trim(),
     lastName: String(address.lastName || '').trim(),
@@ -100,6 +101,6 @@ export function mapCustomerAddressToPayload(address = {}) {
     city: String(address.city || '').trim(),
     zipCode: String(address.zipCode || '').trim(),
     email: String(address.email || '').trim(),
-    phone: String(address.phone || '').trim(),
+    phone,
   }
 }

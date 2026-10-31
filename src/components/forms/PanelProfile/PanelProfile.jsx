@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiCamera, FiUser } from 'react-icons/fi'
+import { FiCamera, FiUser, FiTrash2 } from 'react-icons/fi'
 import { DEMO_PANEL_PROFILE } from '@/data/demoData'
 import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete'
 import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
@@ -153,6 +153,7 @@ function AccountFields({
 function WarehouseFields({
   warehouses,
   onUpdate,
+  onRemove,
   onAdd,
   onSave,
   warehouseTitleKey,
@@ -166,19 +167,36 @@ function WarehouseFields({
       </h3>
       <div className="mt-4 space-y-4">
         {warehouses.map((item, index) => (
-          <Field
-            key={item.id}
-            label={t('panel.profile.warehouseN', { n: index + 1 })}
-          >
-            <AddressAutocomplete
-              value={item.address}
-              onChange={(address) => onUpdate(item.id, address)}
-              onLocationSelect={(loc) => onUpdate(item.id, loc.address)}
-              placeholder={t('panel.profile.warehousePlaceholder')}
-              inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3"
-            />
-          </Field>
+          <div key={item.id} className="flex items-start gap-2">
+            <div className="flex-1">
+              <Field
+                label={t('panel.profile.warehouseN', { n: index + 1 })}
+              >
+                <AddressAutocomplete
+                  value={item.address}
+                  onChange={(address) => onUpdate(item.id, address)}
+                  onLocationSelect={(loc) => onUpdate(item.id, loc.address)}
+                  placeholder={t('panel.profile.warehousePlaceholder')}
+                  inputClassName="w-full rounded-md border border-gray-200 bg-white text-sm text-[var(--primary-text)] outline-none transition-colors placeholder:text-zinc-400 focus:border-[var(--active)] h-11 px-3"
+                />
+              </Field>
+            </div>
+            <button
+              type="button"
+              onClick={() => onRemove?.(item.id)}
+              className="mt-7 inline-flex h-11 items-center justify-center rounded-md border border-red-200 px-3 text-red-600 hover:bg-red-50 transition-colors"
+              title={t('common.delete', { defaultValue: 'Remover' })}
+              aria-label={t('common.delete', { defaultValue: 'Remover' })}
+            >
+              <FiTrash2 className="size-4" />
+            </button>
+          </div>
         ))}
+        {warehouses.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4 text-sm text-[var(--secondary-text)]">
+            {t('panel.profile.noWarehouses', { defaultValue: 'Nenhum armazém configurado.' })}
+          </div>
+        ) : null}
       </div>
       <button
         type="button"
@@ -505,6 +523,7 @@ export default function PanelProfile({
               <BuyerAccountSection
                 form={form}
                 setField={setField}
+                onPatch={patch}
                 onSave={handleUpdateProfile}
                 saving={isUpdatingProfile}
                 fileRef={fileRef}
@@ -615,6 +634,7 @@ export default function PanelProfile({
               <WarehouseFields
                 warehouses={warehouses}
                 onUpdate={updateWarehouse}
+                onRemove={removeWarehouse}
                 onAdd={addWarehouse}
                 onSave={handleSaveWarehouses}
                 warehouseTitleKey={cfg.warehouseTitleKey}

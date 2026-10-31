@@ -9,10 +9,13 @@ import {
 import Seo from "@/components/common/Seo/Seo";
 import StatusCard from "@/components/data-display/StatusCard";
 import DataTable from "@/components/data-display/DataTable/DataTable";
-import {
-  DEMO_SUPPLIER_PAYMENTS_STATS,
-  SUPPLIER_PAYMENTS_PAGE_SIZE,
-} from "@/data/demoData";
+import { SUPPLIER_PAYMENTS_PAGE_SIZE } from "@/data/demoData";
+
+const EMPTY_PAYMENTS_STATS = {
+  totalEarnings: "€0.00",
+  availableBalance: "€0.00",
+  pendingAmount: "€0.00",
+};
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import {
   useGetSupplierCommissionInvoicesQuery,
@@ -115,7 +118,7 @@ export default function PaymentsFinancePage() {
   const safePage = Math.min(page, pageCount);
   const paged = invoices;
 
-  const activeStats = data?.stats || DEMO_SUPPLIER_PAYMENTS_STATS;
+  const activeStats = data?.stats || EMPTY_PAYMENTS_STATS;
 
   const activeErrorMessage = error
     ? getApiErrorMessage(error, t("common.requestFailed"))
@@ -138,8 +141,7 @@ export default function PaymentsFinancePage() {
           <StatusCard
             label={t("supplierPaymentsFinance.cards.totalEarnings")}
             value={
-              activeStats.totalEarnings ??
-              DEMO_SUPPLIER_PAYMENTS_STATS.totalEarnings
+              activeStats.totalEarnings ?? "€0.00"
             }
             description={t("supplierPaymentsFinance.cards.thisMonth")}
             icon={FiArrowDownLeft}
@@ -148,8 +150,7 @@ export default function PaymentsFinancePage() {
           <StatusCard
             label={t("supplierPaymentsFinance.cards.availableBalance")}
             value={
-              activeStats.availableBalance ??
-              DEMO_SUPPLIER_PAYMENTS_STATS.availableBalance
+              activeStats.availableBalance ?? "€0.00"
             }
             description={t("supplierPaymentsFinance.cards.withdrawNote")}
             icon={FiDollarSign}

@@ -56,7 +56,11 @@ export const supplierProfileApi = baseApi.injectEndpoints({
         method: "PUT",
         data: {
           warehouses: warehouses
-            .map((warehouse) => ({ address: warehouse?.address ?? "" }))
+            .map((warehouse) => ({
+              id: warehouse?.id && !String(warehouse.id).startsWith("temp-") && !String(warehouse.id).startsWith("wh-") ? warehouse.id : undefined,
+              label: warehouse?.label || warehouse?.name || undefined,
+              address: warehouse?.address ?? "",
+            }))
             .filter((warehouse) => warehouse.address),
         },
       }),

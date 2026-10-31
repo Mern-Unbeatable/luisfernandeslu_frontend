@@ -1,7 +1,11 @@
 import { FiMessageCircle, FiStar, FiThumbsUp } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
-import { DEMO_SUPPLIER_REVIEWS } from "@/data/demoData";
+const EMPTY_REVIEWS = {
+  summary: { averageRating: 0, totalReviews: 0 },
+  distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+  reviews: [],
+};
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { useGetSupplierReviewsQuery } from "@/features/supplier/reviews/reviewsApi";
 
@@ -215,7 +219,7 @@ function ReviewCard({ review, t }) {
 export default function ReviewsPage() {
   const { t } = useTranslation();
   const { data, isLoading, isFetching, error } = useGetSupplierReviewsQuery();
-  const reviewsData = data ?? DEMO_SUPPLIER_REVIEWS;
+  const reviewsData = data ?? EMPTY_REVIEWS;
   const { summary, distribution, reviews } = reviewsData;
   const errorMessage = error
     ? getApiErrorMessage(error, t("common.requestFailed"))

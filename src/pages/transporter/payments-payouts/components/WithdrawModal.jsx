@@ -17,16 +17,14 @@ export default function WithdrawModal({
   const { t } = useTranslation()
   const [amount, setAmount] = useState('')
   const [businessName, setBusinessName] = useState('')
-  const [routingNumber, setRoutingNumber] = useState('')
-  const [accountNumber, setAccountNumber] = useState('')
+  const [iban, setIban] = useState('')
   const [formError, setFormError] = useState('')
 
   useEffect(() => {
     if (!isOpen) return
     setAmount('')
     setBusinessName('')
-    setRoutingNumber('')
-    setAccountNumber('')
+    setIban('')
     setFormError('')
   }, [isOpen])
 
@@ -38,54 +36,45 @@ export default function WithdrawModal({
     if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
       setFormError(
         t('transporterPaymentsPayouts.withdraw.invalidAmount', {
-          defaultValue: 'Enter a valid amount greater than 0',
+          defaultValue: 'Introduza um montante válido maior que 0',
         }),
       )
       return
     }
-    if (String(businessName).trim().length < 2) {
+
+    const cleanIban = String(iban || '').replace(/\s+/g, '').toUpperCase()
+    if (cleanIban.length < 15) {
       setFormError(
-        t('transporterPaymentsPayouts.withdraw.invalidBusinessName', {
-          defaultValue: 'Business name must be at least 2 characters',
+        t('transporterPaymentsPayouts.withdraw.invalidIban', {
+          defaultValue: 'Introduza um IBAN válido (ex.: PT50...)',
         }),
       )
       return
     }
-    if (String(routingNumber).trim().length < 3) {
-      setFormError(
-        t('transporterPaymentsPayouts.withdraw.invalidRouting', {
-          defaultValue: 'Routing number must be at least 3 characters',
-        }),
-      )
-      return
-    }
-    if (String(accountNumber).trim().length < 5) {
-      setFormError(
-        t('transporterPaymentsPayouts.withdraw.invalidAccount', {
-          defaultValue: 'Account number must be at least 5 characters',
-        }),
-      )
-      return
-    }
+
     if (
       Number.isFinite(availableBalance) &&
       numericAmount > Number(availableBalance)
     ) {
       setFormError(
         t('transporterPaymentsPayouts.withdraw.insufficientBalance', {
-          defaultValue: 'Amount exceeds available balance',
+          defaultValue: 'O montante excede o saldo disponível',
         }),
       )
       return
     }
 
     setFormError('')
-    await onSubmit?.({
+    const ok = await onSubmit?.({
       amount: numericAmount,
-      businessName: businessName.trim(),
-      routingNumber: routingNumber.trim(),
-      accountNumber: accountNumber.trim(),
+      businessName: businessName.trim() || undefined,
+      iban: cleanIban,
+      accountNumber: cleanIban,
+      routingNumber: 'N/A',
     })
+    if (ok) {
+      onClose?.()
+    }
   }
 
   return (
@@ -109,7 +98,7 @@ export default function WithdrawModal({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700">
-              {t('transporterPaymentsPayouts.withdraw.amount')}
+              {t('transporterPaymentsPayouts.withdraw.amount')} (€)
             </label>
             <input
               type="number"
@@ -117,45 +106,44 @@ export default function WithdrawModal({
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder="100"
+              placeholder="100.00"
               className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             />
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700">
-              {t('transporterPaymentsPayouts.withdraw.businessName')}
+              {t('transporterPaymentsPayouts.withdraw.businessName')} ({t('common.optional', { defaultValue: 'Opcional' })})
             </label>
             <input
               type="text"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
+              placeholder={t('transporterPaymentsPayouts.withdraw.businessNamePlaceholder', {
+                defaultValue: 'Nome da empresa ou titular da conta',
+              })}
               className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             />
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700">
-              {t('transporterPaymentsPayouts.withdraw.routingNumber')}
+              {t('transporterPaymentsPayouts.withdraw.iban', { defaultValue: 'IBAN' })}
             </label>
             <input
               type="text"
-              value={routingNumber}
-              onChange={(e) => setRoutingNumber(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+              value={iban}
+              onChange={(e) => setIban(e.target.value.toUpperCase())}
+              placeholder={t('transporterPaymentsPayouts.withdraw.ibanPlaceholder', {
+                defaultValue: 'PT50 0000 0000 0000 0000 0000 0',
+              })}
+              className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-mono tracking-wider outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 uppercase"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">
-              {t('transporterPaymentsPayouts.withdraw.accountNumber')}
-            </label>
-            <input
-              type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-            />
+            <p className="mt-1 text-xs text-gray-500">
+              {t('transporterPaymentsPayouts.withdraw.ibanHelp', {
+                defaultValue: 'Indique o IBAN da sua conta bancária (ex.: PT50...).',
+              })}
+            </p>
           </div>
 
           {formError ? (
@@ -180,7 +168,7 @@ export default function WithdrawModal({
           >
             {isSubmitting
               ? t('transporterPaymentsPayouts.withdraw.submitting', {
-                  defaultValue: 'Submitting…',
+                  defaultValue: 'A enviar…',
                 })
               : t('transporterPaymentsPayouts.withdraw.submit')}
           </button>

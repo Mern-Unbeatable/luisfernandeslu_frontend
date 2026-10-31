@@ -35,7 +35,6 @@ import {
   resolveAiField,
 } from "@/features/supplier/products/productMappers";
 import { useGetSupplierProfileQuery } from "@/features/supplier/profile/profileApi";
-import { DEMO_WAREHOUSE_OPTIONS } from "@/data/demoData";
 
 export default function AddProductPage() {
   const navigate = useNavigate();
@@ -134,12 +133,22 @@ export default function AddProductPage() {
   }, [form.sku, isEdit, lastLookupSku, lookupSku]);
 
   const warehouseOptions = useMemo(() => {
+    const list = Array.isArray(supplierProfile?.warehouses)
+      ? supplierProfile.warehouses
+      : [];
+    const realOptions = list
+      .filter((w) => w?.address)
+      .map((w) => ({
+        value: w.address,
+        label: w.label ? `${w.label} - ${w.address}` : w.address,
+      }));
+
     const options = [
       {
         value: "",
         label: t("panel.supplierProducts.add.selectWarehouse"),
       },
-      ...DEMO_WAREHOUSE_OPTIONS.filter((option) => option.value),
+      ...realOptions,
     ];
 
     if (
@@ -153,7 +162,7 @@ export default function AddProductPage() {
     }
 
     return options;
-  }, [form.warehouseLocation, t]);
+  }, [supplierProfile?.warehouses, form.warehouseLocation, t]);
 
   const categoryOptions = useMemo(
     () => [

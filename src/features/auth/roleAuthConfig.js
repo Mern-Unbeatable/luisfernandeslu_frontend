@@ -140,6 +140,7 @@ const ROLE_AUTH = {
     login: {
       titleKey: 'auth.marketing.supplier.loginTitle',
       subtitleKey: 'auth.marketing.supplier.loginSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.supplier.loginSidebarTitle',
         subtitleKey: 'auth.marketing.supplier.loginSidebarSubtitle',
@@ -165,6 +166,7 @@ const ROLE_AUTH = {
     register: {
       titleKey: 'auth.marketing.supplier.registerTitle',
       subtitleKey: 'auth.marketing.supplier.registerSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.supplier.regSidebarTitle',
         subtitleKey: 'auth.marketing.supplier.regSidebarSubtitle',
@@ -228,6 +230,7 @@ const ROLE_AUTH = {
     login: {
       titleKey: 'auth.marketing.factory.loginTitle',
       subtitleKey: 'auth.marketing.factory.loginSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.factory.loginSidebarTitle',
         subtitleKey: 'auth.marketing.factory.loginSidebarSubtitle',
@@ -253,6 +256,7 @@ const ROLE_AUTH = {
     register: {
       titleKey: 'auth.marketing.factory.registerTitle',
       subtitleKey: 'auth.marketing.factory.registerSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.factory.regSidebarTitle',
         subtitleKey: 'auth.marketing.factory.regSidebarSubtitle',
@@ -316,6 +320,7 @@ const ROLE_AUTH = {
     login: {
       titleKey: 'auth.marketing.transporter.loginTitle',
       subtitleKey: 'auth.marketing.transporter.loginSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.transporter.loginSidebarTitle',
         subtitleKey: 'auth.marketing.transporter.loginSidebarSubtitle',
@@ -341,6 +346,7 @@ const ROLE_AUTH = {
     register: {
       titleKey: 'auth.marketing.transporter.registerTitle',
       subtitleKey: 'auth.marketing.transporter.registerSubtitle',
+      showSocial: true,
       sidebar: {
         titleKey: 'auth.marketing.transporter.regSidebarTitle',
         subtitleKey: 'auth.marketing.transporter.regSidebarSubtitle',
@@ -405,6 +411,7 @@ const ROLE_AUTH = {
     login: {
       titleKey: 'auth.marketing.affiliate.loginTitle',
       subtitleKey: 'auth.marketing.affiliate.loginSubtitle',
+      showSocial: true,
       submitKey: 'auth.marketing.affiliate.loginSubmit',
       showRememberMe: true,
       showLegal: true,
@@ -436,6 +443,7 @@ const ROLE_AUTH = {
     register: {
       titleKey: 'auth.marketing.affiliate.registerTitle',
       subtitleKey: 'auth.marketing.affiliate.registerSubtitle',
+      showSocial: true,
       submitKey: 'auth.marketing.affiliate.registerSubmit',
       showLegal: true,
       sidebar: {

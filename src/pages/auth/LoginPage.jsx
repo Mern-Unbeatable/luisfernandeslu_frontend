@@ -318,7 +318,7 @@ export default function LoginPage() {
         </p>
       ) : null}
 
-      {!isMarketing && loginCfg.showSocial && BUYER_RETURN_ROLES.has(role) ? (
+      {loginCfg.showSocial ? (
         <AuthSocialButtons
           googleLabel={t('auth.googleLogin')}
           orLabel={t('auth.or')}

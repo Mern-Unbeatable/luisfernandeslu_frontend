@@ -20,9 +20,9 @@ import {
 import { buildInventoryCreateBody } from '@/features/supplier/inventory/inventoryMappers';
 import {
   DEMO_SUPPLIER_INVENTORY_STAT_CARDS,
-  DEMO_SUPPLIER_INVENTORY_WAREHOUSES,
   SUPPLIER_INVENTORY_PAGE_SIZE,
 } from '@/data/demoData';
+import { useGetSupplierProfileQuery } from '@/features/supplier/profile/profileApi';
 import FactoryOrdersPageSkeleton from '@/pages/factory/components/FactoryOrdersPageSkeleton';
 import AddInventoryProductModal from './AddInventoryProductModal';
 import RestockModal from './RestockModal';
@@ -84,6 +84,15 @@ export default function InventoryPage() {
     }, 400);
     return () => window.clearTimeout(timer);
   }, [search]);
+
+  const { data: supplierProfile } = useGetSupplierProfileQuery();
+  const warehouseOptions = useMemo(() => {
+    const list = supplierProfile?.warehouses || [];
+    return list.map((w) => ({
+      value: w.address,
+      label: w.label ? `${w.label} - ${w.address}` : w.address,
+    }));
+  }, [supplierProfile?.warehouses]);
 
   const {
     data: stats,
@@ -198,8 +207,8 @@ export default function InventoryPage() {
   }, []);
 
   const handleEdit = useCallback((row) => {
-    const warehouse = DEMO_SUPPLIER_INVENTORY_WAREHOUSES.find(
-      (item) => item.label === row.warehouseLocation,
+    const warehouse = warehouseOptions.find(
+      (item) => item.label === row.warehouseLocation || item.value === row.warehouseLocation,
     );
 
     setModalError('');
@@ -222,7 +231,7 @@ export default function InventoryPage() {
       factoryName: row.factoryName,
     });
     setAddModalOpen(true);
-  }, []);
+  }, [warehouseOptions]);
 
   const getRowActions = useCallback(
     (row) => {
@@ -368,7 +377,7 @@ export default function InventoryPage() {
 
       try {
         await createInventoryProduct(
-          buildInventoryCreateBody(payload, DEMO_SUPPLIER_INVENTORY_WAREHOUSES),
+          buildInventoryCreateBody(payload, warehouseOptions),
         ).unwrap();
         setAddModalOpen(false);
         setEditingProduct(null);
@@ -383,7 +392,7 @@ export default function InventoryPage() {
         );
       }
     },
-    [createInventoryProduct, t],
+    [createInventoryProduct, t, warehouseOptions],
   );
 
   const handleRestockSubmit = useCallback(
@@ -570,7 +579,7 @@ export default function InventoryPage() {
       <AddInventoryProductModal
         open={addModalOpen}
         onClose={handleAddModalClose}
-        warehouseOptions={DEMO_SUPPLIER_INVENTORY_WAREHOUSES}
+        warehouseOptions={warehouseOptions}
         categoryOptions={categoryOptions}
         subCategoryOptions={subCategoryOptions}
         productTypeOptions={productTypeOptions}

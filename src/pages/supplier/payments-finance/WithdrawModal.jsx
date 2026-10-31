@@ -95,19 +95,15 @@ export default function WithdrawModal({ open, form, onChange, onClose, onSubmit 
               className={inputClass}
             />
           </Field>
-          <Field label={t('supplierPaymentsFinance.withdraw.routingNumber')}>
+          <Field label={t('supplierPaymentsFinance.withdraw.iban', { defaultValue: 'IBAN' })}>
             <input
               type="text"
-              value={form.routingNumber}
-              onChange={setField('routingNumber')}
-              className={inputClass}
-            />
-          </Field>
-          <Field label={t('supplierPaymentsFinance.withdraw.accountNumber')}>
-            <input
-              type="text"
-              value={form.accountNumber}
-              onChange={setField('accountNumber')}
+              value={form.iban || form.accountNumber || ''}
+              onChange={(e) => {
+                const val = e.target.value.toUpperCase();
+                onChange?.({ ...form, iban: val, accountNumber: val });
+              }}
+              placeholder="PT50 0000 0000 0000 0000 0000 0"
               className={inputClass}
             />
           </Field>

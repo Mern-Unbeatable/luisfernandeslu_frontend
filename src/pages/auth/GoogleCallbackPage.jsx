@@ -13,6 +13,10 @@ const KNOWN_ERRORS = new Set([
   'account_disabled',
   'registered_as_customer',
   'registered_as_company',
+  'registered_as_supplier',
+  'registered_as_factory',
+  'registered_as_transporter',
+  'registered_as_affiliate',
 ])
 
 function readHashParams() {

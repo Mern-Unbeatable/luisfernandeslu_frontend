@@ -359,7 +359,7 @@ export default function DeliveryLogisticsPage() {
 
       toast.success(
         t('factoryDeliveryLogistics.create.submitSuccess', {
-          defaultValue: 'Auction created successfully.',
+          defaultValue: 'Pedido de entrega criado com sucesso.',
         }),
       )
       setActivePage(1)
@@ -368,7 +368,7 @@ export default function DeliveryLogisticsPage() {
       toast.error(
         err?.data?.message
         || t('factoryDeliveryLogistics.create.submitFailed', {
-          defaultValue: 'Failed to create auction. Please try again.',
+          defaultValue: 'Não foi possível criar o pedido de entrega. Tente novamente.',
         }),
       )
     }
@@ -451,13 +451,13 @@ export default function DeliveryLogisticsPage() {
         ) : activeAuctions.length === 0 ? (
           <EmptyAuctionsBox
             title={t('factoryDeliveryLogistics.activeAuctions.emptyTitle', {
-              defaultValue: 'No active auctions',
+              defaultValue: 'Sem entregas em curso',
             })}
             description={t(
               'factoryDeliveryLogistics.activeAuctions.emptySubtitle',
               {
                 defaultValue:
-                  'You have no open delivery auctions right now. Request a delivery to create a new auction.',
+                  'Não tem pedidos de entrega abertos. Peça uma entrega para iniciar um envio.',
               },
             )}
           />
@@ -505,14 +505,14 @@ export default function DeliveryLogisticsPage() {
             title={t(
               'factoryDeliveryLogistics.assignedDeliveries.emptyTitle',
               {
-                defaultValue: 'No assigned deliveries',
+                defaultValue: 'Sem entregas atribuídas',
               },
             )}
             description={t(
               'factoryDeliveryLogistics.assignedDeliveries.emptySubtitle',
               {
                 defaultValue:
-                  'Assigned deliveries will appear here once a transporter wins an auction.',
+                  'As entregas atribuídas aparecem aqui assim que um transportador aceitar a entrega.',
               },
             )}
           />

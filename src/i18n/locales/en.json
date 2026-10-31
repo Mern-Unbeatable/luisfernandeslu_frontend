@@ -37,7 +37,8 @@
     "beLiberator": "Be a deliverer"
   },
   "productsPage": {
-    "unavailableForPurchase": "Currently unavailable for purchase",    "filters": "Filters",
+    "unavailableForPurchase": "Currently unavailable for purchase",
+    "filters": "Filters",
     "priceRange": "Price Range",
     "minPrice": "Min price",
     "maxPrice": "Max price",
@@ -1389,7 +1390,7 @@
       "invoices": "Invoices",
       "profile": "Profile",
       "orders": "Orders",
-      "auctionBoard": "Auction Board",
+      "auctionBoard": "Proposals board",
       "assignDeliveries": "Assign Deliveries",
       "paymentsPayouts": "Payments & Payouts",
       "orderHistory": "Order History",
@@ -2241,7 +2242,11 @@
       "email_in_use": "Google sign-in isn't available for this account. Please log in with your email and password.",
       "registered_as_customer": "This Google account is registered as a customer. Please log in from the customer login.",
       "registered_as_company": "This Google account is registered as a company. Please log in from the company login.",
-      "account_disabled": "This account has been blocked. Please contact support."
+      "account_disabled": "This account has been blocked. Please contact support.",
+      "registered_as_supplier": "This Google account is registered as a supplier. Please sign in on the supplier page.",
+      "registered_as_factory": "This Google account is registered as a factory. Please sign in on the factory page.",
+      "registered_as_transporter": "This Google account is registered as a transporter. Please sign in on the transporter page.",
+      "registered_as_affiliate": "This Google account is registered as an affiliate. Please sign in on the affiliate page."
     }
   },
   "buyer": {
@@ -3060,7 +3065,7 @@
     "assignedTransporter": "Assigned Transporter",
     "bidPrice": "Bid Price",
     "viewDetails": "View Details",
-    "auctionId": "Auction ID",
+    "auctionId": "Delivery ID",
     "quantity": "Quantity",
     "pickup": "Pickup",
     "delivery": "Delivery",
@@ -3075,8 +3080,8 @@
       "back": "Back to Dashboard",
       "orderSummary": "Order Summary",
       "orderId": "Order ID",
-      "auctionId": "Auction ID",
-      "auctionDate": "Auction Date",
+      "auctionId": "Delivery ID",
+      "auctionDate": "Order Date",
       "pickupLocation": "Pickup location",
       "deliveryCharge": "Delivery Charge",
       "currentStatus": "Current Status",
@@ -3105,11 +3110,11 @@
       "vehicleType": "Vehicle Type",
       "bidAmount": "Bid Amount",
       "assignedAt": "Assigned Date & Time",
-      "nav": "Auction Details"
+      "nav": "Delivery Details"
     },
     "create": {
       "title": "Shipment Information",
-      "subtitle": "Fill in the details to start an auction",
+      "subtitle": "Fill in the details to request delivery",
       "back": "Back to Dashboard",
       "orderInfo": "Order Information",
       "orderId": "Order ID",
@@ -3144,8 +3149,8 @@
       "accessPlaceholder": "e.g., Loading dock, Ground level",
       "additionalNotes": "Additional Notes About Location",
       "additionalNotesPlaceholder": "Any additional information",
-      "submit": "Submit Auction",
-      "nav": "Create Auction"
+      "submit": "Request Delivery",
+      "nav": "Request Delivery"
     }
   },
   "order": {
@@ -3158,7 +3163,7 @@
     "title": "Dashboard Overview",
     "welcome": "Welcome back, {{name}}",
     "cards": {
-      "activeAuctions": "Active Auctions",
+      "activeAuctions": "Active proposals",
       "wonDeliveries": "Won Deliveries",
       "inTransit": "In Transit",
       "completedToday": "Completed Today",
@@ -3166,8 +3171,8 @@
       "pendingEarnings": "Pending Earnings"
     },
     "actions": {
-      "viewAuctions": "View Auctions",
-      "auctionsNearYou": "{{count}} active auctions near you",
+      "viewAuctions": "View proposals",
+      "auctionsNearYou": "{{count}} active proposals near you",
       "myDeliveries": "My Deliveries",
       "activeDeliveries": "{{count}} active deliveries",
       "requestPayout": "Request Payout",
@@ -3199,10 +3204,10 @@
     "defaultName": "Transporter"
   },
   "transporterAuctionBoard": {
-    "title": "Auction Board",
-    "matchingCount": "{{count}} auctions matching your selection",
+    "title": "Proposals board",
+    "matchingCount": "{{count}} proposals match your selection",
     "filter": "Filter:",
-    "filterAria": "Filter auctions",
+    "filterAria": "Filter proposals",
     "justNow": "Just now",
     "youTransporter": "You (Transporter)",
     "bidSuccess": "Bid placed successfully",
@@ -3212,8 +3217,8 @@
       "nearestFirst": "Nearest First",
       "ended": "Ended"
     },
-    "emptyTitle": "No auctions available",
-    "emptySubtitle": "There are currently no active auctions matching your criteria. Check back soon or reset your filter.",
+    "emptyTitle": "No proposals available",
+    "emptySubtitle": "There are no active proposals matching your criteria right now. Check back later or reset your filter.",
     "clearFilter": "Reset Filter"
   },
   "transporterAssignDeliveries": {
@@ -3293,7 +3298,7 @@
     "withdraw": {
       "title": "Withdraw Funds",
       "amount": "Amount",
-      "businessName": "Name of the business/organisation",
+      "businessName": "Account holder / Business name",
       "routingNumber": "Routing Number",
       "accountNumber": "Account Number",
       "cancel": "Cancel",
@@ -3305,7 +3310,12 @@
       "invalidBusinessName": "Business name must be at least 2 characters",
       "invalidRouting": "Routing number must be at least 3 characters",
       "invalidAccount": "Account number must be at least 5 characters",
-      "insufficientBalance": "Amount exceeds available balance"
+      "insufficientBalance": "Amount exceeds available balance",
+      "businessNamePlaceholder": "Company name or account holder",
+      "iban": "IBAN",
+      "ibanPlaceholder": "PT50 0000 0000 0000 0000 0000 0",
+      "ibanHelp": "Enter your bank account IBAN (starts with PT50).",
+      "invalidIban": "Please enter a valid IBAN (e.g. PT50...)"
     }
   },
   "transporterOrderHistory": {
@@ -3569,33 +3579,33 @@
     "subtitle": "Manage shipments, assign transporter",
     "requestDelivery": "+ Request Delivery",
     "activeAuctions": {
-      "title": "Active Auctions",
-      "subtitle": "Pending bids and auction items",
-      "emptyTitle": "No active auctions",
-      "emptySubtitle": "You have no open delivery auctions right now. Request a delivery to create a new auction."
+      "title": "Active deliveries",
+      "subtitle": "Pending deliveries awaiting carrier",
+      "emptyTitle": "No active deliveries",
+      "emptySubtitle": "You have no open delivery requests right now. Request a delivery to start a shipment."
     },
     "assignedDeliveries": {
       "title": "Assigned Deliveries",
       "subtitle": "Track orders already accepted by transporters",
       "emptyTitle": "No assigned deliveries",
-      "emptySubtitle": "Assigned deliveries will appear here once a transporter wins an auction."
+      "emptySubtitle": "Assigned deliveries will appear here once a carrier accepts the delivery."
     },
     "create": {
       "orderLoaded": "Order details loaded.",
       "orderNotFound": "Order not found. Check the Order ID.",
       "orderRequired": "Order ID is required.",
-      "submitSuccess": "Auction created successfully.",
-      "submitFailed": "Failed to create auction. Please try again."
+      "submitSuccess": "Delivery requested successfully.",
+      "submitFailed": "Failed to request delivery. Please try again."
     }
   },
   "supplierDeliveryLogistics": {
     "title": "Delivery & Logistic",
     "subtitle": "Manage shipments, assign transporter",
-    "startAuction": "+ Start Auction",
-    "startAuctionTitle": "Start Auction",
-    "activeDetailTitle": "Active Auctions",
+    "startAuction": "+ Request delivery",
+    "startAuctionTitle": "Request delivery",
+    "activeDetailTitle": "Active deliveries",
     "assignedDetailTitle": "Assigned Delivers Details",
-    "auctionCreated": "Auction created successfully",
+    "auctionCreated": "Delivery requested successfully",
     "order": "Order",
     "payout": "You receive for the delivery: {{amount}}",
     "deliverMyself": "I'll deliver it",
@@ -3643,7 +3653,7 @@
       "subtitle": "Orders sent to carriers",
       "searching": "Looking for a carrier",
       "noCarrier": "No carrier found",
-      "endsAt": "Auction ends {{date}}"
+      "endsAt": "Assignment deadline: {{date}}"
     },
     "alert": {
       "title": "{{count}} order(s) waiting for your delivery decision",
@@ -3651,16 +3661,16 @@
       "cta": "Choose now"
     },
     "activeAuctions": {
-      "title": "Active Auctions",
-      "subtitle": "Pending bids and auction items",
-      "emptyTitle": "No active auctions",
-      "emptySubtitle": "You have no open delivery auctions right now. Start an auction to find a transporter."
+      "title": "Active deliveries",
+      "subtitle": "Pending deliveries awaiting carrier",
+      "emptyTitle": "No active deliveries",
+      "emptySubtitle": "You have no open delivery requests right now. Request a delivery to find a carrier."
     },
     "assignedDeliveries": {
       "title": "Assigned Deliveries",
       "subtitle": "Track orders already accepted by transporters",
       "emptyTitle": "No assigned deliveries",
-      "emptySubtitle": "Assigned deliveries will appear here once a transporter wins an auction."
+      "emptySubtitle": "Assigned deliveries will appear here once a carrier accepts the delivery."
     }
   },
   "supplierPaymentsFinance": {
@@ -4364,7 +4374,7 @@
     "recentMessages": "Recent Messages",
     "retry": "Retry",
     "loadingEllipsis": "Loading…",
-    "auctionLoadFailed": "Failed to load auction details.",
+    "auctionLoadFailed": "Could not load delivery details.",
     "saving": "Saving…",
     "loadingInvoice": "Loading invoice…",
     "orderLoadFailed": "Failed to load order details.",
@@ -4603,7 +4613,7 @@
     "invalidBid": "Enter a valid bid amount",
     "bidTooHigh": "Bid must be at most €{{amount}}",
     "placeBid": "Failed to place bid",
-    "loadAuctions": "Failed to load auctions",
+    "loadAuctions": "Could not load deliveries",
     "uploadInsurance": "Failed to upload insurance",
     "downloadPdf": "Failed to download PDF",
     "loadInsurance": "Failed to load insurance",
@@ -4701,7 +4711,7 @@
     "confirmDeleteProduct": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
     "confirmCancelSubmission": "Are you sure you want to cancel the submission for \"{{title}}\"?",
     "orderIdValue": "Order ID: {{id}}",
-    "auctionIdValue": "Auction ID: {{id}}",
+    "auctionIdValue": "Delivery No.: {{id}}",
     "deliveryIdValue": "Delivery ID: {{id}}",
     "priceValue": "Price: {{price}}",
     "pricePerUnitValue": "Price: {{price}} per {{unit}}",
