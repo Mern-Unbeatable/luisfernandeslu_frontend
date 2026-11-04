@@ -1,7 +1,20 @@
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiCamera, FiUser, FiTrash2 } from 'react-icons/fi'
-import { DEMO_PANEL_PROFILE } from '@/data/demoData'
+const EMPTY_PANEL_PROFILE = {
+  displayName: '',
+  displayEmail: '',
+  name: '',
+  email: '',
+  phone: '',
+  warehouses: [],
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  iban: '',
+  ibanPhone: '',
+  avatarUrl: null,
+}
 import AddressAutocomplete from '@/pages/public_page/checkout/components/AddressAutocomplete'
 import { Field, PrimaryButton, SecretInput, SelectInput, TextInput, PhoneInput } from './FormControls'
 import { resolveProfileConfig } from './roleConfig'
@@ -389,7 +402,7 @@ export default function PanelProfile({
 
   const isControlled = value !== undefined
   const [internal, setInternal] = useState(
-    () => defaultValue || DEMO_PANEL_PROFILE,
+    () => defaultValue || EMPTY_PANEL_PROFILE,
   )
   const form = isControlled ? value : internal
   const fileInputId = useId()

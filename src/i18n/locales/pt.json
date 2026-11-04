@@ -3079,7 +3079,7 @@
     "refresh": "Atualizar"
   },
   "auction": {
-    "boardTitle": "Leilão",
+    "boardTitle": "Entrega",
     "orderId": "ID da encomenda",
     "pickupLocation": "Local de recolha",
     "customerName": "Nome do cliente",
