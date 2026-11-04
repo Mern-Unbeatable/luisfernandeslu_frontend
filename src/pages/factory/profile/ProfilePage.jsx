@@ -124,15 +124,6 @@ export default function ProfilePage() {
 
   const handleSaveWarehouses = async (warehouses) => {
     const payload = toWarehousePayload(warehouses)
-    if (payload.length < 1) {
-      toast.error(
-        t('panel.profile.warehouseRequired', {
-          defaultValue: 'Add at least one warehouse address',
-        }),
-      )
-      return
-    }
-
     try {
       const result = await updateWarehouses(payload).unwrap()
       toast.success(

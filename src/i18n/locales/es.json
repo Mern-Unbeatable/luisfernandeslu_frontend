@@ -2277,7 +2277,28 @@
     "sepManageYour": ", Gestionar tus ",
     "sepAndTrackYour": ", Y seguir tus ",
     "introAfter": ".",
-    "placeholderComingSoon": "Página de {{title}} — contenido próximamente."
+    "placeholderComingSoon": "Página de {{title}} — contenido próximamente.",
+    "affiliatesBadge": "Comisiones y Asociaciones",
+    "affiliatesHeroTitle": "Programa de Afiliados Construpreço",
+    "affiliatesHeroSubtitle": "Recomiende Construpreço a sus socios, constructores y amigos. Gane comisiones automáticas en cada pedido completado.",
+    "affiliatesOpenDashboard": "Abrir Panel de Afiliado",
+    "affiliatesJoinNow": "Registrarse como Afiliado",
+    "affiliatesYourLink": "Su Enlace Exclusivo de Recomendación",
+    "affiliatesYourLinkDesc": "Comparta este enlace con nuevos usuarios para que sus compras se asocien a su cuenta.",
+    "affiliatesCopyLink": "Copiar Enlace",
+    "affiliatesCodeLabel": "Código de Referencia:",
+    "affiliatesCopyCode": "Copiar código",
+    "affiliateStep1Title": "1. Comparta su Enlace",
+    "affiliateStep1Desc": "Difunda su enlace en sus redes, por correo electrónico, WhatsApp o directamente con colegas y clientes.",
+    "affiliateStep2Title": "2. Compras Realizadas",
+    "affiliateStep2Desc": "Cuando los usuarios recomendados se registran y compran materiales de construcción, el pedido es rastreado.",
+    "affiliateStep3Title": "3. Reciba Comisiones",
+    "affiliateStep3Desc": "Gane comisiones automáticas depositadas por transferencia bancaria (IBAN) con total transparencia.",
+    "affiliatesFaqTitle": "Ventajas del Programa",
+    "affiliateAdv1Title": "Comisiones Transparentes",
+    "affiliateAdv1Desc": "Porcentajes claros por cada nivel de ventas con informes en tiempo real.",
+    "affiliateAdv2Title": "Atribución Automática",
+    "affiliateAdv2Desc": "Cookies y códigos de referencia duraderos que garantizan la atribución de la venta."
   },
   "buyerOrders": {
     "orderId": "ID del pedido: #{{id}}",
@@ -3767,7 +3788,9 @@
     "customerType": {
       "regular": "Normal",
       "company": "Empresa"
-    }
+    },
+    "noReviewsYet": "Aún no hay reseñas",
+    "noReviewsDesc": "Las reseñas y calificaciones de los clientes sobre sus productos aparecerán aquí."
   },
   "supplierReturnRequests": {
     "title": "Solicitudes de devolución",

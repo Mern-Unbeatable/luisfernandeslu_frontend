@@ -2275,7 +2275,28 @@
     "sepManageYour": ", Manage Your ",
     "sepAndTrackYour": ", And Track Your ",
     "introAfter": ".",
-    "placeholderComingSoon": "{{title}} page — content coming soon."
+    "placeholderComingSoon": "{{title}} page — content coming soon.",
+    "affiliatesBadge": "Commissions & Partnerships",
+    "affiliatesHeroTitle": "Construpreço Affiliate Program",
+    "affiliatesHeroSubtitle": "Refer Construpreço to your partners, builders, and friends. Earn automatic commissions on every completed order.",
+    "affiliatesOpenDashboard": "Open Affiliate Dashboard",
+    "affiliatesJoinNow": "Register as Affiliate",
+    "affiliatesYourLink": "Your Exclusive Referral Link",
+    "affiliatesYourLinkDesc": "Share this link with new users so their orders are linked to your account.",
+    "affiliatesCopyLink": "Copy Link",
+    "affiliatesCodeLabel": "Referral Code:",
+    "affiliatesCopyCode": "Copy code",
+    "affiliateStep1Title": "1. Share Your Link",
+    "affiliateStep1Desc": "Share your link on your networks, via email, WhatsApp, or directly with job site colleagues and clients.",
+    "affiliateStep2Title": "2. Completed Purchases",
+    "affiliateStep2Desc": "When referred users register and purchase construction materials, the order is tracked.",
+    "affiliateStep3Title": "3. Earn Commissions",
+    "affiliateStep3Desc": "Earn automatic commissions deposited via bank transfer (IBAN) with full transparency.",
+    "affiliatesFaqTitle": "Program Advantages",
+    "affiliateAdv1Title": "Transparent Commissions",
+    "affiliateAdv1Desc": "Clear percentages per sales tier with real-time reporting.",
+    "affiliateAdv2Title": "Automatic Attribution",
+    "affiliateAdv2Desc": "Long-lasting cookies and referral tracking ensuring accurate sales attribution."
   },
   "buyerOrders": {
     "orderId": "Order ID: #{{id}}",
@@ -3765,7 +3786,9 @@
     "customerType": {
       "regular": "Regular",
       "company": "Company"
-    }
+    },
+    "noReviewsYet": "No reviews yet",
+    "noReviewsDesc": "Customer reviews and ratings for your products will appear here."
   },
   "supplierReturnRequests": {
     "title": "Return Requests",
