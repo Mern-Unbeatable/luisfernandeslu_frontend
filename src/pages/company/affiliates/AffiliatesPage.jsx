@@ -1,5 +1,5 @@
-import ComingSoonPage from '../../shared/ComingSoonPage'
+import BuyerAffiliatesPage from '../../shared/BuyerAffiliatesPage'
 
 export default function AffiliatesPage() {
-  return <ComingSoonPage titleKey="buyer.affiliates" />
+  return <BuyerAffiliatesPage />
 }
