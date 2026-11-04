@@ -3077,7 +3077,7 @@
     "refresh": "Refresh"
   },
   "auction": {
-    "boardTitle": "Auction",
+    "boardTitle": "Delivery",
     "orderId": "Order ID",
     "pickupLocation": "Pickup Location",
     "customerName": "Customer Name",
