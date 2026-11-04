@@ -14,73 +14,73 @@ export const ADMIN_DASHBOARD_CHANNELS = ['all', 'b2b', 'b2c']
 export const ADMIN_DASHBOARD_METRICS = [
   {
     id: 'totalGmv',
-    value: '€45.2M',
+    value: '€0',
     icon: FiDollarSign,
     iconTone: 'brand',
   },
   {
     id: 'b2bGmv',
-    value: '€32.8M',
+    value: '€0',
     icon: FiBriefcase,
     iconTone: 'teal',
   },
   {
     id: 'b2cGmv',
-    value: '€12.4M',
+    value: '€0',
     icon: FiShoppingCart,
     iconTone: 'warning',
   },
   {
     id: 'totalRevenue',
-    value: '€4.52M',
+    value: '€0',
     icon: FiTrendingUp,
     iconTone: 'purple',
   },
   {
     id: 'commission',
-    value: '€562K',
+    value: '€0',
     icon: FiDollarSign,
     iconTone: 'red',
   },
   {
     id: 'avgOrderValue',
-    value: '€3,240',
+    value: '€0',
     icon: FiShoppingCart,
     iconTone: 'brand',
   },
   {
     id: 'activeUsers',
-    value: '12,453',
+    value: '0',
     icon: FiUsers,
     iconTone: 'brand',
   },
   {
     id: 'newRegistrations',
-    value: '1,245',
+    value: '0',
     icon: FiUserPlus,
     iconTone: 'teal',
   },
   {
     id: 'activeSuppliers',
-    value: '342',
+    value: '0',
     icon: FiBriefcase,
     iconTone: 'warning',
   },
   {
     id: 'activeFactories',
-    value: '156',
+    value: '0',
     icon: FaIndustry,
     iconTone: 'purple',
   },
   {
     id: 'activeTransporters',
-    value: '89',
+    value: '0',
     icon: FiTruck,
     iconTone: 'red',
   },
   {
     id: 'openDisputes',
-    value: '23',
+    value: '0',
     icon: FiAlertCircle,
     iconTone: 'red',
   },
@@ -131,9 +131,9 @@ export const ADMIN_ORDER_B2B = [420, 380, 450, 410, 480, 520, 560, 530, 590, 550
 export const ADMIN_ORDER_B2C = [280, 260, 310, 290, 340, 370, 390, 360, 410, 380, 320, 340]
 
 export const ADMIN_PERFORMANCE = {
-  retention: { b2b: 78, b2c: 45 },
-  ltv: { b2b: '€12,450', b2c: '€890' },
-  repurchase: { b2b: 65, b2c: 32 },
+  retention: { b2b: 0, b2c: 0 },
+  ltv: { b2b: '€0', b2c: '€0' },
+  repurchase: { b2b: 0, b2c: 0 },
 }
 
 const METRICS_BY_ID = Object.fromEntries(

@@ -1,5 +1,5 @@
 export const MARKETING_STATS = {
-  totalRevenue: '€2,840',
+  totalRevenue: '€0',
 }
 
 export const MARKETING_TABS = [
