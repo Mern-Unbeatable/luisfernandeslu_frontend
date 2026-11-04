@@ -411,6 +411,12 @@ export default function PanelProfile({
     })
   }
 
+  const removeWarehouse = (id) => {
+    patch({
+      warehouses: (form.warehouses || []).filter((item) => item.id !== id),
+    })
+  }
+
   const addWarehouse = () => {
     const list = form.warehouses || []
     patch({

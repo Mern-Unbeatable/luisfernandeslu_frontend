@@ -1,13 +1,22 @@
 import { FiMessageCircle, FiStar, FiThumbsUp } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import Seo from "@/components/common/Seo/Seo";
-const EMPTY_REVIEWS = {
-  summary: { averageRating: 0, totalReviews: 0 },
-  distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
-  reviews: [],
-};
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { useGetSupplierReviewsQuery } from "@/features/supplier/reviews/reviewsApi";
+
+const EMPTY_DISTRIBUTION = [
+  { stars: 5, count: 0, percent: 0 },
+  { stars: 4, count: 0, percent: 0 },
+  { stars: 3, count: 0, percent: 0 },
+  { stars: 2, count: 0, percent: 0 },
+  { stars: 1, count: 0, percent: 0 },
+];
+
+const EMPTY_REVIEWS = {
+  summary: { averageRating: 0, totalReviews: 0, positivePercent: 0 },
+  distribution: EMPTY_DISTRIBUTION,
+  reviews: [],
+};
 
 const shellClass =
   "rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6";
@@ -95,6 +104,11 @@ function AverageRatingCard({ summary, t }) {
 }
 
 function RatingDistributionCard({ distribution, t }) {
+  const safeList =
+    Array.isArray(distribution) && distribution.length > 0
+      ? distribution
+      : EMPTY_DISTRIBUTION;
+
   return (
     <div className={shellClass}>
       <h2 className="text-base font-bold text-[var(--primary-text)]">
@@ -102,7 +116,7 @@ function RatingDistributionCard({ distribution, t }) {
       </h2>
 
       <ul className="mt-5 space-y-3">
-        {distribution.map((row) => (
+        {safeList.map((row) => (
           <li key={row.stars} className="flex items-center gap-3">
             <span className="w-10 shrink-0 text-sm font-medium text-[var(--primary-text)]">
               {row.stars}{" "}
@@ -190,26 +204,30 @@ function ReviewCard({ review, t }) {
                 <CustomerTypeBadge type={review.customerType} t={t} />
               </div>
               <p className="mt-1 text-sm text-[var(--secondary-text)]">
-                {review.productName} • {t("supplierReviews.orderLabel")}{" "}
-                {review.orderId}
+                {review.productName}
+                {review.orderId ? ` • ${t("supplierReviews.orderLabel")} ${review.orderId}` : ""}
               </p>
             </div>
 
-            <time
-              className="shrink-0 text-sm text-[var(--secondary-text)]"
-              dateTime={review.date}
-            >
-              {review.date}
-            </time>
+            {review.date ? (
+              <time
+                className="shrink-0 text-sm text-[var(--secondary-text)]"
+                dateTime={review.date}
+              >
+                {review.date}
+              </time>
+            ) : null}
           </div>
 
           <div className="mt-3">
             <StarRating rating={review.rating} />
           </div>
 
-          <p className="mt-3 text-sm leading-relaxed text-[var(--primary-text)]">
-            {review.comment}
-          </p>
+          {review.comment ? (
+            <p className="mt-3 text-sm leading-relaxed text-[var(--primary-text)]">
+              {review.comment}
+            </p>
+          ) : null}
         </div>
       </div>
     </article>
@@ -269,9 +287,21 @@ export default function ReviewsPage() {
         </div>
 
         <section className="space-y-4">
-          {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} t={t} />
-          ))}
+          {Array.isArray(reviews) && reviews.length > 0 ? (
+            reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} t={t} />
+            ))
+          ) : (
+            <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center text-[var(--secondary-text)]">
+              <FiMessageCircle className="mx-auto size-10 text-gray-300 mb-3" />
+              <p className="text-base font-semibold text-[var(--primary-text)]">
+                {t("supplierReviews.noReviewsYet")}
+              </p>
+              <p className="mt-1 text-sm text-[var(--secondary-text)]">
+                {t("supplierReviews.noReviewsDesc")}
+              </p>
+            </div>
+          )}
         </section>
       </div>
     </>
