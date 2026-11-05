@@ -182,6 +182,16 @@ export default function SmtpGuideModal({ isOpen, onClose }) {
                 <p>• <strong>Porta:</strong> <code className="font-mono">587</code> (com TLS) ou <code className="font-mono">465</code> (com SSL)</p>
                 <p>• <strong>Email / Utilizador:</strong> o seu email completo da Google</p>
               </div>
+
+              {/* Final Steps explanation */}
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 space-y-1 text-xs text-emerald-950">
+                <p className="font-bold text-emerald-900 flex items-center gap-1.5">
+                  <FiCheckCircle className="size-4 text-emerald-600 shrink-0" />
+                  Como guardar e testar no perfil:
+                </p>
+                <p><strong>1. Guardar:</strong> Preencha os campos e clique no botão verde <strong>&quot;Guardar Credenciais SMTP&quot;</strong>.</p>
+                <p><strong>2. Testar:</strong> Clique em <strong>&quot;Testar Conexão&quot;</strong>, digite o seu email pessoal e confirme que recebe o email de teste.</p>
+              </div>
             </div>
           )}
 
@@ -241,6 +251,16 @@ export default function SmtpGuideModal({ isOpen, onClose }) {
                   </div>
                 </li>
               </ol>
+
+              {/* Final Steps explanation */}
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 space-y-1 text-xs text-emerald-950">
+                <p className="font-bold text-emerald-900 flex items-center gap-1.5">
+                  <FiCheckCircle className="size-4 text-emerald-600 shrink-0" />
+                  Como guardar e testar no perfil:
+                </p>
+                <p><strong>1. Guardar:</strong> Preencha os campos e clique no botão verde <strong>&quot;Guardar Credenciais SMTP&quot;</strong>.</p>
+                <p><strong>2. Testar:</strong> Clique em <strong>&quot;Testar Conexão&quot;</strong>, digite o seu email pessoal e confirme que recebe o email de teste.</p>
+              </div>
             </div>
           )}
 
@@ -298,3 +318,4 @@ export default function SmtpGuideModal({ isOpen, onClose }) {
     </div>
   )
 }
+
