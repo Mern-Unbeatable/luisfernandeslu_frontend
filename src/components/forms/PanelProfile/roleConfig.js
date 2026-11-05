@@ -66,6 +66,7 @@ export const PANEL_PROFILE_ROLE_CONFIG = {
     showEupagoCredentials: true,
     eupagoShowApiKey: true,
     eupagoShowExternKey: true,
+    showSmtpCredentials: true,
     subtitleKey: 'panel.profile.subtitle',
     accountTitleKey: 'panel.profile.accountInformation',
     nameLabelKey: 'panel.profile.name',

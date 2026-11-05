@@ -51,6 +51,28 @@ export const adminProfileApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'User', id: 'ADMIN_PROFILE' }],
     }),
+    getAdminSmtp: builder.query({
+      query: () => ({
+        url: '/api/admin/profile/smtp',
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'User', id: 'ADMIN_SMTP' }],
+    }),
+    updateAdminSmtp: builder.mutation({
+      query: (body) => ({
+        url: '/api/admin/profile/smtp',
+        method: 'PUT',
+        data: body,
+      }),
+      invalidatesTags: [{ type: 'User', id: 'ADMIN_SMTP' }],
+    }),
+    testAdminSmtp: builder.mutation({
+      query: (body) => ({
+        url: '/api/admin/profile/smtp/test',
+        method: 'POST',
+        data: body,
+      }),
+    }),
   }),
 })
 
@@ -61,4 +83,7 @@ export const {
   useUpdateAdminProfileIbanMutation,
   useUploadAdminProfileAvatarMutation,
   useDeleteAdminProfileAvatarMutation,
+  useGetAdminSmtpQuery,
+  useUpdateAdminSmtpMutation,
+  useTestAdminSmtpMutation,
 } = adminProfileApi
