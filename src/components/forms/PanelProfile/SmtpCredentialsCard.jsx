@@ -4,7 +4,9 @@ import toast from 'react-hot-toast'
 import {
   FiCheckCircle,
   FiHelpCircle,
+  FiInfo,
   FiMail,
+  FiSave,
   FiSend,
   FiServer,
   FiShield,
@@ -102,7 +104,7 @@ export default function SmtpCredentialsCard({ t: propT }) {
       return
     }
     if (!form.pass.trim() && !hasStoredPassword) {
-      toast.error('A Palavra-passe de aplicação é obrigatória')
+      toast.error('A Palavra-passe de aplicação é obrigatória para guardar')
       return
     }
 
@@ -126,6 +128,25 @@ export default function SmtpCredentialsCard({ t: propT }) {
     }
   }
 
+  const handleOpenTest = () => {
+    if (!form.host.trim()) {
+      toast.error('Preencha o Servidor SMTP (Host) antes de testar')
+      return
+    }
+    if (!form.user.trim()) {
+      toast.error('Preencha o Email / Utilizador antes de testar')
+      return
+    }
+    if (!hasStoredPassword && !form.pass.trim()) {
+      toast.error(
+        'Insira a Palavra-passe acima ou clique em "Guardar Credenciais SMTP" antes de testar.',
+        { duration: 5000 },
+      )
+      return
+    }
+    setShowTestInput(true)
+  }
+
   const handleSendTest = async () => {
     const target = (testRecipient || form.user || '').trim().toLowerCase()
     if (!target) {
@@ -134,7 +155,17 @@ export default function SmtpCredentialsCard({ t: propT }) {
     }
 
     try {
-      const res = await testSmtp({ toEmail: target }).unwrap()
+      const payload = {
+        toEmail: target,
+        host: form.host.trim(),
+        port: Number(form.port) || 587,
+        secure: Boolean(form.secure),
+        user: form.user.trim().toLowerCase(),
+        fromEmail: (form.fromEmail || form.user).trim().toLowerCase(),
+        fromName: form.fromName.trim() || 'Construpreço',
+        ...(form.pass.trim() ? { pass: form.pass.trim() } : {}),
+      }
+      const res = await testSmtp(payload).unwrap()
       toast.success(res?.message || `Email de teste enviado com sucesso para ${target}!`)
       setShowTestInput(false)
     } catch (err) {
@@ -164,7 +195,7 @@ export default function SmtpCredentialsCard({ t: propT }) {
           <button
             type="button"
             onClick={() => setIsGuideOpen(true)}
-            className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-[var(--active)] hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] transition"
+            className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-[var(--active)] hover:bg-[color-mix(in_srgb,var(--active)_8%,white)] transition"
           >
             <FiHelpCircle className="size-3.5" />
             Como configurar? (Guia)
@@ -173,6 +204,21 @@ export default function SmtpCredentialsCard({ t: propT }) {
 
         {/* Card Body */}
         <div className="space-y-5 p-5 sm:p-8">
+          {/* Quick instructions / step banner */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-blue-100 bg-blue-50/70 p-3.5 text-xs text-blue-900">
+            <div className="flex items-start gap-2.5">
+              <FiInfo className="size-4 shrink-0 text-blue-600 mt-0.5" />
+              <div>
+                <span className="font-bold">Como funciona a configuração:</span>
+                <p className="mt-0.5 text-blue-800 leading-relaxed">
+                  <strong>Passo 1:</strong> Preencha o servidor, email e palavra-passe de aplicação &rarr;{' '}
+                  <strong>Passo 2:</strong> Clique em <strong>&quot;Guardar Credenciais SMTP&quot;</strong> abaixo &rarr;{' '}
+                  <strong>Passo 3:</strong> Clique em <strong>&quot;Testar Conexão&quot;</strong> para confirmar o envio com um email real.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Preset Buttons */}
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-[var(--secondary-text)]">
@@ -284,62 +330,96 @@ export default function SmtpCredentialsCard({ t: propT }) {
           </div>
 
           {/* Test connection section */}
-          <div className="rounded-xl border border-gray-100 bg-gray-50/70 p-4 space-y-3">
+          <div className="rounded-xl border border-gray-200 bg-gray-50/80 p-4 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <p className="text-xs font-bold text-[var(--primary-text)]">
-                  Verificar Envio de Emails
-                </p>
-                <p className="text-xs text-[var(--secondary-text)]">
-                  Envie um email de teste automático para confirmar que os dados estão corretos.
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-bold text-[var(--primary-text)]">
+                    Verificar Envio de Emails (Teste de Conexão)
+                  </p>
+                  {hasStoredPassword ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                      <FiCheckCircle className="size-3" /> Configurado
+                    </span>
+                  ) : form.pass.trim() ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-800">
+                      Pronto a testar
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                      Requer Guardar ou Inserir Senha
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs text-[var(--secondary-text)]">
+                  {hasStoredPassword
+                    ? 'As credenciais já estão guardadas. Pode enviar um email de teste a qualquer momento.'
+                    : 'Dica: Guarde as credenciais no botão verde abaixo ou preencha a palavra-passe acima para testar.'}
                 </p>
               </div>
 
               {!showTestInput ? (
                 <button
                   type="button"
-                  onClick={() => setShowTestInput(true)}
-                  disabled={!hasStoredPassword && !form.pass.trim()}
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-[var(--primary-text)] hover:bg-gray-50 disabled:opacity-50 transition"
+                  onClick={handleOpenTest}
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-gray-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-[var(--primary-text)] hover:bg-gray-50 hover:border-[var(--active)] transition shadow-xs"
                 >
-                  <FiSend className="size-3" />
+                  <FiSend className="size-3 text-[var(--active)]" />
                   Testar Conexão
                 </button>
               ) : null}
             </div>
 
             {showTestInput ? (
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
-                <input
-                  type="email"
-                  value={testRecipient}
-                  onChange={(e) => setTestRecipient(e.target.value)}
-                  placeholder="Email para onde enviar o teste..."
-                  className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
-                />
-                <button
-                  type="button"
-                  onClick={handleSendTest}
-                  disabled={isTesting}
-                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--active)] px-4 py-1.5 text-xs font-semibold text-white hover:brightness-95 disabled:opacity-60 transition"
-                >
-                  <FiSend className="size-3" />
-                  {isTesting ? 'A enviar...' : 'Enviar Teste'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowTestInput(false)}
-                  className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-100 transition"
-                >
-                  Cancelar
-                </button>
+              <div className="space-y-2 pt-2 border-t border-gray-200">
+                <p className="text-xs font-medium text-gray-700">
+                  Insira o email que irá receber a mensagem de teste:
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <input
+                    type="email"
+                    value={testRecipient}
+                    onChange={(e) => setTestRecipient(e.target.value)}
+                    placeholder="Email de destino (ex.: seu-email@gmail.com)"
+                    className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-[var(--primary-text)] outline-none focus:border-[var(--active)]"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSendTest}
+                    disabled={isTesting}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--active)] px-4 py-1.5 text-xs font-semibold text-white hover:brightness-95 disabled:opacity-60 transition shadow-xs"
+                  >
+                    <FiSend className="size-3" />
+                    {isTesting ? 'A enviar teste...' : 'Enviar Email de Teste'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowTestInput(false)}
+                    className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-100 transition"
+                  >
+                    Fechar
+                  </button>
+                </div>
               </div>
             ) : null}
           </div>
 
           {/* Action Footer */}
-          <div className="flex justify-end pt-2">
-            <PrimaryButton onClick={handleSave} loading={isSaving}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-gray-100 pt-4">
+            <div className="text-xs">
+              {hasStoredPassword ? (
+                <span className="inline-flex items-center gap-1.5 text-emerald-700 font-semibold">
+                  <FiCheckCircle className="size-3.5 text-emerald-600" />
+                  Credenciais guardadas e encriptadas com segurança na base de dados.
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 text-amber-700 font-semibold">
+                  ⚠️ Credenciais não guardadas. Clique no botão ao lado para guardar na base de dados.
+                </span>
+              )}
+            </div>
+            <PrimaryButton onClick={handleSave} loading={isSaving} className="gap-2 shadow-xs">
+              <FiSave className="size-4" />
               Guardar Credenciais SMTP
             </PrimaryButton>
           </div>
