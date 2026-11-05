@@ -24,6 +24,7 @@ import {
   BuyerPasswordSection,
 } from './BuyerProfileSections'
 import EupagoCredentialsCard from './EupagoCredentialsCard'
+import SmtpCredentialsCard from './SmtpCredentialsCard'
 
 function emptyPassword() {
   return { currentPassword: '', newPassword: '', confirmPassword: '' }
@@ -695,6 +696,10 @@ export default function PanelProfile({
             showExternKey={cfg.eupagoShowExternKey !== false}
             t={t}
           />
+        ) : null}
+
+        {!isBuyer && cfg.showSmtpCredentials ? (
+          <SmtpCredentialsCard t={t} />
         ) : null}
       </div>
     </div>
