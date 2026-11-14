@@ -8,7 +8,6 @@ import BuyerSkeleton from '@/components/common/Skeleton/BuyerSkeleton'
 import {
   useDownloadCustomerOrderInvoiceMutation,
   useGetCustomerOrdersQuery,
-  useLazyGetCustomerOrderInvoiceQuery,
 } from '@/features/customer/customerOrderApi'
 import { mapCustomerOrder } from '@/features/customer/customerOrderMappers'
 import { triggerCustomerOrderInvoiceDownload } from '@/features/customer/customerOrderUtils'
@@ -34,7 +33,6 @@ export default function OrdersPage() {
   const [downloadingOrderId, setDownloadingOrderId] = useState(null)
 
   const [downloadInvoice] = useDownloadCustomerOrderInvoiceMutation()
-  const [fetchInvoice] = useLazyGetCustomerOrderInvoiceQuery()
 
   useEffect(() => {
     setPage(1)
@@ -78,7 +76,6 @@ export default function OrdersPage() {
         orderId: order.id,
         orderNumber: order.orderNumber,
         downloadInvoice,
-        fetchInvoice,
         onError: (err) => {
           toast.error(
             getAuthErrorMessage(err, t('buyerOrders.invoiceDownloadFailed')),
@@ -92,7 +89,7 @@ export default function OrdersPage() {
 
       setDownloadingOrderId(null)
     },
-    [downloadInvoice, fetchInvoice, t],
+    [downloadInvoice, t],
   )
 
   const handleOrderAction = (actionId, order) => {

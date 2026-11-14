@@ -5,6 +5,7 @@ import {
   FiTruck,
 } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+import GoogleMapsButton from '@/components/common/GoogleMapsButton/GoogleMapsButton'
 
 const STEPS = ['assigned', 'picked_up', 'in_transit', 'delivered']
 
@@ -114,6 +115,14 @@ function DeliveryCard({
           onNavigateToDelivery,
           onVerifyDelivery,
         }, t)}
+        {normalizeStatus(item.status) !== 'delivered' ? (
+          <GoogleMapsButton
+            destination={item.deliveryLocation}
+            waypoints={
+              normalizeStatus(item.status) === 'assigned' ? [item.pickupLocation] : []
+            }
+          />
+        ) : null}
         <button
           type="button"
           onClick={() => onSeeDetails?.(item)}

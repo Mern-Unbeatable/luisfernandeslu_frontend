@@ -14,6 +14,7 @@ import {
   FiX,
 } from 'react-icons/fi'
 import { getAuthErrorMessage } from '@/features/auth/authUtils'
+import { useSignedFileUrl } from '@/hooks/useSignedFileUrl'
 import {
   DOCUMENT_FIELD_META,
   DOCUMENTS_SECTION_ID,
@@ -38,8 +39,9 @@ function isPdfUrl(url) {
   return /\.pdf($|[?#])/i.test(String(url || ''))
 }
 
-function DocumentPreviewModal({ url, title, onClose }) {
+function DocumentPreviewModal({ url: storedUrl, title, onClose }) {
   const { t } = useTranslation()
+  const { url, isLoading, isError } = useSignedFileUrl(storedUrl)
 
   useEffect(() => {
     const onKey = (event) => {
@@ -65,15 +67,17 @@ function DocumentPreviewModal({ url, title, onClose }) {
         <div className="flex items-center justify-between gap-3 border-b border-gray-200 px-5 py-3">
           <h3 className="truncate text-sm font-semibold text-[var(--primary-text)]">{title}</h3>
           <div className="flex shrink-0 items-center gap-2">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-semibold text-[var(--primary-text)] hover:bg-gray-50"
-            >
-              <FiExternalLink className="size-3.5" aria-hidden />
-              {t('verificationDocuments.openNewTab')}
-            </a>
+            {url ? (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 px-3 py-1.5 text-xs font-semibold text-[var(--primary-text)] hover:bg-gray-50"
+              >
+                <FiExternalLink className="size-3.5" aria-hidden />
+                {t('verificationDocuments.openNewTab')}
+              </a>
+            ) : null}
             <button
               type="button"
               onClick={onClose}
@@ -85,7 +89,11 @@ function DocumentPreviewModal({ url, title, onClose }) {
           </div>
         </div>
         <div className="flex min-h-[50vh] flex-1 items-center justify-center overflow-auto bg-gray-50 p-4">
-          {isPdfUrl(url) ? (
+          {isLoading ? (
+            <p className="text-sm text-[var(--secondary-text)]">{t('verificationDocuments.loadingPreview')}</p>
+          ) : isError || !url ? (
+            <p className="text-sm text-red-700">{t('verificationDocuments.previewFailed')}</p>
+          ) : isPdfUrl(storedUrl) ? (
             <iframe title={title} src={url} className="h-[75vh] w-full rounded-lg bg-white" />
           ) : (
             <img src={url} alt={title} className="max-h-[75vh] max-w-full rounded-lg object-contain" />

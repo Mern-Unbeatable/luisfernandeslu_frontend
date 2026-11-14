@@ -799,6 +799,45 @@
       "view": "Ver factura",
       "download": "Descargar factura"
     },
+    "transportPayments": {
+      "title": "Transporte de pedidos de fábrica",
+      "subtitle": "Transporte pagado por los proveedores en los pedidos de fábrica, el transportista que ganó la subasta y el margen de la plataforma.",
+      "searchPlaceholder": "Buscar por pago, pedido, fábrica o proveedor",
+      "empty": "Aún no hay pagos de transporte",
+      "stats": {
+        "paid": "Pagado por proveedores",
+        "pending": "Pendiente de pago",
+        "failed": "Pagos fallidos",
+        "margin": "Margen de la plataforma"
+      },
+      "marginHint": "En subastas asignadas: {{paid}} pagados, {{cost}} para transportistas",
+      "columns": {
+        "payment": "Pago",
+        "parties": "Fábrica → Proveedor",
+        "transport": "Transporte",
+        "amount": "Pagado por el proveedor",
+        "status": "Estado",
+        "auction": "Subasta",
+        "margin": "Margen"
+      },
+      "status": {
+        "all": "Todos los pagos",
+        "pending": "Pendiente",
+        "paid": "Pagado",
+        "failed": "Fallido",
+        "cancelled": "Cancelado"
+      },
+      "auctionStatus": {
+        "notOpened": "No abierta",
+        "pending_bids": "Abierta a pujas",
+        "pending_payment": "Pendiente de pago",
+        "assigned": "Asignada",
+        "expired": "Sin pujas",
+        "cancelled": "Cancelada"
+      },
+      "bids": "{{count}} pujas",
+      "wonBy": "{{name}} · {{amount}}"
+    },
     "pagination": {
       "summary": "Mostrando {{from}} a {{to}} de {{total}} resultados",
       "previous": "Anterior",
@@ -1789,7 +1828,26 @@
       "breadcrumbChatOrder": "Pedido por chat",
       "breadcrumbOrderDetails": "Detalles del pedido",
       "notFound": "Pedido no encontrado.",
-      "backToOrders": "Volver a pedidos"
+      "backToOrders": "Volver a pedidos",
+      "actionPayTransport": "Pagar transporte",
+      "colRoute": "Ruta",
+      "colVehicle": "Vehículo",
+      "transportPaid": "Transporte pagado. Los transportistas ya pueden pujar.",
+      "transportPaymentSent": "Solicitud de pago enviada. Confírmela en su teléfono.",
+      "transportPayTitle": "Pagar transporte — {{order}}",
+      "transportPayIntro": "La fábrica pidió a Construpreço entregar este pedido ({{distance}} km). Precio del transporte: {{amount}}.",
+      "transportPayButton": "Pagar {{amount}}",
+      "mbEntity": "Entidad",
+      "mbReference": "Referencia",
+      "mbAmount": "Importe",
+      "mbHint": "Pague en un cajero Multibanco o en la app de su banco. La subasta de transporte se abre cuando se confirme el pago.",
+      "transportStatus": {
+        "awaitingPayment": "Esperando su pago",
+        "failed": "El pago falló — inténtelo de nuevo",
+        "bidding": "Pagado — transportistas pujando",
+        "assigned": "Transportista asignado",
+        "noBids": "Pagado — esperando transportista"
+      }
     },
     "supplierInventory": {
       "title": "Gestión de inventario",
@@ -3567,7 +3625,8 @@
       "installmentAmount": "Importe del plazo",
       "status": "Estado",
       "installmentNumber": "Número de plazo",
-      "date": "Fecha"
+      "date": "Fecha",
+      "transport": "Transporte"
     },
     "searchPlaceholder": "Buscar pedido, proveedor, estado...",
     "sortBy": "Ordenar por:",
@@ -3595,6 +3654,40 @@
       "accessCondition": "Descarga manual",
       "paidNote": "Paga €10,040/mes durante 10 meses",
       "duration": "10 meses"
+    },
+    "transport": {
+      "title": "Transporte del pedido {{order}}",
+      "choose": "Elegir transporte",
+      "platformTitle": "Transporte Construpreço",
+      "platformDesc": "Nosotros buscamos un transportista. El proveedor paga el transporte por la plataforma antes de que los transportistas pujen.",
+      "selfTitle": "Lo entregamos nosotros",
+      "selfDesc": "Transporte propio. No se cobra el transporte.",
+      "vehicle": "Vehículo",
+      "distance": "Distancia",
+      "price": "Precio del transporte",
+      "platformNote": "El proveedor recibe una solicitud de pago por este importe.",
+      "confirm": "Confirmar",
+      "requestedPlatform": "Transporte solicitado. Se pidió al proveedor que lo pague.",
+      "requestedSelf": "Usted entregará este pedido.",
+      "markDelivered": "Marcar como entregado",
+      "deliveredDone": "Pedido marcado como entregado.",
+      "reopen": "Reabrir subasta de transporte",
+      "reopened": "Subasta de transporte reabierta.",
+      "state": {
+        "self": "Entrega propia",
+        "selfDelivered": "Entregado (propio)",
+        "awaitingPayment": "Esperando pago del proveedor ({{amount}})",
+        "auction": "Transportistas pujando",
+        "assigned": "Transportista asignado",
+        "noBids": "Sin pujas — reabrir"
+      },
+      "vehicles": {
+        "HEAVY_TRUCK": "Camión pesado",
+        "FLATBED": "Camión plataforma",
+        "TIPPER": "Camión volquete",
+        "CRANE_TRUCK": "Camión grúa",
+        "VAN": "Furgoneta"
+      }
     }
   },
   "factoryDeliveryLogistics": {
@@ -4341,6 +4434,7 @@
     "markPicked": "Marcar como recogido",
     "startTrip": "Iniciar viaje",
     "navigateToDelivery": "Navegar a la entrega",
+    "openInGoogleMaps": "Abrir en Google Maps",
     "verifyDelivery": "Verificar entrega",
     "loadingProductCard": "Cargando producto",
     "back": "Volver",
@@ -4832,6 +4926,8 @@
     "replace": "Sustituir",
     "removeFile": "Quitar",
     "openNewTab": "Abrir en una pestaña nueva",
+    "loadingPreview": "Cargando documento…",
+    "previewFailed": "No se pudo abrir este documento.",
     "close": "Cerrar",
     "submit": "Enviar para revisión",
     "confirm": "Sí, enviar",

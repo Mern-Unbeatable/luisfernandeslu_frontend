@@ -13,27 +13,14 @@ export async function triggerCustomerOrderInvoiceDownload({
   orderId,
   orderNumber,
   downloadInvoice,
-  fetchInvoice,
   onError,
 }) {
   try {
     const blob = await downloadInvoice(orderId).unwrap()
     downloadBlobFile(blob, `${orderNumber || orderId}-invoice.pdf`)
     return true
-  } catch {
-    try {
-      const result = await fetchInvoice(orderId).unwrap()
-      const pdfUrl = result?.invoice?.pdfUrl
-      if (pdfUrl) {
-        window.open(pdfUrl, '_blank', 'noopener,noreferrer')
-        return true
-      }
-    } catch (fetchError) {
-      onError?.(fetchError)
-      return false
-    }
-
-    onError?.()
+  } catch (error) {
+    onError?.(error)
     return false
   }
 }

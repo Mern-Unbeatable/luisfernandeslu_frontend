@@ -73,8 +73,6 @@ export default function CompanyCheckoutPage() {
   const [quoteDirect, { data: directDataResponse }] = useQuoteDirectBuyMutation()
   const [payQuoteOffer, { isLoading: isPayingQuoteOffer }] = usePaySupplierQuoteOfferMutation()
   const [payFactoryOffer, { isLoading: isPayingFactoryOffer }] = usePayFactoryOfferMutation()
-  const [shippingCost, setShippingCost] = useState(0)
-  
   const isPayingOffer = isPayingQuoteOffer || isPayingFactoryOffer
   
   const [directPromos, setDirectPromos] = useState([])
@@ -124,11 +122,22 @@ export default function CompanyCheckoutPage() {
         const paymentPayload = {
           paymentMethod: paymentMethod.toLowerCase(),
           mbwayPhone: paymentMethod === 'MBWAY' ? mbwayPhone : undefined,
+          unloadingType: toUnloadingTypeId(shipping.unloadingType) || DEFAULT_UNLOADING_TYPE,
+          shippingAddress: shipping.address
+            ? {
+                title: 'Shipping',
+                streetAddress: shipping.address,
+                city: shipping.city || '—',
+                state: shipping.region || '—',
+                zipCode: shipping.zipCode || '—',
+                country: 'Portugal',
+              }
+            : undefined,
         }
         if (directBuy.chatType === 'FACTORY_SUPPLIER' || directBuy.isFactoryOffer) {
-          result = await payFactoryOffer({ offerId: directBuy.offerId, shippingFee: shippingCost, ...paymentPayload }).unwrap()
+          result = await payFactoryOffer({ offerId: directBuy.offerId, ...paymentPayload }).unwrap()
         } else {
-          result = await payQuoteOffer({ quoteId: directBuy.quoteId, offerId: directBuy.offerId, shippingFee: shippingCost, ...paymentPayload }).unwrap()
+          result = await payQuoteOffer({ quoteId: directBuy.quoteId, offerId: directBuy.offerId, ...paymentPayload }).unwrap()
         }
         if (result.url) {
           window.location.href = result.url
@@ -297,7 +306,6 @@ export default function CompanyCheckoutPage() {
               setDirectPromos(newPromos)
               await quoteDirect({ directBuy, promos: newPromos }).unwrap()
             }}
-            onShippingQuoted={setShippingCost}
           />
         </div>
       </div>

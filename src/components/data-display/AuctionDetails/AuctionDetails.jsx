@@ -1,5 +1,6 @@
 import { FiArrowLeft, FiMessageSquare, FiTruck } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
+import GoogleMapsButton from '@/components/common/GoogleMapsButton/GoogleMapsButton'
 
 const POST_ASSIGN_STATUSES = new Set([
   'assigned',
@@ -134,7 +135,19 @@ function TransporterInfo({ transporter = {}, t, hideBid = false }) {
 
 function ShippingCard({ auction, shipping, t }) {
   return (
-    <Card title={t('auction.details.shippingDetails')}>
+    <Card
+      title={t('auction.details.shippingDetails')}
+      headerAction={
+        <GoogleMapsButton
+          origin={shipping.pickupLocation || auction.pickupLocation}
+          destination={
+            shipping.deliveryLocation ||
+            auction.deliveryLocation ||
+            auction.customer?.deliveryAddress
+          }
+        />
+      }
+    >
       <div className="flex flex-col gap-4">
         <StackField
           label={t('auction.details.pickupLocation')}
