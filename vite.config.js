@@ -47,7 +47,8 @@ export default defineConfig({
       // Role manifests live in /public/manifests; linked at runtime (not blob URLs)
       manifest: false,
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        // Keep images out of the precache: they are large and load on demand via 'panel-images'.
+        globPatterns: ['**/*.{js,css,html,woff2}'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [

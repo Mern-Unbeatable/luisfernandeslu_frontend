@@ -295,6 +295,25 @@ export const supplierFactoryOrdersApi = baseApi.injectEndpoints({
         { type: "FactoryOrder", id: "LIST" },
       ],
     }),
+    getSupplierTransportPayments: builder.query({
+      query: () => ({
+        url: "/api/supplier/transport-payments",
+        method: "GET",
+      }),
+      transformResponse: (response) => response?.transportPayments ?? [],
+      providesTags: [{ type: "FactoryOrder", id: "TRANSPORT" }],
+    }),
+    paySupplierTransport: builder.mutation({
+      query: ({ orderId, paymentMethod, mbwayPhone }) => ({
+        url: `/api/supplier/transport-payments/${orderId}/pay`,
+        method: "POST",
+        data: { paymentMethod, ...(mbwayPhone ? { mbwayPhone } : {}) },
+      }),
+      invalidatesTags: [
+        { type: "FactoryOrder", id: "TRANSPORT" },
+        { type: "FactoryOrder", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -303,4 +322,6 @@ export const {
   useGetSupplierFactoryOrdersQuery,
   useGetSupplierFactoryOrderByIdQuery,
   useDeleteSupplierFactoryOrderMutation,
+  useGetSupplierTransportPaymentsQuery,
+  usePaySupplierTransportMutation,
 } = supplierFactoryOrdersApi;

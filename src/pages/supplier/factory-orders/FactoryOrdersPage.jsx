@@ -8,8 +8,11 @@ import {
   useDeleteSupplierFactoryOrderMutation,
   useGetSupplierFactoryOrderFactoriesQuery,
   useGetSupplierFactoryOrdersQuery,
+  useGetSupplierTransportPaymentsQuery,
 } from "@/features/supplier/factory-orders/factoryOrdersApi";
 import FactoryOrdersPageSkeleton from "@/pages/factory/components/FactoryOrdersPageSkeleton";
+import { appLocale } from "@/i18n/locale";
+import TransportPaymentModal from "./TransportPaymentModal";
 
 const SUPPLIER_FACTORY_ORDERS_PAGE_SIZE = 7;
 
@@ -26,6 +29,41 @@ const STATUS_LABEL_KEYS = {
   cancel: "panel.supplierFactoryOrders.statusCancel",
   completed: "panel.supplierFactoryOrders.statusCompleted",
 };
+
+const PAYABLE_TRANSPORT = new Set(["PENDING_PAYMENT", "FAILED"]);
+
+function formatEuro(value) {
+  return new Intl.NumberFormat(appLocale(), {
+    style: "currency",
+    currency: "EUR",
+  }).format(Number(value) || 0);
+}
+
+function transportStatusKey(payment) {
+  if (payment.status === "PENDING_PAYMENT") return "awaitingPayment";
+  if (payment.status === "FAILED") return "failed";
+  if (payment.auction?.status === "ASSIGNED") return "assigned";
+  if (payment.auction?.status === "EXPIRED") return "noBids";
+  return "bidding";
+}
+
+function mapTransportRow(payment, t) {
+  const statusKey = transportStatusKey(payment);
+  return {
+    id: payment.id,
+    orderId: payment.orderId,
+    poNumber: payment.orderNumber || "—",
+    factoryName: payment.factory || "—",
+    route: [payment.pickupLocation, payment.deliveryLocation].filter(Boolean).join(" → ") || "—",
+    vehicle: payment.requiredVehicleType
+      ? t(`factoryOrders.transport.vehicles.${payment.requiredVehicleType}`)
+      : "—",
+    shippingCharge: formatEuro(payment.amount),
+    status: statusKey === "awaitingPayment" || statusKey === "failed" ? "pending" : "assigned",
+    statusLabel: t(`panel.supplierFactoryOrders.transportStatus.${statusKey}`),
+    raw: payment,
+  };
+}
 
 export default function FactoryOrdersPage() {
   const { t } = useTranslation();
@@ -50,6 +88,14 @@ export default function FactoryOrdersPage() {
   });
   const [deleteSupplierFactoryOrder, { isLoading: isDeleting }] =
     useDeleteSupplierFactoryOrderMutation();
+  const { data: transportPayments = [], isFetching: isFetchingTransport } =
+    useGetSupplierTransportPaymentsQuery();
+  const [payingTransport, setPayingTransport] = useState(null);
+  const transportRows = useMemo(
+    () => transportPayments.map((payment) => mapTransportRow(payment, t)),
+    [transportPayments, t],
+  );
+  const pendingTransportCount = transportPayments.filter((p) => PAYABLE_TRANSPORT.has(p.status)).length;
 
   const orders = useMemo(() => ordersData?.orders ?? [], [ordersData]);
 
@@ -61,10 +107,12 @@ export default function FactoryOrdersPage() {
       },
       {
         id: TAB_IDS.transport,
-        label: t("panel.supplierFactoryOrders.tabTransportRequest"),
+        label: pendingTransportCount
+          ? `${t("panel.supplierFactoryOrders.tabTransportRequest")} (${pendingTransportCount})`
+          : t("panel.supplierFactoryOrders.tabTransportRequest"),
       },
     ],
-    [t],
+    [t, pendingTransportCount],
   );
 
   const companyOptions = useMemo(
@@ -117,16 +165,8 @@ export default function FactoryOrdersPage() {
     [deleteSupplierFactoryOrder],
   );
 
-  const handleMarkPaid = useCallback(() => {
-    // Transport request pay flow is not available in the current Postman contract.
-  }, []);
-
-  const handleDecline = useCallback(() => {
-    // Transport request decline flow is not available in the current Postman contract.
-  }, []);
-
   const getOrderRowActions = useCallback(
-    () => [
+    (row) => [
       {
         id: "see-details",
         label: t("panel.supplierFactoryOrders.actionSeeDetails"),
@@ -137,30 +177,32 @@ export default function FactoryOrdersPage() {
           });
         },
       },
-      {
-        id: "delete",
-        label: t("panel.supplierFactoryOrders.actionDelete"),
-        onClick: handleDelete,
-      },
+      ...(row?.raw?.actions?.canDelete === false
+        ? []
+        : [
+            {
+              id: "delete",
+              label: t("panel.supplierFactoryOrders.actionDelete"),
+              onClick: handleDelete,
+            },
+          ]),
     ],
     [t, handleDelete, navigate, activeTab],
   );
 
   const getTransportRowActions = useCallback(
-    () => [
-      {
-        id: "paid",
-        label: t("panel.supplierFactoryOrders.actionPaid"),
-        variant: "header",
-        onClick: handleMarkPaid,
-      },
-      {
-        id: "decline",
-        label: t("panel.supplierFactoryOrders.actionDecline"),
-        onClick: handleDecline,
-      },
-    ],
-    [t, handleMarkPaid, handleDecline],
+    (row) =>
+      PAYABLE_TRANSPORT.has(row?.raw?.status)
+        ? [
+            {
+              id: "pay",
+              label: t("panel.supplierFactoryOrders.actionPayTransport"),
+              variant: "header",
+              onClick: (item) => setPayingTransport(item.raw),
+            },
+          ]
+        : [],
+    [t],
   );
 
   const companyLabelById = useMemo(
@@ -174,11 +216,15 @@ export default function FactoryOrdersPage() {
   const filteredOrders = useMemo(() => {
     const q = search.trim().toLowerCase();
 
+    if (activeTab === TAB_IDS.transport) {
+      if (!q) return transportRows;
+      return transportRows.filter((row) =>
+        [row.poNumber, row.factoryName, row.route, row.vehicle, row.shippingCharge, row.statusLabel]
+          .some((value) => String(value).toLowerCase().includes(q)),
+      );
+    }
+
     return orders.filter((row) => {
-      if (row.tab !== activeTab) return false;
-      if (activeTab === TAB_IDS.transport && row.transportStatus === "paid") {
-        return false;
-      }
       if (companyFilter !== "all" && row.companyId !== companyFilter)
         return false;
       if (
@@ -225,6 +271,7 @@ export default function FactoryOrdersPage() {
     });
   }, [
     orders,
+    transportRows,
     activeTab,
     companyFilter,
     statusFilter,
@@ -233,7 +280,10 @@ export default function FactoryOrdersPage() {
     t,
   ]);
 
-  const total = ordersData?.total ?? filteredOrders.length;
+  const total =
+    activeTab === TAB_IDS.transport
+      ? filteredOrders.length
+      : ordersData?.total ?? filteredOrders.length;
   const pageCount = Math.max(
     1,
     Math.ceil(total / SUPPLIER_FACTORY_ORDERS_PAGE_SIZE),
@@ -292,21 +342,24 @@ export default function FactoryOrdersPage() {
         header: t("panel.supplierFactoryOrders.colFactoryName"),
       },
       {
-        key: "product",
-        header: t("panel.supplierFactoryOrders.colProduct"),
+        key: "route",
+        header: t("panel.supplierFactoryOrders.colRoute"),
+        className: "max-w-[260px] whitespace-normal",
       },
       {
-        key: "qty",
-        header: t("panel.supplierFactoryOrders.colQty"),
-      },
-      {
-        key: "weightSize",
-        header: t("panel.supplierFactoryOrders.colWeightSize"),
-        className: "max-w-[200px] whitespace-normal",
+        key: "vehicle",
+        header: t("panel.supplierFactoryOrders.colVehicle"),
       },
       {
         key: "shippingCharge",
         header: t("panel.supplierFactoryOrders.colShippingCharge"),
+      },
+      {
+        key: "status",
+        header: t("panel.supplierFactoryOrders.colStatus"),
+        render: (value, row) => (
+          <StatusBadge status={value} label={row.statusLabel} />
+        ),
       },
     ],
     [t],
@@ -400,7 +453,7 @@ export default function FactoryOrdersPage() {
           emptyMessage={emptyMessage}
           showPagination
           showSearch
-          loading={isFetching || isDeleting}
+          loading={isOrdersTab ? isFetching || isDeleting : isFetchingTransport}
           searchValue={search}
           onSearchChange={(value) => {
             setSearch(value);
@@ -431,6 +484,11 @@ export default function FactoryOrdersPage() {
           }}
         />
       </section>
+
+      <TransportPaymentModal
+        payment={payingTransport}
+        onClose={() => setPayingTransport(null)}
+      />
     </>
   );
 }

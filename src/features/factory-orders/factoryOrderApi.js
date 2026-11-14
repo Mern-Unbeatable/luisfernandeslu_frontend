@@ -49,6 +49,45 @@ export const factoryOrderApi = baseApi.injectEndpoints({
         { type: 'Order', id: `FACTORY_${id}` },
       ],
     }),
+    getFactoryTransportQuote: builder.query({
+      query: ({ orderId, vehicleType }) => ({
+        url: `/api/factory/auctions/order/${orderId}`,
+        method: 'GET',
+        params: vehicleType ? { vehicleType } : {},
+      }),
+    }),
+    chooseFactoryTransport: builder.mutation({
+      query: ({ id, mode, requiredVehicleType }) => ({
+        url: `/api/factory/transport/${id}`,
+        method: 'POST',
+        data: mode === 'PLATFORM' ? { mode, requiredVehicleType } : { mode },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Order', id: 'FACTORY_LIST' },
+        { type: 'Order', id: `FACTORY_${id}` },
+      ],
+    }),
+    markFactoryOrderDelivered: builder.mutation({
+      query: (id) => ({
+        url: `/api/factory/transport/${id}/delivered`,
+        method: 'POST',
+      }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Order', id: 'FACTORY_LIST' },
+        { type: 'Order', id: `FACTORY_${id}` },
+      ],
+    }),
+    reopenFactoryAuction: builder.mutation({
+      query: (orderId) => ({
+        url: '/api/factory/auctions',
+        method: 'POST',
+        data: { orderId },
+      }),
+      invalidatesTags: [
+        { type: 'Order', id: 'FACTORY_LIST' },
+        { type: 'Order', id: 'FACTORY_AUCTIONS_ACTIVE' },
+      ],
+    }),
   }),
 })
 
@@ -57,4 +96,8 @@ export const {
   useGetFactoryOrderByIdQuery,
   useGetFactoryOrderCompaniesQuery,
   useUpdateFactoryOrderStatusMutation,
+  useGetFactoryTransportQuoteQuery,
+  useChooseFactoryTransportMutation,
+  useMarkFactoryOrderDeliveredMutation,
+  useReopenFactoryAuctionMutation,
 } = factoryOrderApi

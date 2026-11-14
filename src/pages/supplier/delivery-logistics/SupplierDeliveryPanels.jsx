@@ -10,6 +10,7 @@ import {
 } from "@/features/supplier/deliveries/deliveriesApi";
 import { getApiErrorMessage } from "@/features/supplier/apiError";
 import { appLocale } from "@/i18n/locale";
+import GoogleMapsButton from "@/components/common/GoogleMapsButton/GoogleMapsButton";
 
 const POLL_MS = 30000;
 
@@ -297,6 +298,12 @@ export default function SupplierDeliveryPanels() {
                           date: formatDateTime(delivery.selfDeliveryDeadline),
                         })}
                   </p>
+                  {!delivered ? (
+                    <GoogleMapsButton
+                      destination={delivery.deliveryAddress}
+                      className={secondaryBtn}
+                    />
+                  ) : null}
                   {!delivered ? (
                     <button
                       type="button"

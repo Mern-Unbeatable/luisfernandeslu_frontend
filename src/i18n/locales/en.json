@@ -799,6 +799,45 @@
       "view": "View invoice",
       "download": "Download invoice"
     },
+    "transportPayments": {
+      "title": "Factory order transport",
+      "subtitle": "Transport paid by suppliers for factory orders, the transporter who won the auction, and the platform margin.",
+      "searchPlaceholder": "Search by payment, order, factory or supplier",
+      "empty": "No transport payments yet",
+      "stats": {
+        "paid": "Paid by suppliers",
+        "pending": "Awaiting payment",
+        "failed": "Failed payments",
+        "margin": "Platform margin"
+      },
+      "marginHint": "On assigned auctions: {{paid}} paid, {{cost}} to transporters",
+      "columns": {
+        "payment": "Payment",
+        "parties": "Factory → Supplier",
+        "transport": "Transport",
+        "amount": "Supplier paid",
+        "status": "Status",
+        "auction": "Auction",
+        "margin": "Margin"
+      },
+      "status": {
+        "all": "All payments",
+        "pending": "Pending",
+        "paid": "Paid",
+        "failed": "Failed",
+        "cancelled": "Cancelled"
+      },
+      "auctionStatus": {
+        "notOpened": "Not opened",
+        "pending_bids": "Open for bids",
+        "pending_payment": "Awaiting payment",
+        "assigned": "Assigned",
+        "expired": "No bids",
+        "cancelled": "Cancelled"
+      },
+      "bids": "{{count}} bids",
+      "wonBy": "{{name}} · {{amount}}"
+    },
     "pagination": {
       "summary": "Showing {{from}} to {{to}} of {{total}} results",
       "previous": "Previous",
@@ -1787,7 +1826,26 @@
       "breadcrumbChatOrder": "Chat Order",
       "breadcrumbOrderDetails": "Order Details",
       "notFound": "Order not found.",
-      "backToOrders": "Back to orders"
+      "backToOrders": "Back to orders",
+      "actionPayTransport": "Pay transport",
+      "colRoute": "Route",
+      "colVehicle": "Vehicle",
+      "transportPaid": "Transport paid. Carriers can bid now.",
+      "transportPaymentSent": "Payment request sent. Confirm it on your phone.",
+      "transportPayTitle": "Pay transport — {{order}}",
+      "transportPayIntro": "The factory asked Construpreço to deliver this order ({{distance}} km). Transport price: {{amount}}.",
+      "transportPayButton": "Pay {{amount}}",
+      "mbEntity": "Entity",
+      "mbReference": "Reference",
+      "mbAmount": "Amount",
+      "mbHint": "Pay at an ATM or in your banking app. The carrier auction opens as soon as the payment is confirmed.",
+      "transportStatus": {
+        "awaitingPayment": "Awaiting your payment",
+        "failed": "Payment failed — try again",
+        "bidding": "Paid — carriers bidding",
+        "assigned": "Carrier assigned",
+        "noBids": "Paid — waiting for a carrier"
+      }
     },
     "supplierInventory": {
       "title": "Inventory Management",
@@ -3565,7 +3623,8 @@
       "installmentAmount": "Installment Amount",
       "status": "Status",
       "installmentNumber": "Installment Number",
-      "date": "Date"
+      "date": "Date",
+      "transport": "Transport"
     },
     "searchPlaceholder": "Search order, supplier, status...",
     "sortBy": "Sort By:",
@@ -3593,6 +3652,40 @@
       "accessCondition": "Manual Unloading",
       "paidNote": "Pay €10,040/month for 10 months",
       "duration": "10 months"
+    },
+    "transport": {
+      "title": "Transport for order {{order}}",
+      "choose": "Choose transport",
+      "platformTitle": "Construpreço transport",
+      "platformDesc": "We find a carrier. The supplier pays the transport through the platform before carriers bid.",
+      "selfTitle": "We deliver it ourselves",
+      "selfDesc": "Your own transport. Nothing is charged for the transport.",
+      "vehicle": "Vehicle",
+      "distance": "Distance",
+      "price": "Transport price",
+      "platformNote": "The supplier receives a payment request for this amount.",
+      "confirm": "Confirm",
+      "requestedPlatform": "Transport requested. The supplier was asked to pay it.",
+      "requestedSelf": "You will deliver this order.",
+      "markDelivered": "Mark as delivered",
+      "deliveredDone": "Order marked as delivered.",
+      "reopen": "Reopen carrier auction",
+      "reopened": "Carrier auction reopened.",
+      "state": {
+        "self": "Own delivery",
+        "selfDelivered": "Delivered (own)",
+        "awaitingPayment": "Awaiting supplier payment ({{amount}})",
+        "auction": "Carriers bidding",
+        "assigned": "Carrier assigned",
+        "noBids": "No bids — reopen"
+      },
+      "vehicles": {
+        "HEAVY_TRUCK": "Heavy truck",
+        "FLATBED": "Flatbed truck",
+        "TIPPER": "Tipper truck",
+        "CRANE_TRUCK": "Crane truck",
+        "VAN": "Van"
+      }
     }
   },
   "factoryDeliveryLogistics": {
@@ -4339,6 +4432,7 @@
     "markPicked": "Mark Picked",
     "startTrip": "Start Trip",
     "navigateToDelivery": "Navigate to Delivery",
+    "openInGoogleMaps": "Open in Google Maps",
     "verifyDelivery": "Verify Delivery",
     "loadingProductCard": "Loading product card",
     "back": "Back",
@@ -4830,6 +4924,8 @@
     "replace": "Replace",
     "removeFile": "Remove",
     "openNewTab": "Open in new tab",
+    "loadingPreview": "Loading document…",
+    "previewFailed": "This document could not be opened.",
     "close": "Close",
     "submit": "Submit for review",
     "confirm": "Yes, submit",

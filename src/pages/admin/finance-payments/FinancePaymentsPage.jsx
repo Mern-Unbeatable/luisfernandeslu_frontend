@@ -10,6 +10,7 @@ import InvoiceRowActions from './components/InvoiceRowActions'
 import InvoiceUserTypeBadge from './components/InvoiceUserTypeBadge'
 import PayoutStatusBadge from './components/PayoutStatusBadge'
 import RevenueTrendSection from './sections/RevenueTrendSection'
+import TransportPaymentsSection from './sections/TransportPaymentsSection'
 import {
   FINANCE_COMMISSION_INVOICES,
   FINANCE_STATS,
@@ -376,6 +377,8 @@ export default function FinancePaymentsPage() {
           }}
         />
       </section>
+
+      <TransportPaymentsSection />
 
       <section className="space-y-4">
         <div>

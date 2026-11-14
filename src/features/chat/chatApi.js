@@ -145,10 +145,10 @@ export const chatApi = baseApi.injectEndpoints({
     }),
 
     payFactoryOffer: builder.mutation({
-      query: ({ offerId, shippingFee, paymentMethod, mbwayPhone }) => ({
+      query: ({ offerId, ...body }) => ({
         url: `/api/factory-offers/${offerId}/pay`,
         method: 'POST',
-        data: { shippingFee, paymentMethod, mbwayPhone },
+        data: body,
       }),
     }),
   }),

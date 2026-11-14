@@ -799,6 +799,45 @@
       "view": "Ver fatura",
       "download": "Transferir fatura"
     },
+    "transportPayments": {
+      "title": "Transporte de encomendas da fábrica",
+      "subtitle": "Transporte pago pelos fornecedores nas encomendas da fábrica, o transportador que ganhou o leilão e a margem da plataforma.",
+      "searchPlaceholder": "Pesquisar por pagamento, encomenda, fábrica ou fornecedor",
+      "empty": "Ainda não há pagamentos de transporte",
+      "stats": {
+        "paid": "Pago pelos fornecedores",
+        "pending": "A aguardar pagamento",
+        "failed": "Pagamentos falhados",
+        "margin": "Margem da plataforma"
+      },
+      "marginHint": "Em leilões atribuídos: {{paid}} pagos, {{cost}} para transportadores",
+      "columns": {
+        "payment": "Pagamento",
+        "parties": "Fábrica → Fornecedor",
+        "transport": "Transporte",
+        "amount": "Pago pelo fornecedor",
+        "status": "Estado",
+        "auction": "Leilão",
+        "margin": "Margem"
+      },
+      "status": {
+        "all": "Todos os pagamentos",
+        "pending": "Pendente",
+        "paid": "Pago",
+        "failed": "Falhado",
+        "cancelled": "Cancelado"
+      },
+      "auctionStatus": {
+        "notOpened": "Não aberto",
+        "pending_bids": "Aberto a licitações",
+        "pending_payment": "A aguardar pagamento",
+        "assigned": "Atribuído",
+        "expired": "Sem licitações",
+        "cancelled": "Cancelado"
+      },
+      "bids": "{{count}} licitações",
+      "wonBy": "{{name}} · {{amount}}"
+    },
     "pagination": {
       "summary": "A mostrar {{from}} a {{to}} de {{total}} resultados",
       "previous": "Anterior",
@@ -1789,7 +1828,26 @@
       "breadcrumbChatOrder": "Pedido por chat",
       "breadcrumbOrderDetails": "Detalhes do pedido",
       "notFound": "Pedido não encontrado.",
-      "backToOrders": "Voltar aos pedidos"
+      "backToOrders": "Voltar aos pedidos",
+      "actionPayTransport": "Pagar transporte",
+      "colRoute": "Percurso",
+      "colVehicle": "Veículo",
+      "transportPaid": "Transporte pago. Os transportadores já podem licitar.",
+      "transportPaymentSent": "Pedido de pagamento enviado. Confirme no seu telemóvel.",
+      "transportPayTitle": "Pagar transporte — {{order}}",
+      "transportPayIntro": "A fábrica pediu à Construpreço para entregar esta encomenda ({{distance}} km). Preço do transporte: {{amount}}.",
+      "transportPayButton": "Pagar {{amount}}",
+      "mbEntity": "Entidade",
+      "mbReference": "Referência",
+      "mbAmount": "Valor",
+      "mbHint": "Pague no Multibanco ou na app do seu banco. O leilão de transporte abre assim que o pagamento for confirmado.",
+      "transportStatus": {
+        "awaitingPayment": "A aguardar o seu pagamento",
+        "failed": "Pagamento falhou — tente novamente",
+        "bidding": "Pago — transportadores a licitar",
+        "assigned": "Transportador atribuído",
+        "noBids": "Pago — à espera de transportador"
+      }
     },
     "supplierInventory": {
       "title": "Gestão de inventário",
@@ -3567,7 +3625,8 @@
       "installmentAmount": "Valor da prestação",
       "status": "Estado",
       "installmentNumber": "Número da prestação",
-      "date": "Data"
+      "date": "Data",
+      "transport": "Transporte"
     },
     "searchPlaceholder": "Pesquisar encomenda, fornecedor, estado...",
     "sortBy": "Ordenar por:",
@@ -3595,6 +3654,40 @@
       "accessCondition": "Descarga manual",
       "paidNote": "Pague €10,040/mês durante 10 meses",
       "duration": "10 meses"
+    },
+    "transport": {
+      "title": "Transporte da encomenda {{order}}",
+      "choose": "Escolher transporte",
+      "platformTitle": "Transporte Construpreço",
+      "platformDesc": "Nós encontramos um transportador. O fornecedor paga o transporte pela plataforma antes dos transportadores licitarem.",
+      "selfTitle": "Nós entregamos",
+      "selfDesc": "Transporte próprio. O transporte não é cobrado.",
+      "vehicle": "Veículo",
+      "distance": "Distância",
+      "price": "Preço do transporte",
+      "platformNote": "O fornecedor recebe um pedido de pagamento deste valor.",
+      "confirm": "Confirmar",
+      "requestedPlatform": "Transporte pedido. O fornecedor foi notificado para pagar.",
+      "requestedSelf": "Vai entregar esta encomenda.",
+      "markDelivered": "Marcar como entregue",
+      "deliveredDone": "Encomenda marcada como entregue.",
+      "reopen": "Reabrir leilão de transporte",
+      "reopened": "Leilão de transporte reaberto.",
+      "state": {
+        "self": "Entrega própria",
+        "selfDelivered": "Entregue (própria)",
+        "awaitingPayment": "A aguardar pagamento do fornecedor ({{amount}})",
+        "auction": "Transportadores a licitar",
+        "assigned": "Transportador atribuído",
+        "noBids": "Sem licitações — reabrir"
+      },
+      "vehicles": {
+        "HEAVY_TRUCK": "Camião pesado",
+        "FLATBED": "Camião de plataforma",
+        "TIPPER": "Camião basculante",
+        "CRANE_TRUCK": "Camião grua",
+        "VAN": "Carrinha"
+      }
     }
   },
   "factoryDeliveryLogistics": {
@@ -4341,6 +4434,7 @@
     "markPicked": "Marcar como recolhido",
     "startTrip": "Iniciar viagem",
     "navigateToDelivery": "Navegar até à entrega",
+    "openInGoogleMaps": "Abrir no Google Maps",
     "verifyDelivery": "Verificar entrega",
     "loadingProductCard": "A carregar produto",
     "back": "Voltar",
@@ -4832,6 +4926,8 @@
     "replace": "Substituir",
     "removeFile": "Remover",
     "openNewTab": "Abrir num novo separador",
+    "loadingPreview": "A carregar documento…",
+    "previewFailed": "Não foi possível abrir este documento.",
     "close": "Fechar",
     "submit": "Submeter para análise",
     "confirm": "Sim, submeter",

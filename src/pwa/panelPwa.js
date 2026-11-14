@@ -66,9 +66,26 @@ function removeManifest() {
   document.getElementById(MANIFEST_LINK_ID)?.remove()
 }
 
+/** Let the first page (dashboard after login) finish loading before the SW starts precaching. */
+function waitForIdle() {
+  return new Promise((resolve) => {
+    const whenIdle = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => resolve(), { timeout: 5000 })
+      } else {
+        setTimeout(resolve, 2000)
+      }
+    }
+    if (document.readyState === 'complete') whenIdle()
+    else window.addEventListener('load', whenIdle, { once: true })
+  })
+}
+
 async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return null
+  if (swRegistration) return swRegistration
   try {
+    await waitForIdle()
     const isDev = import.meta.env.DEV
     const swUrl = isDev ? '/dev-sw.js?dev-sw' : '/sw.js'
     swRegistration = await navigator.serviceWorker.register(swUrl, {
