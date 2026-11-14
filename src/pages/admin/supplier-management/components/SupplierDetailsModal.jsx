@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 import { FiExternalLink, FiFileText, FiMapPin, FiX } from 'react-icons/fi'
+import { useOpenStoredFile, useSignedFileUrl } from '@/hooks/useSignedFileUrl'
 import Skeleton from '@/components/common/Skeleton/Skeleton'
 import { useGetAdminFactoryByIdQuery } from '@/features/admin/adminFactoryApi'
 import { useGetAdminSupplierByIdQuery } from '@/features/admin/adminSupplierApi'
@@ -22,23 +24,27 @@ function isImageUrl(url) {
 }
 
 function DocumentThumb({ doc }) {
-  if (doc.urls?.length) {
-    const url = doc.urls[0]
+  const url = doc.urls?.[0]
+  const image = Boolean(url) && isImageUrl(url)
+  const { url: previewUrl } = useSignedFileUrl(image ? url : null)
+  const openStoredFile = useOpenStoredFile()
+
+  if (url) {
     const label = doc.label || doc.key || i18n.t('fallback.document')
-    const image = isImageUrl(url)
 
     return (
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group block"
+      <button
+        type="button"
+        onClick={async () => {
+          if (!(await openStoredFile(url))) toast.error(i18n.t('verificationDocuments.previewFailed'))
+        }}
+        className="group block w-full text-left"
         title={label}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-          {image ? (
+          {image && previewUrl ? (
             <img
-              src={url}
+              src={previewUrl}
               alt={label}
               className="size-full object-cover transition group-hover:opacity-90"
             />
@@ -59,7 +65,7 @@ function DocumentThumb({ doc }) {
         <p className="mt-1.5 line-clamp-2 text-xs font-medium text-[var(--primary-text)]">
           {label}
         </p>
-      </a>
+      </button>
     )
   }
 

@@ -8,7 +8,6 @@ import {
   useDownloadCustomerOrderInvoiceMutation,
   useGetCustomerOrderByIdQuery,
   useGetCustomerOrderTrackQuery,
-  useLazyGetCustomerOrderInvoiceQuery,
 } from '@/features/customer/customerOrderApi'
 import {
   mapCustomerOrderDetail,
@@ -42,7 +41,6 @@ export default function OrderDetailPage() {
   })
 
   const [downloadInvoice] = useDownloadCustomerOrderInvoiceMutation()
-  const [fetchInvoice] = useLazyGetCustomerOrderInvoiceQuery()
 
   const order = useMemo(() => {
     const detailOrder = mapCustomerOrderDetail(data)
@@ -69,7 +67,6 @@ export default function OrderDetailPage() {
       orderId: order.id,
       orderNumber: order.orderNumber,
       downloadInvoice,
-      fetchInvoice,
       onError: (err) => {
         toast.error(
           getAuthErrorMessage(err, t('buyerOrders.invoiceDownloadFailed')),
@@ -80,7 +77,7 @@ export default function OrderDetailPage() {
     if (success) {
       toast.success(t('buyerOrders.invoiceDownloadSuccess'))
     }
-  }, [order, downloadInvoice, fetchInvoice, t])
+  }, [order, downloadInvoice, t])
 
   if (isLoading && !data) {
     return <BuyerSkeleton variant="orderDetail" />

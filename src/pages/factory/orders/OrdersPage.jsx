@@ -15,9 +15,15 @@ import {
   useGetFactoryOrderByIdQuery,
   useGetFactoryOrderCompaniesQuery,
   useGetFactoryOrdersQuery,
+  useMarkFactoryOrderDeliveredMutation,
+  useReopenFactoryAuctionMutation,
   useUpdateFactoryOrderStatusMutation,
 } from '@/features/factory-orders/factoryOrderApi'
+import toast from 'react-hot-toast'
 import FactoryOrdersPageSkeleton from '../components/FactoryOrdersPageSkeleton'
+import FactoryTransportModal from './components/FactoryTransportModal'
+import { getApiErrorMessage } from '@/features/supplier/apiError'
+import { googleMapsDirectionsUrl } from '@/utils/googleMaps'
 import { appLocale } from '@/i18n/locale'
 
 const PAGE_SIZE = 6
@@ -90,8 +96,26 @@ function mapOrderRow(order) {
     badgeStatus: toBadgeStatus(order.status, order.orderStatus),
     installmentNumber: order.installmentNumber ?? '—',
     date: formatDate(order.date),
+    transport: order.transport || {},
     actions: order.actions || {},
   }
+}
+
+function transportLabel(transport, t) {
+  if (transport?.mode === 'SELF') {
+    return transport.deliveredAt
+      ? t('factoryOrders.transport.state.selfDelivered')
+      : t('factoryOrders.transport.state.self')
+  }
+  if (transport?.mode !== 'PLATFORM') return '—'
+  if (transport.paymentStatus !== 'PAID') {
+    return t('factoryOrders.transport.state.awaitingPayment', {
+      amount: formatMoney(transport.amount),
+    })
+  }
+  if (transport.auctionStatus === 'ASSIGNED') return t('factoryOrders.transport.state.assigned')
+  if (transport.auctionStatus === 'EXPIRED') return t('factoryOrders.transport.state.noBids')
+  return t('factoryOrders.transport.state.auction')
 }
 
 function mapDetailOrder(apiOrder) {
@@ -172,6 +196,11 @@ function getColumns(t) {
       ),
     },
     {
+      key: 'transport',
+      header: t('factoryOrders.columns.transport'),
+      render: (value) => transportLabel(value, t),
+    },
+    {
       key: 'installmentNumber',
       header: t('factoryOrders.columns.installmentNumber'),
     },
@@ -242,6 +271,9 @@ export default function OrdersPage() {
   const { data: companiesResponse } = useGetFactoryOrderCompaniesQuery()
   const [updateFactoryOrderStatus, { isLoading: isUpdatingStatus }] =
     useUpdateFactoryOrderStatusMutation()
+  const [markDelivered] = useMarkFactoryOrderDeliveredMutation()
+  const [reopenAuction] = useReopenFactoryAuctionMutation()
+  const [transportOrder, setTransportOrder] = useState(null)
 
   const columns = getColumns(t)
 
@@ -291,6 +323,15 @@ export default function OrdersPage() {
     (row) => row.installmentAmount !== '—',
   ).length
 
+  const runAction = async (action, successKey) => {
+    try {
+      await action()
+      toast.success(t(successKey))
+    } catch (err) {
+      toast.error(getApiErrorMessage(err))
+    }
+  }
+
   const handleStatusUpdate = async (row, patchStatus) => {
     if (!row?.id || isUpdatingStatus) return
     try {
@@ -335,6 +376,38 @@ export default function OrdersPage() {
         id: 'status-ready',
         label: t('factoryOrders.status.ready'),
         onClick: (item) => handleStatusUpdate(item, STATUS_PATCH.ready),
+      })
+    }
+
+    if (row?.actions?.canChooseTransport) {
+      rowActions.push({
+        id: 'choose-transport',
+        label: t('factoryOrders.transport.choose'),
+        onClick: (item) => setTransportOrder(item),
+      })
+    }
+
+    if (row?.actions?.canMarkDelivered) {
+      const mapsUrl = googleMapsDirectionsUrl({ destination: row.transport?.deliveryLocation })
+      if (mapsUrl) {
+        rowActions.push({
+          id: 'open-maps',
+          label: t('ui.openInGoogleMaps'),
+          onClick: () => window.open(mapsUrl, '_blank', 'noopener,noreferrer'),
+        })
+      }
+      rowActions.push({
+        id: 'mark-delivered',
+        label: t('factoryOrders.transport.markDelivered'),
+        onClick: (item) => runAction(() => markDelivered(item.id).unwrap(), 'factoryOrders.transport.deliveredDone'),
+      })
+    }
+
+    if (row?.actions?.canReopenAuction) {
+      rowActions.push({
+        id: 'reopen-auction',
+        label: t('factoryOrders.transport.reopen'),
+        onClick: (item) => runAction(() => reopenAuction(item.id).unwrap(), 'factoryOrders.transport.reopened'),
       })
     }
 
@@ -442,6 +515,11 @@ export default function OrdersPage() {
           total: pagination.total || 0,
           onPageChange: setPage,
         }}
+      />
+
+      <FactoryTransportModal
+        order={transportOrder}
+        onClose={() => setTransportOrder(null)}
       />
     </div>
   )

@@ -16,6 +16,7 @@ import {
 import PolicyListSection from './sections/PolicyListSection'
 import UploadInsuranceModal from './sections/UploadInsuranceModal'
 import Skeleton from '../../../components/common/Skeleton/Skeleton'
+import { useOpenStoredFile } from '@/hooks/useSignedFileUrl'
 import i18n from '@/i18n'
 
 export default function InsurancePage() {
@@ -34,6 +35,7 @@ export default function InsurancePage() {
     useUploadTransporterInsuranceMutation()
   const [downloadPdf, { isLoading: isDownloadingPdf }] =
     useDownloadTransporterInsurancePdfMutation()
+  const openStoredFile = useOpenStoredFile()
 
   const { requirementsMet, policies } = useMemo(
     () => mapInsuranceResponse(data, t),
@@ -89,11 +91,8 @@ export default function InsurancePage() {
     }
   }
 
-  const handleViewDocument = (policy) => {
-    if (policy.documentUrl) {
-      window.open(policy.documentUrl, '_blank', 'noopener,noreferrer')
-      return
-    }
+  const handleViewDocument = async (policy) => {
+    if (policy.documentUrl && (await openStoredFile(policy.documentUrl))) return
     setToast({
       open: true,
       message: t('transporterInsurance.documentUnavailable', {
